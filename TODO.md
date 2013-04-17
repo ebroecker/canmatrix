@@ -1,23 +1,32 @@
 
 
 
-exportDbc.py
+
+
+
+
+
+
+library/exportdbc.py
  add multiplex-support
 
 
 
-exportKcd.py
- add multiplex-support
-
-
-
-exportdbf.py
+library/exportdbf.py
  add multiplex-support
 	 db-parameter sind nicht ordendlich im Objekt abgelegt
 
 
 
-importarxml.py
+library/exportkcd.py
+ add multiplex-support
+
+
+
+
+
+
+library/importarxml.py
  default-frame-info for CAN-Simulation is missing (only default signals available => calculation required
  Well, ..., this is the first attempt to import a arxml-file; I did this without reading any spec;  
  sender of frames and recievers of signals are missing
@@ -25,12 +34,12 @@ importarxml.py
 
 
 
-importdbc.py
+library/importdbc.py
  support for: VERSION, NS, BS_, BA_DEF_DEF_, BA_DEF_, CM_
 
 
 
-importdbf.py
+library/importdbf.py
  support for [START_PARAM_NET]
  support for [START_PARAM_NODE]
  support for [START_PARAM_MSG]
@@ -43,7 +52,7 @@ importdbf.py
 
 
 
-importkcd.py
+library/importkcd.py
  baudrate missing
  name save
  defaults for CAN-Simulation missing
