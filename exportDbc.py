@@ -23,11 +23,12 @@
 # this script exports dbc-files from a canmatrix-object
 # dbc-files are the can-matrix-definitions of the CanOe (Vector Informatic)
 #  NOT supported BA_DEF BA_DEF_DEF
-#
+#TODO multiplex
 
 from lxml import etree
 from canmatrix import *
 import cPickle as pickle
+import codecs
 
 def exportDbc(db, filename):
 	f = open(filename,"w")
@@ -42,7 +43,7 @@ def exportDbc(db, filename):
 	nodeList = {};
 	for bu in db._BUs._liste:
 		f.write(bu._name + " ")
-	f.write("\n")
+	f.write("\n\n")
 
 
 	#Botschaften
@@ -52,35 +53,44 @@ def exportDbc(db, filename):
 			f.write(" SG_ " + signal._name + " : %d|%d@%d%c" % (signal._startbit, signal._signalsize,signal._byteorder, signal._valuetype))
 			f.write(" (%g,%g)" % (signal._factor, signal._offset))
 			f.write(" [%g,%g]" % (signal._min, signal._max))
-			f.write(' "%s" ' % (signal._unit))
+			f.write(' "')
+			f.write(signal._unit.encode('CP1253'))
+#			print signal._unit
+			f.write('"')
 			f.write(','.join(signal._reciever) + "\n")
 		f.write("\n")
+	f.write("\n")
 
 	#signalbezeichnungen
 	for bo in db._bl._liste:
 		for signal in bo._signals:
 			f.write("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "' + signal._comment + '";\n') 
+	f.write("\n")
 
 
 	#boardunit-attributes:
 	for bu in db._BUs._liste:
 		for attrib,val in bu._attributes.items():
 			f.write('BA_ "' + attrib + '" BU_ ' + bu._name + ' ' + val  + ';\n')
+	f.write("\n")
 
 	#boardunit-attributes:
 	for attrib,val in db._attributes.items():
 		f.write( 'BA_ "' + attrib + '" ' + val  + ';\n')
+	f.write("\n")
 
 	#messages-attributes:
 	for bo in db._bl._liste:
 		for attrib,val in bo._attributes.items():
 			f.write( 'BA_ "' + attrib + '" BO_ %d ' % bo._Id + val  + ';\n')
+	f.write("\n")
 
 	#signal-attributes:
 	for bo in db._bl._liste:
 		for signal in bo._signals:
 			for attrib,val in signal._attributes.items():
 				f.write( 'BA_ "' + attrib + '" SG_ %d ' % bo._Id + signal._name + ' ' + val  + ';\n')
+	f.write("\n")
 
 
 	#signal-values:
@@ -95,5 +105,3 @@ def exportDbc(db, filename):
 def test():
 	db = loadPkl('test.pkl')
 	exportDbc(db, 'test.dbc')
-
-test()

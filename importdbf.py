@@ -93,8 +93,13 @@ def importDbf(filename):
 				temstr = line.strip()[15:].strip()
 				(name, size, startbyte, startbit, sign, Min, Max, byteorder, offset, factor, unit, multiplex, reciever) = temstr.split(',',12)
 
+				if multiplex == 'M':
+					multiplex = 'Multiplexor'
+				else:
+					multiplex = multiplex[1:]
+
 				sign = '+'
-				newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit, reciever.split(',')))
+				newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit, reciever.split(','), multiplex))
 
 			if line.startswith("[VALUE_DESCRIPTION]"):
 				temstr = line.strip()[19:].strip()

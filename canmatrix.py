@@ -3,12 +3,22 @@
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.
 #
-#Redistribution and use in source and binary forms, with or without modification, are permitted provided that #the following conditions are met:
+#Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+# the following conditions are met:
 #
-#    Redistributions of source code must retain the above copyright notice, this list of conditions and the #following disclaimer.
-#    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the #following disclaimer in the documentation and/or other materials provided with the distribution.
+#    Redistributions of source code must retain the above copyright notice, this list of conditions and the
+#    following disclaimer.
+#    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+#    following disclaimer in the documentation and/or other materials provided with the distribution.
 #
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED #WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A #PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY #DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, #PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER #CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH #DAMAGE.
+#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+#WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+#PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+#DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+#CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+#DAMAGE.
 
 import cPickle as pickle
 import json
@@ -45,7 +55,7 @@ class BoardUnitListe:
 	def __init__(self):
 		self._liste = []
 	def add(self,BU):
-		self._liste.append(BoardUnit(BU))
+		self._liste.append(BU)
 	def byName(self, name):
 		for test in self._liste:
 			if test._name == name:
@@ -53,7 +63,7 @@ class BoardUnitListe:
 		return 0
 
 class Signal:
-	def __init__(self, name, startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever):
+	def __init__(self, name, startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, multiplex=0):
 		self._name = name
 		self._startbit = int(startbit)
 		self._signalsize = int(signalsize)
@@ -68,6 +78,7 @@ class Signal:
 		self._values = {}
 		self._unit = unit
 		self._comment = ""
+		self._multiplex = multiplex
 	def addComment(self, comment):
 		self._comment = comment
 	def addAttribute(self, attribute, value):
@@ -128,6 +139,14 @@ class CanMatrix:
 	def addAttribute(self, attribute, value):
 		 self._attributes[attribute]=value
 
+def loadPkl(filename):
+        pkl_file = open(filename, 'rb')
+        db1 = pickle.load(pkl_file)
+        pkl_file.close()
+        return db1
 
-
+def savePkl(db, filename):
+        output = open(filename, 'wb')
+        pickle.dump(db, output)
+        output.close()
 

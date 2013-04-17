@@ -24,7 +24,7 @@
 #
 # this script exports kcd-files from a canmatrix-object
 # kcd-files are the can-matrix-definitions of the kayak (http://kayak.2codeornot2code.org/)
-#
+#TODO multiplex
 
 from lxml import etree
 from canmatrix import *

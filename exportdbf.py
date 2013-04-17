@@ -26,7 +26,7 @@ import cPickle as pickle
 #
 # this script exports dbf-files from a canmatrix-object
 # dbf-files are the can-matrix-definitions of the busmaster-project (http://rbei-etas.github.io/busmaster/)
-#
+#TODO multiplex
 
 
 def exportDbf(db, filename):
