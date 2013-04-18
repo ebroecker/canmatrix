@@ -41,7 +41,7 @@ elif infile[-3:] == 'dbf':
 elif infile[-3:] == 'kcd':
 	db = im.importKcd(infile)
 elif infile[-5:] == 'arxml':
-	db = im.importarxml(infile)
+	db = im.importArxml(infile)
 else:
     sys.stderr.write('\nFile not recognized: ' + infile + "\n")
 print "done\n"
