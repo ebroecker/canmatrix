@@ -36,6 +36,9 @@ def exportDbc(db, filename):
 	f.write( "VERSION \"created by pkl2dbc\"\n\n")
 	f.write("\n")
 
+	f.write("NS_ :\n\nBS_:\n\n")
+
+	
 	#Boardunits
 	f.write( "BU_: ")
 	id = 1
@@ -47,16 +50,20 @@ def exportDbc(db, filename):
 
 	#Botschaften
 	for bo in db._bl._liste:
+		if bo._Transmitter == "":
+			bo._Transmitter = "DUMMY"
 		f.write("BO_ %d " % bo._Id + bo._name + ": %d " % bo._Size + bo._Transmitter + "\n")
 		for signal in bo._signals:
 			f.write(" SG_ " + signal._name + " : %d|%d@%d%c" % (signal._startbit, signal._signalsize,signal._byteorder, signal._valuetype))
 			f.write(" (%g,%g)" % (signal._factor, signal._offset))
-			f.write(" [%g,%g]" % (signal._min, signal._max))
+			f.write(" [%g|%g]" % (signal._min, signal._max))
 			f.write(' "')
 			f.write(signal._unit.encode('CP1253'))
 #			f.write(signal._unit)
 #			print signal._unit
 			f.write('" ')
+			if signal._reciever.__len__() == 0:
+				signal._reciever = ['DUMMY']
 			f.write(','.join(signal._reciever) + "\n")
 		f.write("\n")
 	f.write("\n")
@@ -78,7 +85,8 @@ def exportDbc(db, filename):
 	for attrib,val in db._attributes.items():
 		f.write( 'BA_ "' + attrib + '" ' + val  + ';\n')
 	f.write("\n")
-
+	
+	f.write("BA_DEF_ BO_  \"GenMsgCycleTime\" INT 0 65535;\n")
 	#messages-attributes:
 	for bo in db._bl._liste:
 		for attrib,val in bo._attributes.items():
@@ -99,6 +107,6 @@ def exportDbc(db, filename):
 			if len(signal._values) > 0:
 				f.write('VAL_ %d ' % bo._Id + signal._name)		
 				for attrib,val in signal._values.items():
-					f.write(' ' + str(attrib) + ' ' + str(val))
+					f.write(' ' + str(attrib) + ' "' + str(val) + '"')
 				f.write(";\n"); 
 
