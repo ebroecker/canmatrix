@@ -54,7 +54,13 @@ def exportDbc(db, filename):
 			bo._Transmitter = "DUMMY"
 		f.write("BO_ %d " % bo._Id + bo._name + ": %d " % bo._Size + bo._Transmitter + "\n")
 		for signal in bo._signals:
-			f.write(" SG_ " + signal._name + " : %d|%d@%d%c" % (signal._startbit, signal._signalsize,signal._byteorder, signal._valuetype))
+			f.write(" SG_ " + signal._name)
+			if signal._multiplex == 'Multiplexor':
+				f.write(' M ')
+			elif signal._multiplex is not None:
+				f.write(" m%d " % int(signal._multiplex))
+
+			f.write(" : %d|%d@%d%c" % (signal._startbit, signal._signalsize,signal._byteorder, signal._valuetype))
 			f.write(" (%g,%g)" % (signal._factor, signal._offset))
 			f.write(" [%g|%g]" % (signal._min, signal._max))
 			f.write(' "')

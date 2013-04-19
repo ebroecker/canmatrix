@@ -67,7 +67,7 @@ def exportDbf(db, filename):
 
 			f.write(",%d,%g,%g" % (signal._byteorder, signal._offset, signal._factor))
 			multiplex=""
-			f.write("," + signal._unit + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
+			f.write("," + signal._unit.encode('CP1253') + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
 
 			if len(signal._values) > 0:
 				for attrib,val in signal._values.items():

@@ -35,7 +35,7 @@ def exportKcd(db, filename):
 	root = etree.Element('NetworkDefinition')
 	root.set("xmlns","http://kayak.2codeornot2code.org/1.0")
 	NS_XSI = "{http://www.w3.org/2001/XMLSchema-instance}"
-	root.set(NS_XSI + "SchemaLocation", "Definition.xsd")
+	root.set(NS_XSI + "schemaLocation", "Definition.xsd")
 
 
 	#root.append(etree.Element('Document'))
@@ -67,7 +67,7 @@ def exportKcd(db, filename):
 	bus.set("name","chassis")
 
 	for bo in db._bl._liste:
-		message = etree.Element('Message', id="0x%X" % bo._Id, name=bo._name)
+		message = etree.Element('Message', id="0x%03X" % bo._Id, name=bo._name)
 
 		if "GenMsgCycleTime" in bo._attributes:
 			cycleTime = int(bo._attributes["GenMsgCycleTime"])	
@@ -100,8 +100,8 @@ def exportKcd(db, filename):
 				value.set('min',str(signal._min))
 			if float(signal._max) != 1:	
 				value.set('max',str(signal._max))
-	#		if len(signal._unit) > 0:		
-	#			value.set('unit',signal._unit)
+			if len(signal._unit) > 0:		
+				value.set('unit',signal._unit)
 			sig.append(value)
 
 
@@ -117,7 +117,8 @@ def exportKcd(db, filename):
 					noderef = etree.Element('NodeRef', id=str(nodeList[reciever]))
 					consumer.append(noderef)
 
-			sig.append(consumer)
+#TODO Kajak doesnt like my consumer-list -> research why?
+#			sig.append(consumer)
 			message.append(sig)
 		
 		bus.append(message)

@@ -63,7 +63,7 @@ class BoardUnitListe:
 		return 0
 
 class Signal:
-	def __init__(self, name, startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, multiplex=0):
+	def __init__(self, name, startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, multiplex=None):
 		self._name = name
 		self._startbit = int(startbit)
 		self._signalsize = int(signalsize)
