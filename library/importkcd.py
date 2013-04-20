@@ -27,9 +27,7 @@
 #TODO baudrate missing
 #TODO name save
 #TODO defaults for CAN-Simulation missing
-#TODO multiplex support
 #TODO LabelGroup not supported
-
 
 from lxml import etree
 from canmatrix import *
@@ -99,7 +97,7 @@ def importKcd(filename):
 	nodelist = {}
 	nodes = root.findall('./' + namespace + 'Node')
 	for node in nodes:
-		db._BUs.add(node.get('name'))	
+		db._BUs.add(BoardUnit(node.get('name')))	
 		nodelist[node.get('id')] = node.get('name')
 
 	bus = root.find('./' + namespace + 'Bus')
@@ -158,7 +156,7 @@ def importKcd(filename):
 		signales = message.findall('./' + namespace + 'Signal')
 		maxBit = 0;
 		for signal in signales:
-			newSig = parseSignal(signal, "", namespace)
+			newSig = parseSignal(signal, None, namespace)
 		
 			if int(newSig._startbit) + int(newSig._signalsize) > maxBit:
 				maxBit = int(newSig._startbit) + int(newSig._signalsize)

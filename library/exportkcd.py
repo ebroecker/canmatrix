@@ -24,10 +24,49 @@
 #
 # this script exports kcd-files from a canmatrix-object
 # kcd-files are the can-matrix-definitions of the kayak (http://kayak.2codeornot2code.org/)
-#TODO add multiplex-support
 
 from lxml import etree
 from canmatrix import *
+
+def createSignal(signal, nodeList):
+	sig = etree.Element('Signal', name=signal._name, offset=str(signal._startbit))
+	if signal._signalsize > 1:		
+		sig.set("length", str(signal._signalsize))
+	if signal._byteorder == 0:	
+		sig.set('endianess',"little")
+
+	notes = etree.Element('Notes')
+	notes.text = signal._comment		
+	sig.append(notes)
+
+	value = etree.Element('Value')
+	if float(signal._factor) != 1:	
+		value.set('slope',str(signal._factor))
+	if float(signal._offset) != 0:	
+		value.set('intercept',str(signal._offset))
+	if float(signal._min) != 0:	
+		value.set('min',str(signal._min))
+	if float(signal._max) != 1:	
+		value.set('max',str(signal._max))
+	if len(signal._unit) > 0:		
+		value.set('unit',signal._unit)
+	sig.append(value)
+
+
+	labelset = etree.Element('LabelSet')
+	for valueVal,valName in signal._values.items():
+		label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
+		labelset.append(label)			
+	sig.append(labelset)
+
+	consumer = etree.Element('Consumer')
+	for reciever in signal._reciever:
+		if len(reciever) > 1:				
+			noderef = etree.Element('NodeRef', id=str(nodeList[reciever]))
+			consumer.append(noderef)
+	return sig
+#TODO Kajak doesnt like my consumer-list -> research why?
+#			sig.append(consumer)
 
 
 def exportKcd(db, filename):
@@ -56,7 +95,6 @@ def exportKcd(db, filename):
 		nodeList[bu._name] = id;
 		id += 1
 
-
 	# Bus
 
 	if 'Baudrate' in db._attributes:
@@ -80,47 +118,33 @@ def exportKcd(db, filename):
 			noderef = etree.Element('NodeRef', id=str(nodeList[bo._Transmitter]))
 		producer.append(noderef)
 		message.append(producer)
+		# standard-signals:
 		for signal in bo._signals:
-			sig = etree.Element('Signal', name=signal._name, offset=str(signal._startbit))
-			if signal._signalsize > 1:		
-				sig.set("length", str(signal._signalsize))
-			if signal._byteorder == 0:	
-				sig.set('endianess',"little")
-	
-			notes = etree.Element('Notes')
-			notes.text = signal._comment		
-			sig.append(notes)
+			if signal._multiplex is None:
+				sig = createSignal(signal, nodeList)
+				message.append(sig)
 
-			value = etree.Element('Value')
-			if float(signal._factor) != 1:	
-				value.set('slope',str(signal._factor))
-			if float(signal._offset) != 0:	
-				value.set('intercept',str(signal._offset))
-			if float(signal._min) != 0:	
-				value.set('min',str(signal._min))
-			if float(signal._max) != 1:	
-				value.set('max',str(signal._max))
-			if len(signal._unit) > 0:		
-				value.set('unit',signal._unit)
-			sig.append(value)
+		# check Multiplexor if present:
+		multiplexor = None
+		for signal in bo._signals:
+			if signal._multiplex is not None and signal._multiplex == 'Multiplexor':
+				multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal._startbit), length=str(signal._signalsize))
 
+		# multiplexor found
+		if multiplexor is not None:
+			# ticker all potential muxgroups
+			for i in range(0,1<<int(multiplexor.get('length'))):
+				empty = 0
+				muxgroup = etree.Element('MuxGroup', count=str(i))
+				for signal in bo._signals:
+					if signal._multiplex is not None and signal._multiplex == str(i):
+						sig = createSignal(signal, nodeList)
+						muxgroup.append(sig)
+						empty = 1
+				if empty == 1:
+					multiplexor.append(muxgroup)
+			message.append(multiplexor)
 
-			labelset = etree.Element('LabelSet')
-			for valueVal,valName in signal._values.items():
-				label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
-				labelset.append(label)			
-			sig.append(labelset)
-
-			consumer = etree.Element('Consumer')
-			for reciever in signal._reciever:
-				if len(reciever) > 1:				
-					noderef = etree.Element('NodeRef', id=str(nodeList[reciever]))
-					consumer.append(noderef)
-
-#TODO Kajak doesnt like my consumer-list -> research why?
-#			sig.append(consumer)
-			message.append(sig)
-		
 		bus.append(message)
 
 	root.append(bus)

@@ -25,7 +25,6 @@ from canmatrix import *
 #
 # this script exports dbf-files from a canmatrix-object
 # dbf-files are the can-matrix-definitions of the busmaster-project (http://rbei-etas.github.io/busmaster/)
-#TODO add multiplex-support
 
 
 def exportDbf(db, filename):
@@ -66,7 +65,13 @@ def exportDbf(db, filename):
 			f.write("[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%g,%g" % (signal._signalsize,whichbyte,signal._startbit,sign,signal._min,signal._max))
 
 			f.write(",%d,%g,%g" % (signal._byteorder, signal._offset, signal._factor))
-			multiplex=""
+			multiplex = ""
+			if signal._multiplex is not None:
+				if signal._multiplex == 'Multiplexor':
+					multiplex = 'M'
+				else:			
+			 TC_FuelType_TC_DIST		multiplex = 'm' + str(signal._multiplex)
+
 			f.write("," + signal._unit.encode('CP1253') + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
 
 			if len(signal._values) > 0:
