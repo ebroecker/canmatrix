@@ -7,19 +7,24 @@
 
 
 
+
+
+
 library/exportdbc.py
  add multiplex-support
 
 
 
 library/exportdbf.py
- add multiplex-support
 	 db-parameter sind nicht ordendlich im Objekt abgelegt
 
 
 
 library/exportkcd.py
- add multiplex-support
+ Kajak doesnt like my consumer-list -> research why?
+
+
+
 
 
 
@@ -56,7 +61,6 @@ library/importkcd.py
  baudrate missing
  name save
  defaults for CAN-Simulation missing
- multiplex support
  LabelGroup not supported
 
 
