@@ -132,12 +132,15 @@ def getSignals(signalarray, Bo, arDict, ns):
 				# value hinzufuegen
 				if const is None:
 					print "unknown Compu-Method: " + compmethod.get('UUID')
-		byteorder = 1		
+		byteorder = 0	
 		if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
-			byteorder = 0	
+			byteorder = 1	
 		valuetype = '+' # unsigned
 		if startBit is not None:
-			newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever)
+			startbit = int(startBit.text)	
+			if 0 == byteorder:	
+				startbit = reverseStartbit(startbit)
+			newSig = Signal(name.text, startbit, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever)
 			#newSig Description, 
 			for key,value in values.items():			
 				newSig.addValues(key, value)

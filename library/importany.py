@@ -30,6 +30,6 @@ def importany(filename):
 	elif filename[-3:] == 'kcd':
 		db = im.importKcd(filename)
 	elif filename[-5:] == 'arxml':
-		db = im.importarxml(filename)
+		db = im.importArxml(filename)
 	return db
 

@@ -150,3 +150,9 @@ def savePkl(db, filename):
         pickle.dump(db, output)
         output.close()
 
+def reverseStartbit(startbit):
+	startbyte = (startbit / 8)
+	startbit = 7 - ( startbit % 8)			
+							
+	return (startbyte*8)+startbit
+

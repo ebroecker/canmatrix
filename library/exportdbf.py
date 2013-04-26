@@ -70,7 +70,7 @@ def exportDbf(db, filename):
 				if signal._multiplex == 'Multiplexor':
 					multiplex = 'M'
 				else:			
-			 TC_FuelType_TC_DIST		multiplex = 'm' + str(signal._multiplex)
+			 		multiplex = 'm' + str(signal._multiplex)
 
 			f.write("," + signal._unit.encode('CP1253') + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
 
