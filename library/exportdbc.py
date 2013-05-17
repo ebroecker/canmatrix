@@ -50,9 +50,13 @@ def exportDbc(db, filename):
 
 	#Botschaften
 	for bo in db._bl._liste:
-		if bo._Transmitter == "":
-			bo._Transmitter = "DUMMY"
-		f.write("BO_ %d " % bo._Id + bo._name + ": %d " % bo._Size + bo._Transmitter + "\n")
+		if bo._Transmitter.__len__() == 0:
+			bo._Transmitter = ["Vector__XXX"]
+
+		if bo._extended == 1:
+			bo._Id += 0x80000000
+			
+		f.write("BO_ %d " % bo._Id + bo._name + ": %d " % bo._Size + bo._Transmitter[0] + "\n")
 		for signal in bo._signals:
 			f.write(" SG_ " + signal._name)
 			if signal._multiplex == 'Multiplexor':
@@ -65,22 +69,35 @@ def exportDbc(db, filename):
 			f.write(" [%g|%g]" % (signal._min, signal._max))
 			f.write(' "')
 			f.write(signal._unit.encode('CP1253'))
-#			f.write(signal._unit)
-#			print signal._unit
 			f.write('" ')
 			if signal._reciever.__len__() == 0:
-				signal._reciever = ['DUMMY']
+				signal._reciever = ['Vector__XXX']
 			f.write(','.join(signal._reciever) + "\n")
 		f.write("\n")
 	f.write("\n")
 
+	#second Sender:
+	for bo in db._bl._liste:
+		if bo._Transmitter.__len__() > 1:
+			f.write("BO_TX_BU_ %d : %s;\n" % (bo._Id,','.join(bo._Transmitter)))
+
 	#signalbezeichnungen
 	for bo in db._bl._liste:
 		for signal in bo._signals:
-			f.write("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "' + signal._comment + '";\n') 
+			f.write("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "')
+			f.write(signal._comment.encode('CP1253','replace').replace('"','\\"'))
+			f.write('";\n') 
 	f.write("\n")
 
-
+	f.write('BA_DEF_ BU_  "NWM-Stationsadresse" HEX 0 63;\n')
+	f.write('BA_DEF_ BU_  "NWM-Knoten\" ENUM  "nein","ja";')
+	f.write('BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;\n')
+	f.write('BA_DEF_ BO_  "GenMsgDelayTime" INT 0 65535;')
+	f.write('BA_DEF_ BO_  "GenMsgStartValue" STRING ;\n')
+	f.write('BA_DEF_ BO_  "GenMsgCycleTimeActive" INT 0 65535;\n')
+	f.write('BA_DEF_ BO_  "GenMsgNrOfRepetitions" INT 0 65535;\n')
+	f.write('BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";\n');
+	
 	#boardunit-attributes:
 	for bu in db._BUs._liste:
 		for attrib,val in bu._attributes.items():
@@ -92,20 +109,18 @@ def exportDbc(db, filename):
 		f.write( 'BA_ "' + attrib + '" ' + val  + ';\n')
 	f.write("\n")
 	
-	f.write("BA_DEF_ BO_  \"GenMsgCycleTime\" INT 0 65535;\n")
 	#messages-attributes:
 	for bo in db._bl._liste:
 		for attrib,val in bo._attributes.items():
-			f.write( 'BA_ "' + attrib + '" BO_ %d ' % bo._Id + val  + ';\n')
+			f.write( 'BA_ "' + attrib.encode('CP1253') + '" BO_ %d ' % bo._Id + val + ';\n')
 	f.write("\n")
-
+			
 	#signal-attributes:
 	for bo in db._bl._liste:
 		for signal in bo._signals:
 			for attrib,val in signal._attributes.items():
 				f.write( 'BA_ "' + attrib + '" SG_ %d ' % bo._Id + signal._name + ' ' + val  + ';\n')
 	f.write("\n")
-
 
 	#signal-values:
 	for bo in db._bl._liste:

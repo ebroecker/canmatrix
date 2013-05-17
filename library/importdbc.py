@@ -23,7 +23,7 @@
 # this script imports dbc-files to a canmatrix-object
 # dbc-files are the can-matrix-definitions of canoe
 #
-#TODO support for: VERSION, NS, BS_, BA_DEF_DEF_, BA_DEF_, CM_
+#TODO support for: VERSION, NS, BS_, BA_DEF_DEF_, BA_DEF_, CM_ BO, CM_
 
 from canmatrix import *
 import re
@@ -59,6 +59,9 @@ def importDbc(filename):
 				db._bl.addSignalToLastBotschaft(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp.group(11),reciever, multiplex))
 
 
+		elif l.startswith("BO_TX_BU_ "):
+			#TODO: multiple Frame Submitters (example Line: BO_TX_BU_ 0 : b,a; )
+			pass
 		elif l.startswith("CM_ SG_"):
 			regexp = re.compile("^CM\_ SG\_ (\w+) (\w+) \"(.+)\";")		
 			temp = regexp.match(l)

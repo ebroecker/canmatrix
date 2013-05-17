@@ -28,6 +28,7 @@
 #TODO name save
 #TODO defaults for CAN-Simulation missing
 #TODO LabelGroup not supported
+#TODO multiple Transmitter
 
 from lxml import etree
 from canmatrix import *
@@ -106,7 +107,7 @@ def importKcd(filename):
 
 	for message in messages:
 		dlc = 1
-		newBo = Botschaft(int(message.get('id'), 16), message.get('name'), dlc, "")
+		newBo = Botschaft(int(message.get('id'), 16), message.get('name'), dlc, None)
 
 		if 'triggered' in message.attrib:
 			newBo.addAttribute("GenMsgCycleTime", message.get('interval'))	
@@ -163,7 +164,7 @@ def importKcd(filename):
 			
 			newBo.addSignal(newSig)
 		newBo._Size = int(maxBit / 8)
-		if newBo._Size < maxBit / 8:
+		if newBo._Size < maxBit / 8 + 1 :
 			newBo._Size = int(maxBit / 8)+1
 
 		db._bl.addBotschaft(newBo)

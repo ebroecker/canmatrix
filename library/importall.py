@@ -4,6 +4,7 @@ from importarxml import *
 from importdbc import *
 from importdbf import *
 from importkcd import *
+from importxls import *
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.

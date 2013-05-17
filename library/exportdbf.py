@@ -48,10 +48,14 @@ def exportDbf(db, filename):
 	#m_cDataFormat If 1 dataformat Intel, 0- Motorola -- immer 1 original Converter macht das nach anzahl entsprechender Signale
 	#cFrameFormat Standard 'S' Extended 'X'
 		extended = 'S'
-		if int(bo._Id) > 0x800:
+		if bo._extended == 1:
 			extended = 'X'	
 		f.write("[START_MSG] " + bo._name + ",%d,%d,%d,1,%c," % (bo._Id, bo._Size, len(bo._signals), extended))
-		f.write( bo._Transmitter + "\n")
+#TODO multiple Transmitter
+		if bo._Transmitter.__len__() == 0:
+			bo._Transmitter = ["Vector__XXX"]
+		
+		f.write( bo._Transmitter[0] + "\n")
 
 		for signal in bo._signals:
 	# m_acName ucLength m_ucWhichByte m_ucStartBit

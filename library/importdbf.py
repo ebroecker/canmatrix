@@ -80,6 +80,8 @@ def importDbf(filename):
 				temstr = line.strip()[11:].strip()
 				(name, Id, size, nSignals, extended, motIntl ,transmitter) = temstr.split(',') 
 				newBo = db._bl.addBotschaft(Botschaft(int(Id), name, size, transmitter))
+				if extended == 'X':
+					newBo._extended = 1
 		
 			if line.startswith("[NODE]"):
 				temstr = line.strip()[6:].strip()

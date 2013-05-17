@@ -42,7 +42,7 @@ class BotschaftenListe:
 		for test in self._liste:
 			if test._name == Name:
 				return test
-		return 0
+		return None
 		
 class BoardUnit:
 	def __init__(self,name):
@@ -68,6 +68,7 @@ class Signal:
 		self._startbit = int(startbit)
 		self._signalsize = int(signalsize)
 		self._byteorder = int(byteorder)
+		# byteorder: 1: Intel, 0: Motorola
 		self._valuetype = valuetype
 		self._factor = float(factor)
 		self._offset = float(offset)
@@ -93,15 +94,24 @@ class Botschaft:
 	def __init__(self,bid, name, size, transmitter): 
 		self._Id = int(bid)
 		self._name = name
-		self._Transmitter = transmitter
+		if transmitter is not None:
+			self._Transmitter = [transmitter]
+		else:
+			self._Transmitter = []
 		self._Size = int(size)
 		self._signals = []
 		self._attributes = {}
 		self._Reciever = []
+		self._extended = 0
+		
 	def addSignal(self, signal):
 		self._signals.append(signal)
 		return self._signals[len(self._signals)-1]
 
+	def addTransmitter(self, transmitter):
+		if transmitter not in self._Transmitter:
+			self._Transmitter.append(transmitter)
+		
 	def signalByName(self, name):
 		for signal in self._signals:
 			if signal._name == name:
@@ -150,9 +160,29 @@ def savePkl(db, filename):
         pickle.dump(db, output)
         output.close()
 
-def reverseStartbit(startbit):
-	startbyte = (startbit / 8)
-	startbit = 7 - ( startbit % 8)			
-							
-	return (startbyte*8)+startbit
+def putSignalValueInFrame(startbit, len, format, value, frame):
+	if format == 1: # Intel
+		lastbit = startbit + len
+		firstbyte = startbit/8-1
+		lastbyte = (lastbit-1)/8
+		# im lastbyte mit dem msb anfangen
+		# im firstbyte mit dem lsb aufhoeren
+		for i in range(lastbyte, firstbyte, -1):
+			if lastbit %8 != 0:
+				nbits = lastbit % 8
+			else:
+				nbits = min(len, 8)
+			nbits = min(len, nbits)
+				
+			start = lastbit-1 - int((lastbit-1)/8)*8
+			end = lastbit-nbits - int((lastbit-nbits)/8)*8
+			
+			len -= nbits
+			mask = (0xff >> 7-start) << end
+			mask &= 0xff;
+			frame[i] |= (((value >> len ) << end) & mask)
+			lastbit = startbit + len
+	else:
+		print "Singal Format %s not supportet, initializing with 0" % format
+
 

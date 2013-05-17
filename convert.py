@@ -40,6 +40,8 @@ elif infile[-3:] == 'dbf':
 	db = im.importDbf(infile)
 elif infile[-3:] == 'kcd':
 	db = im.importKcd(infile)
+elif infile[-3:] == 'xls' or infile[-4:] == 'xlsx' :
+	db = im.importXls(infile)
 elif infile[-5:] == 'arxml':
 	db = im.importArxml(infile)
 else:

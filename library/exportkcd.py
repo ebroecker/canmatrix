@@ -114,9 +114,10 @@ def exportKcd(db, filename):
 				message.set("interval", "%d" % cycleTime)
 
 		producer = etree.Element('Producer')
+#TODO multiple Transmitter
 		if len(bo._Transmitter) > 1:				
 			noderef = etree.Element('NodeRef', id=str(nodeList[bo._Transmitter]))
-		producer.append(noderef)
+			producer.append(noderef)
 		message.append(producer)
 		# standard-signals:
 		for signal in bo._signals:

@@ -157,7 +157,7 @@ def tickerBoardUnits(db, dbcname):
 			continue		
 		bu._cycles = {}
 		for botsch in db._bl._liste:
-			if botsch._Transmitter == bu._name:
+			if bu._name in botsch._Transmitter:
 				if "GenMsgCycleTime" in botsch._attributes:
 					data =  botsch._attributes["GenMsgStartValue"][1:-2]
 					dlc = (len(data)/2)	

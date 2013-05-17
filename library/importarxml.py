@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from lxml import etree
 from canmatrix import *
+from autosarhelper import *
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.
@@ -28,41 +29,10 @@ from canmatrix import *
 #
 
 
-
-#TODO default-frame-info for CAN-Simulation is missing (only default signals available => calculation required
+#TODO default-frame-info for CAN-Simulation Motorola format is missing (only default signals available => calculation required
 #TODO Well, ..., this is the first attempt to import a arxml-file; I did this without reading any spec;  
-#TODO sender of frames and recievers of signals are missing
-
-class arTree:
-	def __init__(self,name="", ref=None):
-		self._name = name
-		self._ref = ref
-		self._array = []
-	def new(self, name, child):		
-		temp = arTree(name, child)
-		self._array.append(temp)
-		return temp
-
-	def getChild(self, path):
-		for tem in self._array:
-			if tem._name == path:
-				return tem
-
-def arParseTree(tag, ardict, namespace):
-	for child in tag:
-		name = child.find('./' + namespace + 'SHORT-NAME')			
-		if name is not None:
-			arParseTree(child, ardict.new(name.text, child), namespace)
-		else:
-			arParseTree(child, ardict, namespace)
-
-def arGetPath(ardict, path):
-	ptr = ardict
-	for p in path.split('/'):
-		if p.strip():
-			ptr = ptr.getChild(p)
-	return ptr._ref
-
+#TODO recievers of signals are missing
+#TODO MULTIPLEXED-I-PDU support!
 
 def getSignals(signalarray, Bo, arDict, ns):
 	for signal in signalarray:	
@@ -79,12 +49,12 @@ def getSignals(signalarray, Bo, arDict, ns):
 		factor = 1.0
 		offset = 0
 		Unit = ""
-		Reciever = ""
+		Reciever = []
 
 		signalDescription = getDesc(syssignal, arDict, ns)
 
 		datatype = arGetChild(syssignal, "DATA-TYPE", arDict, ns)
-
+		
 		lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
 		upper = arGetChild(datatype, "UPPER-LIMIT", arDict, ns)
 		if lower is not None and upper is not None:
@@ -106,8 +76,6 @@ def getSignals(signalarray, Bo, arDict, ns):
 
 		initvalueelement = arGetChild(syssignal, "INIT-VALUE", arDict, ns)
 		initvalue = arGetChild(initvalueelement, "VALUE", arDict, ns)
-		if initvalue is not None:
-			pass
 
 		for compuscale in compuscales:	
 			ll = arGetChild(compuscale, "LOWER-LIMIT", arDict, ns)
@@ -132,67 +100,95 @@ def getSignals(signalarray, Bo, arDict, ns):
 				# value hinzufuegen
 				if const is None:
 					print "unknown Compu-Method: " + compmethod.get('UUID')
-		byteorder = 0	
+		byteorder = 0		
 		if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
 			byteorder = 1	
 		valuetype = '+' # unsigned
 		if startBit is not None:
-			startbit = int(startBit.text)	
-			if 0 == byteorder:	
-				startbit = reverseStartbit(startbit)
-			newSig = Signal(name.text, startbit, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever)
+			newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever)
+			
+			if initvalue is not None:
+				if initvalue.text == "false":
+					initvalue.text = "0"
+				elif initvalue.text == "true":
+					initvalue.text = "1"
+				newSig._initValue = int(initvalue.text)
+			else:
+				newSig._initValue = 0
 			#newSig Description, 
 			for key,value in values.items():			
 				newSig.addValues(key, value)
 			Bo.addSignal(newSig)
 
 def getFrame(frame, arDict, ns):
+	extEle = arGetChild(frame, "CAN-ADDRESSING-MODE", arDict, ns)
 	idele = arGetChild(frame, "IDENTIFIER", arDict, ns)
 	frameR = arGetChild(frame, "FRAME", arDict, ns)
 	dlc = arGetChild(frameR, "FRAME-LENGTH", arDict, ns)
 	pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
 	pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
 	pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
-	name = arGetChild(pdu,"SHORT-NAME", arDict, ns)
+	
+	sn = arGetChild(frame, "SHORT-NAME", arDict, ns)
+	if "MULTIPLEXED-I-PDU" in pdu.tag:
+		sn = arGetChild(pdu, "SHORT-NAME", arDict, ns)
+		print "multiplex not supportet yet: " + sn.text
 
-	newBo = Botschaft(int(idele.text), name.text, int(dlc.text), "") #TODO Transmitter fehlt noch
+	idNum = int(idele.text)
 
+
+	newBo = Botschaft(idNum, arGetName(pdu, ns), int(dlc.text), None) 
+#	newBo.addComment(getDesc(frame, arDict, ns))
+	
+	if extEle is not None:
+		if extEle.text == 'EXTENDED':
+			newBo._extended = 1
+	
 	timingSpec = arGetChild(pdu,"I-PDU-TIMING-SPECIFICATION", arDict, ns)
 	cyclicTiming = arGetChild(timingSpec,"CYCLIC-TIMING", arDict, ns)
 	repeatingTime = arGetChild(cyclicTiming,"REPEATING-TIME", arDict, ns)
+	
+	eventTiming = arGetChild(timingSpec,"EVENT-CONTROLLED-TIMING", arDict, ns)
+	repeats = arGetChild(eventTiming, "NUMBER-OF-REPEATS", arDict, ns)
+	minimumDelay = arGetChild(timingSpec,"MINIMUM-DELAY", arDict, ns)
+	startingTime = arGetChild(timingSpec,"STARTING-TIME", arDict, ns)
+	
+	if cyclicTiming is not None and eventTiming is not None:
+		newBo.addAttribute("GenMsgSendType", "5")	 # CycleAndSpontan
+		if minimumDelay is not None: 
+			newBo.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
+		if repeats is not None:
+			newBo.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+	elif cyclicTiming is not None:
+		newBo.addAttribute("GenMsgSendType", "0") # CycleX
+		if minimumDelay is not None: 
+			newBo.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
+		if repeats is not None:
+			newBo.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+	else:
+		newBo.addAttribute("GenMsgSendType", "1") # Spontan
+		if minimumDelay is not None: 
+			newBo.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
+		if repeats is not None:
+			newBo.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+
+	
+	if startingTime is not None:
+		value = arGetChild(startingTime,"VALUE", arDict, ns)
+		newBo.addAttribute("GenMsgStartDelayTime", str(int(float(value.text)*1000)))
+
+		
+		
 	value = arGetChild(repeatingTime,"VALUE", arDict, ns)
 	if value is not None:	
-		newBo.addAttribute("GenMsgCycleTime",value.text) 
+		newBo.addAttribute("GenMsgCycleTime",str(int(float(value.text)*1000))) 
 
 	pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
 	pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
 	getSignals(pdusigmapping, newBo, arDict, ns)
 	return newBo
 
-
-
-def arGetChild(parent, tagname, arTranslationTable, namespace):
-	if parent is None:
-		return None
-	ret = parent.find('./' + namespace + tagname)
-	if ret is None:
-		ret = parent.find('./' + namespace + tagname + '-REF')
-		if ret is not None:
-			ret = arGetPath(arTranslationTable, ret.text)
-	return ret
-
-def arGetChildren(parent, tagname, arTranslationTable, namespace):
-	if parent is None:
-		return []
-	ret = parent.findall('./' + namespace + tagname)
-	if ret is None:
-		retlist = parent.findall('./' + namespace + tagname + '-REF')
-		rettemp = {}
-		for ret in retlist:
-			rettemp.append(arGetPath(arTranslationTable, ret.text))
-		ret = rettemp
-	return ret
-
+	
 def getDesc(element, arDict, ns):
 	desc = arGetChild(element, "DESC", arDict, ns)
 	txt = arGetChild(desc, 'L-2[@L="DE"]', arDict, ns)
@@ -205,7 +201,65 @@ def getDesc(element, arDict, ns):
 	else: 
 		return ""
 
+def processEcu(ecu, db, arDict, ns):
+#	print arGetName(ecu, ns) + ":"
+	connectors = arGetChild(ecu, "CONNECTORS", arDict, ns)
+	commconnector = arGetChild(connectors, "COMMUNICATION-CONNECTOR", arDict, ns)
+	nmAddress = arGetChild(commconnector, "NM-ADDRESS", arDict, ns)
+	assocRefs = arGetChild(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", arDict, ns)
+	assoc = arGetChildren(assocRefs, "ASSOCIATED-I-PDU-GROUP", arDict, ns)
+	inFrame = []
+	outFrame = []
+	
+	for ref in assoc:
+		direction = arGetChild(ref, "COMMUNICATION-DIRECTION", arDict, ns)
+		groupRefs = arGetChild(ref, "CONTAINED-I-PDU-GROUPS-REFS", arDict, ns)
+		pdurefs = arGetChild(ref, "I-PDU-REFS", arDict, ns)			
 
+		#local defined pdus
+		pdus = arGetChildren(pdurefs, "I-PDU", arDict, ns)
+		for pdu in pdus:
+			if direction.text == "IN":
+				inFrame.append(arGetName(pdu, ns))
+			else:
+				outFrame.append(arGetName(pdu, ns))
+
+		#grouped pdus
+		group = arGetChildren(groupRefs, "CONTAINED-I-PDU-GROUPS", arDict, ns)
+		for t in group:
+			if direction is None:
+				direction = arGetChild(t, "COMMUNICATION-DIRECTION", arDict, ns)
+			pdurefs = arGetChild(t, "I-PDU-REFS", arDict, ns)			
+			pdus = arGetChildren(pdurefs, "I-PDU", arDict, ns)
+			for pdu in pdus:
+				if direction.text == "IN":
+					inFrame.append(arGetName(pdu, ns))
+				else:
+					outFrame.append(arGetName(pdu, ns))
+			
+		for out in outFrame:
+			frame = db._bl.byName(out)
+			if frame is not None:
+				frame.addTransmitter(arGetName(ecu, ns))
+			else:
+				print "not found: " + out 
+
+		for inf in inFrame:
+			frame = db._bl.byName(inf)
+			if frame is not None:
+				for signal in frame._signals:
+					signal._reciever.append(arGetName(ecu, ns))
+			else:
+				print "not found: " + inf
+	bu = BoardUnit(arGetName(ecu, ns))
+	if nmAddress is not None:
+		bu.addAttribute("NWM-Stationsadresse", nmAddress.text)
+		bu.addAttribute("NWM-Knoten", "1")
+	else:
+		bu.addAttribute("NWM-Stationsadresse", "0")
+		bu.addAttribute("NWM-Knoten", "0")
+	return bu
+		
 def importArxml(filename):
 	db = CanMatrix() 
 
@@ -226,22 +280,35 @@ def importArxml(filename):
 
 
 	cc = root.find('.//' + ns + 'CAN-CLUSTER')
-	busname = arGetChild(cc, "SHORT-NAME", arDict, ns)
 	speed = arGetChild(cc, "SPEED", arDict, ns)
-	print "Busname: " + busname.text + " Speed: " + speed.text
+	print "Busname: " + arGetName(cc,ns) + " Speed: " + speed.text
 	physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
+	nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
+	
 	physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
 	frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
 	canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
-
+	
+	
 	for frame in canframetrig:
 		db._bl.addBotschaft(getFrame(frame, arDict, ns))
 
 	# find ECUs:
 	nodes = root.findall('.//' + ns +'ECU-INSTANCE')
 	for node in nodes:
-		name = node.find('.//' + ns + 'SHORT-NAME')	
-		db._BUs.add(BoardUnit(name.text))
+		bu = processEcu(node, db, arDict, ns)			
+		db._BUs.add(bu)
 
+	for bo in db._bl._liste:
+		frame = [0, 0, 0, 0, 0, 0, 0, 0]
+		for sig in bo._signals:
+			if sig._initValue != 0:
+				putSignalValueInFrame(sig._startbit, sig._signalsize, sig._byteorder, sig._initValue, frame)
+		hexStr = '"'
+		for i in range(bo._Size):
+			hexStr += "%02X" % frame[i]
+		hexStr += '"'
+		bo.addAttribute("GenMsgStartValue", hexStr)
+		
 	return db	
 
