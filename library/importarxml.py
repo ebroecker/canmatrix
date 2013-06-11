@@ -29,12 +29,10 @@ from autosarhelper import *
 #
 
 
-#TODO default-frame-info for CAN-Simulation Motorola format is missing (only default signals available => calculation required
 #TODO Well, ..., this is the first attempt to import a arxml-file; I did this without reading any spec;  
 #TODO recievers of signals are missing
-#TODO MULTIPLEXED-I-PDU support!
 
-def getSignals(signalarray, Bo, arDict, ns):
+def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 	for signal in signalarray:	
 		values = {}
 		motorolla = arGetChild(signal, "PACKING-BYTE-ORDER", arDict, ns)
@@ -62,6 +60,8 @@ def getSignals(signalarray, Bo, arDict, ns):
 			Max = int(upper.text)
 
 		datdefprops = arGetChild(datatype, "SW-DATA-DEF-PROPS", arDict, ns)
+
+		
 		compmethod = arGetChild(datdefprops, "COMPU-METHOD", arDict, ns)
 		unit = arGetChild(compmethod, "UNIT", arDict, ns)
 		if unit is not None:
@@ -76,7 +76,6 @@ def getSignals(signalarray, Bo, arDict, ns):
 
 		initvalueelement = arGetChild(syssignal, "INIT-VALUE", arDict, ns)
 		initvalue = arGetChild(initvalueelement, "VALUE", arDict, ns)
-
 		for compuscale in compuscales:	
 			ll = arGetChild(compuscale, "LOWER-LIMIT", arDict, ns)
 			ul = arGetChild(compuscale, "UPPER-LIMIT", arDict, ns)
@@ -105,22 +104,30 @@ def getSignals(signalarray, Bo, arDict, ns):
 			byteorder = 1	
 		valuetype = '+' # unsigned
 		if startBit is not None:
-			newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever)
-			
+			newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever, multiplexId)
+
+			basetype = arGetChild(datdefprops, "BASE-TYPE", arDict, ns)
+			if basetype is not None:
+				temp = arGetChild(basetype, "SHORT-NAME", arDict, ns)
+				if temp is not None and "boolean" == temp.text:
+					newSig.addValues(1,"TRUE")
+					newSig.addValues(0,"FALSE")
+		
 			if initvalue is not None:
 				if initvalue.text == "false":
 					initvalue.text = "0"
 				elif initvalue.text == "true":
 					initvalue.text = "1"
 				newSig._initValue = int(initvalue.text)
+				newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
 			else:
 				newSig._initValue = 0
-			#newSig Description, 
+
 			for key,value in values.items():			
 				newSig.addValues(key, value)
 			Bo.addSignal(newSig)
 
-def getFrame(frame, arDict, ns):
+def getFrame(frame, arDict, multiplexTranslation, ns):
 	extEle = arGetChild(frame, "CAN-ADDRESSING-MODE", arDict, ns)
 	idele = arGetChild(frame, "IDENTIFIER", arDict, ns)
 	frameR = arGetChild(frame, "FRAME", arDict, ns)
@@ -130,15 +137,49 @@ def getFrame(frame, arDict, ns):
 	pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
 	
 	sn = arGetChild(frame, "SHORT-NAME", arDict, ns)
-	if "MULTIPLEXED-I-PDU" in pdu.tag:
-		sn = arGetChild(pdu, "SHORT-NAME", arDict, ns)
-		print "multiplex not supportet yet: " + sn.text
-
 	idNum = int(idele.text)
-
-
 	newBo = Botschaft(idNum, arGetName(pdu, ns), int(dlc.text), None) 
-#	newBo.addComment(getDesc(frame, arDict, ns))
+
+	
+	if "MULTIPLEXED-I-PDU" in pdu.tag:
+		selectorByteOrder = arGetChild(pdu, "SELECTOR-FIELD-BYTE-ORDER", arDict, ns)
+		selectorLen = arGetChild(pdu, "SELECTOR-FIELD-LENGTH", arDict, ns)
+		selectorStart = arGetChild(pdu, "SELECTOR-FIELD-START-POSITION", arDict, ns)
+		byteorder = 0		
+		if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
+			byteorder = 1	
+		valuetype = '+' # unsigned
+		multiplexor = Signal("Multiplexor", selectorStart.text, selectorLen.text, byteorder, valuetype, 1, 0, 0, 1, "", [], "Multiplexor")
+		multiplexor._initValue = 0
+		newBo.addSignal(multiplexor)
+		staticPart = arGetChild(pdu, "STATIC-PART", arDict, ns)
+		ipdu = arGetChild(staticPart, "I-PDU", arDict, ns)
+		if ipdu is not None:
+			pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
+			pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+			getSignals(pdusigmapping, newBo, arDict, ns, None)
+			multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu,ns)
+			
+		dynamicPart = arGetChild(pdu, "DYNAMIC-PART", arDict, ns)
+#		segmentPositions = arGetChild(dynamicPart, "SEGMENT-POSITIONS", arDict, ns)
+#		segmentPosition = arGetChild(segmentPositions, "SEGMENT-POSITION", arDict, ns)	
+#		byteOrder = arGetChild(segmentPosition, "SEGMENT-BYTE-ORDER", arDict, ns)	
+#		segLength = arGetChild(segmentPosition, "SEGMENT-LENGTH", arDict, ns)	
+#		segPos = arGetChild(segmentPosition, "SEGMENT-POSITION", arDict, ns)			
+		dynamicPartAlternatives = arGetChild(dynamicPart, "DYNAMIC-PART-ALTERNATIVES", arDict, ns)
+		dynamicPartAlternativeList = arGetChildren(dynamicPartAlternatives, "DYNAMIC-PART-ALTERNATIVE", arDict, ns)
+		for alternative in dynamicPartAlternativeList:
+			selectorId = arGetChild(alternative, "SELECTOR-FIELD-CODE", arDict, ns)
+			ipdu = arGetChild(alternative, "I-PDU", arDict, ns)
+			multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu,ns)
+			if ipdu is not None:
+				pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
+				pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+				getSignals(pdusigmapping, newBo, arDict, ns, selectorId.text)
+
+			
+	
+	newBo.addComment(getDesc(pdu, arDict, ns))
 	
 	if extEle is not None:
 		if extEle.text == 'EXTENDED':
@@ -185,7 +226,7 @@ def getFrame(frame, arDict, ns):
 
 	pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
 	pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-	getSignals(pdusigmapping, newBo, arDict, ns)
+	getSignals(pdusigmapping, newBo, arDict, ns, None)
 	return newBo
 
 	
@@ -201,9 +242,12 @@ def getDesc(element, arDict, ns):
 	else: 
 		return ""
 
-def processEcu(ecu, db, arDict, ns):
+def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 #	print arGetName(ecu, ns) + ":"
 	connectors = arGetChild(ecu, "CONNECTORS", arDict, ns)
+	diagAddress = arGetChild(ecu, "DIAGNOSTIC-ADDRESS", arDict, ns)
+	diagResponse = arGetChild(ecu, "RESPONSE-ADDRESSS", arDict, ns)
+	#TODO: use diagAddress for frame-classification
 	commconnector = arGetChild(connectors, "COMMUNICATION-CONNECTOR", arDict, ns)
 	nmAddress = arGetChild(commconnector, "NM-ADDRESS", arDict, ns)
 	assocRefs = arGetChild(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", arDict, ns)
@@ -238,19 +282,25 @@ def processEcu(ecu, db, arDict, ns):
 					outFrame.append(arGetName(pdu, ns))
 			
 		for out in outFrame:
+			if out in multiplexTranslation:
+				out = multiplexTranslation[out]
 			frame = db._bl.byName(out)
 			if frame is not None:
 				frame.addTransmitter(arGetName(ecu, ns))
 			else:
-				print "not found: " + out 
+				print "out not found: " + out 
 
 		for inf in inFrame:
+			if inf in multiplexTranslation:
+				inf = multiplexTranslation[inf]
 			frame = db._bl.byName(inf)
 			if frame is not None:
 				for signal in frame._signals:
-					signal._reciever.append(arGetName(ecu, ns))
+					rec_name = arGetName(ecu, ns)
+					if rec_name not in  signal._reciever:
+						signal._reciever.append(rec_name)
 			else:
-				print "not found: " + inf
+				print "in not found: " + inf
 	bu = BoardUnit(arGetName(ecu, ns))
 	if nmAddress is not None:
 		bu.addAttribute("NWM-Stationsadresse", nmAddress.text)
@@ -289,14 +339,15 @@ def importArxml(filename):
 	frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
 	canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
 	
-	
+	multiplexTranslation = {}
 	for frame in canframetrig:
-		db._bl.addBotschaft(getFrame(frame, arDict, ns))
-
+		db._bl.addBotschaft(getFrame(frame, arDict,multiplexTranslation, ns))
+	
+	
 	# find ECUs:
 	nodes = root.findall('.//' + ns +'ECU-INSTANCE')
 	for node in nodes:
-		bu = processEcu(node, db, arDict, ns)			
+		bu = processEcu(node, db, arDict, multiplexTranslation, ns)			
 		db._BUs.add(bu)
 
 	for bo in db._bl._liste:

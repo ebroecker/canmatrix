@@ -23,7 +23,6 @@
 # this script exports dbc-files from a canmatrix-object
 # dbc-files are the can-matrix-definitions of the CanOe (Vector Informatic)
 #  NOT supported BA_DEF BA_DEF_DEF
-#TODO add multiplex-support
 
 from lxml import etree
 from canmatrix import *
@@ -81,6 +80,13 @@ def exportDbc(db, filename):
 		if bo._Transmitter.__len__() > 1:
 			f.write("BO_TX_BU_ %d : %s;\n" % (bo._Id,','.join(bo._Transmitter)))
 
+	#frame comments
+	for bo in db._bl._liste:
+		f.write("CM_ BO_ " + "%d " % bo._Id + ' "')
+		f.write(bo._comment.encode('CP1253','replace').replace('"','\\"'))
+		f.write('";\n') 
+	f.write("\n")
+			
 	#signalbezeichnungen
 	for bo in db._bl._liste:
 		for signal in bo._signals:
@@ -97,6 +103,9 @@ def exportDbc(db, filename):
 	f.write('BA_DEF_ BO_  "GenMsgCycleTimeActive" INT 0 65535;\n')
 	f.write('BA_DEF_ BO_  "GenMsgNrOfRepetitions" INT 0 65535;\n')
 	f.write('BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";\n');
+	f.write('BA_DEF_ SG_  "GenSigStartValue" HEX 0 4294967295;\n')
+#	f.write('BA_DEF_ SG_  "GenSigSNA" STRING;\n')
+	
 	
 	#boardunit-attributes:
 	for bu in db._BUs._liste:

@@ -103,7 +103,8 @@ class Botschaft:
 		self._attributes = {}
 		self._Reciever = []
 		self._extended = 0
-		
+		self._comment = ""
+
 	def addSignal(self, signal):
 		self._signals.append(signal)
 		return self._signals[len(self._signals)-1]
@@ -118,7 +119,10 @@ class Botschaft:
 				return signal
 		return 0
 	def addAttribute(self, attribute, value):
-		 self._attributes[attribute]=value
+		self._attributes[attribute]=value
+		
+	def addComment(self, comment):
+		self._comment = comment
 
 
 class CanMatrix:
@@ -182,7 +186,20 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
 			mask &= 0xff;
 			frame[i] |= (((value >> len ) << end) & mask)
 			lastbit = startbit + len
-	else:
-		print "Singal Format %s not supportet, initializing with 0" % format
-
-
+	else: # Motorola
+		firstbyte = startbit/8
+		bitsInfirstByte = startbit % 8 + 1 
+		restnBits = len - bitsInfirstByte
+		lastbyte = firstbyte + restnBits/8
+		if restnBits %8 > 0:
+			lastbyte += 1
+		restLen = len
+		nbits = bitsInfirstByte
+		for i in range(firstbyte, lastbyte+1):
+			end = 0
+			if restLen < 8:
+				end = 8-restLen
+			mask = (0xff >> (8-nbits)) << end
+			restLen -= nbits
+			frame[i] |= ((value >> restLen) << end) & mask 
+			nbits = min(restLen, 8)				

@@ -36,11 +36,11 @@ def importDbc(filename):
 	f = open(filename)
 	for line in f:
 		l = line.strip()
-		if l.startswith("BO_"):
+		if l.startswith("BO_ "):
 			regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")		
 			temp = regexp.match(l)
 			db._bl.addBotschaft(Botschaft(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-		elif l.startswith("SG_"):
+		elif l.startswith("SG_ "):
 			regexp = re.compile("^SG\_ (\w+) : (\d+)\|(\d+)@(\d)([\+|\-]) \(([0-9.+\-]+),([0-9.+\-]+)\) \[([0-9.+\-]+)\|([0-9.+\-]+)\] \"(.*)\" (.*)")		
 			temp = regexp.match(l)
 			if temp:
@@ -62,7 +62,7 @@ def importDbc(filename):
 		elif l.startswith("BO_TX_BU_ "):
 			#TODO: multiple Frame Submitters (example Line: BO_TX_BU_ 0 : b,a; )
 			pass
-		elif l.startswith("CM_ SG_"):
+		elif l.startswith("CM_ SG_ "):
 			regexp = re.compile("^CM\_ SG\_ (\w+) (\w+) \"(.+)\";")		
 			temp = regexp.match(l)
 			if temp:
@@ -71,7 +71,7 @@ def importDbc(filename):
 				if signal:
 					signal.addComment(temp.group(3))
 
-		elif l.startswith("BU_"):
+		elif l.startswith("BU_ "):
 			regexp = re.compile("^BU\_\:(.*)")		
 			temp = regexp.match(l)
 			if temp:
@@ -81,7 +81,7 @@ def importDbc(filename):
 						db._BUs.add(BoardUnit(ele))
 
 
-		elif l.startswith("VAL_"):
+		elif l.startswith("VAL_ "):
 			regexp = re.compile("^VAL\_ (\w+) (\w+) (.*)")		
 			temp = regexp.match(l)
 			if temp:
