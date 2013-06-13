@@ -61,7 +61,7 @@ def createSignal(signal, nodeList):
 
 	consumer = etree.Element('Consumer')
 	for reciever in signal._reciever:
-		if len(reciever) > 1:				
+		if len(reciever) > 1 and reciever in nodeList:				
 			noderef = etree.Element('NodeRef', id=str(nodeList[reciever]))
 			consumer.append(noderef)
 	return sig
@@ -94,7 +94,6 @@ def exportKcd(db, filename):
 		root.append(node)
 		nodeList[bu._name] = id;
 		id += 1
-
 	# Bus
 
 	if 'Baudrate' in db._attributes:
@@ -114,10 +113,11 @@ def exportKcd(db, filename):
 				message.set("interval", "%d" % cycleTime)
 
 		producer = etree.Element('Producer')
-#TODO multiple Transmitter
-		if len(bo._Transmitter) > 1:				
-			noderef = etree.Element('NodeRef', id=str(nodeList[bo._Transmitter]))
-			producer.append(noderef)
+
+		for transmitter in bo._Transmitter:
+			if len(transmitter) > 1 and transmitter in nodeList:				
+				noderef = etree.Element('NodeRef', id=str(nodeList[transmitter]))
+				producer.append(noderef)
 		message.append(producer)
 		# standard-signals:
 		for signal in bo._signals:

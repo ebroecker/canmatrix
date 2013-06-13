@@ -51,10 +51,9 @@ def exportDbf(db, filename):
 		if bo._extended == 1:
 			extended = 'X'	
 		f.write("[START_MSG] " + bo._name + ",%d,%d,%d,1,%c," % (bo._Id, bo._Size, len(bo._signals), extended))
-#TODO multiple Transmitter
 		if bo._Transmitter.__len__() == 0:
 			bo._Transmitter = ["Vector__XXX"]
-		
+#DBF does not support multiple Transmitters
 		f.write( bo._Transmitter[0] + "\n")
 
 		for signal in bo._signals:
@@ -100,7 +99,7 @@ def exportDbf(db, filename):
 	f.write("[START_DESC_SIG]\n")
 	for bo in db._bl._liste:
 		for signal in bo._signals:
-			f.write("%d S " % bo._Id + signal._name  + ' "' + signal._comment + '";\n') 
+			f.write("%d S " % bo._Id + signal._name  + ' "' + signal._comment.encode('CP1253') + '";\n') 
 	f.write("[END_DESC_SIG]\n")
 	f.write("[END_DESC]\n\n")
 
@@ -138,8 +137,3 @@ def exportDbf(db, filename):
 				f.write( str(bo._Id) + ',S,' + attrib  +  ',' + val  + '\n')
 	f.write("[END_PARAM_SIG_VAL]\n")
 	f.write("[END_PARAM_VAL]\n")
-
-def test():
-	db = loadPkl('test.pkl')
-	exportDbf(db, "test.dbf")
-

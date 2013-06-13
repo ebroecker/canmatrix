@@ -67,6 +67,7 @@ def exportDbc(db, filename):
 			f.write(" (%g,%g)" % (signal._factor, signal._offset))
 			f.write(" [%g|%g]" % (signal._min, signal._max))
 			f.write(' "')
+
 			f.write(signal._unit.encode('CP1253'))
 			f.write('" ')
 			if signal._reciever.__len__() == 0:
