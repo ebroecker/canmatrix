@@ -55,8 +55,11 @@ I use "active python" and installed lxml-package from active
 lxml is nedded for .arxml and .kcd support
  
 after download and with python in your path, you should be able to use:
+
 ./convert.py some-matrix.dbc some-matrix.dbf
+
 ./convert.py some-matrix.arxml some-matrix.dbc
+
 ...
 
 
