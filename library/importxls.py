@@ -20,6 +20,7 @@
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
+#TODO: Multiplex-Support missing
 #
 # this script imports excel-files to a canmatrix-object
 # these Excelfiles should have following collums:
@@ -69,6 +70,8 @@ def importXls(filename):
 			index['ValueName'] = i
 		elif "Function /" in value:
 			index['function'] = i
+		elif "Byteorder" in value:
+			index['byteorder'] = i
 			
 	index['BUstart'] = index['signalSNA'] + 1
 	index['BUend'] = index['Value'] - 1
@@ -82,6 +85,8 @@ def importXls(filename):
 	signalName = ""
 	newBo = None
 	for rownum in range(2,sh.nrows):
+		if sh.cell(rownum,index['ID']).value.__len__() == 0:
+			break
 		if sh.cell(rownum,index['ID']).value != frameId:
 			sender = []
 			# new Frame
@@ -134,8 +139,15 @@ def importXls(filename):
 			signalDefault = sh.cell(rownum,index['signalDefault']).value
 			signalSNA = sh.cell(rownum,index['signalSNA']).value
 
-			byteorder = 1 # Default Intel
-			#TODO, this is NOT in .xls?!
+			if "byteorder" in index:
+				signalByteorder = sh.cell(rownum,index['signalSNA']).value
+				if "Intel" in signalByteorder:
+					byteorder = 1
+				else:
+					byteorder = 0
+			else:
+				byteorder = 1 # Default Intel
+			#TODO: Byteorder is NOT in .xls?!
 			valuetype = '+'
 			if signalLength > 8:
 				byteorder = 0 # Motorola for long signals
@@ -147,9 +159,9 @@ def importXls(filename):
 					if 'r' in sh.cell(rownum,x).value:
 						reciever.append(sh.cell(0,x).value.strip())
 				if signalLength > 8:
-					newSig = Signal(signalName, startbyte*8+startbit-signalLength, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, None)
+					newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, None)
 				else:
-					newSig = Signal(signalName, startbyte*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, None)
+					newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, None)
 				
 				newBo.addSignal(newSig)
 				newSig.addComment(signalComment)
@@ -191,5 +203,3 @@ def importXls(filename):
 			if bo._Size < (maxBit / 8):
 				bo._Size = min(8,int(maxBit / 8))
 	return db
-
-importXls("body.xls")

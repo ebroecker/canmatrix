@@ -30,7 +30,7 @@
 #TODO LabelGroup not supported
 #TODO multiple Transmitter
 
-from lxml import etree
+from xml import etree
 from canmatrix import *
 
 def parseSignal(signal, mux, namespace):
@@ -89,7 +89,7 @@ def parseSignal(signal, mux, namespace):
 
 
 def importKcd(filename):
-	tree = etree.parse(filename)
+	tree = etree.ElementTree.parse(filename)
 	root = tree.getroot()
 	namespace = "{" + tree.xpath('namespace-uri(.)') + "}"
  

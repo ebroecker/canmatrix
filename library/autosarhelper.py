@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from lxml import etree
 from canmatrix import *
 
 #Copyright (c) 2013, Eduard Broecker 

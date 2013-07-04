@@ -315,6 +315,7 @@ def importArxml(filename):
 
 	print "Read arxml ..."
 	tree = etree.parse(filename)
+	
 	root = tree.getroot()
 	print " Done\n"
 

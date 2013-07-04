@@ -56,6 +56,8 @@ elif outfile[-3:] == 'dbf':
 	db = ex.exportDbf(db, outfile)
 elif outfile[-3:] == 'kcd':
 	db = ex.exportKcd(db, outfile)
+elif outfile[-3:] == 'xls':
+	db = ex.exportXls(db, outfile)
 else:
     sys.stderr.write('File not recognized: ' + infile + "\n")
 print "done"

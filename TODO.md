@@ -1,11 +1,14 @@
+
 library/canmatrixGenerateJS.py
  flasche Bits bei nicht-vollständigen Bytes...
+
 
 library/exportdbf.py
 	 db-parameter sind nicht ordendlich im Objekt abgelegt
 
 library/exportkcd.py
  Kajak doesnt like my consumer-list -> research why?
+
 
 library/importarxml.py
  Well, ..., this is the first attempt to import a arxml-file; I did this without reading any spec;  
@@ -33,7 +36,8 @@ library/importkcd.py
  LabelGroup not supported
  multiple Transmitter
 
-library/importxls.py
-			 : correct DLC ermitteln
-			, this is NOT in .xls?!
 
+library/importxls.py
+: Multiplex-Support missing
+			 : correct DLC ermitteln
+			: Byteorder is NOT in .xls?!

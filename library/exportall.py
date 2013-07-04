@@ -2,6 +2,7 @@
 from exportdbc import *
 from exportdbf import *
 from exportkcd import *
+from exportxls import *
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.
