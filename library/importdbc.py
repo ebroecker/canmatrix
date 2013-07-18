@@ -60,7 +60,7 @@ def importDbc(filename):
 
 
 		elif l.startswith("BO_TX_BU_ "):
-			regexp = re.compile("^BO_TX_BU_ (\w+) *: (.+);")
+			regexp = re.compile("^BO_TX_BU_ ([0-9]+) *: *(.+);")
 			temp = regexp.match(l)
 			botschaft = db._bl.byId(temp.group(1))
 			for bu in temp.group(2).split(','):
@@ -97,7 +97,7 @@ def importDbc(filename):
 			if temp:
 				botschaft = temp.group(1)
 				signal = temp.group(2) 
-				tempList = temp.group(3).split(' ')
+				tempList = temp.group(3).split('"')
 				try:
 					for i in range(len(tempList)/2):
 						bo = db._bl.byId(botschaft)
@@ -111,8 +111,9 @@ def importDbc(filename):
 
 
 		elif l.startswith("BA_ "):
-			regexp = re.compile("^BA\_ \"[A-Za-z\-_]+\" (.+)")		
-			tempba = regexp.match(l)		
+			regexp = re.compile("^BA\_ +\"[A-Za-z0-9\-_]+\" +(.+)")		
+			tempba = regexp.match(l)
+			
 			if tempba.group(1).strip().startswith("BO_ "):
 				regexp = re.compile("^BA\_ \"(.*)\" BO\_ (\w+) (.+);")		
 				temp = regexp.match(l)	

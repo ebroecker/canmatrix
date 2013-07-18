@@ -23,6 +23,7 @@
 import cPickle as pickle
 import json
 
+
 class BotschaftenListe:
 	def __init__(self):
 		self._liste = []
