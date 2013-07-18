@@ -1,5 +1,5 @@
 This peace of Software mainly helps to interprete several kinds of descriptionformats for can-communication.
-Some of these formats can be written also.
+Some of these formats can be written also. There is some german Documentation at http://eduard-broecker.de/Software/canmatrix.html
 
 As a sideeffect, this software helps to convert between can-matrix-description formats.
 
