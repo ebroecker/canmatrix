@@ -25,45 +25,86 @@ import json
 
 
 class BotschaftenListe:
+	"""
+	Keeps all Frames of a Canmatrix
+	"""
 	def __init__(self):
 		self._liste = []
 
 	def addSignalToLastBotschaft(self, signal):
+		"""
+		Adds a Signal to the last addes Frame, this is mainly for importers
+		"""
 		self._liste[len(self._liste)-1].addSignal(signal)
 	def addBotschaft(self, botschaft):
+		"""
+		Adds a Frame
+		"""
 		self._liste.append(botschaft)
 		return self._liste[len(self._liste)-1]
 
 	def byId(self, Id):
+		"""
+		returns a Frame-Object by given Frame-ID
+		"""
 		for test in self._liste:
 			if test._Id == int(Id):
 				return test
 		return 0
 	def byName(self, Name):
+		"""
+		returns a Frame-Object by given Frame-Name
+		"""
 		for test in self._liste:
 			if test._name == Name:
 				return test
 		return None
 		
 class BoardUnit:
+	"""
+	Contains one Boardunit/ECU
+	"""
 	def __init__(self,name):
 		self._name = name.strip()
 		self._attributes = {}
 	def addAttribute(self, attribute, value):
-		 self._attributes[attribute]=value
+		"""
+		adds some Attribute to current Boardunit/ECU		
+		"""
+		self._attributes[attribute]=value
 
 class BoardUnitListe:
+	"""
+	Contains all Boardunits/ECUs of a canmatrix in a list
+	"""
 	def __init__(self):
 		self._liste = []
 	def add(self,BU):
+		"""
+		add Boardunit/EDU to list
+		"""
 		self._liste.append(BU)
 	def byName(self, name):
+		"""
+		returns Boardunit-Object of list by Name
+		"""
 		for test in self._liste:
 			if test._name == name:
 				return test
 		return 0
 
 class Signal:
+	"""
+	contains on Signal of canmatrix-object
+	with following attributes:
+		_name, _startbit,_signalsize (in Bits)
+		_byteorder (1: Intel, 0: Motorola)
+		_valuetype ()
+		_factor, _offset, _min, _max
+		_reciever  (Boarunit/ECU-Name)
+		_attributes, _values, _unit, _comment
+		_multiplex ('Multiplexor' or Number of Multiplex)
+	"""
 	def __init__(self, name, startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, multiplex=None):
 		self._name = name
 		self._startbit = int(startbit)
@@ -82,16 +123,28 @@ class Signal:
 		self._comment = ""
 		self._multiplex = multiplex
 	def addComment(self, comment):
+		"""
+		Set comment of Signal
+		"""
 		self._comment = comment
 	def addAttribute(self, attribute, value):
+		"""
+		Add Attribute to Signal
+		"""
 		self._attributes[attribute]=value
 	def addValues(self, value, valueName):
+		"""
+		Add Value/Description to Signal
+		"""
 		self._values[int(value)] = valueName
-	def dump(self):
-		return json.dumps({"name": self._name, "startbit" : self._startbit, "signalsize": self._signalsize} )		
-		# if hasattr(self, '_comment'):
 
 class Botschaft:
+	"""
+	contains one Frame with following attributes
+	_Id, _name, _Transmitter (list of boardunits/ECU-names), _Size (= DLC), 
+	_signals (list of signal-objects), _attributes (list of attributes),
+	_Reciever (list of boardunits/ECU-names), _extended (Extended Frame = 1), _comment
+	"""
 	def __init__(self,bid, name, size, transmitter): 
 		self._Id = int(bid)
 		self._name = name
@@ -107,65 +160,80 @@ class Botschaft:
 		self._comment = ""
 
 	def addSignal(self, signal):
+		"""
+		add Signal to Frame
+		"""
 		self._signals.append(signal)
 		return self._signals[len(self._signals)-1]
 
 	def addTransmitter(self, transmitter):
+		"""
+		add transmitter Boardunit/ECU-Name to Frame
+		"""
 		if transmitter not in self._Transmitter:
 			self._Transmitter.append(transmitter)
 		
 	def signalByName(self, name):
+		"""
+		returns signal-object by signalname
+		"""
 		for signal in self._signals:
 			if signal._name == name:
 				return signal
 		return 0
 	def addAttribute(self, attribute, value):
+		"""
+		add attribute to attribute-list of frame
+		"""
 		self._attributes[attribute]=value
 		
 	def addComment(self, comment):
+		"""
+		set comment of frame
+		"""
 		self._comment = comment
 
 
 class CanMatrix:
+	"""
+	The Can-Matrix-Object
+	_attributes (global canmatrix-attributes), 
+	_BUs (list of boardunits/ECUs),
+	_bl (list of Frames)
+	"""
 	def __init__(self):
-		self.ContentLines = []
 		self._attributes = {}
 		self._BUs = BoardUnitListe()
 		self._bl = BotschaftenListe()
-
-	def getRawValues(self, botschaftID, botschaftData):
-		botschaft = self._bl.byId(botschaftID)
-		length = int(botschaft._Size)
-		bv = BitVector( size = 0 )		
-		dummyBv = BitVector( size = 8 )		
-		for i in range(0, length):					
-			bv += ( BitVector(intVal = botschaftData[i]) | dummyBv )	
-		
-		for signal in botschaft._signals:
-			startBit = int(signal._startbit)
-			endBit = int(signal._startbit)+int(signal._signalsize)			
-			rawValue = int(bv[startBit:endBit])		
-			physicalValue = rawValue * float(signal._factor) + float(signal._offset)
-			symbolValue = ""			
-			if rawValue in signal._values:
-				symbolValue = signal._values[rawValue]
-			print signal._name + " " + str(rawValue) + " " + str(physicalValue) + " " + symbolValue
  
 	def addAttribute(self, attribute, value):
-		 self._attributes[attribute]=value
+		"""
+		add attribute to attribute-list of canmatrix
+		"""
+		self._attributes[attribute]=value
 
 def loadPkl(filename):
+	"""
+	helper for loading a python-object-dump of canmatrix
+	"""
         pkl_file = open(filename, 'rb')
         db1 = pickle.load(pkl_file)
         pkl_file.close()
         return db1
 
 def savePkl(db, filename):
+	"""
+	helper for saving a python-object-dump of canmatrix
+	"""
         output = open(filename, 'wb')
         pickle.dump(db, output)
         output.close()
 
 def putSignalValueInFrame(startbit, len, format, value, frame):
+	"""
+	puts a signal-value to the right position in a frame
+	"""
+
 	if format == 1: # Intel
 		lastbit = startbit + len
 		firstbyte = startbit/8-1
