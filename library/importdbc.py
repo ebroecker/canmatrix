@@ -29,7 +29,9 @@ from canmatrix import *
 import re
 import codecs
 
-#CP1253
+#CP1253 or iso-8859-1
+
+dbcImportEncoding = 'iso-8859-1'
 
 def importDbc(filename):
 	db = CanMatrix()
@@ -45,7 +47,7 @@ def importDbc(filename):
 			temp = regexp.match(l)
 			if temp:
 				reciever = map(str.strip, temp.group(11).split(',')) 
-				db._bl.addSignalToLastBotschaft(Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10).decode('CP1253'),reciever))
+				db._bl.addSignalToLastBotschaft(Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10).decode(dbcImportEncoding),reciever))
 			else:
 				regexp = re.compile("^SG\_ (\w+) (\w+) *: (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)")
 				temp = regexp.match(l)
@@ -56,7 +58,7 @@ def importDbc(filename):
 				else:
 					multiplex = multiplex[1:]
 
-				db._bl.addSignalToLastBotschaft(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp.group(11).decode('CP1253'),reciever, multiplex))
+				db._bl.addSignalToLastBotschaft(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp.group(11).decode(dbcImportEncoding),reciever, multiplex))
 
 
 		elif l.startswith("BO_TX_BU_ "):
@@ -72,7 +74,7 @@ def importDbc(filename):
 				botschaft = db._bl.byId(temp.group(1))
 				signal = botschaft.signalByName(temp.group(2))
 				if signal:
-					signal.addComment(temp.group(3).decode('CP1253').replace('\\"','"'))
+					signal.addComment(temp.group(3).decode(dbcImportEncoding).replace('\\"','"'))
 
 		elif l.startswith("CM_ BO_ "):
 			regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.+)\";")		
@@ -80,7 +82,7 @@ def importDbc(filename):
 			if temp:
 				botschaft = db._bl.byId(temp.group(1))
 				if botschaft:
-					botschaft.addComment(temp.group(2).decode('CP1253').replace('\\"','"'))
+					botschaft.addComment(temp.group(2).decode(dbcImportEncoding).replace('\\"','"'))
 					
 		elif l.startswith("BU_:"):
 			regexp = re.compile("^BU\_\:(.*)")		

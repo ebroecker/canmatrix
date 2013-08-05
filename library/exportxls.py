@@ -185,6 +185,13 @@ def exportXls(db, filename):
 					row +=1
 					sigstyle = sty_white
 					framestyle = sty_white
+			else: 
+				writeFrame(bo, worksheet, row, framestyle)
+                                writeSignal(sig, worksheet, row, sigstyle)
+                                col = head_top.__len__()
+                                col = writeBuMatrix(buList, sig, bo, worksheet, row, col)
+				row +=1
+				framestyle = sty_white
 #			worksheet.write(row-1, col+2, label = str(sig._factor) + " " + sig._unit)
 
 		signals = []

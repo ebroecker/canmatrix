@@ -28,6 +28,9 @@ from lxml import etree
 from canmatrix import *
 import codecs
 
+dbcExportEncoding = 'iso-8859-1'
+#CP1253
+
 def exportDbc(db, filename):
 	f = open(filename,"w")
 
@@ -68,7 +71,7 @@ def exportDbc(db, filename):
 			f.write(" [%g|%g]" % (signal._min, signal._max))
 			f.write(' "')
 
-			f.write(signal._unit.encode('CP1253'))
+			f.write(signal._unit.encode(dbcExportEncoding))
 			f.write('" ')
 			if signal._reciever.__len__() == 0:
 				signal._reciever = ['Vector__XXX']
@@ -84,7 +87,7 @@ def exportDbc(db, filename):
 	#frame comments
 	for bo in db._bl._liste:
 		f.write("CM_ BO_ " + "%d " % bo._Id + ' "')
-		f.write(bo._comment.encode('CP1253','replace').replace('"','\\"'))
+		f.write(bo._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
 		f.write('";\n') 
 	f.write("\n")
 			
@@ -92,7 +95,7 @@ def exportDbc(db, filename):
 	for bo in db._bl._liste:
 		for signal in bo._signals:
 			f.write("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "')
-			f.write(signal._comment.encode('CP1253','replace').replace('"','\\"'))
+			f.write(signal._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
 			f.write('";\n') 
 	f.write("\n")
 
@@ -122,7 +125,7 @@ def exportDbc(db, filename):
 	#messages-attributes:
 	for bo in db._bl._liste:
 		for attrib,val in bo._attributes.items():
-			f.write( 'BA_ "' + attrib.encode('CP1253') + '" BO_ %d ' % bo._Id + val + ';\n')
+			f.write( 'BA_ "' + attrib.encode(dbcExportEncoding) + '" BO_ %d ' % bo._Id + val + ';\n')
 	f.write("\n")
 			
 	#signal-attributes:

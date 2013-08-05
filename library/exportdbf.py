@@ -26,6 +26,8 @@ from canmatrix import *
 # this script exports dbf-files from a canmatrix-object
 # dbf-files are the can-matrix-definitions of the busmaster-project (http://rbei-etas.github.io/busmaster/)
 
+dbfExportEncoding = 'iso-8859-1'
+#CP1253
 
 def exportDbf(db, filename):
 	f = open(filename,"w")
@@ -75,7 +77,7 @@ def exportDbf(db, filename):
 				else:			
 			 		multiplex = 'm' + str(signal._multiplex)
 
-			f.write("," + signal._unit.encode('CP1253') + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
+			f.write("," + signal._unit.encode(dbfExportEncoding) + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
 
 			if len(signal._values) > 0:
 				for attrib,val in signal._values.items():
@@ -99,7 +101,7 @@ def exportDbf(db, filename):
 	f.write("[START_DESC_SIG]\n")
 	for bo in db._bl._liste:
 		for signal in bo._signals:
-			f.write("%d S " % bo._Id + signal._name  + ' "' + signal._comment.encode('CP1253') + '";\n') 
+			f.write("%d S " % bo._Id + signal._name  + ' "' + signal._comment.encode(dbfExportEncoding) + '";\n') 
 	f.write("[END_DESC_SIG]\n")
 	f.write("[END_DESC]\n\n")
 
