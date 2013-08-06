@@ -24,7 +24,6 @@
 # dbc-files are the can-matrix-definitions of the CanOe (Vector Informatic)
 #  NOT supported BA_DEF BA_DEF_DEF
 
-from lxml import etree
 from canmatrix import *
 import codecs
 
