@@ -1,14 +1,8 @@
-
-library/canmatrixGenerateJS.py
- flasche Bits bei nicht-vollständigen Bytes...
-
-
 library/exportdbf.py
 	 db-parameter sind nicht ordendlich im Objekt abgelegt
 
 library/exportkcd.py
  Kajak doesnt like my consumer-list -> research why?
-
 
 library/importarxml.py
  Well, ..., this is the first attempt to import a arxml-file; I did this without reading any spec;  
@@ -16,7 +10,7 @@ library/importarxml.py
 	: use diagAddress for frame-classification
 
 library/importdbc.py
- support for: VERSION, NS, BS_, BA_DEF_DEF_, BA_DEF_, CM_
+ support for: VERSION, NS, BS_, BA_DEF_DEF_, CM_ BU_, VAL_TABLE_
 
 library/importdbf.py
  support for [START_PARAM_NET]
@@ -35,7 +29,6 @@ library/importkcd.py
  defaults for CAN-Simulation missing
  LabelGroup not supported
  multiple Transmitter
-
 
 library/importxls.py
 : Multiplex-Support missing

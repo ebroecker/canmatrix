@@ -23,21 +23,42 @@
 # this script imports dbc-files to a canmatrix-object
 # dbc-files are the can-matrix-definitions of canoe
 #
-#TODO support for: VERSION, NS, BS_, BA_DEF_DEF_, BA_DEF_, CM_
+#TODO support for: VERSION, NS, BS_, BA_DEF_DEF_, CM_ BU_, VAL_TABLE_
 
 from canmatrix import *
 import re
 import codecs
 
-#CP1253 or iso-8859-1
-
-dbcImportEncoding = 'iso-8859-1'
 
 def importDbc(filename):
+####
+#CP1253 or iso-8859-1 ???
+	dbcImportEncoding = 'iso-8859-1'
+	
+	class FollowUps:
+		nothing, signalComment, frameComment, boardUnitComment, globalComment = range(5)
+	followUp = FollowUps.nothing
+	comment = ""
+	signal = None
+	frame = None
 	db = CanMatrix()
 	f = open(filename)
 	for line in f:
 		l = line.strip()
+		if followUp == FollowUps.signalComment:
+			comment += "\n" + l.decode(dbcImportEncoding).replace('\\"','"')
+			if l.endswith('";'):
+				followUp = FollowUps.nothing
+				if signal is not None:
+					signal.addComment(comment[0:-2])
+			continue;
+		elif followUp == FollowUps.frameComment:
+			comment += "\n" + l.decode(dbcImportEncoding).replace('\\"','"')
+			if l.endswith('";'):
+				followUp = FollowUps.nothing
+				if frame is not None:
+					frame.addComment(comment[0:2])
+			continue;
 		if l.startswith("BO_ "):
 			regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")		
 			temp = regexp.match(l)
@@ -68,22 +89,36 @@ def importDbc(filename):
 			for bu in temp.group(2).split(','):
 				botschaft.addTransmitter(bu)
 		elif l.startswith("CM_ SG_ "):
-			regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.+)\";")		
+			regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)\";")		
 			temp = regexp.match(l)
 			if temp:
 				botschaft = db._bl.byId(temp.group(1))
 				signal = botschaft.signalByName(temp.group(2))
 				if signal:
 					signal.addComment(temp.group(3).decode(dbcImportEncoding).replace('\\"','"'))
-
+			else:
+				regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)")		
+				temp = regexp.match(l)
+				if temp:
+					botschaft = db._bl.byId(temp.group(1))
+					signal = botschaft.signalByName(temp.group(2))
+					comment = temp.group(3).decode(dbcImportEncoding).replace('\\"','"')
+					followUp = FollowUps.signalComment
+					
 		elif l.startswith("CM_ BO_ "):
-			regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.+)\";")		
+			regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)\";")		
 			temp = regexp.match(l)
 			if temp:
-				botschaft = db._bl.byId(temp.group(1))
-				if botschaft:
-					botschaft.addComment(temp.group(2).decode(dbcImportEncoding).replace('\\"','"'))
-					
+				frame = db._bl.byId(temp.group(1))
+				if frame:
+					frame.addComment(temp.group(2).decode(dbcImportEncoding).replace('\\"','"'))
+			else:
+				regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)")		
+				temp = regexp.match(l)
+				if temp:
+					frame = db._bl.byId(temp.group(1))
+					comment = temp.group(2).decode(dbcImportEncoding).replace('\\"','"')
+					followUp = FollowUps.frameComment
 		elif l.startswith("BU_:"):
 			regexp = re.compile("^BU\_\:(.*)")		
 			temp = regexp.match(l)
@@ -97,12 +132,12 @@ def importDbc(filename):
 			regexp = re.compile("^VAL\_ (\w+) (\w+) (.*);")		
 			temp = regexp.match(l)
 			if temp:
-				botschaft = temp.group(1)
+				botschaftId = temp.group(1)
 				signal = temp.group(2) 
 				tempList = temp.group(3).split('"')
 				try:
 					for i in range(len(tempList)/2):
-						bo = db._bl.byId(botschaft)
+						bo = db._bl.byId(botschaftId)
 						sg = bo.signalByName(signal)
 						val = tempList[i*2+1][1:-1]
 						
@@ -112,6 +147,28 @@ def importDbc(filename):
 					print "Error with Line: ",tempList
 
 
+
+		elif l.startswith("BA_DEF_ SG_ "):
+			regexp = re.compile("^BA\_DEF\_ SG\_ +\"([A-Za-z0-9\-_]+)\" +(.+)")		
+			temp = regexp.match(l)
+			if temp:
+				db.addSignalDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
+		elif l.startswith("BA_DEF_ BO_ "):
+			regexp = re.compile("^BA\_DEF\_ BO\_ +\"([A-Za-z0-9\-_]+)\" +(.+)")		
+			temp = regexp.match(l)
+			if temp:
+				db.addFrameDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
+		elif l.startswith("BA_DEF_ BU_ "):
+			regexp = re.compile("^BA\_DEF\_ BU\_ +\"([A-Za-z0-9\-_]+)\" +(.+)")		
+			temp = regexp.match(l)
+			if temp:
+				db.addBUDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
+		elif l.startswith("BA_DEF_"):
+			regexp = re.compile("^BA\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+)")		
+			temp = regexp.match(l)
+			if temp:
+				db.addGlobalDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
+
 		elif l.startswith("BA_ "):
 			regexp = re.compile("^BA\_ +\"[A-Za-z0-9\-_]+\" +(.+)")		
 			tempba = regexp.match(l)
@@ -120,8 +177,6 @@ def importDbc(filename):
 				regexp = re.compile("^BA\_ \"(.*)\" BO\_ (\w+) (.+);")		
 				temp = regexp.match(l)	
 				db._bl.byId(int(temp.group(2))).addAttribute(temp.group(1),temp.group(3))
-
-
 			elif tempba.group(1).strip().startswith("SG_ "):
 				regexp = re.compile("^BA\_ \"(.*)\" SG\_ (\w+) (\w+) (.+);")		
 				temp = regexp.match(l)	
@@ -131,10 +186,14 @@ def importDbc(filename):
 				temp = regexp.match(l)
 				db._BUs.byName(temp.group(2)).addAttribute(temp.group(1), temp.group(3))
 			else:
-				regexp = re.compile("^BA\_ \"([A-Za-z\-]+)\" (\w+);")		
+				regexp = re.compile("^BA\_ \"([A-Za-z0-9\-\_]+)\" +([\"A-Za-z0-9\-\_]+);")		
 				temp = regexp.match(l)
 				if temp:
 					db.addAttribute(temp.group(1),temp.group(2))
+
+
+#		else:
+#			print "Unrecocniced line: " + l
 	return db
 
 

@@ -33,8 +33,8 @@ dbcExportEncoding = 'iso-8859-1'
 def exportDbc(db, filename):
 	f = open(filename,"w")
 
-	#not supported BA_DEF BA_DEF_DEF
-	f.write( "VERSION \"created by pkl2dbc\"\n\n")
+	#not supported BA_DEF_DEF
+	f.write( "VERSION \"created by canmatrix\"\n\n")
 	f.write("\n")
 
 	f.write("NS_ :\n\nBS_:\n\n")
@@ -98,25 +98,35 @@ def exportDbc(db, filename):
 			f.write('";\n') 
 	f.write("\n")
 
-	f.write('BA_DEF_ BU_  "NWM-Stationsadresse" HEX 0 63;\n')
-	f.write('BA_DEF_ BU_  "NWM-Knoten\" ENUM  "nein","ja";')
-	f.write('BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;\n')
-	f.write('BA_DEF_ BO_  "GenMsgDelayTime" INT 0 65535;')
-	f.write('BA_DEF_ BO_  "GenMsgStartValue" STRING ;\n')
-	f.write('BA_DEF_ BO_  "GenMsgCycleTimeActive" INT 0 65535;\n')
-	f.write('BA_DEF_ BO_  "GenMsgNrOfRepetitions" INT 0 65535;\n')
-	f.write('BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";\n');
-	f.write('BA_DEF_ SG_  "GenSigStartValue" HEX 0 4294967295;\n')
-#	f.write('BA_DEF_ SG_  "GenSigSNA" STRING;\n')
-	
-	
+# some default defines:
+	db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63;')
+	db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja";')
+	db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535;')
+	db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535;')
+	db.addFrameDefines("GenMsgCycleTimeActive",  'INT 0 65535;')
+	db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535;')
+	db.addFrameDefines("GenMsgStartValue",  'STRING ;')
+	db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";')
+	db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295;')
+	db.addSignalDefines("GenSigSNA", 'STRING;')
+
+	for (type,define) in db._frameDefines.items():
+		f.write('BA_DEF_ BO_ "' + type + '" ' + define.encode(dbcExportEncoding,'replace') + '\n')
+	for (type,define) in db._signalDefines.items():
+		f.write('BA_DEF_ SG_ "' + type + '" ' + define.encode(dbcExportEncoding,'replace') + '\n')
+	for (type,define) in db._buDefines.items():
+		f.write('BA_DEF_ BU_ "' + type + '" ' + define.encode(dbcExportEncoding,'replace') + '\n')
+	for (type,define) in db._globalDefines.items():
+		f.write('BA_DEF_ "' + type + '" ' + define.encode(dbcExportEncoding,'replace') + '\n')
+
+		
 	#boardunit-attributes:
 	for bu in db._BUs._liste:
 		for attrib,val in bu._attributes.items():
 			f.write('BA_ "' + attrib + '" BU_ ' + bu._name + ' ' + val  + ';\n')
 	f.write("\n")
 
-	#boardunit-attributes:
+	#global-attributes:
 	for attrib,val in db._attributes.items():
 		f.write( 'BA_ "' + attrib + '" ' + val  + ';\n')
 	f.write("\n")
