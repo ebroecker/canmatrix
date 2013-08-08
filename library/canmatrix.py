@@ -24,30 +24,30 @@ import cPickle as pickle
 import json
 
 
-class BotschaftenListe:
+class FrameList:
 	"""
 	Keeps all Frames of a Canmatrix
 	"""
 	def __init__(self):
-		self._liste = []
+		self._list = []
 
-	def addSignalToLastBotschaft(self, signal):
+	def addSignalToLastFrame(self, signal):
 		"""
 		Adds a Signal to the last addes Frame, this is mainly for importers
 		"""
-		self._liste[len(self._liste)-1].addSignal(signal)
-	def addBotschaft(self, botschaft):
+		self._list[len(self._list)-1].addSignal(signal)
+	def addFrame(self, botschaft):
 		"""
 		Adds a Frame
 		"""
-		self._liste.append(botschaft)
-		return self._liste[len(self._liste)-1]
+		self._list.append(botschaft)
+		return self._list[len(self._list)-1]
 
 	def byId(self, Id):
 		"""
 		returns a Frame-Object by given Frame-ID
 		"""
-		for test in self._liste:
+		for test in self._list:
 			if test._Id == int(Id):
 				return test
 		return 0
@@ -55,7 +55,7 @@ class BotschaftenListe:
 		"""
 		returns a Frame-Object by given Frame-Name
 		"""
-		for test in self._liste:
+		for test in self._list:
 			if test._name == Name:
 				return test
 		return None
@@ -78,19 +78,19 @@ class BoardUnitListe:
 	Contains all Boardunits/ECUs of a canmatrix in a list
 	"""
 	def __init__(self):
-		self._liste = []
+		self._list = []
 	def add(self,BU):
 		"""
 		add Boardunit/EDU to list
 		"""
-		if BU._name.strip() not in self._liste:
-			self._liste.append(BU)
+		if BU._name.strip() not in self._list:
+			self._list.append(BU)
 			
 	def byName(self, name):
 		"""
 		returns Boardunit-Object of list by Name
 		"""
-		for test in self._liste:
+		for test in self._list:
 			if test._name == name:
 				return test
 		return None
@@ -141,7 +141,7 @@ class Signal:
 		"""
 		self._values[int(value)] = valueName
 
-class Botschaft:
+class Frame:
 	"""
 	contains one Frame with following attributes
 	_Id, _name, _Transmitter (list of boardunits/ECU-names), _Size (= DLC), 
@@ -203,7 +203,7 @@ class CanMatrix:
 	The Can-Matrix-Object
 	_attributes (global canmatrix-attributes), 
 	_BUs (list of boardunits/ECUs),
-	_bl (list of Frames)
+	_fl (list of Frames)
 	_signalDefines (list of signal-attribute types)
 	_frameDefines (list of frame-attribute types)
 	_buDefines (list of BoardUnit-attribute types)
@@ -212,7 +212,7 @@ class CanMatrix:
 	def __init__(self):
 		self._attributes = {}
 		self._BUs = BoardUnitListe()
-		self._bl = BotschaftenListe()
+		self._fl = FrameList()
 		self._signalDefines = {}
 		self._frameDefines = {}
 		self._globalDefines = {}
@@ -326,7 +326,7 @@ def copyBU (buId, sourceDb, targetDb):
 	else:
 		bu = sourceDb._BUs.byName(buId)
 	
-	targetDb._BUs.add(bu)
+	targetDb._BUs.add(bu.copy())
 	
 	# copy all bu-defines
 	attributes = bu._attributes
@@ -342,15 +342,15 @@ def copyFrame (frameId, sourceDb, targetDb):
 
 	# check wether frameId is object, id or symbolic name
 	if type(frameId).__name__ == 'int':
-		frame = sourceDb._bl.byId(frameId)
+		frame = sourceDb._fl.byId(frameId)
 	elif type(frameId).__name__ == 'instance':
 		frame = frameId
 	else:
-		frame = sourceDb._bl.byName(frameId)
+		frame = sourceDb._fl.byName(frameId)
 
 
 	# copy Frame-Object:
-	targetDb._bl.addBotschaft(frame)
+	targetDb._fl.addFrame(frame.copy())
 	
 	## Boardunits:
 	# each transmitter of Frame could be ECU that is not listed already

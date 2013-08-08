@@ -134,7 +134,7 @@ def exportXls(db, filename):
 	worksheet.col(8).width = 7777
 
 	buList = []
-	for bu in db._BUs._liste:
+	for bu in db._BUs._list:
 		worksheet.write(0, col, label = bu._name, style=sty_up)
 		worksheet.col(col).width = 1111
 		buList.append(bu._name)
@@ -151,7 +151,7 @@ def exportXls(db, filename):
 	worksheet.col(head_start+1).width = 5555
 
 	boHash = {}
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		boHash[int(bo._Id)] = bo
 
 	row = 1

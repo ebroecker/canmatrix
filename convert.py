@@ -48,7 +48,7 @@ else:
     sys.stderr.write('\nFile not recognized: ' + infile + "\n")
 print "done\n"
 
-print "%d Frames found" % (db._bl._liste.__len__())
+print "%d Frames found" % (db._fl._list.__len__())
 
 print "Exporting " + outfile + " ... "
 

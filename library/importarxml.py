@@ -138,7 +138,7 @@ def getFrame(frame, arDict, multiplexTranslation, ns):
 	
 	sn = arGetChild(frame, "SHORT-NAME", arDict, ns)
 	idNum = int(idele.text)
-	newBo = Botschaft(idNum, arGetName(pdu, ns), int(dlc.text), None) 
+	newBo = Frame(idNum, arGetName(pdu, ns), int(dlc.text), None) 
 
 	
 	if "MULTIPLEXED-I-PDU" in pdu.tag:
@@ -284,7 +284,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 		for out in outFrame:
 			if out in multiplexTranslation:
 				out = multiplexTranslation[out]
-			frame = db._bl.byName(out)
+			frame = db._fl.byName(out)
 			if frame is not None:
 				frame.addTransmitter(arGetName(ecu, ns))
 			else:
@@ -293,7 +293,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 		for inf in inFrame:
 			if inf in multiplexTranslation:
 				inf = multiplexTranslation[inf]
-			frame = db._bl.byName(inf)
+			frame = db._fl.byName(inf)
 			if frame is not None:
 				for signal in frame._signals:
 					rec_name = arGetName(ecu, ns)
@@ -342,7 +342,7 @@ def importArxml(filename):
 	
 	multiplexTranslation = {}
 	for frame in canframetrig:
-		db._bl.addBotschaft(getFrame(frame, arDict,multiplexTranslation, ns))
+		db._fl.addFrame(getFrame(frame, arDict,multiplexTranslation, ns))
 	
 	
 	# find ECUs:
@@ -351,7 +351,7 @@ def importArxml(filename):
 		bu = processEcu(node, db, arDict, multiplexTranslation, ns)			
 		db._BUs.add(bu)
 
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		frame = [0, 0, 0, 0, 0, 0, 0, 0]
 		for sig in bo._signals:
 			if sig._initValue != 0:

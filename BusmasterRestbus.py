@@ -92,12 +92,12 @@ def createNode(structNames, timedPrototypes, timedCallbacks):
 	return nodetemplate + structNames + nodetemplate2 + timedPrototypes + "/* End BUSMASTER Function Prototype  */\n" + timedCallbacks
 
 def genCallbacks(cycle, bId, db):
-	botsch = db._bl.byId(bId)._name;
+	botsch = db._fl.byId(bId)._name;
 	callbacks = "/* Start BUSMASTER generated function - OnTimer_" + botsch + "_" + str(cycle) + " */\n"
 	callbacks += "void OnTimer_" + botsch + "_" + str(cycle) +"( )\n"
 	callbacks += "{\n"
 	
-	canData = db._bl.byId(bId)._attributes["GenMsgStartValue"][1:-2];
+	canData = db._fl.byId(bId)._attributes["GenMsgStartValue"][1:-2];
 	dlc = len(canData) / 2;
 	callbacks += "    SendMsg(" + botsch + ");\n"
 	callbacks += "\n} "
@@ -150,13 +150,13 @@ def tickerBoardUnits(db, dbcname):
 
 	MyBuList = []
 
-	for bu in db._BUs._liste:
+	for bu in db._BUs._list:
 		if bu._name not in MyBuList:
 			MyBuList.append(bu._name) # no duplicate Nodes
 		else:
 			continue		
 		bu._cycles = {}
-		for botsch in db._bl._liste:
+		for botsch in db._fl._list:
 			if bu._name in botsch._Transmitter:
 				if "GenMsgCycleTime" in botsch._attributes:
 					data =  botsch._attributes["GenMsgStartValue"][1:-2]

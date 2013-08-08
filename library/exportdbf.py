@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from canmatrix import *
+import codecs
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.
@@ -26,10 +27,11 @@ from canmatrix import *
 # this script exports dbf-files from a canmatrix-object
 # dbf-files are the can-matrix-definitions of the busmaster-project (http://rbei-etas.github.io/busmaster/)
 
-dbfExportEncoding = 'iso-8859-1'
+
 #CP1253
 
 def exportDbf(db, filename):
+	dbfExportEncoding = 'iso-8859-1'
 	f = open(filename,"w")
 
 
@@ -42,10 +44,10 @@ def exportDbf(db, filename):
 [BUSMASTER_VERSION] [1.7.2]
 [NUMBER_OF_MESSAGES] """
 
-	f.write( header + str(len(db._bl._liste)) + "\n")
+	f.write( header + str(len(db._fl._list)) + "\n")
 
-	#Botschaften
-	for bo in db._bl._liste:
+	#Frames
+	for bo in db._fl._list:
 	#Name unMsgId m_ucLength m_ucNumOfSignals m_cDataFormat m_cFrameFormat? m_txNode
 	#m_cDataFormat If 1 dataformat Intel, 0- Motorola -- immer 1 original Converter macht das nach anzahl entsprechender Signale
 	#cFrameFormat Standard 'S' Extended 'X'
@@ -81,7 +83,7 @@ def exportDbf(db, filename):
 
 			if len(signal._values) > 0:
 				for attrib,val in signal._values.items():
-					f.write('[VALUE_DESCRIPTION] ' + val + "," + str(attrib) + "\n")
+					f.write('[VALUE_DESCRIPTION] "' + val + '",' + str(attrib) + '\n')
 			
 
 		f.write("[END_MSG]\n\n")
@@ -89,9 +91,9 @@ def exportDbf(db, filename):
 	#Boardunits
 	f.write ("[NODE] ")
 	count = 1
-	for bu in db._BUs._liste:
+	for bu in db._BUs._list:
 		f.write(bu._name)
-		if count < len(db._BUs._liste): 	
+		if count < len(db._BUs._list): 	
 			f.write(",")
 		count += 1
 	f.write("\n")
@@ -99,9 +101,10 @@ def exportDbf(db, filename):
 	#signalbezeichnungen
 	f.write("[START_DESC]\n\n")
 	f.write("[START_DESC_SIG]\n")
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		for signal in bo._signals:
-			f.write("%d S " % bo._Id + signal._name  + ' "' + signal._comment.encode(dbfExportEncoding) + '";\n') 
+			comment = signal._comment.replace("\n"," ")
+			f.write("%d S " % bo._Id + signal._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n') 
 	f.write("[END_DESC_SIG]\n")
 	f.write("[END_DESC]\n\n")
 
@@ -118,7 +121,7 @@ def exportDbf(db, filename):
 
 	#boardunit-attributes:
 	f.write("[START_PARAM_NODE_VAL]\n")
-	for bu in db._BUs._liste:
+	for bu in db._BUs._list:
 		for attrib,val in bu._attributes.items():
 			f.write(bu._name + ',' + attrib + ','  + val  + '\n')
 	f.write("[END_PARAM_NODE_VAL]\n")
@@ -126,14 +129,14 @@ def exportDbf(db, filename):
 
 	#messages-attributes:
 	f.write("[START_PARAM_MSG_VAL]\n")
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		for attrib,val in bo._attributes.items():
 			f.write( str(bo._Id) + ',S,' + attrib + ','  + val  + '\n')
 	f.write("[END_PARAM_MSG_VAL]\n")
 
 	#signal-attributes:
 	f.write("[START_PARAM_SIG_VAL]\n")
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		for signal in bo._signals:
 			for attrib,val in signal._attributes.items():
 				f.write( str(bo._Id) + ',S,' + attrib  +  ',' + val  + '\n')

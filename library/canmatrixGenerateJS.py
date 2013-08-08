@@ -12,7 +12,7 @@ def generateCode_js(db, botschaften, generatorConfig):
 	framedecodeSwitch = ""
 	globalMessagesRaw = ""
 	i=0;
-	botschafenFeld = "decodeBotschaftName : function(id) { return this.database[id]; },"
+	botschafenFeld = "decodeFrameName : function(id) { return this.database[id]; },"
 	if(generatorConfig['nice']): 
 		botschafenFeld += '\n'
 	botschafenFeld += "decode : function(id, d) { if(typeof(this[id]) == \"function\") return this[id](d); else return 0; },"
@@ -24,11 +24,11 @@ def generateCode_js(db, botschaften, generatorConfig):
 		constants += '\n'
 	for botschaftName in botschaften:
 		if type(botschaftName).__name__ == 'int':
-			botschaft = db._bl.byId(botschaftName)
+			botschaft = db._fl.byId(botschaftName)
 		elif type(botschaftName).__name__ == 'instance':
 			botschaft = botschaftName		
 		else:
-			botschaft = db._bl.byName(botschaftName)
+			botschaft = db._fl.byName(botschaftName)
 		i = i + 1
 
 		constants +=  '"' + str(botschaft._Id) + '":"' + botschaft._name + '"'

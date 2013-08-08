@@ -89,7 +89,7 @@ def exportKcd(db, filename):
 	# Nodes:
 	id = 1
 	nodeList = {};
-	for bu in db._BUs._liste:
+	for bu in db._BUs._list:
 		node = etree.Element('Node', name=bu._name, id="%d" %id)
 		root.append(node)
 		nodeList[bu._name] = id;
@@ -103,7 +103,7 @@ def exportKcd(db, filename):
 
 	bus.set("name","chassis")
 
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		message = etree.Element('Message', id="0x%03X" % bo._Id, name=bo._name)
 
 		if "GenMsgCycleTime" in bo._attributes:

@@ -26,6 +26,7 @@
 #
 
 from canmatrix import *
+import re
 
 #TODO support for [START_PARAM_NET]
 #TODO support for [START_PARAM_NODE]
@@ -36,35 +37,38 @@ from canmatrix import *
 #TODO support for [START_PARAM_VAL]
 #TODO support for [START_PARAM_NET_VAL]
 #TODO support for [START_PARAM_NODE_VAL]
-
+dbfImportEncoding = 'iso-8859-1'
 def importDbf(filename):
+
 	db = CanMatrix()
 	f = open(filename,"r")
 
 	mode = ''
 	for line in f:
 		line = line.strip()
-	
+		
 		if mode == 'SignalDescription':
 			if line.startswith("[END_DESC_SIG]") or line.startswith("[END_DESC]"):
 				mode = ''
 			else:
-				(boId, temS, SignalName, comment) = line.split(' ',3)			
-				db._bl.byId(int(boId)).signalByName(SignalName).addComment(comment.replace('"','').replace(';',''))
+				(boId, temS, SignalName, comment) = line.split(' ',3)	
+				comment = comment.replace('"','').replace(';','').decode(dbfImportEncoding)		
+				db._fl.byId(int(boId)).signalByName(SignalName).addComment(comment)
 
 		elif mode == 'ParamMsgVal':
 			if line.startswith("[END_PARAM_MSG_VAL]"):
 				mode = ''
 			else:
 				(boId, temS, attrib, value) = line.split(',',3)			
-				db._bl.byId(int(boId)).addAttribute(attrib.replace('"',''), value)
+				db._fl.byId(int(boId)).addAttribute(attrib.replace('"',''), value)
 
 		elif mode == 'ParamSigVal':
 			if line.startswith("[END_PARAM_SIG_VAL]"):
 				mode = ''
 			else:
-				(boId, temS, SignalName, attrib, value) = line.split(',',4)			
-				db._bl.byId(int(boId)).signalByName(SignalName).addAttribute(attrib.replace('"',''), value)
+				pass				
+#				(boId, temS, SignalName, attrib, value) = line.split(',',4)			
+#				db._fl.byId(int(boId)).signalByName(SignalName).addAttribute(attrib.replace('"',''), value)
 		
 		else:	
 			if line.startswith("[START_DESC_SIG]"):
@@ -79,7 +83,7 @@ def importDbf(filename):
 			if line.startswith("[START_MSG]"):
 				temstr = line.strip()[11:].strip()
 				(name, Id, size, nSignals, extended, motIntl ,transmitter) = temstr.split(',') 
-				newBo = db._bl.addBotschaft(Botschaft(int(Id), name, size, transmitter))
+				newBo = db._fl.addFrame(Frame(int(Id), name, size, transmitter))
 				if extended == 'X':
 					newBo._extended = 1
 		
@@ -93,18 +97,27 @@ def importDbf(filename):
 				temstr = line.strip()[15:].strip()
 				(name, size, startbyte, startbit, sign, Min, Max, byteorder, offset, factor, unit, multiplex, reciever) = temstr.split(',',12)
 
+						
 				if multiplex == 'M':
 					multiplex = 'Multiplexor'
+				elif multiplex.strip().__len__() > 0:
+					multiplex = int(multiplex[1:])
 				else:
-					multiplex = multiplex[1:]
+					multiplex = None
 
 				sign = '+'
-				newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit, reciever.split(','), multiplex))
+				newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit.decode(dbfImportEncoding), reciever.split(','), multiplex))
 
 			if line.startswith("[VALUE_DESCRIPTION]"):
 				temstr = line.strip()[19:].strip()
-				(name, value) = temstr.split(',')
-				newSig.addValues(value, name)
+				regexp = re.compile("\"(.+)\" *, *(.+)")		
+				temp = regexp.match(temstr)
+				
+				if temp:
+					name = temp.group(1)
+					value = temp.group(2)
+					newSig.addValues(value, name)
+
 
 	return db
 

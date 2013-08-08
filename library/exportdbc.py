@@ -44,13 +44,13 @@ def exportDbc(db, filename):
 	f.write( "BU_: ")
 	id = 1
 	nodeList = {};
-	for bu in db._BUs._liste:
+	for bu in db._BUs._list:
 		f.write(bu._name + " ")
 	f.write("\n\n")
 
 
-	#Botschaften
-	for bo in db._bl._liste:
+	#Frames
+	for bo in db._fl._list:
 		if bo._Transmitter.__len__() == 0:
 			bo._Transmitter = ["Vector__XXX"]
 
@@ -79,19 +79,19 @@ def exportDbc(db, filename):
 	f.write("\n")
 
 	#second Sender:
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		if bo._Transmitter.__len__() > 1:
 			f.write("BO_TX_BU_ %d : %s;\n" % (bo._Id,','.join(bo._Transmitter)))
 
 	#frame comments
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		f.write("CM_ BO_ " + "%d " % bo._Id + ' "')
 		f.write(bo._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
 		f.write('";\n') 
 	f.write("\n")
 			
 	#signalbezeichnungen
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		for signal in bo._signals:
 			f.write("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "')
 			f.write(signal._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
@@ -121,7 +121,7 @@ def exportDbc(db, filename):
 
 		
 	#boardunit-attributes:
-	for bu in db._BUs._liste:
+	for bu in db._BUs._list:
 		for attrib,val in bu._attributes.items():
 			f.write('BA_ "' + attrib + '" BU_ ' + bu._name + ' ' + val  + ';\n')
 	f.write("\n")
@@ -132,20 +132,20 @@ def exportDbc(db, filename):
 	f.write("\n")
 	
 	#messages-attributes:
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		for attrib,val in bo._attributes.items():
 			f.write( 'BA_ "' + attrib.encode(dbcExportEncoding) + '" BO_ %d ' % bo._Id + val + ';\n')
 	f.write("\n")
 			
 	#signal-attributes:
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		for signal in bo._signals:
 			for attrib,val in signal._attributes.items():
 				f.write( 'BA_ "' + attrib + '" SG_ %d ' % bo._Id + signal._name + ' ' + val  + ';\n')
 	f.write("\n")
 
 	#signal-values:
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		for signal in bo._signals:
 			if len(signal._values) > 0:
 				f.write('VAL_ %d ' % bo._Id + signal._name)		

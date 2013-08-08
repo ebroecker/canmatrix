@@ -62,13 +62,13 @@ def importDbc(filename):
 		if l.startswith("BO_ "):
 			regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")		
 			temp = regexp.match(l)
-			db._bl.addBotschaft(Botschaft(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
+			db._fl.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
 		elif l.startswith("SG_ "):
 			regexp = re.compile("^SG\_ (\w+) : (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)")		
 			temp = regexp.match(l)
 			if temp:
 				reciever = map(str.strip, temp.group(11).split(',')) 
-				db._bl.addSignalToLastBotschaft(Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10).decode(dbcImportEncoding),reciever))
+				db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10).decode(dbcImportEncoding),reciever))
 			else:
 				regexp = re.compile("^SG\_ (\w+) (\w+) *: (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)")
 				temp = regexp.match(l)
@@ -79,20 +79,20 @@ def importDbc(filename):
 				else:
 					multiplex = multiplex[1:]
 
-				db._bl.addSignalToLastBotschaft(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp.group(11).decode(dbcImportEncoding),reciever, multiplex))
+				db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp.group(11).decode(dbcImportEncoding),reciever, multiplex))
 
 
 		elif l.startswith("BO_TX_BU_ "):
 			regexp = re.compile("^BO_TX_BU_ ([0-9]+) *: *(.+);")
 			temp = regexp.match(l)
-			botschaft = db._bl.byId(temp.group(1))
+			botschaft = db._fl.byId(temp.group(1))
 			for bu in temp.group(2).split(','):
 				botschaft.addTransmitter(bu)
 		elif l.startswith("CM_ SG_ "):
 			regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)\";")		
 			temp = regexp.match(l)
 			if temp:
-				botschaft = db._bl.byId(temp.group(1))
+				botschaft = db._fl.byId(temp.group(1))
 				signal = botschaft.signalByName(temp.group(2))
 				if signal:
 					signal.addComment(temp.group(3).decode(dbcImportEncoding).replace('\\"','"'))
@@ -100,7 +100,7 @@ def importDbc(filename):
 				regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
-					botschaft = db._bl.byId(temp.group(1))
+					botschaft = db._fl.byId(temp.group(1))
 					signal = botschaft.signalByName(temp.group(2))
 					comment = temp.group(3).decode(dbcImportEncoding).replace('\\"','"')
 					followUp = FollowUps.signalComment
@@ -109,14 +109,14 @@ def importDbc(filename):
 			regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)\";")		
 			temp = regexp.match(l)
 			if temp:
-				frame = db._bl.byId(temp.group(1))
+				frame = db._fl.byId(temp.group(1))
 				if frame:
 					frame.addComment(temp.group(2).decode(dbcImportEncoding).replace('\\"','"'))
 			else:
 				regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
-					frame = db._bl.byId(temp.group(1))
+					frame = db._fl.byId(temp.group(1))
 					comment = temp.group(2).decode(dbcImportEncoding).replace('\\"','"')
 					followUp = FollowUps.frameComment
 		elif l.startswith("BU_:"):
@@ -137,9 +137,10 @@ def importDbc(filename):
 				tempList = temp.group(3).split('"')
 				try:
 					for i in range(len(tempList)/2):
-						bo = db._bl.byId(botschaftId)
+						bo = db._fl.byId(botschaftId)
 						sg = bo.signalByName(signal)
-						val = tempList[i*2+1][1:-1]
+						val = tempList[i*2+1]
+						#[1:-1]
 						
 						if sg:
 							sg.addValues(tempList[i*2], val)
@@ -176,11 +177,11 @@ def importDbc(filename):
 			if tempba.group(1).strip().startswith("BO_ "):
 				regexp = re.compile("^BA\_ \"(.*)\" BO\_ (\w+) (.+);")		
 				temp = regexp.match(l)	
-				db._bl.byId(int(temp.group(2))).addAttribute(temp.group(1),temp.group(3))
+				db._fl.byId(int(temp.group(2))).addAttribute(temp.group(1),temp.group(3))
 			elif tempba.group(1).strip().startswith("SG_ "):
 				regexp = re.compile("^BA\_ \"(.*)\" SG\_ (\w+) (\w+) (.+);")		
 				temp = regexp.match(l)	
-				db._bl.byId(int(temp.group(2))).signalByName(temp.group(3)).addAttribute(temp.group(1),temp.group(4))
+				db._fl.byId(int(temp.group(2))).signalByName(temp.group(3)).addAttribute(temp.group(1),temp.group(4))
 			elif tempba.group(1).strip().startswith("BU_ "):
 				regexp = re.compile("^BA\_ \"(.*)\" BU\_ (\w+) (.+);")		
 				temp = regexp.match(l)

@@ -100,8 +100,8 @@ def importXls(filename):
 				launchParam = 0.0
 			launchParam = str(int(launchParam))
 			# TODO: correct DLC ermitteln
-			newBo = Botschaft(int(frameId[:-1], 16), frameName, dlc, None)
-			db._bl.addBotschaft(newBo)
+			newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
+			db._fl.addFrame(newBo)
 			if launchType is not None:
 				if "Cyclic+Change" == launchType:
 					newBo.addAttribute("GenMsgSendType", "5")	
@@ -195,7 +195,7 @@ def importXls(filename):
 			newSig.addValues(value, valueName)
 	
 	#do dlc-correction:
-	for bo in db._bl._liste:
+	for bo in db._fl._list:
 		maxBit = 0
 		for sig in bo._signals:
 			if int(sig._startbit) + int(sig._signalsize) > maxBit:

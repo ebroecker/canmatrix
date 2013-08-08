@@ -1,8 +1,16 @@
 #!/usr/bin/env python
 from exportdbc import *
 from exportdbf import *
-from exportkcd import *
-from exportxls import *
+
+try: 
+	from exportkcd import *
+except:
+	print "no kcd-export-support, some dependencys missing... "
+
+try: 
+	from exportxls import *
+except:
+	print "no xls-export-support, some dependencys missing... "
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.

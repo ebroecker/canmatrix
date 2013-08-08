@@ -1,10 +1,22 @@
 #!/usr/bin/env python
-
-from importarxml import *
 from importdbc import *
 from importdbf import *
-from importkcd import *
-from importxls import *
+
+try: 
+	from importarxml import *
+except:
+	print "no arxml-import-support, some dependencys missing... "
+
+try: 
+	from importkcd import *
+except:
+	print "no kcd-import-support, some dependencys missing... "
+
+try: 
+	from importxls import *
+except:
+	print "no xls-import-support, some dependencys missing... "
+
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.

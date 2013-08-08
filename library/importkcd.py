@@ -107,7 +107,7 @@ def importKcd(filename):
 
 	for message in messages:
 		dlc = 1
-		newBo = Botschaft(int(message.get('id'), 16), message.get('name'), dlc, None)
+		newBo = Frame(int(message.get('id'), 16), message.get('name'), dlc, None)
 
 		if 'triggered' in message.attrib:
 			newBo.addAttribute("GenMsgCycleTime", message.get('interval'))	
@@ -167,6 +167,6 @@ def importKcd(filename):
 		if newBo._Size < maxBit / 8 + 1 :
 			newBo._Size = int(maxBit / 8)+1
 
-		db._bl.addBotschaft(newBo)
+		db._fl.addFramef(newBo)
 	return db
 
