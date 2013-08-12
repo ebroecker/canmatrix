@@ -73,7 +73,11 @@ def writeSignal(sig, worksheet, row, mystyle):
 	worksheet.write(row, 5, label = (sig._startbit)/8+1, style=mystyle)
 	worksheet.write(row, 6, label = (sig._startbit)%8, style=mystyle)
 	worksheet.write(row, 7, label = sig._name, style=mystyle)
-	comment = sig._comment
+
+	if sig._comment is None:
+		comment = ""
+	else:
+		comment = sig._comment
 	if sig._multiplex == 'Multiplexor':
 		comment = "Mode Signal: " + comment
 	elif sig._multiplex is not None:

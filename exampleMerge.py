@@ -11,9 +11,9 @@ import sys
 #
 
 # Importieren einer CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db1 = im.importany("frist.dbc")
+db1 = im.importany("aa.dbc")
 # Importieren einer 2. CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db2 = im.importany("second.dbc")
+db2 = im.importany("aa.dbc")
 
 #
 # Ziel-Matrix anlegen
@@ -30,7 +30,7 @@ db3 = CanMatrix()
 copyFrame(1731, db2, db3)
 
 #Kopiere Frame "Engine_123" aus der 1. K-Matrix in die Zielmatrix
-copyFrame("Engine_123", db1, db3)
+copyFrame("BMS_Hybrid_01", db1, db3)
 
 
 #

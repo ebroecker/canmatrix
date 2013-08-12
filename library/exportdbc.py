@@ -22,7 +22,6 @@
 #
 # this script exports dbc-files from a canmatrix-object
 # dbc-files are the can-matrix-definitions of the CanOe (Vector Informatic)
-#  NOT supported BA_DEF BA_DEF_DEF
 
 from canmatrix import *
 import codecs
@@ -33,7 +32,6 @@ dbcExportEncoding = 'iso-8859-1'
 def exportDbc(db, filename):
 	f = open(filename,"w")
 
-	#not supported BA_DEF_DEF
 	f.write( "VERSION \"created by canmatrix\"\n\n")
 	f.write("\n")
 
@@ -85,17 +83,25 @@ def exportDbc(db, filename):
 
 	#frame comments
 	for bo in db._fl._list:
-		f.write("CM_ BO_ " + "%d " % bo._Id + ' "')
-		f.write(bo._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
-		f.write('";\n') 
+		if bo._comment is not None and bo._comment.__len__() > 0:
+			f.write("CM_ BO_ " + "%d " % bo._Id + ' "')
+			f.write(bo._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
+			f.write('";\n') 
 	f.write("\n")
 			
-	#signalbezeichnungen
+	#signal comments
 	for bo in db._fl._list:
 		for signal in bo._signals:
-			f.write("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "')
-			f.write(signal._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
-			f.write('";\n') 
+			if signal._comment is not None and signal._comment.__len__() > 0:
+				f.write("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "')
+				f.write(signal._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
+				f.write('";\n') 
+	f.write("\n")
+
+	#boarUnit comments
+	for bu in db._BUs._list:
+		if bu._comment is not None and bu._comment.__len__() > 0:
+			f.write("CM_ BU_ " + bu._name + ' "' + bu._comment.encode(dbcExportEncoding,'replace').replace('"','\\"') + '";\n') 
 	f.write("\n")
 
 # some default defines:
@@ -110,14 +116,26 @@ def exportDbc(db, filename):
 	db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295;')
 	db.addSignalDefines("GenSigSNA", 'STRING;')
 
+	defaults = {}
 	for (type,define) in db._frameDefines.items():
-		f.write('BA_DEF_ BO_ "' + type + '" ' + define.encode(dbcExportEncoding,'replace') + '\n')
+		f.write('BA_DEF_ BO_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + '\n')
+		if type not in defaults and define._defaultValue is not None:
+			defaults[type] = define._defaultValue
 	for (type,define) in db._signalDefines.items():
-		f.write('BA_DEF_ SG_ "' + type + '" ' + define.encode(dbcExportEncoding,'replace') + '\n')
+		f.write('BA_DEF_ SG_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + '\n')
+		if type not in defaults and define._defaultValue is not None:
+			defaults[type] = define._defaultValue
 	for (type,define) in db._buDefines.items():
-		f.write('BA_DEF_ BU_ "' + type + '" ' + define.encode(dbcExportEncoding,'replace') + '\n')
+		f.write('BA_DEF_ BU_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + '\n')
+		if type not in defaults and define._defaultValue is not None:
+			defaults[type] = define._defaultValue
 	for (type,define) in db._globalDefines.items():
-		f.write('BA_DEF_ "' + type + '" ' + define.encode(dbcExportEncoding,'replace') + '\n')
+		f.write('BA_DEF_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + '\n')
+		if type not in defaults and define._defaultValue is not None:
+			defaults[type] = define._defaultValue
+
+	for define in defaults:
+		f.write('BA_DEF_DEF_ "' + define + '" ' + defaults[define].encode(dbcExportEncoding,'replace') + ';\n')
 
 		
 	#boardunit-attributes:
@@ -152,4 +170,15 @@ def exportDbc(db, filename):
 				for attrib,val in signal._values.items():
 					f.write(' ' + str(attrib) + ' "' + str(val) + '"')
 				f.write(";\n"); 
+
+
+	#signal-groups:
+	for bo in db._fl._list:
+		for sigGroup in bo._SignalGroups:
+			f.write("_SIG_GROUP " + str(bo._Id) + " " + sigGroup._name + " " + str(sigGroup._Id))
+			for signal in sigGroup._members:
+				f.write(" " + signal._name)
+			f.write(";\n")
+
+
 

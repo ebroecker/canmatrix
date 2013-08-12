@@ -50,7 +50,7 @@ class FrameList:
 		for test in self._list:
 			if test._Id == int(Id):
 				return test
-		return 0
+		return None
 	def byName(self, Name):
 		"""
 		returns a Frame-Object by given Frame-Name
@@ -67,11 +67,17 @@ class BoardUnit:
 	def __init__(self,name):
 		self._name = name.strip()
 		self._attributes = {}
+		self._comment = None
 	def addAttribute(self, attribute, value):
 		"""
 		adds some Attribute to current Boardunit/ECU		
 		"""
 		self._attributes[attribute]=value
+	def addComment(self, comment):
+		"""
+		Set comment of Signal
+		"""
+		self._comment = comment
 
 class BoardUnitListe:
 	"""
@@ -122,7 +128,7 @@ class Signal:
 		self._attributes = {}
 		self._values = {}
 		self._unit = unit
-		self._comment = ""
+		self._comment = None
 		self._multiplex = multiplex
 	def addComment(self, comment):
 		"""
@@ -140,6 +146,22 @@ class Signal:
 		Add Value/Description to Signal
 		"""
 		self._values[int(value)] = valueName
+
+class SignalGroup:
+	"""
+	contains Signals, which belong to signal-group
+	"""
+	def __init__(self, name, Id):
+		self._members = []
+		self._name = name
+		self._Id = Id
+	def addSignal(self, signal):
+		if signal not in self._members:
+			self._members.append(signal)
+	def delSignal(self, signal):
+		if signal in self._members:
+			self._members[signal].remove()
+
 
 class Frame:
 	"""
@@ -159,8 +181,20 @@ class Frame:
 		self._signals = []
 		self._attributes = {}
 		self._Reciever = []
+		self._SignalGroups = []
 		self._extended = 0
-		self._comment = ""
+		self._comment = None
+
+	def addSignalGroup(self, Name, Id, signalNames):
+		newGroup = SignalGroup(Name, Id)
+		self._SignalGroups.append(newGroup)
+		for signal in signalNames:
+			signal = signal.strip()
+			if signal.__len__() == 0:
+				continue
+			signalId = self.signalByName(signal)
+			if signalId is not None:
+				newGroup.addSignal(signalId)
 
 	def addSignal(self, signal):
 		"""
@@ -183,7 +217,7 @@ class Frame:
 		for signal in self._signals:
 			if signal._name == name:
 				return signal
-		return 0
+		return None
 	def addAttribute(self, attribute, value):
 		"""
 		add attribute to attribute-list of frame
@@ -197,6 +231,16 @@ class Frame:
 		"""
 		self._comment = comment
 
+class Define:
+	"""
+	these objects hold the defines and default-values
+	"""
+	def __init__(self, definition):
+		self._definition = definition
+		self._defaultValue = None
+	
+	def addDefault(self, default):
+		self._defaultValue = default
 
 class CanMatrix:
 	"""
@@ -230,29 +274,47 @@ class CanMatrix:
 		add signal-attribute definition to canmatrix
 		"""
 		if type not in self._signalDefines:
-			self._signalDefines[type]=definition
+			self._signalDefines[type]=Define(definition)
 	
 	def addFrameDefines(self, type, definition):
 		"""
 		add frame-attribute definition to canmatrix
 		"""
 		if type not in self._frameDefines:
-			self._frameDefines[type]=definition
+			self._frameDefines[type]=Define(definition)
 
 	def addBUDefines(self, type, definition):
 		"""
 		add Boardunit-attribute definition to canmatrix
 		"""
 		if type not in self._buDefines:
-			self._buDefines[type]=definition
+			self._buDefines[type]=Define(definition)
 
 	def addGlobalDefines(self, type, definition):
 		"""
 		add global-attribute definition to canmatrix
 		"""
 		if type not in self._globalDefines:
-			self._globalDefines[type]=definition
+			self._globalDefines[type]=Define(definition)
 	
+	def addDefineDefault(self, name, value):
+		if name in self._signalDefines:
+			self._signalDefines[name].addDefault(value)
+		if name in self._frameDefines:
+			self._frameDefines[name].addDefault(value)
+		if name in self._buDefines:
+			self._buDefines[name].addDefault(value)
+		if name in self._globalDefines:
+			self._globalDefines[name].addDefault(value)
+	
+	def frameById(self, Id):
+		return self._fl.byId(Id)
+	
+	def frameByName(self, name):
+		return self._fl.byName(name)
+
+	def boardUnitByName(self, name):
+		return self._BUs.byName(name)
 
 def loadPkl(filename):
 	"""
@@ -326,14 +388,16 @@ def copyBU (buId, sourceDb, targetDb):
 	else:
 		bu = sourceDb._BUs.byName(buId)
 	
-	targetDb._BUs.add(bu.copy())
+	targetDb._BUs.add(bu)
 	
 	# copy all bu-defines
 	attributes = bu._attributes
 	for attribute in attributes:
-		targetDb.addBUDefines(attribute, sourceDb._buDefines[attribute])
+		targetDb.addBUDefines(attribute, sourceDb._buDefines[attribute]._definition)
+		targetDb.addDefineDefault(attribute, sourceDb._buDefines[attribute]._defaultValue)
 
-		
+
+	
 def copyFrame (frameId, sourceDb, targetDb):
 	"""
 	This function copys a Frame identified by frameId from soruce-Canmatrix to target-Canmatrix
@@ -350,7 +414,7 @@ def copyFrame (frameId, sourceDb, targetDb):
 
 
 	# copy Frame-Object:
-	targetDb._fl.addFrame(frame.copy())
+	targetDb._fl.addFrame(frame)
 	
 	## Boardunits:
 	# each transmitter of Frame could be ECU that is not listed already
@@ -372,12 +436,14 @@ def copyFrame (frameId, sourceDb, targetDb):
 	# copy all frame-defines
 	attributes = frame._attributes
 	for attribute in attributes:
-		targetDb.addFrameDefines(attribute, sourceDb._frameDefines[attribute])
+		targetDb.addFrameDefines(attribute, sourceDb._frameDefines[attribute]._definition)
+		targetDb.addDefineDefault(attribute, sourceDb._frameDefines[attribute]._defaultValue)
 
 	#trigger all signals of Frame
 	for sig in frame._signals:
 		# delete all 'unknown' attributes 
 		attributes = sig._attributes
 		for attribute in attributes:
-			targetDb.addSignalDefines(attribute, sourceDb._signalDefines[attribute])
-	
+			targetDb.addSignalDefines(attribute, sourceDb._signalDefines[attribute]._definition)
+			targetDb.addDefineDefault(attribute, sourceDb._signalDefines[attribute]._defaultValue)
+

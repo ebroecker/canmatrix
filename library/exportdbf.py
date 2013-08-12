@@ -103,8 +103,10 @@ def exportDbf(db, filename):
 	f.write("[START_DESC_SIG]\n")
 	for bo in db._fl._list:
 		for signal in bo._signals:
-			comment = signal._comment.replace("\n"," ")
-			f.write("%d S " % bo._Id + signal._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n') 
+			if signal._comment is not None:
+				comment = signal._comment.replace("\n"," ")
+				f.write("%d S " % bo._Id + signal._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n') 
+		
 	f.write("[END_DESC_SIG]\n")
 	f.write("[END_DESC]\n\n")
 

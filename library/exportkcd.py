@@ -36,7 +36,10 @@ def createSignal(signal, nodeList):
 		sig.set('endianess',"little")
 
 	notes = etree.Element('Notes')
-	notes.text = signal._comment		
+
+	if signal._comment is not None:
+		notes.text = signal._comment
+
 	sig.append(notes)
 
 	value = etree.Element('Value')
