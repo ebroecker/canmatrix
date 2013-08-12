@@ -146,6 +146,67 @@ class Signal:
 		Add Value/Description to Signal
 		"""
 		self._values[int(value)] = valueName
+	def compare(self, s2):
+		diffStr = "[Signal: " + self._name + "]\n"
+
+
+		if self._startbit != s2._startbit:
+			diffStr += "Starbit differs: %d %d\n" % (self._startbit, s2._startbit)
+		if self._signalsize != s2._signalsize:
+			diffStr += "signalsize differs: %d %d\n" % (self._signalsize, s2._signalsize)
+		if self._factor != s2._factor:
+			diffStr += "factor differs: %d %d\n" % (self._factor, s2._factor)
+		if self._offset != s2._offset:
+			diffStr += "offset differs: %d %d\n" % (self._offset, s2._offset)
+		if self._min != s2._min:
+			diffStr += "min differs: %d %d\n" % (self._min, s2._min)
+		if self._max != s2._max:
+			diffStr += "max differs: %d %d\n" % (self._max, s2._max)
+		if self._byteorder != s2._byteorder:
+			diffStr += "byteorder differs: %d %d (1 Intel/2 Motorola)\n" % (self._byteorder, s2._byteorder)
+		if self._valuetype != s2._valuetype:
+			diffStr += "valuetype differs: %d %d\n" % (self._valuetype, s2._valuetype)
+		if self._multiplex != s2._multiplex:
+			diffStr += "multiplex differs: %d %d\n" % (self._multiplex, s2._multiplex)
+		if self._unit != s2._unit:
+			diffStr += "unit differs: " + self._unit + " != " + s2._unit  + "\n"
+		if self._comment != s2._comment:
+			diffStr += "comment differs: " + self._comment + " != " + s2._comment + "\n"
+		
+		for reciever in self._reciever:
+			if reciever not in s2._reciever:
+				diffStr += "- Reciever: " + reciever + '\n'
+
+		for reciever in s2._reciever:
+			if reciever not in self._reciever:
+				diffStr += "+ Reciever: " + reciever + '\n'
+
+
+		for attribute in self._attributes:
+			if attribute not in s2._attributes:
+				diffStr += "- ATTRIBUTE: " + str(attribute) + ' = ' + self._attributes[attribute] + '\n'
+			elif self._attributes[attribute] != s2._attributes[attribute]:
+				diffStr += "ATTRIBUTE: " + str(attribute) + ' = (' + self._attributes[attribute] + ' != ' + s2._attributes[attribute] + ')\n'
+
+
+		for attribute in s2._attributes:
+			if attribute not in self._attributes:
+				diffStr += "+ ATTRIBUTE: " + str(attribute) + ' = ' + self._attributes[attribute] + '\n'
+
+
+		for value in self._values:
+			if value not in s2._values:
+				diffStr += "- VALUE: " + str(value) + ' = ' + self._values[value] + '\n'
+			elif s2._values[value] != self._values[value]:
+				diffStr += "VALUE: " + str(value) + ' = (' + self._values[value] + ' != ' + s2._values[value] + ')\n'
+	
+		for value in s2._values:
+			if value not in self._values:
+				diffStr += "+ VALUE:  " + str(value) + ' = ' + s2._values[value] + '\n'
+		if "[Signal: " + self._name + "]\n" == diffStr:
+			return ""
+		else:		
+			return diffStr + "[/SIGNAL]\n"
 
 class SignalGroup:
 	"""
@@ -230,6 +291,32 @@ class Frame:
 		set comment of frame
 		"""
 		self._comment = comment
+	
+	def compare(self, f2):
+		diffStr = ""
+		for signal in self._signals:
+			s2 = f2.signalByName(signal._name)
+			if not s2:
+				diffStr += "- SIGNAL: [" + f2._name + "] " + signal._name + '\n'
+			else:
+				diffStr += signal.compare(s2)
+
+		for s2 in f2._signals:
+			signal = self.signalByName(s2._name)
+			if not signal:
+				diffStr += "+ SIGNAL: [" + self._name + "] " + s2._name + '\n'
+#TODO
+#		self._name = name
+#		self._Transmitter = [transmitter]
+#		self._Size = int(size)
+#		self._signals = []
+#		self._attributes = {}
+#		self._Reciever = []
+#		self._SignalGroups = []
+#		self._extended = 0
+#		self._comment = None
+
+		return diffStr
 
 class Define:
 	"""
@@ -316,6 +403,29 @@ class CanMatrix:
 	def boardUnitByName(self, name):
 		return self._BUs.byName(name)
 
+	def compare(self, db2):
+		diffStr = ""
+		for frame in self._fl._list:
+			f2 = db2.frameById(frame._Id)
+			if f2 is None:
+				diffStr += '- FRAME: ' + frame._name +'(%03x)' % frame._Id  + '\n'
+			else:
+				diffStr += frame.compare(f2)
+		for f2 in db2._fl._list:
+			frame = self.frameById(frame._Id)
+			if frame is None:
+				diffStr += '+ FRAME: ' + frame._name +'(%03x)' % frame._Id + '\n'
+#TODO
+#		self._attributes = {}
+#		self._BUs = BoardUnitListe()
+#		self._signalDefines = {}
+#		self._frameDefines = {}
+#		self._globalDefines = {}
+#		self._buDefines = {}
+
+		return diffStr
+
+ 
 def loadPkl(filename):
 	"""
 	helper for loading a python-object-dump of canmatrix
