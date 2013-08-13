@@ -146,67 +146,7 @@ class Signal:
 		Add Value/Description to Signal
 		"""
 		self._values[int(value)] = valueName
-	def compare(self, s2):
-		diffStr = "[Signal: " + self._name + "]\n"
 
-
-		if self._startbit != s2._startbit:
-			diffStr += "Starbit differs: %d %d\n" % (self._startbit, s2._startbit)
-		if self._signalsize != s2._signalsize:
-			diffStr += "signalsize differs: %d %d\n" % (self._signalsize, s2._signalsize)
-		if self._factor != s2._factor:
-			diffStr += "factor differs: %d %d\n" % (self._factor, s2._factor)
-		if self._offset != s2._offset:
-			diffStr += "offset differs: %d %d\n" % (self._offset, s2._offset)
-		if self._min != s2._min:
-			diffStr += "min differs: %d %d\n" % (self._min, s2._min)
-		if self._max != s2._max:
-			diffStr += "max differs: %d %d\n" % (self._max, s2._max)
-		if self._byteorder != s2._byteorder:
-			diffStr += "byteorder differs: %d %d (1 Intel/2 Motorola)\n" % (self._byteorder, s2._byteorder)
-		if self._valuetype != s2._valuetype:
-			diffStr += "valuetype differs: %d %d\n" % (self._valuetype, s2._valuetype)
-		if self._multiplex != s2._multiplex:
-			diffStr += "multiplex differs: %d %d\n" % (self._multiplex, s2._multiplex)
-		if self._unit != s2._unit:
-			diffStr += "unit differs: " + self._unit + " != " + s2._unit  + "\n"
-		if self._comment != s2._comment:
-			diffStr += "comment differs: " + self._comment + " != " + s2._comment + "\n"
-		
-		for reciever in self._reciever:
-			if reciever not in s2._reciever:
-				diffStr += "- Reciever: " + reciever + '\n'
-
-		for reciever in s2._reciever:
-			if reciever not in self._reciever:
-				diffStr += "+ Reciever: " + reciever + '\n'
-
-
-		for attribute in self._attributes:
-			if attribute not in s2._attributes:
-				diffStr += "- ATTRIBUTE: " + str(attribute) + ' = ' + self._attributes[attribute] + '\n'
-			elif self._attributes[attribute] != s2._attributes[attribute]:
-				diffStr += "ATTRIBUTE: " + str(attribute) + ' = (' + self._attributes[attribute] + ' != ' + s2._attributes[attribute] + ')\n'
-
-
-		for attribute in s2._attributes:
-			if attribute not in self._attributes:
-				diffStr += "+ ATTRIBUTE: " + str(attribute) + ' = ' + self._attributes[attribute] + '\n'
-
-
-		for value in self._values:
-			if value not in s2._values:
-				diffStr += "- VALUE: " + str(value) + ' = ' + self._values[value] + '\n'
-			elif s2._values[value] != self._values[value]:
-				diffStr += "VALUE: " + str(value) + ' = (' + self._values[value] + ' != ' + s2._values[value] + ')\n'
-	
-		for value in s2._values:
-			if value not in self._values:
-				diffStr += "+ VALUE:  " + str(value) + ' = ' + s2._values[value] + '\n'
-		if "[Signal: " + self._name + "]\n" == diffStr:
-			return ""
-		else:		
-			return diffStr + "[/SIGNAL]\n"
 
 class SignalGroup:
 	"""
@@ -292,38 +232,14 @@ class Frame:
 		"""
 		self._comment = comment
 	
-	def compare(self, f2):
-		diffStr = ""
-		for signal in self._signals:
-			s2 = f2.signalByName(signal._name)
-			if not s2:
-				diffStr += "- SIGNAL: [" + f2._name + "] " + signal._name + '\n'
-			else:
-				diffStr += signal.compare(s2)
 
-		for s2 in f2._signals:
-			signal = self.signalByName(s2._name)
-			if not signal:
-				diffStr += "+ SIGNAL: [" + self._name + "] " + s2._name + '\n'
-#TODO
-#		self._name = name
-#		self._Transmitter = [transmitter]
-#		self._Size = int(size)
-#		self._signals = []
-#		self._attributes = {}
-#		self._Reciever = []
-#		self._SignalGroups = []
-#		self._extended = 0
-#		self._comment = None
-
-		return diffStr
 
 class Define:
 	"""
 	these objects hold the defines and default-values
 	"""
 	def __init__(self, definition):
-		self._definition = definition
+		self._definition = definition.strip()
 		self._defaultValue = None
 	
 	def addDefault(self, default):
@@ -403,29 +319,7 @@ class CanMatrix:
 	def boardUnitByName(self, name):
 		return self._BUs.byName(name)
 
-	def compare(self, db2):
-		diffStr = ""
-		for frame in self._fl._list:
-			f2 = db2.frameById(frame._Id)
-			if f2 is None:
-				diffStr += '- FRAME: ' + frame._name +'(%03x)' % frame._Id  + '\n'
-			else:
-				diffStr += frame.compare(f2)
-		for f2 in db2._fl._list:
-			frame = self.frameById(frame._Id)
-			if frame is None:
-				diffStr += '+ FRAME: ' + frame._name +'(%03x)' % frame._Id + '\n'
-#TODO
-#		self._attributes = {}
-#		self._BUs = BoardUnitListe()
-#		self._signalDefines = {}
-#		self._frameDefines = {}
-#		self._globalDefines = {}
-#		self._buDefines = {}
 
-		return diffStr
-
- 
 def loadPkl(filename):
 	"""
 	helper for loading a python-object-dump of canmatrix
@@ -443,6 +337,10 @@ def savePkl(db, filename):
         pickle.dump(db, output)
         output.close()
 
+		
+#		
+# 
+#		
 def putSignalValueInFrame(startbit, len, format, value, frame):
 	"""
 	puts a signal-value to the right position in a frame
@@ -487,6 +385,10 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
 			frame[i] |= ((value >> restLen) << end) & mask 
 			nbits = min(restLen, 8)			
 
+
+# ############################
+# Copy functions:
+# ############################
 def copyBU (buId, sourceDb, targetDb):
 	"""
 	This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
@@ -557,3 +459,206 @@ def copyFrame (frameId, sourceDb, targetDb):
 			targetDb.addSignalDefines(attribute, sourceDb._signalDefines[attribute]._definition)
 			targetDb.addDefineDefault(attribute, sourceDb._signalDefines[attribute]._defaultValue)
 
+# ############################
+# Compare functions:
+# ############################
+
+def compareDb(db1, db2):
+	diffStr = ""
+	for f1 in db1._fl._list:
+		f2 = db2.frameById(f1._Id)
+		if f2 is None:
+			diffStr += '- FRAME: ' + f1._name +'(%03x)' % f1._Id  + '\n'
+		else:
+			diffStr += compareFrame(f1, f2)
+	for f2 in db2._fl._list:
+		f1 = db1.frameById(f2._Id)
+		if f1 is None:
+			diffStr += '+ FRAME: ' + f2._name +'(%03x)' % f2._Id + '\n'
+
+	diffStr += compareAttributes(db1, db2)
+		
+	for bu1 in db1._BUs._list:
+		bu2 = db2.boardUnitByName(bu1._name)
+		if bu2 is None:
+			diffStr += '- ECU: ' + bu2._name + '\n'
+		else:
+			diffStr += compareBu(bu1, bu2)
+
+	temp = compareDefineList(db1._globalDefines, db2._globalDefines)
+	if temp.__len__() > 0:
+		diffStr += "[global-Definitions]\n" + temp +  "[/global-Definitions]\n"
+	
+	temp = compareDefineList(db1._buDefines, db2._buDefines)
+	if temp.__len__() > 0:
+		diffStr += "[ECU-Definitions]\n" + temp +  "[/ECU-Definitions]\n"
+
+	temp = compareDefineList(db1._frameDefines, db2._frameDefines)
+	if temp.__len__() > 0:
+		diffStr += "[Frame-Definitions]\n" + temp +  "[/Frame-Definitions]\n"
+
+	temp = compareDefineList(db1._signalDefines, db2._signalDefines)
+	if temp.__len__() > 0:
+		diffStr += "[Signal-Definitions]\n" + temp +  "[/Signal-Definitions]\n"
+	
+	return diffStr
+
+def compareSignalGroup(sg1, sg2):
+	diffStr = "[SignalGroup: " + sg1._name + "]\n"
+	if sg1._name != sg2._name:
+		diffStr += "Name different: %s != %s\n" % (sg1._name, sg2._name)
+	if sg1._Id != sg2._Id:
+		diffStr += "Id different: %d != %d\n" % (sg1._Id, sg2._Id)
+
+	for member in sg1._members:
+		if member not in sg2._members:
+			diffStr += "- MEMBER: " + str(member) + '\n'
+	for member in sg2._members:
+		if member not in sg1._members:
+			diffStr += "+ MEMBER: " + str(member) + '\n'
+
+			
+	if diffStr == "[SignalGroup: " + sg1._name + "]\n":
+		return ""
+	else:
+		return diffStr
+
+	
+def compareDefineList(d1list, d2list):
+	diffStr = ""
+	for definition in d1list:
+		if definition not in d2list:
+			diffStr += "- DEFINITION: " + str(definition) + '\n'
+		else:
+			d2 = d2list[definition]
+			d1 = d1list[definition]
+			if d1._definition != d2._definition:
+				diffStr += "DEFINITION is different: " + definition + "(" + d1._definition + " != " + d2._definition + ")\n"
+
+			if d1._defaultValue != d2._defaultValue:
+				diffStr += "Default-Value is different: " + definition + "  (" + d1._defaultValue + " != " + d2._defaultValue + ")\n"
+
+	return diffStr
+	
+def compareAttributes(ele1, ele2):
+	diffStr = ""
+	for attribute in ele1._attributes:
+		if attribute not in ele2._attributes:
+			diffStr += "- ATTRIBUTE: " + str(attribute) + ' = ' + ele1._attributes[attribute] + '\n'
+		elif ele1._attributes[attribute] != ele2._attributes[attribute]:
+			diffStr += "ATTRIBUTE: " + str(attribute) + ' = (' + ele1._attributes[attribute] + ' != ' + ele2._attributes[attribute] + ')\n'
+
+	for attribute in ele2._attributes:
+		if attribute not in ele1._attributes:
+			diffStr += "+ ATTRIBUTE: " + str(attribute) + ' = ' + ele2._attributes[attribute] + '\n'
+	return diffStr
+			
+def compareBu(bu1, bu2):
+	diffStr = "[ECU: " + bu1._name + "]\n"
+
+	if bu1._comment != bu2._comment:
+		diffStr += "comment differs: " + bu1._comment + " != " + bu2._comment + "\n"
+	diffStr += compareAttributes(bu1, bu2)
+	if diffStr == "[ECU: " + bu1._name + "]\n":
+		return ""
+	else:
+		return diffStr
+	
+def compareFrame(f1, f2):
+	diffStr = "[FRAME: " + f1._name + "]\n"
+	for s1 in f1._signals:
+		s2 = f2.signalByName(s1._name)
+		if not s2:
+			diffStr += "- SIGNAL: [" + f2._name + "] " + s1._name + '\n'
+		else:
+				diffStr += compareSignal(s1, s2)
+
+	for s2 in f2._signals:
+		s1 = f1.signalByName(s2._name)
+		if not s1:
+			diffStr += "+ SIGNAL: [" + f1._name + "] " + s2._name + '\n'
+	
+	if f1._name != f2._name:
+		diffStr += "Name different: %s != %s\n" % (f1._name, f2._name)
+	if f1._Size != f2._Size:
+		diffStr += "DLC different: %d != %d\n" % (f1._Size, f2._Size)
+	if f1._extended != f2._extended:
+		diffStr += "Extended vs. Normal Frame: %d != %d\n" % (f1._extended, f2._extended)
+	if f1._comment != f2._comment:
+		diffStr += "comment differs: " + f1._comment + " != " + f2._comment + "\n"
+
+	diffStr += compareAttributes(f1, f2)
+
+	for transmitter in f1._Transmitter:
+		if transmitter not in f2._Transmitter:
+			diffStr += "- Transmitter: " + transmitter + '\n'
+	for transmitter in f2._Transmitter:
+		if transmitter not in f1._Transmitter:
+			diffStr += "+ Transmitter: " + transmitter + '\n'
+
+	for sg1 in f1._SignalGroups:
+		if sg1 not in f2._SignalGroups:
+			diffstr += "- SIGNALGROUP " + sg1 + '\n'
+		else:
+			diffstr += compareSignalGroup(f1._SignalGroups[sg1], f1._SignalGroups[sg2])
+
+	for sg2 in f2._SignalGroups:
+		if sg2 not in f1._SignalGroups:
+			diffstr += "+ SIGNALGROUP " + sg1 + '\n'
+
+	#TODO compare self._Reciever = [] ??
+	if diffStr == "[FRAME: " + f1._name + "]\n":
+		return ""
+	else:
+		return diffStr
+		
+def compareSignal(s1,s2):
+	diffStr = "[Signal: " + s1._name + "]\n"
+
+	if s1._startbit != s2._startbit:
+		diffStr += "Starbit differs: %d %d\n" % (s1._startbit, s2._startbit)
+	if s1._signalsize != s2._signalsize:
+		diffStr += "signalsize differs: %d %d\n" % (s1._signalsize, s2._signalsize)
+	if s1._factor != s2._factor:
+		diffStr += "factor differs: %d %d\n" % (s1._factor, s2._factor)
+	if s1._offset != s2._offset:
+		diffStr += "offset differs: %d %d\n" % (s1._offset, s2._offset)
+	if s1._min != s2._min:
+		diffStr += "min differs: %d %d\n" % (s1._min, s2._min)
+	if s1._max != s2._max:
+		diffStr += "max differs: %d %d\n" % (s1._max, s2._max)
+	if s1._byteorder != s2._byteorder:
+		diffStr += "byteorder differs: %d %d (1 Intel/2 Motorola)\n" % (s1._byteorder, s2._byteorder)
+	if s1._valuetype != s2._valuetype:
+		diffStr += "valuetype differs: %d %d\n" % (s1._valuetype, s2._valuetype)
+	if s1._multiplex != s2._multiplex:
+		diffStr += "multiplex differs: %d %d\n" % (s1._multiplex, s2._multiplex)
+	if s1._unit != s2._unit:
+		diffStr += "unit differs: " + s1._unit + " != " + s2._unit  + "\n"
+	if s1._comment != s2._comment:
+		diffStr += "comment differs: " + s1._comment + " != " + s2._comment + "\n"
+		
+	for reciever in s1._reciever:
+		if reciever not in s2._reciever:
+			diffStr += "- Reciever: " + reciever + '\n'
+
+	for reciever in s2._reciever:
+		if reciever not in s1._reciever:
+			diffStr += "+ Reciever: " + reciever + '\n'
+
+	diffStr += compareAttributes(s1, s2)
+
+	for value in s1._values:
+		if value not in s2._values:
+			diffStr += "- VALUE: " + str(value) + ' = ' + s1._values[value] + '\n'
+		elif s2._values[value] != s1._values[value]:
+			diffStr += "VALUE: " + str(value) + ' = (' + s1._values[value] + ' != ' + s2._values[value] + ')\n'
+	
+	for value in s2._values:
+		if value not in s1._values:
+			diffStr += "+ VALUE:  " + str(value) + ' = ' + s2._values[value] + '\n'
+			
+	if "[Signal: " + s1._name + "]\n" == diffStr:
+		return ""
+	else:		
+		return diffStr + "[/SIGNAL]\n"

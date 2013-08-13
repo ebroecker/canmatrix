@@ -105,32 +105,32 @@ def exportDbc(db, filename):
 	f.write("\n")
 
 # some default defines:
-	db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63;')
-	db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja";')
-	db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535;')
-	db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535;')
-	db.addFrameDefines("GenMsgCycleTimeActive",  'INT 0 65535;')
-	db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535;')
-	db.addFrameDefines("GenMsgStartValue",  'STRING ;')
-	db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";')
-	db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295;')
-	db.addSignalDefines("GenSigSNA", 'STRING;')
+	db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
+	db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
+	db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
+	db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535')
+	db.addFrameDefines("GenMsgCycleTimeActive",  'INT 0 65535')
+	db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535')
+	db.addFrameDefines("GenMsgStartValue",  'STRING')
+	db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
+	db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
+	db.addSignalDefines("GenSigSNA", 'STRING')
 
 	defaults = {}
 	for (type,define) in db._frameDefines.items():
-		f.write('BA_DEF_ BO_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + '\n')
+		f.write('BA_DEF_ BO_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + ';\n')
 		if type not in defaults and define._defaultValue is not None:
 			defaults[type] = define._defaultValue
 	for (type,define) in db._signalDefines.items():
-		f.write('BA_DEF_ SG_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + '\n')
+		f.write('BA_DEF_ SG_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + ';\n')
 		if type not in defaults and define._defaultValue is not None:
 			defaults[type] = define._defaultValue
 	for (type,define) in db._buDefines.items():
-		f.write('BA_DEF_ BU_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + '\n')
+		f.write('BA_DEF_ BU_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + ';\n')
 		if type not in defaults and define._defaultValue is not None:
 			defaults[type] = define._defaultValue
 	for (type,define) in db._globalDefines.items():
-		f.write('BA_DEF_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + '\n')
+		f.write('BA_DEF_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + ';\n')
 		if type not in defaults and define._defaultValue is not None:
 			defaults[type] = define._defaultValue
 

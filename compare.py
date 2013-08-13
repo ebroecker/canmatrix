@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-import library.exportall as ex
-import library.importall as im
-import library.canmatrix as cm
+import library.importany as im
+from library.canmatrix import *
 import sys
 
 #Copyright (c) 2013, Eduard Broecker 
@@ -25,41 +24,25 @@ import sys
 #DAMAGE.
 
 if len(sys.argv) < 3:
-    sys.stderr.write('Usage: sys.argv[0] import-file export-file\n')
-    sys.stderr.write('import-file: *.dbc|*.dbf|*.kcd|*.arxml\n')
-    sys.stderr.write('export-file: *.dbc|*.dbf|*.kcd\n')
-    sys.exit(1)
+	sys.stderr.write('Usage: sys.argv[0] matrix1 matrix2\n')
+	sys.stderr.write('matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml\n')
+	sys.exit(1)
 
-infile = sys.argv[1]
-outfile = sys.argv[2]
+matrix1 = sys.argv[1]
+matrix2 = sys.argv[2]
 
-print "Importing " + infile + " ... "
-if infile[-3:] == 'dbc':
-	db = im.importDbc(infile)
-elif infile[-3:] == 'dbf':
-	db = im.importDbf(infile)
-elif infile[-3:] == 'kcd':
-	db = im.importKcd(infile)
-elif infile[-3:] == 'xls' or infile[-4:] == 'xlsx' :
-	db = im.importXls(infile)
-elif infile[-5:] == 'arxml':
-	db = im.importArxml(infile)
-else:
-    sys.stderr.write('\nFile not recognized: ' + infile + "\n")
-print "done\n"
+print "Importing " + matrix1 + " ... "
+db1 = im.importany(matrix1)
+print "%d Frames found" % (db1._fl._list.__len__())
 
-print "%d Frames found" % (db._fl._list.__len__())
+print "Importing " + matrix2 + " ... "
+db2 = im.importany(matrix2)
+print "%d Frames found" % (db2._fl._list.__len__())
 
-print "Exporting " + outfile + " ... "
 
-if outfile[-3:] == 'dbc':
-	db = ex.exportDbc(db, outfile)
-elif outfile[-3:] == 'dbf':
-	db = ex.exportDbf(db, outfile)
-elif outfile[-3:] == 'kcd':
-	db = ex.exportKcd(db, outfile)
-elif outfile[-3:] == 'xls':
-	db = ex.exportXls(db, outfile)
-else:
-    sys.stderr.write('File not recognized: ' + infile + "\n")
-print "done"
+print "\n\n"
+print "Legend:"
+print "+ : Element in " + matrix2 + " but not in " + matrix1
+print "- : Element in " + matrix1 + " but not in " + matrix2 +'\n\n'
+print compareDb(db1, db2)
+

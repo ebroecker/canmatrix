@@ -176,22 +176,22 @@ def importDbc(filename):
 
 
 		elif l.startswith("BA_DEF_ SG_ "):
-			regexp = re.compile("^BA\_DEF\_ SG\_ +\"([A-Za-z0-9\-_]+)\" +(.+)")		
+			regexp = re.compile("^BA\_DEF\_ SG\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")		
 			temp = regexp.match(l)
 			if temp:
 				db.addSignalDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
 		elif l.startswith("BA_DEF_ BO_ "):
-			regexp = re.compile("^BA\_DEF\_ BO\_ +\"([A-Za-z0-9\-_]+)\" +(.+)")		
+			regexp = re.compile("^BA\_DEF\_ BO\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")		
 			temp = regexp.match(l)
 			if temp:
 				db.addFrameDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
 		elif l.startswith("BA_DEF_ BU_ "):
-			regexp = re.compile("^BA\_DEF\_ BU\_ +\"([A-Za-z0-9\-_]+)\" +(.+)")		
+			regexp = re.compile("^BA\_DEF\_ BU\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")		
 			temp = regexp.match(l)
 			if temp:
 				db.addBUDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
 		elif l.startswith("BA_DEF_ "):
-			regexp = re.compile("^BA\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+)")		
+			regexp = re.compile("^BA\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")		
 			temp = regexp.match(l)
 			if temp:
 				db.addGlobalDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
