@@ -180,7 +180,7 @@ def exportXls(db, filename):
 				row += 1
 				framestyle = sty_white
 			elif sig._values.__len__() > 0:
-				for val in sig._values:
+				for val in sorted(sig._values.iterkeys()):
 					writeFrame(bo, worksheet, row, framestyle)
 					writeSignal(sig, worksheet, row, sigstyle)
 					col = head_top.__len__()

@@ -46,3 +46,24 @@ print "+ : Element in " + matrix2 + " but not in " + matrix1
 print "- : Element in " + matrix1 + " but not in " + matrix2 +'\n\n'
 print compareDb(db1, db2)
 
+def dumpResult(res):
+	if res._type is not None:
+#	if res._result == "equal":
+#		pass
+#	else:
+		print res._type + " " + res._result + " ",
+		if  hasattr(res._ref, '_name'):
+			print res._ref._name
+		else:
+			print " "
+		if  res._changes is not None and res._changes.__len__() > 0:
+			print "\told: " + str(res._changes[0]) + " new: " + str(res._changes[1])
+	for child in res._children:
+		dumpResult(child)
+
+
+obj = compareDb(db1, db2)
+
+dumpResult(obj)
+	
+

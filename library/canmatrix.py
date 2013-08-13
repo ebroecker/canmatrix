@@ -463,202 +463,201 @@ def copyFrame (frameId, sourceDb, targetDb):
 # Compare functions:
 # ############################
 
+class compareResult:
+	def __init__(self, result= None, type= None, ref= None, changes = None):
+		# equal, added, deleted, changed
+		self._result = result
+		# db, bu, frame, signal, attribute
+		self._type = type
+		#reference to related object
+		self._ref = ref
+		self._changes = changes
+		self._children = []
+	def addChild(self, child):
+		self._children.append(child)
+
 def compareDb(db1, db2):
-	diffStr = ""
+	result = compareResult() 
 	for f1 in db1._fl._list:
 		f2 = db2.frameById(f1._Id)
 		if f2 is None:
-			diffStr += '- FRAME: ' + f1._name +'(%03x)' % f1._Id  + '\n'
+			result.addChild(compareResult("deleted", "FRAME", f1))
 		else:
-			diffStr += compareFrame(f1, f2)
+			result.addChild(compareFrame(f1, f2))
 	for f2 in db2._fl._list:
 		f1 = db1.frameById(f2._Id)
 		if f1 is None:
-			diffStr += '+ FRAME: ' + f2._name +'(%03x)' % f2._Id + '\n'
+			result.addChild(compareResult("added", "FRAME", f2))
 
-	diffStr += compareAttributes(db1, db2)
+	result.addChild(compareAttributes(db1, db2))
+
 		
 	for bu1 in db1._BUs._list:
 		bu2 = db2.boardUnitByName(bu1._name)
 		if bu2 is None:
-			diffStr += '- ECU: ' + bu2._name + '\n'
+			result.addChild(compareResult("deleted", "ecu", bu1))
 		else:
-			diffStr += compareBu(bu1, bu2)
+			result.addChild(compareBu(bu1, bu2))
+	for bu2 in db2._BUs._list:
+		bu1 = db1.boardUnitByName(bu2._name)
+		if bu1 is None:
+			result.addChild(compareResult("added", "ecu", bu2))
 
-	temp = compareDefineList(db1._globalDefines, db2._globalDefines)
-	if temp.__len__() > 0:
-		diffStr += "[global-Definitions]\n" + temp +  "[/global-Definitions]\n"
+
+	result.addChild(compareDefineList(db1._globalDefines, db2._globalDefines))
 	
-	temp = compareDefineList(db1._buDefines, db2._buDefines)
-	if temp.__len__() > 0:
-		diffStr += "[ECU-Definitions]\n" + temp +  "[/ECU-Definitions]\n"
-
-	temp = compareDefineList(db1._frameDefines, db2._frameDefines)
-	if temp.__len__() > 0:
-		diffStr += "[Frame-Definitions]\n" + temp +  "[/Frame-Definitions]\n"
-
-	temp = compareDefineList(db1._signalDefines, db2._signalDefines)
-	if temp.__len__() > 0:
-		diffStr += "[Signal-Definitions]\n" + temp +  "[/Signal-Definitions]\n"
-	
-	return diffStr
+	result.addChild(compareDefineList(db1._buDefines, db2._buDefines))
+	result.addChild(compareDefineList(db1._frameDefines, db2._frameDefines))
+	result.addChild(compareDefineList(db1._signalDefines, db2._signalDefines))
+	return result
 
 def compareSignalGroup(sg1, sg2):
-	diffStr = "[SignalGroup: " + sg1._name + "]\n"
-	if sg1._name != sg2._name:
-		diffStr += "Name different: %s != %s\n" % (sg1._name, sg2._name)
-	if sg1._Id != sg2._Id:
-		diffStr += "Id different: %d != %d\n" % (sg1._Id, sg2._Id)
+	result = compareResult("equal", "SignalGroup", sg1)
 
+	if sg1._name != sg2._name:
+		result.addChild(compareResult("changed", "SignalName", [sg1._name, sg2._name] ))
+	if sg1._Id != sg2._Id:
+		result.addChild(compareResult("changed", "SignalName", [str(sg1._Id), str(sg2._Id)] ))
+
+	#	self._members = []
 	for member in sg1._members:
 		if member not in sg2._members:
-			diffStr += "- MEMBER: " + str(member) + '\n'
+			result.addChild(compareResult("deleted", str(member), sg2._member))
 	for member in sg2._members:
 		if member not in sg1._members:
-			diffStr += "+ MEMBER: " + str(member) + '\n'
-
-			
-	if diffStr == "[SignalGroup: " + sg1._name + "]\n":
-		return ""
-	else:
-		return diffStr
+			result.addChild(compareResult("added", str(member), sg2._member))
+	return result			
 
 	
 def compareDefineList(d1list, d2list):
-	diffStr = ""
+	result = compareResult("equal", "DefineList", d1list)
 	for definition in d1list:
 		if definition not in d2list:
-			diffStr += "- DEFINITION: " + str(definition) + '\n'
+			result.addChild(compareResult("deleted", "Define" + str(definition), d1list))
 		else:
 			d2 = d2list[definition]
 			d1 = d1list[definition]
 			if d1._definition != d2._definition:
-				diffStr += "DEFINITION is different: " + definition + "(" + d1._definition + " != " + d2._definition + ")\n"
+				result.addChild(compareResult("changed", "Definition", [d1._definition, d2._definition] ))
 
 			if d1._defaultValue != d2._defaultValue:
-				diffStr += "Default-Value is different: " + definition + "  (" + d1._defaultValue + " != " + d2._defaultValue + ")\n"
+				result.addChild(compareResult("changed", "DefaultValue", [d1._defaultValue, d2._defaultValue] ))
 
-	return diffStr
+
+#	for definition in d2list:
+#		if definition not in d1list:
+#			result.addChild(compareResult("added", "Define" + str(definition), d2list))
+	return result
 	
 def compareAttributes(ele1, ele2):
-	diffStr = ""
+	result = compareResult("equal", "ATTRIBUTES", ele1)	
 	for attribute in ele1._attributes:
 		if attribute not in ele2._attributes:
-			diffStr += "- ATTRIBUTE: " + str(attribute) + ' = ' + ele1._attributes[attribute] + '\n'
+			result.addChild(compareResult("deleted", str(attribute), ele1._attributes[attribute]))
 		elif ele1._attributes[attribute] != ele2._attributes[attribute]:
-			diffStr += "ATTRIBUTE: " + str(attribute) + ' = (' + ele1._attributes[attribute] + ' != ' + ele2._attributes[attribute] + ')\n'
+			result.addChild(compareResult("changed", str(attribute), ele1._attributes[attribute], 	 [ ele1._attributes[attribute] , ele2._attributes[attribute]] ))
 
 	for attribute in ele2._attributes:
 		if attribute not in ele1._attributes:
-			diffStr += "+ ATTRIBUTE: " + str(attribute) + ' = ' + ele2._attributes[attribute] + '\n'
-	return diffStr
+			result.addChild(compareResult("added", str(attribute), ele2._attributes[attribute]))
+	return result
 			
 def compareBu(bu1, bu2):
-	diffStr = "[ECU: " + bu1._name + "]\n"
+	result = compareResult("equal", "ECU", bu1)
 
 	if bu1._comment != bu2._comment:
-		diffStr += "comment differs: " + bu1._comment + " != " + bu2._comment + "\n"
-	diffStr += compareAttributes(bu1, bu2)
-	if diffStr == "[ECU: " + bu1._name + "]\n":
-		return ""
-	else:
-		return diffStr
+		result.addChild(compareResult("changed", "ECU", bu1, [ bu1._comment,  bu2._comment]))
+	result.addChild(compareAttributes(bu1, bu2))
+	return result
 	
 def compareFrame(f1, f2):
-	diffStr = "[FRAME: " + f1._name + "]\n"
+	result = compareResult("equal", "FRAME", f1)
+
 	for s1 in f1._signals:
 		s2 = f2.signalByName(s1._name)
 		if not s2:
-			diffStr += "- SIGNAL: [" + f2._name + "] " + s1._name + '\n'
+			result.addChild(compareResult("deleted", "SIGNAL", s1))
 		else:
-				diffStr += compareSignal(s1, s2)
+			result.addChild(compareSignal(s1, s2))
 
+	if f1._name != f2._name:
+		result.addChild(compareResult("changed", "Name", f1, [f1._name, f2._name]))
+	if f1._Size != f2._Size:
+		result.addChild(compareResult("changed", "dlc", f1, ["dlc: %d" % f1._Size, "dlc: %d" % f2._Size]))
+	if f1._extended != f2._extended:
+		result.addChild(compareResult("changed", "FRAME", f1, ["extended-Flag: %d" % f1._extended, "extended-Flag: %d" % f2._extended]))
+	if f1._comment != f2._comment:
+		result.addChild(compareResult("changed", "FRAME", f1, ["comment: " +  f1._comment , "comment: " +  f1._comment]))
+		
 	for s2 in f2._signals:
 		s1 = f1.signalByName(s2._name)
 		if not s1:
-			diffStr += "+ SIGNAL: [" + f1._name + "] " + s2._name + '\n'
-	
-	if f1._name != f2._name:
-		diffStr += "Name different: %s != %s\n" % (f1._name, f2._name)
-	if f1._Size != f2._Size:
-		diffStr += "DLC different: %d != %d\n" % (f1._Size, f2._Size)
-	if f1._extended != f2._extended:
-		diffStr += "Extended vs. Normal Frame: %d != %d\n" % (f1._extended, f2._extended)
-	if f1._comment != f2._comment:
-		diffStr += "comment differs: " + f1._comment + " != " + f2._comment + "\n"
+			result.addChild(compareResult("added", "SIGNAL", s2))
 
-	diffStr += compareAttributes(f1, f2)
+	result.addChild(compareAttributes(f1, f2))
 
 	for transmitter in f1._Transmitter:
 		if transmitter not in f2._Transmitter:
-			diffStr += "- Transmitter: " + transmitter + '\n'
+			result.addChild(compareResult("removed", "Frame-Transmitter", f1))
 	for transmitter in f2._Transmitter:
 		if transmitter not in f1._Transmitter:
-			diffStr += "+ Transmitter: " + transmitter + '\n'
+			result.addChild(compareResult("added", "Frame-Transmitter", f2))
 
 	for sg1 in f1._SignalGroups:
 		if sg1 not in f2._SignalGroups:
-			diffstr += "- SIGNALGROUP " + sg1 + '\n'
+			result.addChild(compareResult("removed", "Signalgroup", sg1))
 		else:
-			diffstr += compareSignalGroup(f1._SignalGroups[sg1], f1._SignalGroups[sg2])
+			result.addChild(compareSignalGroup(f1._SignalGroups[sg1], f1._SignalGroups[sg2]))
 
 	for sg2 in f2._SignalGroups:
 		if sg2 not in f1._SignalGroups:
-			diffstr += "+ SIGNALGROUP " + sg1 + '\n'
+			result.addChild(compareResult("added", "Signalgroup", sg1))
+	return result
 
-	#TODO compare self._Reciever = [] ??
-	if diffStr == "[FRAME: " + f1._name + "]\n":
-		return ""
-	else:
-		return diffStr
-		
 def compareSignal(s1,s2):
-	diffStr = "[Signal: " + s1._name + "]\n"
+	result = compareResult("equal", "SIGNAL", s1)
 
 	if s1._startbit != s2._startbit:
-		diffStr += "Starbit differs: %d %d\n" % (s1._startbit, s2._startbit)
+		result.addChild(compareResult("changed", "startbit", s1, [" %d" % s1._startbit, " %d" % s2._startbit]))
 	if s1._signalsize != s2._signalsize:
-		diffStr += "signalsize differs: %d %d\n" % (s1._signalsize, s2._signalsize)
+		result.addChild(compareResult("changed", "signalsize", s1, [" %d" % s1._signalsize, " %d" % s2._signalsize]))
 	if s1._factor != s2._factor:
-		diffStr += "factor differs: %d %d\n" % (s1._factor, s2._factor)
+		result.addChild(compareResult("changed", "factor", s1, [" %f" % s1._factor, " %f" % s2._factor]))
 	if s1._offset != s2._offset:
-		diffStr += "offset differs: %d %d\n" % (s1._offset, s2._offset)
+		result.addChild(compareResult("changed", "offset", s1, [" %d" % s1._offset, " %d" % s2._offset]))
 	if s1._min != s2._min:
-		diffStr += "min differs: %d %d\n" % (s1._min, s2._min)
+		result.addChild(compareResult("changed", "min", s1, [" %f" % s1._min, " %f" % s2._min]))
 	if s1._max != s2._max:
-		diffStr += "max differs: %d %d\n" % (s1._max, s2._max)
+		result.addChild(compareResult("changed", "max", s1, [" %f" % s1._max, " %f" % s2._max]))
 	if s1._byteorder != s2._byteorder:
-		diffStr += "byteorder differs: %d %d (1 Intel/2 Motorola)\n" % (s1._byteorder, s2._byteorder)
+		result.addChild(compareResult("changed", "byteorder", s1, [" %d" % s1._byteorder, " %d" % s2._byteorder]))
 	if s1._valuetype != s2._valuetype:
-		diffStr += "valuetype differs: %d %d\n" % (s1._valuetype, s2._valuetype)
+		result.addChild(compareResult("changed", "valuetype", s1, [" %d" % s1._valuetype, " %d" % s2._valuetype]))
 	if s1._multiplex != s2._multiplex:
-		diffStr += "multiplex differs: %d %d\n" % (s1._multiplex, s2._multiplex)
+		result.addChild(compareResult("changed", "multiplex", s1, [str(s1._multiplex), str(s2._multiplex)]))
 	if s1._unit != s2._unit:
-		diffStr += "unit differs: " + s1._unit + " != " + s2._unit  + "\n"
+		result.addChild(compareResult("changed", "unit", s1, [ s1._unit,  s2._unit]))
 	if s1._comment != s2._comment:
-		diffStr += "comment differs: " + s1._comment + " != " + s2._comment + "\n"
-		
+		result.addChild(compareResult("changed", "comment", s1, [ s1._comment,  s2._comment]))
+	
 	for reciever in s1._reciever:
 		if reciever not in s2._reciever:
-			diffStr += "- Reciever: " + reciever + '\n'
+			result.addChild(compareResult("removed", "Reciever " + reciever, s1._reciever))
 
 	for reciever in s2._reciever:
 		if reciever not in s1._reciever:
-			diffStr += "+ Reciever: " + reciever + '\n'
+			result.addChild(compareResult("added", "Reciever " + reciever, s1._reciever))
 
-	diffStr += compareAttributes(s1, s2)
+	result.addChild(compareAttributes(s1, s2))
 
 	for value in s1._values:
 		if value not in s2._values:
-			diffStr += "- VALUE: " + str(value) + ' = ' + s1._values[value] + '\n'
+			result.addChild(compareResult("removed", "Value " + str(value), s1._values[value]))
 		elif s2._values[value] != s1._values[value]:
-			diffStr += "VALUE: " + str(value) + ' = (' + s1._values[value] + ' != ' + s2._values[value] + ')\n'
+			result.addChild(compareResult("changed", "Value " + str(value), [s1._values[value], s2._values[value]]))
 	
 	for value in s2._values:
 		if value not in s1._values:
-			diffStr += "+ VALUE:  " + str(value) + ' = ' + s2._values[value] + '\n'
+			result.addChild(compareResult("added", "Value " + str(value), s2._values[value]))
 			
-	if "[Signal: " + s1._name + "]\n" == diffStr:
-		return ""
-	else:		
-		return diffStr + "[/SIGNAL]\n"
+	return result
