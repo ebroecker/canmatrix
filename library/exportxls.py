@@ -32,7 +32,7 @@ sty_norm    = xlwt.easyxf('font: colour black')
 sty_first_frame    = xlwt.easyxf('font: colour black; borders: top thin')
 
 sty_white    = xlwt.easyxf('font: colour white') 
-sty_blue = xlwt.easyxf('pattern: pattern solid, fore-colour sky_blue') 
+sty_blue = xlwt.easyxf('pattern: pattern solid, fore-colour light_green') 
 
 def writeFrame(bo, worksheet, row, mystyle):
 	worksheet.write(row, 0, label = "%3Xh" % bo._Id, style=mystyle)
@@ -94,7 +94,7 @@ def writeSignal(sig, worksheet, row, mystyle):
 	if sig._byteorder == 1:
 		worksheet.write(row, 12, label = "Intel", style=mystyle)
 	else:
-		worksheet.write(row, 12, label = "Motorolla", style=mystyle)
+		worksheet.write(row, 12, label = "Motorola", style=mystyle)
 	
 def writeValue(label, value, worksheet, row, col, mystyle):
 	worksheet.write(row, col, label = label, style=mystyle)
