@@ -170,7 +170,7 @@ def importDbc(filename):
 						#[1:-1]
 						
 						if sg:
-							sg.addValues(tempList[i*2], val)
+							sg.addValues(tempList[i*2], val.decode(dbcImportEncoding))
 				except:
 					print "Error with Line: ",tempList
 

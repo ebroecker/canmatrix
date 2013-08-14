@@ -637,8 +637,12 @@ def compareFrame(f1, f2):
 		result.addChild(compareResult("changed", "dlc", f1, ["dlc: %d" % f1._Size, "dlc: %d" % f2._Size]))
 	if f1._extended != f2._extended:
 		result.addChild(compareResult("changed", "FRAME", f1, ["extended-Flag: %d" % f1._extended, "extended-Flag: %d" % f2._extended]))
+	if f2._comment == None:
+		f2._comment = ""	
+	if f1._comment == None:
+		f1._comment = ""	
 	if f1._comment != f2._comment:
-		result.addChild(compareResult("changed", "FRAME", f1, ["comment: " +  f1._comment , "comment: " +  f1._comment]))
+		result.addChild(compareResult("changed", "FRAME", f1, ["comment: " +  f1._comment , "comment: " +  f2._comment]))
 		
 	for s2 in f2._signals:
 		s1 = f1.signalByName(s2._name)

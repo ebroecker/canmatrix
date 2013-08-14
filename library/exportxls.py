@@ -45,6 +45,8 @@ def writeFrame(bo, worksheet, row, mystyle):
 	worksheet.write(row, 1, label = bo._name, style=mystyle)
 	if "GenMsgCycleTime" in bo._attributes:
 		worksheet.write(row, 2, label = int(bo._attributes["GenMsgCycleTime"]) , style=mystyle)
+	else:
+		worksheet.write(row, 2, label = "", style=mystyle)			
 		
 	if "GenMsgSendType" in bo._attributes:
 		if bo._attributes["GenMsgSendType"] == "5":
@@ -86,6 +88,9 @@ def writeFrame(bo, worksheet, row, mystyle):
 				worksheet.write(row, 4, label = int(bo._attributes["GenMsgDelayTime"]) , style=mystyle)				
 			else:
 				worksheet.write(row, 4, label = "", style=mystyle)			
+	else:
+		worksheet.write(row, 3, label = "", style=mystyle)			
+		worksheet.write(row, 4, label = "", style=mystyle)			
 
 
 def writeSignal(sig, worksheet, row, mystyle):
@@ -107,6 +112,10 @@ def writeSignal(sig, worksheet, row, mystyle):
 
 	if "GenSigStartValue" in sig._attributes:
 		worksheet.write(row, 10, label = "%Xh" % int(sig._attributes["GenSigStartValue"]), style=mystyle)
+	else:
+		worksheet.write(row, 10, label = " ", style=mystyle)
+
+
 	if "GenSigSNA" in sig._attributes:
 		sna = sig._attributes["GenSigSNA"][1:-1]
 		worksheet.write(row, 11, label = sna, style=mystyle)
@@ -208,9 +217,11 @@ def exportXls(db, filename):
 #		for sig in bo._signals:
 		for sig_idx in sorted(sigHash.iterkeys()):
 			sig = sigHash[sig_idx]		
+
 			if sigstyle != sty_first_frame:
 				sigstyle = sty_norm
-			if sig._offset != 0 or sig._factor != 1.0:
+
+			if float(sig._offset) != 0 or float(sig._factor) != 1.0:
 				writeFrame(bo, worksheet, row, framestyle)
 				writeSignal(sig, worksheet, row, sigstyle)
 				col = head_top.__len__()

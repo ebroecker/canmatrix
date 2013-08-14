@@ -2,6 +2,7 @@
 import library.importany as im
 from library.canmatrix import *
 import sys
+import codecs
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.
@@ -41,9 +42,6 @@ print "%d Frames found" % (db2._fl._list.__len__())
 
 
 print "\n\n"
-print "Legend:"
-print "+ : Element in " + matrix2 + " but not in " + matrix1
-print "- : Element in " + matrix1 + " but not in " + matrix2 +'\n\n'
 #print compareDb(db1, db2)
 
 def dumpResult(res, depth = 0):
@@ -55,10 +53,10 @@ def dumpResult(res, depth = 0):
 			print res._ref._name
 		else:
 			print " "
-		if  res._changes is not None and res._changes.__len__() > 0:
+		if  res._changes is not None and res._changes[0] is not None and res._changes[1] is not None:
 			for i in range(0,depth):
 				print " ",
-			print "old: " + str(res._changes[0]) + " new: " + str(res._changes[1])
+			print "old: " + str(res._changes[0].encode('ascii','replace')) + " new: " + str(res._changes[1].encode('ascii','replace'))
 	for child in res._children:
 		dumpResult(child, depth+1)
 

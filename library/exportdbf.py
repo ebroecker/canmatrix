@@ -69,9 +69,9 @@ def exportDbf(db, filename):
 		
 			if signal._valuetype == '+':
 				sign = 'U'
-			f.write("[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%g,%g" % (signal._signalsize,whichbyte,signal._startbit,sign,signal._min,signal._max))
+			f.write("[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%s,%s" % (signal._signalsize,whichbyte,signal._startbit,sign,signal._min,signal._max))
 
-			f.write(",%d,%g,%g" % (signal._byteorder, signal._offset, signal._factor))
+			f.write(",%d,%s,%s" % (signal._byteorder, signal._offset, signal._factor))
 			multiplex = ""
 			if signal._multiplex is not None:
 				if signal._multiplex == 'Multiplexor':
@@ -83,7 +83,7 @@ def exportDbf(db, filename):
 
 			if len(signal._values) > 0:
 				for attrib,val in signal._values.items():
-					f.write('[VALUE_DESCRIPTION] "' + val + '",' + str(attrib) + '\n')
+					f.write('[VALUE_DESCRIPTION] "' + val.encode(dbfExportEncoding) + '",' + str(attrib) + '\n')
 			
 
 		f.write("[END_MSG]\n\n")
@@ -113,27 +113,42 @@ def exportDbf(db, filename):
 	f.write("[START_PARAM]\n")
 	f.write("[START_PARAM_VAL]\n")
 
-	#TODO db-parameter sind nicht ordendlich im Objekt abgelegt
-	#f.write("[START_PARAM_NET]\n")
-	#for attrib,val in db._attributes.items():
-	#	f.write('"' + attrib + '" ' + ' ' + val  + ';\n')
-	#f.write("[END_PARAM_NET]\n")
-	#BA_DEF_DEF fehlt in Datenbasis
+	# db-parameter
+	f.write("[START_PARAM_NET]\n")
+	for (type,define) in db._globalDefines.items():
+		f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
+	f.write("[END_PARAM_NET]\n")
 
+	# bu-parameter
+	f.write("[START_PARAM_NODE]\n")
+	for (type,define) in db._buDefines.items():
+		f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
+	f.write("[END_PARAM_NODE]\n")
+
+	# frame-parameter
+	f.write("[START_PARAM_MSG]\n")
+	for (type,define) in db._frameDefines.items():
+		f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
+	f.write("[END_PARAM_MSG]\n")
+
+	# signal-parameter
+	f.write("[START_PARAM_SIG]\n")
+	for (type,define) in db._signalDefines.items():
+		f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
+	f.write("[END_PARAM_SIG]\n")
 
 	#boardunit-attributes:
 	f.write("[START_PARAM_NODE_VAL]\n")
 	for bu in db._BUs._list:
 		for attrib,val in bu._attributes.items():
-			f.write(bu._name + ',' + attrib + ','  + val  + '\n')
+			f.write(bu._name + ',"' + attrib + '","'  + val  + '"\n')
 	f.write("[END_PARAM_NODE_VAL]\n")
-
 
 	#messages-attributes:
 	f.write("[START_PARAM_MSG_VAL]\n")
 	for bo in db._fl._list:
 		for attrib,val in bo._attributes.items():
-			f.write( str(bo._Id) + ',S,' + attrib + ','  + val  + '\n')
+			f.write( str(bo._Id) + ',S,"' + attrib + '","'  + val  + '"\n')
 	f.write("[END_PARAM_MSG_VAL]\n")
 
 	#signal-attributes:
@@ -141,6 +156,6 @@ def exportDbf(db, filename):
 	for bo in db._fl._list:
 		for signal in bo._signals:
 			for attrib,val in signal._attributes.items():
-				f.write( str(bo._Id) + ',S,' + attrib  +  ',' + val  + '\n')
+				f.write( str(bo._Id) + ',S,' + signal._name + ',"'+ attrib  +  '","' + val  + '"\n')
 	f.write("[END_PARAM_SIG_VAL]\n")
 	f.write("[END_PARAM_VAL]\n")

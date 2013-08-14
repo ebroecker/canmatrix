@@ -177,7 +177,7 @@ def exportDbc(db, filename):
 			if len(signal._values) > 0:
 				f.write('VAL_ %d ' % bo._Id + signal._name)		
 				for attrib,val in signal._values.items():
-					f.write(' ' + str(attrib) + ' "' + str(val) + '"')
+					f.write(' ' + str(attrib) + ' "' + str(val.encode(dbcExportEncoding)) + '"')
 				f.write(";\n"); 
 
 

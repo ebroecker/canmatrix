@@ -32,8 +32,10 @@ import re
 #TODO support for [START_PARAM_NODE]
 #TODO support for [START_PARAM_MSG]
 #TODO support for [START_PARAM_SIG]
+
 #TODO support for [START_PARAM_NODE_RX_SIG]
 #TODO support for [START_PARAM_NODE_TX_MSG]
+
 #TODO support for [START_PARAM_VAL]
 #TODO support for [START_PARAM_NET_VAL]
 #TODO support for [START_PARAM_NODE_VAL]
@@ -59,16 +61,15 @@ def importDbf(filename):
 			if line.startswith("[END_PARAM_MSG_VAL]"):
 				mode = ''
 			else:
-				(boId, temS, attrib, value) = line.split(',',3)			
-				db._fl.byId(int(boId)).addAttribute(attrib.replace('"',''), value)
+				(boId, temS, attrib, value) = line.split(',',3)	
+				db._fl.byId(int(boId)).addAttribute(attrib.replace('"',''), value[1:-1])
 
 		elif mode == 'ParamSigVal':
 			if line.startswith("[END_PARAM_SIG_VAL]"):
 				mode = ''
-			else:
-				pass				
-#				(boId, temS, SignalName, attrib, value) = line.split(',',4)			
-#				db._fl.byId(int(boId)).signalByName(SignalName).addAttribute(attrib.replace('"',''), value)
+			else:				
+				(boId, temS, SignalName, attrib, value) = line.split(',',4)			 
+				db._fl.byId(int(boId)).signalByName(SignalName).addAttribute(attrib.replace('"',''), value[1:-1])
 		
 		else:	
 			if line.startswith("[START_DESC_SIG]"):
@@ -116,7 +117,7 @@ def importDbf(filename):
 				if temp:
 					name = temp.group(1)
 					value = temp.group(2)
-					newSig.addValues(value, name)
+					newSig.addValues(value, name.decode(dbfImportEncoding))
 
 
 	return db
