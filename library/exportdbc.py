@@ -46,7 +46,14 @@ def exportDbc(db, filename):
 		f.write(bu._name + " ")
 	f.write("\n\n")
 
-
+	#ValueTables
+	for table in db._valueTables:
+		f.write("VAL_TABLE_ " + table )
+		for row in db._valueTables[table]:
+			f.write(' ' + row + ' "' + db._valueTables[table][row] + '"')
+		f.write(";\n")
+	f.write("\n")
+		
 	#Frames
 	for bo in db._fl._list:
 		if bo._Transmitter.__len__() == 0:
@@ -64,8 +71,10 @@ def exportDbc(db, filename):
 				f.write(" m%d " % int(signal._multiplex))
 
 			f.write(" : %d|%d@%d%c" % (signal._startbit, signal._signalsize,signal._byteorder, signal._valuetype))
-			f.write(" (%g,%g)" % (signal._factor, signal._offset))
-			f.write(" [%g|%g]" % (signal._min, signal._max))
+#			f.write(" (%g,%g)" % (signal._factor, signal._offset))
+#			f.write(" [%g|%g]" % (signal._min, signal._max))
+			f.write(" (%s,%s)" % (signal._factor, signal._offset))
+			f.write(" [%s|%s]" % (signal._min, signal._max))
 			f.write(' "')
 
 			f.write(signal._unit.encode(dbcExportEncoding))
@@ -175,7 +184,7 @@ def exportDbc(db, filename):
 	#signal-groups:
 	for bo in db._fl._list:
 		for sigGroup in bo._SignalGroups:
-			f.write("_SIG_GROUP " + str(bo._Id) + " " + sigGroup._name + " " + str(sigGroup._Id))
+			f.write("SIG_GROUP_ " + str(bo._Id) + " " + sigGroup._name + " " + str(sigGroup._Id)+ " :") 
 			for signal in sigGroup._members:
 				f.write(" " + signal._name)
 			f.write(";\n")

@@ -44,25 +44,38 @@ print "\n\n"
 print "Legend:"
 print "+ : Element in " + matrix2 + " but not in " + matrix1
 print "- : Element in " + matrix1 + " but not in " + matrix2 +'\n\n'
-print compareDb(db1, db2)
+#print compareDb(db1, db2)
 
-def dumpResult(res):
-	if res._type is not None:
-#	if res._result == "equal":
-#		pass
-#	else:
+def dumpResult(res, depth = 0):
+	if res._type is not None and res._result != "equal":
+		for i in range(0,depth):
+			print " ",
 		print res._type + " " + res._result + " ",
 		if  hasattr(res._ref, '_name'):
 			print res._ref._name
 		else:
 			print " "
 		if  res._changes is not None and res._changes.__len__() > 0:
-			print "\told: " + str(res._changes[0]) + " new: " + str(res._changes[1])
+			for i in range(0,depth):
+				print " ",
+			print "old: " + str(res._changes[0]) + " new: " + str(res._changes[1])
 	for child in res._children:
-		dumpResult(child)
+		dumpResult(child, depth+1)
+
+def propagateChanges(res):
+	change = 0
+	for child in res._children:
+		change += propagateChanges(child)
+	if change != 0:
+		res._result = "changed"
+	if res._result != "equal":
+		return 1
+	else:
+		return 0
 
 
 obj = compareDb(db1, db2)
+propagateChanges(obj)
 
 dumpResult(obj)
 	

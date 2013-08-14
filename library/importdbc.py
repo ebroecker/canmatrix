@@ -23,7 +23,8 @@
 # this script imports dbc-files to a canmatrix-object
 # dbc-files are the can-matrix-definitions of canoe
 #
-#TODO support for: VERSION, NS, BS_, VAL_TABLE_
+#TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL == BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
+#TODO VAL_TABLE_ Val_table_name 1 "An" 0 "Aus" ;
 
 from canmatrix import *
 import re
@@ -173,7 +174,22 @@ def importDbc(filename):
 				except:
 					print "Error with Line: ",tempList
 
-
+		elif l.startswith("VAL_TABLE_ "):
+			regexp = re.compile("^VAL\_TABLE\_ (\w+) (.*);")		
+			temp = regexp.match(l)
+			if temp:
+				tableName = temp.group(1)
+				tempList = temp.group(2).split('"')
+				try:
+					valHash = {}
+					for i in range(len(tempList)/2):
+						val = tempList[i*2+1]
+						valHash[tempList[i*2].strip()] = val.strip()
+				except:
+					print "Error with Line: ",tempList
+				db.addValueTable(tableName, valHash)
+			else:
+				print l
 
 		elif l.startswith("BA_DEF_ SG_ "):
 			regexp = re.compile("^BA\_DEF\_ SG\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")		

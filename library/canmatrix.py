@@ -23,7 +23,6 @@
 import cPickle as pickle
 import json
 
-
 class FrameList:
 	"""
 	Keeps all Frames of a Canmatrix
@@ -120,10 +119,10 @@ class Signal:
 		self._byteorder = int(byteorder)
 		# byteorder: 1: Intel, 0: Motorola
 		self._valuetype = valuetype
-		self._factor = float(factor)
-		self._offset = float(offset)
-		self._min = float(min)
-		self._max = float(max)
+		self._factor = str(factor)
+		self._offset = str(offset)
+		self._min = str(min)
+		self._max = str(max)
 		self._reciever = reciever
 		self._attributes = {}
 		self._values = {}
@@ -162,7 +161,14 @@ class SignalGroup:
 	def delSignal(self, signal):
 		if signal in self._members:
 			self._members[signal].remove()
-
+	def byName(self, name):
+		"""
+		returns Signalobject-Object of list by Name
+		"""
+		for test in self._members:
+			if test._name == name:
+				return test
+		return None
 
 class Frame:
 	"""
@@ -196,7 +202,16 @@ class Frame:
 			signalId = self.signalByName(signal)
 			if signalId is not None:
 				newGroup.addSignal(signalId)
-
+	
+	def signalGroupbyName(self, name):
+		"""
+		returns signalGroup-object by signalname
+		"""
+		for signalGroup in self._SignalGroups:
+			if signalGroup._name == name:
+				return signalGroup
+		return None 
+	
 	def addSignal(self, signal):
 		"""
 		add Signal to Frame
@@ -255,6 +270,7 @@ class CanMatrix:
 	_frameDefines (list of frame-attribute types)
 	_buDefines (list of BoardUnit-attribute types)
 	_globalDefines (list of global attribute types)
+	_valueTables (global defined values)
 	"""
 	def __init__(self):
 		self._attributes = {}
@@ -264,6 +280,10 @@ class CanMatrix:
 		self._frameDefines = {}
 		self._globalDefines = {}
 		self._buDefines = {}
+		self._valueTables = {}
+	
+	def addValueTable(self, name, valueTable):
+		self._valueTables[name] = valueTable
  
 	def addAttribute(self, attribute, value):
 		"""
@@ -506,9 +526,40 @@ def compareDb(db1, db2):
 
 	result.addChild(compareDefineList(db1._globalDefines, db2._globalDefines))
 	
-	result.addChild(compareDefineList(db1._buDefines, db2._buDefines))
-	result.addChild(compareDefineList(db1._frameDefines, db2._frameDefines))
-	result.addChild(compareDefineList(db1._signalDefines, db2._signalDefines))
+	temp = compareDefineList(db1._buDefines, db2._buDefines)
+	temp._type = "ECU Defines"
+	result.addChild(temp)
+
+	temp = compareDefineList(db1._frameDefines, db2._frameDefines)
+	temp._type = "Frame Defines"
+	result.addChild(temp)
+
+	temp = compareDefineList(db1._signalDefines, db2._signalDefines)
+	temp._type = "Signal Defines"
+	result.addChild(temp)
+
+	for vt1 in db1._valueTables:
+		if vt1 not in db2._valueTables:
+			result.addChild(compareResult("deleted", "valuetable " + vt1, db1._valueTables))
+		else:
+			result.addChild(compareValueTable(db1._valueTables[vt1], db2._valueTables[vt1]))
+			
+			
+	for vt2 in db2._valueTables:
+		if vt2 not in db1._valueTables:
+			result.addChild(compareResult("added", "valuetable " + vt2, db2._valueTables))
+	return result
+
+def compareValueTable(vt1, vt2):
+	result = compareResult("equal", "Valuetable", vt1)
+	for value in vt1:
+		if value not in vt2:
+			result.addChild(compareResult("removed", "Value " + str(value), vt1[value]))
+		elif vt1[value] != vt2[value]:
+			result.addChild(compareResult("changed", "Value " + str(value) + " " + str(vt1[value]), [vt1[value], vt2[value]]))	
+	for value in vt2:
+		if value not in vt1:
+			result.addChild(compareResult("added", "Value " + str(value), vt2[value]))
 	return result
 
 def compareSignalGroup(sg1, sg2):
@@ -519,13 +570,15 @@ def compareSignalGroup(sg1, sg2):
 	if sg1._Id != sg2._Id:
 		result.addChild(compareResult("changed", "SignalName", [str(sg1._Id), str(sg2._Id)] ))
 
-	#	self._members = []
+	if sg1._members == None or sg2._members == None:
+		print "Strange - sg wo members???"
+		return result
 	for member in sg1._members:
-		if member not in sg2._members:
-			result.addChild(compareResult("deleted", str(member), sg2._member))
+		if sg2.byName(member._name) is None:
+			result.addChild(compareResult("deleted", str(member._name), member))
 	for member in sg2._members:
-		if member not in sg1._members:
-			result.addChild(compareResult("added", str(member), sg2._member))
+		if sg1.byName(member._name) is None:
+			result.addChild(compareResult("added", str(member._name), member))
 	return result			
 
 	
@@ -542,11 +595,9 @@ def compareDefineList(d1list, d2list):
 
 			if d1._defaultValue != d2._defaultValue:
 				result.addChild(compareResult("changed", "DefaultValue", [d1._defaultValue, d2._defaultValue] ))
-
-
-#	for definition in d2list:
-#		if definition not in d1list:
-#			result.addChild(compareResult("added", "Define" + str(definition), d2list))
+	for definition in d2list:
+		if definition not in d1list:
+			result.addChild(compareResult("added", "Define" + str(definition), d2list))
 	return result
 	
 def compareAttributes(ele1, ele2):
@@ -604,13 +655,14 @@ def compareFrame(f1, f2):
 			result.addChild(compareResult("added", "Frame-Transmitter", f2))
 
 	for sg1 in f1._SignalGroups:
-		if sg1 not in f2._SignalGroups:
+		sg2 = f2.signalGroupbyName(sg1._name)
+		if sg2 is None:
 			result.addChild(compareResult("removed", "Signalgroup", sg1))
 		else:
-			result.addChild(compareSignalGroup(f1._SignalGroups[sg1], f1._SignalGroups[sg2]))
+			result.addChild(compareSignalGroup(sg1,sg2))
 
 	for sg2 in f2._SignalGroups:
-		if sg2 not in f1._SignalGroups:
+		if f1.signalGroupbyName(sg2._name) is None:
 			result.addChild(compareResult("added", "Signalgroup", sg1))
 	return result
 
@@ -649,15 +701,6 @@ def compareSignal(s1,s2):
 			result.addChild(compareResult("added", "Reciever " + reciever, s1._reciever))
 
 	result.addChild(compareAttributes(s1, s2))
-
-	for value in s1._values:
-		if value not in s2._values:
-			result.addChild(compareResult("removed", "Value " + str(value), s1._values[value]))
-		elif s2._values[value] != s1._values[value]:
-			result.addChild(compareResult("changed", "Value " + str(value), [s1._values[value], s2._values[value]]))
-	
-	for value in s2._values:
-		if value not in s1._values:
-			result.addChild(compareResult("added", "Value " + str(value), s2._values[value]))
+	result.addChild(compareValueTable(s1._values,s2._values))
 			
 	return result
