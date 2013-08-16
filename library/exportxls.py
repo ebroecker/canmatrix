@@ -27,12 +27,12 @@ import xlwt
 import sys
 from canmatrix import *
 
-sty_up    = xlwt.easyxf('align: rota 90, vertical center, horizontal center','pattern: pattern solid, fore-colour rose') 
-sty_norm    = xlwt.easyxf('font: colour black')
-sty_first_frame    = xlwt.easyxf('font: colour black; borders: top thin')
+sty_up    = xlwt.easyxf('font: name Arial Narrow; align: rota 90, vertical center, horizontal center','pattern: pattern solid, fore-colour rose') 
+sty_norm    = xlwt.easyxf('font: name Arial Narrow, colour black')
+sty_first_frame    = xlwt.easyxf('font: name Arial Narrow, colour black; borders: top thin')
+sty_white    = xlwt.easyxf('font: name Arial Narrow, colour white') 
 
-sty_white    = xlwt.easyxf('font: colour white') 
-
+# Matrix-Styles
 sty_blue = xlwt.easyxf('pattern: pattern solid, fore-colour light_green') 
 sty_sender = xlwt.easyxf('pattern: pattern 0x04, fore-colour gray25') 
 sty_sender_blue = xlwt.easyxf('pattern: pattern 0x04, fore-colour gray25, back-colour light_green') 
@@ -105,7 +105,7 @@ def writeSignal(sig, worksheet, row, mystyle):
 	if sig._multiplex == 'Multiplexor':
 		comment = "Mode Signal: " + comment
 	elif sig._multiplex is not None:
-		comment = "Mode " + sig._multiplex + ":" + comment
+		comment = "Mode " + str(sig._multiplex) + ":" + comment
 
 	worksheet.write(row, 8, label = comment, style=mystyle)
 	worksheet.write(row, 9, label = sig._signalsize, style=mystyle)
@@ -122,9 +122,9 @@ def writeSignal(sig, worksheet, row, mystyle):
 	else:
 		worksheet.write(row, 11, label = " ", style=mystyle)	
 	if sig._byteorder == 1:
-		worksheet.write(row, 12, label = "Intel", style=mystyle)
+		worksheet.write(row, 12, label = "i", style=mystyle)
 	else:
-		worksheet.write(row, 12, label = "Motorola", style=mystyle)
+		worksheet.write(row, 12, label = "m", style=mystyle)
 	
 def writeValue(label, value, worksheet, row, col, mystyle):
 	worksheet.write(row, col, label = label, style=mystyle)
@@ -167,6 +167,7 @@ def exportXls(db, filename):
 
 	font = xlwt.Font()
 	font.bold = True
+	font.name = "Arial Narrow"
 	sty_up.font = font 
 
 	workbook = xlwt.Workbook(encoding = 'utf8')
