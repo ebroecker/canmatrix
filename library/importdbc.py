@@ -24,7 +24,6 @@
 # dbc-files are the can-matrix-definitions of canoe
 #
 #TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL == BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
-#TODO VAL_TABLE_ Val_table_name 1 "An" 0 "Aus" ;
 
 from canmatrix import *
 import re
@@ -89,7 +88,7 @@ def importDbc(filename):
 				if multiplex == 'M':
 					multiplex = 'Multiplexor'
 				else:
-					multiplex = multiplex[1:]
+					multiplex = int(multiplex[1:])
 
 				db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp.group(11).decode(dbcImportEncoding),reciever, multiplex))
 

@@ -98,8 +98,29 @@ def exportDbf(db, filename):
 		count += 1
 	f.write("\n")
 
-	#signalbezeichnungen
+
 	f.write("[START_DESC]\n\n")
+
+	#BU-bezeichnungen
+	f.write("[START_DESC_MSG]\n")
+	for frame in db._fl._list:
+		if frame._comment is not None:
+			comment = frame._comment.replace("\n"," ")
+			f.write(str(frame._Id) + ' S "' + comment.encode(dbfExportEncoding) + '";\n') 
+		
+	f.write("[END_DESC_MSG]\n")
+
+	#Frame-bezeichnungen
+	f.write("[START_DESC_NODE]\n")
+	for bu in db._BUs._list:
+		if bu._comment is not None:
+			comment = bu._comment.replace("\n"," ")
+			f.write(bu._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n') 
+		
+	f.write("[END_DESC_NODE]\n")
+
+
+	#signalbezeichnungen
 	f.write("[START_DESC_SIG]\n")
 	for bo in db._fl._list:
 		for signal in bo._signals:
@@ -111,8 +132,6 @@ def exportDbf(db, filename):
 	f.write("[END_DESC]\n\n")
 
 	f.write("[START_PARAM]\n")
-	f.write("[START_PARAM_VAL]\n")
-
 	# db-parameter
 	f.write("[START_PARAM_NET]\n")
 	for (type,define) in db._globalDefines.items():
@@ -137,6 +156,7 @@ def exportDbf(db, filename):
 		f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
 	f.write("[END_PARAM_SIG]\n")
 
+	f.write("[START_PARAM_VAL]\n")
 	#boardunit-attributes:
 	f.write("[START_PARAM_NODE_VAL]\n")
 	for bu in db._BUs._list:

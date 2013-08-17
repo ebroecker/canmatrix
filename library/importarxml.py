@@ -312,6 +312,17 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 		
 def importArxml(filename):
 	db = CanMatrix() 
+#Defines not jet imported...
+	db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
+	db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
+	db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
+	db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535')
+#	db.addFrameDefines("GenMsgCycleTimeActive",  'INT 0 65535')
+	db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535')
+	db.addFrameDefines("GenMsgStartValue",  'STRING')
+	db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
+	db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
+#	db.addSignalDefines("GenSigSNA", 'STRING')
 
 	print "Read arxml ..."
 	tree = etree.parse(filename)

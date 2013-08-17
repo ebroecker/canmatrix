@@ -20,8 +20,9 @@
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-import cPickle as pickle
-import json
+#TODO: Definitions should be imported with disassembling not as complete string
+#import cPickle as pickle
+#import json
 
 class FrameList:
 	"""

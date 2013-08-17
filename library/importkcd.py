@@ -94,6 +94,7 @@ def importKcd(filename):
 	namespace = "{" + tree.xpath('namespace-uri(.)') + "}"
  
 	db = CanMatrix()
+	db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
 
 	nodelist = {}
 	nodes = root.findall('./' + namespace + 'Node')

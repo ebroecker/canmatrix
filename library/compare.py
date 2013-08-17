@@ -145,10 +145,10 @@ def compareDefineList(d1list, d2list):
 			d2 = d2list[definition]
 			d1 = d1list[definition]
 			if d1._definition != d2._definition:
-				result.addChild(compareResult("changed", "Definition", [d1._definition, d2._definition] ))
+				result.addChild(compareResult("changed", "Definition", d1._definition, [d1._definition, d2._definition] ))
 
 			if d1._defaultValue != d2._defaultValue:
-				result.addChild(compareResult("changed", "DefaultValue", [d1._defaultValue, d2._defaultValue] ))
+				result.addChild(compareResult("changed", "DefaultValue", d1._definition, [d1._defaultValue, d2._defaultValue] ))
 	for definition in d2list:
 		if definition not in d1list:
 			result.addChild(compareResult("added", "Define" + str(definition), d2list))
@@ -248,8 +248,12 @@ def compareSignal(s1,s2):
 	if s1._unit != s2._unit:
 		result.addChild(compareResult("changed", "unit", s1, [ s1._unit,  s2._unit]))
 	if s1._comment != s2._comment:
-		result.addChild(compareResult("changed", "comment", s1, [ s1._comment,  s2._comment]))
-	
+		if s1._comment.replace("\n"," ") != s2._comment.replace("\n"," "):
+			result.addChild(compareResult("changed", "comment", s1, [ s1._comment,  s2._comment]))
+		else:
+			result.addChild(compareResult("changed", "comment", s1, ["only whitespaces differ", ""]))
+
+
 	for reciever in s1._reciever:
 		if reciever not in s2._reciever:
 			result.addChild(compareResult("removed", "Reciever " + reciever, s1._reciever))

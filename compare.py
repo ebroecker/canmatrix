@@ -42,7 +42,7 @@ print "%d Frames found" % (db2._fl._list.__len__())
 
 
 print "\n\n"
-#print compareDb(db1, db2)
+
 
 def dumpResult(res, depth = 0):
 	if res._type is not None and res._result != "equal":
@@ -62,7 +62,6 @@ def dumpResult(res, depth = 0):
 
 
 obj = compareDb(db1, db2)
-
 dumpResult(obj)
 	
 

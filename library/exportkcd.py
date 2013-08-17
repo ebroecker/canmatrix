@@ -67,9 +67,9 @@ def createSignal(signal, nodeList):
 		if len(reciever) > 1 and reciever in nodeList:				
 			noderef = etree.Element('NodeRef', id=str(nodeList[reciever]))
 			consumer.append(noderef)
-	return sig
 #TODO Kajak doesnt like my consumer-list -> research why?
-#			sig.append(consumer)
+			sig.append(consumer)
+	return sig
 
 
 def exportKcd(db, filename):
