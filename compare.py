@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import library.importany as im
-from library.canmatrix import *
+from library.compare import *
 import sys
 import codecs
 
@@ -60,20 +60,8 @@ def dumpResult(res, depth = 0):
 	for child in res._children:
 		dumpResult(child, depth+1)
 
-def propagateChanges(res):
-	change = 0
-	for child in res._children:
-		change += propagateChanges(child)
-	if change != 0:
-		res._result = "changed"
-	if res._result != "equal":
-		return 1
-	else:
-		return 0
-
 
 obj = compareDb(db1, db2)
-propagateChanges(obj)
 
 dumpResult(obj)
 	
