@@ -232,13 +232,13 @@ def compareSignal(s1,s2):
 	if s1._signalsize != s2._signalsize:
 		result.addChild(compareResult("changed", "signalsize", s1, [" %d" % s1._signalsize, " %d" % s2._signalsize]))
 	if s1._factor != s2._factor:
-		result.addChild(compareResult("changed", "factor", s1, [" %f" % s1._factor, " %f" % s2._factor]))
+		result.addChild(compareResult("changed", "factor", s1, [s1._factor, s2._factor]))
 	if s1._offset != s2._offset:
-		result.addChild(compareResult("changed", "offset", s1, [" %d" % s1._offset, " %d" % s2._offset]))
+		result.addChild(compareResult("changed", "offset", s1, [ s1._offset, s2._offset]))
 	if s1._min != s2._min:
-		result.addChild(compareResult("changed", "min", s1, [" %f" % s1._min, " %f" % s2._min]))
+		result.addChild(compareResult("changed", "min", s1, [ s1._min, s2._min]))
 	if s1._max != s2._max:
-		result.addChild(compareResult("changed", "max", s1, [" %f" % s1._max, " %f" % s2._max]))
+		result.addChild(compareResult("changed", "max", s1, [ s1._max,  s2._max]))
 	if s1._byteorder != s2._byteorder:
 		result.addChild(compareResult("changed", "byteorder", s1, [" %d" % s1._byteorder, " %d" % s2._byteorder]))
 	if s1._valuetype != s2._valuetype:
@@ -247,7 +247,7 @@ def compareSignal(s1,s2):
 		result.addChild(compareResult("changed", "multiplex", s1, [str(s1._multiplex), str(s2._multiplex)]))
 	if s1._unit != s2._unit:
 		result.addChild(compareResult("changed", "unit", s1, [ s1._unit,  s2._unit]))
-	if s1._comment != s2._comment:
+	if s1._comment is not None and s2._comment is not None and s1._comment != s2._comment:
 		if s1._comment.replace("\n"," ") != s2._comment.replace("\n"," "):
 			result.addChild(compareResult("changed", "comment", s1, [ s1._comment,  s2._comment]))
 		else:

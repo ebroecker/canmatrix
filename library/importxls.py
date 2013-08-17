@@ -152,8 +152,8 @@ def importXls(filename):
 			signalSNA = sh.cell(rownum,index['signalSNA']).value
 
 			if "byteorder" in index:
-				signalByteorder = sh.cell(rownum,index['signalSNA']).value
-				if "i" in signalByteorder:
+				signalByteorder = sh.cell(rownum,index['byteorder']).value
+				if 'i' == signalByteorder:
 					byteorder = 1
 				else:
 					byteorder = 0
@@ -198,7 +198,7 @@ def importXls(filename):
 			if type(factor).__name__ == "unicode":
 				factor = factor.strip()
 				if " " in factor:
-					(factor, temp) = factor.split(" ",2)
+					(factor, temp) = factor.split(" ",1)
 			newSig._factor = float(factor)
 			newSig._offset = float(mini)
 			newSig._unit = unit

@@ -118,6 +118,7 @@ def writeSignal(sig, worksheet, row, mystyle):
 
 	if "GenSigSNA" in sig._attributes:
 		sna = sig._attributes["GenSigSNA"][1:-1]
+		print sna
 		worksheet.write(row, 11, label = sna, style=mystyle)
 	else:
 		worksheet.write(row, 11, label = " ", style=mystyle)	
