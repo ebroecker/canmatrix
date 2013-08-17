@@ -35,6 +35,18 @@ def importXls(filename):
 	wb = xlrd.open_workbook(filename, formatting_info=True)
 	sh = wb.sheet_by_index(0)
 	db = CanMatrix()
+
+	#Defines not imported...
+#	db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
+#	db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
+	db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
+	db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535')
+	db.addFrameDefines("GenMsgCycleTimeActive",  'INT 0 65535')
+	db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535')
+#	db.addFrameDefines("GenMsgStartValue",  'STRING')
+	db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
+#	db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
+	db.addSignalDefines("GenSigSNA", 'STRING')
 	
 	# eval search for correct collums:
 	index = {}
@@ -141,7 +153,7 @@ def importXls(filename):
 
 			if "byteorder" in index:
 				signalByteorder = sh.cell(rownum,index['signalSNA']).value
-				if "Intel" in signalByteorder:
+				if "i" in signalByteorder:
 					byteorder = 1
 				else:
 					byteorder = 0
