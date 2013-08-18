@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 
 #Copyright (c) 2013, Eduard Broecker 
@@ -41,6 +42,38 @@ def copyBU (buId, sourceDb, targetDb):
 		targetDb.addBUDefines(attribute, sourceDb._buDefines[attribute]._definition)
 		targetDb.addDefineDefault(attribute, sourceDb._buDefines[attribute]._defaultValue)
 
+def copyBUwithFrames (buId, sourceDb, targetDb):
+	"""
+	This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
+	while copying is easy, this function additionally copys all relevant Frames and Defines
+	"""
+	# check wether buId is object or symbolic name
+	if type(buId).__name__ == 'instance':
+		bu = buId
+	else:
+		bu = sourceDb._BUs.byName(buId)
+	
+	targetDb._BUs.add(bu)
+	
+	#copy tx-frames
+	for frame in sourceDb._fl._list:
+		if bu._name in frame._Transmitter:
+			copyFrame (frame, sourceDb, targetDb)
+
+	#copy rx-frames
+	for frame in sourceDb._fl._list:
+		for signal in frame._signals:
+			if bu._name in signal._reciever:
+				copyFrame (frame, sourceDb, targetDb)
+				break
+
+	# copy all bu-defines
+	attributes = bu._attributes
+	for attribute in attributes:
+		targetDb.addBUDefines(attribute, sourceDb._buDefines[attribute]._definition)
+		targetDb.addDefineDefault(attribute, sourceDb._buDefines[attribute]._defaultValue)
+
+
 
 	
 def copyFrame (frameId, sourceDb, targetDb):
@@ -66,7 +99,7 @@ def copyFrame (frameId, sourceDb, targetDb):
 	for transmitter in frame._Transmitter:
 		targetBU = targetDb._BUs.byName(transmitter)
 		sourceBU = sourceDb._BUs.byName(transmitter)
-		if targetBU is None:
+		if sourceBU is not None and targetBU is None:
 			copyBU(sourceBU, sourceDb, targetDb)
 			
 	#trigger all signals of Frame
@@ -75,7 +108,7 @@ def copyFrame (frameId, sourceDb, targetDb):
 		for reciever in sig._reciever:
 			targetBU = targetDb._BUs.byName(transmitter)
 			sourceBU = sourceDb._BUs.byName(transmitter)
-			if targetBU is None:
+			if sourceBU is not None and targetBU is None:
 				copyBU(sourceBU, sourceDb, targetDb)
 
 	# copy all frame-defines

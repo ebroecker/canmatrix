@@ -2,6 +2,7 @@
 # importany laed alle verfuegbaren importfilter
 from library.copy import *
 import library.importany as im
+import library.exportall as ex
 #fuer Fileio:
 import sys
 
@@ -26,11 +27,13 @@ db3 = CanMatrix()
 #
 
 #Kopiere ID 1234 aus der 2. K-Matrix in die Zielmatrix
-copyFrame(1731, db2, db3)
+copyFrame(1234, db2, db3)
 
 #Kopiere Frame "Engine_123" aus der 1. K-Matrix in die Zielmatrix
-copyFrame("BMS_Hybrid_01", db1, db3)
+copyFrame("Engine_123", db1, db3)
 
+#Kopiere ECU "Gateway" aus der 1. K-Matrix (mit allen zugehoerigen Frames) in die Zielmatrix
+copyBUwithFrames("Gateway", db1, db3)
 
 #
 # -----------------------------------------------------
