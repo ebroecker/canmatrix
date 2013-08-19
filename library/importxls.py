@@ -85,8 +85,11 @@ def importXls(filename):
 		elif "Byteorder" in value:
 			index['byteorder'] = i
 			
-	index['BUstart'] = index['signalSNA'] + 1
-	index['BUend'] = index['Value'] - 1
+	if "byteorder" in index:
+		index['BUstart'] = index['byteorder'] + 1
+	else:
+		index['BUstart'] = index['signalSNA'] + 1
+	index['BUend'] = index['Value']
 
 	#BoardUnits:
 	for x in range(index['BUstart'],index['BUend']):
@@ -111,7 +114,7 @@ def importXls(filename):
 			if type(launchParam).__name__ != "float":
 				launchParam = 0.0
 			launchParam = str(int(launchParam))
-			# TODO: correct DLC ermitteln
+
 			newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
 			db._fl.addFrame(newBo)
 			if launchType is not None:
@@ -153,7 +156,8 @@ def importXls(filename):
 
 			if "byteorder" in index:
 				signalByteorder = sh.cell(rownum,index['byteorder']).value
-				if 'i' == signalByteorder:
+
+				if 'i' in signalByteorder:
 					byteorder = 1
 				else:
 					byteorder = 0
@@ -161,8 +165,6 @@ def importXls(filename):
 				byteorder = 1 # Default Intel
 			#TODO: Byteorder is NOT in .xls?!
 			valuetype = '+'
-			if signalLength > 8:
-				byteorder = 0 # Motorola for long signals
 				
 			if signalName != "-":
 				for x in range(index['BUstart'],index['BUend']):
@@ -189,24 +191,33 @@ def importXls(filename):
 
 		factor = 0
 		unit = ""
+
+		factor = sh.cell(rownum,index['function']).value
+		if type(factor).__name__ == "unicode":
+			factor = factor.strip()
+			if " " in factor:
+				(factor, unit) = factor.strip().split(" ",1)
+				factor = factor.strip()
+				unit = unit.strip()
+				newSig._unit = unit
+				newSig._factor = float(factor)
+
 		if ".." in test:
 			(mini, maxi) = test.strip().split("..",2)
 			unit = ""
-			if " " in maxi:
-				(maxi, unit) = maxi.strip().split(" ",2)
-			factor = sh.cell(rownum,index['function']).value
-			if type(factor).__name__ == "unicode":
-				factor = factor.strip()
-				if " " in factor:
-					(factor, temp) = factor.split(" ",1)
-			newSig._factor = float(factor)
 			newSig._offset = float(mini)
-			newSig._unit = unit
+			newSig._min = mini
+			newSig._max = maxi
 		elif valueName.__len__() > 0:
 			value = int(value)
 			newSig.addValues(value, valueName)
-	
-	#do dlc-correction:
+			maxi = pow(2,signalLength)-1
+			newSig._max = maxi
+		else:
+			maxi = pow(2,signalLength)-1
+			newSig._max = maxi
+
+	# dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
 	for bo in db._fl._list:
 		maxBit = 0
 		for sig in bo._signals:

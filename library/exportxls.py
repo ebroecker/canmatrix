@@ -118,10 +118,10 @@ def writeSignal(sig, worksheet, row, mystyle):
 
 	if "GenSigSNA" in sig._attributes:
 		sna = sig._attributes["GenSigSNA"][1:-1]
-		print sna
 		worksheet.write(row, 11, label = sna, style=mystyle)
 	else:
 		worksheet.write(row, 11, label = " ", style=mystyle)	
+
 	if sig._byteorder == 1:
 		worksheet.write(row, 12, label = "i", style=mystyle)
 	else:
@@ -223,6 +223,11 @@ def exportXls(db, filename):
 			if sigstyle != sty_first_frame:
 				sigstyle = sty_norm
 
+			if sig._unit.strip().__len__() > 0:
+				worksheet.write(row, col+2, label = "%g" % float(sig._factor) + "  " + sig._unit, style=sigstyle)
+			else:
+				worksheet.write(row, col+2, label = float(sig._factor), style=sigstyle)
+
 			if float(sig._offset) != 0 or float(sig._factor) != 1.0:
 				writeFrame(bo, worksheet, row, framestyle)
 				writeSignal(sig, worksheet, row, sigstyle)
@@ -236,10 +241,6 @@ def exportXls(db, filename):
 					maxi = int(sig._offset) + 2 ^ int(sig._signalsize )					
 				worksheet.write(row, col, label = "", style=sigstyle)
 				worksheet.write(row, col+1, label = str("%s..%s" %(sig._offset, maxi)), style=sigstyle)
-				if sig._unit.strip().__len__() > 0:
-					worksheet.write(row, col+2, label = "%g" % float(sig._factor) + "  " + sig._unit, style=sigstyle)
-				else:
-					worksheet.write(row, col+2, label = float(sig._factor), style=sigstyle)
 				
 				sigstyle = sty_white
 				#, sig._startbit, sig._signalsize, sig._byteorder, float(sig._factor), float(sig._offset)])
