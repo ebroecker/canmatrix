@@ -22,6 +22,7 @@
 #
 # this script exports xls-files from a canmatrix-object
 # xls-files are the can-matrix-definitions displayed in Excel
+# TODO: Support Signals with scale-infos and valuetables
 
 import xlwt
 import sys
@@ -54,7 +55,7 @@ def writeFrame(bo, worksheet, row, mystyle):
 			if "GenMsgDelayTime" in bo._attributes:
 				worksheet.write(row, 4, label = int(bo._attributes["GenMsgDelayTime"]) , style=mystyle)
 			else:
-				worksheet.write(row, 4, label = "", style=mystyle)			
+				worksheet.write(row, 4, label = "", style=mystyle)
 		elif bo._attributes["GenMsgSendType"] == "0":
 			worksheet.write(row, 3, label = "Cyclic" , style=mystyle)
 			worksheet.write(row, 4, label = "", style=mystyle)			
@@ -88,6 +89,9 @@ def writeFrame(bo, worksheet, row, mystyle):
 				worksheet.write(row, 4, label = int(bo._attributes["GenMsgDelayTime"]) , style=mystyle)				
 			else:
 				worksheet.write(row, 4, label = "", style=mystyle)			
+		else:
+			worksheet.write(row, 3, label = "", style=mystyle)			
+			worksheet.write(row, 4, label = "", style=mystyle)			
 	else:
 		worksheet.write(row, 3, label = "", style=mystyle)			
 		worksheet.write(row, 4, label = "", style=mystyle)			
@@ -207,6 +211,8 @@ def exportXls(db, filename):
 		boHash[int(bo._Id)] = bo
 
 	row = 1
+
+	# iterate over the frames
 	for idx in sorted(boHash.iterkeys()):
 		bo = boHash[idx]
 		framestyle = sty_first_frame 
@@ -216,17 +222,12 @@ def exportXls(db, filename):
 			sigHash[sig._startbit] = sig
 		
 		sigstyle = sty_first_frame
-#		for sig in bo._signals:
+
 		for sig_idx in sorted(sigHash.iterkeys()):
 			sig = sigHash[sig_idx]		
 
 			if sigstyle != sty_first_frame:
 				sigstyle = sty_norm
-
-			if sig._unit.strip().__len__() > 0:
-				worksheet.write(row, col+2, label = "%g" % float(sig._factor) + "  " + sig._unit, style=sigstyle)
-			else:
-				worksheet.write(row, col+2, label = float(sig._factor), style=sigstyle)
 
 			if float(sig._offset) != 0 or float(sig._factor) != 1.0:
 				writeFrame(bo, worksheet, row, framestyle)
@@ -236,10 +237,16 @@ def exportXls(db, filename):
 					col = writeBuMatrix(buList, sig, bo, worksheet, row, col, 1)
 				else:
 					col = writeBuMatrix(buList, sig, bo, worksheet, row, col)
+
+				if sig._unit.strip().__len__() > 0:
+					worksheet.write(row, col+2, label = "%g" % float(sig._factor) + "  " + sig._unit, style=sigstyle)
+				else:
+					worksheet.write(row, col+2, label = float(sig._factor), style=sigstyle)
+
 				maxi = max(sig._offset, sig._max)
 				if maxi == sig._offset:
 					maxi = int(sig._offset) + 2 ^ int(sig._signalsize )					
-				worksheet.write(row, col, label = "", style=sigstyle)
+				worksheet.write(row, col, label = " ", style=sigstyle)
 				worksheet.write(row, col+1, label = str("%s..%s" %(sig._offset, maxi)), style=sigstyle)
 				
 				sigstyle = sty_white
@@ -257,6 +264,10 @@ def exportXls(db, filename):
 					else:
 						col = writeBuMatrix(buList, sig, bo, worksheet, row, col)
 						writeValue(val,sig._values[val], worksheet, row, col, sty_norm)
+					if sig._unit.strip().__len__() > 0:
+						worksheet.write(row, col+2, label = "%g" % float(sig._factor) + "  " + sig._unit, style=sigstyle)
+					else:
+						worksheet.write(row, col+2, label = float(sig._factor), style=sigstyle)
 					row +=1
 					sigstyle = sty_white
 					framestyle = sty_white
@@ -264,8 +275,19 @@ def exportXls(db, filename):
 				writeFrame(bo, worksheet, row, framestyle)
 				writeSignal(sig, worksheet, row, sigstyle)
 				col = head_top.__len__()
-				col = writeBuMatrix(buList, sig, bo, worksheet, row, col)
+				if framestyle == sty_first_frame:
+					col = writeBuMatrix(buList, sig, bo, worksheet, row, col,1)
+				else:
+					col = writeBuMatrix(buList, sig, bo, worksheet, row, col)
+				if sig._unit.strip().__len__() > 0:
+					worksheet.write(row, col+2, label = "%g" % float(sig._factor) + "  " + sig._unit, style=sigstyle)
+				else:
+					worksheet.write(row, col+2, label = float(sig._factor), style=sigstyle)
+
+				worksheet.write(row, col, label = " ", style=sigstyle)
+				worksheet.write(row, col+1, label = " ", style=sigstyle)
 				row +=1
+				sigstyle = sty_white
 				framestyle = sty_white
 #			worksheet.write(row-1, col+2, label = str(sig._factor) + " " + sig._unit)
 
