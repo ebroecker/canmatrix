@@ -96,14 +96,14 @@ def importDbc(filename):
 		elif l.startswith("BO_TX_BU_ "):
 			regexp = re.compile("^BO_TX_BU_ ([0-9]+) *: *(.+);")
 			temp = regexp.match(l)
-			botschaft = db._fl.byId(temp.group(1))
+			botschaft = db.frameById(temp.group(1))
 			for bu in temp.group(2).split(','):
 				botschaft.addTransmitter(bu)
 		elif l.startswith("CM_ SG_ "):
 			regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)\";")		
 			temp = regexp.match(l)
 			if temp:
-				botschaft = db._fl.byId(temp.group(1))
+				botschaft = db.frameById(temp.group(1))
 				signal = botschaft.signalByName(temp.group(2))
 				if signal:
 					signal.addComment(temp.group(3).decode(dbcImportEncoding).replace('\\"','"'))
@@ -111,7 +111,7 @@ def importDbc(filename):
 				regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
-					botschaft = db._fl.byId(temp.group(1))
+					botschaft = db.frameById(temp.group(1))
 					signal = botschaft.signalByName(temp.group(2))
 					comment = temp.group(3).decode(dbcImportEncoding).replace('\\"','"')
 					followUp = FollowUps.signalComment
@@ -120,14 +120,14 @@ def importDbc(filename):
 			regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)\";")		
 			temp = regexp.match(l)
 			if temp:
-				frame = db._fl.byId(temp.group(1))
+				frame = db.frameById(temp.group(1))
 				if frame:
 					frame.addComment(temp.group(2).decode(dbcImportEncoding).replace('\\"','"'))
 			else:
 				regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
-					frame = db._fl.byId(temp.group(1))
+					frame = db.frameById(temp.group(1))
 					comment = temp.group(2).decode(dbcImportEncoding).replace('\\"','"')
 					followUp = FollowUps.frameComment
 		elif l.startswith("CM_ BU_ "):
@@ -163,7 +163,7 @@ def importDbc(filename):
 				tempList = temp.group(3).split('"')
 				try:
 					for i in range(len(tempList)/2):
-						bo = db._fl.byId(botschaftId)
+						bo = db.frameById(botschaftId)
 						sg = bo.signalByName(signal)
 						val = tempList[i*2+1]
 						#[1:-1]
@@ -218,11 +218,11 @@ def importDbc(filename):
 			if tempba.group(1).strip().startswith("BO_ "):
 				regexp = re.compile("^BA\_ \"(.*)\" BO\_ (\w+) (.+);")		
 				temp = regexp.match(l)	
-				db._fl.byId(int(temp.group(2))).addAttribute(temp.group(1),temp.group(3))
+				db.frameById(int(temp.group(2))).addAttribute(temp.group(1),temp.group(3))
 			elif tempba.group(1).strip().startswith("SG_ "):
 				regexp = re.compile("^BA\_ \"(.*)\" SG\_ (\w+) (\w+) (.+);")		
 				temp = regexp.match(l)	
-				db._fl.byId(int(temp.group(2))).signalByName(temp.group(3)).addAttribute(temp.group(1),temp.group(4))
+				db.frameById(int(temp.group(2))).signalByName(temp.group(3)).addAttribute(temp.group(1),temp.group(4))
 			elif tempba.group(1).strip().startswith("BU_ "):
 				regexp = re.compile("^BA\_ \"(.*)\" BU\_ (\w+) (.+);")		
 				temp = regexp.match(l)
@@ -237,7 +237,7 @@ def importDbc(filename):
 		elif l.startswith("SIG_GROUP_ "):
 			regexp = re.compile("^SIG\_GROUP\_ +(\w+) +(\w+) +(\w+) +\:(.*);")		
 			temp = regexp.match(l)
-			frame = db._fl.byId(temp.group(1))
+			frame = db.frameById(temp.group(1))
 			if frame is not None:
 				signalArray = temp.group(4).split(' ')
 				frame.addSignalGroup(temp.group(2), temp.group(3), signalArray)

@@ -84,11 +84,11 @@ def copyFrame (frameId, sourceDb, targetDb):
 
 	# check wether frameId is object, id or symbolic name
 	if type(frameId).__name__ == 'int':
-		frame = sourceDb._fl.byId(frameId)
+		frame = sourceDb.frameById(frameId)
 	elif type(frameId).__name__ == 'instance':
 		frame = frameId
 	else:
-		frame = sourceDb._fl.byName(frameId)
+		frame = sourceDb.frameByName(frameId)
 
 
 	# copy Frame-Object:

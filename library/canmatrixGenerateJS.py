@@ -24,11 +24,11 @@ def generateCode_js(db, botschaften, generatorConfig):
 		constants += '\n'
 	for botschaftName in botschaften:
 		if type(botschaftName).__name__ == 'int':
-			botschaft = db._fl.byId(botschaftName)
+			botschaft = db.frameById(botschaftName)
 		elif type(botschaftName).__name__ == 'instance':
 			botschaft = botschaftName		
 		else:
-			botschaft = db._fl.byName(botschaftName)
+			botschaft = db.frameByName(botschaftName)
 		i = i + 1
 
 		constants +=  '"' + str(botschaft._Id) + '":"' + botschaft._name + '"'

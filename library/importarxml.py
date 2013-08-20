@@ -284,7 +284,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 		for out in outFrame:
 			if out in multiplexTranslation:
 				out = multiplexTranslation[out]
-			frame = db._fl.byName(out)
+			frame = db.frameByName(out)
 			if frame is not None:
 				frame.addTransmitter(arGetName(ecu, ns))
 			else:
@@ -293,7 +293,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 		for inf in inFrame:
 			if inf in multiplexTranslation:
 				inf = multiplexTranslation[inf]
-			frame = db._fl.byName(inf)
+			frame = db.frameByName(inf)
 			if frame is not None:
 				for signal in frame._signals:
 					rec_name = arGetName(ecu, ns)

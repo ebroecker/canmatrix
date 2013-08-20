@@ -67,7 +67,7 @@ def importDbf(filename):
 			else:
 				(boId, temS, SignalName, comment) = line.split(' ',3)	
 				comment = comment.replace('"','').replace(';','').decode(dbfImportEncoding)		
-				db._fl.byId(int(boId)).signalByName(SignalName).addComment(comment)
+				db.frameById(int(boId)).signalByName(SignalName).addComment(comment)
 
 		if mode == 'BUDescription':
 			if line.startswith("[END_DESC_NODE]") or line.startswith("[END_DESC]"):
@@ -83,14 +83,14 @@ def importDbf(filename):
 			else:
 				(boId, temS, comment) = line.split(' ',2)	
 				comment = comment.replace('"','').replace(';','').decode(dbfImportEncoding)		
-				db._fl.byId(int(boId)).addComment(comment)
+				db.frameById(int(boId)).addComment(comment)
 
 		elif mode == 'ParamMsgVal':
 			if line.startswith("[END_PARAM_MSG_VAL]"):
 				mode = ''
 			else:
 				(boId, temS, attrib, value) = line.split(',',3)	
-				db._fl.byId(int(boId)).addAttribute(attrib.replace('"',''), value[1:-1])
+				db.frameById(int(boId)).addAttribute(attrib.replace('"',''), value[1:-1])
 
 		elif mode == 'ParamNodeVal':
 			if line.startswith("[END_PARAM_NODE_VAL]"):
@@ -111,7 +111,7 @@ def importDbf(filename):
 				mode = ''
 			else:				
 				(boId, temS, SignalName, attrib, value) = line.split(',',4)			 
-				db._fl.byId(int(boId)).signalByName(SignalName).addAttribute(attrib.replace('"',''), value[1:-1])
+				db.frameById(int(boId)).signalByName(SignalName).addAttribute(attrib.replace('"',''), value[1:-1])
 
 		elif mode == 'ParamSig':
 			if line.startswith("[END_PARAM_SIG]"):
