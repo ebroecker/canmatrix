@@ -20,7 +20,6 @@
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-#TODO: Multiplex-Support missing
 #
 # this script imports excel-files to a canmatrix-object
 # these Excelfiles should have following collums:
@@ -95,13 +94,16 @@ def importXls(filename):
 	for x in range(index['BUstart'],index['BUend']):
 		db._BUs.add(BoardUnit(sh.cell(0,x).value))	
 
-	#initialize with first Frame:
-	frameId = sh.cell(2,index['ID'])
+	#initialize:
+	frameId = None
 	signalName = ""
 	newBo = None
-	for rownum in range(2,sh.nrows):
+
+	for rownum in range(1,sh.nrows):
+		#ignore empty row
 		if sh.cell(rownum,index['ID']).value.__len__() == 0:
 			break
+		# new frame detected
 		if sh.cell(rownum,index['ID']).value != frameId:
 			sender = []
 			# new Frame
@@ -117,6 +119,8 @@ def importXls(filename):
 
 			newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
 			db._fl.addFrame(newBo)
+
+			#eval launctype
 			if launchType is not None:
 				if "Cyclic+Change" == launchType:
 					newBo.addAttribute("GenMsgSendType", "5")	
@@ -139,21 +143,30 @@ def importXls(filename):
 					newBo.addAttribute("GenMsgSendType", "1")
 					newBo.addAttribute("GenMsgDelayTime", launchParam)
 
+			#eval cycletime
 			if type(cycleTime).__name__ != "float":
 				cycleTime = 0.0
 			newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
-	
+
+		#new signal detected
 		if sh.cell(rownum,index['signalName']).value != signalName:
 			# new Signal
 			reciever = []
 			startbyte = int(sh.cell(rownum,index['startbyte']).value)
 			startbit = int(sh.cell(rownum,index['startbit']).value)
 			signalName = sh.cell(rownum,index['signalName']).value	
-			signalComment = sh.cell(rownum,index['signalComment']).value	
+			signalComment = sh.cell(rownum,index['signalComment']).value.strip()	
 			signalLength = int(sh.cell(rownum,index['signalLength']).value)
 			signalDefault = sh.cell(rownum,index['signalDefault']).value
 			signalSNA = sh.cell(rownum,index['signalSNA']).value
-
+			multiplex = None
+			if signalComment.startswith('Mode Signal:'):
+				multiplex = 'Multiplexor'
+				signalComment = signalComment[12:]
+			elif signalComment.startswith('Mode '):
+				mux, signalComment = signalComment[4:].split(':',1)
+				multiplex = int(mux.strip())
+				
 			if "byteorder" in index:
 				signalByteorder = sh.cell(rownum,index['byteorder']).value
 
@@ -163,7 +176,7 @@ def importXls(filename):
 					byteorder = 0
 			else:
 				byteorder = 1 # Default Intel
-			#TODO: Byteorder is NOT in .xls?!
+
 			valuetype = '+'
 				
 			if signalName != "-":
@@ -173,15 +186,16 @@ def importXls(filename):
 					if 'r' in sh.cell(rownum,x).value:
 						reciever.append(sh.cell(0,x).value.strip())
 				if signalLength > 8:
-					newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, None)
+					newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
 				else:
-					newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, None)
+					newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
 				
 				newBo.addSignal(newSig)
 				newSig.addComment(signalComment)
 				function = sh.cell(rownum,index['function']).value
-		value = sh.cell(rownum,index['Value']).value
+		value = str(sh.cell(rownum,index['Value']).value)
 		valueName = sh.cell(rownum,index['ValueName']).value
+
 		if valueName == 0:
 			valueName = "0"
 		elif valueName == 1:
@@ -201,21 +215,35 @@ def importXls(filename):
 				unit = unit.strip()
 				newSig._unit = unit
 				newSig._factor = float(factor)
+			else:
+				unit = factor.strip()
+				newSig._unit = unit
+				newSig._factor = 1
+				
 
 		if ".." in test:
 			(mini, maxi) = test.strip().split("..",2)
 			unit = ""
-			newSig._offset = float(mini)
-			newSig._min = mini
-			newSig._max = maxi
+			try:
+				newSig._offset = mini
+				newSig._min = str(mini)		
+				newSig._max = str(maxi)
+			except:
+				newSig._offset = "0"
+				newSig._min = "0"		
+				newSig._max = "1"
+	
+		
 		elif valueName.__len__() > 0:
-			value = int(value)
-			newSig.addValues(value, valueName)
+			if value.strip().__len__() > 0:
+				value = int(float(value))
+				newSig.addValues(value, valueName)
 			maxi = pow(2,signalLength)-1
 			newSig._max = maxi
 		else:
-			maxi = pow(2,signalLength)-1
-			newSig._max = maxi
+			newSig._offset = "0"
+			newSig._min = "0"		
+			newSig._max = "1"
 
 	# dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
 	for bo in db._fl._list:
