@@ -47,20 +47,23 @@ def propagateChanges(res):
 	else:
 		return 0
 
-def compareDb(db1, db2):
+def compareDb(db1, db2, ignore = None):
 	result = compareResult() 
 	for f1 in db1._fl._list:
 		f2 = db2.frameById(f1._Id)
 		if f2 is None:
 			result.addChild(compareResult("deleted", "FRAME", f1))
 		else:
-			result.addChild(compareFrame(f1, f2))
+			result.addChild(compareFrame(f1, f2, ignore))
 	for f2 in db2._fl._list:
 		f1 = db1.frameById(f2._Id)
 		if f1 is None:
 			result.addChild(compareResult("added", "FRAME", f2))
 
-	result.addChild(compareAttributes(db1, db2))
+	if ignore is not None and "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
+		pass
+	else:
+		result.addChild(compareAttributes(db1, db2, ignore))
 
 		
 	for bu1 in db1._BUs._list:
@@ -68,26 +71,30 @@ def compareDb(db1, db2):
 		if bu2 is None:
 			result.addChild(compareResult("deleted", "ecu", bu1))
 		else:
-			result.addChild(compareBu(bu1, bu2))
+			result.addChild(compareBu(bu1, bu2, ignore))
 	for bu2 in db2._BUs._list:
 		bu1 = db1.boardUnitByName(bu2._name)
 		if bu1 is None:
 			result.addChild(compareResult("added", "ecu", bu2))
 
 
-	result.addChild(compareDefineList(db1._globalDefines, db2._globalDefines))
 	
-	temp = compareDefineList(db1._buDefines, db2._buDefines)
-	temp._type = "ECU Defines"
-	result.addChild(temp)
+	if ignore is not None and "DEFINE" in ignore and ignore["DEFINE"] == "*":
+		pass
+	else:
+		result.addChild(compareDefineList(db1._globalDefines, db2._globalDefines))
 
-	temp = compareDefineList(db1._frameDefines, db2._frameDefines)
-	temp._type = "Frame Defines"
-	result.addChild(temp)
+		temp = compareDefineList(db1._buDefines, db2._buDefines)
+		temp._type = "ECU Defines"
+		result.addChild(temp)
 
-	temp = compareDefineList(db1._signalDefines, db2._signalDefines)
-	temp._type = "Signal Defines"
-	result.addChild(temp)
+		temp = compareDefineList(db1._frameDefines, db2._frameDefines)
+		temp._type = "Frame Defines"
+		result.addChild(temp)
+
+		temp = compareDefineList(db1._signalDefines, db2._signalDefines)
+		temp._type = "Signal Defines"
+		result.addChild(temp)
 
 	for vt1 in db1._valueTables:
 		if vt1 not in db2._valueTables:
@@ -154,8 +161,10 @@ def compareDefineList(d1list, d2list):
 			result.addChild(compareResult("added", "Define" + str(definition), d2list))
 	return result
 	
-def compareAttributes(ele1, ele2):
+def compareAttributes(ele1, ele2, ignore = None):
 	result = compareResult("equal", "ATTRIBUTES", ele1)	
+	if ignore is not None and "ATTRIBUTE" in ignore and (ignore["ATTRIBUTE"] == "*" or ignore["ATTRIBUTE"] == ele1):		
+		return result 
 	for attribute in ele1._attributes:
 		if attribute not in ele2._attributes:
 			result.addChild(compareResult("deleted", str(attribute), ele1._attributes[attribute]))
@@ -167,15 +176,19 @@ def compareAttributes(ele1, ele2):
 			result.addChild(compareResult("added", str(attribute), ele2._attributes[attribute]))
 	return result
 			
-def compareBu(bu1, bu2):
+def compareBu(bu1, bu2, ignore=None):
 	result = compareResult("equal", "ECU", bu1)
 
 	if bu1._comment != bu2._comment:
 		result.addChild(compareResult("changed", "ECU", bu1, [ bu1._comment,  bu2._comment]))
-	result.addChild(compareAttributes(bu1, bu2))
+
+	if ignore is not None and "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
+		pass
+	else:
+		result.addChild(compareAttributes(bu1, bu2, ignore))
 	return result
 	
-def compareFrame(f1, f2):
+def compareFrame(f1, f2, ignore= None):
 	result = compareResult("equal", "FRAME", f1)
 
 	for s1 in f1._signals:
@@ -183,7 +196,7 @@ def compareFrame(f1, f2):
 		if not s2:
 			result.addChild(compareResult("deleted", "SIGNAL", s1))
 		else:
-			result.addChild(compareSignal(s1, s2))
+			result.addChild(compareSignal(s1, s2, ignore))
 
 	if f1._name != f2._name:
 		result.addChild(compareResult("changed", "Name", f1, [f1._name, f2._name]))
@@ -203,7 +216,10 @@ def compareFrame(f1, f2):
 		if not s1:
 			result.addChild(compareResult("added", "SIGNAL", s2))
 
-	result.addChild(compareAttributes(f1, f2))
+	if ignore is not None and "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":		
+		pass
+	else:
+		result.addChild(compareAttributes(f1, f2, ignore))
 
 	for transmitter in f1._Transmitter:
 		if transmitter not in f2._Transmitter:
@@ -224,7 +240,7 @@ def compareFrame(f1, f2):
 			result.addChild(compareResult("added", "Signalgroup", sg1))
 	return result
 
-def compareSignal(s1,s2):
+def compareSignal(s1,s2, ignore = None):
 	result = compareResult("equal", "SIGNAL", s1)
 
 	if s1._startbit != s2._startbit:
@@ -262,7 +278,11 @@ def compareSignal(s1,s2):
 		if reciever not in s1._reciever:
 			result.addChild(compareResult("added", "Reciever " + reciever, s1._reciever))
 
-	result.addChild(compareAttributes(s1, s2))
+	if ignore is not None and "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
+		pass
+	else:
+		result.addChild(compareAttributes(s1, s2, ignore))
+
 	result.addChild(compareValueTable(s1._values,s2._values))
 			
 	return result

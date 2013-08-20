@@ -60,8 +60,10 @@ def dumpResult(res, depth = 0):
 	for child in res._children:
 		dumpResult(child, depth+1)
 
-
-obj = compareDb(db1, db2)
+ignore = {}
+#ignore["ATTRIBUTE"] = "*"
+#ignore["DEFINE"] = "*"
+obj = compareDb(db1, db2, ignore)
 dumpResult(obj)
 	
 
