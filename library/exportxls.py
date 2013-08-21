@@ -261,7 +261,7 @@ def exportXls(db, filename):
 		#sort signals:
 		sigHash ={}
 		for sig in frame._signals:
-			sigHash[str(sig._startbit) + sig._name] = sig
+			sigHash["%02d" % int(sig._startbit) + sig._name] = sig
 		
 		#set style for first line with border
 		sigstyle = sty_first_frame
