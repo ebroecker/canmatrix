@@ -28,12 +28,11 @@
 #TODO name save
 #TODO defaults for CAN-Simulation missing
 #TODO LabelGroup not supported
-#TODO multiple Transmitter
 
 from lxml import etree
 from canmatrix import *
 
-def parseSignal(signal, mux, namespace):
+def parseSignal(signal, mux, namespace, nodelist):
 	startbit = 0
 	if 'offset' in signal.attrib:
 		startbit = signal.get('offset')
@@ -67,21 +66,29 @@ def parseSignal(signal, mux, namespace):
 		if 'max' in values.attrib:
 			max = values.get('max')
 
-	reciever = ""
-	producers = signal.findall('./' + namespace + 'Producer')
-	for producer in producers:
-		noderefs = producer.findall('./' + namespace + 'NodeRef')
+	reciever = []
+	consumers = signal.findall('./' + namespace + 'Consumer')
+	for consumer in consumers:
+		noderefs = consumer.findall('./' + namespace + 'NodeRef')
 		for noderef in noderefs:
-			reciever += nodelist[noderef.get('id')] + ' '
+			reciever.append(nodelist[noderef.get('id')])
+
 
 	valuetype = '+'		
 	newSig = Signal(signal.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, mux)
 
+	notes = signal.findall('./' + namespace + 'Notes')
+	comment = ""
+	for note in notes:
+		if note.text is not None:
+			comment += note.text
+			newSig.addComment(comment)
+		
 	labelsets = signal.findall('./' + namespace + 'LabelSet')
 	for labelset in  labelsets:
 		labels = labelset.findall('./' + namespace + 'Label')
 		for label in labels:
-			name = '"' + label.get('name') + '"'
+			name = label.get('name')
 			value = label.get('value')
 			newSig.addValues(value, name)
 
@@ -107,13 +114,19 @@ def importKcd(filename):
 	messages = bus.findall('./' + namespace + 'Message')
 
 	for message in messages:
-		dlc = 1
-		newBo = Frame(int(message.get('id'), 16), message.get('name'), dlc, None)
+		dlc = None
+		newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
 
 		if 'triggered' in message.attrib:
 			newBo.addAttribute("GenMsgCycleTime", message.get('interval'))	
 
+		
+		if 'length' in message.attrib:
+			dlc = int(message.get('length'))
+
 		multiplex = message.find('./' + namespace + 'Multiplex')
+		maxBit = 0;
+
 		if multiplex is not None:	
 			startbit = 0
 			if 'offset' in multiplex.attrib:
@@ -128,21 +141,44 @@ def importKcd(filename):
 			if int(startbit) + int(signalsize) > maxBit:
 				maxBit = int(startbit) + int(signalsize)
 			
+			min = 0
+			max = 1
+			values = multiplex.find('./' + namespace + 'Value')
+			if values is not None:
+				if 'min' in values.attrib:
+					min = values.get('min')
+				if 'max' in values.attrib:
+					max = values.get('max')
+
 			unit = ""
 			offset = 0
 			factor = 1
-			min = 0
-			max = 1
 			valuetype = '+'		
-
+	
 			reciever = ""
-			producers = signal.findall('./' + namespace + 'Producer')
-			for producer in producers:
-				noderefs = producer.findall('./' + namespace + 'NodeRef')
+			consumers = multiplex.findall('./' + namespace + 'Consumer')
+			for consumer in consumers:
+				noderefs = consumer.findall('./' + namespace + 'NodeRef')
 				for noderef in noderefs:
 					reciever += nodelist[noderef.get('id')] + ' '
 
 			newSig = Signal(multiplex.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, 'Multiplexor')
+
+			notes = multiplex.findall('./' + namespace + 'Notes')
+			comment = ""
+			for note in notes:
+				comment += note.text
+			newSig.addComment(comment)
+
+
+			labelsets = multiplex.findall('./' + namespace + 'LabelSet')
+			for labelset in  labelsets:
+				labels = labelset.findall('./' + namespace + 'Label')
+				for label in labels:
+					name = label.get('name')
+					value = label.get('value')
+					newSig.addValues(value, name)
+
 			newBo.addSignal(newSig)
 			
 			muxgroups = multiplex.findall('./' + namespace + 'MuxGroup')
@@ -150,24 +186,40 @@ def importKcd(filename):
 				mux = muxgroup.get('count')
 				signales = muxgroup.findall('./' + namespace + 'Signal')			
 				for signal in signales:
-					newSig = parseSignal(signal, mux, namespace)	
+					newSig = parseSignal(signal, mux, namespace, nodelist)	
 					if int(newSig._startbit) + int(newSig._signalsize) > maxBit:
 						maxBit = int(newSig._startbit) + int(newSig._signalsize)
 					newBo.addSignal(newSig)
 
 		signales = message.findall('./' + namespace + 'Signal')
-		maxBit = 0;
+		
+		producers = message.findall('./' + namespace + 'Producer')
+		for producer in producers:
+			noderefs = producer.findall('./' + namespace + 'NodeRef')
+			for noderef in noderefs:
+				newBo.addTransmitter(nodelist[noderef.get('id')])
+		
 		for signal in signales:
-			newSig = parseSignal(signal, None, namespace)
+			newSig = parseSignal(signal, None, namespace, nodelist)
 		
 			if int(newSig._startbit) + int(newSig._signalsize) > maxBit:
 				maxBit = int(newSig._startbit) + int(newSig._signalsize)
 			
 			newBo.addSignal(newSig)
-		newBo._Size = int(maxBit / 8)
-		if newBo._Size < maxBit / 8 + 1 :
-			newBo._Size = int(maxBit / 8)+1
 
+		
+		notes = message.findall('./' + namespace + 'Notes')
+		comment = ""
+		for note in notes:
+			comment += note.text
+		newBo.addComment(comment)
+	
+		if dlc is None:
+			newBo._Size = int((maxBit-1) / 8)+1
+		else:
+			newBo._Size = dlc
+		
+		
 		db._fl.addFrame(newBo)
 	return db
 

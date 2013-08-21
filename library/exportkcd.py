@@ -36,10 +36,8 @@ def createSignal(signal, nodeList):
 		sig.set('endianess',"little")
 
 	notes = etree.Element('Notes')
-
 	if signal._comment is not None:
 		notes.text = signal._comment
-
 	sig.append(notes)
 
 	value = etree.Element('Value')
@@ -67,7 +65,6 @@ def createSignal(signal, nodeList):
 		if len(reciever) > 1 and reciever in nodeList:				
 			noderef = etree.Element('NodeRef', id=str(nodeList[reciever]))
 			consumer.append(noderef)
-#TODO Kajak doesnt like my consumer-list -> research why?
 			sig.append(consumer)
 	return sig
 
@@ -98,16 +95,15 @@ def exportKcd(db, filename):
 		nodeList[bu._name] = id;
 		id += 1
 	# Bus
-
 	if 'Baudrate' in db._attributes:
 		bus = etree.Element('Bus', baudrate=db._attributes['Baudrate'])
 	else:
 		bus = etree.Element('Bus')
 
-	bus.set("name","chassis")
+	bus.set("name",filename)
 
 	for bo in db._fl._list:
-		message = etree.Element('Message', id="0x%03X" % bo._Id, name=bo._name)
+		message = etree.Element('Message', id="0x%03X" % bo._Id, name=bo._name, length = str(bo._Size))
 
 		if "GenMsgCycleTime" in bo._attributes:
 			cycleTime = int(bo._attributes["GenMsgCycleTime"])	
@@ -122,6 +118,13 @@ def exportKcd(db, filename):
 				noderef = etree.Element('NodeRef', id=str(nodeList[transmitter]))
 				producer.append(noderef)
 		message.append(producer)
+		
+		comment = etree.Element('Notes')
+		if bo._comment is not None:
+			comment.text = bo._comment	
+			message.append(comment)		
+				
+				
 		# standard-signals:
 		for signal in bo._signals:
 			if signal._multiplex is None:
@@ -133,6 +136,19 @@ def exportKcd(db, filename):
 		for signal in bo._signals:
 			if signal._multiplex is not None and signal._multiplex == 'Multiplexor':
 				multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal._startbit), length=str(signal._signalsize))
+				value = etree.Element('Value')
+				if float(signal._min) != 0:	
+					value.set('min',str(signal._min))
+				if float(signal._max) != 1:	
+					value.set('max',str(signal._max))
+				multiplexor.append(value)
+				labelset = etree.Element('LabelSet')
+				for valueVal,valName in signal._values.items():
+					label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
+					labelset.append(label)			
+				multiplexor.append(labelset)
+
+
 
 		# multiplexor found
 		if multiplexor is not None:
@@ -141,7 +157,7 @@ def exportKcd(db, filename):
 				empty = 0
 				muxgroup = etree.Element('MuxGroup', count=str(i))
 				for signal in bo._signals:
-					if signal._multiplex is not None and signal._multiplex == str(i):
+					if signal._multiplex is not None and signal._multiplex == i:
 						sig = createSignal(signal, nodeList)
 						muxgroup.append(sig)
 						empty = 1
