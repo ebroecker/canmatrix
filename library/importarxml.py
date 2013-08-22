@@ -39,6 +39,10 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 		startBit = arGetChild(signal, "START-POSITION", arDict, ns)
 		isignal = arGetChild(signal, "SIGNAL", arDict, ns)
 		syssignal = arGetChild(isignal, "SYSTEM-SIGNAL", arDict, ns)
+		if "SYSTEM-SIGNAL-GROUP" in  syssignal.tag:
+			print isignal.tag + " is signal-group - not supported yet"
+			continue
+#TODO: Support for Signal-Groups
 		length = arGetChild(syssignal,  "LENGTH", arDict, ns)
 		name = arGetChild(syssignal,  "SHORT-NAME", arDict, ns)
 
@@ -113,7 +117,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 					newSig.addValues(1,"TRUE")
 					newSig.addValues(0,"FALSE")
 		
-			if initvalue is not None:
+			if initvalue is not None and initvalue.text is not None:
 				if initvalue.text == "false":
 					initvalue.text = "0"
 				elif initvalue.text == "true":
@@ -138,6 +142,7 @@ def getFrame(frame, arDict, multiplexTranslation, ns):
 	
 	sn = arGetChild(frame, "SHORT-NAME", arDict, ns)
 	idNum = int(idele.text)
+	print "Frame: " + arGetName(pdu, ns)
 	newBo = Frame(idNum, arGetName(pdu, ns), int(dlc.text), None) 
 
 	
@@ -156,7 +161,7 @@ def getFrame(frame, arDict, multiplexTranslation, ns):
 		ipdu = arGetChild(staticPart, "I-PDU", arDict, ns)
 		if ipdu is not None:
 			pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
-			pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+			pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)			
 			getSignals(pdusigmapping, newBo, arDict, ns, None)
 			multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu,ns)
 			
@@ -228,7 +233,6 @@ def getFrame(frame, arDict, multiplexTranslation, ns):
 	pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
 	getSignals(pdusigmapping, newBo, arDict, ns, None)
 	return newBo
-
 	
 def getDesc(element, arDict, ns):
 	desc = arGetChild(element, "DESC", arDict, ns)
@@ -243,7 +247,6 @@ def getDesc(element, arDict, ns):
 		return ""
 
 def processEcu(ecu, db, arDict, multiplexTranslation, ns):
-#	print arGetName(ecu, ns) + ":"
 	connectors = arGetChild(ecu, "CONNECTORS", arDict, ns)
 	diagAddress = arGetChild(ecu, "DIAGNOSTIC-ADDRESS", arDict, ns)
 	diagResponse = arGetChild(ecu, "RESPONSE-ADDRESSS", arDict, ns)
@@ -340,11 +343,18 @@ def importArxml(filename):
 	arParseTree(topLevelPackages, arDict, ns)
 	print " Done\n"
 
+	ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
+	for cc in ccs:
+		speed = arGetChild(cc, "SPEED", arDict, ns)
+		print "Busname: " + arGetName(cc,ns) + " Speed: " + speed.text
+		physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
 
-	cc = root.find('.//' + ns + 'CAN-CLUSTER')
+#TODO: Support for multiple Bus-Definitions
+	cc = ccs[0]
 	speed = arGetChild(cc, "SPEED", arDict, ns)
 	print "Busname: " + arGetName(cc,ns) + " Speed: " + speed.text
 	physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
+
 	nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
 	
 	physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
