@@ -27,10 +27,14 @@ import xlwt
 import sys
 from canmatrix import *
 
-sty_header    = xlwt.easyxf('font: name Arial Narrow, bold on; align: rota 90, vertical center, horizontal center','pattern: pattern solid, fore-colour rose') 
-sty_norm    = xlwt.easyxf('font: name Arial Narrow, colour black')
-sty_first_frame    = xlwt.easyxf('font: name Arial Narrow, colour black; borders: top thin')
-sty_white    = xlwt.easyxf('font: name Arial Narrow, colour white') 
+#Font Size : 8pt * 20 = 160
+#font = 'font: name Arial Narrow, height 160'
+font = 'font: name Verdana, height 160'
+
+sty_header    = xlwt.easyxf(font + ', bold on; align: rota 90, vertical center, horizontal center','pattern: pattern solid, fore-colour rose') 
+sty_norm    = xlwt.easyxf(font + ', colour black')
+sty_first_frame    = xlwt.easyxf(font + ', colour black; borders: top thin')
+sty_white    = xlwt.easyxf(font + ', colour white') 
 
 # BUMatrix-Styles
 sty_green = xlwt.easyxf('pattern: pattern solid, fore-colour light_green') 
