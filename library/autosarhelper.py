@@ -49,7 +49,20 @@ def arParseTree(tag, ardict, namespace):
 			arParseTree(child, ardict.new(name.text, child), namespace)
 		if name is None:
 			arParseTree(child, ardict, namespace)
+#
+# some sort of X-Path in autosar-xml-files:
+#
+def arGetXchildren(root, path, arDict, ns):
+	pathElements = path.split('/')
+	ptr = root
+	for element in pathElements[:-1]:
+		ptr = arGetChild(ptr, element, arDict, ns)
+	ptr = arGetChildren(ptr, pathElements[-1], arDict, ns)
+	return ptr
 
+#
+# get path in tranlation-dictionary
+#
 def arGetPath(ardict, path):
 	ptr = ardict
 	for p in path.split('/'):
@@ -59,6 +72,7 @@ def arGetPath(ardict, path):
 
 
 def arGetChild(parent, tagname, arTranslationTable, namespace):
+#	print "getChild: " + tagname
 	if parent is None:
 		return None
 	ret = parent.find('./' + namespace + tagname)

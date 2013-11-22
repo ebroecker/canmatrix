@@ -30,21 +30,34 @@ from autosarhelper import *
 
 
 #TODO Well, ..., this is the first attempt to import a arxml-file; I did this without reading any spec;  
-#TODO recievers of signals are missing
+
+signalRxs = {} 
+
+def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):	
+	members = []
+	for signal in syssignalarray:
+		members.append(arGetName(signal, ns))
+	Bo.addSignalGroup( arGetName(syssignal, ns), 1, members)
+
 
 def getSignals(signalarray, Bo, arDict, ns, multiplexId):
+	GroupId = 1
 	for signal in signalarray:	
 		values = {}
 		motorolla = arGetChild(signal, "PACKING-BYTE-ORDER", arDict, ns)
 		startBit = arGetChild(signal, "START-POSITION", arDict, ns)
-		isignal = arGetChild(signal, "SIGNAL", arDict, ns)
-		syssignal = arGetChild(isignal, "SYSTEM-SIGNAL", arDict, ns)
+		syssignal = arGetXchildren(signal, "SIGNAL/SYSTEM-SIGNAL", arDict, ns)
+		if syssignal is not None:
+			syssignal = syssignal[0]
 		if "SYSTEM-SIGNAL-GROUP" in  syssignal.tag:
-			print isignal.tag + " is signal-group - not supported yet"
+			syssignalarray = arGetXchildren(syssignal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL", arDict, ns)
+			getSysSignals(syssignal, syssignalarray, Bo, GroupId, ns)
+			GroupId = GroupId + 1
 			continue
-#TODO: Support for Signal-Groups
+
 		length = arGetChild(syssignal,  "LENGTH", arDict, ns)
 		name = arGetChild(syssignal,  "SHORT-NAME", arDict, ns)
+		isignal = signal.find('./' + ns + 'SIGNAL-REF')
 
 		Min = 0
 		Max = 1
@@ -74,23 +87,28 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 			if l4 is not None:
 				Unit = l4.text
 
-		int2phy = arGetChild(compmethod, "COMPU-INTERNAL-TO-PHYS", arDict, ns)
-		compuscalescontainer = arGetChild(int2phy, "COMPU-SCALES", arDict, ns)
-		compuscales = arGetChildren(compuscalescontainer, "COMPU-SCALE", arDict, ns)
+		compuscales = arGetXchildren(compmethod, "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE", arDict, ns)
+		initvalue = arGetXchildren(syssignal, "INIT-VALUE/VALUE", arDict, ns)
+		if initvalue is not None and initvalue.__len__() > 1:
+			initvalue = initvalue[0]
+		else:
+			initvalue = None
 
-		initvalueelement = arGetChild(syssignal, "INIT-VALUE", arDict, ns)
-		initvalue = arGetChild(initvalueelement, "VALUE", arDict, ns)
 		for compuscale in compuscales:	
 			ll = arGetChild(compuscale, "LOWER-LIMIT", arDict, ns)
 			ul = arGetChild(compuscale, "UPPER-LIMIT", arDict, ns)
 			sl = arGetChild(compuscale, "SHORT-LABEL", arDict, ns)
+			if sl is None:
+				desc = getDesc(compuscale, arDict, ns)
+			else:
+				desc = sl.text
 
-			if ll is not None and sl is not None and int(ul.text) == int(ll.text):
-				values[ll.text] = sl.text			
+			if ll is not None and desc is not None and int(ul.text) == int(ll.text):
+				values[ll.text] = desc
+			
 			scaleDesc = getDesc(compuscale, arDict, ns)
 			rational = arGetChild(compuscale, "COMPU-RATIONAL-COEFFS", arDict, ns)
 			if rational is not None:
-
 				numerator = arGetChild(rational, "COMPU-NUMERATOR", arDict, ns)
 				zaehler = arGetChildren(numerator, "V", arDict, ns)
 				denominator = arGetChild(rational, "COMPU-DENOMINATOR", arDict, ns)
@@ -109,7 +127,9 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 		valuetype = '+' # unsigned
 		if startBit is not None:
 			newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever, multiplexId)
-
+			newSig._isigRef = isignal.text
+			signalRxs[isignal.text] = newSig
+	
 			basetype = arGetChild(datdefprops, "BASE-TYPE", arDict, ns)
 			if basetype is not None:
 				temp = arGetChild(basetype, "SHORT-NAME", arDict, ns)
@@ -142,8 +162,8 @@ def getFrame(frame, arDict, multiplexTranslation, ns):
 	
 	sn = arGetChild(frame, "SHORT-NAME", arDict, ns)
 	idNum = int(idele.text)
-	print "Frame: " + arGetName(pdu, ns)
-	newBo = Frame(idNum, arGetName(pdu, ns), int(dlc.text), None) 
+
+	newBo = Frame(idNum, arGetName(pdumapping, ns), int(dlc.text), None) 
 
 	
 	if "MULTIPLEXED-I-PDU" in pdu.tag:
@@ -182,8 +202,6 @@ def getFrame(frame, arDict, multiplexTranslation, ns):
 				pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
 				getSignals(pdusigmapping, newBo, arDict, ns, selectorId.text)
 
-			
-	
 	newBo.addComment(getDesc(pdu, arDict, ns))
 	
 	if extEle is not None:
@@ -293,17 +311,17 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 			else:
 				print "out not found: " + out 
 
-		for inf in inFrame:
-			if inf in multiplexTranslation:
-				inf = multiplexTranslation[inf]
-			frame = db.frameByName(inf)
-			if frame is not None:
-				for signal in frame._signals:
-					rec_name = arGetName(ecu, ns)
-					if rec_name not in  signal._reciever:
-						signal._reciever.append(rec_name)
-			else:
-				print "in not found: " + inf
+#		for inf in inFrame:
+#			if inf in multiplexTranslation:
+#				inf = multiplexTranslation[inf]
+#			frame = db.frameByName(inf)
+#			if frame is not None:
+#				for signal in frame._signals:
+#					rec_name = arGetName(ecu, ns)
+#					if rec_name not in  signal._reciever:
+#						signal._reciever.append(rec_name)
+#			else:
+#				print "in not found: " + inf
 	bu = BoardUnit(arGetName(ecu, ns))
 	if nmAddress is not None:
 		bu.addAttribute("NWM-Stationsadresse", nmAddress.text)
@@ -346,13 +364,19 @@ def importArxml(filename):
 	ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
 	for cc in ccs:
 		speed = arGetChild(cc, "SPEED", arDict, ns)
-		print "Busname: " + arGetName(cc,ns) + " Speed: " + speed.text
+		print "Busname: " + arGetName(cc,ns),
+		if speed is not None:
+			print " Speed: " + speed.text
+
 		physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
 
 #TODO: Support for multiple Bus-Definitions
 	cc = ccs[0]
 	speed = arGetChild(cc, "SPEED", arDict, ns)
-	print "Busname: " + arGetName(cc,ns) + " Speed: " + speed.text
+	print "Busname: " + arGetName(cc,ns),
+	if speed is not None:
+		print " Speed: " + speed.text
+
 	physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
 
 	nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
@@ -360,11 +384,30 @@ def importArxml(filename):
 	physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
 	frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
 	canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
+
 	
 	multiplexTranslation = {}
 	for frame in canframetrig:
 		db._fl.addFrame(getFrame(frame, arDict,multiplexTranslation, ns))
 	
+
+	isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERINGS/I-SIGNAL-TRIGGERING", arDict, ns)
+	for sigTrig in isignaltriggerings:
+		isignal = sigTrig.find('./' + ns + 'SIGNAL-REF')
+		portRefs =  arGetChild(sigTrig, "I-SIGNAL-PORT-REFS", arDict, ns)
+		portRef =  arGetChildren(portRefs, "I-SIGNAL-PORT", arDict, ns)
+	
+		for port in portRef:			
+			comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
+			if comDir.text == "IN":
+				ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
+				if isignal.text in signalRxs:
+					signalRxs[isignal.text]._reciever.append(ecuName)
+#				for fr in db._fl._list:
+#					for sig in fr._signals:
+#						if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
+#							sig._reciever.append(ecuName)
+					#TODO
 	
 	# find ECUs:
 	nodes = root.findall('.//' + ns +'ECU-INSTANCE')
