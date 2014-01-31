@@ -105,7 +105,7 @@ def writeFrame(frame, worksheet, row, mystyle):
 		worksheet.write(row, 4, label = "", style=mystyle)			
 
 
-def writeSignal(sig, worksheet, row, mystyle, rearCol):
+def writeSignal(db, sig, worksheet, row, mystyle, rearCol):
 	#startbyte
 	worksheet.write(row, 5, label = (sig._startbit)/8+1, style=mystyle)
 	#startbit
@@ -131,8 +131,10 @@ def writeSignal(sig, worksheet, row, mystyle, rearCol):
 
 	#startvalue of signal available
 	if "GenSigStartValue" in sig._attributes:
-		worksheet.write(row, 10, label = "%Xh" % int(sig._attributes["GenSigStartValue"]), style=mystyle)
-	#no startvalue of signal available / just for correct style:
+		if db._signalDefines["GenSigStartValue"]._definition == "STRING":
+			worksheet.write(row, 10, label = sig._attributes["GenSigStartValue"], style=mystyle)		
+		elif db._signalDefines["GenSigStartValue"]._definition == "INT" or db._signalDefines["GenSigStartValue"]._definition == "HEX":
+			worksheet.write(row, 10, label = "%Xh" % int(sig._attributes["GenSigStartValue"]), style=mystyle)
 	else:
 		worksheet.write(row, 10, label = " ", style=mystyle)
 
@@ -288,7 +290,7 @@ def exportXls(db, filename):
 					col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)
 					# write Value
 					writeValue(val,sig._values[val], worksheet, row, col, valstyle)					
-					writeSignal(sig, worksheet, row, sigstyle, col)
+					writeSignal(db, sig, worksheet, row, sigstyle, col)
 
 					# no min/max here, because min/max has same col as values...
 					#next row					
@@ -303,7 +305,7 @@ def exportXls(db, filename):
 				writeFrame(frame, worksheet, row, framestyle)
 				col = head_top.__len__()
 				col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)		
-				writeSignal(sig, worksheet, row, sigstyle, col)	
+				writeSignal(db, sig, worksheet, row, sigstyle, col)	
 			
 				if float(sig._min) != 0 or float(sig._max) != 1.0:
 					worksheet.write(row, col+1, label = str("%s..%s" %(sig._min, sig._max)), style=sigstyle)

@@ -141,8 +141,9 @@ class Signal:
 		"""
 		Add Attribute to Signal
 		"""
+		
 		if attribute not in self._attributes:
-			self._attributes[attribute]=value
+			self._attributes[attribute]=value.replace('"','')
 	def addValues(self, value, valueName):
 		"""
 		Add Value/Description to Signal
@@ -257,9 +258,36 @@ class Define:
 	these objects hold the defines and default-values
 	"""
 	def __init__(self, definition):
-		self._definition = definition.strip()
+		definition = definition.strip()
+		self._definition = definition
+		self._type = None
+		
+		# for any known type:
+		if definition[0:3] == 'INT':
+			self._type = 'INT'
+			_min, _max = definition[4:].split(' ',2)
+			self._min = int(_min)
+			self._max = int(_max)			
+		elif definition[0:6] == 'STRING':
+			self._type = 'STRING'
+			self._min = None
+			self._max = None
+		elif definition[0:4] == 'ENUM':
+			self._type = 'ENUM'
+			self._values = definition[5:].split(',')
+		elif definition[0:3] == 'HEX':
+			self._type = 'HEX'
+			_min, _max = definition[4:].split(' ',2)
+			self._min = int(_min)
+			self._max = int(_max)			
+		elif definition[0:5] == 'FLOAT':
+			self._type = 'FLOAT'
+			_min, _max = definition[6:].split(' ',2)
+			self._min = float(_min)
+			self._max = float(_max)			
+
 		self._defaultValue = None
-	
+		
 	def addDefault(self, default):
 		self._defaultValue = default
 

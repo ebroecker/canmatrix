@@ -71,8 +71,6 @@ def exportDbc(db, filename):
 				f.write(" m%d " % int(signal._multiplex))
 
 			f.write(" : %d|%d@%d%c" % (signal._startbit, signal._signalsize,signal._byteorder, signal._valuetype))
-#			f.write(" (%g,%g)" % (signal._factor, signal._offset))
-#			f.write(" [%g|%g]" % (signal._min, signal._max))
 			f.write(" (%s,%s)" % (signal._factor, signal._offset))
 			f.write(" [%s|%s]" % (signal._min, signal._max))
 			f.write(' "')
@@ -112,18 +110,6 @@ def exportDbc(db, filename):
 		if bu._comment is not None and bu._comment.__len__() > 0:
 			f.write("CM_ BU_ " + bu._name + ' "' + bu._comment.encode(dbcExportEncoding,'replace').replace('"','\\"') + '";\n') 
 	f.write("\n")
-
-# some default defines  --> now in importarxml and importkcd:
-#	db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
-#	db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
-#	db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
-#	db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535')
-#	db.addFrameDefines("GenMsgCycleTimeActive",  'INT 0 65535')
-#	db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535')
-#	db.addFrameDefines("GenMsgStartValue",  'STRING')
-#	db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
-#	db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
-#	db.addSignalDefines("GenSigSNA", 'STRING')
 
 	defaults = {}
 	for (type,define) in db._frameDefines.items():
