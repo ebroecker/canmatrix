@@ -27,7 +27,7 @@ import sys
 if len(sys.argv) < 3:
     sys.stderr.write('Usage: sys.argv[0] import-file export-file\n')
     sys.stderr.write('import-file: *.dbc|*.dbf|*.kcd|*.arxml\n')
-    sys.stderr.write('export-file: *.dbc|*.dbf|*.kcd\n')
+    sys.stderr.write('export-file: *.dbc|*.dbf|*.kcd|*.json\n')
     sys.exit(1)
 
 infile = sys.argv[1]
@@ -60,6 +60,8 @@ elif outfile[-3:] == 'kcd':
 	db = ex.exportKcd(db, outfile)
 elif outfile[-3:] == 'xls':
 	db = ex.exportXls(db, outfile)
+elif outfile[-4:] == 'json':
+	db = ex.exportJson(db, outfile)
 else:
     sys.stderr.write('File not recognized: ' + infile + "\n")
 print "done"

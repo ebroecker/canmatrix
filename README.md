@@ -19,11 +19,14 @@ Export-File-Formats:
  .dbf
  .kcd
  .xls
+ .json
+ .arxml (very basic implementation)
 
 Thus Currently partly working (x = validated):
 * convert .dbc -> .kcd x
 * convert .dbc -> .dbf x
 * convert .dbc -> .xls x
+* convert .dbc -> .json x
 * convert .dbf -> .kcd
 * convert .dbf -> .dbf
 * convert .dbf -> .kcd
