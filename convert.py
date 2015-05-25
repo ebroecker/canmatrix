@@ -63,5 +63,5 @@ elif outfile[-3:] == 'xls':
 elif outfile[-4:] == 'json':
 	db = ex.exportJson(db, outfile)
 else:
-    sys.stderr.write('File not recognized: ' + infile + "\n")
+    sys.stderr.write('File not recognized: ' + outfile + "\n")
 print "done"
