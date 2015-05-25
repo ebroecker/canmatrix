@@ -10,12 +10,12 @@ except:
 try: 
 	from importkcd import *
 except:
-	print "no kcd-import-support, some dependencys missing... "
+	print "no kcd-import-support, some dependencys missing... , try pip install lxml"
 
 try: 
 	from importxls import *
 except:
-	print "no xls-import-support, some dependencys missing... "
+	print "no xls-import-support, some dependencys missing... , try pip install xlrd xlwt"
 
 
 #Copyright (c) 2013, Eduard Broecker 
