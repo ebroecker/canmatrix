@@ -30,38 +30,47 @@ if len(sys.argv) < 3:
     sys.stderr.write('export-file: *.dbc|*.dbf|*.kcd|*.json\n')
     sys.exit(1)
 
+dbs = {}
 infile = sys.argv[1]
-outfile = sys.argv[2]
+outfileName = sys.argv[2]
 
 print "Importing " + infile + " ... "
 if infile[-3:] == 'dbc':
-	db = im.importDbc(infile)
+	dbs[""] = im.importDbc(infile)
 elif infile[-3:] == 'dbf':
-	db = im.importDbf(infile)
+	dbs["default"] = im.importDbf(infile)
 elif infile[-3:] == 'kcd':
-	db = im.importKcd(infile)
+	dbs["default"] = im.importKcd(infile)
 elif infile[-3:] == 'xls' or infile[-4:] == 'xlsx' :
-	db = im.importXls(infile)
+	dbs["default"] = im.importXls(infile)
 elif infile[-5:] == 'arxml':
-	db = im.importArxml(infile)
+	dbs = im.importArxml(infile)
 else:
     sys.stderr.write('\nFile not recognized: ' + infile + "\n")
 print "done\n"
 
-print "%d Frames found" % (db._fl._list.__len__())
 
-print "Exporting " + outfile + " ... "
+print "Exporting " + outfileName + " ... "
 
-if outfile[-3:] == 'dbc':
-	db = ex.exportDbc(db, outfile)
-elif outfile[-3:] == 'dbf':
-	db = ex.exportDbf(db, outfile)
-elif outfile[-3:] == 'kcd':
-	db = ex.exportKcd(db, outfile)
-elif outfile[-3:] == 'xls':
-	db = ex.exportXls(db, outfile)
-elif outfile[-4:] == 'json':
-	db = ex.exportJson(db, outfile)
-else:
-    sys.stderr.write('File not recognized: ' + infile + "\n")
+for name in dbs:
+	db = dbs[name]
+	print name
+	print "%d Frames found" % (db._fl._list.__len__())
+	
+	if len(name) > 0:
+		outfile = name + "_" + outfileName
+	else:
+		outfile = outfileName
+	if outfile[-3:] == 'dbc':
+		db = ex.exportDbc(db, outfile)
+	elif outfile[-3:] == 'dbf':
+		db = ex.exportDbf(db, outfile)
+	elif outfile[-3:] == 'kcd':
+		db = ex.exportKcd(db, outfile)
+	elif outfile[-3:] == 'xls':
+		db = ex.exportXls(db, outfile)
+	elif outfile[-4:] == 'json':
+		db = ex.exportJson(db, outfile)
+	else:
+	    sys.stderr.write('File not recognized: ' + infile + "\n")
 print "done"
