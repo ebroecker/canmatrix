@@ -2,6 +2,9 @@
 library/canmatrix.py
 : Definitions should be imported with disassembling not as complete string
 
+library/canmatrixGenerateJS.py
+ flasche Bits bei nicht-vollständigen Bytes...
+
 library/exportarxml.py
  Well, ..., this is the first attempt to export a arxml-file; I did this without reading any spec;  
  recievers of signals are missing
@@ -9,10 +12,10 @@ library/exportarxml.py
 			: TRANSFER-PROPERTY: PENDING???
 			: TRANSFER-PROPERTY: PENDING???
 
+
 library/importarxml.py
  Well, ..., this is the first attempt to import a arxml-file; I did this without reading any spec;  
 	: use diagAddress for frame-classification
-: Support for multiple Bus-Definitions
 					
 
 library/importdbc.py
@@ -29,3 +32,4 @@ library/importkcd.py
  name save
  defaults for CAN-Simulation missing
  LabelGroup not supported
+

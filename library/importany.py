@@ -32,6 +32,7 @@ def importany(filename):
 	elif filename[-3:] == 'xls' or filename[-4:] == 'xlsx' :
 		db = im.importXls(filename)
 	elif filename[-5:] == 'arxml':
-		db = im.importArxml(filename)
+		dbs = im.importArxml(filename)
+		db = dbs.itervalues().next()
 	return db
 

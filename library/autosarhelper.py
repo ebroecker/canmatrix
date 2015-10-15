@@ -67,7 +67,10 @@ def arGetPath(ardict, path):
 	ptr = ardict
 	for p in path.split('/'):
 		if p.strip():
-			ptr = ptr.getChild(p)
+			if ptr is not None:
+				ptr = ptr.getChild(p)
+			else:
+				return None
 	return ptr._ref
 
 

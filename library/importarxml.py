@@ -309,7 +309,8 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 			if frame is not None:
 				frame.addTransmitter(arGetName(ecu, ns))
 			else:
-				print "out not found: " + out 
+				pass
+				#print "out not found: " + out 
 
 #		for inf in inFrame:
 #			if inf in multiplexTranslation:
@@ -332,19 +333,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 	return bu
 		
 def importArxml(filename):
-	db = CanMatrix() 
-#Defines not jet imported...
-	db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
-	db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
-	db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
-	db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535')
-#	db.addFrameDefines("GenMsgCycleTimeActive",  'INT 0 65535')
-	db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535')
-	db.addFrameDefines("GenMsgStartValue",  'STRING')
-	db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
-	db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
-#	db.addSignalDefines("GenSigSNA", 'STRING')
-
+	result = {}
 	print "Read arxml ..."
 	tree = etree.parse(filename)
 	
@@ -363,6 +352,17 @@ def importArxml(filename):
 
 	ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
 	for cc in ccs:
+		db = CanMatrix() 
+#Defines not jet imported...
+		db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
+		db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
+		db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
+		db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535')
+		db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535')
+		db.addFrameDefines("GenMsgStartValue",  'STRING')
+		db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
+		db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
+
 		speed = arGetChild(cc, "SPEED", arDict, ns)
 		print "Busname: " + arGetName(cc,ns),
 		if speed is not None:
@@ -370,39 +370,34 @@ def importArxml(filename):
 
 		physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
 
-#TODO: Support for multiple Bus-Definitions
-	cc = ccs[0]
-	speed = arGetChild(cc, "SPEED", arDict, ns)
-	print "Busname: " + arGetName(cc,ns),
-	if speed is not None:
-		print " Speed: " + speed.text
+		busname = arGetName(cc,ns)
+		if speed is not None:
+			print " Speed: " + speed.text
 
-	physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
-
-	nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
+		nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
 	
-	physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
-	frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
-	canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
+		physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
+		frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
+		canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
 
 	
-	multiplexTranslation = {}
-	for frame in canframetrig:
-		db._fl.addFrame(getFrame(frame, arDict,multiplexTranslation, ns))
+		multiplexTranslation = {}
+		for frame in canframetrig:
+			db._fl.addFrame(getFrame(frame, arDict,multiplexTranslation, ns))
 	
 
-	isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERINGS/I-SIGNAL-TRIGGERING", arDict, ns)
-	for sigTrig in isignaltriggerings:
-		isignal = sigTrig.find('./' + ns + 'SIGNAL-REF')
-		portRefs =  arGetChild(sigTrig, "I-SIGNAL-PORT-REFS", arDict, ns)
-		portRef =  arGetChildren(portRefs, "I-SIGNAL-PORT", arDict, ns)
+		isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERINGS/I-SIGNAL-TRIGGERING", arDict, ns)
+		for sigTrig in isignaltriggerings:
+			isignal = sigTrig.find('./' + ns + 'SIGNAL-REF')
+			portRefs =  arGetChild(sigTrig, "I-SIGNAL-PORT-REFS", arDict, ns)
+			portRef =  arGetChildren(portRefs, "I-SIGNAL-PORT", arDict, ns)
 	
-		for port in portRef:			
-			comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
-			if comDir.text == "IN":
-				ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
-				if isignal.text in signalRxs:
-					signalRxs[isignal.text]._reciever.append(ecuName)
+			for port in portRef:			
+				comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
+				if comDir.text == "IN":
+					ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
+					if isignal.text in signalRxs:
+						signalRxs[isignal.text]._reciever.append(ecuName)
 #				for fr in db._fl._list:
 #					for sig in fr._signals:
 #						if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
@@ -410,21 +405,22 @@ def importArxml(filename):
 					#TODO
 	
 	# find ECUs:
-	nodes = root.findall('.//' + ns +'ECU-INSTANCE')
-	for node in nodes:
-		bu = processEcu(node, db, arDict, multiplexTranslation, ns)			
-		db._BUs.add(bu)
+		nodes = root.findall('.//' + ns +'ECU-INSTANCE')
+		for node in nodes:
+			bu = processEcu(node, db, arDict, multiplexTranslation, ns)			
+			db._BUs.add(bu)
 
-	for bo in db._fl._list:
-		frame = [0, 0, 0, 0, 0, 0, 0, 0]
-		for sig in bo._signals:
-			if sig._initValue != 0:
-				putSignalValueInFrame(sig._startbit, sig._signalsize, sig._byteorder, sig._initValue, frame)
-		hexStr = '"'
-		for i in range(bo._Size):
-			hexStr += "%02X" % frame[i]
-		hexStr += '"'
-		bo.addAttribute("GenMsgStartValue", hexStr)
+		for bo in db._fl._list:
+			frame = [0, 0, 0, 0, 0, 0, 0, 0]
+			for sig in bo._signals:
+				if sig._initValue != 0:
+					putSignalValueInFrame(sig._startbit, sig._signalsize, sig._byteorder, sig._initValue, frame)
+			hexStr = '"'
+			for i in range(bo._Size):
+				hexStr += "%02X" % frame[i]
+			hexStr += '"'
+			bo.addAttribute("GenMsgStartValue", hexStr)
 		
-	return db	
+		result[busname] = db
+	return result	
 
