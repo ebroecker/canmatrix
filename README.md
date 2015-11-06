@@ -19,6 +19,7 @@ Export-File-Formats:
  .dbf
  .kcd
  .xls
+ .xlsx (new)
  .json
  .arxml (very basic implementation)
 
@@ -26,6 +27,7 @@ Thus Currently partly working (x = validated):
 * convert .dbc -> .kcd x
 * convert .dbc -> .dbf x
 * convert .dbc -> .xls x
+* convert .dbc -> .xlsx x
 * convert .dbc -> .json x
 * convert .dbf -> .kcd
 * convert .dbf -> .dbf
@@ -39,12 +41,14 @@ Thus Currently partly working (x = validated):
 * convert .arxml -> .dbf
 * convert .arxml -> .kcd
 * convert .arxml -> .xls x
-* convert .xls(x) -> .kcd
-* convert .xls(x) -> .dbf
-* convert .xls(x) -> .dbc
-* convert .xls(x) -> .xls 
+* convert .xls -> .kcd
+* convert .xls -> .dbf
+* convert .xls -> .dbc
+* convert .xls -> .xls 
 
 
+you need xlwt and xlrd for .xls-support (http://www.python-excel.org/)
+you need xlsxwriter for xlsx-export-support (https://github.com/jmcnamara/XlsxWriter)
 
 * generate Busmaster Simulation out of .dbf/.dbc/.arxml
 

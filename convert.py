@@ -67,6 +67,8 @@ for name in dbs:
 		db = ex.exportDbf(db, outfile)
 	elif outfile[-3:] == 'kcd':
 		db = ex.exportKcd(db, outfile)
+	elif outfile[-4:] == 'xlsx':
+		db = ex.exportXlsx(db, outfile)
 	elif outfile[-3:] == 'xls':
 		db = ex.exportXls(db, outfile)
 	elif outfile[-4:] == 'json':

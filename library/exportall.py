@@ -13,6 +13,11 @@ try:
 	from exportxls import *
 except:
 	print "no xls-export-support, some dependencys missing... "
+try: 
+	from exportxlsx import *
+except:
+	print "no xlsx-export-support, some dependencys missing... "
+
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.
