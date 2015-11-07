@@ -62,6 +62,11 @@ DON'T USE IT FOR ANY SERIOUS WORK ON CARS!
 Formatspecific:
 * generate Busmaster Simulation out of .kcd will never work, because default-framedata missing
 
+* there are 2 commandline-options for dbc-files:
+  --dbcCharset=CHARSET
+	set charset for dbc-file
+  --dbcCommentCharset=CHARSET
+	set charset for comments in dbc-file 
 
 For a Windows you need python and lxml library for python. 
 I use "active python" and installed lxml-package from active
