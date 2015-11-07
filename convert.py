@@ -26,8 +26,8 @@ import sys
 
 if len(sys.argv) < 3:
     sys.stderr.write('Usage: sys.argv[0] import-file export-file\n')
-    sys.stderr.write('import-file: *.dbc|*.dbf|*.kcd|*.arxml\n')
-    sys.stderr.write('export-file: *.dbc|*.dbf|*.kcd|*.json\n')
+    sys.stderr.write('import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls\n')
+    sys.stderr.write('export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)\n')
     sys.exit(1)
 
 dbs = {}

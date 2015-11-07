@@ -286,6 +286,9 @@ def exportXls(db, filename):
 				# iterate over values in valuetable
 				for val in sorted(sig._values.iterkeys()):
 					writeFrame(frame, worksheet, row, framestyle)
+					if framestyle != sty_first_frame:		
+						worksheet.row(row).level = 1
+
 					col = head_top.__len__()
 					col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)
 					# write Value
@@ -303,6 +306,9 @@ def exportXls(db, filename):
 			# no valuetable available
 			else: 
 				writeFrame(frame, worksheet, row, framestyle)
+				if framestyle != sty_first_frame:		
+					worksheet.row(row).level = 1
+
 				col = head_top.__len__()
 				col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)		
 				writeSignal(db, sig, worksheet, row, sigstyle, col)	

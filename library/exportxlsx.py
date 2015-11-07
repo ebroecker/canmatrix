@@ -169,10 +169,10 @@ def writeSignalx(db, sig, worksheet, row, rearCol, mystyle):
 		else:
 			worksheet.write(row, rearCol+2,  "", mystyle)
 		
-def writeValuex(label, value, worksheet, row, rearCol):
+def writeValuex(label, value, worksheet, row, rearCol, mystyle):
 	# write value and lable in sheet
-	worksheet.write(row, rearCol, label)
-	worksheet.write(row, rearCol+1,  value)
+	worksheet.write(row, rearCol, label, mystyle)
+	worksheet.write(row, rearCol+1,  value, mystyle)
 
 def writeBuMatrixx(buList, sig, frame, worksheet, row, col, firstframe):
 	# first-frame - style with borders:
@@ -308,12 +308,14 @@ def exportXlsx(db, filename):
 				valstyle = sigstyle
 				# iterate over values in valuetable
 				for val in sorted(sig._values.iterkeys()):
-					writeFrame(frame, worksheet, row, framestyle)
+					writeFramex(frame, worksheet, row, framestyle)
+					if framestyle != sty_first_frame:		
+						worksheet.set_row(row, None, None, {'level': 1})
 					col = head_top.__len__()
 					col = writeBuMatrixx(buList, sig, frame, worksheet, row, col, framestyle)
 					# write Value
-					writeValue(val,sig._values[val], worksheet, row, col, valstyle)					
-					writeSignal(db, sig, worksheet, row, col, sigstyle)
+					writeValuex(val,sig._values[val], worksheet, row, col, valstyle)					
+					writeSignalx(db, sig, worksheet, row, col, sigstyle)
 
 					# no min/max here, because min/max has same col as values...
 					#next row					
@@ -326,6 +328,8 @@ def exportXlsx(db, filename):
 			# no valuetable available
 			else: 
 				writeFramex(frame, worksheet, row, framestyle)
+				if framestyle != sty_first_frame:		
+					worksheet.set_row(row, None, None, {'level': 1})
 				col = head_top.__len__()
 				col = writeBuMatrixx(buList, sig, frame, worksheet, row, col, framestyle)		
 				writeSignalx(db, sig, worksheet, row, col, sigstyle)	
