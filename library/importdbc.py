@@ -30,10 +30,9 @@ import re
 import codecs
 
 
-def importDbc(filename):
+def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-8859-1'):
 ####
 #CP1253 or iso-8859-1 ???
-	dbcImportEncoding = 'iso-8859-1'
 	i = 0	
 	class FollowUps:
 		nothing, signalComment, frameComment, boardUnitComment, globalComment = range(5)
@@ -50,21 +49,21 @@ def importDbc(filename):
 		if l.__len__() == 0:
 			continue
 		if followUp == FollowUps.signalComment:
-			comment += "\n" + l.decode(dbcImportEncoding).replace('\\"','"')
+			comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
 			if l.endswith('";'):
 				followUp = FollowUps.nothing
 				if signal is not None:
 					signal.addComment(comment[0:-2])
 			continue;
 		elif followUp == FollowUps.frameComment:
-			comment += "\n" + l.decode(dbcImportEncoding).replace('\\"','"')
+			comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
 			if l.endswith('";'):
 				followUp = FollowUps.nothing
 				if frame is not None:
 					frame.addComment(comment[0:-2])
 			continue;
 		elif followUp == FollowUps.boardUnitComment:
-			comment += "\n" + l.decode(dbcImportEncoding).replace('\\"','"')
+			comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
 			if l.endswith('";'):
 				followUp = FollowUps.nothing
 				if boardUnit is not None:
@@ -106,14 +105,14 @@ def importDbc(filename):
 				botschaft = db.frameById(temp.group(1))
 				signal = botschaft.signalByName(temp.group(2))
 				if signal:
-					signal.addComment(temp.group(3).decode(dbcImportEncoding).replace('\\"','"'))
+					signal.addComment(temp.group(3).decode(dbcCommentEncoding).replace('\\"','"'))
 			else:
 				regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
 					botschaft = db.frameById(temp.group(1))
 					signal = botschaft.signalByName(temp.group(2))
-					comment = temp.group(3).decode(dbcImportEncoding).replace('\\"','"')
+					comment = temp.group(3).decode(dbcCommentEncoding).replace('\\"','"')
 					followUp = FollowUps.signalComment
 					
 		elif l.startswith("CM_ BO_ "):
@@ -122,13 +121,13 @@ def importDbc(filename):
 			if temp:
 				frame = db.frameById(temp.group(1))
 				if frame:
-					frame.addComment(temp.group(2).decode(dbcImportEncoding).replace('\\"','"'))
+					frame.addComment(temp.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
 			else:
 				regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
 					frame = db.frameById(temp.group(1))
-					comment = temp.group(2).decode(dbcImportEncoding).replace('\\"','"')
+					comment = temp.group(2).decode(dbcCommentEncoding).replace('\\"','"')
 					followUp = FollowUps.frameComment
 		elif l.startswith("CM_ BU_ "):
 			regexp = re.compile("^CM\_ BU\_ *(\w+) *\"(.*)\";")		
@@ -136,14 +135,14 @@ def importDbc(filename):
 			if temp:
 				boardUnit = db.boardUnitByName(temp.group(1))
 				if boardUnit:
-					boardUnit.addComment(temp.group(2).decode(dbcImportEncoding).replace('\\"','"'))
+					boardUnit.addComment(temp.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
 			else:
 				regexp = re.compile("^CM\_ BU\_ *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
 					boardUnit = db.boardUnitByName(temp.group(1))
 					if boardUnit:
-						comment = temp.group(2).decode(dbcImportEncoding).replace('\\"','"')
+						comment = temp.group(2).decode(dbcCommentEncoding).replace('\\"','"')
 						followUp = FollowUps.boardUnitComment
 		elif l.startswith("BU_:"):
 			regexp = re.compile("^BU\_\:(.*)")		

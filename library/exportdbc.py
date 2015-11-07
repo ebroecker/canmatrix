@@ -26,10 +26,10 @@
 from canmatrix import *
 import codecs
 
-dbcExportEncoding = 'iso-8859-1'
+#dbcExportEncoding = 'iso-8859-1'
 #CP1253
 
-def exportDbc(db, filename):
+def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='iso-8859-1'):
 	f = open(filename,"w")
 
 	f.write( "VERSION \"created by canmatrix\"\n\n")
@@ -92,7 +92,7 @@ def exportDbc(db, filename):
 	for bo in db._fl._list:
 		if bo._comment is not None and bo._comment.__len__() > 0:
 			f.write("CM_ BO_ " + "%d " % bo._Id + ' "')
-			f.write(bo._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
+			f.write(bo._comment.encode(dbcCommentEncoding,'replace').replace('"','\\"'))
 			f.write('";\n') 
 	f.write("\n")
 			
@@ -101,14 +101,14 @@ def exportDbc(db, filename):
 		for signal in bo._signals:
 			if signal._comment is not None and signal._comment.__len__() > 0:
 				f.write("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "')
-				f.write(signal._comment.encode(dbcExportEncoding,'replace').replace('"','\\"'))
+				f.write(signal._comment.encode(dbcCommentEncoding,'replace').replace('"','\\"'))
 				f.write('";\n') 
 	f.write("\n")
 
 	#boarUnit comments
 	for bu in db._BUs._list:
 		if bu._comment is not None and bu._comment.__len__() > 0:
-			f.write("CM_ BU_ " + bu._name + ' "' + bu._comment.encode(dbcExportEncoding,'replace').replace('"','\\"') + '";\n') 
+			f.write("CM_ BU_ " + bu._name + ' "' + bu._comment.encode(dbcCommentEncoding,'replace').replace('"','\\"') + '";\n') 
 	f.write("\n")
 
 	defaults = {}

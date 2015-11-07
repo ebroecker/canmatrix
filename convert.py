@@ -1,9 +1,4 @@
 #!/usr/bin/env python
-import library.exportall as ex
-import library.importall as im
-import library.canmatrix as cm
-import sys
-
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.
 #
@@ -24,19 +19,44 @@ import sys
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-if len(sys.argv) < 3:
-    sys.stderr.write('Usage: sys.argv[0] import-file export-file\n')
-    sys.stderr.write('import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls\n')
-    sys.stderr.write('export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)\n')
+import library.exportall as ex
+import library.importall as im
+import library.canmatrix as cm
+import sys
+from optparse import OptionParser
+
+usage = """
+%prog [options] import-file export-file
+
+import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls
+export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)
+
+"""
+
+parser = OptionParser(usage=usage)
+#parser.add_option("-d", "--debug",
+#                  dest="debug", default=False,
+#                  help="print debug messages to stdout")
+parser.add_option("", "--dbcCharset", 
+                  dest="dbcCharset", default="iso-8859-1",
+                  help="Charset of Comments in dbc, maybe utf-8")
+parser.add_option("", "--dbcCommentCharset", 
+                  dest="dbcCommentCharset", default="iso-8859-1",
+                  help="Charset of Comments in dbc")
+(cmdlineOptions, args) = parser.parse_args()
+
+
+if len(args) < 2:
+    parser.print_help()
     sys.exit(1)
 
 dbs = {}
-infile = sys.argv[1]
-outfileName = sys.argv[2]
+infile = args[0]
+outfileName = args[1]
 
 print "Importing " + infile + " ... "
 if infile[-3:] == 'dbc':
-	dbs[""] = im.importDbc(infile)
+	dbs[""] = im.importDbc(infile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
 elif infile[-3:] == 'dbf':
 	dbs["default"] = im.importDbf(infile)
 elif infile[-3:] == 'kcd':
@@ -62,7 +82,7 @@ for name in dbs:
 	else:
 		outfile = outfileName
 	if outfile[-3:] == 'dbc':
-		db = ex.exportDbc(db, outfile)
+		db = ex.exportDbc(db, outfile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
 	elif outfile[-3:] == 'dbf':
 		db = ex.exportDbf(db, outfile)
 	elif outfile[-3:] == 'kcd':
