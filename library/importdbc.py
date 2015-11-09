@@ -49,21 +49,30 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
 		if l.__len__() == 0:
 			continue
 		if followUp == FollowUps.signalComment:
-			comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
+			try:
+				comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
+			except:
+				print ("Error decoding line: %d (%s)" % (i, line))
 			if l.endswith('";'):
 				followUp = FollowUps.nothing
 				if signal is not None:
 					signal.addComment(comment[0:-2])
 			continue;
 		elif followUp == FollowUps.frameComment:
-			comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
+			try:
+				comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
+			except:
+				print ("Error decoding line: %d (%s)" % (i, line))
 			if l.endswith('";'):
 				followUp = FollowUps.nothing
 				if frame is not None:
 					frame.addComment(comment[0:-2])
 			continue;
 		elif followUp == FollowUps.boardUnitComment:
-			comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
+			try:
+				comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
+			except:
+				print ("Error decoding line: %d (%s)" % (i, line))
 			if l.endswith('";'):
 				followUp = FollowUps.nothing
 				if boardUnit is not None:
@@ -105,14 +114,20 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
 				botschaft = db.frameById(temp.group(1))
 				signal = botschaft.signalByName(temp.group(2))
 				if signal:
-					signal.addComment(temp.group(3).decode(dbcCommentEncoding).replace('\\"','"'))
+					try:
+						signal.addComment(temp.group(3).decode(dbcCommentEncoding).replace('\\"','"'))
+					except:
+						print ("Error decoding line: %d (%s)" % (i, line))
 			else:
 				regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
 					botschaft = db.frameById(temp.group(1))
 					signal = botschaft.signalByName(temp.group(2))
-					comment = temp.group(3).decode(dbcCommentEncoding).replace('\\"','"')
+					try:
+						comment = temp.group(3).decode(dbcCommentEncoding).replace('\\"','"')
+					except:
+						print ("Error decoding line: %d (%s)" % (i, line))
 					followUp = FollowUps.signalComment
 					
 		elif l.startswith("CM_ BO_ "):
@@ -121,13 +136,19 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
 			if temp:
 				frame = db.frameById(temp.group(1))
 				if frame:
-					frame.addComment(temp.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
+					try:
+						frame.addComment(temp.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
+					except:
+						print ("Error decoding line: %d (%s)" % (i, line))
 			else:
 				regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
 					frame = db.frameById(temp.group(1))
-					comment = temp.group(2).decode(dbcCommentEncoding).replace('\\"','"')
+					try:
+						comment = temp.group(2).decode(dbcCommentEncoding).replace('\\"','"')
+					except:
+						print ("Error decoding line: %d (%s)" % (i, line))
 					followUp = FollowUps.frameComment
 		elif l.startswith("CM_ BU_ "):
 			regexp = re.compile("^CM\_ BU\_ *(\w+) *\"(.*)\";")		
@@ -135,14 +156,20 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
 			if temp:
 				boardUnit = db.boardUnitByName(temp.group(1))
 				if boardUnit:
-					boardUnit.addComment(temp.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
+					try:
+						boardUnit.addComment(temp.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
+					except:
+						print ("Error decoding line: %d (%s)" % (i, line))
 			else:
 				regexp = re.compile("^CM\_ BU\_ *(\w+) *\"(.*)")		
 				temp = regexp.match(l)
 				if temp:
 					boardUnit = db.boardUnitByName(temp.group(1))
 					if boardUnit:
-						comment = temp.group(2).decode(dbcCommentEncoding).replace('\\"','"')
+						try:
+							comment = temp.group(2).decode(dbcCommentEncoding).replace('\\"','"')
+						except:
+							print ("Error decoding line: %d (%s)" % (i, line))
 						followUp = FollowUps.boardUnitComment
 		elif l.startswith("BU_:"):
 			regexp = re.compile("^BU\_\:(.*)")		
@@ -248,6 +275,3 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
 #		else:
 #			print "Unrecocniced line: " + l + " (%d) " % i 
 	return db
-
-
-
