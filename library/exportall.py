@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 from exportdbc import *
 from exportdbf import *
-#from exportar import *
 from exportJson import *
+
+try: 
+	from exportarxml import *
+except:
+	print "no arxml-export-support, some dependencys missing... "
 
 try: 
 	from exportkcd import *
 except:
 	print "no kcd-export-support, some dependencys missing... "
+
 
 try: 
 	from exportxls import *

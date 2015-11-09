@@ -353,12 +353,3 @@ def exportArxml(db, filename):
 	f = open(filename,"w");
 	f.write(etree.tostring(root, pretty_print=True))
 
-
-
-
-def main():
-	db = importDbc('test.dbc')
-	exportArxml(db, 'asdf.arxml')
-
-
-main()
