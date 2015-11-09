@@ -214,7 +214,10 @@ def importXls(filename):
 				factor = factor.strip()
 				unit = unit.strip()
 				newSig._unit = unit
-				newSig._factor = float(factor)
+				try:
+					newSig._factor = float(factor)
+				except:
+					print "Some error occured while decoding scale: Signal: %s; \"%s\"" % (signalName, sh.cell(rownum,index['function']).value)
 			else:
 				unit = factor.strip()
 				newSig._unit = unit
