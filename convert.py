@@ -58,11 +58,11 @@ print "Importing " + infile + " ... "
 if infile[-3:] == 'dbc':
 	dbs[""] = im.importDbc(infile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
 elif infile[-3:] == 'dbf':
-	dbs["default"] = im.importDbf(infile)
+	dbs[""] = im.importDbf(infile)
 elif infile[-3:] == 'kcd':
-	dbs["default"] = im.importKcd(infile)
+	dbs[""] = im.importKcd(infile)
 elif infile[-3:] == 'xls' or infile[-4:] == 'xlsx' :
-	dbs["default"] = im.importXls(infile)
+	dbs[""] = im.importXls(infile)
 elif infile[-5:] == 'arxml':
 	dbs = im.importArxml(infile)
 else:
