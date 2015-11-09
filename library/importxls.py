@@ -209,7 +209,7 @@ def importXls(filename):
 		factor = sh.cell(rownum,index['function']).value
 		if type(factor).__name__ == "unicode":
 			factor = factor.strip()
-			if " " in factor:
+			if " " in factor and factor[0].isdigit():
 				(factor, unit) = factor.strip().split(" ",1)
 				factor = factor.strip()
 				unit = unit.strip()
