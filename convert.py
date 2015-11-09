@@ -61,8 +61,10 @@ elif infile[-3:] == 'dbf':
 	dbs[""] = im.importDbf(infile)
 elif infile[-3:] == 'kcd':
 	dbs[""] = im.importKcd(infile)
-elif infile[-3:] == 'xls' or infile[-4:] == 'xlsx' :
+elif infile[-3:] == 'xls':
 	dbs[""] = im.importXls(infile)
+elif infile[-4:] == 'xlsx' :
+	dbs[""] = im.importXlsx(infile)
 elif infile[-5:] == 'arxml':
 	dbs = im.importArxml(infile)
 else:
@@ -93,6 +95,8 @@ for name in dbs:
 		db = ex.exportXls(db, outfile)
 	elif outfile[-4:] == 'json':
 		db = ex.exportJson(db, outfile)
+	elif outfile[-4:] == 'arxml':
+		db = ex.exportArxml(db, outfile)
 	else:
 	    sys.stderr.write('File not recognized: ' + infile + "\n")
 print "done"

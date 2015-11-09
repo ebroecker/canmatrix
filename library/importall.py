@@ -17,6 +17,11 @@ try:
 except:
 	print "no xls-import-support, some dependencys missing... "
 
+try: 
+	from importxlsx import *
+except:
+	print "no xlsx-import-support, some dependencys missing... "
+
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.
