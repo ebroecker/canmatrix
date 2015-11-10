@@ -67,6 +67,8 @@ elif infile[-4:] == 'xlsx' :
 	dbs[""] = im.importXlsx(infile)
 elif infile[-5:] == 'arxml':
 	dbs = im.importArxml(infile)
+elif infile[-4:] == 'yaml':
+	dbs[""] = im.importYaml(infile)
 else:
     sys.stderr.write('\nFile not recognized: ' + infile + "\n")
 print "done\n"
@@ -84,19 +86,21 @@ for name in dbs:
 	else:
 		outfile = outfileName
 	if outfile[-3:] == 'dbc':
-		db = ex.exportDbc(db, outfile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
+		ex.exportDbc(db, outfile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
 	elif outfile[-3:] == 'dbf':
-		db = ex.exportDbf(db, outfile)
+		ex.exportDbf(db, outfile)
 	elif outfile[-3:] == 'kcd':
-		db = ex.exportKcd(db, outfile)
+		ex.exportKcd(db, outfile)
 	elif outfile[-4:] == 'xlsx':
-		db = ex.exportXlsx(db, outfile)
+		ex.exportXlsx(db, outfile)
 	elif outfile[-3:] == 'xls':
-		db = ex.exportXls(db, outfile)
+		ex.exportXls(db, outfile)
 	elif outfile[-4:] == 'json':
-		db = ex.exportJson(db, outfile)
-	elif outfile[-4:] == 'arxml':
-		db = ex.exportArxml(db, outfile)
+		ex.exportJson(db, outfile)
+	elif outfile[-5:] == 'arxml':
+		ex.exportArxml(db, outfile)
+	elif outfile[-4:] == 'yaml':
+		ex.exportYaml(db, outfile)
 	else:
 	    sys.stderr.write('File not recognized: ' + infile + "\n")
 print "done"

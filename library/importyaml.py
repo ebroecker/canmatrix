@@ -1,33 +1,4 @@
 #!/usr/bin/env python
-from exportdbc import *
-from exportdbf import *
-from exportJson import *
-
-try: 
-	from exportarxml import *
-except:
-	print "no arxml-export-support, some dependencys missing...  (probably lxml)"
-
-try: 
-	from exportkcd import *
-except:
-	print "no kcd-export-support, some dependencys missing... "
-
-
-try: 
-	from exportxls import *
-except:
-	print "no xls-export-support, some dependencys missing... "
-try: 
-	from exportxlsx import *
-except:
-	print "no xlsx-export-support, some dependencys missing... "
-try: 
-	from exportyaml import *
-except:
-	print "no yaml-export-support, some dependencys missing ... (probably yaml) "
-
-
 
 #Copyright (c) 2013, Eduard Broecker 
 #All rights reserved.
@@ -48,3 +19,22 @@ except:
 #CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
+
+#
+# this script imports yaml-object-dumps of canmatrix-objects
+# yaml-files are just object-dumps human readable. 
+# This export is complete, no information lost
+#
+
+from canmatrix import *
+import yaml
+
+
+def importYaml(filename):
+	f = file(filename, 'r')
+	db = yaml.load(f)
+	f.close()
+
+	return db
+
+

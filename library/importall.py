@@ -5,7 +5,7 @@ from importdbf import *
 try: 
 	from importarxml import *
 except:
-	print "no arxml-import-support, some dependencys missing... "
+	print "no arxml-import-support, some dependencys missing... (probably lxml) "
 
 try: 
 	from importkcd import *
@@ -21,6 +21,11 @@ try:
 	from importxlsx import *
 except:
 	print "no xlsx-import-support, some dependencys missing... "
+
+try: 
+	from importyaml import *
+except:
+	print "no yaml-import-support, some dependencys missing ... (probably yaml) "
 
 
 #Copyright (c) 2013, Eduard Broecker 

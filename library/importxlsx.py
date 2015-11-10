@@ -290,7 +290,7 @@ def importXlsx(filename):
 		unit = ""
 
 		factor = getIfPossible(row,'Function / Increment Unit')
-		if type(factor).__name__ == "unicode":
+		if type(factor).__name__ == "unicode" or  type(factor).__name__ == "str":			
 			factor = factor.strip()
 			if " " in factor and factor[0].isdigit():
 				(factor, unit) = factor.strip().split(" ",1)
@@ -334,6 +334,7 @@ def importXlsx(filename):
 		for sig in bo._signals:
 			if int(sig._startbit) + int(sig._signalsize) > maxBit:
 				maxBit = int(sig._startbit) + int(sig._signalsize)
-			if bo._Size < (maxBit / 8):
-				bo._Size = min(8,int(maxBit / 8))
+		if bo._Size > (maxBit / 8):
+			bo._Size = min(8,int(round(maxBit/8 + 0.5)))
+			
 	return db
