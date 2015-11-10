@@ -26,6 +26,7 @@
 import xlwt
 import sys
 from canmatrix import *
+import os.path
 
 #Font Size : 8pt * 20 = 160
 #font = 'font: name Arial Narrow, height 160'
@@ -218,7 +219,8 @@ def exportXls(db, filename):
 	head_tail = ['Value',	'Name / Phys. Range', 'Function / Increment Unit']
 
 	workbook = xlwt.Workbook(encoding = 'utf8')
-	worksheet = workbook.add_sheet('K-Matrix ' + filename.replace('.xls','')[0:22])
+	wsname = os.path.basename(filename).replace('.xls','')
+	worksheet = workbook.add_sheet('K-Matrix ' + wsname[0:22])
 	col = 0
 
 	# write first row (header) cols before frameardunits:
