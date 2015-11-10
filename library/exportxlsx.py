@@ -26,6 +26,7 @@
 import xlsxwriter
 import sys
 from canmatrix import *
+import os.path
 
 #Font Size : 8pt * 20 = 160
 #font = 'font: name Arial Narrow, height 160'
@@ -216,7 +217,8 @@ def exportXlsx(db, filename):
 	head_tail = ['Value',	'Name / Phys. Range', 'Function / Increment Unit']
 
 	workbook = xlsxwriter.Workbook(filename)
-	worksheet = workbook.add_worksheet('K-Matrix ' + filename.replace('.xls','')[0:22])
+	wsname = os.path.basename(filename).replace('.xlsx','')
+	worksheet = workbook.add_worksheet('K-Matrix ' + wsname[0:22])
 	col = 0
 	global sty_header
 	sty_header = workbook.add_format({'bold': True, 'rotation': 90, 'font_name' : 'Verdana', 'font_size' : 8, 'align' : 'center', 'valign' : 'center'})
