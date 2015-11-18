@@ -163,7 +163,8 @@ def getFrame(frame, arDict, multiplexTranslation, ns):
 	sn = arGetChild(frame, "SHORT-NAME", arDict, ns)
 	idNum = int(idele.text)
 
-	newBo = Frame(idNum, arGetName(pdumapping, ns), int(dlc.text), None) 
+#	newBo = Frame(idNum, arGetName(pdumapping, ns), int(dlc.text), None) 
+	newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None) 
 
 	
 	if "MULTIPLEXED-I-PDU" in pdu.tag:
