@@ -28,7 +28,7 @@ from optparse import OptionParser
 usage = """
 %prog [options] import-file export-file
 
-import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls
+import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
 export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)
 
 """
@@ -59,6 +59,8 @@ if infile[-3:] == 'dbc':
 	dbs[""] = im.importDbc(infile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
 elif infile[-3:] == 'dbf':
 	dbs[""] = im.importDbf(infile)
+elif infile[-3:] == 'sym':
+	dbs[""] = im.importSym(infile)
 elif infile[-3:] == 'kcd':
 	dbs[""] = im.importKcd(infile)
 elif infile[-3:] == 'xls':

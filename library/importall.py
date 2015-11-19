@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from importdbc import *
 from importdbf import *
+from importsym import *
 
 try: 
 	from importarxml import *

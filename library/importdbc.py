@@ -24,6 +24,7 @@
 # dbc-files are the can-matrix-definitions of canoe
 #
 #TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL == BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
+#TODO Extended-Frames are not recognized
 
 from canmatrix import *
 import re
