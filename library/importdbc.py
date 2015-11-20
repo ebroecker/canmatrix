@@ -24,7 +24,6 @@
 # dbc-files are the can-matrix-definitions of canoe
 #
 #TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL == BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
-#TODO Extended-Frames are not recognized
 
 from canmatrix import *
 import re
@@ -275,4 +274,10 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
 				db.addDefineDefault(temp.group(1), temp.group(2).decode(dbcImportEncoding))
 #		else:
 #			print "Unrecocniced line: " + l + " (%d) " % i 
+
+# extended-flag is implicite in canid, thus repair this:
+	for bo in db._fl._list:
+		if bo._Id > 0x80000000:
+			bo._Id -= 0x80000000
+			bo._extended = 1
 	return db
