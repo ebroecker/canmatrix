@@ -1,5 +1,5 @@
 This peace of Software mainly helps to interprete several different description formats for can-communication.
-Some of these formats can be written also. There is some outdated german Documentation at [http://eduard-broecker.de/Software/canmatrix.html}(my personal homepage)
+Some of these formats can be written also. There is some outdated german Documentation at [http://eduard-broecker.de/Software/canmatrix.html](my personal homepage)
 
 As a sideeffect, this software helps to convert between can-matrix-description formats.
 You can for example convert a autosar system description (.arxml) to an candb++ - File (.dbc).
