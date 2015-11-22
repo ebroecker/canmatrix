@@ -55,7 +55,32 @@ Fileformats:
 * json
 * xls(x)
 * kdc
-	
+
+## Export
+
+|Format|Frames / Signals|ECUs|Mux  |S/R of Signal|Cycletype|Cycletime|Baudrate |Extended|Byteorder|scaling|min/max|attributes|value tables|signal groups| 
+|---|---------|----|----|----------|---------|---------|---------|--------|---------|-------|---|---|---|---|
+|arxml | +              |    |+    |		 |         |         |+        |+       |+        |       |       |          |            |             |
+|dbc   |+               |+   |+	   |+    	 |+        |+        |         |+       |+        |+      |+      |+         |+           |+            |
+|dbf   |+               |+   |+    |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |-            |
+|json  |+               |    |	   |		 |         |         |         |        |         |+      |       |          |            |             |
+|kcd   |+               |+   |+    |		 |+        |+        |+        |        |         |       |       |          |+           |             |
+|sym   |+               |    |+	   |		 |         |         |         |        |+        |+      |+      |          |+           |             |
+|xls(x)|+               |+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |          |+           |             |
+
+## Import
+|Format|Frames / Signals|ECUs|Mux  |S/R of Signal|Cycletype|Cycletime|Baudrate |Extended|Byteorder|scaling|min/max|attributes|value tables|signal groups| 
+|---|---------|----|----|----------|---------|---------|---------|--------|---------|-------|---|---|---|---|
+|arxml |+               |+   |+    |+	         |+        |+        |+        |+       |+        |+      |+      |          |+           |+            |
+|dbc   |+               |+   |+	   |+    	 |+        |+        |         |+       |+        |+      |+      |+         |+           |+            |
+|dbf   |+               |+   |+    |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |-            |
+|kcd   |+               |+   |+    |		 |+        |+        |         |        |         |       |       |          |+           |             |
+|sym   |+               |    |+	   |		 |         |         |         |        |+        |+      |+      |          |+           |             |
+|xls(x)|+               |+   |+	   |+		 |+        |+        |         |        |+        |p      |p      |          |p           |             |
+
+
+
+
 ***
 Requirements for use:
 * You need lxml library for arxml- and kcd-support. 
