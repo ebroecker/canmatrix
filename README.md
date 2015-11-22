@@ -39,6 +39,7 @@ There is an example included to generate Busmaster Simulation out of canmatrix-o
 ***
 
 Fileformats:
+* all formats support im-/export of signals and frames
 * dbc: complete Support; there are 2 commandline-options for dbc-files:
 
   --dbcCharset=CHARSET
@@ -58,25 +59,25 @@ Fileformats:
 
 ## Export
 
-|Format|Frames / Signals|ECUs|Mux  |S/R of Signal|Cycletype|Cycletime|Baudrate |Extended|Byteorder|scaling|min/max|attributes|value tables|signal groups| 
-|---|---------|----|----|----------|---------|---------|---------|--------|---------|-------|---|---|---|---|
-|arxml | +              |    |+    |		 |         |         |+        |+       |+        |       |       |          |            |             |
-|dbc   |+               |+   |+	   |+    	 |+        |+        |         |+       |+        |+      |+      |+         |+           |+            |
-|dbf   |+               |+   |+    |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |-            |
-|json  |+               |    |	   |		 |         |         |         |        |         |+      |       |          |            |             |
-|kcd   |+               |+   |+    |		 |+        |+        |+        |        |         |       |       |          |+           |             |
-|sym   |+               |    |+	   |		 |         |         |         |        |+        |+      |+      |          |+           |             |
-|xls(x)|+               |+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |          |+           |             |
+|Format|ECUs|Mux  |S/R of Signal|Cycletype|Cycletime|Baudrate |Extended|Byteorder|scaling|min/max|attributes|value tables|signal groups| 
+|---|----|----|----------|---------|---------|---------|--------|---------|-------|---|---|---|---|
+|arxml |    |+    |		 |         |         |+        |+       |+        |       |       |          |            |             |
+|dbc   |+   |+	   |+    	 |+        |+        |         |+       |+        |+      |+      |+         |+           |+            |
+|dbf   |+   |+    |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |-            |
+|json  |    |	   |		 |         |         |         |        |         |+      |       |          |            |             |
+|kcd   |+   |+    |		 |+        |+        |+        |        |         |       |       |          |+           |             |
+|sym   |    |+	   |		 |         |         |         |        |+        |+      |+      |          |+           |             |
+|xls(x)|+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |          |+           |             |
 
 ## Import
-|Format|Frames / Signals|ECUs|Mux  |S/R of Signal|Cycletype|Cycletime|Baudrate |Extended|Byteorder|scaling|min/max|attributes|value tables|signal groups| 
-|---|---------|----|----|----------|---------|---------|---------|--------|---------|-------|---|---|---|---|
-|arxml |+               |+   |+    |+	         |+        |+        |+        |+       |+        |+      |+      |          |+           |+            |
-|dbc   |+               |+   |+	   |+    	 |+        |+        |         |+       |+        |+      |+      |+         |+           |+            |
-|dbf   |+               |+   |+    |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |-            |
-|kcd   |+               |+   |+    |		 |+        |+        |         |        |         |       |       |          |+           |             |
-|sym   |+               |    |+	   |		 |         |         |         |        |+        |+      |+      |          |+           |             |
-|xls(x)|+               |+   |+	   |+		 |+        |+        |         |        |+        |p      |p      |          |p           |             |
+|Format|ECUs|Mux  |S/R of Signal|Cycletype|Cycletime|Baudrate |Extended|Byteorder|scaling|min/max|attributes|value tables|signal groups| 
+|---|----|----|----------|---------|---------|---------|--------|---------|-------|---|---|---|---|
+|arxml |+   |+     |+	         |+        |+        |+        |+       |+        |+      |+      |          |+           |+            |
+|dbc   |+   |+	   |+    	 |+        |+        |         |+       |+        |+      |+      |+         |+           |+            |
+|dbf   |+   |+     |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |-            |
+|kcd   |+   |+     |		 |+        |+        |         |        |         |       |       |          |+           |             |
+|sym   |    |+	   |		 |         |         |         |        |+        |+      |+      |          |+           |             |
+|xls(x)|+   |+	   |+		 |+        |+        |         |        |+        |p      |p      |          |p           |             |
 
 
 
