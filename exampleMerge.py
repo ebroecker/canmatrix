@@ -7,32 +7,32 @@ import library.exportall as ex
 import sys
 
 #
-# Einlesen der Quell-Matritzen
+# read source Can-Matrixes
 #
 
-# Importieren einer CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db1 = im.importany("aa.dbc")
-# Importieren einer 2. CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db2 = im.importany("aa.dbc")
+# import of one CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
+db1 = im.importany("first.dbc")
+# import of a second CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
+db2 = im.importany("second.dbc")
 
 #
-# Ziel-Matrix anlegen
+# create target Matrix
 #
 
 db3 = CanMatrix()
 
 #
-# Hier kann die neue Can-Matrix 'Programmiert' werden:
+# Here a new Can-Matrix can be  'programmed':
 # -----------------------------------------------------
 #
 
-#Kopiere ID 1234 aus der 2. K-Matrix in die Zielmatrix
+#Copy Can-ID 1234 from second CAN-Matrix to target-Matrix
 copyFrame(1234, db2, db3)
 
-#Kopiere Frame "Engine_123" aus der 1. K-Matrix in die Zielmatrix
+#Copy frame "Engine_123" from first CAN-Matrix to target-Matrix
 copyFrame("Engine_123", db1, db3)
 
-#Kopiere ECU "Gateway" aus der 1. K-Matrix (mit allen zugehoerigen Frames) in die Zielmatrix
+#Copy ECU (with all Frames) "Gateway" from first CAN-Matrix to target-Matrix  
 copyBUwithFrames("Gateway", db1, db3)
 
 #
@@ -42,7 +42,7 @@ copyBUwithFrames("Gateway", db1, db3)
 
 #
 #
-# Exportieren der neuen matrix z.B. als dbc:
+# export the new (target)-Matrix for example as .dbc:
 #
 
-ex.exportDbc(db3, "ziel.dbc")
+ex.exportDbc(db3, "target.dbc")

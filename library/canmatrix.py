@@ -21,8 +21,6 @@
 #DAMAGE.
 
 #TODO: Definitions should be imported with disassembling not as complete string
-#import cPickle as pickle
-#import json
 
 class FrameList:
 	"""

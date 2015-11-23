@@ -22,7 +22,7 @@
 #
 # this script imports dbc-files to a canmatrix-object
 # dbc-files are the can-matrix-definitions of canoe
-#
+# 
 #TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL == BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
 
 from canmatrix import *
@@ -31,8 +31,6 @@ import codecs
 
 
 def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-8859-1'):
-####
-#CP1253 or iso-8859-1 ???
 	i = 0	
 	class FollowUps:
 		nothing, signalComment, frameComment, boardUnitComment, globalComment = range(5)

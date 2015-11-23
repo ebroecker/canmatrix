@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# this is an attempt to generate js-decoding-code
+# this is very buggy and not used anymore
 from canmatrix import *
 
 signalShortens = {};
@@ -117,7 +119,7 @@ def generateSignalMacros_js(botschaft, generatorConfig):
 					macros += '\n'
 
 		else: # Motorola 
-#TODO flasche Bits bei nicht-vollständigen Bytes...
+#TODO wrong bits are used if signal is not 
 			startbyte = (signal._startbit / 8)
 			startbit = 7 - ( signal._startbit % 8)			
 
@@ -156,4 +158,4 @@ def generateSignalMacros_js(botschaft, generatorConfig):
 				print "Error Generierungs-Script hier unvollstaendig: " + botschaft._name + " " + signal._name
 	framedecodeMethods += "};}"
 	return framedecodeMethods, macros, globalMessagesRaw 
-#Ende generateSignalMacrosSel
+#end generateSignalMacrosSel

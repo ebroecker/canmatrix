@@ -102,38 +102,38 @@ def exportKcd(db, filename):
 
 	bus.set("name",filename)
 
-	for bo in db._fl._list:
-		message = etree.Element('Message', id="0x%03X" % bo._Id, name=bo._name, length = str(bo._Size))
+	for frame in db._fl._list:
+		message = etree.Element('Message', id="0x%03X" % frame._Id, name=frame._name, length = str(frame._Size))
 
-		if "GenMsgCycleTime" in bo._attributes:
-			cycleTime = int(bo._attributes["GenMsgCycleTime"])	
+		if "GenMsgCycleTime" in frame._attributes:
+			cycleTime = int(frame._attributes["GenMsgCycleTime"])	
 			if cycleTime > 0:				
 				message.set("triggered", "true")
 				message.set("interval", "%d" % cycleTime)
 
 		producer = etree.Element('Producer')
 
-		for transmitter in bo._Transmitter:
+		for transmitter in frame._Transmitter:
 			if len(transmitter) > 1 and transmitter in nodeList:				
 				noderef = etree.Element('NodeRef', id=str(nodeList[transmitter]))
 				producer.append(noderef)
 		message.append(producer)
 		
 		comment = etree.Element('Notes')
-		if bo._comment is not None:
-			comment.text = bo._comment	
+		if frame._comment is not None:
+			comment.text = frame._comment	
 			message.append(comment)		
 				
 				
 		# standard-signals:
-		for signal in bo._signals:
+		for signal in frame._signals:
 			if signal._multiplex is None:
 				sig = createSignal(signal, nodeList)
 				message.append(sig)
 
 		# check Multiplexor if present:
 		multiplexor = None
-		for signal in bo._signals:
+		for signal in frame._signals:
 			if signal._multiplex is not None and signal._multiplex == 'Multiplexor':
 				multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal._startbit), length=str(signal._signalsize))
 				value = etree.Element('Value')
@@ -156,7 +156,7 @@ def exportKcd(db, filename):
 			for i in range(0,1<<int(multiplexor.get('length'))):
 				empty = 0
 				muxgroup = etree.Element('MuxGroup', count=str(i))
-				for signal in bo._signals:
+				for signal in frame._signals:
 					if signal._multiplex is not None and signal._multiplex == i:
 						sig = createSignal(signal, nodeList)
 						muxgroup.append(sig)

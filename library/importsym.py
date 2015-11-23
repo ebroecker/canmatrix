@@ -27,7 +27,7 @@
 #TODO : I don't know what to do with the "/p"-Options in the signal-definition
 #TODO : what is the differenze between SEND and SENDRECEIVE ?
 # currently only for FormatVersion=5.0 
-#TODO: support for title Title="AFE_CAN_ID0"
+#TODO: support for title example: Title="some title"
 
 from canmatrix import *
 import re
@@ -67,6 +67,7 @@ def importSym(filename):
 			
 			
 		if mode == Mode.glob:
+			# just ignore headers...
 			continue
 		elif mode == Mode.enums:
 			line = line.strip()

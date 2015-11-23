@@ -34,12 +34,12 @@ def exportJson(db, filename):
 	f = open(filename,"w")
 	exportArray = []	
 
-	for bo in db._fl._list:
+	for frame in db._fl._list:
 		signals = {}
-		for signal in bo._signals:
+		for signal in frame._signals:
 			signals[signal._startbit]= {"name" : signal._name, "bit_length" : signal._signalsize, "factor":signal._factor, "offset":signal._offset}
 		
-		exportArray.append({"name" : bo._name, "id" :  hex(bo._Id), "signals": signals })
+		exportArray.append({"name" : frame._name, "id" :  hex(frame._Id), "signals": signals })
 
 	json.dump({"messages" : exportArray}, f, sort_keys=True, indent=4, separators=(',', ': '))
 

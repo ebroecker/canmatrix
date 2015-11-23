@@ -22,7 +22,6 @@
 #
 # this script exports sym-files from a canmatrix-object
 # sym-files are the can-matrix-definitions of the Peak Systems Tools
-# TODO: Mux-Support, ENUMS
 
 from canmatrix import *
 
@@ -73,6 +72,9 @@ def createSignal(signal):
 	return output
 
 def exportSym(db, filename):
+"""
+export canmatrix-object as .sym file (compatible to PEAK-Systems)
+"""
 	global enumDict
 	global enums 
 	
@@ -82,13 +84,14 @@ def exportSym(db, filename):
 	f = open(filename,"w")
 
 	f.write( "FormatVersion=5.0 // Do not edit this line!\n")
-	f.write( "Title=\"AFE_CAN_ID0\"\n\n")
+	f.write( "Title=\"canmatrix-Export\"\n\n")
 
 
 
 	#Frames
 	output = "\n{SENDRECEIVE}\n"
 
+	#trigger all frames
 	for frame in db._fl._list:
 		name = "[" + frame._name + "]\n"
 		
@@ -101,22 +104,28 @@ def exportSym(db, filename):
 		else:
 			idType += "Type=Standard\n" 
 		
+		#check if frame has multiplexed signals
 		multiplex = 0
 		for signal in frame._signals:
 			if signal._multiplex != None:
 				multiplex = 1
 		
+		#if multiplex-signal:
 		if multiplex == 1:
+			#search for multiplexor in frame:
 			for signal in frame._signals:
 				if signal._multiplex == 'Multiplexor':
 					muxSignal = signal
 					
 
+			# ticker all possible mux-groups as i (0 - 2^ (number of bits of multiplexor))			
 			first = 0
 			for i in range(0,1<<int(muxSignal._signalsize)):
 				found = 0
 				muxOut = ""
+				#ticker all signals 
 				for signal in frame._signals:
+					# if signal is in mux-group i
 					if signal._multiplex == i:
 						muxOut = name
 						if first == 0:
@@ -152,11 +161,13 @@ def exportSym(db, filename):
 				
 
 		else:	
+			#no multiplex signals in frame, just 'normal' signals
 			output += name
 			output += idType
 			output += "DLC=%d\n" % (frame._Size)
 			for signal in frame._signals:
 				output += createSignal(signal)
 			output += "\n"
+	#write outputfile
 	f.write(enums.encode('iso-8859-1'))
 	f.write(output.encode('iso-8859-1'))

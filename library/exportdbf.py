@@ -47,20 +47,20 @@ def exportDbf(db, filename):
 	f.write( header + str(len(db._fl._list)) + "\n")
 
 	#Frames
-	for bo in db._fl._list:
+	for frame in db._fl._list:
 	#Name unMsgId m_ucLength m_ucNumOfSignals m_cDataFormat m_cFrameFormat? m_txNode
 	#m_cDataFormat If 1 dataformat Intel, 0- Motorola -- immer 1 original Converter macht das nach anzahl entsprechender Signale
 	#cFrameFormat Standard 'S' Extended 'X'
 		extended = 'S'
-		if bo._extended == 1:
+		if frame._extended == 1:
 			extended = 'X'	
-		f.write("[START_MSG] " + bo._name + ",%d,%d,%d,1,%c," % (bo._Id, bo._Size, len(bo._signals), extended))
-		if bo._Transmitter.__len__() == 0:
-			bo._Transmitter = ["Vector__XXX"]
+		f.write("[START_MSG] " + frame._name + ",%d,%d,%d,1,%c," % (frame._Id, frame._Size, len(frame._signals), extended))
+		if frame._Transmitter.__len__() == 0:
+			frame._Transmitter = ["Vector__XXX"]
 #DBF does not support multiple Transmitters
-		f.write( bo._Transmitter[0] + "\n")
+		f.write( frame._Transmitter[0] + "\n")
 
-		for signal in bo._signals:
+		for signal in frame._signals:
 	# m_acName ucLength m_ucWhichByte m_ucStartBit
 	#m_ucDataFormat m_fOffset m_fScaleFactor m_acUnit m_acMultiplex m_rxNode
 			#m_ucDataFormat		
@@ -122,11 +122,11 @@ def exportDbf(db, filename):
 
 	#signalbezeichnungen
 	f.write("[START_DESC_SIG]\n")
-	for bo in db._fl._list:
-		for signal in bo._signals:
+	for frame in db._fl._list:
+		for signal in frame._signals:
 			if signal._comment is not None:
 				comment = signal._comment.replace("\n"," ")
-				f.write("%d S " % bo._Id + signal._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n') 
+				f.write("%d S " % frame._Id + signal._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n') 
 		
 	f.write("[END_DESC_SIG]\n")
 	f.write("[END_DESC]\n\n")
@@ -166,16 +166,16 @@ def exportDbf(db, filename):
 
 	#messages-attributes:
 	f.write("[START_PARAM_MSG_VAL]\n")
-	for bo in db._fl._list:
-		for attrib,val in bo._attributes.items():
-			f.write( str(bo._Id) + ',S,"' + attrib + '","'  + val  + '"\n')
+	for frame in db._fl._list:
+		for attrib,val in frame._attributes.items():
+			f.write( str(frame._Id) + ',S,"' + attrib + '","'  + val  + '"\n')
 	f.write("[END_PARAM_MSG_VAL]\n")
 
 	#signal-attributes:
 	f.write("[START_PARAM_SIG_VAL]\n")
-	for bo in db._fl._list:
-		for signal in bo._signals:
+	for frame in db._fl._list:
+		for signal in frame._signals:
 			for attrib,val in signal._attributes.items():
-				f.write( str(bo._Id) + ',S,' + signal._name + ',"'+ attrib  +  '","' + val  + '"\n')
+				f.write( str(frame._Id) + ',S,' + signal._name + ',"'+ attrib  +  '","' + val  + '"\n')
 	f.write("[END_PARAM_SIG_VAL]\n")
 	f.write("[END_PARAM_VAL]\n")
