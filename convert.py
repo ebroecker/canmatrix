@@ -104,5 +104,5 @@ for name in dbs:
 	elif outfile[-4:] == 'yaml':
 		ex.exportYaml(db, outfile)
 	else:
-	    sys.stderr.write('File not recognized: ' + infile + "\n")
+	    sys.stderr.write('File not recognized: ' + outfile + "\n")
 print "done"
