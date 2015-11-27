@@ -72,9 +72,9 @@ def createSignal(signal):
 	return output
 
 def exportSym(db, filename):
-"""
-export canmatrix-object as .sym file (compatible to PEAK-Systems)
-"""
+	"""
+	export canmatrix-object as .sym file (compatible to PEAK-Systems)
+	"""
 	global enumDict
 	global enums 
 	
