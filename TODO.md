@@ -2,7 +2,7 @@ library/canmatrix.py
 : Definitions should be imported with disassembling not as complete string
 
 library/canmatrixGenerateJS.py
- flasche Bits bei nicht-vollst‰ndigen Bytes...
+ flasche Bits bei nicht-vollst√§ndigen Bytes...
 
 library/exportarxml.py
  Well, ..., this is the first attempt to export a arxml-file; I did this without reading any spec;  

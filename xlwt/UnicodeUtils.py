@@ -34,8 +34,8 @@ Offset  Size    Contents
 [2 or 3] 2      (optional, only if richtext=1) Number of Rich-Text formatting runs (rt)
 [var.]   4      (optional, only if phonetic=1) Size of Asian phonetic settings block (in bytes, sz)
 var.     ln or 
-         2·ln   Character array (8-bit characters or 16-bit characters, dependent on ccompr)
-[var.]   4·rt   (optional, only if richtext=1) List of rt formatting runs 
+         2Â·ln   Character array (8-bit characters or 16-bit characters, dependent on ccompr)
+[var.]   4Â·rt   (optional, only if richtext=1) List of rt formatting runs 
 [var.]   sz     (optional, only if phonetic=1) Asian Phonetic Settings Block 
 '''
 

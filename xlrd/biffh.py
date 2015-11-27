@@ -3,7 +3,7 @@
 ##
 # Support module for the xlrd package.
 #
-# <p>Portions copyright © 2005-2010 Stephen John Machin, Lingfo Pty Ltd</p>
+# <p>Portions copyright Â© 2005-2010 Stephen John Machin, Lingfo Pty Ltd</p>
 # <p>This module is part of the xlrd package, which is released under a BSD-style licence.</p>
 ##
 

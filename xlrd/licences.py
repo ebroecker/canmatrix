@@ -1,7 +1,7 @@
 # -*- coding: cp1252 -*-
 
 """
-Portions copyright © 2005-2009, Stephen John Machin, Lingfo Pty Ltd
+Portions copyright Â© 2005-2009, Stephen John Machin, Lingfo Pty Ltd
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
