@@ -91,6 +91,8 @@ for name in dbs:
 		ex.exportDbc(db, outfile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
 	elif outfile[-3:] == 'dbf':
 		ex.exportDbf(db, outfile)
+	elif outfile[-3:] == 'sym':
+		ex.exportSym(db, outfile)
 	elif outfile[-3:] == 'kcd':
 		ex.exportKcd(db, outfile)
 	elif outfile[-4:] == 'xlsx':

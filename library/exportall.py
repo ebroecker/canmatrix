@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from exportdbc import *
 from exportdbf import *
+from exportsym import *
 from exportJson import *
 
 try: 
