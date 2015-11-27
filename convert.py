@@ -22,6 +22,7 @@
 import library.exportall as ex
 import library.importall as im
 import library.canmatrix as cm
+import os
 import sys
 from optparse import OptionParser
 
@@ -84,13 +85,16 @@ for name in dbs:
 	print "%d Frames found" % (db._fl._list.__len__())
 	
 	if len(name) > 0:
-		outfile = name + "_" + outfileName
+		path = os.path.split(outfileName)
+		outfile = os.path.join(path[0], name + "_" + path[1])
 	else:
 		outfile = outfileName
 	if outfile[-3:] == 'dbc':
 		ex.exportDbc(db, outfile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
 	elif outfile[-3:] == 'dbf':
 		ex.exportDbf(db, outfile)
+	elif outfile[-3:] == 'sym':
+		ex.exportSym(db, outfile)
 	elif outfile[-3:] == 'kcd':
 		ex.exportKcd(db, outfile)
 	elif outfile[-4:] == 'xlsx':

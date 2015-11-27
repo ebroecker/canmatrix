@@ -34,7 +34,7 @@ from importdbc import *
 
 def createSubElement(elem, strElement, strName):
 	sn = etree.SubElement(elem, strElement)
-	sn.text = strName
+	sn.text = str(strName)
 
 
 def exportArxml(db, filename):
