@@ -1,0 +1,2832 @@
+!!python/object:library.canmatrix.CanMatrix
+_BUs: !!python/object:library.canmatrix.BoardUnitListe
+  _list: []
+_attributes: {}
+_buDefines: {}
+_fl: !!python/object:library.canmatrix.FrameList
+  _list:
+  - !!python/object:library.canmatrix.Frame
+    _Id: 16751425
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'CommandModeControlAPU2'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'Enable_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 1
+      _unit: ''
+      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'FaultClear_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 3
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Clear Faults',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'MasterFollowerMode_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 17
+      _unit: ''
+      _values: {0: !!python/unicode 'Master', 1: !!python/unicode 'Follower', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ForceRelayMX1_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 33
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ForceRelayMX2_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 35
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ForceRelayK1_Precharge_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 37
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ForceRelayRelayK2_DCRun_comand'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 39
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'InvertHwEnable_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 57
+      _unit: ''
+      _values: {0: !!python/unicode 'No invert', 1: !!python/unicode 'Invert', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'EnableUPSMode_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 59
+      _unit: ''
+      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'EnableSplitPhase_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 61
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal - Three Phase Mode', 1: !!python/unicode 'Enable
+          Split Phase Mode', 2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'PhaseRotation_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 63
+      _unit: ''
+      _values: {0: !!python/unicode 'Negative', 1: !!python/unicode 'Positive', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 16755521
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'CommandModeControl'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'Enable_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 1
+      _unit: ''
+      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'FaultClear_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 3
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Clear Faults',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'MasterFollowerMode_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 17
+      _unit: ''
+      _values: {0: !!python/unicode 'Master', 1: !!python/unicode 'Follower', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ForceRelayMX1_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 33
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ForceRelayMX2_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 35
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ForceRelayK1_Precharge_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 37
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ForceRelayRelayK2_DCRun_comand'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 39
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'InvertHwEnable_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 57
+      _unit: ''
+      _values: {0: !!python/unicode 'No invert', 1: !!python/unicode 'Invert', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'EnableUPSMode_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 59
+      _unit: ''
+      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'EnableSplitPhase_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 61
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal - Three Phase Mode', 1: !!python/unicode 'Enable
+          Split Phase Mode', 2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'PhaseRotation_command'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 63
+      _unit: ''
+      _values: {0: !!python/unicode 'Negative', 1: !!python/unicode 'Positive', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218078273
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'CommandPowerAPU2'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '90000'
+      _min: '-90000'
+      _multiplex: null
+      _name: !!python/unicode 'RealPower_command'
+      _offset: !!python/unicode '-90000'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 7
+      _unit: !!python/unicode 'W'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '90000'
+      _min: '-90000'
+      _multiplex: null
+      _name: !!python/unicode 'ReactivePower_command'
+      _offset: !!python/unicode '-90000'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 39
+      _unit: !!python/unicode 'VA'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218078785
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 5
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'CommandVFAPU2'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '500'
+      _min: '10'
+      _multiplex: null
+      _name: !!python/unicode 'Voltage_command'
+      _offset: !!python/unicode '10'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'Vrms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '65'
+      _min: '45'
+      _multiplex: null
+      _name: !!python/unicode 'Frequency_command'
+      _offset: !!python/unicode '45'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'Hz'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218081857
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'CommandSetNVParam'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: 65535
+      _min: '0'
+      _multiplex: Multiplexor
+      _name: !!python/unicode 'CommandSetNVParam_MUX'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: ''
+      _values: {0: !!python/unicode 'Param0', 1: !!python/unicode 'LVM_ClearingTimes1',
+        2: !!python/unicode 'LVM_ClearingTimes2', 3: !!python/unicode 'LFM_Limits',
+        4: !!python/unicode 'LFM_ClearingTimes', 5: !!python/unicode 'J1939_Interface',
+        6: !!python/unicode 'Fault_Config', 7: !!python/unicode 'ContactorDelays1',
+        8: !!python/unicode 'ContactorDelays2', 9: !!python/unicode 'ContactorDelays3'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: 6
+      _name: !!python/unicode 'ThermalOverload'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 17
+      _unit: ''
+      _values: {0: !!python/unicode 'Warning', 1: !!python/unicode 'Fault', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: 0
+      _name: !!python/unicode 'Dummy'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 0.1
+      _max: '70'
+      _min: '40'
+      _multiplex: 3
+      _name: !!python/unicode 'FreqHi'
+      _offset: !!python/unicode '40'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'Hz'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '160'
+      _min: '160'
+      _multiplex: 4
+      _name: !!python/unicode 'FreqVeryLo'
+      _offset: !!python/unicode '160'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 9
+      _name: !!python/unicode 'K2Open'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '5000'
+      _min: '0'
+      _multiplex: 7
+      _name: !!python/unicode 'MX1Open'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 8
+      _name: !!python/unicode 'MX2Close'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '247'
+      _min: '0'
+      _multiplex: 5
+      _name: !!python/unicode 'NodeID'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 8
+      _startbit: 23
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 2
+      _name: !!python/unicode 'VOver120'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 1
+      _name: !!python/unicode 'VUnder50pct'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: 5
+      _name: !!python/unicode 'SA_Mask'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 8
+      _startbit: 31
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: 15
+      _min: '0'
+      _multiplex: 5
+      _name: !!python/unicode 'Baudrate'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 4
+      _startbit: 39
+      _unit: ''
+      _values: {0: !!python/unicode '125K', 1: !!python/unicode '250K', 2: !!python/unicode '500K',
+        3: !!python/unicode '1M'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 4
+      _name: !!python/unicode 'FreqLo'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 8
+      _name: !!python/unicode 'K1Open'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 9
+      _name: !!python/unicode 'K2Close'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 7
+      _name: !!python/unicode 'MX1Close'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 1
+      _name: !!python/unicode 'V50to88pct'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '160'
+      _min: '160'
+      _multiplex: 4
+      _name: !!python/unicode 'FreqHi'
+      _offset: !!python/unicode '160'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 0.1
+      _max: '70'
+      _min: '40'
+      _multiplex: 3
+      _name: !!python/unicode 'FreqVeryLo'
+      _offset: !!python/unicode '40'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'Hz'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 8
+      _name: !!python/unicode 'K1Close'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: 7
+      _name: !!python/unicode 'MX2Open'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 1
+      _name: !!python/unicode 'V110to120pct'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218082369
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'CommandPower'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '90000'
+      _min: '-90000'
+      _multiplex: null
+      _name: !!python/unicode 'RealPower_command'
+      _offset: !!python/unicode '-90000'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 7
+      _unit: !!python/unicode 'W'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '90000'
+      _min: '-90000'
+      _multiplex: null
+      _name: !!python/unicode 'ReactivePower_command'
+      _offset: !!python/unicode '-90000'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 39
+      _unit: !!python/unicode 'VA'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218082881
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 5
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'CommandVF'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '500'
+      _min: '10'
+      _multiplex: null
+      _name: !!python/unicode 'Voltage_command'
+      _offset: !!python/unicode '10'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'Vrms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '65'
+      _min: '45'
+      _multiplex: null
+      _name: !!python/unicode 'Frequency_command'
+      _offset: !!python/unicode '45'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'Hz'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218083137
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'CommandFactoryControl'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'WriteSerialNumber'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 1
+      _unit: ''
+      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'FactoryAccess'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'SerialNumber'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 39
+      _unit: ''
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218088183
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 7
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusACParameters'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'VoltageAC_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'V'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'CurrentAC_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'A'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'Frequency_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'Hz'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218088439
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 6
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusBits'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 15
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'State_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 4
+      _startbit: 3
+      _unit: ''
+      _values: {0: !!python/unicode 'Power On Reset', 1: !!python/unicode 'Ready',
+        2: !!python/unicode 'Following', 3: !!python/unicode 'Fault', 4: !!python/unicode 'Forming',
+        5: !!python/unicode 'N/A', 6: !!python/unicode 'N/A', 7: !!python/unicode 'N/A',
+        8: !!python/unicode 'N/A', 9: !!python/unicode 'N/A', 10: !!python/unicode 'N/A',
+        11: !!python/unicode 'N/A', 12: !!python/unicode 'N/A', 13: !!python/unicode 'N/A',
+        14: !!python/unicode 'N/A', 15: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'Enable_echo'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 5
+      _unit: ''
+      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'FaultClr_echo'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 7
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Clear Faults',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'HardwareEnable_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 9
+      _unit: ''
+      _values: {0: !!python/unicode 'Not Active', 1: !!python/unicode 'Active', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'PowerAvailAC_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 11
+      _unit: ''
+      _values: {0: !!python/unicode 'None', 1: !!python/unicode 'Available', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'PowerAvailDC_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 13
+      _unit: ''
+      _values: {0: !!python/unicode 'None', 1: !!python/unicode 'Available', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'PowerCircuitEnabled_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 15
+      _unit: ''
+      _values: {0: !!python/unicode 'Disabled', 1: !!python/unicode 'Enabled', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'MX1Permissive_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 17
+      _unit: ''
+      _values: {0: !!python/unicode 'Open', 1: !!python/unicode 'Closed', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'MX2Permissive_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 19
+      _unit: ''
+      _values: {0: !!python/unicode 'Open', 1: !!python/unicode 'Closed', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'K1PrechargePermissive_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 21
+      _unit: ''
+      _values: {0: !!python/unicode 'Open', 1: !!python/unicode 'Closed', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'K2DCRunPermissive_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 23
+      _unit: ''
+      _values: {0: !!python/unicode 'Open', 1: !!python/unicode 'Closed', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'MessageValidModeControl_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 25
+      _unit: ''
+      _values: {0: !!python/unicode 'Invalid', 1: !!python/unicode 'Valid', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'MessageValidPowerCMD_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 27
+      _unit: ''
+      _values: {0: !!python/unicode 'Invalid', 1: !!python/unicode 'Valid', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'MessageValidVF_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 29
+      _unit: ''
+      _values: {0: !!python/unicode 'Invalid', 1: !!python/unicode 'Valid', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'CANbus_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 31
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Warning', 3: !!python/unicode 'ErrorPassive',
+        4: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'EnableUPSMode_echo'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 33
+      _unit: ''
+      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'EnableSplitPhase_echo'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 35
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal - Three Phase Mode', 1: !!python/unicode 'Enable
+          Split Phase Mode', 2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'PhaseRotation_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 37
+      _unit: ''
+      _values: {0: !!python/unicode 'Negative', 1: !!python/unicode 'Positive', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'LineVoltageDetected_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 39
+      _unit: ''
+      _values: {0: !!python/unicode 'No_Voltage', 1: !!python/unicode 'Voltage_Detected',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'PhaseRotation_echo'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 41
+      _unit: ''
+      _values: {0: !!python/unicode 'Negative', 1: !!python/unicode 'Positive', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218089719
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusFaults'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'GeneralFault_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 1
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'OvercurrentAC_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 3
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'LossOfAC_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 5
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'OvercurrentDC_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 7
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'OvervoltageDC_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 9
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'UndervoltageDC_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 11
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'OvertempInternal_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 13
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'OvertempPowerDevice_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 15
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 15
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ControlHardwareFail_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 4
+      _startbit: 19
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 15
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'LossValidControlMessage_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 4
+      _startbit: 23
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'EStopShutdown_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 25
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'IllegalTransition_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 27
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'InvalidEEHeader_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 29
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'InvalidEESection_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 31
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ThermalOverload'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 33
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 7
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'BridgeBFault_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 3
+      _startbit: 42
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'FLT_A', 2: !!python/unicode 'N/A',
+        3: !!python/unicode 'FLT_C', 4: !!python/unicode 'OverVoltage', 5: !!python/unicode 'FLT_B',
+        6: !!python/unicode 'Overcurrent', 7: !!python/unicode '5V'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 1
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'BridgeBVoltageOk_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 1
+      _startbit: 43
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 7
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'BridgeAFault_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 3
+      _startbit: 58
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'FLT_A', 2: !!python/unicode 'N/A',
+        3: !!python/unicode 'FLT_C', 4: !!python/unicode 'OverVoltage', 5: !!python/unicode 'FLT_B',
+        6: !!python/unicode 'Overcurrent', 7: !!python/unicode '5V'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: 1
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'BridgeAVoltageOk_status'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 1
+      _startbit: 59
+      _unit: ''
+      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
+        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218090230
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'MasterMeasuredPower'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'RealPower_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 7
+      _unit: !!python/unicode 'W'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ReactivePower_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 39
+      _unit: !!python/unicode 'VA'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 218090231
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusMeasuredPower'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'RealPower_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 7
+      _unit: !!python/unicode 'W'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ReactivePower_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 39
+      _unit: !!python/unicode 'VA'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 419415287
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusCommandedPower'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'RealPower_echo'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 7
+      _unit: !!python/unicode 'W'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ReactivePower_echo'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 39
+      _unit: !!python/unicode 'VA'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 419416567
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 5
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusCommandVF'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'Voltage_echo'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'Vrms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'Frequency_echo'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'Hz'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 419417079
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 7
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusTemps'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'TempInlet_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'C'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'TempInternal_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'C'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ConverterLosses'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'W'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 419418359
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 7
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusLineCurrents'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'L1Current_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'A'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'L2Current_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'A'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'L3Current_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'A'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 419418615
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 7
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusLineVoltages'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'L1Voltage_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'Vrms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'L2Voltage_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'Vrms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'L3Voltage_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'Vrms'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 486517239
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusNVParam'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: 65535
+      _min: '0'
+      _multiplex: Multiplexor
+      _name: !!python/unicode 'StatusNVParam_MUX'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: ''
+      _values: {0: !!python/unicode 'ActParam0', 1: !!python/unicode 'ActLVM_ClearingTimes1',
+        2: !!python/unicode 'ActLVM_ClearingTimes2', 3: !!python/unicode 'ActLFM_Limits',
+        4: !!python/unicode 'ActLFM_ClearingTimes', 5: !!python/unicode 'StatusJ1939_Interface',
+        6: !!python/unicode 'StatusFault_Config', 7: !!python/unicode 'StatusContactorDelays1',
+        8: !!python/unicode 'StatusContactorDelays2', 9: !!python/unicode 'StatusContactorDelays3'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: 3
+      _min: '0'
+      _multiplex: 6
+      _name: !!python/unicode 'StatusThermalOverload'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 2
+      _startbit: 17
+      _unit: ''
+      _values: {0: !!python/unicode 'Warning', 1: !!python/unicode 'Fault', 2: !!python/unicode 'Error',
+        3: !!python/unicode 'N/A'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '10'
+      _min: '5'
+      _multiplex: 0
+      _name: !!python/unicode 'Dummy'
+      _offset: !!python/unicode '5'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 0.1
+      _max: '70'
+      _min: '40'
+      _multiplex: 3
+      _name: !!python/unicode 'FreqHi'
+      _offset: !!python/unicode '40'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'Hz'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '160'
+      _min: '160'
+      _multiplex: 4
+      _name: !!python/unicode 'FreqVeryLo'
+      _offset: !!python/unicode '160'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 9
+      _name: !!python/unicode 'StatusK2Open'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '5000'
+      _min: '0'
+      _multiplex: 7
+      _name: !!python/unicode 'StatusMX1Open'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 8
+      _name: !!python/unicode 'StatusMX2Close'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '247'
+      _min: '0'
+      _multiplex: 5
+      _name: !!python/unicode 'StatusNodeID'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 8
+      _startbit: 23
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 2
+      _name: !!python/unicode 'VOver120'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 1
+      _name: !!python/unicode 'VUnder50pct'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: 5
+      _name: !!python/unicode 'StatusSA_Mask'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 8
+      _startbit: 31
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 4
+      _name: !!python/unicode 'FreqLo'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: 15
+      _min: '0'
+      _multiplex: 5
+      _name: !!python/unicode 'StatusBaudrate'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 4
+      _startbit: 39
+      _unit: ''
+      _values: {0: !!python/unicode '125K', 1: !!python/unicode '250K', 2: !!python/unicode '500K',
+        3: !!python/unicode '1M'}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 8
+      _name: !!python/unicode 'StatusK1Open'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 9
+      _name: !!python/unicode 'StatusK2Close'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 7
+      _name: !!python/unicode 'StatusMX1Close'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 1
+      _name: !!python/unicode 'V50to88pct'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '160'
+      _min: '160'
+      _multiplex: 4
+      _name: !!python/unicode 'FreqHi'
+      _offset: !!python/unicode '160'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 0.1
+      _max: '70'
+      _min: '40'
+      _multiplex: 3
+      _name: !!python/unicode 'FreqVeryLo'
+      _offset: !!python/unicode '40'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'Hz'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '2000'
+      _min: '0'
+      _multiplex: 8
+      _name: !!python/unicode 'StatusK1Close'
+      _offset: !!python/unicode '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: 7
+      _name: !!python/unicode 'StatusMX2Open'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: !!python/unicode ''
+      _factor: 1
+      _max: '30000'
+      _min: '1'
+      _multiplex: 1
+      _name: !!python/unicode 'V110to120pct'
+      _offset: !!python/unicode '1'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'ms'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 486523383
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'softwareRev'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: '1'
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'ControlSwRev'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: '1'
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'InterfaceRev'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: ''
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'BuildTime'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 39
+      _unit: ''
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 486524407
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusControlVoltage'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.01
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'v5p0_Supply'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'V'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.01
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'v3p3_Supply'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'V'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.01
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'v24_Supply'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'V'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.01
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'v15_Supply'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'V'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 486524663
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusControlVolts2'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 0.01
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'n15V_Supply'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'V'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'DiodeTemperature'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'C'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'IGBTTemperature'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 55
+      _unit: !!python/unicode 'C'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 486524919
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 7
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'StatusDCParameters'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'VoltageDCInput_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 7
+      _unit: !!python/unicode 'V'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'VoltageDCBus'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 23
+      _unit: !!python/unicode 'V'
+      _values: {}
+      _valuetype: +
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'CurrentDC_measured'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 16
+      _startbit: 39
+      _unit: !!python/unicode 'A'
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 486526199
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 5
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'serialNumber'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'SerialNumber'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 32
+      _startbit: 7
+      _unit: ''
+      _values: {}
+      _valuetype: +
+  - !!python/object:library.canmatrix.Frame
+    _Id: 486526455
+    _Reciever: []
+    _SignalGroups: []
+    _Size: 5
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '0'}
+    _comment: null
+    _extended: 0
+    _name: !!python/unicode 'softwareRevHash'
+    _signals:
+    - !!python/object:library.canmatrix.Signal
+      _attributes: {}
+      _byteorder: 0
+      _comment: ''
+      _factor: 1
+      _max: '1'
+      _min: '0'
+      _multiplex: null
+      _name: !!python/unicode 'Hash'
+      _offset: '0'
+      _reciever: []
+      _signalsize: 28
+      _startbit: 7
+      _unit: ''
+      _values: {}
+      _valuetype: +
+_frameDefines:
+  GenMsgCycleTime: !!python/object:library.canmatrix.Define {_defaultValue: null,
+    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+  GenMsgCycleTimeActive: !!python/object:library.canmatrix.Define {_defaultValue: null,
+    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+  GenMsgDelayTime: !!python/object:library.canmatrix.Define {_defaultValue: null,
+    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+  GenMsgNrOfRepetitions: !!python/object:library.canmatrix.Define {_defaultValue: null,
+    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+  GenMsgSendType: !!python/object:library.canmatrix.Define
+    _defaultValue: null
+    _definition: ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"
+    _type: ENUM
+    _values: [' "cyclicX"', '"spontanX"', '"cyclicIfActiveX"', '"spontanWithDelay"',
+      '"cyclicAndSpontanX"', '"cyclicAndSpontanWithDelay"', '"spontanWithRepitition"',
+      '"cyclicIfActiveAndSpontanWD"', '"cyclicIfActiveFast"', '"cyclicWithRepeatOnDemand"',
+      '"none"']
+_globalDefines: {}
+_signalDefines:
+  GenSigSNA: !!python/object:library.canmatrix.Define {_defaultValue: null, _definition: STRING,
+    _max: null, _min: null, _type: STRING}
+_valueTables: {}
