@@ -46,7 +46,7 @@ class csvRow:
 
 	def toCSV(self, delimiter=','):
 		text = delimiter.join([unicode(self._linedict[x]).encode('utf-8') for x in range(0, max(self._linedict) + 1)])
-		return text
+		return text.replace('\n', ' ') # TODO newline replacement OK?
 		
 	def __str__(self):
 		return self.toCSV()
