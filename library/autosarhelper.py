@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from canmatrix import *
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -27,80 +27,79 @@ from canmatrix import *
 #
 
 class arTree:
-	def __init__(self,name="", ref=None):
-		self._name = name
-		self._ref = ref
-		self._array = []
-	def new(self, name, child):		
-		temp = arTree(name, child)
-		self._array.append(temp)
-		return temp
+    def __init__(self,name="", ref=None):
+        self._name = name
+        self._ref = ref
+        self._array = []
+    def new(self, name, child):
+        temp = arTree(name, child)
+        self._array.append(temp)
+        return temp
 
-	def getChild(self, path):
-		for tem in self._array:
-			if tem._name == path:
-				return tem
+    def getChild(self, path):
+        for tem in self._array:
+            if tem._name == path:
+                return tem
 
 def arParseTree(tag, ardict, namespace):
-	for child in tag:
-		name = child.find('./' + namespace + 'SHORT-NAME')			
-#		namel = child.find('./' + namespace + 'LONG-NAME')			
-		if name is not None:
-			arParseTree(child, ardict.new(name.text, child), namespace)
-		if name is None:
-			arParseTree(child, ardict, namespace)
+    for child in tag:
+        name = child.find('./' + namespace + 'SHORT-NAME')
+#               namel = child.find('./' + namespace + 'LONG-NAME')
+        if name is not None:
+            arParseTree(child, ardict.new(name.text, child), namespace)
+        if name is None:
+            arParseTree(child, ardict, namespace)
 #
 # some sort of X-Path in autosar-xml-files:
 #
 def arGetXchildren(root, path, arDict, ns):
-	pathElements = path.split('/')
-	ptr = root
-	for element in pathElements[:-1]:
-		ptr = arGetChild(ptr, element, arDict, ns)
-	ptr = arGetChildren(ptr, pathElements[-1], arDict, ns)
-	return ptr
+    pathElements = path.split('/')
+    ptr = root
+    for element in pathElements[:-1]:
+        ptr = arGetChild(ptr, element, arDict, ns)
+    ptr = arGetChildren(ptr, pathElements[-1], arDict, ns)
+    return ptr
 
 #
 # get path in tranlation-dictionary
 #
 def arGetPath(ardict, path):
-	ptr = ardict
-	for p in path.split('/'):
-		if p.strip():
-			if ptr is not None:
-				ptr = ptr.getChild(p)
-			else:
-				return None
-	return ptr._ref
+    ptr = ardict
+    for p in path.split('/'):
+        if p.strip():
+            if ptr is not None:
+                ptr = ptr.getChild(p)
+            else:
+                return None
+    return ptr._ref
 
 
 def arGetChild(parent, tagname, arTranslationTable, namespace):
-#	print "getChild: " + tagname
-	if parent is None:
-		return None
-	ret = parent.find('./' + namespace + tagname)
-	if ret is None:
-		ret = parent.find('./' + namespace + tagname + '-REF')
-		if ret is not None:
-			ret = arGetPath(arTranslationTable, ret.text)
-	return ret
+#       print "getChild: " + tagname
+    if parent is None:
+        return None
+    ret = parent.find('./' + namespace + tagname)
+    if ret is None:
+        ret = parent.find('./' + namespace + tagname + '-REF')
+        if ret is not None:
+            ret = arGetPath(arTranslationTable, ret.text)
+    return ret
 
 def arGetChildren(parent, tagname, arTranslationTable, namespace):
-	if parent is None:
-		return []
-	ret = parent.findall('./' + namespace + tagname)
-	if ret.__len__() == 0:
-		retlist = parent.findall('./' + namespace + tagname + '-REF')
-		rettemp = []
-		for ret in retlist:
-			rettemp.append(arGetPath(arTranslationTable, ret.text))
-		ret = rettemp
-	return ret
+    if parent is None:
+        return []
+    ret = parent.findall('./' + namespace + tagname)
+    if ret.__len__() == 0:
+        retlist = parent.findall('./' + namespace + tagname + '-REF')
+        rettemp = []
+        for ret in retlist:
+            rettemp.append(arGetPath(arTranslationTable, ret.text))
+        ret = rettemp
+    return ret
 
 def arGetName(parent, ns):
-	name = parent.find('.//' + ns + 'SHORT-NAME')
-	if name is not None:
-		if name.text is not None:
-			return name.text
-	return ""
-
+    name = parent.find('.//' + ns + 'SHORT-NAME')
+    if name is not None:
+        if name.text is not None:
+            return name.text
+    return ""

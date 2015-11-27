@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -27,147 +27,147 @@ from canmatrix import *
 
 enumDict = {}
 enums = "{ENUMS}\n"
-	
+
 def createSignal(signal):
-	global enums
-	global enumDict
-	output = ""
-	output += "Var=%s " % (signal._name)
-	if signal._valuetype == '+':
-		output += "unsigned " 
-	else:
-		output += "signed " 
-	if signal._byteorder == 0:
-		#Motorola
-		startBit = signal._startbit
-		startByte = startBit / 8
-		startBit = startBit % 8
-		startBit = (7-startBit)
-		startBit += startByte * 8
-		output += "%d,%d -m " % (startBit, signal._signalsize)
-	else:
-		output += "%d,%d -i " % (signal._startbit, signal._signalsize)
-	if len(signal._unit) > 0:
-		output += "/u:%s " % ( signal._unit[0:15])
-	if float(signal._factor) != 1:
-		output += "/f:%g " % (float(signal._factor))
-	if float(signal._offset) != 0:
-		output += "/o:%g " % (float(signal._offset))
-	output += "/min:%g /max:%g " % (float(signal._min), float(signal._max))
-	
-	if "GenSigStartValue" in signal._attributes:
-		default = float(signal._attributes["GenSigStartValue"]) * float(signal._factor)
-		if default != 0 and default >= float(signal._min) and default <= float(signal._max):
-			output += "/d:%g " % (default)
-	
-	if len(signal._values) > 0:
-		valTabName = signal._name
-		output += "/e:%s" % (valTabName)
-		if valTabName not in enumDict:
-			enums += "enum " + valTabName + "(" + ', '.join('%s="%s"' % (key,val) for (key,val) in signal._values.items()) + ")\n"
-			enumDict[valTabName] = 1
-	if signal._comment is not None and signal._comment > 0:
-		output += " // " + signal._comment.replace('\n',' ').replace('\r',' ')
-	output += "\n"
-	return output
+    global enums
+    global enumDict
+    output = ""
+    output += "Var=%s " % (signal._name)
+    if signal._valuetype == '+':
+        output += "unsigned "
+    else:
+        output += "signed "
+    if signal._byteorder == 0:
+        #Motorola
+        startBit = signal._startbit
+        startByte = startBit / 8
+        startBit = startBit % 8
+        startBit = (7-startBit)
+        startBit += startByte * 8
+        output += "%d,%d -m " % (startBit, signal._signalsize)
+    else:
+        output += "%d,%d -i " % (signal._startbit, signal._signalsize)
+    if len(signal._unit) > 0:
+        output += "/u:%s " % ( signal._unit[0:15])
+    if float(signal._factor) != 1:
+        output += "/f:%g " % (float(signal._factor))
+    if float(signal._offset) != 0:
+        output += "/o:%g " % (float(signal._offset))
+    output += "/min:%g /max:%g " % (float(signal._min), float(signal._max))
+
+    if "GenSigStartValue" in signal._attributes:
+        default = float(signal._attributes["GenSigStartValue"]) * float(signal._factor)
+        if default != 0 and default >= float(signal._min) and default <= float(signal._max):
+            output += "/d:%g " % (default)
+
+    if len(signal._values) > 0:
+        valTabName = signal._name
+        output += "/e:%s" % (valTabName)
+        if valTabName not in enumDict:
+            enums += "enum " + valTabName + "(" + ', '.join('%s="%s"' % (key,val) for (key,val) in signal._values.items()) + ")\n"
+            enumDict[valTabName] = 1
+    if signal._comment is not None and signal._comment > 0:
+        output += " // " + signal._comment.replace('\n',' ').replace('\r',' ')
+    output += "\n"
+    return output
 
 def exportSym(db, filename):
-	"""
-	export canmatrix-object as .sym file (compatible to PEAK-Systems)
-	"""
-	global enumDict
-	global enums 
-	
-	enumDict = {}
-	enums = "{ENUMS}\n"
-	
-	f = open(filename,"w")
+    """
+    export canmatrix-object as .sym file (compatible to PEAK-Systems)
+    """
+    global enumDict
+    global enums
 
-	f.write( "FormatVersion=5.0 // Do not edit this line!\n")
-	f.write( "Title=\"canmatrix-Export\"\n\n")
+    enumDict = {}
+    enums = "{ENUMS}\n"
+
+    f = open(filename,"w")
+
+    f.write( "FormatVersion=5.0 // Do not edit this line!\n")
+    f.write( "Title=\"canmatrix-Export\"\n\n")
 
 
 
-	#Frames
-	output = "\n{SENDRECEIVE}\n"
+    #Frames
+    output = "\n{SENDRECEIVE}\n"
 
-	#trigger all frames
-	for frame in db._fl._list:
-		name = "[" + frame._name + "]\n"
-		
-		idType = "ID=%8Xh" % (frame._Id)
-		if frame._comment is not None:
-			idType += " // "+ frame._comment.replace('\n',' ').replace('\r',' ')
-		idType += "\n"
-		if frame._extended == 1:
-			idType += "Type=Extended\n" 
-		else:
-			idType += "Type=Standard\n" 
-		
-		#check if frame has multiplexed signals
-		multiplex = 0
-		for signal in frame._signals:
-			if signal._multiplex != None:
-				multiplex = 1
-		
-		#if multiplex-signal:
-		if multiplex == 1:
-			#search for multiplexor in frame:
-			for signal in frame._signals:
-				if signal._multiplex == 'Multiplexor':
-					muxSignal = signal
-					
+    #trigger all frames
+    for frame in db._fl._list:
+        name = "[" + frame._name + "]\n"
 
-			# ticker all possible mux-groups as i (0 - 2^ (number of bits of multiplexor))			
-			first = 0
-			for i in range(0,1<<int(muxSignal._signalsize)):
-				found = 0
-				muxOut = ""
-				#ticker all signals 
-				for signal in frame._signals:
-					# if signal is in mux-group i
-					if signal._multiplex == i:
-						muxOut = name
-						if first == 0:
-							muxOut += idType
-							first = 1
-						muxOut += "DLC=%d\n" % (frame._Size)
-						
-			
-						muxName = muxSignal._name + "%d" % i
-						
-						muxOut += "Mux=" + muxName
-						if signal._byteorder == 0:
-							#Motorola
-							startBit = muxSignal._startbit
-							startByte = startBit / 8
-							startBit = startBit % 8
-							startBit = (7-startBit)
-							startBit += startByte * 8
-							muxOut += " %d,%d %d -m" % (startBit, muxSignal._signalsize, i)
-						else:
-							muxOut += " %d,%d %d" % (muxSignal._startbit, muxSignal._signalsize, i)
-						if muxSignal._values is not None and i in muxSignal._values:
-							muxOut += "// " + muxSignal._values[i].replace('\n','').replace('\r','')
-						muxOut += "\n"
-						found = 1
-						break
-				
-				if found == 1:
-					for signal in frame._signals:
-						if signal._multiplex == i or signal._multiplex == None:
-							muxOut += createSignal(signal)
-					output += muxOut + "\n"
-				
+        idType = "ID=%8Xh" % (frame._Id)
+        if frame._comment is not None:
+            idType += " // "+ frame._comment.replace('\n',' ').replace('\r',' ')
+        idType += "\n"
+        if frame._extended == 1:
+            idType += "Type=Extended\n"
+        else:
+            idType += "Type=Standard\n"
 
-		else:	
-			#no multiplex signals in frame, just 'normal' signals
-			output += name
-			output += idType
-			output += "DLC=%d\n" % (frame._Size)
-			for signal in frame._signals:
-				output += createSignal(signal)
-			output += "\n"
-	#write outputfile
-	f.write(enums.encode('iso-8859-1'))
-	f.write(output.encode('iso-8859-1'))
+        #check if frame has multiplexed signals
+        multiplex = 0
+        for signal in frame._signals:
+            if signal._multiplex != None:
+                multiplex = 1
+
+        #if multiplex-signal:
+        if multiplex == 1:
+            #search for multiplexor in frame:
+            for signal in frame._signals:
+                if signal._multiplex == 'Multiplexor':
+                    muxSignal = signal
+
+
+            # ticker all possible mux-groups as i (0 - 2^ (number of bits of multiplexor))
+            first = 0
+            for i in range(0,1<<int(muxSignal._signalsize)):
+                found = 0
+                muxOut = ""
+                #ticker all signals
+                for signal in frame._signals:
+                    # if signal is in mux-group i
+                    if signal._multiplex == i:
+                        muxOut = name
+                        if first == 0:
+                            muxOut += idType
+                            first = 1
+                        muxOut += "DLC=%d\n" % (frame._Size)
+
+
+                        muxName = muxSignal._name + "%d" % i
+
+                        muxOut += "Mux=" + muxName
+                        if signal._byteorder == 0:
+                            #Motorola
+                            startBit = muxSignal._startbit
+                            startByte = startBit / 8
+                            startBit = startBit % 8
+                            startBit = (7-startBit)
+                            startBit += startByte * 8
+                            muxOut += " %d,%d %d -m" % (startBit, muxSignal._signalsize, i)
+                        else:
+                            muxOut += " %d,%d %d" % (muxSignal._startbit, muxSignal._signalsize, i)
+                        if muxSignal._values is not None and i in muxSignal._values:
+                            muxOut += "// " + muxSignal._values[i].replace('\n','').replace('\r','')
+                        muxOut += "\n"
+                        found = 1
+                        break
+
+                if found == 1:
+                    for signal in frame._signals:
+                        if signal._multiplex == i or signal._multiplex == None:
+                            muxOut += createSignal(signal)
+                    output += muxOut + "\n"
+
+
+        else:
+            #no multiplex signals in frame, just 'normal' signals
+            output += name
+            output += idType
+            output += "DLC=%d\n" % (frame._Size)
+            for signal in frame._signals:
+                output += createSignal(signal)
+            output += "\n"
+    #write outputfile
+    f.write(enums.encode('iso-8859-1'))
+    f.write(output.encode('iso-8859-1'))

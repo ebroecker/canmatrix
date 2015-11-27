@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -22,7 +22,7 @@
 
 #
 # this script imports yaml-object-dumps of canmatrix-objects
-# yaml-files are just object-dumps human readable. 
+# yaml-files are just object-dumps human readable.
 # This export is complete, no information lost
 #
 
@@ -31,10 +31,8 @@ import yaml
 
 
 def importYaml(filename):
-	f = file(filename, 'r')
-	db = yaml.load(f)
-	f.close()
+    f = file(filename, 'r')
+    db = yaml.load(f)
+    f.close()
 
-	return db
-
-
+    return db

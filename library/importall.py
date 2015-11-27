@@ -3,33 +3,33 @@ from importdbc import *
 from importdbf import *
 from importsym import *
 
-try: 
-	from importarxml import *
+try:
+    from importarxml import *
 except:
-	print "no arxml-import-support, some dependencys missing... (probably lxml) "
+    print "no arxml-import-support, some dependencys missing... (probably lxml) "
 
-try: 
-	from importkcd import *
+try:
+    from importkcd import *
 except:
-	print "no kcd-import-support, some dependencys missing... , try pip install lxml"
+    print "no kcd-import-support, some dependencys missing... , try pip install lxml"
 
-try: 
-	from importxls import *
+try:
+    from importxls import *
 except:
-	print "no xls-import-support, some dependencys missing... , try pip install xlrd xlwt"
+    print "no xls-import-support, some dependencys missing... , try pip install xlrd xlwt"
 
-try: 
-	from importxlsx import *
+try:
+    from importxlsx import *
 except:
-	print "no xlsx-import-support, some dependencys missing... "
+    print "no xlsx-import-support, some dependencys missing... "
 
-try: 
-	from importyaml import *
+try:
+    from importyaml import *
 except:
-	print "no yaml-import-support, some dependencys missing ... (probably yaml) "
+    print "no yaml-import-support, some dependencys missing ... (probably yaml) "
 
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that

@@ -32,7 +32,7 @@ copyFrame(1234, db2, db3)
 #Copy frame "Engine_123" from first CAN-Matrix to target-Matrix
 copyFrame("Engine_123", db1, db3)
 
-#Copy ECU (with all Frames) "Gateway" from first CAN-Matrix to target-Matrix  
+#Copy ECU (with all Frames) "Gateway" from first CAN-Matrix to target-Matrix
 copyBUwithFrames("Gateway", db1, db3)
 
 #

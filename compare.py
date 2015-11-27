@@ -4,7 +4,7 @@ from library.compare import *
 import sys
 import codecs
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -25,9 +25,9 @@ import codecs
 #DAMAGE.
 
 if len(sys.argv) < 3:
-	sys.stderr.write('Usage: sys.argv[0] matrix1 matrix2\n')
-	sys.stderr.write('matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml\n')
-	sys.exit(1)
+    sys.stderr.write('Usage: sys.argv[0] matrix1 matrix2\n')
+    sys.stderr.write('matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml\n')
+    sys.exit(1)
 
 matrix1 = sys.argv[1]
 matrix2 = sys.argv[2]
@@ -45,25 +45,23 @@ print "\n\n"
 
 
 def dumpResult(res, depth = 0):
-	if res._type is not None and res._result != "equal":
-		for i in range(0,depth):
-			print " ",
-		print res._type + " " + res._result + " ",
-		if  hasattr(res._ref, '_name'):
-			print res._ref._name
-		else:
-			print " "
-		if  res._changes is not None and res._changes[0] is not None and res._changes[1] is not None:
-			for i in range(0,depth):
-				print " ",
-			print "old: " + str(res._changes[0].encode('ascii','replace')) + " new: " + str(res._changes[1].encode('ascii','replace'))
-	for child in res._children:
-		dumpResult(child, depth+1)
+    if res._type is not None and res._result != "equal":
+        for i in range(0,depth):
+            print " ",
+        print res._type + " " + res._result + " ",
+        if  hasattr(res._ref, '_name'):
+            print res._ref._name
+        else:
+            print " "
+        if  res._changes is not None and res._changes[0] is not None and res._changes[1] is not None:
+            for i in range(0,depth):
+                print " ",
+            print "old: " + str(res._changes[0].encode('ascii','replace')) + " new: " + str(res._changes[1].encode('ascii','replace'))
+    for child in res._children:
+        dumpResult(child, depth+1)
 
 ignore = {}
 #ignore["ATTRIBUTE"] = "*"
 #ignore["DEFINE"] = "*"
 obj = compareDb(db1, db2, ignore)
 dumpResult(obj)
-	
-

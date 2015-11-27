@@ -27,94 +27,94 @@ import sys
 
 
 def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso-8859-1'):
-	dbs = {}
-	print "Importing " + infile + " ... "
-	if infile[-3:] == 'dbc':
-		dbs[""] = im.importDbc(infile, dbcCharset,  dbcCommentCharset)
-	elif infile[-3:] == 'dbf':
-		dbs[""] = im.importDbf(infile)
-	elif infile[-3:] == 'sym':
-		dbs[""] = im.importSym(infile)
-	elif infile[-3:] == 'kcd':
-		dbs[""] = im.importKcd(infile)
-	elif infile[-3:] == 'xls':
-		dbs[""] = im.importXls(infile)
-	elif infile[-4:] == 'xlsx' :
-		dbs[""] = im.importXlsx(infile)
-	elif infile[-5:] == 'arxml':
-		dbs = im.importArxml(infile)
-	elif infile[-4:] == 'yaml':
-		dbs[""] = im.importYaml(infile)
-	else:
-		sys.stderr.write('\nFile not recognized: ' + infile + "\n")
-	print "done\n"
+    dbs = {}
+    print "Importing " + infile + " ... "
+    if infile[-3:] == 'dbc':
+        dbs[""] = im.importDbc(infile, dbcCharset,  dbcCommentCharset)
+    elif infile[-3:] == 'dbf':
+        dbs[""] = im.importDbf(infile)
+    elif infile[-3:] == 'sym':
+        dbs[""] = im.importSym(infile)
+    elif infile[-3:] == 'kcd':
+        dbs[""] = im.importKcd(infile)
+    elif infile[-3:] == 'xls':
+        dbs[""] = im.importXls(infile)
+    elif infile[-4:] == 'xlsx' :
+        dbs[""] = im.importXlsx(infile)
+    elif infile[-5:] == 'arxml':
+        dbs = im.importArxml(infile)
+    elif infile[-4:] == 'yaml':
+        dbs[""] = im.importYaml(infile)
+    else:
+        sys.stderr.write('\nFile not recognized: ' + infile + "\n")
+    print "done\n"
 
 
-	print "Exporting " + outfileName + " ... "
+    print "Exporting " + outfileName + " ... "
 
-	for name in dbs:
-		db = dbs[name]
-		print name
-		print "%d Frames found" % (db._fl._list.__len__())
+    for name in dbs:
+        db = dbs[name]
+        print name
+        print "%d Frames found" % (db._fl._list.__len__())
 
-		if len(name) > 0:
-			path = os.path.split(outfileName)
-			outfile = os.path.join(path[0], name + "_" + path[1])
-		else:
-			outfile = outfileName
-		if outfile[-3:] == 'dbc':
-			ex.exportDbc(db, outfile, dbcCharset,  dbcCommentCharset)
-		elif outfile[-3:] == 'dbf':
-			ex.exportDbf(db, outfile)
-		elif outfile[-3:] == 'sym':
-			ex.exportSym(db, outfile)
-		elif outfile[-3:] == 'kcd':
-			ex.exportKcd(db, outfile)
-		elif outfile[-4:] == 'xlsx':
-			ex.exportXlsx(db, outfile)
-		elif outfile[-3:] == 'xls':
-			ex.exportXls(db, outfile)
-		elif outfile[-4:] == 'json':
-			ex.exportJson(db, outfile)
-		elif outfile[-5:] == 'arxml':
-			ex.exportArxml(db, outfile)
-		elif outfile[-4:] == 'yaml':
-			ex.exportYaml(db, outfile)
-		else:
-			sys.stderr.write('File not recognized: ' + infile + "\n")
-	print "done"
+        if len(name) > 0:
+            path = os.path.split(outfileName)
+            outfile = os.path.join(path[0], name + "_" + path[1])
+        else:
+            outfile = outfileName
+        if outfile[-3:] == 'dbc':
+            ex.exportDbc(db, outfile, dbcCharset,  dbcCommentCharset)
+        elif outfile[-3:] == 'dbf':
+            ex.exportDbf(db, outfile)
+        elif outfile[-3:] == 'sym':
+            ex.exportSym(db, outfile)
+        elif outfile[-3:] == 'kcd':
+            ex.exportKcd(db, outfile)
+        elif outfile[-4:] == 'xlsx':
+            ex.exportXlsx(db, outfile)
+        elif outfile[-3:] == 'xls':
+            ex.exportXls(db, outfile)
+        elif outfile[-4:] == 'json':
+            ex.exportJson(db, outfile)
+        elif outfile[-5:] == 'arxml':
+            ex.exportArxml(db, outfile)
+        elif outfile[-4:] == 'yaml':
+            ex.exportYaml(db, outfile)
+        else:
+            sys.stderr.write('File not recognized: ' + infile + "\n")
+    print "done"
 
 def main():
-	from optparse import OptionParser
+    from optparse import OptionParser
 
-	usage = """
-	%prog [options] import-file export-file
+    usage = """
+    %prog [options] import-file export-file
 
-	import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
-	export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)
+    import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
+    export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)
 
-	"""
+    """
 
-	parser = OptionParser(usage=usage)
-	#parser.add_option("-d", "--debug",
-	#                  dest="debug", default=False,
-	#                  help="print debug messages to stdout")
-	parser.add_option("", "--dbcCharset",
-					  dest="dbcCharset", default="iso-8859-1",
-					  help="Charset of Comments in dbc, maybe utf-8")
-	parser.add_option("", "--dbcCommentCharset",
-					  dest="dbcCommentCharset", default="iso-8859-1",
-					  help="Charset of Comments in dbc")
-	(cmdlineOptions, args) = parser.parse_args()
+    parser = OptionParser(usage=usage)
+    #parser.add_option("-d", "--debug",
+    #                  dest="debug", default=False,
+    #                  help="print debug messages to stdout")
+    parser.add_option("", "--dbcCharset",
+                                      dest="dbcCharset", default="iso-8859-1",
+                                      help="Charset of Comments in dbc, maybe utf-8")
+    parser.add_option("", "--dbcCommentCharset",
+                                      dest="dbcCommentCharset", default="iso-8859-1",
+                                      help="Charset of Comments in dbc")
+    (cmdlineOptions, args) = parser.parse_args()
 
-	if len(args) < 2:
-		parser.print_help()
-		sys.exit(1)
-	infile = args[0]
-	outfileName = args[1]
+    if len(args) < 2:
+        parser.print_help()
+        sys.exit(1)
+    infile = args[0]
+    outfileName = args[1]
 
-	convert(infile=infile, outfile=outfileName,
-			charset=args.dbcCharset, comment_charset=args.commentCharset)
+    convert(infile=infile, outfile=outfileName,
+                    charset=args.dbcCharset, comment_charset=args.commentCharset)
 
 if __name__ == '__main__':
-	sys.exit(main())
+    sys.exit(main())
