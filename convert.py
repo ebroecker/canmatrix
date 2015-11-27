@@ -22,6 +22,7 @@
 import library.exportall as ex
 import library.importall as im
 import library.canmatrix as cm
+import os
 import sys
 from optparse import OptionParser
 
@@ -84,7 +85,8 @@ for name in dbs:
 	print "%d Frames found" % (db._fl._list.__len__())
 	
 	if len(name) > 0:
-		outfile = name + "_" + outfileName
+		path = os.path.split(outfileName)
+		outfile = os.path.join(path[0], name + "_" + path[1])
 	else:
 		outfile = outfileName
 	if outfile[-3:] == 'dbc':
