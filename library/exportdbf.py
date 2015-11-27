@@ -135,25 +135,29 @@ def exportDbf(db, filename):
 	# db-parameter
 	f.write("[START_PARAM_NET]\n")
 	for (type,define) in db._globalDefines.items():
-		f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
+		if define._defaultValue is not None:
+			f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
 	f.write("[END_PARAM_NET]\n")
 
 	# bu-parameter
 	f.write("[START_PARAM_NODE]\n")
 	for (type,define) in db._buDefines.items():
-		f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
+		if define._defaultValue is not None:
+			f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
 	f.write("[END_PARAM_NODE]\n")
 
 	# frame-parameter
 	f.write("[START_PARAM_MSG]\n")
 	for (type,define) in db._frameDefines.items():
-		f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
+		if define._defaultValue is not None:
+			f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
 	f.write("[END_PARAM_MSG]\n")
 
 	# signal-parameter
 	f.write("[START_PARAM_SIG]\n")
 	for (type,define) in db._signalDefines.items():
-		f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
+		if define._defaultValue is not None:
+			f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
 	f.write("[END_PARAM_SIG]\n")
 
 	f.write("[START_PARAM_VAL]\n")
