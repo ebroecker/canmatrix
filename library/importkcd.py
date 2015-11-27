@@ -211,7 +211,8 @@ def importKcd(filename):
 		notes = message.findall('./' + namespace + 'Notes')
 		comment = ""
 		for note in notes:
-			comment += note.text
+			if note.text is not None:
+				comment += note.text
 		newBo.addComment(comment)
 	
 		if dlc is None:
