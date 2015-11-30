@@ -30,7 +30,7 @@ import sys
 from pprint import pprint
 
 
-def convert(infile, outfile, dbcCharset='iso-8859-1', dbcCommentCharset='iso-8859-1'):
+def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso-8859-1'):
     dbs = {}
     print("Importing " + infile + " ... ")
     if infile[-3:] == 'dbc':
@@ -54,7 +54,7 @@ def convert(infile, outfile, dbcCharset='iso-8859-1', dbcCommentCharset='iso-885
     print("done\n")
 
 
-    print("Exporting " + outfile + " ... ")
+    print("Exporting " + outfileName + " ... ")
 
     for name in dbs:
         db = dbs[name]
@@ -62,10 +62,10 @@ def convert(infile, outfile, dbcCharset='iso-8859-1', dbcCommentCharset='iso-885
         print("%d Frames found" % (db._fl._list.__len__()))
 
         if len(name) > 0:
-            path = os.path.split(outfile)
+            path = os.path.split(outfileName)
             outfile = os.path.join(path[0], name + "_" + path[1])
         else:
-            outfile = outfile
+            outfile = outfileName
         if outfile[-3:] == 'dbc':
             ex.exportDbc(db, outfile, dbcCharset,  dbcCommentCharset)
         elif outfile[-3:] == 'dbf':
@@ -117,7 +117,7 @@ def main():
     infile = args[0]
     outfileName = args[1]
 
-    convert(infile=infile, outfile=outfileName,
+    convert(infile=infile, outfileName=outfileName,
                     dbcCharset=cmdlineOptions.dbcCharset, dbcCommentCharset=cmdlineOptions.dbcCommentCharset)
 
 if __name__ == '__main__':

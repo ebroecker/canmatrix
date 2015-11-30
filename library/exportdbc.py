@@ -126,7 +126,7 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
         f.write(('BA_DEF_ BU_ "' + type + '" ').encode(dbcExportEncoding) + define._definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
         if type not in defaults and define._defaultValue is not None:
             defaults[type] = define._defaultValue
-    for (type,define) in sorted(list(db._globalDefines.items()), key=lambda x: int(x[0])):
+    for (type,define) in sorted(list(db._globalDefines.items())):
         f.write(('BA_DEF_ "' + type + '" ').encode(dbcExportEncoding) + define._definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
         if type not in defaults and define._defaultValue is not None:
             defaults[type] = define._defaultValue
