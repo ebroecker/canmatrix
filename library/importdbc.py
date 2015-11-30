@@ -56,7 +56,7 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
                 comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
             except:
                 print ("Error decoding line: %d (%s)" % (i, line))
-            if l.endswith('";'):
+            if l.endswith(b'";'):
                 followUp = FollowUps.nothing
                 if signal is not None:
                     signal.addComment(comment[0:-2])
@@ -66,7 +66,7 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
                 comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
             except:
                 print ("Error decoding line: %d (%s)" % (i, line))
-            if l.endswith('";'):
+            if l.endswith(b'";'):
                 followUp = FollowUps.nothing
                 if frame is not None:
                     frame.addComment(comment[0:-2])
@@ -76,7 +76,7 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
                 comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
             except:
                 print ("Error decoding line: %d (%s)" % (i, line))
-            if l.endswith('";'):
+            if l.endswith(b'";'):
                 followUp = FollowUps.nothing
                 if boardUnit is not None:
                     boardUnit.addComment(comment[0:-2])
