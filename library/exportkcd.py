@@ -26,6 +26,11 @@ from builtins import *
 #
 # this script exports kcd-files from a canmatrix-object
 # kcd-files are the can-matrix-definitions of the kayak (http://kayak.2codeornot2code.org/)
+# TODO: support for extended frames (https://github.com/julietkilo/CANBabel/blob/master/src/main/java/com/github/canbabel/canio/kcd/Message.java) :
+#       <attribute name="format" default="standard">
+# ...
+#             <enumeration value="standard"/>
+#             <enumeration value="extended"/>
 
 from lxml import etree
 from .canmatrix import *
