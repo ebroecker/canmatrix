@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 # this is an attempt to generate js-decoding-code
 # this is very buggy and not used anymore
-from canmatrix import *
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import *
+import math
+from .canmatrix import *
 
 signalShortens = {};
 signalShortensIndex = 0;
@@ -100,7 +105,7 @@ def generateSignalMacros_js(botschaft, generatorConfig):
             if ((signal._startbit % 8) + signal._signalsize) > 8:
                 macros += "/* " + signal._name + " getMacro generation not jet supportet */\n"
             else:
-                startbyte = signal._startbit / 8
+                startbyte = math.floor(signal._startbit / 8)
                 startbit = signal._startbit % 8
                 mask = (2 << (signal._signalsize-1)) - 1
 
@@ -120,19 +125,19 @@ def generateSignalMacros_js(botschaft, generatorConfig):
 
         else: # Motorola
 #TODO wrong bits are used if signal is not
-            startbyte = (signal._startbit / 8)
+            startbyte = (math.floor(signal._startbit / 8))
             startbit = 7 - ( signal._startbit % 8)
 
             if startbit + signal._signalsize > 8:
                 if (startbit + signal._signalsize) % 8 != 0:
                     macros +=  " /* Startbyte ist kein ganzes Byte, Generator-Implementierung nicht vollstaendig v */"
-                    print "Error Generierungs-Script hier unvollstaendig: " + botschaft._name + " " + signal._name
+                    print("Error Generierungs-Script hier unvollstaendig: " + botschaft._name + " " + signal._name)
                 else:
                     if(generatorConfig['nice']):
                         macros += "_" + signal._name + " : function(d) { return ("
                     else:
                         macros += "_" + signalShortens[signal._name] + " : function(d) { return ("
-                sizeInByte = signal._signalsize / 8 + ((signal._signalsize % 8) > 0)
+                sizeInByte = math.floor(signal._signalsize / 8) + ((signal._signalsize % 8) > 0)
 
                 for index in range(0, sizeInByte):
                     if (index < sizeInByte-1) or ((signal._signalsize % 8) == 0):
@@ -155,7 +160,7 @@ def generateSignalMacros_js(botschaft, generatorConfig):
 
             else:
                 macros += "/* " + signal._name + " getMacro (2) generation not jet supportet */\n"
-                print "Error Generierungs-Script hier unvollstaendig: " + botschaft._name + " " + signal._name
+                print("Error Generierungs-Script hier unvollstaendig: " + botschaft._name + " " + signal._name)
     framedecodeMethods += "};}"
     return framedecodeMethods, macros, globalMessagesRaw
 #end generateSignalMacrosSel

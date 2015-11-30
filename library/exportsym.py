@@ -23,7 +23,11 @@
 # this script exports sym-files from a canmatrix-object
 # sym-files are the can-matrix-definitions of the Peak Systems Tools
 
-from canmatrix import *
+from __future__ import division
+from __future__ import absolute_import
+from builtins import *
+from .canmatrix import *
+import math
 
 enumDict = {}
 enums = "{ENUMS}\n"
@@ -40,7 +44,7 @@ def createSignal(signal):
     if signal._byteorder == 0:
         #Motorola
         startBit = signal._startbit
-        startByte = startBit / 8
+        startByte = math.floor(startBit / 8)
         startBit = startBit % 8
         startBit = (7-startBit)
         startBit += startByte * 8
@@ -64,9 +68,9 @@ def createSignal(signal):
         valTabName = signal._name
         output += "/e:%s" % (valTabName)
         if valTabName not in enumDict:
-            enums += "enum " + valTabName + "(" + ', '.join('%s="%s"' % (key,val) for (key,val) in signal._values.items()) + ")\n"
+            enums += "enum " + valTabName + "(" + ', '.join('%s="%s"' % (key,val) for (key,val) in sorted(signal._values.items())) + ")\n"
             enumDict[valTabName] = 1
-    if signal._comment is not None and signal._comment > 0:
+    if signal._comment is not None and len(signal._comment) > 0:
         output += " // " + signal._comment.replace('\n',' ').replace('\r',' ')
     output += "\n"
     return output
@@ -140,7 +144,7 @@ def exportSym(db, filename):
                         if signal._byteorder == 0:
                             #Motorola
                             startBit = muxSignal._startbit
-                            startByte = startBit / 8
+                            startByte = math.floor(startBit / 8)
                             startBit = startBit % 8
                             startBit = (7-startBit)
                             startBit += startByte * 8
@@ -169,5 +173,5 @@ def exportSym(db, filename):
                 output += createSignal(signal)
             output += "\n"
     #write outputfile
-    f.write(enums.encode('iso-8859-1'))
-    f.write(output.encode('iso-8859-1'))
+    f.write(enums)
+    f.write(output)

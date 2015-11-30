@@ -26,6 +26,9 @@
 # ID, Frame Name, Cycle Time [ms], Launch Type, Launch Parameter, Signal Byte No., Signal Bit No., Signal Name, Signal Function,  Signal Length [Bit], Signal Default, Signal Not Available, [LIST OF ECUS], Value,     Name / Phys. Range,     Function / Increment Unit
 #
 
+from __future__ import division
+from builtins import *
+import math
 from library.canmatrix import *
 import codecs
 import zipfile
@@ -157,7 +160,7 @@ def importXlsx(filename):
 #                       index['function'] = i
 #               elif "Byteorder" in value:
 #                       index['byteorder'] = i
-    if 'Byteorder' in sheet[0].values():
+    if 'Byteorder' in list(sheet[0].values()):
         for key in sheet[0]:
             if sheet[0][key].strip() == 'Byteorder':
                 _BUstart = letterIndex.index(key)+1
@@ -334,7 +337,6 @@ def importXlsx(filename):
         for sig in bo._signals:
             if int(sig._startbit) + int(sig._signalsize) > maxBit:
                 maxBit = int(sig._startbit) + int(sig._signalsize)
-        if bo._Size > (maxBit / 8):
-            bo._Size = min(8,int(round(maxBit/8 + 0.5)))
+        bo._Size = int(min([8, bo._Size, math.ceil(maxBit / 8)]))
 
     return db

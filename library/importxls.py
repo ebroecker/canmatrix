@@ -26,6 +26,10 @@
 # ID, Frame Name, Cycle Time [ms], Launch Type, Launch Parameter, Signal Byte No., Signal Bit No., Signal Name, Signal Function,  Signal Length [Bit], Signal Default, Signal Not Available, [LIST OF ECUS], Value,     Name / Phys. Range,     Function / Increment Unit
 #
 
+from __future__ import division
+from __future__ import print_function
+from builtins import *
+import math
 from library.canmatrix import *
 import xlrd
 import codecs
@@ -217,7 +221,7 @@ def importXls(filename):
                 try:
                     newSig._factor = float(factor)
                 except:
-                    print "Some error occured while decoding scale: Signal: %s; \"%s\"" % (signalName, sh.cell(rownum,index['function']).value)
+                    print("Some error occured while decoding scale: Signal: %s; \"%s\"" % (signalName, sh.cell(rownum,index['function']).value))
             else:
                 unit = factor.strip()
                 newSig._unit = unit
@@ -254,7 +258,6 @@ def importXls(filename):
         for sig in bo._signals:
             if int(sig._startbit) + int(sig._signalsize) > maxBit:
                 maxBit = int(sig._startbit) + int(sig._signalsize)
-        if bo._Size > (maxBit / 8):
-            bo._Size = min(8,int(round(maxBit/8 + 0.5)))
+        bo._Size = int(min([8, bo._Size, math.ceil(maxBit / 8)]))
 
     return db

@@ -1,32 +1,34 @@
 #!/usr/bin/env python
-from exportdbc import *
-from exportdbf import *
-from exportsym import *
-from exportJson import *
+from __future__ import print_function
+from __future__ import absolute_import
+from .exportdbc import *
+from .exportdbf import *
+from .exportsym import *
+from .exportJson import *
 
 try:
-    from exportarxml import *
+    from .exportarxml import *
 except:
-    print "no arxml-export-support, some dependencys missing...  (probably lxml)"
+    print("no arxml-export-support, some dependencys missing...  (probably lxml)")
 
 try:
-    from exportkcd import *
+    from .exportkcd import *
 except:
-    print "no kcd-export-support, some dependencys missing... "
+    print("no kcd-export-support, some dependencys missing... ")
 
 
 try:
-    from exportxls import *
+    from .exportxls import *
 except:
-    print "no xls-export-support, some dependencys missing... "
+    print("no xls-export-support, some dependencys missing... ")
 try:
-    from exportxlsx import *
+    from .exportxlsx import *
 except:
-    print "no xlsx-export-support, some dependencys missing... "
+    print("no xlsx-export-support, some dependencys missing... ")
 try:
-    from exportyaml import *
+    from .exportyaml import *
 except:
-    print "no yaml-export-support, some dependencys missing ... (probably yaml) "
+    print("no yaml-export-support, some dependencys missing ... (probably yaml) ")
 
 
 

@@ -26,12 +26,13 @@
 # This export is complete, no information lost
 #
 
-from canmatrix import *
+from __future__ import absolute_import
+from .canmatrix import *
 import yaml
 
 
 def importYaml(filename):
-    f = file(filename, 'r')
+    f = open(filename, 'r')
     db = yaml.load(f)
     f.close()
 

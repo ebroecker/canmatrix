@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
 # importany laed alle verfuegbaren importfilter
 from library.copy import *
 import library.importany as im

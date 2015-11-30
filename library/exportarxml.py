@@ -1,8 +1,10 @@
+from __future__ import absolute_import
+from builtins import *
 #!/usr/bin/env python
 from lxml import etree
-from canmatrix import *
-from autosarhelper import *
-from importdbc import *
+from .canmatrix import *
+from .autosarhelper import *
+from .importdbc import *
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -242,7 +244,7 @@ def exportArxml(db, filename):
             #UNIT-REF
             compuIntToPhys = etree.SubElement(compuMethod,'COMPU-INTERNAL-TO-PHYS')
             compuScales = etree.SubElement(compuIntToPhys,'COMPU-SCALES')
-            for value in signal._values:
+            for value in sorted(signal._values, key=lambda x: int(x)):
                 compuScale = etree.SubElement(compuScales,'COMPU-SCALE')
                 desc = etree.SubElement(compuScale,'DESC')
                 l2 = etree.SubElement(desc,'L-2')
@@ -350,5 +352,5 @@ def exportArxml(db, filename):
             ipduRef.set('DEST', "SIGNAL-I-PDU")
             ipduRef.text = "/PDU/" + frame
 
-    f = open(filename,"w");
+    f = open(filename,"wb");
     f.write(etree.tostring(root, pretty_print=True))

@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import absolute_import
 #!/usr/bin/env python
 
 #Copyright (c) 2013, Eduard Broecker
@@ -20,10 +22,10 @@
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-from canmatrix import *
+from .canmatrix import *
 
 
-class compareResult:
+class compareResult(object):
     def __init__(self, result= None, type= None, ref= None, changes = None):
         # equal, added, deleted, changed
         self._result = result
@@ -132,7 +134,7 @@ def compareSignalGroup(sg1, sg2):
         result.addChild(compareResult("changed", "SignalName", [str(sg1._Id), str(sg2._Id)] ))
 
     if sg1._members == None or sg2._members == None:
-        print "Strange - sg wo members???"
+        print("Strange - sg wo members???")
         return result
     for member in sg1._members:
         if sg2.byName(member._name) is None:

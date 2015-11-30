@@ -215,11 +215,11 @@ BO_ 486526455 softwareRevHash: 5 Vector__XXX
 
 
 
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
+BA_DEF_ BO_ "GenMsgCycleTimeActive" INT 0 65535;
 BA_DEF_ BO_ "GenMsgDelayTime" INT 0 65535;
 BA_DEF_ BO_ "GenMsgNrOfRepetitions" INT 0 65535;
 BA_DEF_ BO_ "GenMsgSendType" ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";
-BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
-BA_DEF_ BO_ "GenMsgCycleTimeActive" INT 0 65535;
 BA_DEF_ SG_ "GenSigSNA" STRING;
 
 

@@ -1,7 +1,12 @@
 #!/usr/bin/env python
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import *
+import math
 from lxml import etree
-from canmatrix import *
-from autosarhelper import *
+from .canmatrix import *
+from .autosarhelper import *
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -120,7 +125,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 const = arGetChild(compuscale, "COMPU-CONST", arDict, ns)
                 # value hinzufuegen
                 if const is None:
-                    print "unknown Compu-Method: " + compmethod.get('UUID')
+                    print("unknown Compu-Method: " + compmethod.get('UUID'))
         byteorder = 0
         if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             byteorder = 1
@@ -147,7 +152,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             else:
                 newSig._initValue = 0
 
-            for key,value in values.items():
+            for key,value in list(values.items()):
                 newSig.addValues(key, value)
             Bo.addSignal(newSig)
 
@@ -335,21 +340,21 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 
 def importArxml(filename):
     result = {}
-    print "Read arxml ..."
+    print("Read arxml ...")
     tree = etree.parse(filename)
 
     root = tree.getroot()
-    print " Done\n"
+    print(" Done\n")
 
     ns = "{" + tree.xpath('namespace-uri(.)') + "}"
     nsp = tree.xpath('namespace-uri(.)')
 
     topLevelPackages = root.find('./' + ns + 'TOP-LEVEL-PACKAGES')
 
-    print "Build arTree ..."
+    print("Build arTree ...")
     arDict = arTree()
     arParseTree(topLevelPackages, arDict, ns)
-    print " Done\n"
+    print(" Done\n")
 
     ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
     for cc in ccs:
@@ -365,15 +370,15 @@ def importArxml(filename):
         db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
 
         speed = arGetChild(cc, "SPEED", arDict, ns)
-        print "Busname: " + arGetName(cc,ns),
+        print("Busname: " + arGetName(cc,ns), end=' ')
         if speed is not None:
-            print " Speed: " + speed.text
+            print(" Speed: " + speed.text)
 
         physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
 
         busname = arGetName(cc,ns)
         if speed is not None:
-            print " Speed: " + speed.text
+            print(" Speed: " + speed.text)
 
         nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
 

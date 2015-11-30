@@ -1,5 +1,7 @@
+from __future__ import absolute_import
+from builtins import *
 #!/usr/bin/env python
-from canmatrix import *
+from .canmatrix import *
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -26,7 +28,7 @@ from canmatrix import *
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 #
 
-class arTree:
+class arTree(object):
     def __init__(self,name="", ref=None):
         self._name = name
         self._ref = ref

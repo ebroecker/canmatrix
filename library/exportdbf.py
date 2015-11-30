@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
-from canmatrix import *
+from __future__ import division
+from __future__ import absolute_import
+from builtins import *
+from .canmatrix import *
 import codecs
+import math
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -64,7 +68,7 @@ def exportDbf(db, filename):
     # m_acName ucLength m_ucWhichByte m_ucStartBit
     #m_ucDataFormat m_fOffset m_fScaleFactor m_acUnit m_acMultiplex m_rxNode
             #m_ucDataFormat
-            whichbyte = int(signal._startbit / 8 + 1)
+            whichbyte = int(math.floor(signal._startbit / 8) + 1)
             sign = 'S'
 
             if signal._valuetype == '+':
@@ -82,7 +86,7 @@ def exportDbf(db, filename):
             f.write("," + signal._unit.encode(dbfExportEncoding) + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
 
             if len(signal._values) > 0:
-                for attrib,val in signal._values.items():
+                for attrib,val in list(signal._values.items()):
                     f.write('[VALUE_DESCRIPTION] "' + val.encode(dbfExportEncoding) + '",' + str(attrib) + '\n')
 
 
@@ -134,28 +138,28 @@ def exportDbf(db, filename):
     f.write("[START_PARAM]\n")
     # db-parameter
     f.write("[START_PARAM_NET]\n")
-    for (type,define) in db._globalDefines.items():
+    for (type,define) in list(db._globalDefines.items()):
         if define._defaultValue is not None:
             f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
     f.write("[END_PARAM_NET]\n")
 
     # bu-parameter
     f.write("[START_PARAM_NODE]\n")
-    for (type,define) in db._buDefines.items():
+    for (type,define) in list(db._buDefines.items()):
         if define._defaultValue is not None:
             f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
     f.write("[END_PARAM_NODE]\n")
 
     # frame-parameter
     f.write("[START_PARAM_MSG]\n")
-    for (type,define) in db._frameDefines.items():
+    for (type,define) in list(db._frameDefines.items()):
         if define._defaultValue is not None:
             f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
     f.write("[END_PARAM_MSG]\n")
 
     # signal-parameter
     f.write("[START_PARAM_SIG]\n")
-    for (type,define) in db._signalDefines.items():
+    for (type,define) in list(db._signalDefines.items()):
         if define._defaultValue is not None:
             f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
     f.write("[END_PARAM_SIG]\n")
@@ -164,14 +168,14 @@ def exportDbf(db, filename):
     #boardunit-attributes:
     f.write("[START_PARAM_NODE_VAL]\n")
     for bu in db._BUs._list:
-        for attrib,val in bu._attributes.items():
+        for attrib,val in list(bu._attributes.items()):
             f.write(bu._name + ',"' + attrib + '","'  + val  + '"\n')
     f.write("[END_PARAM_NODE_VAL]\n")
 
     #messages-attributes:
     f.write("[START_PARAM_MSG_VAL]\n")
     for frame in db._fl._list:
-        for attrib,val in frame._attributes.items():
+        for attrib,val in list(frame._attributes.items()):
             f.write( str(frame._Id) + ',S,"' + attrib + '","'  + val  + '"\n')
     f.write("[END_PARAM_MSG_VAL]\n")
 
@@ -179,7 +183,7 @@ def exportDbf(db, filename):
     f.write("[START_PARAM_SIG_VAL]\n")
     for frame in db._fl._list:
         for signal in frame._signals:
-            for attrib,val in signal._attributes.items():
+            for attrib,val in list(signal._attributes.items()):
                 f.write( str(frame._Id) + ',S,' + signal._name + ',"'+ attrib  +  '","' + val  + '"\n')
     f.write("[END_PARAM_SIG_VAL]\n")
     f.write("[END_PARAM_VAL]\n")

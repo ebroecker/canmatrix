@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 #import re
 #from BitVector import BitVector
+from __future__ import division
+from builtins import *
+import math
 from struct import *
 import library.importany as im
 import zipfile
@@ -53,7 +56,7 @@ def genSimulatonFile(nodes):
     retStr += genZeros(4)
 
     #each node
-    for (nodename,source) in nodes.items():
+    for (nodename,source) in list(nodes.items()):
         retStr += genString(source)
         retStr += genString(nodename)
         retStr += genZeros(10)
@@ -98,12 +101,12 @@ def genCallbacks(cycle, bId, db):
     callbacks += "{\n"
 
     canData = db._fl.byId(bId)._attributes["GenMsgStartValue"][1:-2];
-    dlc = len(canData) / 2;
+    dlc = math.floor(len(canData) / 2);
     callbacks += "    SendMsg(" + botsch + ");\n"
     callbacks += "\n} "
     callbacks += "/* End BUSMASTER generated function - OnTimer_" + botsch + "_" + str(cycle) + " */\n\n"
     prototype = "GCC_EXTERN void GCC_EXPORT OnTimer_" + botsch + "_" + str(cycle) +"( );\n"
-    structNames = "STCAN_MSG " + botsch + " = { " + hex(bId) + ", 0, 0, " + str(len(canData)/2) + ", 1,"
+    structNames = "STCAN_MSG " + botsch + " = { " + hex(bId) + ", 0, 0, " + str(math.floor(len(canData)/2)) + ", 1,"
     for i in range(dlc):
         structNames += " 0x"+ canData[i*2:i*2+2]
         if i < dlc-1:
@@ -160,7 +163,7 @@ def tickerBoardUnits(db, dbcname):
             if bu._name in botsch._Transmitter:
                 if "GenMsgCycleTime" in botsch._attributes:
                     data =  botsch._attributes["GenMsgStartValue"][1:-2]
-                    dlc = (len(data)/2)
+                    dlc = (math.floor(len(data)/2))
                     cycleTime = int(botsch._attributes["GenMsgCycleTime"])
                     if float(cycleTime) > 0:
                         if cycleTime in bu._cycles:

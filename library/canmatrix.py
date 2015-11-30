@@ -1,3 +1,5 @@
+from __future__ import division
+import math
 #!/usr/bin/env python
 
 #Copyright (c) 2013, Eduard Broecker
@@ -22,7 +24,7 @@
 
 #TODO: Definitions should be imported with disassembling not as complete string
 
-class FrameList:
+class FrameList(object):
     """
     Keeps all Frames of a Canmatrix
     """
@@ -58,7 +60,7 @@ class FrameList:
                 return test
         return None
 
-class BoardUnit:
+class BoardUnit(object):
     """
     Contains one Boardunit/ECU
     """
@@ -77,7 +79,7 @@ class BoardUnit:
         """
         self._comment = comment
 
-class BoardUnitListe:
+class BoardUnitListe(object):
     """
     Contains all Boardunits/ECUs of a canmatrix in a list
     """
@@ -99,7 +101,7 @@ class BoardUnitListe:
                 return test
         return None
 
-class Signal:
+class Signal(object):
     """
     contains on Signal of canmatrix-object
     with following attributes:
@@ -149,7 +151,7 @@ class Signal:
         self._values[int(value)] = valueName
 
 
-class SignalGroup:
+class SignalGroup(object):
     """
     contains Signals, which belong to signal-group
     """
@@ -172,7 +174,7 @@ class SignalGroup:
                 return test
         return None
 
-class Frame:
+class Frame(object):
     """
     contains one Frame with following attributes
     _Id, _name, _Transmitter (list of boardunits/ECU-names), _Size (= DLC),
@@ -251,7 +253,7 @@ class Frame:
 
 
 
-class Define:
+class Define(object):
     """
     these objects hold the defines and default-values
     """
@@ -289,7 +291,7 @@ class Define:
     def addDefault(self, default):
         self._defaultValue = default
 
-class CanMatrix:
+class CanMatrix(object):
     """
     The Can-Matrix-Object
     _attributes (global canmatrix-attributes),
@@ -397,8 +399,8 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
 
     if format == 1: # Intel
         lastbit = startbit + len
-        firstbyte = startbit/8-1
-        lastbyte = (lastbit-1)/8
+        firstbyte = math.floor(startbit/8)-1
+        lastbyte = math.floor((lastbit-1)/8)
         # im lastbyte mit dem msb anfangen
         # im firstbyte mit dem lsb aufhoeren
         for i in range(lastbyte, firstbyte, -1):
@@ -408,8 +410,8 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
                 nbits = min(len, 8)
             nbits = min(len, nbits)
 
-            start = lastbit-1 - int((lastbit-1)/8)*8
-            end = lastbit-nbits - int((lastbit-nbits)/8)*8
+            start = lastbit-1 - int(math.floor((lastbit-1)/8))*8
+            end = lastbit-nbits - int(math.floor((lastbit-nbits)/8))*8
 
             len -= nbits
             mask = (0xff >> 7-start) << end
@@ -417,10 +419,10 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
             frame[i] |= (((value >> len ) << end) & mask)
             lastbit = startbit + len
     else: # Motorola
-        firstbyte = startbit/8
+        firstbyte = math.floor(startbit/8)
         bitsInfirstByte = startbit % 8 + 1
         restnBits = len - bitsInfirstByte
-        lastbyte = firstbyte + restnBits/8
+        lastbyte = firstbyte + math.floor(restnBits/8)
         if restnBits %8 > 0:
             lastbyte += 1
         restLen = len

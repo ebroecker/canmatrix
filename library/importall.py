@@ -1,32 +1,34 @@
 #!/usr/bin/env python
-from importdbc import *
-from importdbf import *
-from importsym import *
+from __future__ import print_function
+from __future__ import absolute_import
+from .importdbc import *
+from .importdbf import *
+from .importsym import *
 
 try:
-    from importarxml import *
+    from .importarxml import *
 except:
-    print "no arxml-import-support, some dependencys missing... (probably lxml) "
+    print("no arxml-import-support, some dependencys missing... (probably lxml) ")
 
 try:
-    from importkcd import *
+    from .importkcd import *
 except:
-    print "no kcd-import-support, some dependencys missing... , try pip install lxml"
+    print("no kcd-import-support, some dependencys missing... , try pip install lxml")
 
 try:
-    from importxls import *
+    from .importxls import *
 except:
-    print "no xls-import-support, some dependencys missing... , try pip install xlrd xlwt"
+    print("no xls-import-support, some dependencys missing... , try pip install xlrd xlwt")
 
 try:
-    from importxlsx import *
+    from .importxlsx import *
 except:
-    print "no xlsx-import-support, some dependencys missing... "
+    print("no xlsx-import-support, some dependencys missing... ")
 
 try:
-    from importyaml import *
+    from .importyaml import *
 except:
-    print "no yaml-import-support, some dependencys missing ... (probably yaml) "
+    print("no yaml-import-support, some dependencys missing ... (probably yaml) ")
 
 
 #Copyright (c) 2013, Eduard Broecker

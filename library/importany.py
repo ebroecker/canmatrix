@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-import importall as im
+from __future__ import absolute_import
+#!/usr/bin/env python
+from . import importall as im
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -33,5 +35,5 @@ def importany(filename):
         db = im.importXls(filename)
     elif filename[-5:] == 'arxml':
         dbs = im.importArxml(filename)
-        db = dbs.itervalues().next()
+        db = next(iter(dbs.values()))
     return db

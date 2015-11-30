@@ -1,3 +1,7 @@
+from __future__ import division
+from __future__ import absolute_import
+from builtins import *
+import math
 #!/usr/bin/env python
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -29,14 +33,14 @@
 # currently only for FormatVersion=5.0
 #TODO: support for title example: Title="some title"
 
-from canmatrix import *
+from .canmatrix import *
 import re
 import codecs
 
 
 def importSym(filename):
-    class Mode:
-        glob, enums, send, sendReceive = range(4)
+    class Mode(object):
+        glob, enums, send, sendReceive = list(range(4))
     mode = Mode.glob
     valueTables = {}
 
@@ -74,7 +78,7 @@ def importSym(filename):
             if line.startswith('enum'):
                 while not line[5:].strip().endswith(')'):
                     line = line.split('//')[0]
-                    line += f.next().strip()
+                    line += f.readline().strip()
                 line = line.split('//')[0]
                 tempArray = line[5:].replace(')','').split('(')
                 valtabName = tempArray[0]
@@ -136,7 +140,7 @@ def importSym(filename):
                 for switch in tempArray[indexOffset+2:]:
                     if switch == "-m":
                         intel = 0
-                        startByte = startBit / 8
+                        startByte = math.floor(startBit / 8)
                         startBit = startBit % 8
                         startBit = (7-startBit)
                         startBit += startByte * 8
@@ -165,7 +169,8 @@ def importSym(filename):
 #                                                       print switch
 #                                       else:
 #                                               print switch
-                startValue = float(startValue) / float(factor)
+                # ... (1 / ...) because this somehow made 59.8/0.1 be 598.0 rather than 597.9999999999999
+                startValue = float(startValue) * (1 / float(factor))
                 if tmpMux == "Mux":
                     signal = frame.signalByName(frameName + "_MUX")
                     if signal == None:

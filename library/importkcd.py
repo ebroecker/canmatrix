@@ -29,8 +29,11 @@
 #TODO defaults for CAN-Simulation missing
 #TODO LabelGroup not supported
 
+from __future__ import division
+from __future__ import absolute_import
+import math
 from lxml import etree
-from canmatrix import *
+from .canmatrix import *
 
 def parseSignal(signal, mux, namespace, nodelist):
     startbit = 0
@@ -216,7 +219,7 @@ def importKcd(filename):
         newBo.addComment(comment)
 
         if dlc is None:
-            newBo._Size = int((maxBit-1) / 8)+1
+            newBo._Size = int(math.floor((maxBit-1) / 8))+1
         else:
             newBo._Size = dlc
 

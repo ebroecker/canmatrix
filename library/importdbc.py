@@ -1,3 +1,8 @@
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import *
+import math
 #!/usr/bin/env python
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -25,22 +30,22 @@
 #
 #TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL == BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
 
-from canmatrix import *
+from .canmatrix import *
 import re
 import codecs
 
 
 def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-8859-1'):
     i = 0
-    class FollowUps:
-        nothing, signalComment, frameComment, boardUnitComment, globalComment = range(5)
+    class FollowUps(object):
+        nothing, signalComment, frameComment, boardUnitComment, globalComment = list(range(5))
     followUp = FollowUps.nothing
     comment = ""
     signal = None
     frame = None
     boardUnit = None
     db = CanMatrix()
-    f = open(filename)
+    f = open(filename, 'rb')
     for line in f:
         i = i+1
         l = line.strip()
@@ -76,200 +81,242 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
                 if boardUnit is not None:
                     boardUnit.addComment(comment[0:-2])
             continue;
-        if l.startswith("BO_ "):
+        decoded = l.decode(dbcImportEncoding)
+        if decoded.startswith("BO_ "):
             regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")
-            temp = regexp.match(l)
+            temp = regexp.match(decoded)
             db._fl.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-        elif l.startswith("SG_ "):
-            regexp = re.compile("^SG\_ (\w+) : (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)")
-            temp = regexp.match(l)
+        elif decoded.startswith("SG_ "):
+            pattern = "^SG\_ (\w+) : (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)"
+            regexp = re.compile(pattern)
+            temp = regexp.match(decoded)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp_raw = regexp_raw.match(l)
             if temp:
-                reciever = map(str.strip, temp.group(11).split(','))
-                db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10).decode(dbcImportEncoding),reciever))
+                reciever = list(map(str.strip, temp.group(11).split(',')))
+                db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp_raw.group(10).decode(dbcImportEncoding),reciever))
             else:
-                regexp = re.compile("^SG\_ (\w+) (\w+) *: (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)")
-                temp = regexp.match(l)
-                reciever = map(str.strip, temp.group(12).split(','))
+                pattern = "^SG\_ (\w+) (\w+) *: (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)"
+                regexp = re.compile(pattern)
+                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                temp = regexp.match(decoded)
+                temp_raw = regexp_raw.match(l)
+                reciever = list(map(str.strip, temp.group(12).split(',')))
                 multiplex = temp.group(2)
                 if multiplex == 'M':
                     multiplex = 'Multiplexor'
                 else:
                     multiplex = int(multiplex[1:])
 
-                db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp.group(11).decode(dbcImportEncoding),reciever, multiplex))
+                db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp_raw.group(11).decode(dbcImportEncoding),reciever, multiplex))
 
 
-        elif l.startswith("BO_TX_BU_ "):
+        elif decoded.startswith("BO_TX_BU_ "):
             regexp = re.compile("^BO_TX_BU_ ([0-9]+) *: *(.+);")
-            temp = regexp.match(l)
+            temp = regexp.match(decoded)
             botschaft = db.frameById(temp.group(1))
             for bu in temp.group(2).split(','):
                 botschaft.addTransmitter(bu)
-        elif l.startswith("CM_ SG_ "):
-            regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)\";")
-            temp = regexp.match(l)
+        elif decoded.startswith("CM_ SG_ "):
+            pattern = "^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)\";"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
+            temp_raw = regexp_raw.match(l)
             if temp:
                 botschaft = db.frameById(temp.group(1))
                 signal = botschaft.signalByName(temp.group(2))
                 if signal:
                     try:
-                        signal.addComment(temp.group(3).decode(dbcCommentEncoding).replace('\\"','"'))
+                        signal.addComment(temp_raw.group(3).decode(dbcCommentEncoding).replace('\\"','"'))
                     except:
                         print ("Error decoding line: %d (%s)" % (i, line))
             else:
-                regexp = re.compile("^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)")
-                temp = regexp.match(l)
+                pattern = "^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)"
+                regexp = re.compile(pattern)
+                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                temp = regexp.match(decoded)
+                temp_raw = regexp_raw.match(l)
                 if temp:
                     botschaft = db.frameById(temp.group(1))
                     signal = botschaft.signalByName(temp.group(2))
                     try:
-                        comment = temp.group(3).decode(dbcCommentEncoding).replace('\\"','"')
+                        comment = temp_raw.group(3).decode(dbcCommentEncoding).replace('\\"','"')
                     except:
                         print ("Error decoding line: %d (%s)" % (i, line))
                     followUp = FollowUps.signalComment
 
-        elif l.startswith("CM_ BO_ "):
-            regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)\";")
-            temp = regexp.match(l)
+        elif decoded.startswith("CM_ BO_ "):
+            pattern = "^CM\_ BO\_ *(\w+) *\"(.*)\";"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
+            temp_raw = regexp_raw.match(l)
             if temp:
                 frame = db.frameById(temp.group(1))
                 if frame:
                     try:
-                        frame.addComment(temp.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
+                        frame.addComment(temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
                     except:
                         print ("Error decoding line: %d (%s)" % (i, line))
             else:
-                regexp = re.compile("^CM\_ BO\_ *(\w+) *\"(.*)")
-                temp = regexp.match(l)
+                pattern = "^CM\_ BO\_ *(\w+) *\"(.*)"
+                regexp = re.compile(pattern)
+                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                temp = regexp.match(decoded)
+                temp_raw = regexp_raw.match(l)
                 if temp:
                     frame = db.frameById(temp.group(1))
                     try:
-                        comment = temp.group(2).decode(dbcCommentEncoding).replace('\\"','"')
+                        comment = temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"')
                     except:
                         print ("Error decoding line: %d (%s)" % (i, line))
                     followUp = FollowUps.frameComment
-        elif l.startswith("CM_ BU_ "):
-            regexp = re.compile("^CM\_ BU\_ *(\w+) *\"(.*)\";")
-            temp = regexp.match(l)
+        elif decoded.startswith("CM_ BU_ "):
+            pattern = "^CM\_ BU\_ *(\w+) *\"(.*)\";"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
+            temp_raw = regexp_raw.match(l)
             if temp:
                 boardUnit = db.boardUnitByName(temp.group(1))
                 if boardUnit:
                     try:
-                        boardUnit.addComment(temp.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
+                        boardUnit.addComment(temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
                     except:
                         print ("Error decoding line: %d (%s)" % (i, line))
             else:
-                regexp = re.compile("^CM\_ BU\_ *(\w+) *\"(.*)")
-                temp = regexp.match(l)
+                pattern = "^CM\_ BU\_ *(\w+) *\"(.*)"
+                regexp = re.compile(pattern)
+                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                temp = regexp.match(decoded)
+                temp_raw = regexp_raw.match(l)
                 if temp:
                     boardUnit = db.boardUnitByName(temp.group(1))
                     if boardUnit:
                         try:
-                            comment = temp.group(2).decode(dbcCommentEncoding).replace('\\"','"')
+                            comment = temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"')
                         except:
                             print ("Error decoding line: %d (%s)" % (i, line))
                         followUp = FollowUps.boardUnitComment
-        elif l.startswith("BU_:"):
-            regexp = re.compile("^BU\_\:(.*)")
-            temp = regexp.match(l)
+        elif decoded.startswith("BU_:"):
+            pattern = "^BU\_\:(.*)"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
             if temp:
                 myTempListe = temp.group(1).split(' ')
                 for ele in myTempListe:
                     if len(ele.strip()) > 1:
                         db._BUs.add(BoardUnit(ele))
 
-        elif l.startswith("VAL_ "):
+        elif decoded.startswith("VAL_ "):
             regexp = re.compile("^VAL\_ (\w+) (\w+) (.*);")
-            temp = regexp.match(l)
+            temp = regexp.match(decoded)
             if temp:
                 botschaftId = temp.group(1)
                 signal = temp.group(2)
                 tempList = temp.group(3).split('"')
                 try:
-                    for i in range(len(tempList)/2):
+                    for i in range(math.floor(len(tempList)/2)):
                         bo = db.frameById(botschaftId)
                         sg = bo.signalByName(signal)
                         val = tempList[i*2+1]
                         #[1:-1]
 
                         if sg:
-                            sg.addValues(tempList[i*2], val.decode(dbcImportEncoding))
+                            sg.addValues(tempList[i*2], val)
                 except:
-                    print "Error with Line: ",tempList
+                    print("Error with Line: ",tempList)
 
-        elif l.startswith("VAL_TABLE_ "):
+        elif decoded.startswith("VAL_TABLE_ "):
             regexp = re.compile("^VAL\_TABLE\_ (\w+) (.*);")
-            temp = regexp.match(l)
+            temp = regexp.match(decoded)
             if temp:
                 tableName = temp.group(1)
                 tempList = temp.group(2).split('"')
                 try:
                     valHash = {}
-                    for i in range(len(tempList)/2):
+                    for i in range(math.floor(len(tempList)/2)):
                         val = tempList[i*2+1]
                         valHash[tempList[i*2].strip()] = val.strip()
                 except:
-                    print "Error with Line: ",tempList
+                    print("Error with Line: ",tempList)
                 db.addValueTable(tableName, valHash)
             else:
-                print l
+                print(l)
 
-        elif l.startswith("BA_DEF_ SG_ "):
-            regexp = re.compile("^BA\_DEF\_ SG\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")
-            temp = regexp.match(l)
+        elif decoded.startswith("BA_DEF_ SG_ "):
+            pattern = "^BA\_DEF\_ SG\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
+            temp_raw = regexp_raw.match(l)
             if temp:
-                db.addSignalDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
-        elif l.startswith("BA_DEF_ BO_ "):
-            regexp = re.compile("^BA\_DEF\_ BO\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")
-            temp = regexp.match(l)
+                db.addSignalDefines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+        elif decoded.startswith("BA_DEF_ BO_ "):
+            pattern = "^BA\_DEF\_ BO\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
+            temp_raw = regexp_raw.match(l)
             if temp:
-                db.addFrameDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
-        elif l.startswith("BA_DEF_ BU_ "):
-            regexp = re.compile("^BA\_DEF\_ BU\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")
-            temp = regexp.match(l)
+                db.addFrameDefines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+        elif decoded.startswith("BA_DEF_ BU_ "):
+            pattern = "^BA\_DEF\_ BU\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
+            temp_raw = regexp_raw.match(l)
             if temp:
-                db.addBUDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
-        elif l.startswith("BA_DEF_ "):
-            regexp = re.compile("^BA\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")
-            temp = regexp.match(l)
+                db.addBUDefines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+        elif decoded.startswith("BA_DEF_ "):
+            pattern = "^BA\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
+            temp_raw = regexp_raw.match(l)
             if temp:
-                db.addGlobalDefines(temp.group(1), temp.group(2).decode(dbcImportEncoding))
+                db.addGlobalDefines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
 
-        elif l.startswith("BA_ "):
+        elif decoded.startswith("BA_ "):
             regexp = re.compile("^BA\_ +\"[A-Za-z0-9\-_]+\" +(.+)")
-            tempba = regexp.match(l)
+            tempba = regexp.match(decoded)
 
             if tempba.group(1).strip().startswith("BO_ "):
                 regexp = re.compile("^BA\_ \"(.*)\" BO\_ (\w+) (.+);")
-                temp = regexp.match(l)
+                temp = regexp.match(decoded)
                 db.frameById(int(temp.group(2))).addAttribute(temp.group(1),temp.group(3))
             elif tempba.group(1).strip().startswith("SG_ "):
                 regexp = re.compile("^BA\_ \"(.*)\" SG\_ (\w+) (\w+) (.+);")
-                temp = regexp.match(l)
+                temp = regexp.match(decoded)
                 db.frameById(int(temp.group(2))).signalByName(temp.group(3)).addAttribute(temp.group(1),temp.group(4))
             elif tempba.group(1).strip().startswith("BU_ "):
                 regexp = re.compile("^BA\_ \"(.*)\" BU\_ (\w+) (.+);")
-                temp = regexp.match(l)
+                temp = regexp.match(decoded)
                 db._BUs.byName(temp.group(2)).addAttribute(temp.group(1), temp.group(3))
             else:
                 regexp = re.compile("^BA\_ \"([A-Za-z0-9\-\_]+)\" +([\"A-Za-z0-9\-\_]+);")
-                temp = regexp.match(l)
+                temp = regexp.match(decoded)
                 if temp:
                     db.addAttribute(temp.group(1),temp.group(2))
 
 
-        elif l.startswith("SIG_GROUP_ "):
+        elif decoded.startswith("SIG_GROUP_ "):
             regexp = re.compile("^SIG\_GROUP\_ +(\w+) +(\w+) +(\w+) +\:(.*);")
-            temp = regexp.match(l)
+            temp = regexp.match(decoded)
             frame = db.frameById(temp.group(1))
             if frame is not None:
                 signalArray = temp.group(4).split(' ')
                 frame.addSignalGroup(temp.group(2), temp.group(3), signalArray)
-        elif l.startswith("BA_DEF_DEF_ "):
-            regexp = re.compile("^BA\_DEF\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+)\;")
-            temp = regexp.match(l)
+        elif decoded.startswith("BA_DEF_DEF_ "):
+            pattern = "^BA\_DEF\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+)\;"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
+            temp_raw = regexp_raw.match(l)
             if temp:
-                db.addDefineDefault(temp.group(1), temp.group(2).decode(dbcImportEncoding))
+                db.addDefineDefault(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
 #               else:
 #                       print "Unrecocniced line: " + l + " (%d) " % i
 

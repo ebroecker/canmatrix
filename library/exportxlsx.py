@@ -23,9 +23,13 @@
 # this script exports xls-files from a canmatrix-object
 # xls-files are the can-matrix-definitions displayed in Excel
 
+from __future__ import division
+from __future__ import absolute_import
+from builtins import *
+import math
 import xlsxwriter
 import sys
-from canmatrix import *
+from .canmatrix import *
 import os.path
 
 #Font Size : 8pt * 20 = 160
@@ -107,7 +111,7 @@ def writeFramex(frame, worksheet, row, mystyle):
 
 def writeSignalx(db, sig, worksheet, row, rearCol, mystyle):
     #startbyte
-    worksheet.write(row, 5,  (sig._startbit)/8+1, mystyle)
+    worksheet.write(row, 5,  math.floor((sig._startbit)/8)+1, mystyle)
     #startbit
     worksheet.write(row, 6,  (sig._startbit)%8, mystyle)
     #signalname
@@ -286,7 +290,7 @@ def exportXlsx(db, filename):
     row = 1
 
     # iterate over the frames
-    for idx in sorted(frameHash.iterkeys()):
+    for idx in sorted(frameHash.keys()):
         frame = frameHash[idx]
         framestyle = sty_first_frame
 
@@ -299,7 +303,7 @@ def exportXlsx(db, filename):
         sigstyle = sty_first_frame
 
         #iterate over signals
-        for sig_idx in sorted(sigHash.iterkeys()):
+        for sig_idx in sorted(sigHash.keys()):
             sig = sigHash[sig_idx]
 
             # if not first Signal in Frame, set style
@@ -309,7 +313,7 @@ def exportXlsx(db, filename):
             if sig._values.__len__() > 0:
                 valstyle = sigstyle
                 # iterate over values in valuetable
-                for val in sorted(sig._values.iterkeys()):
+                for val in sorted(sig._values.keys()):
                     writeFramex(frame, worksheet, row, framestyle)
                     if framestyle != sty_first_frame:
                         worksheet.set_row(row, None, None, {'level': 1})

@@ -25,7 +25,9 @@
 # dbf-files are the can-matrix-definitions of the busmaster-project (http://rbei-etas.github.io/busmaster/)
 #
 
-from canmatrix import *
+from __future__ import print_function
+from __future__ import absolute_import
+from .canmatrix import *
 import re
 
 #TODO support for [START_PARAM_NODE_RX_SIG]
@@ -47,7 +49,7 @@ def decodeDefine(line):
         myDef = valueType
         default = value
     else:
-        print line
+        print(line)
 
     return define[1:-1], myDef, default
 

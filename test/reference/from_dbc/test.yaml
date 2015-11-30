@@ -12,8 +12,8 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Operational commands are received by the module via
-      control bits within this message.'
+    _comment: Operational commands are received by the module via control bits within
+      this message.
     _extended: 1
     _name: CommandModeControl
     _signals:
@@ -30,9 +30,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 1
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -47,9 +46,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 3
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Clear Faults',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -64,9 +62,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 57
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'No invert', 1: !!python/unicode 'Invert', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -81,9 +78,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 59
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -98,9 +94,9 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 61
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal - Three Phase Mode', 1: !!python/unicode 'Enable
-          Split Phase Mode', 2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
+        3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -115,9 +111,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 33
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -132,9 +127,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 35
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -149,9 +143,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 37
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -166,9 +159,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 39
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -183,9 +175,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 63
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Negative', 1: !!python/unicode 'Positive', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -200,9 +191,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 17
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Master', 1: !!python/unicode 'Follower', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
     _Id: 218082369
@@ -211,8 +201,8 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Sets the desired real (P) and reactive (Q) power levels
-      for the module to follow while in the GRID FOLLOWING mode.'
+    _comment: Sets the desired real (P) and reactive (Q) power levels for the module
+      to follow while in the GRID FOLLOWING mode.
     _extended: 1
     _name: CommandPower
     _signals:
@@ -229,7 +219,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 7
-      _unit: !!python/unicode 'W'
+      _unit: W
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -245,7 +235,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 39
-      _unit: !!python/unicode 'VA'
+      _unit: VA
       _values: {}
       _valuetype: '-'
   - !!python/object:library.canmatrix.Frame
@@ -255,10 +245,10 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Sets the desired voltage and frequency for the module
-      to produce while in the GRID FORMING mode.  In addition, while in the READY
-      and GRID FOLLOWING modes, this message is used to set the nominal voltage levels
-      for detection of acceptable AC line voltage.'
+    _comment: Sets the desired voltage and frequency for the module to produce while
+      in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
+      modes, this message is used to set the nominal voltage levels for detection
+      of acceptable AC line voltage.
     _extended: 1
     _name: CommandVF
     _signals:
@@ -275,7 +265,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'Vrms'
+      _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -291,7 +281,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -301,7 +291,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Returns the actual measured power.'
+    _comment: Returns the actual measured power.
     _extended: 1
     _name: MasterMeasuredPower
     _signals:
@@ -318,7 +308,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 7
-      _unit: !!python/unicode 'W'
+      _unit: W
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -334,7 +324,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 39
-      _unit: !!python/unicode 'VA'
+      _unit: VA
       _values: {}
       _valuetype: '-'
   - !!python/object:library.canmatrix.Frame
@@ -361,9 +351,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 1
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -378,7 +367,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 39
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -394,7 +383,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -404,9 +393,9 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Provides access to configure non-volatile parameters.  Note
-      that these parameters can only be set when the inverter''s power stage is disabled
-      (PowerCircuitEnabled_status in StatusBits message is ''Disabled.'')'
+    _comment: Provides access to configure non-volatile parameters.  Note that these
+      parameters can only be set when the inverter's power stage is disabled (PowerCircuitEnabled_status
+      in StatusBits message is 'Disabled.')
     _extended: 1
     _name: CommandSetNVParam
     _signals:
@@ -423,12 +412,10 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Param0', 1: !!python/unicode 'LVM_ClearingTimes1',
-        2: !!python/unicode 'LVM_ClearingTimes2', 3: !!python/unicode 'LFM_Limits',
-        4: !!python/unicode 'LFM_ClearingTimes', 5: !!python/unicode 'J1939_Interface',
-        6: !!python/unicode 'Fault_Config', 7: !!python/unicode 'ContactorDelays1',
-        8: !!python/unicode 'ContactorDelays2', 9: !!python/unicode 'ContactorDelays3'}
+      _unit: ''
+      _values: {0: Param0, 1: LVM_ClearingTimes1, 2: LVM_ClearingTimes2, 3: LFM_Limits,
+        4: LFM_ClearingTimes, 5: J1939_Interface, 6: Fault_Config, 7: ContactorDelays1,
+        8: ContactorDelays2, 9: ContactorDelays3}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -443,7 +430,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -459,7 +446,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -475,7 +462,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -491,7 +478,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -507,7 +494,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -523,7 +510,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -539,7 +526,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -555,7 +542,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -571,7 +558,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -587,7 +574,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -603,7 +590,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -619,7 +606,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 8
       _startbit: 23
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -635,7 +622,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 8
       _startbit: 31
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -651,9 +638,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 4
       _startbit: 39
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode '125K', 1: !!python/unicode '250K', 2: !!python/unicode '500K',
-        3: !!python/unicode '1M'}
+      _unit: ''
+      _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -668,9 +654,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 17
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Warning', 1: !!python/unicode 'Fault', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
@@ -685,7 +670,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -701,7 +686,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -717,7 +702,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -733,7 +718,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -749,7 +734,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -765,7 +750,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -781,7 +766,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -797,7 +782,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -807,8 +792,8 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Operational commands are received by the module via
-      control bits within this message.'
+    _comment: Operational commands are received by the module via control bits within
+      this message.
     _extended: 1
     _name: CommandModeControlAPU2
     _signals:
@@ -825,9 +810,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 1
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -842,9 +826,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 3
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Clear Faults',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -859,9 +842,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 57
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'No invert', 1: !!python/unicode 'Invert', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -876,9 +858,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 59
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -893,9 +874,9 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 61
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal - Three Phase Mode', 1: !!python/unicode 'Enable
-          Split Phase Mode', 2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
+        3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -910,9 +891,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 33
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -927,9 +907,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 35
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -944,9 +923,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 37
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -961,9 +939,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 39
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Force On', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -978,9 +955,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 63
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Negative', 1: !!python/unicode 'Positive', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -995,9 +971,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 17
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Master', 1: !!python/unicode 'Follower', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
     _Id: 218078273
@@ -1006,8 +981,8 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Sets the desired real (P) and reactive (Q) power levels
-      for the module to follow while in the GRID FOLLOWING mode.'
+    _comment: Sets the desired real (P) and reactive (Q) power levels for the module
+      to follow while in the GRID FOLLOWING mode.
     _extended: 1
     _name: CommandPowerAPU2
     _signals:
@@ -1024,7 +999,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 7
-      _unit: !!python/unicode 'W'
+      _unit: W
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -1040,7 +1015,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 39
-      _unit: !!python/unicode 'VA'
+      _unit: VA
       _values: {}
       _valuetype: '-'
   - !!python/object:library.canmatrix.Frame
@@ -1050,10 +1025,10 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Sets the desired voltage and frequency for the module
-      to produce while in the GRID FORMING mode.  In addition, while in the READY
-      and GRID FOLLOWING modes, this message is used to set the nominal voltage levels
-      for detection of acceptable AC line voltage.'
+    _comment: Sets the desired voltage and frequency for the module to produce while
+      in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
+      modes, this message is used to set the nominal voltage levels for detection
+      of acceptable AC line voltage.
     _extended: 1
     _name: CommandVFAPU2
     _signals:
@@ -1070,7 +1045,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'Vrms'
+      _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -1086,7 +1061,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -1096,7 +1071,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Returns the actual measured power.'
+    _comment: Returns the actual measured power.
     _extended: 1
     _name: MasterMeasuredPowerAPU2
     _signals:
@@ -1113,7 +1088,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 7
-      _unit: !!python/unicode 'W'
+      _unit: W
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -1129,7 +1104,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 39
-      _unit: !!python/unicode 'VA'
+      _unit: VA
       _values: {}
       _valuetype: '-'
   - !!python/object:library.canmatrix.Frame
@@ -1156,7 +1131,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 7
-      _unit: !!python/unicode 'W'
+      _unit: W
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -1172,7 +1147,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 39
-      _unit: !!python/unicode 'VA'
+      _unit: VA
       _values: {}
       _valuetype: '-'
   - !!python/object:library.canmatrix.Frame
@@ -1182,7 +1157,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Echoes the commanded power (P&Q) as received in CommandPQ.'
+    _comment: Echoes the commanded power (P&Q) as received in CommandPQ.
     _extended: 1
     _name: StatusCommandedPower
     _signals:
@@ -1199,7 +1174,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 7
-      _unit: !!python/unicode 'W'
+      _unit: W
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -1215,7 +1190,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 39
-      _unit: !!python/unicode 'VA'
+      _unit: VA
       _values: {}
       _valuetype: '-'
   - !!python/object:library.canmatrix.Frame
@@ -1225,7 +1200,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Bits representing the status of the power module.'
+    _comment: Bits representing the status of the power module.
     _extended: 1
     _name: StatusBits
     _signals:
@@ -1242,13 +1217,10 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 4
       _startbit: 3
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Power On Reset', 1: !!python/unicode 'Ready',
-        2: !!python/unicode 'Following', 3: !!python/unicode 'Fault', 4: !!python/unicode 'Forming',
-        5: !!python/unicode 'N/A', 6: !!python/unicode 'N/A', 7: !!python/unicode 'N/A',
-        8: !!python/unicode 'N/A', 9: !!python/unicode 'N/A', 10: !!python/unicode 'N/A',
-        11: !!python/unicode 'N/A', 12: !!python/unicode 'N/A', 13: !!python/unicode 'N/A',
-        14: !!python/unicode 'N/A', 15: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Power On Reset, 1: Ready, 2: Following, 3: Fault, 4: Forming, 5: N/A,
+        6: N/A, 7: N/A, 8: N/A, 9: N/A, 10: N/A, 11: N/A, 12: N/A, 13: N/A, 14: N/A,
+        15: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1263,9 +1235,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 19
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Open', 1: !!python/unicode 'Closed', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1280,9 +1251,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 11
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'None', 1: !!python/unicode 'Available', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: None, 1: Available, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1297,9 +1267,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 13
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'None', 1: !!python/unicode 'Available', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: None, 1: Available, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1314,9 +1283,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 15
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Disabled', 1: !!python/unicode 'Enabled', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Disabled, 1: Enabled, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1331,9 +1299,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 9
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Not Active', 1: !!python/unicode 'Active', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Not Active, 1: Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1348,9 +1315,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 5
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1365,9 +1331,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 7
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Clear Faults',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1382,9 +1347,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 25
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Invalid', 1: !!python/unicode 'Valid', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1399,9 +1363,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 17
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Open', 1: !!python/unicode 'Closed', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1416,9 +1379,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 23
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Open', 1: !!python/unicode 'Closed', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1433,9 +1395,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 21
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Open', 1: !!python/unicode 'Closed', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1450,9 +1411,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 27
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Invalid', 1: !!python/unicode 'Valid', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1467,9 +1427,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 29
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Invalid', 1: !!python/unicode 'Valid', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1484,9 +1443,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 31
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Warning', 3: !!python/unicode 'ErrorPassive',
-        4: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Warning, 3: ErrorPassive, 4: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1501,9 +1459,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 33
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Disable', 1: !!python/unicode 'Enable', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1518,9 +1475,9 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 35
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal - Three Phase Mode', 1: !!python/unicode 'Enable
-          Split Phase Mode', 2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
+        3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1535,9 +1492,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 37
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Negative', 1: !!python/unicode 'Positive', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1552,9 +1508,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 39
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'No_Voltage', 1: !!python/unicode 'Voltage_Detected',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: No_Voltage, 1: Voltage_Detected, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1569,9 +1524,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 41
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Negative', 1: !!python/unicode 'Positive', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
     _Id: 486524407
@@ -1580,8 +1534,8 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Lists present voltage of each power supply on the
-      control board (24V, 15V, 5V, and 3.3V.)'
+    _comment: Lists present voltage of each power supply on the control board (24V,
+      15V, 5V, and 3.3V.)
     _extended: 1
     _name: StatusControlVoltage
     _signals:
@@ -1598,7 +1552,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'V'
+      _unit: V
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -1614,7 +1568,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'V'
+      _unit: V
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -1630,7 +1584,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'V'
+      _unit: V
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -1646,7 +1600,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'V'
+      _unit: V
       _values: {}
       _valuetype: '-'
   - !!python/object:library.canmatrix.Frame
@@ -1656,8 +1610,8 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Returns the inlet water temperature to the module
-      as well as module internal ambient temperature.'
+    _comment: Returns the inlet water temperature to the module as well as module
+      internal ambient temperature.
     _extended: 1
     _name: StatusTemps
     _signals:
@@ -1674,7 +1628,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'C'
+      _unit: C
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -1690,7 +1644,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'C'
+      _unit: C
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -1706,7 +1660,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'W'
+      _unit: W
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -1716,7 +1670,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Fault bits.'
+    _comment: Fault bits.
     _extended: 1
     _name: StatusFaults
     _signals:
@@ -1733,9 +1687,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 1
       _startbit: 59
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1750,9 +1703,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 3
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1767,9 +1719,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 1
       _startbit: 43
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1784,9 +1735,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 9
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1801,9 +1751,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 15
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1818,9 +1767,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 13
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1835,9 +1783,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 4
       _startbit: 23
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1852,9 +1799,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 11
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1869,9 +1815,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 4
       _startbit: 19
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1886,9 +1831,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 7
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1903,9 +1847,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 1
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1920,9 +1863,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 5
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1937,9 +1879,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 25
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1954,10 +1895,9 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 3
       _startbit: 58
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'FLT_A', 2: !!python/unicode 'N/A',
-        3: !!python/unicode 'FLT_C', 4: !!python/unicode 'OverVoltage', 5: !!python/unicode 'FLT_B',
-        6: !!python/unicode 'Overcurrent', 7: !!python/unicode '5V'}
+      _unit: ''
+      _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
+        7: 5V}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1972,10 +1912,9 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 3
       _startbit: 42
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'FLT_A', 2: !!python/unicode 'N/A',
-        3: !!python/unicode 'FLT_C', 4: !!python/unicode 'OverVoltage', 5: !!python/unicode 'FLT_B',
-        6: !!python/unicode 'Overcurrent', 7: !!python/unicode '5V'}
+      _unit: ''
+      _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
+        7: 5V}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1990,9 +1929,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 27
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -2007,9 +1945,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 29
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -2024,9 +1961,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 31
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -2041,9 +1977,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 33
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Normal', 1: !!python/unicode 'Fault Active',
-        2: !!python/unicode 'Error', 3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
     _Id: 218088183
@@ -2052,8 +1987,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'RMS AC Voltage, current, and frequency measured by
-      line A, B and C feedbacks.'
+    _comment: RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.
     _extended: 1
     _name: StatusACParameters
     _signals:
@@ -2070,7 +2004,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'V'
+      _unit: V
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -2086,7 +2020,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'A'
+      _unit: A
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -2102,7 +2036,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: '-'
   - !!python/object:library.canmatrix.Frame
@@ -2112,8 +2046,8 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Measured (boosted) DC Bus voltage, DC Current, and
-      estimated DC Input voltage.'
+    _comment: Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input
+      voltage.
     _extended: 1
     _name: StatusDCParameters
     _signals:
@@ -2130,7 +2064,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'V'
+      _unit: V
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -2146,7 +2080,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'A'
+      _unit: A
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -2162,7 +2096,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'V'
+      _unit: V
       _values: {}
       _valuetype: '-'
   - !!python/object:library.canmatrix.Frame
@@ -2172,8 +2106,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Present voltage of the -15V power supply on the control
-      board.'
+    _comment: Present voltage of the -15V power supply on the control board.
     _extended: 1
     _name: StatusControlVolts2
     _signals:
@@ -2190,7 +2123,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'V'
+      _unit: V
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
@@ -2206,7 +2139,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'C'
+      _unit: C
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2222,7 +2155,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'C'
+      _unit: C
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -2232,7 +2165,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Software revision.'
+    _comment: Software revision.
     _extended: 1
     _name: softwareRev
     _signals:
@@ -2249,7 +2182,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2265,7 +2198,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2281,7 +2214,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 39
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -2291,7 +2224,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Echoes the voltage and frequency commands from commandVF.'
+    _comment: Echoes the voltage and frequency commands from commandVF.
     _extended: 1
     _name: StatusCommandVF
     _signals:
@@ -2308,7 +2241,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'Vrms'
+      _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2324,7 +2257,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -2334,7 +2267,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Serial number of the power module.'
+    _comment: Serial number of the power module.
     _extended: 1
     _name: serialNumber
     _signals:
@@ -2351,7 +2284,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 32
       _startbit: 7
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -2361,7 +2294,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Unique software revision identification hashcode.'
+    _comment: Unique software revision identification hashcode.
     _extended: 1
     _name: softwareRevHash
     _signals:
@@ -2378,7 +2311,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 28
       _startbit: 7
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -2388,7 +2321,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {}
-    _comment: !!python/unicode 'Echos back parameter values.'
+    _comment: Echos back parameter values.
     _extended: 1
     _name: StatusNVParam
     _signals:
@@ -2405,12 +2338,10 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'ActParam0', 1: !!python/unicode 'ActLVM_ClearingTimes1',
-        2: !!python/unicode 'ActLVM_ClearingTimes2', 3: !!python/unicode 'ActLFM_Limits',
-        4: !!python/unicode 'ActLFM_ClearingTimes', 5: !!python/unicode 'StatusJ1939_Interface',
-        6: !!python/unicode 'StatusFault_Config', 7: !!python/unicode 'StatusContactorDelays1',
-        8: !!python/unicode 'StatusContactorDelays2', 9: !!python/unicode 'StatusContactorDelays3'}
+      _unit: ''
+      _values: {0: ActParam0, 1: ActLVM_ClearingTimes1, 2: ActLVM_ClearingTimes2,
+        3: ActLFM_Limits, 4: ActLFM_ClearingTimes, 5: StatusJ1939_Interface, 6: StatusFault_Config,
+        7: StatusContactorDelays1, 8: StatusContactorDelays2, 9: StatusContactorDelays3}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -2425,7 +2356,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2441,7 +2372,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2457,7 +2388,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2473,7 +2404,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2489,7 +2420,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2505,7 +2436,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2521,7 +2452,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2537,7 +2468,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'Hz'
+      _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2553,7 +2484,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2569,7 +2500,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2585,7 +2516,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2601,7 +2532,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 8
       _startbit: 23
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2617,7 +2548,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 8
       _startbit: 31
-      _unit: !!python/unicode ''
+      _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2633,9 +2564,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 4
       _startbit: 39
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode '125K', 1: !!python/unicode '250K', 2: !!python/unicode '500K',
-        3: !!python/unicode '1M'}
+      _unit: ''
+      _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -2650,9 +2580,8 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 2
       _startbit: 17
-      _unit: !!python/unicode ''
-      _values: {0: !!python/unicode 'Warning', 1: !!python/unicode 'Fault', 2: !!python/unicode 'Error',
-        3: !!python/unicode 'N/A'}
+      _unit: ''
+      _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
@@ -2667,7 +2596,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2683,7 +2612,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2699,7 +2628,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2715,7 +2644,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2731,7 +2660,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2747,7 +2676,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 55
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2763,7 +2692,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2779,7 +2708,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'ms'
+      _unit: ms
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -2789,7 +2718,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Measured RMS line currents.'
+    _comment: Measured RMS line currents.
     _extended: 1
     _name: StatusLineCurrents
     _signals:
@@ -2806,7 +2735,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'A'
+      _unit: A
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2822,7 +2751,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'A'
+      _unit: A
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2838,7 +2767,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'A'
+      _unit: A
       _values: {}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
@@ -2848,7 +2777,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Size: 8
     _Transmitter: [Vector__XXX]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: !!python/unicode 'Measured RMS line voltages.'
+    _comment: Measured RMS line voltages.
     _extended: 1
     _name: StatusLineVoltages
     _signals:
@@ -2865,7 +2794,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 7
-      _unit: !!python/unicode 'Vrms'
+      _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2881,7 +2810,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 23
-      _unit: !!python/unicode 'Vrms'
+      _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
@@ -2897,15 +2826,14 @@ _fl: !!python/object:library.canmatrix.FrameList
       _reciever: [Vector__XXX]
       _signalsize: 16
       _startbit: 39
-      _unit: !!python/unicode 'Vrms'
+      _unit: Vrms
       _values: {}
       _valuetype: +
 _frameDefines:
   GenMsgCycleTime: !!python/object:library.canmatrix.Define {_defaultValue: null,
-    _definition: !!python/unicode 'INT 0 65535', _max: 65535, _min: 0, _type: INT}
+    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
 _globalDefines: {}
 _signalDefines:
   GenSigStartValue: !!python/object:library.canmatrix.Define {_defaultValue: null,
-    _definition: !!python/unicode 'FLOAT -3.4E+038 3.4E+038', _max: 3.4e+38, _min: -3.4e+38,
-    _type: FLOAT}
+    _definition: FLOAT -3.4E+038 3.4E+038, _max: 3.4e+38, _min: -3.4e+38, _type: FLOAT}
 _valueTables: {}

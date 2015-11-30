@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
@@ -19,6 +20,7 @@
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
+from __future__ import print_function
 import library.exportall as ex
 import library.importall as im
 import library.canmatrix as cm
@@ -28,7 +30,7 @@ import sys
 
 def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso-8859-1'):
     dbs = {}
-    print "Importing " + infile + " ... "
+    print("Importing " + infile + " ... ")
     if infile[-3:] == 'dbc':
         dbs[""] = im.importDbc(infile, dbcCharset,  dbcCommentCharset)
     elif infile[-3:] == 'dbf':
@@ -47,15 +49,15 @@ def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso
         dbs[""] = im.importYaml(infile)
     else:
         sys.stderr.write('\nFile not recognized: ' + infile + "\n")
-    print "done\n"
+    print("done\n")
 
 
-    print "Exporting " + outfileName + " ... "
+    print("Exporting " + outfileName + " ... ")
 
     for name in dbs:
         db = dbs[name]
-        print name
-        print "%d Frames found" % (db._fl._list.__len__())
+        print(name)
+        print("%d Frames found" % (db._fl._list.__len__()))
 
         if len(name) > 0:
             path = os.path.split(outfileName)
@@ -82,7 +84,7 @@ def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso
             ex.exportYaml(db, outfile)
         else:
             sys.stderr.write('File not recognized: ' + infile + "\n")
-    print "done"
+    print("done")
 
 def main():
     from optparse import OptionParser
