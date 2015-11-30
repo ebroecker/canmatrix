@@ -1,10 +1,12 @@
+from builtins import *
 #!/usr/bin/env python
 
 from library.canmatrix import *
 import codecs
 import json
+import sys
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -30,16 +32,21 @@ import json
 
 
 def exportJson(db, filename):
-	dbfExportEncoding = 'iso-8859-1'
-	f = open(filename,"w")
-	exportArray = []	
+    dbfExportEncoding = 'iso-8859-1'
 
-	for frame in db._fl._list:
-		signals = {}
-		for signal in frame._signals:
-			signals[signal._startbit]= {"name" : signal._name, "bit_length" : signal._signalsize, "factor":signal._factor, "offset":signal._offset}
-		
-		exportArray.append({"name" : frame._name, "id" :  hex(frame._Id), "signals": signals })
+    if (sys.version_info > (3, 0)):
+        mode = 'w'
+    else:
+        mode = 'wb'
+    f = open(filename, mode)
 
-	json.dump({"messages" : exportArray}, f, sort_keys=True, indent=4, separators=(',', ': '))
+    exportArray = []
 
+    for frame in db._fl._list:
+        signals = {}
+        for signal in frame._signals:
+            signals[signal._startbit]= {"name" : signal._name, "bit_length" : signal._signalsize, "factor":signal._factor, "offset":signal._offset}
+
+        exportArray.append({"name" : frame._name, "id" :  hex(frame._Id), "signals": signals })
+
+    json.dump({"messages" : exportArray}, f, sort_keys=True, indent=4, separators=(',', ': '))

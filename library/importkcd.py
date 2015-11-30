@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -29,197 +29,200 @@
 #TODO defaults for CAN-Simulation missing
 #TODO LabelGroup not supported
 
+from __future__ import division
+from __future__ import absolute_import
+import math
 from lxml import etree
-from canmatrix import *
+from .canmatrix import *
 
 def parseSignal(signal, mux, namespace, nodelist):
-	startbit = 0
-	if 'offset' in signal.attrib:
-		startbit = signal.get('offset')
+    startbit = 0
+    if 'offset' in signal.attrib:
+        startbit = signal.get('offset')
 
-	signalsize = 1
-	if 'length' in signal.attrib:
-		signalsize = signal.get('length')
-
-
-	byteorder = 1
-	if 'endianess' in signal.attrib:		
-		if signal.get('endianess') == 'little':
-			byteorder = 0
-
-	unit = ""
-	offset = 0
-	factor = 1
-	min = 0
-	max = 1
-
-	values = signal.find('./' + namespace + 'Value')
-	if values is not None:
-		if 'slope' in values.attrib:
-			factor = values.get('slope')
-		if 'intercept' in values.attrib:
-			offset = values.get('intercept')
-		if 'unit' in values.attrib:
-			unit = values.get('unit')
-		if 'min' in values.attrib:
-			min = values.get('min')
-		if 'max' in values.attrib:
-			max = values.get('max')
-
-	reciever = []
-	consumers = signal.findall('./' + namespace + 'Consumer')
-	for consumer in consumers:
-		noderefs = consumer.findall('./' + namespace + 'NodeRef')
-		for noderef in noderefs:
-			reciever.append(nodelist[noderef.get('id')])
+    signalsize = 1
+    if 'length' in signal.attrib:
+        signalsize = signal.get('length')
 
 
-	valuetype = '+'		
-	newSig = Signal(signal.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, mux)
+    byteorder = 1
+    if 'endianess' in signal.attrib:
+        if signal.get('endianess') == 'little':
+            byteorder = 0
 
-	notes = signal.findall('./' + namespace + 'Notes')
-	comment = ""
-	for note in notes:
-		if note.text is not None:
-			comment += note.text
-			newSig.addComment(comment)
-		
-	labelsets = signal.findall('./' + namespace + 'LabelSet')
-	for labelset in  labelsets:
-		labels = labelset.findall('./' + namespace + 'Label')
-		for label in labels:
-			name = label.get('name')
-			value = label.get('value')
-			newSig.addValues(value, name)
+    unit = ""
+    offset = 0
+    factor = 1
+    min = 0
+    max = 1
 
-	return newSig
+    values = signal.find('./' + namespace + 'Value')
+    if values is not None:
+        if 'slope' in values.attrib:
+            factor = values.get('slope')
+        if 'intercept' in values.attrib:
+            offset = values.get('intercept')
+        if 'unit' in values.attrib:
+            unit = values.get('unit')
+        if 'min' in values.attrib:
+            min = values.get('min')
+        if 'max' in values.attrib:
+            max = values.get('max')
+
+    reciever = []
+    consumers = signal.findall('./' + namespace + 'Consumer')
+    for consumer in consumers:
+        noderefs = consumer.findall('./' + namespace + 'NodeRef')
+        for noderef in noderefs:
+            reciever.append(nodelist[noderef.get('id')])
+
+
+    valuetype = '+'
+    newSig = Signal(signal.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, mux)
+
+    notes = signal.findall('./' + namespace + 'Notes')
+    comment = ""
+    for note in notes:
+        if note.text is not None:
+            comment += note.text
+            newSig.addComment(comment)
+
+    labelsets = signal.findall('./' + namespace + 'LabelSet')
+    for labelset in  labelsets:
+        labels = labelset.findall('./' + namespace + 'Label')
+        for label in labels:
+            name = label.get('name')
+            value = label.get('value')
+            newSig.addValues(value, name)
+
+    return newSig
 
 
 def importKcd(filename):
-	tree = etree.parse(filename)
-	root = tree.getroot()
-	namespace = "{" + tree.xpath('namespace-uri(.)') + "}"
- 
-	db = CanMatrix()
-	db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
+    tree = etree.parse(filename)
+    root = tree.getroot()
+    namespace = "{" + tree.xpath('namespace-uri(.)') + "}"
 
-	nodelist = {}
-	nodes = root.findall('./' + namespace + 'Node')
-	for node in nodes:
-		db._BUs.add(BoardUnit(node.get('name')))	
-		nodelist[node.get('id')] = node.get('name')
+    db = CanMatrix()
+    db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
 
-	bus = root.find('./' + namespace + 'Bus')
+    nodelist = {}
+    nodes = root.findall('./' + namespace + 'Node')
+    for node in nodes:
+        db._BUs.add(BoardUnit(node.get('name')))
+        nodelist[node.get('id')] = node.get('name')
 
-	messages = bus.findall('./' + namespace + 'Message')
+    bus = root.find('./' + namespace + 'Bus')
 
-	for message in messages:
-		dlc = None
-		newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
+    messages = bus.findall('./' + namespace + 'Message')
 
-		if 'triggered' in message.attrib:
-			newBo.addAttribute("GenMsgCycleTime", message.get('interval'))	
+    for message in messages:
+        dlc = None
+        newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
 
-		
-		if 'length' in message.attrib:
-			dlc = int(message.get('length'))
-
-		multiplex = message.find('./' + namespace + 'Multiplex')
-		maxBit = 0;
-
-		if multiplex is not None:	
-			startbit = 0
-			if 'offset' in multiplex.attrib:
-				startbit = multiplex.get('offset')
-
-			signalsize = 1
-			if 'length' in multiplex.attrib:
-				signalsize = multiplex.get('length')
-			
-
-			byteorder = 1
-			if int(startbit) + int(signalsize) > maxBit:
-				maxBit = int(startbit) + int(signalsize)
-			
-			min = 0
-			max = 1
-			values = multiplex.find('./' + namespace + 'Value')
-			if values is not None:
-				if 'min' in values.attrib:
-					min = values.get('min')
-				if 'max' in values.attrib:
-					max = values.get('max')
-
-			unit = ""
-			offset = 0
-			factor = 1
-			valuetype = '+'		
-	
-			reciever = ""
-			consumers = multiplex.findall('./' + namespace + 'Consumer')
-			for consumer in consumers:
-				noderefs = consumer.findall('./' + namespace + 'NodeRef')
-				for noderef in noderefs:
-					reciever += nodelist[noderef.get('id')] + ' '
-
-			newSig = Signal(multiplex.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, 'Multiplexor')
-
-			notes = multiplex.findall('./' + namespace + 'Notes')
-			comment = ""
-			for note in notes:
-				comment += note.text
-			newSig.addComment(comment)
+        if 'triggered' in message.attrib:
+            newBo.addAttribute("GenMsgCycleTime", message.get('interval'))
 
 
-			labelsets = multiplex.findall('./' + namespace + 'LabelSet')
-			for labelset in  labelsets:
-				labels = labelset.findall('./' + namespace + 'Label')
-				for label in labels:
-					name = label.get('name')
-					value = label.get('value')
-					newSig.addValues(value, name)
+        if 'length' in message.attrib:
+            dlc = int(message.get('length'))
 
-			newBo.addSignal(newSig)
-			
-			muxgroups = multiplex.findall('./' + namespace + 'MuxGroup')
-			for muxgroup in muxgroups:
-				mux = muxgroup.get('count')
-				signales = muxgroup.findall('./' + namespace + 'Signal')			
-				for signal in signales:
-					newSig = parseSignal(signal, mux, namespace, nodelist)	
-					if int(newSig._startbit) + int(newSig._signalsize) > maxBit:
-						maxBit = int(newSig._startbit) + int(newSig._signalsize)
-					newBo.addSignal(newSig)
+        multiplex = message.find('./' + namespace + 'Multiplex')
+        maxBit = 0;
 
-		signales = message.findall('./' + namespace + 'Signal')
-		
-		producers = message.findall('./' + namespace + 'Producer')
-		for producer in producers:
-			noderefs = producer.findall('./' + namespace + 'NodeRef')
-			for noderef in noderefs:
-				newBo.addTransmitter(nodelist[noderef.get('id')])
-		
-		for signal in signales:
-			newSig = parseSignal(signal, None, namespace, nodelist)
-		
-			if int(newSig._startbit) + int(newSig._signalsize) > maxBit:
-				maxBit = int(newSig._startbit) + int(newSig._signalsize)
-			
-			newBo.addSignal(newSig)
+        if multiplex is not None:
+            startbit = 0
+            if 'offset' in multiplex.attrib:
+                startbit = multiplex.get('offset')
 
-		
-		notes = message.findall('./' + namespace + 'Notes')
-		comment = ""
-		for note in notes:
-			comment += note.text
-		newBo.addComment(comment)
-	
-		if dlc is None:
-			newBo._Size = int((maxBit-1) / 8)+1
-		else:
-			newBo._Size = dlc
-		
-		
-		db._fl.addFrame(newBo)
-	return db
+            signalsize = 1
+            if 'length' in multiplex.attrib:
+                signalsize = multiplex.get('length')
 
+
+            byteorder = 1
+            if int(startbit) + int(signalsize) > maxBit:
+                maxBit = int(startbit) + int(signalsize)
+
+            min = 0
+            max = 1
+            values = multiplex.find('./' + namespace + 'Value')
+            if values is not None:
+                if 'min' in values.attrib:
+                    min = values.get('min')
+                if 'max' in values.attrib:
+                    max = values.get('max')
+
+            unit = ""
+            offset = 0
+            factor = 1
+            valuetype = '+'
+
+            reciever = ""
+            consumers = multiplex.findall('./' + namespace + 'Consumer')
+            for consumer in consumers:
+                noderefs = consumer.findall('./' + namespace + 'NodeRef')
+                for noderef in noderefs:
+                    reciever += nodelist[noderef.get('id')] + ' '
+
+            newSig = Signal(multiplex.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, 'Multiplexor')
+
+            notes = multiplex.findall('./' + namespace + 'Notes')
+            comment = ""
+            for note in notes:
+                comment += note.text
+            newSig.addComment(comment)
+
+
+            labelsets = multiplex.findall('./' + namespace + 'LabelSet')
+            for labelset in  labelsets:
+                labels = labelset.findall('./' + namespace + 'Label')
+                for label in labels:
+                    name = label.get('name')
+                    value = label.get('value')
+                    newSig.addValues(value, name)
+
+            newBo.addSignal(newSig)
+
+            muxgroups = multiplex.findall('./' + namespace + 'MuxGroup')
+            for muxgroup in muxgroups:
+                mux = muxgroup.get('count')
+                signales = muxgroup.findall('./' + namespace + 'Signal')
+                for signal in signales:
+                    newSig = parseSignal(signal, mux, namespace, nodelist)
+                    if int(newSig._startbit) + int(newSig._signalsize) > maxBit:
+                        maxBit = int(newSig._startbit) + int(newSig._signalsize)
+                    newBo.addSignal(newSig)
+
+        signales = message.findall('./' + namespace + 'Signal')
+
+        producers = message.findall('./' + namespace + 'Producer')
+        for producer in producers:
+            noderefs = producer.findall('./' + namespace + 'NodeRef')
+            for noderef in noderefs:
+                newBo.addTransmitter(nodelist[noderef.get('id')])
+
+        for signal in signales:
+            newSig = parseSignal(signal, None, namespace, nodelist)
+
+            if int(newSig._startbit) + int(newSig._signalsize) > maxBit:
+                maxBit = int(newSig._startbit) + int(newSig._signalsize)
+
+            newBo.addSignal(newSig)
+
+
+        notes = message.findall('./' + namespace + 'Notes')
+        comment = ""
+        for note in notes:
+            if note.text is not None:
+                comment += note.text
+        newBo.addComment(comment)
+
+        if dlc is None:
+            newBo._Size = int(math.floor((maxBit-1) / 8))+1
+        else:
+            newBo._Size = dlc
+
+
+        db._fl.addFrame(newBo)
+    return db

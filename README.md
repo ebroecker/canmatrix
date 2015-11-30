@@ -29,8 +29,12 @@ supported file formats for export:
 
 ***
 
- xlwt and xlrd for .xls-support is included this is from [python excel](http://www.python-excel.org/)
- xlsxwriter is for xlsx-export-support [XlsWriter](https://github.com/jmcnamara/XlsxWriter)
+Depends on:
+ * xlrd ([home](http://www.python-excel.org/), [PyPI](https://pypi.python.org/pypi/xlrd))
+ * xlwt-future ([PyPI](https://pypi.python.org/pypi/xlwt-future))
+ * XlsxWriter ([GitHub](https://github.com/jmcnamara/XlsxWriter), [PyPI](https://pypi.python.org/pypi/XlsxWriter)
+ * PyYAML ([PyPI](https://pypi.python.org/pypi/pyaml))
+ * lxml ([PyPI](https://pypi.python.org/pypi/lxml))
 
 ***
 
@@ -66,7 +70,7 @@ Fileformats:
 |dbf   |+   |+    |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |-            |
 |json  |    |	   |		 |         |         |         |        |         |+      |       |          |            |             |
 |kcd   |+   |+    |		 |+        |+        |+        |        |         |       |       |          |+           |             |
-|sym   |    |+	   |		 |         |         |         |        |+        |+      |+      |          |+           |             |
+|sym   |    |+	   |		 |         |         |         |+       |+        |+      |+      |          |+           |             |
 |xls(x)|+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |          |+           |             |
 
 ## Import
@@ -74,9 +78,9 @@ Fileformats:
 |---|----|----|----------|---------|---------|---------|--------|---------|-------|---|---|---|---|
 |arxml |+   |+     |+	         |+        |+        |+        |+       |+        |+      |+      |          |+           |+            |
 |dbc   |+   |+	   |+    	 |+        |+        |         |+       |+        |+      |+      |+         |+           |+            |
-|dbf   |+   |+     |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |-            |
+|dbf   |+   |+     |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |             |
 |kcd   |+   |+     |		 |+        |+        |         |        |         |       |       |          |+           |             |
-|sym   |    |+	   |		 |         |         |         |        |+        |+      |+      |          |+           |             |
+|sym   |    |+	   |		 |         |         |         |+       |+        |+      |+      |          |+           |             |
 |xls(x)|+   |+	   |+		 |+        |+        |         |        |+        |p      |p      |          |p           |             |
 
 
