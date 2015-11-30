@@ -1,7 +1,9 @@
 #!/usr/bin/env python
-import importall as im
+from __future__ import absolute_import
+#!/usr/bin/env python
+from . import importall as im
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -22,17 +24,16 @@ import importall as im
 #DAMAGE.
 
 def importany(filename):
-	db = None
-	if filename[-3:] == 'dbc':
-		db = im.importDbc(filename)
-	elif filename[-3:] == 'dbf':
-		db = im.importDbf(filename)
-	elif filename[-3:] == 'kcd':
-		db = im.importKcd(filename)
-	elif filename[-3:] == 'xls' or filename[-4:] == 'xlsx' :
-		db = im.importXls(filename)
-	elif filename[-5:] == 'arxml':
-		dbs = im.importArxml(filename)
-		db = dbs.itervalues().next()
-	return db
-
+    db = None
+    if filename[-3:] == 'dbc':
+        db = im.importDbc(filename)
+    elif filename[-3:] == 'dbf':
+        db = im.importDbf(filename)
+    elif filename[-3:] == 'kcd':
+        db = im.importKcd(filename)
+    elif filename[-3:] == 'xls' or filename[-4:] == 'xlsx' :
+        db = im.importXls(filename)
+    elif filename[-5:] == 'arxml':
+        dbs = im.importArxml(filename)
+        db = next(iter(dbs.values()))
+    return db

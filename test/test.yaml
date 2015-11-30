@@ -10,7 +10,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Operational commands are received by the module via control bits within
       this message.
@@ -27,11 +27,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Enable_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 1
       _unit: ''
-      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      _values: &id002 {'0': Disable, '1': Enable, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -43,11 +43,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: FaultClear_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 3
       _unit: ''
-      _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
+      _values: &id003 {'0': Normal, '1': Clear Faults, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -59,11 +59,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: InvertHwEnable_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 57
       _unit: ''
-      _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
+      _values: &id004 {'0': No invert, '1': Invert, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -75,11 +75,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: EnableUPSMode_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 59
       _unit: ''
-      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      _values: &id005 {'0': Disable, '1': Enable, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -91,12 +91,12 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: EnableSplitPhase_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 61
       _unit: ''
-      _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
-        3: N/A}
+      _values: &id006 {'0': Normal - Three Phase Mode, '1': Enable Split Phase Mode,
+        '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -108,11 +108,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ForceRelayMX1_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 33
       _unit: ''
-      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      _values: &id001 {'0': Normal, '1': Force On, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -124,11 +124,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ForceRelayMX2_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 35
       _unit: ''
-      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      _values: *id001
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -140,11 +140,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ForceRelayK1_Precharge_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 37
       _unit: ''
-      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      _values: *id001
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -156,11 +156,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ForceRelayRelayK2_DCRun_comand
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 39
       _unit: ''
-      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      _values: *id001
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -172,11 +172,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: PhaseRotation_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 63
       _unit: ''
-      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
+      _values: &id007 {'0': Negative, '1': Positive, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -188,18 +188,18 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: MasterFollowerMode_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 17
       _unit: ''
-      _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
+      _values: &id008 {'0': Master, '1': Follower, '2': Error, '3': N/A}
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
     _Id: 218082369
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
@@ -216,7 +216,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: RealPower_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 7
       _unit: W
@@ -232,7 +232,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ReactivePower_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 39
       _unit: VA
@@ -243,7 +243,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Sets the desired voltage and frequency for the module to produce while
       in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
@@ -262,7 +262,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Voltage_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: Vrms
@@ -278,7 +278,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Frequency_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: Hz
@@ -289,7 +289,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Returns the actual measured power.
     _extended: 1
@@ -305,7 +305,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: RealPower_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 7
       _unit: W
@@ -321,7 +321,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ReactivePower_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 39
       _unit: VA
@@ -332,9 +332,9 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
-    _comment: null
+    _comment: ''
     _extended: 1
     _name: CommandFactoryControl
     _signals:
@@ -348,11 +348,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: WriteSerialNumber
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 1
       _unit: ''
-      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      _values: *id002
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -364,7 +364,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: SerialNumber
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 39
       _unit: ''
@@ -380,7 +380,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: FactoryAccess
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ''
@@ -391,7 +391,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Provides access to configure non-volatile parameters.  Note that these
       parameters can only be set when the inverter's power stage is disabled (PowerCircuitEnabled_status
@@ -409,13 +409,13 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: Multiplexor
       _name: CommandSetNVParam_MUX
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: ''
-      _values: {0: Param0, 1: LVM_ClearingTimes1, 2: LVM_ClearingTimes2, 3: LFM_Limits,
-        4: LFM_ClearingTimes, 5: J1939_Interface, 6: Fault_Config, 7: ContactorDelays1,
-        8: ContactorDelays2, 9: ContactorDelays3}
+      _values: {'0': Param0, '1': LVM_ClearingTimes1, '2': LVM_ClearingTimes2, '3': LFM_Limits,
+        '4': LFM_ClearingTimes, '5': J1939_Interface, '6': Fault_Config, '7': ContactorDelays1,
+        '8': ContactorDelays2, '9': ContactorDelays3}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -427,7 +427,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 0
       _name: Dummy
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ''
@@ -443,7 +443,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 1
       _name: VUnder50pct
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
@@ -459,7 +459,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 1
       _name: V50to88pct
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
@@ -475,7 +475,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 1
       _name: V110to120pct
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: ms
@@ -491,7 +491,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 2
       _name: VOver120
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ''
@@ -507,7 +507,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 3
       _name: FreqHi
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: Hz
@@ -523,7 +523,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 3
       _name: FreqLo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: Hz
@@ -539,14 +539,14 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 3
       _name: FreqVeryLo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
-      _attributes: {}
+      _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
       _factor: '1'
@@ -555,14 +555,14 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 4
       _name: FreqVeryLo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
-      _attributes: {}
+      _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
       _factor: '1'
@@ -571,14 +571,14 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 4
       _name: FreqLo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
-      _attributes: {}
+      _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
       _factor: '1'
@@ -587,7 +587,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 4
       _name: FreqHi
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: ms
@@ -603,7 +603,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 5
       _name: NodeID
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 8
       _startbit: 23
       _unit: ''
@@ -619,7 +619,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 5
       _name: SA_Mask
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 8
       _startbit: 31
       _unit: ''
@@ -635,11 +635,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 5
       _name: Baudrate
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 4
       _startbit: 39
       _unit: ''
-      _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
+      _values: &id014 {'0': 125K, '1': 250K, '2': 500K, '3': 1M}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -651,11 +651,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 6
       _name: ThermalOverload
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 17
       _unit: ''
-      _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
+      _values: &id015 {'0': Warning, '1': Fault, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
@@ -667,7 +667,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 7
       _name: MX1Open
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
@@ -683,7 +683,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 7
       _name: MX1Close
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
@@ -699,7 +699,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 7
       _name: MX2Open
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: ms
@@ -715,7 +715,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 8
       _name: MX2Close
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
@@ -731,7 +731,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 8
       _name: K1Open
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
@@ -747,7 +747,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 8
       _name: K1Close
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: ms
@@ -763,7 +763,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 9
       _name: K2Open
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
@@ -779,7 +779,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 9
       _name: K2Close
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
@@ -790,7 +790,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Operational commands are received by the module via control bits within
       this message.
@@ -807,11 +807,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Enable_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 1
       _unit: ''
-      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      _values: *id002
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -823,11 +823,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: FaultClear_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 3
       _unit: ''
-      _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
+      _values: *id003
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -839,11 +839,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: InvertHwEnable_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 57
       _unit: ''
-      _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
+      _values: *id004
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -855,11 +855,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: EnableUPSMode_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 59
       _unit: ''
-      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      _values: *id005
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -871,12 +871,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: EnableSplitPhase_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 61
       _unit: ''
-      _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
-        3: N/A}
+      _values: *id006
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -888,11 +887,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ForceRelayMX1_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 33
       _unit: ''
-      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      _values: *id001
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -904,11 +903,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ForceRelayMX2_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 35
       _unit: ''
-      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      _values: *id001
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -920,11 +919,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ForceRelayK1_Precharge_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 37
       _unit: ''
-      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      _values: *id001
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -936,11 +935,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ForceRelayRelayK2_DCRun_comand
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 39
       _unit: ''
-      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      _values: *id001
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -952,11 +951,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: PhaseRotation_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 63
       _unit: ''
-      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
+      _values: *id007
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -968,18 +967,18 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: MasterFollowerMode_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 17
       _unit: ''
-      _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
+      _values: *id008
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
     _Id: 218078273
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
@@ -996,7 +995,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: RealPower_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 7
       _unit: W
@@ -1012,7 +1011,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ReactivePower_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 39
       _unit: VA
@@ -1023,7 +1022,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Sets the desired voltage and frequency for the module to produce while
       in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
@@ -1042,7 +1041,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Voltage_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: Vrms
@@ -1058,7 +1057,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Frequency_command
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: Hz
@@ -1069,8 +1068,8 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
-    _attributes: {GenMsgCycleTime: '100'}
+    _Transmitter: []
+    _attributes: {}
     _comment: Returns the actual measured power.
     _extended: 1
     _name: MasterMeasuredPowerAPU2
@@ -1085,7 +1084,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: RealPower_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 7
       _unit: W
@@ -1101,7 +1100,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ReactivePower_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 39
       _unit: VA
@@ -1112,14 +1111,14 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
-    _attributes: {}
-    _comment: null
+    _Transmitter: []
+    _attributes: {GenMsgCycleTime: '100'}
+    _comment: Returns the actual measured power.
     _extended: 1
     _name: StatusMeasuredPower
     _signals:
     - !!python/object:library.canmatrix.Signal
-      _attributes: {}
+      _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
       _factor: '1'
@@ -1128,14 +1127,14 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: RealPower_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 7
       _unit: W
       _values: {}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
-      _attributes: {}
+      _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
       _factor: '1'
@@ -1144,7 +1143,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ReactivePower_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 39
       _unit: VA
@@ -1155,7 +1154,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Echoes the commanded power (P&Q) as received in CommandPQ.
     _extended: 1
@@ -1171,7 +1170,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: RealPower_echo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 7
       _unit: W
@@ -1187,7 +1186,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ReactivePower_echo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 39
       _unit: VA
@@ -1198,7 +1197,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Bits representing the status of the power module.
     _extended: 1
@@ -1214,13 +1213,13 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: State_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 4
       _startbit: 3
       _unit: ''
-      _values: {0: Power On Reset, 1: Ready, 2: Following, 3: Fault, 4: Forming, 5: N/A,
-        6: N/A, 7: N/A, 8: N/A, 9: N/A, 10: N/A, 11: N/A, 12: N/A, 13: N/A, 14: N/A,
-        15: N/A}
+      _values: {'0': Power On Reset, '1': Ready, '10': N/A, '11': N/A, '12': N/A,
+        '13': N/A, '14': N/A, '15': N/A, '2': Following, '3': Fault, '4': Forming,
+        '5': N/A, '6': N/A, '7': N/A, '8': N/A, '9': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1232,11 +1231,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: MX2Permissive_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 19
       _unit: ''
-      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
+      _values: &id010 {'0': Open, '1': Closed, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1248,11 +1247,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: PowerAvailAC_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 11
       _unit: ''
-      _values: {0: None, 1: Available, 2: Error, 3: N/A}
+      _values: &id009 {'0': None, '1': Available, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1264,11 +1263,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: PowerAvailDC_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 13
       _unit: ''
-      _values: {0: None, 1: Available, 2: Error, 3: N/A}
+      _values: *id009
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1280,11 +1279,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: PowerCircuitEnabled_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 15
       _unit: ''
-      _values: {0: Disabled, 1: Enabled, 2: Error, 3: N/A}
+      _values: {'0': Disabled, '1': Enabled, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1296,11 +1295,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: HardwareEnable_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 9
       _unit: ''
-      _values: {0: Not Active, 1: Active, 2: Error, 3: N/A}
+      _values: {'0': Not Active, '1': Active, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1312,11 +1311,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Enable_echo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 5
       _unit: ''
-      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      _values: *id002
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1328,11 +1327,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: FaultClr_echo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 7
       _unit: ''
-      _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
+      _values: *id003
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1344,11 +1343,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: MessageValidModeControl_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 25
       _unit: ''
-      _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
+      _values: &id011 {'0': Invalid, '1': Valid, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1360,11 +1359,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: MX1Permissive_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 17
       _unit: ''
-      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
+      _values: *id010
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1376,11 +1375,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: K2DCRunPermissive_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 23
       _unit: ''
-      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
+      _values: *id010
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1392,11 +1391,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: K1PrechargePermissive_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 21
       _unit: ''
-      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
+      _values: *id010
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1408,11 +1407,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: MessageValidPowerCMD_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 27
       _unit: ''
-      _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
+      _values: *id011
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1424,11 +1423,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: MessageValidVF_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 29
       _unit: ''
-      _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
+      _values: *id011
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1440,11 +1439,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: CANbus_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 31
       _unit: ''
-      _values: {0: Normal, 1: Warning, 3: ErrorPassive, 4: N/A}
+      _values: {'0': Normal, '1': Warning, '3': ErrorPassive, '4': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1456,11 +1455,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: EnableUPSMode_echo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 33
       _unit: ''
-      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      _values: *id005
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1472,12 +1471,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: EnableSplitPhase_echo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 35
       _unit: ''
-      _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
-        3: N/A}
+      _values: *id006
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1489,11 +1487,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: PhaseRotation_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 37
       _unit: ''
-      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
+      _values: *id007
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1505,11 +1503,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: LineVoltageDetected_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 39
       _unit: ''
-      _values: {0: No_Voltage, 1: Voltage_Detected, 2: Error, 3: N/A}
+      _values: {'0': No_Voltage, '1': Voltage_Detected, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1521,18 +1519,18 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: PhaseRotation_echo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 41
       _unit: ''
-      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
+      _values: *id007
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
     _Id: 486524407
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Lists present voltage of each power supply on the control board (24V,
       15V, 5V, and 3.3V.)
@@ -1549,7 +1547,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: v5p0_Supply
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: V
@@ -1565,7 +1563,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: v3p3_Supply
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: V
@@ -1581,7 +1579,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: v24_Supply
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: V
@@ -1597,7 +1595,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: v15_Supply
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: V
@@ -1608,7 +1606,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Returns the inlet water temperature to the module as well as module
       internal ambient temperature.
@@ -1625,7 +1623,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: TempInlet_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: C
@@ -1641,7 +1639,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: TempInternal_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: C
@@ -1657,7 +1655,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ConverterLosses
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: W
@@ -1668,7 +1666,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Fault bits.
     _extended: 1
@@ -1684,11 +1682,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: BridgeAVoltageOk_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 1
       _startbit: 59
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: &id012 {'0': Normal, '1': Fault Active, '2': Error, '3': N/A}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1700,11 +1698,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: OvercurrentAC_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 3
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1716,11 +1714,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: BridgeBVoltageOk_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 1
       _startbit: 43
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1732,11 +1730,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: OvervoltageDC_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 9
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1748,11 +1746,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: OvertempPowerDevice_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 15
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1764,11 +1762,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: OvertempInternal_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 13
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1780,11 +1778,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: LossValidControlMessage_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 4
       _startbit: 23
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1796,11 +1794,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: UndervoltageDC_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 11
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1812,11 +1810,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ControlHardwareFail_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 4
       _startbit: 19
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1828,11 +1826,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: OvercurrentDC_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 7
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1844,11 +1842,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: GeneralFault_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 1
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1860,11 +1858,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: LossOfAC_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 5
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1876,11 +1874,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: EStopShutdown_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 25
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1892,12 +1890,12 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: BridgeAFault_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 3
       _startbit: 58
       _unit: ''
-      _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
-        7: 5V}
+      _values: &id013 {'0': Normal, '1': FLT_A, '2': N/A, '3': FLT_C, '4': OverVoltage,
+        '5': FLT_B, '6': Overcurrent, '7': 5V}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1909,12 +1907,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: BridgeBFault_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 3
       _startbit: 42
       _unit: ''
-      _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
-        7: 5V}
+      _values: *id013
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1926,11 +1923,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: IllegalTransition_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 27
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1942,11 +1939,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: InvalidEEHeader_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 29
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1958,11 +1955,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: InvalidEESection_status
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 31
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -1974,18 +1971,18 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ThermalOverload
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 33
       _unit: ''
-      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      _values: *id012
       _valuetype: +
   - !!python/object:library.canmatrix.Frame
     _Id: 218088183
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.
     _extended: 1
@@ -2001,7 +1998,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: VoltageAC_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: V
@@ -2017,7 +2014,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: CurrentAC_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: A
@@ -2033,7 +2030,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Frequency_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: Hz
@@ -2044,7 +2041,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input
       voltage.
@@ -2061,7 +2058,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: VoltageDCBus
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: V
@@ -2077,7 +2074,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: CurrentDC_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: A
@@ -2093,7 +2090,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: VoltageDCInput_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: V
@@ -2104,7 +2101,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Present voltage of the -15V power supply on the control board.
     _extended: 1
@@ -2120,7 +2117,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: n15V_Supply
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: V
@@ -2136,7 +2133,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: DiodeTemperature
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: C
@@ -2152,7 +2149,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: IGBTTemperature
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: C
@@ -2163,7 +2160,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Software revision.
     _extended: 1
@@ -2179,7 +2176,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: InterfaceRev
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ''
@@ -2195,7 +2192,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: ControlSwRev
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: ''
@@ -2211,7 +2208,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: BuildTime
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 39
       _unit: ''
@@ -2222,7 +2219,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Echoes the voltage and frequency commands from commandVF.
     _extended: 1
@@ -2238,7 +2235,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Voltage_echo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: Vrms
@@ -2254,7 +2251,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Frequency_echo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: Hz
@@ -2265,7 +2262,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Serial number of the power module.
     _extended: 1
@@ -2281,7 +2278,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: SerialNumber
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 32
       _startbit: 7
       _unit: ''
@@ -2292,7 +2289,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Unique software revision identification hashcode.
     _extended: 1
@@ -2308,7 +2305,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: Hash
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 28
       _startbit: 7
       _unit: ''
@@ -2319,7 +2316,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {}
     _comment: Echos back parameter values.
     _extended: 1
@@ -2335,13 +2332,14 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: Multiplexor
       _name: StatusNVParam_MUX
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: ''
-      _values: {0: ActParam0, 1: ActLVM_ClearingTimes1, 2: ActLVM_ClearingTimes2,
-        3: ActLFM_Limits, 4: ActLFM_ClearingTimes, 5: StatusJ1939_Interface, 6: StatusFault_Config,
-        7: StatusContactorDelays1, 8: StatusContactorDelays2, 9: StatusContactorDelays3}
+      _values: {'0': ActParam0, '1': ActLVM_ClearingTimes1, '2': ActLVM_ClearingTimes2,
+        '3': ActLFM_Limits, '4': ActLFM_ClearingTimes, '5': StatusJ1939_Interface,
+        '6': StatusFault_Config, '7': StatusContactorDelays1, '8': StatusContactorDelays2,
+        '9': StatusContactorDelays3}
       _valuetype: '-'
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -2353,7 +2351,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 0
       _name: Dummy
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ''
@@ -2369,7 +2367,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 1
       _name: VUnder50pct
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
@@ -2385,7 +2383,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 1
       _name: V50to88pct
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
@@ -2401,7 +2399,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 1
       _name: V110to120pct
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: ms
@@ -2417,7 +2415,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 2
       _name: VOver120
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ''
@@ -2433,7 +2431,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 3
       _name: FreqHi
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: Hz
@@ -2449,7 +2447,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 3
       _name: FreqLo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: Hz
@@ -2465,14 +2463,14 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 3
       _name: FreqVeryLo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
-      _attributes: {}
+      _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
       _factor: '1'
@@ -2481,14 +2479,14 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 4
       _name: FreqVeryLo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
-      _attributes: {}
+      _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
       _factor: '1'
@@ -2497,14 +2495,14 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 4
       _name: FreqLo
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
-      _attributes: {}
+      _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
       _factor: '1'
@@ -2513,7 +2511,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 4
       _name: FreqHi
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: ms
@@ -2529,7 +2527,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 5
       _name: StatusNodeID
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 8
       _startbit: 23
       _unit: ''
@@ -2545,7 +2543,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 5
       _name: StatusSA_Mask
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 8
       _startbit: 31
       _unit: ''
@@ -2561,11 +2559,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 5
       _name: StatusBaudrate
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 4
       _startbit: 39
       _unit: ''
-      _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
+      _values: *id014
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -2577,11 +2575,11 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 6
       _name: StatusThermalOverload
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 2
       _startbit: 17
       _unit: ''
-      _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
+      _values: *id015
       _valuetype: +
     - !!python/object:library.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
@@ -2593,7 +2591,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 7
       _name: StatusMX1Open
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
@@ -2609,7 +2607,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 7
       _name: StatusMX1Close
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
@@ -2625,7 +2623,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 7
       _name: StatusMX2Open
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: ms
@@ -2641,7 +2639,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 8
       _name: StatusMX2Close
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
@@ -2657,7 +2655,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 8
       _name: StatusK1Open
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
@@ -2673,7 +2671,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 8
       _name: StatusK1Close
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 55
       _unit: ms
@@ -2689,7 +2687,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 9
       _name: StatusK2Open
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: ms
@@ -2705,7 +2703,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: 9
       _name: StatusK2Close
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: ms
@@ -2716,7 +2714,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured RMS line currents.
     _extended: 1
@@ -2732,7 +2730,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: L1Current_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: A
@@ -2748,7 +2746,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: L2Current_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: A
@@ -2764,7 +2762,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: L3Current_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: A
@@ -2775,7 +2773,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _Reciever: []
     _SignalGroups: []
     _Size: 8
-    _Transmitter: [Vector__XXX]
+    _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured RMS line voltages.
     _extended: 1
@@ -2791,7 +2789,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: L1Voltage_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 7
       _unit: Vrms
@@ -2807,7 +2805,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: L2Voltage_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 23
       _unit: Vrms
@@ -2823,7 +2821,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _multiplex: null
       _name: L3Voltage_measured
       _offset: '0'
-      _reciever: [Vector__XXX]
+      _reciever: ''
       _signalsize: 16
       _startbit: 39
       _unit: Vrms

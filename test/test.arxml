@@ -4811,16 +4811,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Disable</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Disable</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -4831,12 +4821,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Disable</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Disable</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -4847,6 +4837,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -4869,16 +4869,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Clear Faults</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -4889,12 +4879,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -4905,6 +4895,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -4927,16 +4927,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">No invert</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>No invert</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Invert</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -4947,12 +4937,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">No invert</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>No invert</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -4963,6 +4953,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -4985,16 +4985,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Disable</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Disable</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5005,12 +4995,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Disable</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Disable</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5021,6 +5011,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5043,16 +5043,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal - Three Phase Mode</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal - Three Phase Mode</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable Split Phase Mode</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5063,12 +5053,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal - Three Phase Mode</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal - Three Phase Mode</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5079,6 +5069,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5101,16 +5101,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Force On</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5121,12 +5111,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5137,6 +5127,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5159,16 +5159,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Force On</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5179,12 +5169,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5195,6 +5185,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5217,16 +5217,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Force On</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5237,12 +5227,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5253,6 +5243,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5275,16 +5275,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Force On</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5295,12 +5285,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5311,6 +5301,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5333,16 +5333,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Negative</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Negative</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Positive</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5353,12 +5343,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Negative</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Negative</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5369,6 +5359,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5391,16 +5391,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Master</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Master</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Follower</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5411,12 +5401,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Master</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Master</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5427,6 +5417,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5557,16 +5557,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Disable</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Disable</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5577,12 +5567,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Disable</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Disable</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5593,6 +5583,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5651,16 +5651,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Param0</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Param0</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">LVM_ClearingTimes1</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -5671,12 +5661,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">LVM_ClearingTimes2</L-2>
+                      <L-2 L="FOR-ALL">Param0</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>LVM_ClearingTimes2</VT>
+                      <VT>Param0</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5691,12 +5681,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">LFM_ClearingTimes</L-2>
+                      <L-2 L="FOR-ALL">LVM_ClearingTimes2</L-2>
                     </DESC>
-                    <LOWER-LIMIT>4</LOWER-LIMIT>
-                    <UPPER-LIMIT>4</UPPER-LIMIT>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>LFM_ClearingTimes</VT>
+                      <VT>LVM_ClearingTimes2</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5711,12 +5701,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Fault_Config</L-2>
+                      <L-2 L="FOR-ALL">LFM_ClearingTimes</L-2>
                     </DESC>
-                    <LOWER-LIMIT>6</LOWER-LIMIT>
-                    <UPPER-LIMIT>6</UPPER-LIMIT>
+                    <LOWER-LIMIT>4</LOWER-LIMIT>
+                    <UPPER-LIMIT>4</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Fault_Config</VT>
+                      <VT>LFM_ClearingTimes</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5731,12 +5721,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">ContactorDelays2</L-2>
+                      <L-2 L="FOR-ALL">Fault_Config</L-2>
                     </DESC>
-                    <LOWER-LIMIT>8</LOWER-LIMIT>
-                    <UPPER-LIMIT>8</UPPER-LIMIT>
+                    <LOWER-LIMIT>6</LOWER-LIMIT>
+                    <UPPER-LIMIT>6</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>ContactorDelays2</VT>
+                      <VT>Fault_Config</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -5747,6 +5737,16 @@
                     <UPPER-LIMIT>9</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>ContactorDelays3</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">ContactorDelays2</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>8</LOWER-LIMIT>
+                    <UPPER-LIMIT>8</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>ContactorDelays2</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6003,16 +6003,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">125K</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>125K</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">250K</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6023,12 +6013,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">500K</L-2>
+                      <L-2 L="FOR-ALL">125K</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>500K</VT>
+                      <VT>125K</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6039,6 +6029,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>1M</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">500K</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>500K</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6061,16 +6061,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Warning</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Warning</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6081,12 +6071,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Warning</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Warning</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6097,6 +6087,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6263,16 +6263,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Disable</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Disable</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6283,12 +6273,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Disable</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Disable</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6299,6 +6289,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6321,16 +6321,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Clear Faults</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6341,12 +6331,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6357,6 +6347,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6379,16 +6379,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">No invert</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>No invert</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Invert</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6399,12 +6389,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">No invert</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>No invert</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6415,6 +6405,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6437,16 +6437,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Disable</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Disable</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6457,12 +6447,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Disable</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Disable</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6473,6 +6463,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6495,16 +6495,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal - Three Phase Mode</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal - Three Phase Mode</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable Split Phase Mode</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6515,12 +6505,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal - Three Phase Mode</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal - Three Phase Mode</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6531,6 +6521,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6553,16 +6553,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Force On</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6573,12 +6563,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6589,6 +6579,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6611,16 +6611,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Force On</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6631,12 +6621,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6647,6 +6637,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6669,16 +6669,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Force On</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6689,12 +6679,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6705,6 +6695,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6727,16 +6727,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Force On</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6747,12 +6737,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6763,6 +6753,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6785,16 +6785,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Negative</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Negative</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Positive</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6805,12 +6795,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Negative</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Negative</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6821,6 +6811,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6843,16 +6843,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Master</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Master</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Follower</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -6863,12 +6853,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Master</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Master</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -6879,6 +6869,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7081,100 +7081,10 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Power On Reset</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Power On Reset</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
-                      <L-2 L="FOR-ALL">Ready</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>1</LOWER-LIMIT>
-                    <UPPER-LIMIT>1</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Ready</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
-                      <L-2 L="FOR-ALL">Following</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Following</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
-                      <L-2 L="FOR-ALL">Fault</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>3</LOWER-LIMIT>
-                    <UPPER-LIMIT>3</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Fault</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
-                      <L-2 L="FOR-ALL">Forming</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>4</LOWER-LIMIT>
-                    <UPPER-LIMIT>4</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Forming</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">N/A</L-2>
                     </DESC>
-                    <LOWER-LIMIT>5</LOWER-LIMIT>
-                    <UPPER-LIMIT>5</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>N/A</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
-                      <L-2 L="FOR-ALL">N/A</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>6</LOWER-LIMIT>
-                    <UPPER-LIMIT>6</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>N/A</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
-                      <L-2 L="FOR-ALL">N/A</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>7</LOWER-LIMIT>
-                    <UPPER-LIMIT>7</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>N/A</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
-                      <L-2 L="FOR-ALL">N/A</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>8</LOWER-LIMIT>
-                    <UPPER-LIMIT>8</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>N/A</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
-                      <L-2 L="FOR-ALL">N/A</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>9</LOWER-LIMIT>
-                    <UPPER-LIMIT>9</UPPER-LIMIT>
+                    <LOWER-LIMIT>11</LOWER-LIMIT>
+                    <UPPER-LIMIT>11</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
                     </COMPU-CONST>
@@ -7193,8 +7103,8 @@
                     <DESC>
                       <L-2 L="FOR-ALL">N/A</L-2>
                     </DESC>
-                    <LOWER-LIMIT>11</LOWER-LIMIT>
-                    <UPPER-LIMIT>11</UPPER-LIMIT>
+                    <LOWER-LIMIT>13</LOWER-LIMIT>
+                    <UPPER-LIMIT>13</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
                     </COMPU-CONST>
@@ -7213,8 +7123,8 @@
                     <DESC>
                       <L-2 L="FOR-ALL">N/A</L-2>
                     </DESC>
-                    <LOWER-LIMIT>13</LOWER-LIMIT>
-                    <UPPER-LIMIT>13</UPPER-LIMIT>
+                    <LOWER-LIMIT>15</LOWER-LIMIT>
+                    <UPPER-LIMIT>15</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
                     </COMPU-CONST>
@@ -7231,10 +7141,100 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
+                      <L-2 L="FOR-ALL">Ready</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>1</LOWER-LIMIT>
+                    <UPPER-LIMIT>1</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Ready</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Power On Reset</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Power On Reset</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Fault</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>3</LOWER-LIMIT>
+                    <UPPER-LIMIT>3</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Fault</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Following</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Following</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
                       <L-2 L="FOR-ALL">N/A</L-2>
                     </DESC>
-                    <LOWER-LIMIT>15</LOWER-LIMIT>
-                    <UPPER-LIMIT>15</UPPER-LIMIT>
+                    <LOWER-LIMIT>5</LOWER-LIMIT>
+                    <UPPER-LIMIT>5</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Forming</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>4</LOWER-LIMIT>
+                    <UPPER-LIMIT>4</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Forming</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">N/A</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>7</LOWER-LIMIT>
+                    <UPPER-LIMIT>7</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">N/A</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>6</LOWER-LIMIT>
+                    <UPPER-LIMIT>6</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">N/A</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>9</LOWER-LIMIT>
+                    <UPPER-LIMIT>9</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">N/A</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>8</LOWER-LIMIT>
+                    <UPPER-LIMIT>8</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
                     </COMPU-CONST>
@@ -7259,16 +7259,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Open</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Open</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Closed</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7279,12 +7269,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Open</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Open</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7295,6 +7285,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7317,16 +7317,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">None</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>None</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Available</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7337,12 +7327,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">None</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>None</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7353,6 +7343,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7375,16 +7375,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">None</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>None</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Available</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7395,12 +7385,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">None</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>None</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7411,6 +7401,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7433,16 +7433,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Disabled</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Disabled</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enabled</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7453,12 +7443,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Disabled</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Disabled</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7469,6 +7459,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7491,16 +7491,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Not Active</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Not Active</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7511,12 +7501,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Not Active</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Not Active</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7527,6 +7517,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7549,16 +7549,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Disable</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Disable</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7569,12 +7559,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Disable</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Disable</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7585,6 +7575,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7607,16 +7607,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Clear Faults</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7627,12 +7617,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7643,6 +7633,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7665,16 +7665,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Invalid</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Invalid</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Valid</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7685,12 +7675,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Invalid</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Invalid</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7701,6 +7691,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7723,16 +7723,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Open</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Open</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Closed</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7743,12 +7733,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Open</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Open</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7759,6 +7749,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7781,16 +7781,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Open</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Open</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Closed</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7801,12 +7791,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Open</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Open</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7817,6 +7807,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7839,16 +7839,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Open</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Open</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Closed</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7859,12 +7849,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Open</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Open</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7875,6 +7865,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7897,16 +7897,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Invalid</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Invalid</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Valid</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7917,12 +7907,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Invalid</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Invalid</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7933,6 +7923,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7955,16 +7955,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Invalid</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Invalid</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Valid</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -7975,12 +7965,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Invalid</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Invalid</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -7991,6 +7981,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8013,22 +8013,22 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Warning</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
                     <UPPER-LIMIT>1</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>Warning</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Normal</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8071,16 +8071,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Disable</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Disable</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8091,12 +8081,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Disable</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Disable</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8107,6 +8097,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8129,16 +8129,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal - Three Phase Mode</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal - Three Phase Mode</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Enable Split Phase Mode</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8149,12 +8139,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal - Three Phase Mode</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal - Three Phase Mode</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8165,6 +8155,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8187,16 +8187,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Negative</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Negative</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Positive</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8207,12 +8197,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Negative</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Negative</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8223,6 +8213,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8245,16 +8245,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">No_Voltage</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>No_Voltage</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Voltage_Detected</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8265,12 +8255,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">No_Voltage</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>No_Voltage</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8281,6 +8271,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8303,16 +8303,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Negative</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Negative</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Positive</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8323,12 +8313,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Negative</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Negative</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8339,6 +8329,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8487,16 +8487,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8507,12 +8497,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8523,6 +8513,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8545,16 +8545,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8565,12 +8555,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8581,6 +8571,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8603,16 +8603,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8623,12 +8613,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8639,6 +8629,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8661,16 +8661,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8681,12 +8671,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8697,6 +8687,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8719,16 +8719,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8739,12 +8729,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8755,6 +8745,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8777,16 +8777,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8797,12 +8787,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8813,6 +8803,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8835,16 +8835,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8855,12 +8845,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8871,6 +8861,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8893,16 +8893,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8913,12 +8903,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8929,6 +8919,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8951,16 +8951,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -8971,12 +8961,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -8987,6 +8977,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9009,16 +9009,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9029,12 +9019,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9045,6 +9035,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9067,16 +9067,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9087,12 +9077,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9103,6 +9093,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9125,16 +9125,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9145,12 +9135,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9161,6 +9151,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9183,16 +9183,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9203,12 +9193,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9219,6 +9209,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9241,16 +9241,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">FLT_A</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9261,12 +9251,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">N/A</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>N/A</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9281,12 +9271,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">OverVoltage</L-2>
+                      <L-2 L="FOR-ALL">N/A</L-2>
                     </DESC>
-                    <LOWER-LIMIT>4</LOWER-LIMIT>
-                    <UPPER-LIMIT>4</UPPER-LIMIT>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>OverVoltage</VT>
+                      <VT>N/A</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9301,12 +9291,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Overcurrent</L-2>
+                      <L-2 L="FOR-ALL">OverVoltage</L-2>
                     </DESC>
-                    <LOWER-LIMIT>6</LOWER-LIMIT>
-                    <UPPER-LIMIT>6</UPPER-LIMIT>
+                    <LOWER-LIMIT>4</LOWER-LIMIT>
+                    <UPPER-LIMIT>4</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Overcurrent</VT>
+                      <VT>OverVoltage</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9317,6 +9307,16 @@
                     <UPPER-LIMIT>7</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>5V</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Overcurrent</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>6</LOWER-LIMIT>
+                    <UPPER-LIMIT>6</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Overcurrent</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9339,16 +9339,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">FLT_A</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9359,12 +9349,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">N/A</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>N/A</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9379,12 +9369,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">OverVoltage</L-2>
+                      <L-2 L="FOR-ALL">N/A</L-2>
                     </DESC>
-                    <LOWER-LIMIT>4</LOWER-LIMIT>
-                    <UPPER-LIMIT>4</UPPER-LIMIT>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>OverVoltage</VT>
+                      <VT>N/A</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9399,12 +9389,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Overcurrent</L-2>
+                      <L-2 L="FOR-ALL">OverVoltage</L-2>
                     </DESC>
-                    <LOWER-LIMIT>6</LOWER-LIMIT>
-                    <UPPER-LIMIT>6</UPPER-LIMIT>
+                    <LOWER-LIMIT>4</LOWER-LIMIT>
+                    <UPPER-LIMIT>4</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Overcurrent</VT>
+                      <VT>OverVoltage</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9415,6 +9405,16 @@
                     <UPPER-LIMIT>7</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>5V</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Overcurrent</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>6</LOWER-LIMIT>
+                    <UPPER-LIMIT>6</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Overcurrent</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9437,16 +9437,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9457,12 +9447,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9473,6 +9463,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9495,16 +9495,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9515,12 +9505,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9531,6 +9521,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9553,16 +9553,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9573,12 +9563,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9589,6 +9579,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9611,16 +9611,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Normal</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Normal</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault Active</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9631,12 +9621,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Normal</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Normal</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9647,6 +9637,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9957,16 +9957,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">ActParam0</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>ActParam0</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">ActLVM_ClearingTimes1</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -9977,12 +9967,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">ActLVM_ClearingTimes2</L-2>
+                      <L-2 L="FOR-ALL">ActParam0</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>ActLVM_ClearingTimes2</VT>
+                      <VT>ActParam0</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -9997,12 +9987,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">ActLFM_ClearingTimes</L-2>
+                      <L-2 L="FOR-ALL">ActLVM_ClearingTimes2</L-2>
                     </DESC>
-                    <LOWER-LIMIT>4</LOWER-LIMIT>
-                    <UPPER-LIMIT>4</UPPER-LIMIT>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>ActLFM_ClearingTimes</VT>
+                      <VT>ActLVM_ClearingTimes2</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -10017,12 +10007,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">StatusFault_Config</L-2>
+                      <L-2 L="FOR-ALL">ActLFM_ClearingTimes</L-2>
                     </DESC>
-                    <LOWER-LIMIT>6</LOWER-LIMIT>
-                    <UPPER-LIMIT>6</UPPER-LIMIT>
+                    <LOWER-LIMIT>4</LOWER-LIMIT>
+                    <UPPER-LIMIT>4</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>StatusFault_Config</VT>
+                      <VT>ActLFM_ClearingTimes</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -10037,12 +10027,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">StatusContactorDelays2</L-2>
+                      <L-2 L="FOR-ALL">StatusFault_Config</L-2>
                     </DESC>
-                    <LOWER-LIMIT>8</LOWER-LIMIT>
-                    <UPPER-LIMIT>8</UPPER-LIMIT>
+                    <LOWER-LIMIT>6</LOWER-LIMIT>
+                    <UPPER-LIMIT>6</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>StatusContactorDelays2</VT>
+                      <VT>StatusFault_Config</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -10053,6 +10043,16 @@
                     <UPPER-LIMIT>9</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>StatusContactorDelays3</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">StatusContactorDelays2</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>8</LOWER-LIMIT>
+                    <UPPER-LIMIT>8</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>StatusContactorDelays2</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -10309,16 +10309,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">125K</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>125K</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">250K</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -10329,12 +10319,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">500K</L-2>
+                      <L-2 L="FOR-ALL">125K</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>500K</VT>
+                      <VT>125K</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -10345,6 +10335,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>1M</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">500K</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>500K</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -10367,16 +10367,6 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Warning</L-2>
-                    </DESC>
-                    <LOWER-LIMIT>0</LOWER-LIMIT>
-                    <UPPER-LIMIT>0</UPPER-LIMIT>
-                    <COMPU-CONST>
-                      <VT>Warning</VT>
-                    </COMPU-CONST>
-                  </COMPU-SCALE>
-                  <COMPU-SCALE>
-                    <DESC>
                       <L-2 L="FOR-ALL">Fault</L-2>
                     </DESC>
                     <LOWER-LIMIT>1</LOWER-LIMIT>
@@ -10387,12 +10377,12 @@
                   </COMPU-SCALE>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Error</L-2>
+                      <L-2 L="FOR-ALL">Warning</L-2>
                     </DESC>
-                    <LOWER-LIMIT>2</LOWER-LIMIT>
-                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <LOWER-LIMIT>0</LOWER-LIMIT>
+                    <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Error</VT>
+                      <VT>Warning</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>
@@ -10403,6 +10393,16 @@
                     <UPPER-LIMIT>3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>N/A</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">Error</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>Error</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>

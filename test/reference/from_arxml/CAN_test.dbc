@@ -221,14 +221,14 @@ BO_ 2566902263 StatusLineVoltages: 8 Vector__XXX
 
 
 
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
 BA_DEF_ BO_ "GenMsgDelayTime" INT 0 65535;
 BA_DEF_ BO_ "GenMsgNrOfRepetitions" INT 0 65535;
-BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
-BA_DEF_ BO_ "GenMsgStartValue" STRING;
 BA_DEF_ BO_ "GenMsgSendType" ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";
+BA_DEF_ BO_ "GenMsgStartValue" STRING;
 BA_DEF_ SG_ "GenSigStartValue" HEX 0 4294967295;
-BA_DEF_ BU_ "NWM-Stationsadresse" HEX 0 63;
 BA_DEF_ BU_ "NWM-Knoten" ENUM  "nein","ja";
+BA_DEF_ BU_ "NWM-Stationsadresse" HEX 0 63;
 
 
 BA_ "GenMsgSendType" BO_ 2164239169 1;

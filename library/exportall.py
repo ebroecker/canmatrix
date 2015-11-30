@@ -1,36 +1,38 @@
 #!/usr/bin/env python
-from exportdbc import *
-from exportdbf import *
-from exportsym import *
-from exportJson import *
+from __future__ import print_function
+from __future__ import absolute_import
+from .exportdbc import *
+from .exportdbf import *
+from .exportsym import *
+from .exportJson import *
 
-try: 
-	from exportarxml import *
+try:
+    from .exportarxml import *
 except:
-	print "no arxml-export-support, some dependencys missing...  (probably lxml)"
+    print("no arxml-export-support, some dependencys missing...  (probably lxml)")
 
-try: 
-	from exportkcd import *
+try:
+    from .exportkcd import *
 except:
-	print "no kcd-export-support, some dependencys missing... "
+    print("no kcd-export-support, some dependencys missing... ")
 
 
-try: 
-	from exportxls import *
+try:
+    from .exportxls import *
 except:
-	print "no xls-export-support, some dependencys missing... "
-try: 
-	from exportxlsx import *
+    print("no xls-export-support, some dependencys missing... ")
+try:
+    from .exportxlsx import *
 except:
-	print "no xlsx-export-support, some dependencys missing... "
-try: 
-	from exportyaml import *
+    print("no xlsx-export-support, some dependencys missing... ")
+try:
+    from .exportyaml import *
 except:
-	print "no yaml-export-support, some dependencys missing ... (probably yaml) "
+    print("no yaml-export-support, some dependencys missing ... (probably yaml) ")
 
 
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that

@@ -109,64 +109,64 @@ ID= CFFAA41h
 Type=Standard
 DLC=8
 Mux=CommandSetNVParam_MUX0 0,16 0 -m// Param0
-Var=Dummy unsigned 16,16 -m /min:0 /max:65535  // 
+Var=Dummy unsigned 16,16 -m /min:0 /max:65535 
 
 [CommandSetNVParam]
 DLC=8
 Mux=CommandSetNVParam_MUX1 0,16 1 -m// LVM_ClearingTimes1
-Var=VUnder50pct unsigned 16,16 -m /u:ms /o:1 /min:1 /max:30000  // 
-Var=V50to88pct unsigned 32,16 -m /u:ms /o:1 /min:1 /max:30000  // 
-Var=V110to120pct unsigned 48,16 -m /u:ms /o:1 /min:1 /max:30000  // 
+Var=VUnder50pct unsigned 16,16 -m /u:ms /o:1 /min:1 /max:30000 
+Var=V50to88pct unsigned 32,16 -m /u:ms /o:1 /min:1 /max:30000 
+Var=V110to120pct unsigned 48,16 -m /u:ms /o:1 /min:1 /max:30000 
 
 [CommandSetNVParam]
 DLC=8
 Mux=CommandSetNVParam_MUX2 0,16 2 -m// LVM_ClearingTimes2
-Var=VOver120 unsigned 16,16 -m /o:1 /min:1 /max:30000  // 
+Var=VOver120 unsigned 16,16 -m /o:1 /min:1 /max:30000 
 
 [CommandSetNVParam]
 DLC=8
 Mux=CommandSetNVParam_MUX3 0,16 3 -m// LFM_Limits
-Var=FreqHi unsigned 16,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70  // 
-Var=FreqVeryLo unsigned 48,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70  // 
+Var=FreqHi unsigned 16,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70 
+Var=FreqVeryLo unsigned 48,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70 
 
 [CommandSetNVParam]
 DLC=8
 Mux=CommandSetNVParam_MUX4 0,16 4 -m// LFM_ClearingTimes
-Var=FreqVeryLo unsigned 16,16 -m /u:ms /o:160 /min:160 /max:160  // 
-Var=FreqLo unsigned 32,16 -m /u:ms /o:1 /min:1 /max:30000  // 
-Var=FreqHi unsigned 48,16 -m /u:ms /o:160 /min:160 /max:160  // 
+Var=FreqVeryLo unsigned 16,16 -m /u:ms /o:160 /min:160 /max:160 
+Var=FreqLo unsigned 32,16 -m /u:ms /o:1 /min:1 /max:30000 
+Var=FreqHi unsigned 48,16 -m /u:ms /o:160 /min:160 /max:160 
 
 [CommandSetNVParam]
 DLC=8
 Mux=CommandSetNVParam_MUX5 0,16 5 -m// J1939_Interface
-Var=NodeID unsigned 16,8 -m /min:0 /max:247  // 
-Var=SA_Mask unsigned 24,8 -m /min:0 /max:255  // 
-Var=Baudrate unsigned 32,4 -m /min:0 /max:15 /e:Baudrate // 
+Var=NodeID unsigned 16,8 -m /min:0 /max:247 
+Var=SA_Mask unsigned 24,8 -m /min:0 /max:255 
+Var=Baudrate unsigned 32,4 -m /min:0 /max:15 /e:Baudrate
 
 [CommandSetNVParam]
 DLC=8
 Mux=CommandSetNVParam_MUX6 0,16 6 -m// Fault_Config
-Var=ThermalOverload unsigned 22,2 -m /min:0 /max:3 /e:ThermalOverload // 
+Var=ThermalOverload unsigned 22,2 -m /min:0 /max:3 /e:ThermalOverload
 
 [CommandSetNVParam]
 DLC=8
 Mux=CommandSetNVParam_MUX7 0,16 7 -m// ContactorDelays1
-Var=MX1Open unsigned 16,16 -m /u:ms /min:0 /max:5000  // 
-Var=MX1Close unsigned 32,16 -m /u:ms /min:0 /max:2000  // 
-Var=MX2Open unsigned 48,16 -m /u:ms /min:0 /max:65535  // 
+Var=MX1Open unsigned 16,16 -m /u:ms /min:0 /max:5000 
+Var=MX1Close unsigned 32,16 -m /u:ms /min:0 /max:2000 
+Var=MX2Open unsigned 48,16 -m /u:ms /min:0 /max:65535 
 
 [CommandSetNVParam]
 DLC=8
 Mux=CommandSetNVParam_MUX8 0,16 8 -m// ContactorDelays2
-Var=MX2Close unsigned 16,16 -m /u:ms /min:0 /max:2000  // 
-Var=K1Open unsigned 32,16 -m /u:ms /min:0 /max:2000  // 
-Var=K1Close unsigned 48,16 -m /u:ms /min:0 /max:2000  // 
+Var=MX2Close unsigned 16,16 -m /u:ms /min:0 /max:2000 
+Var=K1Open unsigned 32,16 -m /u:ms /min:0 /max:2000 
+Var=K1Close unsigned 48,16 -m /u:ms /min:0 /max:2000 
 
 [CommandSetNVParam]
 DLC=8
 Mux=CommandSetNVParam_MUX9 0,16 9 -m// ContactorDelays3
-Var=K2Open unsigned 16,16 -m /u:ms /min:0 /max:2000  // 
-Var=K2Close unsigned 32,16 -m /u:ms /min:0 /max:2000  // 
+Var=K2Open unsigned 16,16 -m /u:ms /min:0 /max:2000 
+Var=K2Close unsigned 32,16 -m /u:ms /min:0 /max:2000 
 
 [CommandPower]
 ID= CFFAC41h
@@ -304,64 +304,64 @@ ID=1CFFA9F7h
 Type=Standard
 DLC=8
 Mux=StatusNVParam_MUX0 0,16 0 -m// ActParam0
-Var=Dummy unsigned 16,16 -m /o:5 /min:5 /max:10  // 
+Var=Dummy unsigned 16,16 -m /o:5 /min:5 /max:10 
 
 [StatusNVParam]
 DLC=8
 Mux=StatusNVParam_MUX1 0,16 1 -m// ActLVM_ClearingTimes1
-Var=VUnder50pct unsigned 16,16 -m /u:ms /o:1 /min:1 /max:30000  // 
-Var=V50to88pct unsigned 32,16 -m /u:ms /o:1 /min:1 /max:30000  // 
-Var=V110to120pct unsigned 48,16 -m /u:ms /o:1 /min:1 /max:30000  // 
+Var=VUnder50pct unsigned 16,16 -m /u:ms /o:1 /min:1 /max:30000 
+Var=V50to88pct unsigned 32,16 -m /u:ms /o:1 /min:1 /max:30000 
+Var=V110to120pct unsigned 48,16 -m /u:ms /o:1 /min:1 /max:30000 
 
 [StatusNVParam]
 DLC=8
 Mux=StatusNVParam_MUX2 0,16 2 -m// ActLVM_ClearingTimes2
-Var=VOver120 unsigned 16,16 -m /o:1 /min:1 /max:30000  // 
+Var=VOver120 unsigned 16,16 -m /o:1 /min:1 /max:30000 
 
 [StatusNVParam]
 DLC=8
 Mux=StatusNVParam_MUX3 0,16 3 -m// ActLFM_Limits
-Var=FreqHi unsigned 16,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70  // 
-Var=FreqVeryLo unsigned 48,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70  // 
+Var=FreqHi unsigned 16,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70 
+Var=FreqVeryLo unsigned 48,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70 
 
 [StatusNVParam]
 DLC=8
 Mux=StatusNVParam_MUX4 0,16 4 -m// ActLFM_ClearingTimes
-Var=FreqVeryLo unsigned 16,16 -m /u:ms /o:160 /min:160 /max:160  // 
-Var=FreqLo unsigned 32,16 -m /u:ms /o:1 /min:1 /max:30000  // 
-Var=FreqHi unsigned 48,16 -m /u:ms /o:160 /min:160 /max:160  // 
+Var=FreqVeryLo unsigned 16,16 -m /u:ms /o:160 /min:160 /max:160 
+Var=FreqLo unsigned 32,16 -m /u:ms /o:1 /min:1 /max:30000 
+Var=FreqHi unsigned 48,16 -m /u:ms /o:160 /min:160 /max:160 
 
 [StatusNVParam]
 DLC=8
 Mux=StatusNVParam_MUX5 0,16 5 -m// StatusJ1939_Interface
-Var=StatusNodeID unsigned 16,8 -m /min:0 /max:247  // 
-Var=StatusSA_Mask unsigned 24,8 -m /min:0 /max:255  // 
-Var=StatusBaudrate unsigned 32,4 -m /min:0 /max:15 /e:StatusBaudrate // 
+Var=StatusNodeID unsigned 16,8 -m /min:0 /max:247 
+Var=StatusSA_Mask unsigned 24,8 -m /min:0 /max:255 
+Var=StatusBaudrate unsigned 32,4 -m /min:0 /max:15 /e:StatusBaudrate
 
 [StatusNVParam]
 DLC=8
 Mux=StatusNVParam_MUX6 0,16 6 -m// StatusFault_Config
-Var=StatusThermalOverload unsigned 22,2 -m /min:0 /max:3 /e:StatusThermalOverload // 
+Var=StatusThermalOverload unsigned 22,2 -m /min:0 /max:3 /e:StatusThermalOverload
 
 [StatusNVParam]
 DLC=8
 Mux=StatusNVParam_MUX7 0,16 7 -m// StatusContactorDelays1
-Var=StatusMX1Open unsigned 16,16 -m /u:ms /min:0 /max:5000  // 
-Var=StatusMX1Close unsigned 32,16 -m /u:ms /min:0 /max:2000  // 
-Var=StatusMX2Open unsigned 48,16 -m /u:ms /min:0 /max:65535  // 
+Var=StatusMX1Open unsigned 16,16 -m /u:ms /min:0 /max:5000 
+Var=StatusMX1Close unsigned 32,16 -m /u:ms /min:0 /max:2000 
+Var=StatusMX2Open unsigned 48,16 -m /u:ms /min:0 /max:65535 
 
 [StatusNVParam]
 DLC=8
 Mux=StatusNVParam_MUX8 0,16 8 -m// StatusContactorDelays2
-Var=StatusMX2Close unsigned 16,16 -m /u:ms /min:0 /max:2000  // 
-Var=StatusK1Open unsigned 32,16 -m /u:ms /min:0 /max:2000  // 
-Var=StatusK1Close unsigned 48,16 -m /u:ms /min:0 /max:2000  // 
+Var=StatusMX2Close unsigned 16,16 -m /u:ms /min:0 /max:2000 
+Var=StatusK1Open unsigned 32,16 -m /u:ms /min:0 /max:2000 
+Var=StatusK1Close unsigned 48,16 -m /u:ms /min:0 /max:2000 
 
 [StatusNVParam]
 DLC=8
 Mux=StatusNVParam_MUX9 0,16 9 -m// StatusContactorDelays3
-Var=StatusK2Open unsigned 16,16 -m /u:ms /min:0 /max:2000  // 
-Var=StatusK2Close unsigned 32,16 -m /u:ms /min:0 /max:2000  // 
+Var=StatusK2Open unsigned 16,16 -m /u:ms /min:0 /max:2000 
+Var=StatusK2Close unsigned 32,16 -m /u:ms /min:0 /max:2000 
 
 [softwareRev]
 ID=1CFFC1F7h

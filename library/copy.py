@@ -1,7 +1,8 @@
+from __future__ import absolute_import
 
 #!/usr/bin/env python
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -21,107 +22,106 @@
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-from canmatrix import *
+from .canmatrix import *
 
 def copyBU (buId, sourceDb, targetDb):
-	"""
-	This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
-	while copying is easy, this function additionally copys all relevant Defines
-	"""
-	# check wether buId is object or symbolic name
-	if type(buId).__name__ == 'instance':
-		bu = buId
-	else:
-		bu = sourceDb._BUs.byName(buId)
-	
-	targetDb._BUs.add(bu)
-	
-	# copy all bu-defines
-	attributes = bu._attributes
-	for attribute in attributes:
-		targetDb.addBUDefines(attribute, sourceDb._buDefines[attribute]._definition)
-		targetDb.addDefineDefault(attribute, sourceDb._buDefines[attribute]._defaultValue)
+    """
+    This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
+    while copying is easy, this function additionally copys all relevant Defines
+    """
+    # check wether buId is object or symbolic name
+    if type(buId).__name__ == 'instance':
+        bu = buId
+    else:
+        bu = sourceDb._BUs.byName(buId)
+
+    targetDb._BUs.add(bu)
+
+    # copy all bu-defines
+    attributes = bu._attributes
+    for attribute in attributes:
+        targetDb.addBUDefines(attribute, sourceDb._buDefines[attribute]._definition)
+        targetDb.addDefineDefault(attribute, sourceDb._buDefines[attribute]._defaultValue)
 
 def copyBUwithFrames (buId, sourceDb, targetDb):
-	"""
-	This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
-	while copying is easy, this function additionally copys all relevant Frames and Defines
-	"""
-	# check wether buId is object or symbolic name
-	if type(buId).__name__ == 'instance':
-		bu = buId
-	else:
-		bu = sourceDb._BUs.byName(buId)
-	
-	targetDb._BUs.add(bu)
-	
-	#copy tx-frames
-	for frame in sourceDb._fl._list:
-		if bu._name in frame._Transmitter:
-			copyFrame (frame, sourceDb, targetDb)
+    """
+    This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
+    while copying is easy, this function additionally copys all relevant Frames and Defines
+    """
+    # check wether buId is object or symbolic name
+    if type(buId).__name__ == 'instance':
+        bu = buId
+    else:
+        bu = sourceDb._BUs.byName(buId)
 
-	#copy rx-frames
-	for frame in sourceDb._fl._list:
-		for signal in frame._signals:
-			if bu._name in signal._reciever:
-				copyFrame (frame, sourceDb, targetDb)
-				break
+    targetDb._BUs.add(bu)
 
-	# copy all bu-defines
-	attributes = bu._attributes
-	for attribute in attributes:
-		targetDb.addBUDefines(attribute, sourceDb._buDefines[attribute]._definition)
-		targetDb.addDefineDefault(attribute, sourceDb._buDefines[attribute]._defaultValue)
+    #copy tx-frames
+    for frame in sourceDb._fl._list:
+        if bu._name in frame._Transmitter:
+            copyFrame (frame, sourceDb, targetDb)
+
+    #copy rx-frames
+    for frame in sourceDb._fl._list:
+        for signal in frame._signals:
+            if bu._name in signal._reciever:
+                copyFrame (frame, sourceDb, targetDb)
+                break
+
+    # copy all bu-defines
+    attributes = bu._attributes
+    for attribute in attributes:
+        targetDb.addBUDefines(attribute, sourceDb._buDefines[attribute]._definition)
+        targetDb.addDefineDefault(attribute, sourceDb._buDefines[attribute]._defaultValue)
 
 
 
-	
+
 def copyFrame (frameId, sourceDb, targetDb):
-	"""
-	This function copys a Frame identified by frameId from soruce-Canmatrix to target-Canmatrix
-	while copying is easy, this function additionally copys all relevant Boardunits, and Defines
-	"""
+    """
+    This function copys a Frame identified by frameId from soruce-Canmatrix to target-Canmatrix
+    while copying is easy, this function additionally copys all relevant Boardunits, and Defines
+    """
 
-	# check wether frameId is object, id or symbolic name
-	if type(frameId).__name__ == 'int':
-		frame = sourceDb.frameById(frameId)
-	elif type(frameId).__name__ == 'instance':
-		frame = frameId
-	else:
-		frame = sourceDb.frameByName(frameId)
+    # check wether frameId is object, id or symbolic name
+    if type(frameId).__name__ == 'int':
+        frame = sourceDb.frameById(frameId)
+    elif type(frameId).__name__ == 'instance':
+        frame = frameId
+    else:
+        frame = sourceDb.frameByName(frameId)
 
 
-	# copy Frame-Object:
-	targetDb._fl.addFrame(frame)
-	
-	## Boardunits:
-	# each transmitter of Frame could be ECU that is not listed already
-	for transmitter in frame._Transmitter:
-		targetBU = targetDb._BUs.byName(transmitter)
-		sourceBU = sourceDb._BUs.byName(transmitter)
-		if sourceBU is not None and targetBU is None:
-			copyBU(sourceBU, sourceDb, targetDb)
-			
-	#trigger all signals of Frame
-	for sig in frame._signals:			
-		# each reciever of Signal could be ECU that is not listed already
-		for reciever in sig._reciever:
-			targetBU = targetDb._BUs.byName(transmitter)
-			sourceBU = sourceDb._BUs.byName(transmitter)
-			if sourceBU is not None and targetBU is None:
-				copyBU(sourceBU, sourceDb, targetDb)
+    # copy Frame-Object:
+    targetDb._fl.addFrame(frame)
 
-	# copy all frame-defines
-	attributes = frame._attributes
-	for attribute in attributes:
-		targetDb.addFrameDefines(attribute, sourceDb._frameDefines[attribute]._definition)
-		targetDb.addDefineDefault(attribute, sourceDb._frameDefines[attribute]._defaultValue)
+    ## Boardunits:
+    # each transmitter of Frame could be ECU that is not listed already
+    for transmitter in frame._Transmitter:
+        targetBU = targetDb._BUs.byName(transmitter)
+        sourceBU = sourceDb._BUs.byName(transmitter)
+        if sourceBU is not None and targetBU is None:
+            copyBU(sourceBU, sourceDb, targetDb)
 
-	#trigger all signals of Frame
-	for sig in frame._signals:
-		# delete all 'unknown' attributes 
-		attributes = sig._attributes
-		for attribute in attributes:
-			targetDb.addSignalDefines(attribute, sourceDb._signalDefines[attribute]._definition)
-			targetDb.addDefineDefault(attribute, sourceDb._signalDefines[attribute]._defaultValue)
+    #trigger all signals of Frame
+    for sig in frame._signals:
+        # each reciever of Signal could be ECU that is not listed already
+        for reciever in sig._reciever:
+            targetBU = targetDb._BUs.byName(transmitter)
+            sourceBU = sourceDb._BUs.byName(transmitter)
+            if sourceBU is not None and targetBU is None:
+                copyBU(sourceBU, sourceDb, targetDb)
 
+    # copy all frame-defines
+    attributes = frame._attributes
+    for attribute in attributes:
+        targetDb.addFrameDefines(attribute, sourceDb._frameDefines[attribute]._definition)
+        targetDb.addDefineDefault(attribute, sourceDb._frameDefines[attribute]._defaultValue)
+
+    #trigger all signals of Frame
+    for sig in frame._signals:
+        # delete all 'unknown' attributes
+        attributes = sig._attributes
+        for attribute in attributes:
+            targetDb.addSignalDefines(attribute, sourceDb._signalDefines[attribute]._definition)
+            targetDb.addDefineDefault(attribute, sourceDb._signalDefines[attribute]._defaultValue)

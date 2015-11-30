@@ -4,7 +4,7 @@ from library.canmatrix import *
 import codecs
 import yaml
 
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -26,11 +26,10 @@ import yaml
 
 #
 # this script exports yaml-files from a canmatrix-object
-# yaml-files are just object-dumps human readable. 
+# yaml-files are just object-dumps human readable.
 # This export is complete, no information lost
 
 
 def exportYaml(db, filename):
-	f = open(filename,"w")
-	f.write(yaml.dump(db))
-	
+    f = open(filename,"w")
+    f.write(yaml.dump(db))
