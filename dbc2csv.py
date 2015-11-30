@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2015, Martin Hoffmann 
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -19,10 +19,10 @@
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-from library.exportcsv import *
+# 
+
 import library.importdbc as imdbc
-import library.importdbf as imdbf
-import library.canmatrix as cm
+import library.exportcsv as excsv
 import sys
 from optparse import OptionParser
 
@@ -56,18 +56,15 @@ if len(args) > 0:
     infile = args[0]
     
 outfile = None
+
 if len(args) > 1:
     outfile = args[1]
 
-# print "Importing " + infile + " ... "
 if infile[-3:] == 'dbc':
 	dbs[""] = imdbc.importDbc(infile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
-elif infile[-3:] == 'dbf':
-	dbs[""] = imdbf.importDbf(infile)
 else:
     sys.stderr.write('\nFile not recognized: ' + infile + "\n")
 
-# print "Exporting " + outfileName + " ... "
 
 for name in dbs:
 	db = dbs[name]
@@ -78,4 +75,4 @@ for name in dbs:
 	else:
 		outfile = outfile
 
-	exportCsv(db, outfile, cmdlineOptions.delimiter)
+	excsv.exportCsv(db, outfile, cmdlineOptions.delimiter)

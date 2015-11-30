@@ -20,15 +20,10 @@
 # DAMAGE.
 
 #
-# this script exports csv-files from a canmatrix-object
-# csv-files are the can-matrix-definitions displayed in Excel
-# Author: Martin Hoffmann (hoffmmn) martin.hoffmann2@brose.com
+# this script exports canmatrix-objects to a CSV file. (Based on exportxlsx)
+# Author: Martin Hoffmann (m8ddin@gmail.com)
 
-import sys
-from canmatrix import *
-import os.path
 from collections import defaultdict
-from library.exportxlsx import writeValuex
 
 class csvRow:
 	
