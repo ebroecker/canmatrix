@@ -40,7 +40,7 @@ class csvRow:
 		self._linedict[column] = value
 
 	def toCSV(self, delimiter=','):
-		text = delimiter.join([unicode(self._linedict[x]).encode('utf-8') for x in range(0, max(self._linedict) + 1)])
+		text = delimiter.join([str(self._linedict[x]) for x in range(0, max(self._linedict) + 1)])
 		return text.replace('\n', ' ') # TODO newline replacement OK?
 		
 	def __str__(self):
@@ -203,7 +203,7 @@ def exportCsv(db, filename, delimiter=','):
 	row = 1
 
 	# iterate over the frames
-	for idx in sorted(frameHash.iterkeys()):
+	for idx in sorted(frameHash.keys()):
 		frame = frameHash[idx]
 
 		# sort signals:
@@ -212,13 +212,13 @@ def exportCsv(db, filename, delimiter=','):
 			sigHash["%02d" % int(sig._startbit) + sig._name] = sig
 		
 		# iterate over signals
-		for sig_idx in sorted(sigHash.iterkeys()):
+		for sig_idx in sorted(sigHash.keys()):
 			sig = sigHash[sig_idx]		
 
 			# value table available?
 			if sig._values.__len__() > 0:
 				# iterate over values in valuetable
-				for val in sorted(sig._values.iterkeys()):
+				for val in sorted(sig._values.keys()):
 					signalRow = csvRow()
 					writeFramex(frame, signalRow)
 					col = head_top.__len__()
@@ -258,4 +258,4 @@ def exportCsv(db, filename, delimiter=','):
 			thefile.write(finalTableString)
 	else:
 		# just print to stdout
-		print finalTableString
+		print(finalTableString)

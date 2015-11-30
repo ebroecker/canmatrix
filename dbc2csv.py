@@ -29,7 +29,7 @@ from optparse import OptionParser
 usage = """
 %prog [options] import-file [export-file]
 
-import-file: *.dbc|*.dbf
+import-file: *.dbc
 export-file: *.csv
 
 """
