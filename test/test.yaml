@@ -1,11 +1,11 @@
-!!python/object:library.canmatrix.CanMatrix
-_BUs: !!python/object:library.canmatrix.BoardUnitListe
+!!python/object:canmatrix.canmatrix.CanMatrix
+_BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
   _list: []
 _attributes: {}
 _buDefines: {}
-_fl: !!python/object:library.canmatrix.FrameList
+_fl: !!python/object:canmatrix.canmatrix.FrameList
   _list:
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 16755521
     _Reciever: []
     _SignalGroups: []
@@ -17,7 +17,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: CommandModeControl
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -33,7 +33,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id002 {'0': Disable, '1': Enable, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -49,7 +49,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id003 {'0': Normal, '1': Clear Faults, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -65,7 +65,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id004 {'0': No invert, '1': Invert, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -81,7 +81,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id005 {'0': Disable, '1': Enable, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -98,7 +98,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _values: &id006 {'0': Normal - Three Phase Mode, '1': Enable Split Phase Mode,
         '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -114,7 +114,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id001 {'0': Normal, '1': Force On, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -130,7 +130,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id001
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -146,7 +146,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id001
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -162,7 +162,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id001
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -178,7 +178,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id007 {'0': Negative, '1': Positive, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -194,7 +194,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id008 {'0': Master, '1': Follower, '2': Error, '3': N/A}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218082369
     _Reciever: []
     _SignalGroups: []
@@ -206,7 +206,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: CommandPower
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -222,7 +222,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: W
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -238,7 +238,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: VA
       _values: {}
       _valuetype: '-'
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218082881
     _Reciever: []
     _SignalGroups: []
@@ -252,7 +252,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: CommandVF
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2400.0'}
       _byteorder: 0
       _comment: null
@@ -268,7 +268,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Vrms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '500.0'}
       _byteorder: 0
       _comment: null
@@ -284,7 +284,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218090230
     _Reciever: []
     _SignalGroups: []
@@ -295,7 +295,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: MasterMeasuredPower
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -311,7 +311,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: W
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -327,7 +327,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: VA
       _values: {}
       _valuetype: '-'
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218083137
     _Reciever: []
     _SignalGroups: []
@@ -338,7 +338,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: CommandFactoryControl
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -354,7 +354,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id002
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -370,7 +370,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -386,7 +386,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218081857
     _Reciever: []
     _SignalGroups: []
@@ -399,7 +399,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: CommandSetNVParam
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
       _comment: null
@@ -417,7 +417,7 @@ _fl: !!python/object:library.canmatrix.FrameList
         '4': LFM_ClearingTimes, '5': J1939_Interface, '6': Fault_Config, '7': ContactorDelays1,
         '8': ContactorDelays2, '9': ContactorDelays3}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -433,7 +433,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -449,7 +449,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2000.0'}
       _byteorder: 0
       _comment: null
@@ -465,7 +465,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '1000.0'}
       _byteorder: 0
       _comment: null
@@ -481,7 +481,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -497,7 +497,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '605.0'}
       _byteorder: 0
       _comment: null
@@ -513,7 +513,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '598.0'}
       _byteorder: 0
       _comment: null
@@ -529,7 +529,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '570.0'}
       _byteorder: 0
       _comment: null
@@ -545,7 +545,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -561,7 +561,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -577,7 +577,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -593,7 +593,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '247.0'}
       _byteorder: 0
       _comment: null
@@ -609,7 +609,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '65.0'}
       _byteorder: 0
       _comment: null
@@ -625,7 +625,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2.0'}
       _byteorder: 0
       _comment: null
@@ -641,7 +641,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id014 {'0': 125K, '1': 250K, '2': 500K, '3': 1M}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -657,7 +657,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id015 {'0': Warning, '1': Fault, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _byteorder: 0
       _comment: null
@@ -673,7 +673,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _byteorder: 0
       _comment: null
@@ -689,7 +689,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -705,7 +705,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -721,7 +721,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -737,7 +737,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -753,7 +753,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -769,7 +769,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -785,7 +785,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 16751425
     _Reciever: []
     _SignalGroups: []
@@ -797,7 +797,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: CommandModeControlAPU2
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -813,7 +813,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id002
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -829,7 +829,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id003
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -845,7 +845,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id004
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -861,7 +861,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id005
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -877,7 +877,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id006
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -893,7 +893,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id001
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -909,7 +909,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id001
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -925,7 +925,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id001
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -941,7 +941,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id001
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -957,7 +957,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id007
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -973,7 +973,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id008
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218078273
     _Reciever: []
     _SignalGroups: []
@@ -985,7 +985,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: CommandPowerAPU2
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1001,7 +1001,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: W
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1017,7 +1017,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: VA
       _values: {}
       _valuetype: '-'
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218078785
     _Reciever: []
     _SignalGroups: []
@@ -1031,7 +1031,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: CommandVFAPU2
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2400.0'}
       _byteorder: 0
       _comment: null
@@ -1047,7 +1047,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Vrms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '500.0'}
       _byteorder: 0
       _comment: null
@@ -1063,7 +1063,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218090231
     _Reciever: []
     _SignalGroups: []
@@ -1074,7 +1074,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: MasterMeasuredPowerAPU2
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1090,7 +1090,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: W
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1106,7 +1106,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: VA
       _values: {}
       _valuetype: '-'
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218090231
     _Reciever: []
     _SignalGroups: []
@@ -1117,7 +1117,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusMeasuredPower
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1133,7 +1133,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: W
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1149,7 +1149,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: VA
       _values: {}
       _valuetype: '-'
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419415287
     _Reciever: []
     _SignalGroups: []
@@ -1160,7 +1160,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusCommandedPower
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1176,7 +1176,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: W
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1192,7 +1192,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: VA
       _values: {}
       _valuetype: '-'
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218088439
     _Reciever: []
     _SignalGroups: []
@@ -1203,7 +1203,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusBits
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1221,7 +1221,7 @@ _fl: !!python/object:library.canmatrix.FrameList
         '13': N/A, '14': N/A, '15': N/A, '2': Following, '3': Fault, '4': Forming,
         '5': N/A, '6': N/A, '7': N/A, '8': N/A, '9': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1237,7 +1237,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id010 {'0': Open, '1': Closed, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1253,7 +1253,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id009 {'0': None, '1': Available, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1269,7 +1269,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id009
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1285,7 +1285,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {'0': Disabled, '1': Enabled, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1301,7 +1301,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {'0': Not Active, '1': Active, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1317,7 +1317,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id002
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1333,7 +1333,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id003
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1349,7 +1349,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id011 {'0': Invalid, '1': Valid, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1365,7 +1365,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id010
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1381,7 +1381,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id010
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1397,7 +1397,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id010
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1413,7 +1413,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id011
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1429,7 +1429,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id011
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1445,7 +1445,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {'0': Normal, '1': Warning, '3': ErrorPassive, '4': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1461,7 +1461,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id005
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1477,7 +1477,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id006
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1493,7 +1493,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id007
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1509,7 +1509,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {'0': No_Voltage, '1': Voltage_Detected, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1525,7 +1525,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id007
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486524407
     _Reciever: []
     _SignalGroups: []
@@ -1537,7 +1537,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusControlVoltage
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1553,7 +1553,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: V
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1569,7 +1569,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: V
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1585,7 +1585,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: V
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1601,7 +1601,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: V
       _values: {}
       _valuetype: '-'
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419417079
     _Reciever: []
     _SignalGroups: []
@@ -1613,7 +1613,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusTemps
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1629,7 +1629,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: C
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1645,7 +1645,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: C
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1661,7 +1661,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: W
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218089719
     _Reciever: []
     _SignalGroups: []
@@ -1672,7 +1672,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusFaults
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1688,7 +1688,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: &id012 {'0': Normal, '1': Fault Active, '2': Error, '3': N/A}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1704,7 +1704,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1720,7 +1720,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1736,7 +1736,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1752,7 +1752,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1768,7 +1768,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1784,7 +1784,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1800,7 +1800,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1816,7 +1816,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1832,7 +1832,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1848,7 +1848,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1864,7 +1864,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1880,7 +1880,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1897,7 +1897,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _values: &id013 {'0': Normal, '1': FLT_A, '2': N/A, '3': FLT_C, '4': OverVoltage,
         '5': FLT_B, '6': Overcurrent, '7': 5V}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1913,7 +1913,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id013
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1929,7 +1929,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1945,7 +1945,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1961,7 +1961,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -1977,7 +1977,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id012
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218088183
     _Reciever: []
     _SignalGroups: []
@@ -1988,7 +1988,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusACParameters
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2004,7 +2004,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: V
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2020,7 +2020,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: A
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2036,7 +2036,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: '-'
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486524919
     _Reciever: []
     _SignalGroups: []
@@ -2048,7 +2048,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusDCParameters
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2064,7 +2064,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: V
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2080,7 +2080,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: A
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2096,7 +2096,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: V
       _values: {}
       _valuetype: '-'
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486524663
     _Reciever: []
     _SignalGroups: []
@@ -2107,7 +2107,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusControlVolts2
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2123,7 +2123,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: V
       _values: {}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2139,7 +2139,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: C
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2155,7 +2155,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: C
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486523383
     _Reciever: []
     _SignalGroups: []
@@ -2166,7 +2166,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: softwareRev
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2182,7 +2182,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2198,7 +2198,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2214,7 +2214,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419416567
     _Reciever: []
     _SignalGroups: []
@@ -2225,7 +2225,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusCommandVF
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2241,7 +2241,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Vrms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2257,7 +2257,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486526199
     _Reciever: []
     _SignalGroups: []
@@ -2268,7 +2268,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: serialNumber
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2284,7 +2284,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486526455
     _Reciever: []
     _SignalGroups: []
@@ -2295,7 +2295,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: softwareRevHash
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2311,7 +2311,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486517239
     _Reciever: []
     _SignalGroups: []
@@ -2322,7 +2322,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusNVParam
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
       _comment: null
@@ -2341,7 +2341,7 @@ _fl: !!python/object:library.canmatrix.FrameList
         '6': StatusFault_Config, '7': StatusContactorDelays1, '8': StatusContactorDelays2,
         '9': StatusContactorDelays3}
       _valuetype: '-'
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2357,7 +2357,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -2373,7 +2373,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2000.0'}
       _byteorder: 0
       _comment: null
@@ -2389,7 +2389,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '1000.0'}
       _byteorder: 0
       _comment: null
@@ -2405,7 +2405,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -2421,7 +2421,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '605.0'}
       _byteorder: 0
       _comment: null
@@ -2437,7 +2437,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '598.0'}
       _byteorder: 0
       _comment: null
@@ -2453,7 +2453,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '570.0'}
       _byteorder: 0
       _comment: null
@@ -2469,7 +2469,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Hz
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -2485,7 +2485,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -2501,7 +2501,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _byteorder: 0
       _comment: null
@@ -2517,7 +2517,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '247.0'}
       _byteorder: 0
       _comment: null
@@ -2533,7 +2533,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '65.0'}
       _byteorder: 0
       _comment: null
@@ -2549,7 +2549,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2.0'}
       _byteorder: 0
       _comment: null
@@ -2565,7 +2565,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id014
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2581,7 +2581,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ''
       _values: *id015
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _byteorder: 0
       _comment: null
@@ -2597,7 +2597,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _byteorder: 0
       _comment: null
@@ -2613,7 +2613,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2629,7 +2629,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2645,7 +2645,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2661,7 +2661,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2677,7 +2677,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2693,7 +2693,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2709,7 +2709,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: ms
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419418359
     _Reciever: []
     _SignalGroups: []
@@ -2720,7 +2720,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusLineCurrents
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2736,7 +2736,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: A
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2752,7 +2752,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: A
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2768,7 +2768,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: A
       _values: {}
       _valuetype: +
-  - !!python/object:library.canmatrix.Frame
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419418615
     _Reciever: []
     _SignalGroups: []
@@ -2779,7 +2779,7 @@ _fl: !!python/object:library.canmatrix.FrameList
     _extended: 1
     _name: StatusLineVoltages
     _signals:
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2795,7 +2795,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Vrms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2811,7 +2811,7 @@ _fl: !!python/object:library.canmatrix.FrameList
       _unit: Vrms
       _values: {}
       _valuetype: +
-    - !!python/object:library.canmatrix.Signal
+    - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _byteorder: 0
       _comment: null
@@ -2828,10 +2828,10 @@ _fl: !!python/object:library.canmatrix.FrameList
       _values: {}
       _valuetype: +
 _frameDefines:
-  GenMsgCycleTime: !!python/object:library.canmatrix.Define {_defaultValue: null,
+  GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
     _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
 _globalDefines: {}
 _signalDefines:
-  GenSigStartValue: !!python/object:library.canmatrix.Define {_defaultValue: null,
+  GenSigStartValue: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
     _definition: FLOAT -3.4E+038 3.4E+038, _max: 3.4e+38, _min: -3.4e+38, _type: FLOAT}
 _valueTables: {}

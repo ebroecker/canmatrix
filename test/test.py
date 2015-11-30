@@ -15,7 +15,7 @@ import subprocess
 
 export_types = []
 import_types = []
-for f in os.listdir('../library'):
+for f in os.listdir('../canmatrix'):
     m = re.match('^export(.*).py$', f)
     if m is not None and m.group(1) != 'all':
         export_types.append(m.group(1))

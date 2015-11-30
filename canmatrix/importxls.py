@@ -21,96 +21,23 @@
 #DAMAGE.
 
 #
-# this script imports excel-files (xlsx) to a canmatrix-object
+# this script imports excel-files to a canmatrix-object
 # these Excelfiles should have following collums:
 # ID, Frame Name, Cycle Time [ms], Launch Type, Launch Parameter, Signal Byte No., Signal Bit No., Signal Name, Signal Function,  Signal Length [Bit], Signal Default, Signal Not Available, [LIST OF ECUS], Value,     Name / Phys. Range,     Function / Increment Unit
 #
 
 from __future__ import division
+from __future__ import print_function
 from builtins import *
 import math
-from library.canmatrix import *
+from .canmatrix import *
+import xlrd
 import codecs
-import zipfile
-from xml.etree.ElementTree import iterparse
 
-def readXlsx( fileName, **args ):
-    #from: Hooshmand zandi http://stackoverflow.com/a/16544219
-    import zipfile
-    from xml.etree.ElementTree import iterparse
-
-    if "sheet" in args:
-        sheet=args["sheet"]
-    else:
-        sheet=1
-    if "header" in args:
-        isHeader=args["header"]
-    else:
-        isHeader=False
-
-    rows   = []
-    row    = {}
-    header = {}
-    z      = zipfile.ZipFile( fileName )
-
-    # Get shared strings
-    strings = [ el.text for e, el
-                        in  iterparse( z.open( 'xl/sharedStrings.xml' ) )
-                        if el.tag.endswith( '}t' )
-                        ]
-    value = ''
-
-    # Open specified worksheet
-    for e, el in iterparse( z.open( 'xl/worksheets/sheet%d.xml'%( sheet ) ) ):
-        # get value or index to shared strings
-        if el.tag.endswith( '}v' ):                                   # <v>84</v>
-            value = el.text
-        if el.tag.endswith( '}c' ):                                   # <c r="A3" t="s"><v>84</v></c>
-            # If value is a shared string, use value as an index
-
-            if el.attrib.get( 't' ) == 's':
-                value = strings[int( value )]
-
-            # split the row/col information so that the row leter(s) can be separate
-            letter = el.attrib['r']                                   # AZ22
-            while letter[-1].isdigit():
-                letter = letter[:-1]
-
-            # if it is the first row, then create a header hash for the names
-            # that COULD be used
-            if rows ==[]:
-                header[letter]=value.strip()
-            else:
-                if value != '':
-
-                    # if there is a header row, use the first row's names as the row hash index
-                    if isHeader == True and letter in header:
-                        row[header[letter]] = value
-                    else:
-                        row[letter] = value
-
-            value = ''
-        if el.tag.endswith('}row'):
-            rows.append(row)
-            row = {}
-    z.close()
-    return [header, rows]
-
-def getIfPossible(row, value):
-    if value in row:
-        return row[value].strip()
-    else:
-        return None
-
-def importXlsx(filename):
-    sheet = readXlsx( filename, sheet = 1, header = True )
+def importXls(filename):
+    wb = xlrd.open_workbook(filename, formatting_info=True)
+    sh = wb.sheet_by_index(0)
     db = CanMatrix()
-    letterIndex = []
-    for a in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-        letterIndex.append(a)
-    for a in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-        for b in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-            letterIndex.append("%s%s" % (a,b))
 
     #Defines not imported...
 #       db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
@@ -125,78 +52,71 @@ def importXlsx(filename):
     db.addSignalDefines("GenSigSNA", 'STRING')
 
     # eval search for correct collums:
-#       index = {}
-#       for i in range(sh.ncols):
-#               value = sh.cell(0,i).value
-#               if  value == "ID":
-#                       index['ID'] = i
-#               elif "Frame Name" in value:
-#                       index['frameName'] = i
-#               elif "Cycle" in value:
-#                       index['cycle'] = i
-#               elif "Launch Type" in value:
-#                       index['launchType'] = i
-#               elif "Launch Parameter" in value:
-#                       index['launchParam'] = i
-#               elif "Signal Byte No." in value:
-#                       index['startbyte'] = i
-#               elif "Signal Bit No." in value:
-#                       index['startbit'] = i
-#               elif "Signal Name" in value:
-#                       index['signalName'] = i
-#               elif "Signal Function" in value:
-#                       index['signalComment'] = i
-#               elif "Signal Length" in value:
-#                       index['signalLength'] = i
-#               elif "Signal Default" in value:
-#                       index['signalDefault'] = i
-#               elif "Signal Not Ava" in value:
-#                       index['signalSNA'] = i
-#               elif "Value" in value:
-#                       index['Value'] = i
-#               elif "Name / Phys" in value:
-#                       index['ValueName'] = i
-#               elif "Function /" in value:
-#                       index['function'] = i
-#               elif "Byteorder" in value:
-#                       index['byteorder'] = i
-    if 'Byteorder' in list(sheet[0].values()):
-        for key in sheet[0]:
-            if sheet[0][key].strip() == 'Byteorder':
-                _BUstart = letterIndex.index(key)+1
-                break
-    else:
-        for key in sheet[0]:
-            if sheet[0][key].strip() == 'Signal Not Available':
-                _BUstart = letterIndex.index(key)+1
+    index = {}
+    for i in range(sh.ncols):
+        value = sh.cell(0,i).value
+        if  value == "ID":
+            index['ID'] = i
+        elif "Frame Name" in value:
+            index['frameName'] = i
+        elif "Cycle" in value:
+            index['cycle'] = i
+        elif "Launch Type" in value:
+            index['launchType'] = i
+        elif "Launch Parameter" in value:
+            index['launchParam'] = i
+        elif "Signal Byte No." in value:
+            index['startbyte'] = i
+        elif "Signal Bit No." in value:
+            index['startbit'] = i
+        elif "Signal Name" in value:
+            index['signalName'] = i
+        elif "Signal Function" in value:
+            index['signalComment'] = i
+        elif "Signal Length" in value:
+            index['signalLength'] = i
+        elif "Signal Default" in value:
+            index['signalDefault'] = i
+        elif "Signal Not Ava" in value:
+            index['signalSNA'] = i
+        elif "Value" in value:
+            index['Value'] = i
+        elif "Name / Phys" in value:
+            index['ValueName'] = i
+        elif "Function /" in value:
+            index['function'] = i
+        elif "Byteorder" in value:
+            index['byteorder'] = i
 
-    for key in sheet[0]:
-        if sheet[0][key].strip() == 'Value':
-            _BUend = letterIndex.index(key)
+    if "byteorder" in index:
+        index['BUstart'] = index['byteorder'] + 1
+    else:
+        index['BUstart'] = index['signalSNA'] + 1
+    index['BUend'] = index['Value']
 
     #BoardUnits:
-    for x in range(_BUstart,_BUend):
-        db._BUs.add(BoardUnit(sheet[0][letterIndex[x]]))
+    for x in range(index['BUstart'],index['BUend']):
+        db._BUs.add(BoardUnit(sh.cell(0,x).value))
 
     #initialize:
     frameId = None
     signalName = ""
     newBo = None
 
-    for row in sheet[1]:
+    for rownum in range(1,sh.nrows):
         #ignore empty row
-        if not 'ID' in row:
-            continue
+        if sh.cell(rownum,index['ID']).value.__len__() == 0:
+            break
         # new frame detected
-        if row['ID'] != frameId:
+        if sh.cell(rownum,index['ID']).value != frameId:
             sender = []
             # new Frame
-            frameId = row['ID']
-            frameName = row['Frame Name']
-            cycleTime = getIfPossible(row,"Cycle Time [ms]")
-            launchType = getIfPossible(row,'Launch Type')
+            frameId = sh.cell(rownum,index['ID']).value
+            frameName = sh.cell(rownum,index['frameName']).value
+            cycleTime = sh.cell(rownum,index['cycle']).value
+            launchType = sh.cell(rownum,index['launchType']).value
             dlc = 8
-            launchParam = getIfPossible(row,'Launch Parameter')
+            launchParam = sh.cell(rownum,index['launchParam']).value
             if type(launchParam).__name__ != "float":
                 launchParam = 0.0
             launchParam = str(int(launchParam))
@@ -204,7 +124,7 @@ def importXlsx(filename):
             newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
             db._fl.addFrame(newBo)
 
-            #eval launchtype
+            #eval launctype
             if launchType is not None:
                 if "Cyclic+Change" == launchType:
                     newBo.addAttribute("GenMsgSendType", "5")
@@ -227,32 +147,33 @@ def importXlsx(filename):
                     newBo.addAttribute("GenMsgSendType", "1")
                     newBo.addAttribute("GenMsgDelayTime", launchParam)
 
-#                       #eval cycletime
+            #eval cycletime
             if type(cycleTime).__name__ != "float":
                 cycleTime = 0.0
             newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
 
         #new signal detected
-        if row['Signal Name'] != signalName:
+        if sh.cell(rownum,index['signalName']).value != signalName:
             # new Signal
             reciever = []
-            startbyte = int(row["Signal Byte No."])
-            startbit = int(row['Signal Bit No.'])
-            signalName = row['Signal Name']
-            signalComment = getIfPossible(row,'Signal Function')
-            signalLength = int(row['Signal Length [Bit]'])
-            signalDefault = getIfPossible(row,'Signal Default')
-            signalSNA = getIfPossible(row,'Signal Not Available')
+            startbyte = int(sh.cell(rownum,index['startbyte']).value)
+            startbit = int(sh.cell(rownum,index['startbit']).value)
+            signalName = sh.cell(rownum,index['signalName']).value
+            signalComment = sh.cell(rownum,index['signalComment']).value.strip()
+            signalLength = int(sh.cell(rownum,index['signalLength']).value)
+            signalDefault = sh.cell(rownum,index['signalDefault']).value
+            signalSNA = sh.cell(rownum,index['signalSNA']).value
             multiplex = None
-            if signalComment is not None and signalComment.startswith('Mode Signal:'):
+            if signalComment.startswith('Mode Signal:'):
                 multiplex = 'Multiplexor'
                 signalComment = signalComment[12:]
-            elif signalComment is not None and signalComment.startswith('Mode '):
+            elif signalComment.startswith('Mode '):
                 mux, signalComment = signalComment[4:].split(':',1)
                 multiplex = int(mux.strip())
 
-            signalByteorder = getIfPossible(row,'Byteorder')
-            if signalByteorder is not None:
+            if "byteorder" in index:
+                signalByteorder = sh.cell(rownum,index['byteorder']).value
+
                 if 'i' in signalByteorder:
                     byteorder = 1
                 else:
@@ -263,14 +184,11 @@ def importXlsx(filename):
             valuetype = '+'
 
             if signalName != "-":
-                for x in range(_BUstart,_BUend):
-                    buName = sheet[0][letterIndex[x]].strip()
-                    buSenderReceiver = getIfPossible(row,buName)
-                    if buSenderReceiver is not None:
-                        if 's' in buSenderReceiver:
-                            newBo.addTransmitter(buName)
-                        if 'r' in buSenderReceiver:
-                            reciever.append(buName)
+                for x in range(index['BUstart'],index['BUend']):
+                    if 's' in sh.cell(rownum,x).value:
+                        newBo.addTransmitter(sh.cell(0,x).value.strip())
+                    if 'r' in sh.cell(rownum,x).value:
+                        reciever.append(sh.cell(0,x).value.strip())
                 if signalLength > 8:
                     newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
                 else:
@@ -278,11 +196,11 @@ def importXlsx(filename):
 
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
-                function = getIfPossible(row, 'Function / Increment Unit')
-        value = getIfPossible(row,'Value')
-        valueName = getIfPossible(row,'Name / Phys. Range')
+                function = sh.cell(rownum,index['function']).value
+        value = str(sh.cell(rownum,index['Value']).value)
+        valueName = sh.cell(rownum,index['ValueName']).value
 
-        if valueName == 0 or valueName == None:
+        if valueName == 0:
             valueName = "0"
         elif valueName == 1:
             valueName = "1"
@@ -292,15 +210,18 @@ def importXlsx(filename):
         factor = 0
         unit = ""
 
-        factor = getIfPossible(row,'Function / Increment Unit')
-        if type(factor).__name__ == "unicode" or  type(factor).__name__ == "str":
+        factor = sh.cell(rownum,index['function']).value
+        if type(factor).__name__ == "unicode" or type(factor).__name__ == "str" :
             factor = factor.strip()
             if " " in factor and factor[0].isdigit():
                 (factor, unit) = factor.strip().split(" ",1)
                 factor = factor.strip()
                 unit = unit.strip()
                 newSig._unit = unit
-                newSig._factor = float(factor)
+                try:
+                    newSig._factor = float(factor)
+                except:
+                    print("Some error occured while decoding scale: Signal: %s; \"%s\"" % (signalName, sh.cell(rownum,index['function']).value))
             else:
                 unit = factor.strip()
                 newSig._unit = unit
@@ -321,7 +242,7 @@ def importXlsx(filename):
 
 
         elif valueName.__len__() > 0:
-            if value is not None and value.strip().__len__() > 0:
+            if value.strip().__len__() > 0:
                 value = int(float(value))
                 newSig.addValues(value, valueName)
             maxi = pow(2,signalLength)-1

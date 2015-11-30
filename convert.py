@@ -21,9 +21,9 @@
 #DAMAGE.
 
 from __future__ import print_function
-import library.exportall as ex
-import library.importall as im
-import library.canmatrix as cm
+import canmatrix.exportall as ex
+import canmatrix.importall as im
+import canmatrix.canmatrix as cm
 import os
 import sys
 

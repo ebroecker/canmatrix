@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 # importany laed alle verfuegbaren importfilter
-from library.copy import *
-import library.importany as im
-import library.exportall as ex
+from canmatrix.copy import *
+import canmatrix.importany as im
+import canmatrix.exportall as ex
 #fuer Fileio:
 import sys
 
