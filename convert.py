@@ -115,8 +115,8 @@ def main():
     infile = args[0]
     outfileName = args[1]
 
-    convert(infile=infile, outfile=outfileName,
-                    dbcCharset=cmdlineOptions.dbcCharset, dbcCommentCharset=cmdlineOptions.commentCharset)
+    convert(infile=infile, outfileName=outfileName,
+                    dbcCharset=cmdlineOptions.dbcCharset, dbcCommentCharset=cmdlineOptions.dbcCommentCharset)
 
 if __name__ == '__main__':
     sys.exit(main())
