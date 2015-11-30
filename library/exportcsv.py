@@ -254,7 +254,7 @@ def exportCsv(db, filename, delimiter=','):
 	
 	if filename is not None:
 		# save file
-		with open(filename, 'w') as thefile:
+		with open(filename, 'w', encoding='utf8') as thefile:
 			thefile.write(finalTableString)
 	else:
 		# just print to stdout
