@@ -29,7 +29,7 @@ usage = """
 %prog [options] import-file export-file
 
 import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
-export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)
+export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)|*.csv
 
 """
 
@@ -103,6 +103,8 @@ for name in dbs:
 		ex.exportArxml(db, outfile)
 	elif outfile[-4:] == 'yaml':
 		ex.exportYaml(db, outfile)
+	elif outfile[-3:] == 'csv':
+		ex.exportCsv(db, outfile)
 	else:
 	    sys.stderr.write('File not recognized: ' + outfile + "\n")
 print "done"

@@ -47,9 +47,9 @@ parser.add_option("", "--dbcCommentCharset",
 (cmdlineOptions, args) = parser.parse_args()
 
 
-# if len(args) < 1:
-#     parser.print_help()
-#     sys.exit(1)
+if len(args) < 1:
+    parser.print_help()
+    sys.exit(1)
 
 dbs = {}
 if len(args) > 0:
