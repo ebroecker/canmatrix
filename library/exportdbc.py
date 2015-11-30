@@ -138,7 +138,7 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
     #boardunit-attributes:
     for bu in db._BUs._list:
         for attrib,val in sorted(bu._attributes.items()):
-            f.write(('BA_ "' + attrib + '" BU_ ' + bu._name + ' ' + val  + ';\n').encode(dbcExportEncoding))
+            f.write(('BA_ "' + attrib + '" BU_ ' + bu._name + ' ' + str(val)  + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #global-attributes:

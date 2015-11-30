@@ -243,7 +243,7 @@ class Frame(object):
         add attribute to attribute-list of frame
         """
         if attribute not in self._attributes:
-            self._attributes[attribute]=value
+            self._attributes[attribute]=str(value)
 
     def addComment(self, comment):
         """
