@@ -23,10 +23,14 @@
 from __future__ import print_function
 import library.exportall as ex
 import library.importall as im
+import library.canmatrix as cm
 import os
 import sys
 
-def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso-8859-1'):
+from pprint import pprint
+
+
+def convert(infile, outfile, dbcCharset='iso-8859-1', dbcCommentCharset='iso-8859-1'):
     dbs = {}
     print("Importing " + infile + " ... ")
     if infile[-3:] == 'dbc':
@@ -50,7 +54,7 @@ def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso
     print("done\n")
 
 
-    print("Exporting " + outfileName + " ... ")
+    print("Exporting " + outfile + " ... ")
 
     for name in dbs:
         db = dbs[name]
@@ -58,10 +62,10 @@ def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso
         print("%d Frames found" % (db._fl._list.__len__()))
 
         if len(name) > 0:
-            path = os.path.split(outfileName)
+            path = os.path.split(outfile)
             outfile = os.path.join(path[0], name + "_" + path[1])
         else:
-            outfile = outfileName
+            outfile = outfile
         if outfile[-3:] == 'dbc':
             ex.exportDbc(db, outfile, dbcCharset,  dbcCommentCharset)
         elif outfile[-3:] == 'dbf':
@@ -80,8 +84,6 @@ def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso
             ex.exportArxml(db, outfile)
         elif outfile[-4:] == 'yaml':
             ex.exportYaml(db, outfile)
-        elif outfile[-3:] == 'csv':
-            ex.exportCsv(db, outfile)
         else:
             sys.stderr.write('File not recognized: ' + infile + "\n")
     print("done")
@@ -93,7 +95,7 @@ def main():
     %prog [options] import-file export-file
 
     import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
-    export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)|*.csv
+    export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)
 
     """
 
@@ -116,7 +118,7 @@ def main():
     outfileName = args[1]
 
     convert(infile=infile, outfile=outfileName,
-                    charset=args.dbcCharset, comment_charset=args.commentCharset)
+                    dbcCharset=cmdlineOptions.dbcCharset, dbcCommentCharset=cmdlineOptions.dbcCommentCharset)
 
 if __name__ == '__main__':
     sys.exit(main())
