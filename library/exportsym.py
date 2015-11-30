@@ -28,6 +28,7 @@ from __future__ import absolute_import
 from builtins import *
 from .canmatrix import *
 import math
+import sys
 
 enumDict = {}
 enums = "{ENUMS}\n"
@@ -85,7 +86,11 @@ def exportSym(db, filename):
     enumDict = {}
     enums = "{ENUMS}\n"
 
-    f = open(filename,"w")
+    if (sys.version_info > (3, 0)):
+        mode = 'w'
+    else:
+        mode = 'wb'
+    f = open(filename, mode)
 
     f.write( "FormatVersion=5.0 // Do not edit this line!\n")
     f.write( "Title=\"canmatrix-Export\"\n\n")

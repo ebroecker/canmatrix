@@ -4,6 +4,7 @@ from builtins import *
 from library.canmatrix import *
 import codecs
 import json
+import sys
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -32,7 +33,13 @@ import json
 
 def exportJson(db, filename):
     dbfExportEncoding = 'iso-8859-1'
-    f = open(filename,"w")
+
+    if (sys.version_info > (3, 0)):
+        mode = 'w'
+    else:
+        mode = 'wb'
+    f = open(filename, mode)
+
     exportArray = []
 
     for frame in db._fl._list:
