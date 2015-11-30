@@ -27,8 +27,6 @@ import library.canmatrix as cm
 import os
 import sys
 
-from pprint import pprint
-
 
 def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso-8859-1'):
     dbs = {}
