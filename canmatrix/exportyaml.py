@@ -1,10 +1,8 @@
-from builtins import *
 #!/usr/bin/env python
 
-from library.canmatrix import *
+from .canmatrix import *
 import codecs
-import json
-import sys
+import yaml
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -27,26 +25,11 @@ import sys
 #DAMAGE.
 
 #
-# this script exports json-files from a canmatrix-object
-# json-files are the can-matrix-definitions of the CANard-project (https://github.com/ericevenchick/CANard)
+# this script exports yaml-files from a canmatrix-object
+# yaml-files are just object-dumps human readable.
+# This export is complete, no information lost
 
 
-def exportJson(db, filename):
-    dbfExportEncoding = 'iso-8859-1'
-
-    if (sys.version_info > (3, 0)):
-        mode = 'w'
-    else:
-        mode = 'wb'
-    f = open(filename, mode)
-
-    exportArray = []
-
-    for frame in db._fl._list:
-        signals = {}
-        for signal in frame._signals:
-            signals[signal._startbit]= {"name" : signal._name, "bit_length" : signal._signalsize, "factor":signal._factor, "offset":signal._offset}
-
-        exportArray.append({"name" : frame._name, "id" :  hex(frame._Id), "signals": signals })
-
-    json.dump({"messages" : exportArray}, f, sort_keys=True, indent=4, separators=(',', ': '))
+def exportYaml(db, filename):
+    f = open(filename,"w")
+    f.write(yaml.dump(db))

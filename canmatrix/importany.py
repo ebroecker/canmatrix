@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-
-from library.canmatrix import *
-import codecs
-import yaml
+from __future__ import absolute_import
+#!/usr/bin/env python
+from . import importall as im
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -24,12 +23,19 @@ import yaml
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-#
-# this script exports yaml-files from a canmatrix-object
-# yaml-files are just object-dumps human readable.
-# This export is complete, no information lost
-
-
-def exportYaml(db, filename):
-    f = open(filename,"w")
-    f.write(yaml.dump(db))
+def importany(filename):
+    db = None
+    if filename[-3:] == 'dbc':
+        db = im.importDbc(filename)
+    elif filename[-3:] == 'dbf':
+        db = im.importDbf(filename)
+    elif filename[-3:] == 'kcd':
+        db = im.importKcd(filename)
+    elif filename[-3:] == 'sym':
+        db = im.importSym(filename)
+    elif filename[-3:] == 'xls' or filename[-4:] == 'xlsx' :
+        db = im.importXls(filename)
+    elif filename[-5:] == 'arxml':
+        dbs = im.importArxml(filename)
+        db = next(iter(dbs.values()))
+    return db

@@ -2,8 +2,8 @@
 
 from __future__ import print_function
 from builtins import *
-import library.importany as im
-from library.compare import *
+import canmatrix.importany as im
+from canmatrix.compare import *
 import sys
 import codecs
 
@@ -27,25 +27,6 @@ import codecs
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-if len(sys.argv) < 3:
-    sys.stderr.write('Usage: sys.argv[0] matrix1 matrix2\n')
-    sys.stderr.write('matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml\n')
-    sys.exit(1)
-
-matrix1 = sys.argv[1]
-matrix2 = sys.argv[2]
-
-print("Importing " + matrix1 + " ... ")
-db1 = im.importany(matrix1)
-print("%d Frames found" % (db1._fl._list.__len__()))
-
-print("Importing " + matrix2 + " ... ")
-db2 = im.importany(matrix2)
-print("%d Frames found" % (db2._fl._list.__len__()))
-
-
-print("\n\n")
-
 
 def dumpResult(res, depth = 0):
     if res._type is not None and res._result != "equal":
@@ -63,8 +44,32 @@ def dumpResult(res, depth = 0):
     for child in res._children:
         dumpResult(child, depth+1)
 
-ignore = {}
-#ignore["ATTRIBUTE"] = "*"
-#ignore["DEFINE"] = "*"
-obj = compareDb(db1, db2, ignore)
-dumpResult(obj)
+def main():
+    if len(sys.argv) < 3:
+        sys.stderr.write('Usage: sys.argv[0] matrix1 matrix2\n')
+        sys.stderr.write('matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml\n')
+        sys.exit(1)
+
+    matrix1 = sys.argv[1]
+    matrix2 = sys.argv[2]
+
+    print("Importing " + matrix1 + " ... ")
+    db1 = im.importany(matrix1)
+    print("%d Frames found" % (db1._fl._list.__len__()))
+
+    print("Importing " + matrix2 + " ... ")
+    db2 = im.importany(matrix2)
+    print("%d Frames found" % (db2._fl._list.__len__()))
+
+
+    print("\n\n")
+
+
+    ignore = {}
+    #ignore["ATTRIBUTE"] = "*"
+    #ignore["DEFINE"] = "*"
+    obj = compareDb(db1, db2, ignore)
+    dumpResult(obj)
+
+if __name__ == '__main__':
+    sys.exit(main())

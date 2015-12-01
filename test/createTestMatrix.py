@@ -4,8 +4,8 @@ import codecs
 import sys
 sys.path.append('..')
 
-import library.exportall as ex
-from library.canmatrix import *
+import canmatrix.exportall as ex
+from canmatrix.canmatrix import *
 
 #
 # create target Matrix

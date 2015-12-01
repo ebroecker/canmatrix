@@ -1,7 +1,10 @@
+from builtins import *
 #!/usr/bin/env python
-from __future__ import absolute_import
-#!/usr/bin/env python
-from . import importall as im
+
+from .canmatrix import *
+import codecs
+import json
+import sys
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -23,17 +26,27 @@ from . import importall as im
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-def importany(filename):
-    db = None
-    if filename[-3:] == 'dbc':
-        db = im.importDbc(filename)
-    elif filename[-3:] == 'dbf':
-        db = im.importDbf(filename)
-    elif filename[-3:] == 'kcd':
-        db = im.importKcd(filename)
-    elif filename[-3:] == 'xls' or filename[-4:] == 'xlsx' :
-        db = im.importXls(filename)
-    elif filename[-5:] == 'arxml':
-        dbs = im.importArxml(filename)
-        db = next(iter(dbs.values()))
-    return db
+#
+# this script exports json-files from a canmatrix-object
+# json-files are the can-matrix-definitions of the CANard-project (https://github.com/ericevenchick/CANard)
+
+
+def exportJson(db, filename):
+    dbfExportEncoding = 'iso-8859-1'
+
+    if (sys.version_info > (3, 0)):
+        mode = 'w'
+    else:
+        mode = 'wb'
+    f = open(filename, mode)
+
+    exportArray = []
+
+    for frame in db._fl._list:
+        signals = {}
+        for signal in frame._signals:
+            signals[signal._startbit]= {"name" : signal._name, "bit_length" : signal._signalsize, "factor":signal._factor, "offset":signal._offset}
+
+        exportArray.append({"name" : frame._name, "id" :  hex(frame._Id), "signals": signals })
+
+    json.dump({"messages" : exportArray}, f, sort_keys=True, indent=4, separators=(',', ': '))
