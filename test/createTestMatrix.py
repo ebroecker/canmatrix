@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-import library.exportall as ex
-from library.canmatrix import *
+import canmatrix.exportall as ex
+from canmatrix.canmatrix import *
 import sys
 import codecs
 
