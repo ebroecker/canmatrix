@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # coding=utf-8
+import codecs
+import sys
+sys.path.append('..')
 
 import library.exportall as ex
 from library.canmatrix import *
-import sys
-import codecs
 
 #
 # create target Matrix
