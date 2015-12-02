@@ -21,12 +21,15 @@
 #DAMAGE.
 
 from __future__ import print_function
+from __future__ import absolute_import
+
+import sys
+sys.path.append('..')
+
 import canmatrix.exportall as ex
 import canmatrix.importall as im
 import canmatrix.canmatrix as cm
 import os
-import sys
-
 
 def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso-8859-1'):
     dbs = {}

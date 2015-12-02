@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 from __future__ import print_function
+from __future__ import absolute_import
+
 
 import sys
 sys.path.append('..')
 
-import convert
+import canmatrix.convert
 import copy
 import os
 import re
@@ -63,7 +65,7 @@ for i in import_types:
             if t == 'dbf':
                 # TODO: https://github.com/ebroecker/canmatrix/issues/9
                 continue
-            convert.convert(in_file, out_file)
+            canmatrix.convert.convert(in_file, out_file)
 
 exit_code = subprocess.call(['diff', '-r', 'reference', 'converted'])
 
