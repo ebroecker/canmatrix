@@ -4,6 +4,6 @@ setup(
     name = "canmatrix",
     version = "0.1",
     packages = find_packages(),
-    entry_points={'console_scripts': ['compare = compare:main',
+    entry_points={'console_scripts': ['cancompare = canmatrix.compare:main',
                                       'canconvert = canmatrix.convert:main']}
 )
