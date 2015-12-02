@@ -36,10 +36,9 @@ import math
 
 def exportDbf(db, filename):
     dbfExportEncoding = 'iso-8859-1'
-    f = open(filename,"w")
-
-
-    header = """//******************************BUSMASTER Messages and signals Database ******************************//
+#    dbfExportEncoding = 'utf-8'
+    f = open(filename,"wb")
+    outstr =  """//******************************BUSMASTER Messages and signals Database ******************************//
 
 [DATABASE_VERSION] 1.3
 
@@ -48,7 +47,7 @@ def exportDbf(db, filename):
 [BUSMASTER_VERSION] [1.7.2]
 [NUMBER_OF_MESSAGES] """
 
-    f.write( header + str(len(db._fl._list)) + "\n")
+    outstr += str(len(db._fl._list)) + "\n"
 
     #Frames
     for frame in db._fl._list:
@@ -58,11 +57,11 @@ def exportDbf(db, filename):
         extended = 'S'
         if frame._extended == 1:
             extended = 'X'
-        f.write("[START_MSG] " + frame._name + ",%d,%d,%d,1,%c," % (frame._Id, frame._Size, len(frame._signals), extended))
+        outstr += "[START_MSG] " + frame._name + ",%d,%d,%d,1,%c," % (frame._Id, frame._Size, len(frame._signals), extended)
         if frame._Transmitter.__len__() == 0:
             frame._Transmitter = ["Vector__XXX"]
 #DBF does not support multiple Transmitters
-        f.write( frame._Transmitter[0] + "\n")
+        outstr +=  frame._Transmitter[0] + "\n"
 
         for signal in frame._signals:
     # m_acName ucLength m_ucWhichByte m_ucStartBit
@@ -73,9 +72,9 @@ def exportDbf(db, filename):
 
             if signal._valuetype == '+':
                 sign = 'U'
-            f.write("[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%s,%s" % (signal._signalsize,whichbyte,signal._startbit,sign,signal._min,signal._max))
+            outstr += "[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%s,%s" % (signal._signalsize,whichbyte,signal._startbit,sign,signal._min,signal._max)
 
-            f.write(",%d,%s,%s" % (signal._byteorder, signal._offset, signal._factor))
+            outstr += ",%d,%s,%s" % (signal._byteorder, signal._offset, signal._factor)
             multiplex = ""
             if signal._multiplex is not None:
                 if signal._multiplex == 'Multiplexor':
@@ -83,107 +82,108 @@ def exportDbf(db, filename):
                 else:
                     multiplex = 'm' + str(signal._multiplex)
 
-            f.write("," + signal._unit.encode(dbfExportEncoding) + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
+            outstr += "," + signal._unit + ",%s," % multiplex + ','.join(signal._reciever) + "\n"
 
             if len(signal._values) > 0:
                 for attrib,val in list(signal._values.items()):
-                    f.write('[VALUE_DESCRIPTION] "' + val.encode(dbfExportEncoding) + '",' + str(attrib) + '\n')
+                    outstr += '[VALUE_DESCRIPTION] "' + val + '",' + str(attrib) + '\n'
 
 
-        f.write("[END_MSG]\n\n")
+        outstr += "[END_MSG]\n\n"
 
     #Boardunits
-    f.write ("[NODE] ")
+    outstr += "[NODE] "
     count = 1
     for bu in db._BUs._list:
-        f.write(bu._name)
+        outstr += bu._name
         if count < len(db._BUs._list):
-            f.write(",")
+            outstr += ","
         count += 1
-    f.write("\n")
+    outstr += "\n"
 
 
-    f.write("[START_DESC]\n\n")
+    outstr += "[START_DESC]\n\n"
 
-    #BU-bezeichnungen
-    f.write("[START_DESC_MSG]\n")
+    #BU-descriptions
+    outstr += "[START_DESC_MSG]\n"
     for frame in db._fl._list:
         if frame._comment is not None:
             comment = frame._comment.replace("\n"," ")
-            f.write(str(frame._Id) + ' S "' + comment.encode(dbfExportEncoding) + '";\n')
+            outstr += str(frame._Id) + ' S "' + comment + '";\n'
 
-    f.write("[END_DESC_MSG]\n")
+    outstr += "[END_DESC_MSG]\n"
 
-    #Frame-bezeichnungen
-    f.write("[START_DESC_NODE]\n")
+    #Frame descriptions
+    outstr += "[START_DESC_NODE]\n"
     for bu in db._BUs._list:
         if bu._comment is not None:
             comment = bu._comment.replace("\n"," ")
-            f.write(bu._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n')
+            outstr += bu._name  + ' "' + comment + '";\n'
 
-    f.write("[END_DESC_NODE]\n")
+    outstr += "[END_DESC_NODE]\n"
 
 
-    #signalbezeichnungen
-    f.write("[START_DESC_SIG]\n")
+    #signal descriptions
+    outstr += "[START_DESC_SIG]\n"
     for frame in db._fl._list:
         for signal in frame._signals:
             if signal._comment is not None:
                 comment = signal._comment.replace("\n"," ")
-                f.write("%d S " % frame._Id + signal._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n')
+                outstr += "%d S " % frame._Id + signal._name  + ' "' + comment + '";\n'
 
-    f.write("[END_DESC_SIG]\n")
-    f.write("[END_DESC]\n\n")
+    outstr += "[END_DESC_SIG]\n"
+    outstr += "[END_DESC]\n\n"
 
-    f.write("[START_PARAM]\n")
+    outstr += "[START_PARAM]\n"
     # db-parameter
-    f.write("[START_PARAM_NET]\n")
+    outstr += "[START_PARAM_NET]\n"
     for (type,define) in list(db._globalDefines.items()):
         if define._defaultValue is not None:
-            f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
-    f.write("[END_PARAM_NET]\n")
+            outstr += '"' + type + '",' + define._definition.replace(' ',',') + ',' + define._defaultValue + '\n'
+    outstr += "[END_PARAM_NET]\n"
 
     # bu-parameter
-    f.write("[START_PARAM_NODE]\n")
+    outstr += "[START_PARAM_NODE]\n"
     for (type,define) in list(db._buDefines.items()):
         if define._defaultValue is not None:
-            f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
-    f.write("[END_PARAM_NODE]\n")
+            outstr += '"' + type + '",' + define._definition.replace(' ',',') + ',' + define._defaultValue + '\n'
+    outstr += "[END_PARAM_NODE]\n"
 
     # frame-parameter
-    f.write("[START_PARAM_MSG]\n")
+    outstr += "[START_PARAM_MSG]\n"
     for (type,define) in list(db._frameDefines.items()):
         if define._defaultValue is not None:
-            f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
-    f.write("[END_PARAM_MSG]\n")
+            outstr += '"' + type + '",' + define._definition.replace(' ',',') + ',' + define._defaultValue + '\n'
+    outstr += "[END_PARAM_MSG]\n"
 
     # signal-parameter
-    f.write("[START_PARAM_SIG]\n")
+    outstr += "[START_PARAM_SIG]\n"
     for (type,define) in list(db._signalDefines.items()):
         if define._defaultValue is not None:
-            f.write('"' + type + '",' + define._definition.encode(dbfExportEncoding,'replace').replace(' ',',') + ',' + define._defaultValue + '\n')
-    f.write("[END_PARAM_SIG]\n")
+            outstr += '"' + type + '",' + define._definition.replace(' ',',') + ',' + define._defaultValue + '\n'
+    outstr += "[END_PARAM_SIG]\n"
 
-    f.write("[START_PARAM_VAL]\n")
+    outstr += "[START_PARAM_VAL]\n"
     #boardunit-attributes:
-    f.write("[START_PARAM_NODE_VAL]\n")
+    outstr += "[START_PARAM_NODE_VAL]\n"
     for bu in db._BUs._list:
         for attrib,val in list(bu._attributes.items()):
-            f.write(bu._name + ',"' + attrib + '","'  + val  + '"\n')
-    f.write("[END_PARAM_NODE_VAL]\n")
+            outstr += bu._name + ',"' + attrib + '","'  + val  + '"\n'
+    outstr += "[END_PARAM_NODE_VAL]\n"
 
     #messages-attributes:
-    f.write("[START_PARAM_MSG_VAL]\n")
+    outstr += "[START_PARAM_MSG_VAL]\n"
     for frame in db._fl._list:
         for attrib,val in list(frame._attributes.items()):
-            f.write( str(frame._Id) + ',S,"' + attrib + '","'  + val  + '"\n')
-    f.write("[END_PARAM_MSG_VAL]\n")
+            outstr +=  str(frame._Id) + ',S,"' + attrib + '","'  + val  + '"\n'
+    outstr += "[END_PARAM_MSG_VAL]\n"
 
     #signal-attributes:
-    f.write("[START_PARAM_SIG_VAL]\n")
+    outstr += "[START_PARAM_SIG_VAL]\n"
     for frame in db._fl._list:
         for signal in frame._signals:
             for attrib,val in list(signal._attributes.items()):
-                f.write( str(frame._Id) + ',S,' + signal._name + ',"'+ attrib  +  '","' + val  + '"\n')
-    f.write("[END_PARAM_SIG_VAL]\n")
-    f.write("[END_PARAM_VAL]\n")
+                outstr +=  str(frame._Id) + ',S,' + signal._name + ',"'+ attrib  +  '","' + val  + '"\n'
+    outstr += "[END_PARAM_SIG_VAL]\n"
+    outstr += "[END_PARAM_VAL]\n" 
+    f.write(outstr.encode(dbfExportEncoding))

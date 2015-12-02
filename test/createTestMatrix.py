@@ -47,5 +47,5 @@ db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
 # export the new (target)-Matrix for example as .dbc:
 #
 
-ex.exportDbc(db, "test.dbc", 'utf-8', 'utf-8')
+ex.exportDbc(db, "test.dbc", 'iso-8859-1', 'iso-8859-1')
 
