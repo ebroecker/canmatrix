@@ -45,7 +45,7 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
     id = 1
     nodeList = {};
     for bu in db._BUs._list:
-        f.write(bu._name + " ")
+        f.write((bu._name + " ").encode(dbcExportEncoding))
     f.write("\n\n".encode(dbcExportEncoding))
 
     #ValueTables
