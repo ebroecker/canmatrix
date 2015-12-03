@@ -1,23 +1,10 @@
 ##**Canmatrix** is a python package to read and write several CAN database formats.##
 
-Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install"
-
-In addition to the *canmatrix* package there are 2 scripts installed with this package:
-
-1. **canconvert**: 
-
-	converts CAN database formats between all supported formats. 
-	
-	Example: "*canconvert* someArSystemdescription.arxml file.dbc"
-	
-2. **cancompare**: 
-
-	compares 2 CAN databases (of different or same format). 
-	
-	Example: "*cancompare* file1.dbc file2.dbc"
-
+###About
 
 *Canmatrix* implements a "Python Can Matrix Object" which describes the can-communication and the needed objects (Boardunits, Frames, Signals, Values, ...)
+*Canmatrix* also includes two **Tools** (canconvert and cancompare) for converting and comparing **CAN** databases.
+
 There is some outdated german Documentation and windows ".exe" of both scripts at [my personal homepage](http://eduard-broecker.de/Software/canmatrix.html)
 There are several importers (read) and exporters (write) for this object.
 
@@ -42,6 +29,34 @@ supported file formats for export:
 
 ***
 
+###Install instructions
+Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install"
+
+This installs the *canmatrix* package into your python installation.
+
+In addition to the *canmatrix* package there are 2 scripts installed with this package:
+
+1. **canconvert**: 
+
+	converts CAN database formats between all supported formats. 
+	
+	Example: "*canconvert* someArSystemdescription.arxml file.dbc"
+	
+2. **cancompare**: 
+
+	compares 2 CAN databases (of different or same format). 
+	
+	Example: "*cancompare* file1.dbc file2.dbc"
+	
+If you are using a *NIX-System, these scripts should be callable from command line
+
+If you are using a Windows system, these scripts are usually installed at the location of your python installation. For example 'C:\python3.4\Scripts' or 'C:\python2.7\Scripts'
+
+***
+
+###Dependencies
+
+
 *Canmatrix* depends on:
  * xlrd ([home](http://www.python-excel.org/), [PyPI](https://pypi.python.org/pypi/xlrd))
  * xlwt-future ([PyPI](https://pypi.python.org/pypi/xlwt-future))
@@ -50,7 +65,7 @@ supported file formats for export:
  * lxml ([PyPI](https://pypi.python.org/pypi/lxml))
 
 ***
-Examples:
+###Examples
 
 There are some example python scripts in the example-folder
 
@@ -60,7 +75,7 @@ examples/convert.py some-matrix.arxml some-matrix.dbc
 
 ***
 
-Fileformats:
+###Fileformats 
 * all formats support im-/export of signals and frames
 * dbc: complete Support; there are 2 commandline-options for dbc-files:
 
