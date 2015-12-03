@@ -178,5 +178,5 @@ def exportSym(db, filename):
                 output += createSignal(signal)
             output += "\n"
     #write outputfile
-    f.write(enums)
-    f.write(output)
+    f.write(enums.encode('utf-8'))
+    f.write(output.encode('utf-8'))
