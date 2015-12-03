@@ -85,8 +85,10 @@ def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso
             ex.exportArxml(db, outfile)
         elif outfile[-4:] == 'yaml':
             ex.exportYaml(db, outfile)
+        elif outfile[-3:] == 'csv':
+            ex.exportCsv(db, outfile)
         else:
-            sys.stderr.write('File not recognized: ' + infile + "\n")
+            sys.stderr.write('File not recognized: ' + outfileName + "\n")
     print("done")
 
 def main():
