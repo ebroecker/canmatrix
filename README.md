@@ -1,12 +1,20 @@
-This peace of Software mainly helps to interprete several different description formats for can-communication.
-Some of these formats can be written also. There is some outdated german Documentation at [my personal homepage](http://eduard-broecker.de/Software/canmatrix.html)
+Canmatrix is a python package to read and write several CAN database formats.
 
-As a sideeffect, this software helps to convert between can-matrix-description formats.
-You can for example convert a autosar system description (.arxml) to an candb++ - File (.dbc).
+Install canmatrix with either "pip install canmatrix" or  "python setup.py install"
 
-Therefor this software includes a "Python Can Matrix Object" which describes the can-communication and the needed objects (Boardunits, Frames, Signals, Values, ...)
+In addition to the canmatrix package there are 2 scripts installed with this package:
+1. canconvert: 
+	converts CAN database formats between all supported formats. 
+	Example: "canconvert someArSystemdescription.arxml file.dbc"
+	
+2. cancompare: 
+	compares 2 CAN databases (of different or same format). 
+	Example: "cancompare file1.dbc file2.dbc"
 
-There are some import- and some export-functions for this object.
+There is some outdated german Documentation and windows ".exe" of both scripts at [my personal homepage](http://eduard-broecker.de/Software/canmatrix.html)
+
+Canmatrix implements a "Python Can Matrix Object" which describes the can-communication and the needed objects (Boardunits, Frames, Signals, Values, ...)
+There are several importers (read) and exporters (write) for this object.
 
 supported file formats for import:
 * .dbc candb / [Vector](http://vector.com)
@@ -29,7 +37,7 @@ supported file formats for export:
 
 ***
 
-Depends on:
+Canmatrix depends on:
  * xlrd ([home](http://www.python-excel.org/), [PyPI](https://pypi.python.org/pypi/xlrd))
  * xlwt-future ([PyPI](https://pypi.python.org/pypi/xlwt-future))
  * XlsxWriter ([GitHub](https://github.com/jmcnamara/XlsxWriter), [PyPI](https://pypi.python.org/pypi/XlsxWriter)
@@ -37,8 +45,13 @@ Depends on:
  * lxml ([PyPI](https://pypi.python.org/pypi/lxml))
 
 ***
+Examples_
 
-There is an example included to generate Busmaster Simulation out of canmatrix-object. 
+There are some example python scripts in the example-folder
+
+examples/convert.py some-matrix.dbc some-matrix.dbf
+examples/convert.py some-matrix.arxml some-matrix.dbc
+
 
 ***
 
@@ -67,7 +80,7 @@ Fileformats:
 |---|----|----|----------|---------|---------|---------|--------|---------|-------|---|---|---|---|
 |arxml |    |+    |		 |         |         |+        |+       |+        |       |       |          |            |             |
 |dbc   |+   |+	   |+    	 |+        |+        |         |+       |+        |+      |+      |+         |+           |+            |
-|dbf   |+   |+    |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |-            |
+|dbf   |+   |+    |+		 |+        |+        |         |+       |+        |+      |+      |+         |+           |            |
 |json  |    |	   |		 |         |         |         |        |         |+      |       |          |            |             |
 |kcd   |+   |+    |		 |+        |+        |+        |        |         |       |       |          |+           |             |
 |sym   |    |+	   |		 |         |         |         |+       |+        |+      |+      |          |+           |             |
@@ -84,18 +97,6 @@ Fileformats:
 |xls(x)|+   |+	   |+		 |+        |+        |         |        |+        |p      |p      |          |p           |             |
 
 
-
-
-***
-Requirements for use:
-* You need lxml library for arxml- and kcd-support. 
-* You need yaml library for yaml-support
-
-On windows I use "active python" and installed lxml-package from active python
- 
-./convert.py some-matrix.dbc some-matrix.dbf
-
-./convert.py some-matrix.arxml some-matrix.dbc
 
 ***
 
