@@ -82,19 +82,18 @@ def exportSym(db, filename):
     """
     global enumDict
     global enums
+    symEncoding = 'utf-8'
 
     enumDict = {}
     enums = "{ENUMS}\n"
 
-    if (sys.version_info > (3, 0)):
-        mode = 'w'
-    else:
-        mode = 'wb'
-    f = open(filename, mode)
+    f = open(filename, 'wb')
 
-    f.write( "FormatVersion=5.0 // Do not edit this line!\n")
-    f.write( "Title=\"canmatrix-Export\"\n\n")
-
+    header = """FormatVersion=5.0 // Do not edit this line!
+Title=\"canmatrix-Export
+"""
+    f.write( header.encode(symEncoding))
+    
 
 
     #Frames
@@ -178,5 +177,5 @@ def exportSym(db, filename):
                 output += createSignal(signal)
             output += "\n"
     #write outputfile
-    f.write(enums.encode('utf-8'))
-    f.write(output.encode('utf-8'))
+    f.write(enums.encode(symEncoding))
+    f.write(output.encode(symEncoding))

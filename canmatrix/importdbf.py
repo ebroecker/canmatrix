@@ -29,6 +29,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from .canmatrix import *
 import re
+import codecs
 
 #TODO support for [START_PARAM_NODE_RX_SIG]
 #TODO support for [START_PARAM_NODE_TX_MSG]
@@ -57,18 +58,18 @@ def decodeDefine(line):
 def importDbf(filename):
 
     db = CanMatrix()
-    f = open(filename,"r")
+    f = open(filename,"rb")
 
     mode = ''
     for line in f:
-        line = line.strip()
+        line = line.decode(dbfImportEncoding).strip()
 
         if mode == 'SignalDescription':
             if line.startswith("[END_DESC_SIG]") or line.startswith("[END_DESC]"):
                 mode = ''
             else:
                 (boId, temS, SignalName, comment) = line.split(' ',3)
-                comment = comment.replace('"','').replace(';','').decode(dbfImportEncoding)
+                comment = comment.replace('"','').replace(';','')
                 db.frameById(int(boId)).signalByName(SignalName).addComment(comment)
 
         if mode == 'BUDescription':
@@ -76,7 +77,7 @@ def importDbf(filename):
                 mode = ''
             else:
                 (BUName, comment) = line.split(' ',1)
-                comment = comment.replace('"','').replace(';','').decode(dbfImportEncoding)
+                comment = comment.replace('"','').replace(';','')
                 db._BUs.byName(BUName).addComment(comment)
 
         if mode == 'FrameDescription':
@@ -84,7 +85,7 @@ def importDbf(filename):
                 mode = ''
             else:
                 (boId, temS, comment) = line.split(' ',2)
-                comment = comment.replace('"','').replace(';','').decode(dbfImportEncoding)
+                comment = comment.replace('"','').replace(';','')
                 db.frameById(int(boId)).addComment(comment)
 
         elif mode == 'ParamMsgVal':
@@ -205,7 +206,7 @@ def importDbf(filename):
                     multiplex = None
 
                 sign = '+'
-                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit.decode(dbfImportEncoding), reciever.split(','), multiplex))
+                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit, reciever.split(','), multiplex))
 
             if line.startswith("[VALUE_DESCRIPTION]"):
                 temstr = line.strip()[19:].strip()
@@ -215,7 +216,7 @@ def importDbf(filename):
                 if temp:
                     name = temp.group(1)
                     value = temp.group(2)
-                    newSig.addValues(value, name.decode(dbfImportEncoding))
+                    newSig.addValues(value, name)
 
 
     return db

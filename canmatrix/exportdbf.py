@@ -36,7 +36,6 @@ import math
 
 def exportDbf(db, filename):
     dbfExportEncoding = 'iso-8859-1'
-#    dbfExportEncoding = 'utf-8'
     f = open(filename,"wb")
     outstr =  """//******************************BUSMASTER Messages and signals Database ******************************//
 
