@@ -30,8 +30,11 @@ myFrame.addComment("Multi \n Line \n Frame comment")
 myFrame.addSignal(mySignal)
 myFrame.addSignal(mySignal2)
 
+myFrame2 = Frame(0x12, "extendedFrame", 8, "testBU" )
+myFrame2._extended = 1
 
 db._fl.addFrame(myFrame)
+db._fl.addFrame(myFrame2)
 
 db.boardUnitByName("testBU").addComment("sender ECU")
 db.boardUnitByName("testBU").addAttribute("NetworkNode", 0x111)
