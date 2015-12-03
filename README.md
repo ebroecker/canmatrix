@@ -1,19 +1,24 @@
-Canmatrix is a python package to read and write several CAN database formats.
+##**Canmatrix** is a python package to read and write several CAN database formats.##
 
-Install canmatrix with either "pip install canmatrix" or  "python setup.py install"
+Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install"
 
-In addition to the canmatrix package there are 2 scripts installed with this package:
-1. canconvert: 
+In addition to the *canmatrix* package there are 2 scripts installed with this package:
+
+1. **canconvert**: 
+
 	converts CAN database formats between all supported formats. 
-	Example: "canconvert someArSystemdescription.arxml file.dbc"
 	
-2. cancompare: 
+	Example: "*canconvert* someArSystemdescription.arxml file.dbc"
+	
+2. **cancompare**: 
+
 	compares 2 CAN databases (of different or same format). 
-	Example: "cancompare file1.dbc file2.dbc"
+	
+	Example: "*cancompare* file1.dbc file2.dbc"
 
+
+*Canmatrix* implements a "Python Can Matrix Object" which describes the can-communication and the needed objects (Boardunits, Frames, Signals, Values, ...)
 There is some outdated german Documentation and windows ".exe" of both scripts at [my personal homepage](http://eduard-broecker.de/Software/canmatrix.html)
-
-Canmatrix implements a "Python Can Matrix Object" which describes the can-communication and the needed objects (Boardunits, Frames, Signals, Values, ...)
 There are several importers (read) and exporters (write) for this object.
 
 supported file formats for import:
@@ -37,7 +42,7 @@ supported file formats for export:
 
 ***
 
-Canmatrix depends on:
+*Canmatrix* depends on:
  * xlrd ([home](http://www.python-excel.org/), [PyPI](https://pypi.python.org/pypi/xlrd))
  * xlwt-future ([PyPI](https://pypi.python.org/pypi/xlwt-future))
  * XlsxWriter ([GitHub](https://github.com/jmcnamara/XlsxWriter), [PyPI](https://pypi.python.org/pypi/XlsxWriter)
@@ -45,7 +50,7 @@ Canmatrix depends on:
  * lxml ([PyPI](https://pypi.python.org/pypi/lxml))
 
 ***
-Examples_
+Examples:
 
 There are some example python scripts in the example-folder
 
@@ -102,6 +107,8 @@ Fileformats:
 
 
 Have Fun,
+
 feel free to contact me for any suggestions
+
 Eduard
 
