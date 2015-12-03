@@ -26,7 +26,6 @@
 #
 #TODO baudrate missing
 #TODO name save
-#TODO defaults for CAN-Simulation missing
 #TODO LabelGroup not supported
 
 from __future__ import division
@@ -126,6 +125,10 @@ def importKcd(filename):
 
         if 'length' in message.attrib:
             dlc = int(message.get('length'))
+
+        if 'format' in message.attrib:
+            if message.get('format') == "extended":
+                newBo._extended = 1
 
         multiplex = message.find('./' + namespace + 'Multiplex')
         maxBit = 0;
