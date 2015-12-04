@@ -43,6 +43,7 @@ db.boardUnitByName("recBU").addComment("reciever ECU")
 db.frameByName("testFrame1").addAttribute("GenMsgCycleTime", 100)
 
 db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
+db.addBUDefines("NetworkNode", 'INT 0 65535')
 
 
 #

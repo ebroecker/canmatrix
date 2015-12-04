@@ -93,7 +93,7 @@ def importDbf(filename):
                 mode = ''
             else:
                 (boId, temS, attrib, value) = line.split(',',3)
-                db.frameById(int(boId)).addAttribute(attrib.replace('"',''), value[1:-1])
+                db.frameById(int(boId)).addAttribute(attrib.replace('"',''), value.replace('"',''))
 
         elif mode == 'ParamNodeVal':
             if line.startswith("[END_PARAM_NODE_VAL]"):
@@ -182,9 +182,10 @@ def importDbf(filename):
 
             if line.startswith("[START_MSG]"):
                 temstr = line.strip()[11:].strip()
-                (name, Id, size, nSignals, extended, motIntl ,transmitter) = temstr.split(',')
+                (name, Id, size, nSignals, dummy, extended,transmitter) = temstr.split(',')
                 newBo = db._fl.addFrame(Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
+                    print ("Extended")
                     newBo._extended = 1
 
             if line.startswith("[NODE]"):
@@ -195,7 +196,7 @@ def importDbf(filename):
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
-                (name, size, startbyte, startbit, sign, Min, Max, byteorder, offset, factor, unit, multiplex, reciever) = temstr.split(',',12)
+                (name, size, startbyte, startbit, sign, Max, Min, byteorder, offset, factor, unit, multiplex, reciever) = temstr.split(',',12)
 
 
                 if multiplex == 'M':
@@ -206,6 +207,12 @@ def importDbf(filename):
                     multiplex = None
 
                 sign = '+'
+                startbit = int (startbit)
+                startbit += (int(startbyte)-1)*8
+                if int(byteorder) == 0:
+                    #TODO Byteorder Issue (Issue #19)
+                    pass
+
                 newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit, reciever.split(','), multiplex))
 
             if line.startswith("[VALUE_DESCRIPTION]"):
