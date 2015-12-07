@@ -74,7 +74,7 @@ def exportDbf(db, filename):
                 pass
             if signal._valuetype == '+':
                 sign = 'U'
-            outstr += "[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%s,%s" % (signal._signalsize,whichbyte,int(signal._startbit)%8,sign,signal._max,signal._min)
+            outstr += "[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%s,%s" % (signal._signalsize,whichbyte,int(signal._startbit)%8,sign,int(signal._max)/int(signal._factor),signal._min)
 
             outstr += ",%d,%s,%s" % (signal._byteorder, signal._offset, signal._factor)
             multiplex = ""
