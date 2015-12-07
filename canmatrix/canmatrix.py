@@ -171,19 +171,23 @@ class Signal(object):
         self._startbit = lsbStartBit
         
     def getMsbStartbit(self):
-        #code from https://github.com/rbei-etas/busmaster/blob/master/Sources/Format%20Converter/DBF2DBCConverter/Signal.cpp
-        nByte = int(self._signalsize/8);
-        if (self._signalsize % 8) != 0:
-            nByte += 1
-
-        nStartBit = (1 - nByte) * 8;
-        nBitSize = self._signalsize - (8 * (nByte - 1))+ self._startbit;
-
-        if(nBitSize == 0):
-            ucStartBit = self._startbit + self._signalsize;
+        if self._byteorder == 1:
+            #Intel
+            return self._startbit
         else:
-            ucStartBit = nStartBit + nBitSize-1;
-        return ucStartBit
+            #code from https://github.com/rbei-etas/busmaster/blob/master/Sources/Format%20Converter/DBF2DBCConverter/Signal.cpp
+            nByte = int(self._signalsize/8);
+            if (self._signalsize % 8) != 0:
+                nByte += 1
+
+            nStartBit = (1 - nByte) * 8;
+            nBitSize = self._signalsize - (8 * (nByte - 1))+ self._startbit;
+
+            if(nBitSize == 0):
+                ucStartBit = self._startbit + self._signalsize;
+            else:
+                ucStartBit = nStartBit + nBitSize-1;
+            return ucStartBit
 
     def getLsbStartbit(self):
         return self._startbit

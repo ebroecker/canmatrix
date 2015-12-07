@@ -14,6 +14,9 @@ BO_ 291 testFrame1: 8 testBU
 
 BO_ 2147483666 extendedFrame: 8 testBU
 
+BO_ 291 newFrameMotorola: 8 Vector__XXX
+ SG_ signal2 : 39|32@0- (1,0) [0|0] "" Vector__XXX
+ SG_ signal1 : 7|32@0- (1,0) [0|0] "" Vector__XXX
 
 CM_ BO_ 291  "Multi 
  Line 

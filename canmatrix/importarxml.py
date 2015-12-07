@@ -420,7 +420,7 @@ def importArxml(filename):
             frame = [0, 0, 0, 0, 0, 0, 0, 0]
             for sig in bo._signals:
                 if sig._initValue != 0:
-                    putSignalValueInFrame(sig._startbit, sig._signalsize, sig._byteorder, sig._initValue, frame)
+                    putSignalValueInFrame(sig.getLsbStartbit(), sig._signalsize, sig._byteorder, sig._initValue, frame)
             hexStr = '"'
             for i in range(bo._Size):
                 hexStr += "%02X" % frame[i]

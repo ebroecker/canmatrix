@@ -72,7 +72,9 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
             elif signal._multiplex is not None:
                 f.write((" m%d " % int(signal._multiplex)).encode(dbcExportEncoding))
 
-            f.write((" : %d|%d@%d%c" % (signal._startbit, signal._signalsize,signal._byteorder, signal._valuetype)).encode(dbcExportEncoding))
+            startbit = signal.getMsbStartbit()
+                
+            f.write((" : %d|%d@%d%c" % (startbit, signal._signalsize,signal._byteorder, signal._valuetype)).encode(dbcExportEncoding))
             f.write((" (%s,%s)" % (signal._factor, signal._offset)).encode(dbcExportEncoding))
             f.write((" [%s|%s]" % (signal._min, signal._max)).encode(dbcExportEncoding))
             f.write(' "'.encode(dbcExportEncoding))

@@ -169,7 +169,9 @@ def importKcd(filename):
                     reciever += nodelist[noderef.get('id')] + ' '
 
             newSig = Signal(multiplex.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, 'Multiplexor')
-
+            if byteorder == 0:
+                #motorola set/convert startbit
+                newSig.setLsbStartbit(startbit)
             notes = multiplex.findall('./' + namespace + 'Notes')
             comment = ""
             for note in notes:
@@ -193,8 +195,9 @@ def importKcd(filename):
                 signales = muxgroup.findall('./' + namespace + 'Signal')
                 for signal in signales:
                     newSig = parseSignal(signal, mux, namespace, nodelist)
-                    if int(newSig._startbit) + int(newSig._signalsize) > maxBit:
-                        maxBit = int(newSig._startbit) + int(newSig._signalsize)
+                    #TODO dlc calculation for motorola coded signal may be wrong
+                    if int(newSig.getLsbStartbit()) + int(newSig._signalsize) > maxBit:
+                        maxBit = int(newSig.getLsbStartbit()) + int(newSig._signalsize)
                     newBo.addSignal(newSig)
 
         signales = message.findall('./' + namespace + 'Signal')
@@ -207,9 +210,9 @@ def importKcd(filename):
 
         for signal in signales:
             newSig = parseSignal(signal, None, namespace, nodelist)
-
-            if int(newSig._startbit) + int(newSig._signalsize) > maxBit:
-                maxBit = int(newSig._startbit) + int(newSig._signalsize)
+            # TODO dlc calculation for motorola may be wrong 
+            if int(newSig.getLsbStartbit()) + int(newSig._signalsize) > maxBit:
+                maxBit = int(newSig.getLsbStartbit()) + int(newSig._signalsize)
 
             newBo.addSignal(newSig)
 

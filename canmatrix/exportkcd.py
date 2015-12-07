@@ -31,7 +31,7 @@ from lxml import etree
 from .canmatrix import *
 
 def createSignal(signal, nodeList):
-    sig = etree.Element('Signal', name=signal._name, offset=str(signal._startbit))
+    sig = etree.Element('Signal', name=signal._name, offset=str(signal.getLsbStartbit()))
     if signal._signalsize > 1:
         sig.set("length", str(signal._signalsize))
     if signal._byteorder == 0:
@@ -139,7 +139,7 @@ def exportKcd(db, filename):
         multiplexor = None
         for signal in frame._signals:
             if signal._multiplex is not None and signal._multiplex == 'Multiplexor':
-                multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal._startbit), length=str(signal._signalsize))
+                multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal.getLsbStartbit()), length=str(signal._signalsize))
                 value = etree.Element('Value')
                 if float(signal._min) != 0:
                     value.set('min',str(signal._min))

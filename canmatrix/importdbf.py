@@ -209,11 +209,12 @@ def importDbf(filename):
                 sign = '+'
                 startbit = int (startbit)
                 startbit += (int(startbyte)-1)*8
-                if int(byteorder) == 0:
-                    #TODO Byteorder Issue (Issue #19)
-                    pass
 
                 newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit, reciever.split(','), multiplex))
+                if int(byteorder) == 0:
+                    # this is dummy here, because internal lsb is default - for now
+                    newSig.setLsbStartbit(startbit)                    
+
 
             if line.startswith("[VALUE_DESCRIPTION]"):
                 temstr = line.strip()[19:].strip()

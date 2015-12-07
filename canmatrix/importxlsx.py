@@ -275,7 +275,9 @@ def importXlsx(filename):
                     newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
                 else:
                     newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
-
+                if byteorder == 0:
+                    #motorola
+                    newSig.setLsbStartbit((startbyte-1)*8+startbit)
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
                 function = getIfPossible(row, 'Function / Increment Unit')
@@ -332,11 +334,12 @@ def importXlsx(filename):
             newSig._max = "1"
 
     # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
+    #TODO: dlc for motorola coded signals
     for bo in db._fl._list:
         maxBit = 0
         for sig in bo._signals:
-            if int(sig._startbit) + int(sig._signalsize) > maxBit:
-                maxBit = int(sig._startbit) + int(sig._signalsize)
+            if int(sig.getLsbStartbit()) + int(sig._signalsize) > maxBit:
+                maxBit = int(sig.getLsbStartbit()) + int(sig._signalsize)
         bo._Size = int(min([8, bo._Size, math.ceil(maxBit / 8)]))
 
     return db

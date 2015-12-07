@@ -112,9 +112,9 @@ def writeFrame(frame, worksheet, row, mystyle):
 
 def writeSignal(db, sig, worksheet, row, mystyle, rearCol):
     #startbyte
-    worksheet.write(row, 5, label = math.floor((sig._startbit)/8)+1, style=mystyle)
+    worksheet.write(row, 5, label = math.floor((sig.getLsbStartbit())/8)+1, style=mystyle)
     #startbit
-    worksheet.write(row, 6, label = (sig._startbit)%8, style=mystyle)
+    worksheet.write(row, 6, label = (sig.getLsbStartbit())%8, style=mystyle)
     #signalname
     worksheet.write(row, 7, label = sig._name, style=mystyle)
 
@@ -273,7 +273,7 @@ def exportXls(db, filename):
         #sort signals:
         sigHash ={}
         for sig in frame._signals:
-            sigHash["%02d" % int(sig._startbit) + sig._name] = sig
+            sigHash["%02d" % int(sig.getLsbStartbit()) + sig._name] = sig
 
         #set style for first line with border
         sigstyle = sty_first_frame
