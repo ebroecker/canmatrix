@@ -33,8 +33,10 @@ def importany(filename):
         db = im.importKcd(filename)
     elif filename[-3:] == 'sym':
         db = im.importSym(filename)
-    elif filename[-3:] == 'xls' or filename[-4:] == 'xlsx' :
+    elif filename[-3:] == 'xls':
         db = im.importXls(filename)
+    elif filename[-4:] == 'xlsx' :
+        db = im.importXlsx(filename)
     elif filename[-5:] == 'arxml':
         dbs = im.importArxml(filename)
         db = next(iter(dbs.values()))
