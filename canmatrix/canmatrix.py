@@ -149,6 +149,45 @@ class Signal(object):
         Add Value/Description to Signal
         """
         self._values[int(value)] = valueName
+    def setMsbStartbit(self, msbStartBit, length=None):
+        """
+        set startbit while given startbit is most significant bit
+        if length is not given, use length from object
+        """
+        if length == None:
+            length = self._signalsize
+        # following code is from https://github.com/julietkilo/CANBabel/blob/master/src/main/java/com/github/canbabel/canio/dbc/DbcReader.java:
+        pos = 7 - (msbStartBit % 8) + (length - 1)
+        if (pos < 8):
+            self._startbit = msbStartBit - length + 1;
+        else:
+            cpos = 7 - (pos % 8);
+            bytes = int(pos / 8);
+            self._startbit = cpos + (bytes * 8) + int(msbStartBit/8) * 8;
+    def setLsbStartbit(self, lsbStartBit):
+        """
+        set startbit while given startbit is least significant bit
+        """
+        self._startbit = lsbStartBit
+        
+    def getMsbStartbit(self):
+        #code from https://github.com/rbei-etas/busmaster/blob/master/Sources/Format%20Converter/DBF2DBCConverter/Signal.cpp
+        nByte = int(self._signalsize/8);
+        if (self._signalsize % 8) != 0:
+            nByte += 1
+
+        nStartBit = (1 - nByte) * 8;
+        nBitSize = self._signalsize - (8 * (nByte - 1))+ self._startbit;
+
+        if(nBitSize == 0):
+            ucStartBit = self._startbit + self._signalsize;
+        else:
+            ucStartBit = nStartBit + nBitSize-1;
+        return ucStartBit
+
+    def getLsbStartbit(self):
+        return self._startbit
+       
 
 
 class SignalGroup(object):
