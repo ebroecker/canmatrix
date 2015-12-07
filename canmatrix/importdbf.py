@@ -213,7 +213,7 @@ def importDbf(filename):
                     #TODO Byteorder Issue (Issue #19)
                     pass
 
-                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit, reciever.split(','), multiplex))
+                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, int(Max)*int(factor), unit, reciever.split(','), multiplex))
 
             if line.startswith("[VALUE_DESCRIPTION]"):
                 temstr = line.strip()[19:].strip()
