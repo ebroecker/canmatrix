@@ -102,7 +102,12 @@ def getIfPossible(row, value):
     else:
         return None
 
-def importXlsx(filename):
+def importXlsx(filename, **options):
+    if hasattr(options, "xlsMotorolaBitFormat"):
+        motorolaBitFormat = options["xlsMotorolaBitFormat"]
+    else:
+        motorolaBitFormat = "msbreverse"
+
     sheet = readXlsx( filename, sheet = 1, header = True )
     db = CanMatrix()
     letterIndex = []
@@ -277,7 +282,13 @@ def importXlsx(filename):
                     newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
                 if byteorder == 0:
                     #motorola
-                    newSig.setLsbStartbit((startbyte-1)*8+startbit)
+                    if motorolaBitFormat == "msb":
+                        newSig.setMsbStartbit((startbyte-1)*8+startbit)
+                    elif motorolaBitFormat == "msbreverse":
+                        newSig.setMsbReverseStartbit((startbyte-1)*8+startbit)
+                    else: # motorolaBitFormat == "lsb"
+                        newSig.setLsbStartbit((startbyte-1)*8+startbit)
+
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
                 function = getIfPossible(row, 'Function / Increment Unit')

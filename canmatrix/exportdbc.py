@@ -31,7 +31,16 @@ import codecs
 #dbcExportEncoding = 'iso-8859-1'
 #CP1253
 
-def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='iso-8859-1'):
+def exportDbc(db, filename, **options):
+    if hasattr(options,'dbcExportEncoding'):
+        dbcExportEncoding=options["dbcExportEncoding"]
+    else:
+        dbcExportEncoding='iso-8859-1'
+    if hasattr(options,'dbcExportCommentEncoding'):
+        dbcExportCommentEncoding=options["dbcExportCommentEncoding"]
+    else:
+        dbcExportCommentEncoding=dbcExportEncoding
+
     f = open(filename,"wb")
 
     f.write( "VERSION \"created by canmatrix\"\n\n".encode(dbcExportEncoding))
@@ -96,7 +105,7 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
     for bo in db._fl._list:
         if bo._comment is not None and bo._comment.__len__() > 0:
             f.write(("CM_ BO_ " + "%d " % bo._Id + ' "').encode(dbcExportEncoding))
-            f.write(bo._comment.replace('"','\\"').encode(dbcExportEncoding))
+            f.write(bo._comment.replace('"','\\"').encode(dbcExportCommentEncoding))
             f.write('";\n'.encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
@@ -105,14 +114,14 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
         for signal in bo._signals:
             if signal._comment is not None and signal._comment.__len__() > 0:
                 f.write(("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "').encode(dbcExportEncoding))
-                f.write(signal._comment.replace('"','\\"').encode(dbcExportEncoding))
+                f.write(signal._comment.replace('"','\\"').encode(dbcExportCommentEncoding))
                 f.write('";\n'.encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #boarUnit comments
     for bu in db._BUs._list:
         if bu._comment is not None and bu._comment.__len__() > 0:
-            f.write(("CM_ BU_ " + bu._name + ' "' + bu._comment.replace('"','\\"') + '";\n').encode(dbcExportEncoding))
+            f.write(("CM_ BU_ " + bu._name + ' "' + bu._comment.replace('"','\\"') + '";\n').encode(dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     defaults = {}

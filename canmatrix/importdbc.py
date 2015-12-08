@@ -35,7 +35,16 @@ import re
 import codecs
 
 
-def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-8859-1'):
+def importDbc(filename, **options):
+    if hasattr(options,'dbcImportEncoding'):
+        dbcImportEncoding=options["dbcImportEncoding"]
+    else:
+        dbcImportEncoding='iso-8859-1'
+    if hasattr(options,'dbcImportCommentEncoding'):
+        dbcCommentEncoding=options["dbcImportCommentEncoding"]
+    else:
+        dbcCommentEncoding=dbcImportEncoding
+
     i = 0
     class FollowUps(object):
         nothing, signalComment, frameComment, boardUnitComment, globalComment = list(range(5))

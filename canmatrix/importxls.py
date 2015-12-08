@@ -34,7 +34,12 @@ from .canmatrix import *
 import xlrd
 import codecs
 
-def importXls(filename):
+def importXls(filename, **options):
+    if hasattr(options, "xlsMotorolaBitFormat"):
+        motorolaBitFormat = options["xlsMotorolaBitFormat"]
+    else:
+        motorolaBitFormat = "msbreverse"
+
     wb = xlrd.open_workbook(filename, formatting_info=True)
     sh = wb.sheet_by_index(0)
     db = CanMatrix()
@@ -195,7 +200,12 @@ def importXls(filename):
                     newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
                 if byteorder == 0:
                     #motorola
-                    newSig.setLsbStartbit((startbyte-1)*8+startbit)
+                    if motorolaBitFormat == "msb":
+                        newSig.setMsbStartbit((startbyte-1)*8+startbit)
+                    elif motorolaBitFormat == "msbreverse":
+                        newSig.setMsbReverseStartbit((startbyte-1)*8+startbit)
+                    else: # motorolaBitFormat == "lsb"
+                        newSig.setLsbStartbit((startbyte-1)*8+startbit)
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
                 function = sh.cell(rownum,index['function']).value

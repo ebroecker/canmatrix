@@ -109,7 +109,14 @@ def writeFramex(frame, worksheet, row, mystyle):
         worksheet.write(row, 4,  "", mystyle)
 
 
-def writeSignalx(db, sig, worksheet, row, rearCol, mystyle):
+def writeSignalx(db, sig, worksheet, row, rearCol, mystyle, motorolaBitFormat):
+    if motorolaBitFormat == "msb":
+        startBit = sig.getMsbStartbit()
+    elif motorolaBitFormat == "msbreverse":
+        startBit = sig.getMsbReverseStartbit()
+    else: # motorolaBitFormat == "lsb"
+        startBit = sig.getLsbStartbit()
+
     #startbyte
     worksheet.write(row, 5,  math.floor((sig.getLsbStartbit())/8)+1, mystyle)
     #startbit
@@ -216,7 +223,12 @@ def writeBuMatrixx(buList, sig, frame, worksheet, row, col, firstframe):
     # loop over boardunits ends here
     return col
 
-def exportXlsx(db, filename):
+def exportXlsx(db, filename, **options):
+    if hasattr(options, "xlsMotorolaBitFormat"):
+        motorolaBitFormat = options["xlsMotorolaBitFormat"]
+    else:
+        motorolaBitFormat = "msbreverse"
+
     head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.', 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 
@@ -297,7 +309,7 @@ def exportXlsx(db, filename):
         #sort signals:
         sigHash ={}
         for sig in frame._signals:
-            sigHash["%02d" % int(sig.getLsbStartbit()) + sig._name] = sig
+            sigHash["%02d" % int(sig.getMsbStartbitReverse()) + sig._name] = sig
 
         #set style for first line with border
         sigstyle = sty_first_frame
@@ -321,7 +333,7 @@ def exportXlsx(db, filename):
                     col = writeBuMatrixx(buList, sig, frame, worksheet, row, col, framestyle)
                     # write Value
                     writeValuex(val,sig._values[val], worksheet, row, col, valstyle)
-                    writeSignalx(db, sig, worksheet, row, col, sigstyle)
+                    writeSignalx(db, sig, worksheet, row, col, sigstyle, motorolaBitFormat)
 
                     # no min/max here, because min/max has same col as values...
                     #next row
@@ -338,7 +350,7 @@ def exportXlsx(db, filename):
                     worksheet.set_row(row, None, None, {'level': 1})
                 col = head_top.__len__()
                 col = writeBuMatrixx(buList, sig, frame, worksheet, row, col, framestyle)
-                writeSignalx(db, sig, worksheet, row, col, sigstyle)
+                writeSignalx(db, sig, worksheet, row, col, sigstyle, motorolaBitFormat)
 
                 if float(sig._min) != 0 or float(sig._max) != 1.0:
                     worksheet.write(row, col+1, str("%s..%s" %(sig._min, sig._max)), sigstyle)
