@@ -254,13 +254,8 @@ def importXls(filename):
             newSig._min = "0"
             newSig._max = "1"
 
-    # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
-    #TODO dlc-estimation for motorola coded signals is missing. 
-    for bo in db._fl._list:
-        maxBit = 0
-        for sig in bo._signals:
-            if int(sig.getLsbStartbit()) + int(sig._signalsize) > maxBit:
-                maxBit = int(sig.getLsbStartbit()) + int(sig._signalsize)
-        bo._Size = int(min([8, bo._Size, math.ceil(maxBit / 8)]))
+
+    for frame in db._fl._list:
+        frame.calcDLC()
 
     return db

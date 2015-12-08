@@ -131,7 +131,6 @@ def importKcd(filename):
                 newBo._extended = 1
 
         multiplex = message.find('./' + namespace + 'Multiplex')
-        maxBit = 0;
 
         if multiplex is not None:
             startbit = 0
@@ -144,9 +143,7 @@ def importKcd(filename):
 
 
             byteorder = 1
-            if int(startbit) + int(signalsize) > maxBit:
-                maxBit = int(startbit) + int(signalsize)
-
+  
             min = 0
             max = 1
             values = multiplex.find('./' + namespace + 'Value')
@@ -195,9 +192,6 @@ def importKcd(filename):
                 signales = muxgroup.findall('./' + namespace + 'Signal')
                 for signal in signales:
                     newSig = parseSignal(signal, mux, namespace, nodelist)
-                    #TODO dlc calculation for motorola coded signal may be wrong
-                    if int(newSig.getLsbStartbit()) + int(newSig._signalsize) > maxBit:
-                        maxBit = int(newSig.getLsbStartbit()) + int(newSig._signalsize)
                     newBo.addSignal(newSig)
 
         signales = message.findall('./' + namespace + 'Signal')
@@ -210,10 +204,6 @@ def importKcd(filename):
 
         for signal in signales:
             newSig = parseSignal(signal, None, namespace, nodelist)
-            # TODO dlc calculation for motorola may be wrong 
-            if int(newSig.getLsbStartbit()) + int(newSig._signalsize) > maxBit:
-                maxBit = int(newSig.getLsbStartbit()) + int(newSig._signalsize)
-
             newBo.addSignal(newSig)
 
 
@@ -225,10 +215,7 @@ def importKcd(filename):
         newBo.addComment(comment)
 
         if dlc is None:
-            newBo._Size = int(math.floor((maxBit-1) / 8))+1
-        else:
-            newBo._Size = dlc
-
+            newBo.calcDLC()
 
         db._fl.addFrame(newBo)
     return db

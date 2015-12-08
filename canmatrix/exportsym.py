@@ -44,11 +44,7 @@ def createSignal(signal):
         output += "signed "
     if signal._byteorder == 0:
         #Motorola
-        startBit = signal.getMsbStartbit()
-        startByte = math.floor(startBit / 8)
-        startBit = startBit % 8
-        startBit = (7-startBit)
-        startBit += startByte * 8
+        startBit = signal.getMsbReverseStartbit()
         output += "%d,%d -m " % (startBit, signal._signalsize)
     else:
         output += "%d,%d -i " % (signal.getMsbStartbit(), signal._signalsize)

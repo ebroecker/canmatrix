@@ -140,12 +140,6 @@ def importSym(filename):
                 for switch in tempArray[indexOffset+2:]:
                     if switch == "-m":
                         intel = 0
-                        # Startbitindex is inverted msb in sym-file (right?)
-                        startByte = math.floor(startBit / 8)
-                        startBit = startBit % 8
-                        startBit = (7-startBit)
-                        startBit += startByte * 8
-                        #now its msb like in dbc
                     elif switch == "-h":
                         #hexadecimal output - not supported
                         pass
@@ -179,14 +173,14 @@ def importSym(filename):
                         signal = Signal(frameName + "_MUX", startBit, signalLength, intel, valuetype, factor, offset, min, max, unit, "", 'Multiplexor')
                         if intel == 0:
                             #motorola set/convert startbit
-                            signal.setMsbStartbit(startBit)
+                            signal.setMsbReverseStartbit(startBit)
                         frame.addSignal(signal)
 
                 else:
                     signal = Signal(sigName, startBit, signalLength, intel, valuetype, factor, offset, min, max, unit, "", multiplexor)
                     if intel == 0:
                         #motorola set/convert startbit
-                        signal.setMsbStartbit(startBit)
+                        signal.setMsbReverseStartbit(startBit)
                     if valueTableName is not None:
                         signal._values = valueTables[valueTableName]
                     signal.addAttribute("GenSigStartValue", str(startValue))
