@@ -210,11 +210,10 @@ def importDbf(filename):
                 startbit = int (startbit)
                 startbit += (int(startbyte)-1)*8
 
-                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, Min, Max, unit, reciever.split(','), multiplex))
+                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, float(Min)*float(factor), float(Max)*float(factor), unit, reciever.split(','), multiplex))
                 if int(byteorder) == 0:
                     # this is dummy here, because internal lsb is default - for now
                     newSig.setLsbStartbit(startbit)                    
-
 
             if line.startswith("[VALUE_DESCRIPTION]"):
                 temstr = line.strip()[19:].strip()
