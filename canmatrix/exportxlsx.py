@@ -118,9 +118,9 @@ def writeSignalx(db, sig, worksheet, row, rearCol, mystyle, motorolaBitFormat):
         startBit = sig.getLsbStartbit()
 
     #startbyte
-    worksheet.write(row, 5,  math.floor((sig.getLsbStartbit())/8)+1, mystyle)
+    worksheet.write(row, 5,  math.floor(startBit/8)+1, mystyle)
     #startbit
-    worksheet.write(row, 6,  (sig.getLsbStartbit())%8, mystyle)
+    worksheet.write(row, 6,  (startBit)%8, mystyle)
     #signalname
     worksheet.write(row, 7,  sig._name, mystyle)
 

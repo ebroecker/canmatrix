@@ -143,11 +143,7 @@ Title=\"canmatrix-Export
                         muxOut += "Mux=" + muxName
                         if signal._byteorder == 0:
                             #Motorola
-                            startBit = muxSignal.getMsbStartbit()
-                            startByte = math.floor(startBit / 8)
-                            startBit = startBit % 8
-                            startBit = (7-startBit)
-                            startBit += startByte * 8
+                            startBit = muxSignal.getMsbReverseStartbit()
                             muxOut += " %d,%d %d -m" % (startBit, muxSignal._signalsize, i)
                         else:
                             muxOut += " %d,%d %d" % (muxSignal.getMsbStartbit(), muxSignal._signalsize, i)
