@@ -78,7 +78,7 @@ def exportSym(db, filename):
     """
     global enumDict
     global enums
-    symEncoding = 'utf-8'
+    symEncoding = 'latin1'
 
     enumDict = {}
     enums = "{ENUMS}\n"

@@ -124,14 +124,13 @@ def main():
 
 
     (cmdlineOptions, args) = parser.parse_args()
-
     if len(args) < 2:
         parser.print_help()
         sys.exit(1)
     infile = args[0]
     outfileName = args[1]
 
-    convert(infile, outfileName, cmdlineOptions)
+    convert(infile, outfileName, **cmdlineOptions.__dict__)
 
 if __name__ == '__main__':
     sys.exit(main())
