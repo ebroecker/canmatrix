@@ -44,14 +44,10 @@ def createSignal(signal):
         output += "signed "
     if signal._byteorder == 0:
         #Motorola
-        startBit = signal._startbit
-        startByte = math.floor(startBit / 8)
-        startBit = startBit % 8
-        startBit = (7-startBit)
-        startBit += startByte * 8
+        startBit = signal.getMsbReverseStartbit()
         output += "%d,%d -m " % (startBit, signal._signalsize)
     else:
-        output += "%d,%d -i " % (signal._startbit, signal._signalsize)
+        output += "%d,%d -i " % (signal.getMsbStartbit(), signal._signalsize)
     if len(signal._unit) > 0:
         output += "/u:%s " % ( signal._unit[0:15])
     if float(signal._factor) != 1:
@@ -82,7 +78,7 @@ def exportSym(db, filename):
     """
     global enumDict
     global enums
-    symEncoding = 'utf-8'
+    symEncoding = 'latin1'
 
     enumDict = {}
     enums = "{ENUMS}\n"
@@ -147,14 +143,10 @@ Title=\"canmatrix-Export
                         muxOut += "Mux=" + muxName
                         if signal._byteorder == 0:
                             #Motorola
-                            startBit = muxSignal._startbit
-                            startByte = math.floor(startBit / 8)
-                            startBit = startBit % 8
-                            startBit = (7-startBit)
-                            startBit += startByte * 8
+                            startBit = muxSignal.getMsbReverseStartbit()
                             muxOut += " %d,%d %d -m" % (startBit, muxSignal._signalsize, i)
                         else:
-                            muxOut += " %d,%d %d" % (muxSignal._startbit, muxSignal._signalsize, i)
+                            muxOut += " %d,%d %d" % (muxSignal.getMsbStartbit(), muxSignal._signalsize, i)
                         if muxSignal._values is not None and i in muxSignal._values:
                             muxOut += "// " + muxSignal._values[i].replace('\n','').replace('\r','')
                         muxOut += "\n"

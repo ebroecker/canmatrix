@@ -39,6 +39,7 @@ import codecs
 
 
 def importSym(filename):
+    symImportEncoding = "latin1"
     class Mode(object):
         glob, enums, send, sendReceive = list(range(4))
     mode = Mode.glob
@@ -50,12 +51,12 @@ def importSym(filename):
     db = CanMatrix()
     db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
     db.addSignalDefines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
-    f = open(filename)
+    f = open(filename, "rb")
 
     for line in f:
-        l = line.strip()
+        line = line.decode(symImportEncoding).strip()
         #ignore emty line:
-        if l.__len__() == 0:
+        if line.__len__() == 0:
             continue
 
         #switch mode:
@@ -110,7 +111,7 @@ def importSym(filename):
                 indexOffset = 1
                 if tmpMux == "Mux":
                     indexOffset = 0
-
+                comment = ""
                 if '//' in line:
                     comment = line.split('//')[1].strip()
                     line = line.split('//')[0]
@@ -140,10 +141,6 @@ def importSym(filename):
                 for switch in tempArray[indexOffset+2:]:
                     if switch == "-m":
                         intel = 0
-                        startByte = math.floor(startBit / 8)
-                        startBit = startBit % 8
-                        startBit = (7-startBit)
-                        startBit += startByte * 8
                     elif switch == "-h":
                         #hexadecimal output - not supported
                         pass
@@ -175,12 +172,20 @@ def importSym(filename):
                     signal = frame.signalByName(frameName + "_MUX")
                     if signal == None:
                         signal = Signal(frameName + "_MUX", startBit, signalLength, intel, valuetype, factor, offset, min, max, unit, "", 'Multiplexor')
+                        signal.addComment(comment)
+                        if intel == 0:
+                            #motorola set/convert startbit
+                            signal.setMsbReverseStartbit(startBit)
                         frame.addSignal(signal)
 
                 else:
                     signal = Signal(sigName, startBit, signalLength, intel, valuetype, factor, offset, min, max, unit, "", multiplexor)
+                    if intel == 0:
+                        #motorola set/convert startbit
+                        signal.setMsbReverseStartbit(startBit)
                     if valueTableName is not None:
                         signal._values = valueTables[valueTableName]
+                    signal.addComment(comment)
                     signal.addAttribute("GenSigStartValue", str(startValue))
                     frame.addSignal(signal)
                 #variable processing

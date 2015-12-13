@@ -10,26 +10,30 @@ from .exportcsv import *
 try:
     from .exportarxml import *
 except:
-    print("no arxml-export-support, some dependencys missing...  (probably lxml)")
+    print("no arxml-export-support, some dependencys missing... try pip install lxml")
 
 try:
     from .exportkcd import *
 except:
-    print("no kcd-export-support, some dependencys missing... ")
+    print("no kcd-export-support, some dependencys missing...  try pip install lxml")
+try:
+    from .exportsym import *
+except:
+    print("no sym-export-support, some dependencys missing... ")
 
 
 try:
     from .exportxls import *
 except:
-    print("no xls-export-support, some dependencys missing... ")
+    print("no xls-export-support, some dependencys missing...  try pip install xlwt")
 try:
     from .exportxlsx import *
 except:
-    print("no xlsx-export-support, some dependencys missing... ")
+    print("no xlsx-export-support, some dependencys missing...  try pip install xlswriter")
 try:
     from .exportyaml import *
 except:
-    print("no yaml-export-support, some dependencys missing ... (probably yaml) ")
+    print("no yaml-export-support, some dependencys missing ...  try pip install pyyaml ")
 
 
 

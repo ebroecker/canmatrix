@@ -149,6 +149,75 @@ class Signal(object):
         Add Value/Description to Signal
         """
         self._values[int(value)] = valueName
+    def setMsbReverseStartbit(self, msbStartBitReverse, length=None):
+        if self._byteorder == 1:
+            #Intel
+            self._startbit = msbStartBitReverse
+        else:
+            startByte = math.floor(msbStartBitReverse / 8)
+            startBit = msbStartBitReverse % 8
+            startBit = (7-startBit)
+            startBit += startByte * 8
+            self.setMsbStartbit(startBit, length)
+    def setMsbStartbit(self, msbStartBit, length=None):
+        """
+        set startbit while given startbit is most significant bit
+        if length is not given, use length from object
+        """
+        if self._byteorder == 1:
+            #Intel
+            self._startbit = msbStartBit
+        else:
+            if length == None:
+                length = self._signalsize
+            # following code is from https://github.com/julietkilo/CANBabel/blob/master/src/main/java/com/github/canbabel/canio/dbc/DbcReader.java:
+            pos = 7 - (msbStartBit % 8) + (length - 1)
+            if (pos < 8):
+                self._startbit = msbStartBit - length + 1;
+            else:
+                cpos = 7 - (pos % 8);
+                bytes = int(pos / 8);
+                self._startbit = cpos + (bytes * 8) + int(msbStartBit/8) * 8;
+    def setLsbStartbit(self, lsbStartBit):
+        """
+        set startbit while given startbit is least significant bit
+        """
+        self._startbit = lsbStartBit
+        
+    def getMsbReverseStartbit(self):
+        if self._byteorder == 1:
+            #Intel
+            return self._startbit
+        else:
+            startBit = self.getMsbStartbit()
+            startByte = math.floor(startBit / 8)
+            startBit = startBit % 8
+            startBit = (7-startBit)
+            startBit += startByte * 8
+            return startBit
+
+    def getMsbStartbit(self):
+        if self._byteorder == 1:
+            #Intel
+            return self._startbit
+        else:
+            #code from https://github.com/rbei-etas/busmaster/blob/master/Sources/Format%20Converter/DBF2DBCConverter/Signal.cpp
+            nByte = int(self._signalsize/8);
+            if (self._signalsize % 8) != 0:
+                nByte += 1
+
+            nStartBit = (1 - nByte) * 8;
+            nBitSize = self._signalsize - (8 * (nByte - 1))+ self._startbit;
+
+            if(nBitSize == 0):
+                ucStartBit = self._startbit + self._signalsize;
+            else:
+                ucStartBit = nStartBit + nBitSize-1;
+            return ucStartBit
+
+    def getLsbStartbit(self):
+        return int(self._startbit)
+       
 
 
 class SignalGroup(object):
@@ -250,8 +319,20 @@ class Frame(object):
         set comment of frame
         """
         self._comment = comment
-
-
+        
+    def calcDLC(self):
+        """
+        calc minimal DLC/length for frame (using signal information)
+        """
+        maxBit = 0
+        for sig in self._signals:
+            if sig._byteorder == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
+                # check intel signal (startbit + length):
+                maxBit = sig.getLsbStartbit() + int(sig._signalsize)
+            elif sig._byteorder == 0  and sig.getLsbStartbit() > maxBit:
+                #check motorola signal (starbit is least significant bit):
+                maxBit = sig.getLsbStartbit()
+        self._Size =  max(self._Size, math.ceil(maxBit / 8))
 
 class Define(object):
     """
@@ -419,6 +500,7 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
             frame[i] |= (((value >> len ) << end) & mask)
             lastbit = startbit + len
     else: # Motorola
+		  # TODO needs review, is probably wrong till we use LSB for startbit 
         firstbyte = math.floor(startbit/8)
         bitsInfirstByte = startbit % 8 + 1
         restnBits = len - bitsInfirstByte

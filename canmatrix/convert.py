@@ -31,11 +31,11 @@ import canmatrix.importall as im
 import canmatrix.canmatrix as cm
 import os
 
-def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso-8859-1'):
+def convert(infile, outfileName, **options):
     dbs = {}
     print("Importing " + infile + " ... ")
     if infile[-3:] == 'dbc':
-        dbs[""] = im.importDbc(infile, dbcCharset,  dbcCommentCharset)
+        dbs[""] = im.importDbc(infile, **options)
     elif infile[-3:] == 'dbf':
         dbs[""] = im.importDbf(infile)
     elif infile[-3:] == 'sym':
@@ -43,9 +43,9 @@ def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso
     elif infile[-3:] == 'kcd':
         dbs[""] = im.importKcd(infile)
     elif infile[-3:] == 'xls':
-        dbs[""] = im.importXls(infile)
+        dbs[""] = im.importXls(infile, **options)
     elif infile[-4:] == 'xlsx' :
-        dbs[""] = im.importXlsx(infile)
+        dbs[""] = im.importXlsx(infile, **options)
     elif infile[-5:] == 'arxml':
         dbs = im.importArxml(infile)
     elif infile[-4:] == 'yaml':
@@ -68,7 +68,7 @@ def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso
         else:
             outfile = outfileName
         if outfile[-3:] == 'dbc':
-            ex.exportDbc(db, outfile, dbcCharset,  dbcCommentCharset)
+            ex.exportDbc(db, outfile, **options)
         elif outfile[-3:] == 'dbf':
             ex.exportDbf(db, outfile)
         elif outfile[-3:] == 'sym':
@@ -76,9 +76,9 @@ def convert(infile, outfileName, dbcCharset='iso-8859-1', dbcCommentCharset='iso
         elif outfile[-3:] == 'kcd':
             ex.exportKcd(db, outfile)
         elif outfile[-4:] == 'xlsx':
-            ex.exportXlsx(db, outfile)
+            ex.exportXlsx(db, outfile, **options)
         elif outfile[-3:] == 'xls':
-            ex.exportXls(db, outfile)
+            ex.exportXls(db, outfile, **options)
         elif outfile[-4:] == 'json':
             ex.exportJson(db, outfile)
         elif outfile[-5:] == 'arxml':
@@ -106,22 +106,31 @@ def main():
     #parser.add_option("-d", "--debug",
     #                  dest="debug", default=False,
     #                  help="print debug messages to stdout")
-    parser.add_option("", "--dbcCharset",
-                                      dest="dbcCharset", default="iso-8859-1",
-                                      help="Charset of Comments in dbc, maybe utf-8")
-    parser.add_option("", "--dbcCommentCharset",
-                                      dest="dbcCommentCharset", default="iso-8859-1",
-                                      help="Charset of Comments in dbc")
-    (cmdlineOptions, args) = parser.parse_args()
+    parser.add_option("", "--dbcImportEncoding",
+                                      dest="dbcImportEncoding", default="iso-8859-1",
+                                      help="Import charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")
+    parser.add_option("", "--dbcImportCommentEncoding",
+                                      dest="dbcImportCommentEncoding", default="iso-8859-1",
+                                      help="Import charset of Comments in dbc\ndefault iso-8859-1")
+    parser.add_option("", "--dbcExportEncoding",
+                                      dest="dbcExportEncoding", default="iso-8859-1",
+                                      help="Export charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")
+    parser.add_option("", "--dbcExportCommentEncoding",
+                                      dest="dbcExportCommentEncoding", default="iso-8859-1",
+                                      help="Export charset of comments in dbc\ndefault iso-8859-1")
+    parser.add_option("", "--xlsMotorolaBitFormat",
+                                      dest="xlsMotorolaBitFormat", default="msbreverse",
+                                      help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")
 
+
+    (cmdlineOptions, args) = parser.parse_args()
     if len(args) < 2:
         parser.print_help()
         sys.exit(1)
     infile = args[0]
     outfileName = args[1]
 
-    convert(infile=infile, outfileName=outfileName,
-                    dbcCharset=cmdlineOptions.dbcCharset, dbcCommentCharset=cmdlineOptions.dbcCommentCharset)
+    convert(infile, outfileName, **cmdlineOptions.__dict__)
 
 if __name__ == '__main__':
     sys.exit(main())

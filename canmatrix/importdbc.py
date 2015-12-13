@@ -35,7 +35,16 @@ import re
 import codecs
 
 
-def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-8859-1'):
+def importDbc(filename, **options):
+    if hasattr(options,'dbcImportEncoding'):
+        dbcImportEncoding=options["dbcImportEncoding"]
+    else:
+        dbcImportEncoding='iso-8859-1'
+    if hasattr(options,'dbcImportCommentEncoding'):
+        dbcCommentEncoding=options["dbcImportCommentEncoding"]
+    else:
+        dbcCommentEncoding=dbcImportEncoding
+
     i = 0
     class FollowUps(object):
         nothing, signalComment, frameComment, boardUnitComment, globalComment = list(range(5))
@@ -94,7 +103,11 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
             temp_raw = regexp_raw.match(l)
             if temp:
                 reciever = list(map(str.strip, temp.group(11).split(',')))
-                db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp_raw.group(10).decode(dbcImportEncoding),reciever))
+                tempSig = Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp_raw.group(10).decode(dbcImportEncoding),reciever)     
+                if tempSig._byteorder == 0:
+                    # startbit of motorola coded signals are MSB in dbc
+                    tempSig.setMsbStartbit(int(temp.group(2)))                
+                db._fl.addSignalToLastFrame(tempSig)
             else:
                 pattern = "^SG\_ (\w+) (\w+) *: (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)"
                 regexp = re.compile(pattern)

@@ -8,7 +8,7 @@ from .importsym import *
 try:
     from .importarxml import *
 except:
-    print("no arxml-import-support, some dependencys missing... (probably lxml) ")
+    print("no arxml-import-support, some dependencys missing... , try pip install lxml ")
 
 try:
     from .importkcd import *
@@ -23,12 +23,12 @@ except:
 try:
     from .importxlsx import *
 except:
-    print("no xlsx-import-support, some dependencys missing... ")
+    print("no xlsx-import-support, some dependencys missing... , try pip install xlrd ")
 
 try:
     from .importyaml import *
 except:
-    print("no yaml-import-support, some dependencys missing ... (probably yaml) ")
+    print("no yaml-import-support, some dependencys missing ... , try pip install yaml  ")
 
 
 #Copyright (c) 2013, Eduard Broecker

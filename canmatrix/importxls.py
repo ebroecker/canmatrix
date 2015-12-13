@@ -34,7 +34,12 @@ from .canmatrix import *
 import xlrd
 import codecs
 
-def importXls(filename):
+def importXls(filename, **options):
+    if hasattr(options, "xlsMotorolaBitFormat"):
+        motorolaBitFormat = options["xlsMotorolaBitFormat"]
+    else:
+        motorolaBitFormat = "msbreverse"
+
     wb = xlrd.open_workbook(filename, formatting_info=True)
     sh = wb.sheet_by_index(0)
     db = CanMatrix()
@@ -193,7 +198,14 @@ def importXls(filename):
                     newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
                 else:
                     newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
-
+                if byteorder == 0:
+                    #motorola
+                    if motorolaBitFormat == "msb":
+                        newSig.setMsbStartbit((startbyte-1)*8+startbit)
+                    elif motorolaBitFormat == "msbreverse":
+                        newSig.setMsbReverseStartbit((startbyte-1)*8+startbit)
+                    else: # motorolaBitFormat == "lsb"
+                        newSig.setLsbStartbit((startbyte-1)*8+startbit)
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
                 function = sh.cell(rownum,index['function']).value
@@ -252,12 +264,8 @@ def importXls(filename):
             newSig._min = "0"
             newSig._max = "1"
 
-    # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
-    for bo in db._fl._list:
-        maxBit = 0
-        for sig in bo._signals:
-            if int(sig._startbit) + int(sig._signalsize) > maxBit:
-                maxBit = int(sig._startbit) + int(sig._signalsize)
-        bo._Size = int(min([8, bo._Size, math.ceil(maxBit / 8)]))
+
+    for frame in db._fl._list:
+        frame.calcDLC()
 
     return db

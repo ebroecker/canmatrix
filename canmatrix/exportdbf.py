@@ -66,15 +66,12 @@ def exportDbf(db, filename):
     # m_acName ucLength m_ucWhichByte m_ucStartBit
     #m_ucDataFormat m_fOffset m_fScaleFactor m_acUnit m_acMultiplex m_rxNode
             #m_ucDataFormat
-            whichbyte = int(math.floor(signal._startbit / 8) +1 )
+            whichbyte = int(math.floor(signal.getLsbStartbit() / 8) +1 )
             sign = 'S'
 
-            if signal._byteorder == 0:
-                #todo Motorola startbit calculation (Issue #19)
-                pass
             if signal._valuetype == '+':
                 sign = 'U'
-            outstr += "[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%s,%s" % (signal._signalsize,whichbyte,int(signal._startbit)%8,sign,int(signal._max)/int(signal._factor),signal._min)
+            outstr += "[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%s,%s" % (signal._signalsize,whichbyte,int(signal.getLsbStartbit())%8,sign,float(signal._max)/float(signal._factor),float(signal._min)/float(signal._factor))
 
             outstr += ",%d,%s,%s" % (signal._byteorder, signal._offset, signal._factor)
             multiplex = ""

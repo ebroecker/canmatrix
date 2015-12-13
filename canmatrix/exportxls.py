@@ -110,11 +110,18 @@ def writeFrame(frame, worksheet, row, mystyle):
         worksheet.write(row, 4, label = "", style=mystyle)
 
 
-def writeSignal(db, sig, worksheet, row, mystyle, rearCol):
+def writeSignal(db, sig, worksheet, row, mystyle, rearCol, motorolaBitFormat):
+    if motorolaBitFormat == "msb":
+        startBit = sig.getMsbStartbit()
+    elif motorolaBitFormat == "msbreverse":
+        startBit = sig.getMsbReverseStartbit()
+    else: # motorolaBitFormat == "lsb"
+        startBit = sig.getLsbStartbit()
+
     #startbyte
-    worksheet.write(row, 5, label = math.floor((sig._startbit)/8)+1, style=mystyle)
+    worksheet.write(row, 5, label = math.floor(startBit/8)+1, style=mystyle)
     #startbit
-    worksheet.write(row, 6, label = (sig._startbit)%8, style=mystyle)
+    worksheet.write(row, 6, label = (startBit)%8, style=mystyle)
     #signalname
     worksheet.write(row, 7, label = sig._name, style=mystyle)
 
@@ -218,9 +225,14 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
     # loop over boardunits ends here
     return col
 
-def exportXls(db, filename):
+def exportXls(db, filename, **options):
     head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.', 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
+
+    if hasattr(options, "xlsMotorolaBitFormat"):
+        motorolaBitFormat = options["xlsMotorolaBitFormat"]
+    else:
+        motorolaBitFormat = "msbreverse"
 
     workbook = xlwt.Workbook(encoding = 'utf8')
     wsname = os.path.basename(filename).replace('.xls','')
@@ -273,7 +285,7 @@ def exportXls(db, filename):
         #sort signals:
         sigHash ={}
         for sig in frame._signals:
-            sigHash["%02d" % int(sig._startbit) + sig._name] = sig
+            sigHash["%02d" % int(sig.getMsbReverseStartbit()) + sig._name] = sig
 
         #set style for first line with border
         sigstyle = sty_first_frame
@@ -299,7 +311,7 @@ def exportXls(db, filename):
                     col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)
                     # write Value
                     writeValue(val,sig._values[val], worksheet, row, col, valstyle)
-                    writeSignal(db, sig, worksheet, row, sigstyle, col)
+                    writeSignal(db, sig, worksheet, row, sigstyle, col, motorolaBitFormat)
 
                     # no min/max here, because min/max has same col as values...
                     #next row
@@ -317,7 +329,7 @@ def exportXls(db, filename):
 
                 col = head_top.__len__()
                 col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)
-                writeSignal(db, sig, worksheet, row, sigstyle, col)
+                writeSignal(db, sig, worksheet, row, sigstyle, col, motorolaBitFormat)
 
                 if float(sig._min) != 0 or float(sig._max) != 1.0:
                     worksheet.write(row, col+1, label = str("%s..%s" %(sig._min, sig._max)), style=sigstyle)
