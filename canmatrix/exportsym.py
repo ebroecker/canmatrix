@@ -49,7 +49,7 @@ def createSignal(signal):
     else:
         output += "%d,%d -i " % (signal.getMsbStartbit(), signal._signalsize)
     if len(signal._unit) > 0:
-        output += "/u:%s " % ( signal._unit[0:15])
+        output += "/u:%s " % ( signal._unit[0:16])
     if float(signal._factor) != 1:
         output += "/f:%g " % (float(signal._factor))
     if float(signal._offset) != 0:
@@ -86,7 +86,7 @@ def exportSym(db, filename):
     f = open(filename, 'wb')
 
     header = """FormatVersion=5.0 // Do not edit this line!
-Title=\"canmatrix-Export
+Title=\"canmatrix-Export\"
 """
     f.write( header.encode(symEncoding))
     
@@ -165,6 +165,8 @@ Title=\"canmatrix-Export
             output += name
             output += idType
             output += "DLC=%d\n" % (frame._Size)
+            if "GenMsgCycleTime" in frame._attributes:
+                output += "CycleTime=" + frame._attributes["GenMsgCycleTime"] + "\n"
             for signal in frame._signals:
                 output += createSignal(signal)
             output += "\n"
