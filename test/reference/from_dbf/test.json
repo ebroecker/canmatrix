@@ -6,15 +6,15 @@
             "signals": {
                 "9": {
                     "bit_length": 11,
-                    "factor": "5.0",
+                    "factor": "5",
                     "name": "someTestSignal",
-                    "offset": "1.0"
+                    "offset": "1"
                 },
                 "20": {
                     "bit_length": 3,
-                    "factor": "1.0",
+                    "factor": "1",
                     "name": "Signal",
-                    "offset": "0.0"
+                    "offset": "0"
                 }
             }
         },

@@ -1,10 +1,10 @@
 <NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:schemaLocation="Definition.xsd">
   <Document name="Some Document Name">some text</Document>
   <Bus name="converted/from_arxml/CAN_test.kcd">
-    <Message id="0xFFAB41" length="8" name="CommandModeControl">
+    <Message id="0xFFAB41" length="8" name="CommandModeControl" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="Enable_command" offset="1" length="2" endianess="little">
+      <Signal name="Enable_command" offset="0" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -14,7 +14,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="FaultClear_command" offset="3" length="2" endianess="little">
+      <Signal name="FaultClear_command" offset="2" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -24,7 +24,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="InvertHwEnable_command" offset="57" length="2" endianess="little">
+      <Signal name="InvertHwEnable_command" offset="56" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -34,7 +34,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="EnableUPSMode_command" offset="59" length="2" endianess="little">
+      <Signal name="EnableUPSMode_command" offset="58" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -44,7 +44,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="EnableSplitPhase_command" offset="61" length="2" endianess="little">
+      <Signal name="EnableSplitPhase_command" offset="60" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -54,7 +54,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ForceRelayMX1_command" offset="33" length="2" endianess="little">
+      <Signal name="ForceRelayMX1_command" offset="32" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -64,7 +64,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ForceRelayMX2_command" offset="35" length="2" endianess="little">
+      <Signal name="ForceRelayMX2_command" offset="34" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -74,7 +74,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ForceRelayK1_Precharge_command" offset="37" length="2" endianess="little">
+      <Signal name="ForceRelayK1_Precharge_command" offset="36" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -84,7 +84,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ForceRelayRelayK2_DCRun_comand" offset="39" length="2" endianess="little">
+      <Signal name="ForceRelayRelayK2_DCRun_comand" offset="38" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -94,7 +94,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="PhaseRotation_command" offset="63" length="2" endianess="little">
+      <Signal name="PhaseRotation_command" offset="62" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -104,7 +104,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="MasterFollowerMode_command" offset="17" length="2" endianess="little">
+      <Signal name="MasterFollowerMode_command" offset="16" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -115,52 +115,52 @@
         </LabelSet>
       </Signal>
     </Message>
-    <Message id="0xCFFAC41" length="8" name="CommandPower">
+    <Message id="0xCFFAC41" length="8" name="CommandPower" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="RealPower_command" offset="7" length="32" endianess="little">
+      <Signal name="RealPower_command" offset="24" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="ReactivePower_command" offset="39" length="32" endianess="little">
+      <Signal name="ReactivePower_command" offset="56" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFAE41" length="8" name="CommandVF">
+    <Message id="0xCFFAE41" length="8" name="CommandVF" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="Voltage_command" offset="7" length="16" endianess="little">
+      <Signal name="Voltage_command" offset="8" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="Frequency_command" offset="23" length="16" endianess="little">
+      <Signal name="Frequency_command" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFCAF6" length="8" name="MasterMeasuredPower">
+    <Message id="0xCFFCAF6" length="8" name="MasterMeasuredPower" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="RealPower_measured" offset="7" length="32" endianess="little">
+      <Signal name="RealPower_measured" offset="24" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="ReactivePower_measured" offset="39" length="32" endianess="little">
+      <Signal name="ReactivePower_measured" offset="56" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFAF41" length="8" name="CommandFactoryControl">
+    <Message id="0xCFFAF41" length="8" name="CommandFactoryControl" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="WriteSerialNumber" offset="1" length="2" endianess="little">
+      <Signal name="WriteSerialNumber" offset="0" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -170,21 +170,21 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="SerialNumber" offset="39" length="32" endianess="little">
+      <Signal name="SerialNumber" offset="56" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="FactoryAccess" offset="23" length="16" endianess="little">
+      <Signal name="FactoryAccess" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFAA41" length="8" name="CommandSetNVParam">
+    <Message id="0xCFFAA41" length="8" name="CommandSetNVParam" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="CommandSetNVParam_MUX" offset="7" length="16" endianess="little">
+      <Signal name="CommandSetNVParam_MUX" offset="8" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -200,72 +200,72 @@
           <Label name="ContactorDelays3" value="9"/>
         </LabelSet>
       </Signal>
-      <Signal name="Dummy" offset="23" length="16" endianess="little">
+      <Signal name="Dummy" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="VUnder50pct" offset="23" length="16" endianess="little">
+      <Signal name="VUnder50pct" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="V50to88pct" offset="39" length="16" endianess="little">
+      <Signal name="V50to88pct" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="V110to120pct" offset="55" length="16" endianess="little">
+      <Signal name="V110to120pct" offset="56" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="VOver120" offset="23" length="16" endianess="little">
+      <Signal name="VOver120" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqHi" offset="23" length="16" endianess="little">
+      <Signal name="FreqHi" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqLo" offset="39" length="16" endianess="little">
+      <Signal name="FreqLo" offset="40" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqVeryLo" offset="55" length="16" endianess="little">
+      <Signal name="FreqVeryLo" offset="56" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqVeryLo" offset="23" length="16" endianess="little">
+      <Signal name="FreqVeryLo" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqLo" offset="39" length="16" endianess="little">
+      <Signal name="FreqLo" offset="40" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqHi" offset="55" length="16" endianess="little">
+      <Signal name="FreqHi" offset="56" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="NodeID" offset="23" length="8" endianess="little">
+      <Signal name="NodeID" offset="16" length="8" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="SA_Mask" offset="31" length="8" endianess="little">
+      <Signal name="SA_Mask" offset="24" length="8" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="Baudrate" offset="39" length="4" endianess="little">
+      <Signal name="Baudrate" offset="36" length="4" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -275,7 +275,7 @@
           <Label name="1M" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ThermalOverload" offset="17" length="2" endianess="little">
+      <Signal name="ThermalOverload" offset="16" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -285,51 +285,51 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="MX1Open" offset="23" length="16" endianess="little">
+      <Signal name="MX1Open" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="MX1Close" offset="39" length="16" endianess="little">
+      <Signal name="MX1Close" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="MX2Open" offset="55" length="16" endianess="little">
+      <Signal name="MX2Open" offset="56" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="MX2Close" offset="23" length="16" endianess="little">
+      <Signal name="MX2Close" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="K1Open" offset="39" length="16" endianess="little">
+      <Signal name="K1Open" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="K1Close" offset="55" length="16" endianess="little">
+      <Signal name="K1Close" offset="56" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="K2Open" offset="23" length="16" endianess="little">
+      <Signal name="K2Open" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="K2Close" offset="39" length="16" endianess="little">
+      <Signal name="K2Close" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xFF9B41" length="8" name="CommandModeControlAPU2">
+    <Message id="0xFF9B41" length="8" name="CommandModeControlAPU2" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="Enable_command" offset="1" length="2" endianess="little">
+      <Signal name="Enable_command" offset="0" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -339,7 +339,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="FaultClear_command" offset="3" length="2" endianess="little">
+      <Signal name="FaultClear_command" offset="2" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -349,7 +349,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="InvertHwEnable_command" offset="57" length="2" endianess="little">
+      <Signal name="InvertHwEnable_command" offset="56" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -359,7 +359,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="EnableUPSMode_command" offset="59" length="2" endianess="little">
+      <Signal name="EnableUPSMode_command" offset="58" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -369,7 +369,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="EnableSplitPhase_command" offset="61" length="2" endianess="little">
+      <Signal name="EnableSplitPhase_command" offset="60" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -379,7 +379,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ForceRelayMX1_command" offset="33" length="2" endianess="little">
+      <Signal name="ForceRelayMX1_command" offset="32" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -389,7 +389,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ForceRelayMX2_command" offset="35" length="2" endianess="little">
+      <Signal name="ForceRelayMX2_command" offset="34" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -399,7 +399,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ForceRelayK1_Precharge_command" offset="37" length="2" endianess="little">
+      <Signal name="ForceRelayK1_Precharge_command" offset="36" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -409,7 +409,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ForceRelayRelayK2_DCRun_comand" offset="39" length="2" endianess="little">
+      <Signal name="ForceRelayRelayK2_DCRun_comand" offset="38" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -419,7 +419,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="PhaseRotation_command" offset="63" length="2" endianess="little">
+      <Signal name="PhaseRotation_command" offset="62" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -429,7 +429,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="MasterFollowerMode_command" offset="17" length="2" endianess="little">
+      <Signal name="MasterFollowerMode_command" offset="16" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -440,80 +440,80 @@
         </LabelSet>
       </Signal>
     </Message>
-    <Message id="0xCFF9C41" length="8" name="CommandPowerAPU2">
+    <Message id="0xCFF9C41" length="8" name="CommandPowerAPU2" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="RealPower_command" offset="7" length="32" endianess="little">
+      <Signal name="RealPower_command" offset="24" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="ReactivePower_command" offset="39" length="32" endianess="little">
+      <Signal name="ReactivePower_command" offset="56" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFF9E41" length="8" name="CommandVFAPU2">
+    <Message id="0xCFF9E41" length="8" name="CommandVFAPU2" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="Voltage_command" offset="7" length="16" endianess="little">
+      <Signal name="Voltage_command" offset="8" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="Frequency_command" offset="23" length="16" endianess="little">
+      <Signal name="Frequency_command" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFCAF7" length="8" name="MasterMeasuredPowerAPU2">
+    <Message id="0xCFFCAF7" length="8" name="MasterMeasuredPowerAPU2" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="RealPower_measured" offset="7" length="32" endianess="little">
+      <Signal name="RealPower_measured" offset="24" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="ReactivePower_measured" offset="39" length="32" endianess="little">
+      <Signal name="ReactivePower_measured" offset="56" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFCAF7" length="8" name="StatusMeasuredPower">
+    <Message id="0xCFFCAF7" length="8" name="StatusMeasuredPower" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="RealPower_measured" offset="7" length="32" endianess="little">
+      <Signal name="RealPower_measured" offset="24" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="ReactivePower_measured" offset="39" length="32" endianess="little">
+      <Signal name="ReactivePower_measured" offset="56" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x18FFC4F7" length="8" name="StatusCommandedPower">
+    <Message id="0x18FFC4F7" length="8" name="StatusCommandedPower" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="RealPower_echo" offset="7" length="32" endianess="little">
+      <Signal name="RealPower_echo" offset="24" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="ReactivePower_echo" offset="39" length="32" endianess="little">
+      <Signal name="ReactivePower_echo" offset="56" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFC3F7" length="8" name="StatusBits">
+    <Message id="0xCFFC3F7" length="8" name="StatusBits" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="State_status" offset="3" length="4" endianess="little">
+      <Signal name="State_status" offset="0" length="4" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -535,7 +535,7 @@
           <Label name="N/A" value="15"/>
         </LabelSet>
       </Signal>
-      <Signal name="MX2Permissive_status" offset="19" length="2" endianess="little">
+      <Signal name="MX2Permissive_status" offset="18" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -545,7 +545,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="PowerAvailAC_status" offset="11" length="2" endianess="little">
+      <Signal name="PowerAvailAC_status" offset="10" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -555,7 +555,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="PowerAvailDC_status" offset="13" length="2" endianess="little">
+      <Signal name="PowerAvailDC_status" offset="12" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -565,7 +565,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="PowerCircuitEnabled_status" offset="15" length="2" endianess="little">
+      <Signal name="PowerCircuitEnabled_status" offset="14" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -575,7 +575,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="HardwareEnable_status" offset="9" length="2" endianess="little">
+      <Signal name="HardwareEnable_status" offset="8" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -585,7 +585,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="Enable_echo" offset="5" length="2" endianess="little">
+      <Signal name="Enable_echo" offset="4" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -595,7 +595,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="FaultClr_echo" offset="7" length="2" endianess="little">
+      <Signal name="FaultClr_echo" offset="6" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -605,7 +605,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="MessageValidModeControl_status" offset="25" length="2" endianess="little">
+      <Signal name="MessageValidModeControl_status" offset="24" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -615,7 +615,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="MX1Permissive_status" offset="17" length="2" endianess="little">
+      <Signal name="MX1Permissive_status" offset="16" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -625,7 +625,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="K2DCRunPermissive_status" offset="23" length="2" endianess="little">
+      <Signal name="K2DCRunPermissive_status" offset="22" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -635,7 +635,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="K1PrechargePermissive_status" offset="21" length="2" endianess="little">
+      <Signal name="K1PrechargePermissive_status" offset="20" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -645,7 +645,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="MessageValidPowerCMD_status" offset="27" length="2" endianess="little">
+      <Signal name="MessageValidPowerCMD_status" offset="26" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -655,7 +655,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="MessageValidVF_status" offset="29" length="2" endianess="little">
+      <Signal name="MessageValidVF_status" offset="28" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -665,7 +665,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="CANbus_status" offset="31" length="2" endianess="little">
+      <Signal name="CANbus_status" offset="30" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -675,7 +675,7 @@
           <Label name="N/A" value="4"/>
         </LabelSet>
       </Signal>
-      <Signal name="EnableUPSMode_echo" offset="33" length="2" endianess="little">
+      <Signal name="EnableUPSMode_echo" offset="32" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -685,7 +685,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="EnableSplitPhase_echo" offset="35" length="2" endianess="little">
+      <Signal name="EnableSplitPhase_echo" offset="34" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -695,7 +695,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="PhaseRotation_status" offset="37" length="2" endianess="little">
+      <Signal name="PhaseRotation_status" offset="36" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -705,7 +705,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="LineVoltageDetected_status" offset="39" length="2" endianess="little">
+      <Signal name="LineVoltageDetected_status" offset="38" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -715,7 +715,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="PhaseRotation_echo" offset="41" length="2" endianess="little">
+      <Signal name="PhaseRotation_echo" offset="40" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -726,50 +726,50 @@
         </LabelSet>
       </Signal>
     </Message>
-    <Message id="0x1CFFC5F7" length="8" name="StatusControlVoltage">
+    <Message id="0x1CFFC5F7" length="8" name="StatusControlVoltage" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="v5p0_Supply" offset="7" length="16" endianess="little">
+      <Signal name="v5p0_Supply" offset="8" length="16" endianess="little">
         <Notes/>
         <Value slope="0.01"/>
         <LabelSet/>
       </Signal>
-      <Signal name="v3p3_Supply" offset="23" length="16" endianess="little">
+      <Signal name="v3p3_Supply" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.01"/>
         <LabelSet/>
       </Signal>
-      <Signal name="v24_Supply" offset="39" length="16" endianess="little">
+      <Signal name="v24_Supply" offset="40" length="16" endianess="little">
         <Notes/>
         <Value slope="0.01"/>
         <LabelSet/>
       </Signal>
-      <Signal name="v15_Supply" offset="55" length="16" endianess="little">
+      <Signal name="v15_Supply" offset="56" length="16" endianess="little">
         <Notes/>
         <Value slope="0.01"/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x18FFCBF7" length="8" name="StatusTemps">
+    <Message id="0x18FFCBF7" length="8" name="StatusTemps" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="TempInlet_measured" offset="7" length="16" endianess="little">
+      <Signal name="TempInlet_measured" offset="8" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="TempInternal_measured" offset="23" length="16" endianess="little">
+      <Signal name="TempInternal_measured" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="ConverterLosses" offset="39" length="16" endianess="little">
+      <Signal name="ConverterLosses" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFC8F7" length="8" name="StatusFaults">
+    <Message id="0xCFFC8F7" length="8" name="StatusFaults" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="BridgeAVoltageOk_status" offset="59" endianess="little">
@@ -782,7 +782,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="OvercurrentAC_status" offset="3" length="2" endianess="little">
+      <Signal name="OvercurrentAC_status" offset="2" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -802,7 +802,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="OvervoltageDC_status" offset="9" length="2" endianess="little">
+      <Signal name="OvervoltageDC_status" offset="8" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -812,7 +812,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="OvertempPowerDevice_status" offset="15" length="2" endianess="little">
+      <Signal name="OvertempPowerDevice_status" offset="14" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -822,7 +822,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="OvertempInternal_status" offset="13" length="2" endianess="little">
+      <Signal name="OvertempInternal_status" offset="12" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -832,7 +832,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="LossValidControlMessage_status" offset="23" length="4" endianess="little">
+      <Signal name="LossValidControlMessage_status" offset="20" length="4" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -842,7 +842,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="UndervoltageDC_status" offset="11" length="2" endianess="little">
+      <Signal name="UndervoltageDC_status" offset="10" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -852,7 +852,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ControlHardwareFail_status" offset="19" length="4" endianess="little">
+      <Signal name="ControlHardwareFail_status" offset="16" length="4" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -862,7 +862,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="OvercurrentDC_status" offset="7" length="2" endianess="little">
+      <Signal name="OvercurrentDC_status" offset="6" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -872,7 +872,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="GeneralFault_status" offset="1" length="2" endianess="little">
+      <Signal name="GeneralFault_status" offset="0" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -882,7 +882,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="LossOfAC_status" offset="5" length="2" endianess="little">
+      <Signal name="LossOfAC_status" offset="4" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -892,7 +892,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="EStopShutdown_status" offset="25" length="2" endianess="little">
+      <Signal name="EStopShutdown_status" offset="24" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -902,7 +902,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="BridgeAFault_status" offset="58" length="3" endianess="little">
+      <Signal name="BridgeAFault_status" offset="56" length="3" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -916,7 +916,7 @@
           <Label name="5V" value="7"/>
         </LabelSet>
       </Signal>
-      <Signal name="BridgeBFault_status" offset="42" length="3" endianess="little">
+      <Signal name="BridgeBFault_status" offset="40" length="3" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -930,7 +930,7 @@
           <Label name="5V" value="7"/>
         </LabelSet>
       </Signal>
-      <Signal name="IllegalTransition_status" offset="27" length="2" endianess="little">
+      <Signal name="IllegalTransition_status" offset="26" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -940,7 +940,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="InvalidEEHeader_status" offset="29" length="2" endianess="little">
+      <Signal name="InvalidEEHeader_status" offset="28" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -950,7 +950,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="InvalidEESection_status" offset="31" length="2" endianess="little">
+      <Signal name="InvalidEESection_status" offset="30" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -960,7 +960,7 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="ThermalOverload" offset="33" length="2" endianess="little">
+      <Signal name="ThermalOverload" offset="32" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -971,118 +971,118 @@
         </LabelSet>
       </Signal>
     </Message>
-    <Message id="0xCFFC2F7" length="8" name="StatusACParameters">
+    <Message id="0xCFFC2F7" length="8" name="StatusACParameters" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="VoltageAC_measured" offset="7" length="16" endianess="little">
+      <Signal name="VoltageAC_measured" offset="8" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="CurrentAC_measured" offset="23" length="16" endianess="little">
+      <Signal name="CurrentAC_measured" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="Frequency_measured" offset="39" length="16" endianess="little">
+      <Signal name="Frequency_measured" offset="40" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFC7F7" length="8" name="StatusDCParameters">
+    <Message id="0x1CFFC7F7" length="8" name="StatusDCParameters" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="VoltageDCBus" offset="23" length="16" endianess="little">
+      <Signal name="VoltageDCBus" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="CurrentDC_measured" offset="39" length="16" endianess="little">
+      <Signal name="CurrentDC_measured" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="VoltageDCInput_measured" offset="7" length="16" endianess="little">
+      <Signal name="VoltageDCInput_measured" offset="8" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFC6F7" length="8" name="StatusControlVolts2">
+    <Message id="0x1CFFC6F7" length="8" name="StatusControlVolts2" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="n15V_Supply" offset="7" length="16" endianess="little">
+      <Signal name="n15V_Supply" offset="8" length="16" endianess="little">
         <Notes/>
         <Value slope="0.01"/>
         <LabelSet/>
       </Signal>
-      <Signal name="DiodeTemperature" offset="39" length="16" endianess="little">
+      <Signal name="DiodeTemperature" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="IGBTTemperature" offset="55" length="16" endianess="little">
+      <Signal name="IGBTTemperature" offset="56" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFC1F7" length="8" name="softwareRev">
+    <Message id="0x1CFFC1F7" length="8" name="softwareRev" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="InterfaceRev" offset="23" length="16" endianess="little">
+      <Signal name="InterfaceRev" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.01"/>
         <LabelSet/>
       </Signal>
-      <Signal name="ControlSwRev" offset="7" length="16" endianess="little">
+      <Signal name="ControlSwRev" offset="8" length="16" endianess="little">
         <Notes/>
         <Value slope="0.01"/>
         <LabelSet/>
       </Signal>
-      <Signal name="BuildTime" offset="39" length="32" endianess="little">
+      <Signal name="BuildTime" offset="56" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x18FFC9F7" length="8" name="StatusCommandVF">
+    <Message id="0x18FFC9F7" length="8" name="StatusCommandVF" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="Voltage_echo" offset="7" length="16" endianess="little">
+      <Signal name="Voltage_echo" offset="8" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="Frequency_echo" offset="23" length="16" endianess="little">
+      <Signal name="Frequency_echo" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFCCF7" length="8" name="serialNumber">
+    <Message id="0x1CFFCCF7" length="8" name="serialNumber" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="SerialNumber" offset="7" length="32" endianess="little">
+      <Signal name="SerialNumber" offset="24" length="32" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFCDF7" length="8" name="softwareRevHash">
+    <Message id="0x1CFFCDF7" length="8" name="softwareRevHash" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="Hash" offset="7" length="28" endianess="little">
+      <Signal name="Hash" offset="28" length="28" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFA9F7" length="8" name="StatusNVParam">
+    <Message id="0x1CFFA9F7" length="8" name="StatusNVParam" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="StatusNVParam_MUX" offset="7" length="16" endianess="little">
+      <Signal name="StatusNVParam_MUX" offset="8" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -1098,72 +1098,72 @@
           <Label name="StatusContactorDelays3" value="9"/>
         </LabelSet>
       </Signal>
-      <Signal name="Dummy" offset="23" length="16" endianess="little">
+      <Signal name="Dummy" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="VUnder50pct" offset="23" length="16" endianess="little">
+      <Signal name="VUnder50pct" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="V50to88pct" offset="39" length="16" endianess="little">
+      <Signal name="V50to88pct" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="V110to120pct" offset="55" length="16" endianess="little">
+      <Signal name="V110to120pct" offset="56" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="VOver120" offset="23" length="16" endianess="little">
+      <Signal name="VOver120" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqHi" offset="23" length="16" endianess="little">
+      <Signal name="FreqHi" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqLo" offset="39" length="16" endianess="little">
+      <Signal name="FreqLo" offset="40" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqVeryLo" offset="55" length="16" endianess="little">
+      <Signal name="FreqVeryLo" offset="56" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqVeryLo" offset="23" length="16" endianess="little">
+      <Signal name="FreqVeryLo" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqLo" offset="39" length="16" endianess="little">
+      <Signal name="FreqLo" offset="40" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="FreqHi" offset="55" length="16" endianess="little">
+      <Signal name="FreqHi" offset="56" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusNodeID" offset="23" length="8" endianess="little">
+      <Signal name="StatusNodeID" offset="16" length="8" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusSA_Mask" offset="31" length="8" endianess="little">
+      <Signal name="StatusSA_Mask" offset="24" length="8" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusBaudrate" offset="39" length="4" endianess="little">
+      <Signal name="StatusBaudrate" offset="36" length="4" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -1173,7 +1173,7 @@
           <Label name="1M" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="StatusThermalOverload" offset="17" length="2" endianess="little">
+      <Signal name="StatusThermalOverload" offset="16" length="2" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet>
@@ -1183,80 +1183,80 @@
           <Label name="N/A" value="3"/>
         </LabelSet>
       </Signal>
-      <Signal name="StatusMX1Open" offset="23" length="16" endianess="little">
+      <Signal name="StatusMX1Open" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusMX1Close" offset="39" length="16" endianess="little">
+      <Signal name="StatusMX1Close" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusMX2Open" offset="55" length="16" endianess="little">
+      <Signal name="StatusMX2Open" offset="56" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusMX2Close" offset="23" length="16" endianess="little">
+      <Signal name="StatusMX2Close" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusK1Open" offset="39" length="16" endianess="little">
+      <Signal name="StatusK1Open" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusK1Close" offset="55" length="16" endianess="little">
+      <Signal name="StatusK1Close" offset="56" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusK2Open" offset="23" length="16" endianess="little">
+      <Signal name="StatusK2Open" offset="24" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
-      <Signal name="StatusK2Close" offset="39" length="16" endianess="little">
-        <Notes/>
-        <Value/>
-        <LabelSet/>
-      </Signal>
-    </Message>
-    <Message id="0x18FFD0F7" length="8" name="StatusLineCurrents">
-      <Producer/>
-      <Notes></Notes>
-      <Signal name="L1Current_measured" offset="7" length="16" endianess="little">
-        <Notes/>
-        <Value/>
-        <LabelSet/>
-      </Signal>
-      <Signal name="L2Current_measured" offset="23" length="16" endianess="little">
-        <Notes/>
-        <Value/>
-        <LabelSet/>
-      </Signal>
-      <Signal name="L3Current_measured" offset="39" length="16" endianess="little">
+      <Signal name="StatusK2Close" offset="40" length="16" endianess="little">
         <Notes/>
         <Value/>
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x18FFD1F7" length="8" name="StatusLineVoltages">
+    <Message id="0x18FFD0F7" length="8" name="StatusLineCurrents" format="extended">
       <Producer/>
       <Notes></Notes>
-      <Signal name="L1Voltage_measured" offset="7" length="16" endianess="little">
+      <Signal name="L1Current_measured" offset="8" length="16" endianess="little">
+        <Notes/>
+        <Value/>
+        <LabelSet/>
+      </Signal>
+      <Signal name="L2Current_measured" offset="24" length="16" endianess="little">
+        <Notes/>
+        <Value/>
+        <LabelSet/>
+      </Signal>
+      <Signal name="L3Current_measured" offset="40" length="16" endianess="little">
+        <Notes/>
+        <Value/>
+        <LabelSet/>
+      </Signal>
+    </Message>
+    <Message id="0x18FFD1F7" length="8" name="StatusLineVoltages" format="extended">
+      <Producer/>
+      <Notes></Notes>
+      <Signal name="L1Voltage_measured" offset="8" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="L2Voltage_measured" offset="23" length="16" endianess="little">
+      <Signal name="L2Voltage_measured" offset="24" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>
       </Signal>
-      <Signal name="L3Voltage_measured" offset="39" length="16" endianess="little">
+      <Signal name="L3Voltage_measured" offset="40" length="16" endianess="little">
         <Notes/>
         <Value slope="0.1"/>
         <LabelSet/>

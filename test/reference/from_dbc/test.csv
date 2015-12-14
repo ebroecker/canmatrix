@@ -1,0 +1,5 @@
+ID,Frame Name,Cycle Time [ms],Launch Type,Launch Parameter,Signal Byte No.,Signal Bit No.,Signal Name,Signal Function,Signal Length [Bit],Signal Default, Signal Not Available,Byteorder,testBU,recBU,Value,Name / Phys. Range,Function / Increment Unit
+123h,testFrame1,100,,,1,4,someTestSignal,Multi Line Signal comment with a-umlaut: ä,11,,,m,s,r,,0..500,5  specialCharUnit°$
+123h,testFrame1,100,,,3,4,Signal,,3,,,i,s,r,one,1,someUnit
+123h,testFrame1,100,,,3,4,Signal,,3,,,i,s,r,two,2,someUnit
+123h,testFrame1,100,,,3,4,Signal,,3,,,i,s,r,three,3,someUnit

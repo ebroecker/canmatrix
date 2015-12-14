@@ -5,11 +5,11 @@ enum Signal(1="one", 2="two", 3="three")
 
 {SENDRECEIVE}
 [testFrame1]
-ID=     123h // Multi Line Frame comment
+ID=     123h //  Multi  Line  Frame comment
 Type=Standard
 DLC=8
 CycleTime=100
-Var=someTestSignal unsigned 4,11 -m /u:specialCharUnit° /f:5 /o:1 /min:0 /max:500  // Multi Line Signal comment with a-umlaut: ä
+Var=someTestSignal unsigned 4,11 -m /u:specialCharUnit° /f:5 /o:1 /min:0 /max:500  // Multi  Line  Signal comment with a-umlaut: ä
 Var=Signal unsigned 20,3 -i /u:someUnit /min:0 /max:6 /e:Signal
 
 [extendedFrame]

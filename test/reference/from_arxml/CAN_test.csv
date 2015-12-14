@@ -1,0 +1,390 @@
+ID,Frame Name,Cycle Time [ms],Launch Type,Launch Parameter,Signal Byte No.,Signal Bit No.,Signal Name,Signal Function,Signal Length [Bit],Signal Default, Signal Not Available,Byteorder,Value,Name / Phys. Range,Function / Increment Unit
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,1,4,FaultClear_command,,2,,,m,Normal,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,1,4,FaultClear_command,,2,,,m,Clear Faults,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,1,4,FaultClear_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,1,4,FaultClear_command,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,1,6,Enable_command,,2,,,m,Disable,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,1,6,Enable_command,,2,,,m,Enable,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,1,6,Enable_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,1,6,Enable_command,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,3,6,MasterFollowerMode_command,,2,,,m,Master,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,3,6,MasterFollowerMode_command,,2,,,m,Follower,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,3,6,MasterFollowerMode_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,3,6,MasterFollowerMode_command,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,0,ForceRelayRelayK2_DCRun_comand,,2,,,m,Normal,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,0,ForceRelayRelayK2_DCRun_comand,,2,,,m,Force On,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,0,ForceRelayRelayK2_DCRun_comand,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,0,ForceRelayRelayK2_DCRun_comand,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,2,ForceRelayK1_Precharge_command,,2,,,m,Normal,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,2,ForceRelayK1_Precharge_command,,2,,,m,Force On,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,2,ForceRelayK1_Precharge_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,2,ForceRelayK1_Precharge_command,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,4,ForceRelayMX2_command,,2,,,m,Normal,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,4,ForceRelayMX2_command,,2,,,m,Force On,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,4,ForceRelayMX2_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,4,ForceRelayMX2_command,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,6,ForceRelayMX1_command,,2,,,m,Normal,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,6,ForceRelayMX1_command,,2,,,m,Force On,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,6,ForceRelayMX1_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,5,6,ForceRelayMX1_command,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,0,PhaseRotation_command,,2,,,m,Negative,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,0,PhaseRotation_command,,2,,,m,Positive,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,0,PhaseRotation_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,0,PhaseRotation_command,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,2,EnableSplitPhase_command,,2,,,m,Normal - Three Phase Mode,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,2,EnableSplitPhase_command,,2,,,m,Enable Split Phase Mode,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,2,EnableSplitPhase_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,2,EnableSplitPhase_command,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,4,EnableUPSMode_command,,2,,,m,Disable,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,4,EnableUPSMode_command,,2,,,m,Enable,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,4,EnableUPSMode_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,4,EnableUPSMode_command,,2,,,m,N/A,3
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,6,InvertHwEnable_command,,2,,,m,No invert,0
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,6,InvertHwEnable_command,,2,,,m,Invert,1
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,6,InvertHwEnable_command,,2,,,m,Error,2
+FF9B41h,CommandModeControlAPU2,,Spontaneous,,8,6,InvertHwEnable_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,1,4,FaultClear_command,,2,,,m,Normal,0
+FFAB41h,CommandModeControl,,Spontaneous,,1,4,FaultClear_command,,2,,,m,Clear Faults,1
+FFAB41h,CommandModeControl,,Spontaneous,,1,4,FaultClear_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,1,4,FaultClear_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,1,6,Enable_command,,2,,,m,Disable,0
+FFAB41h,CommandModeControl,,Spontaneous,,1,6,Enable_command,,2,,,m,Enable,1
+FFAB41h,CommandModeControl,,Spontaneous,,1,6,Enable_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,1,6,Enable_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,3,6,MasterFollowerMode_command,,2,,,m,Master,0
+FFAB41h,CommandModeControl,,Spontaneous,,3,6,MasterFollowerMode_command,,2,,,m,Follower,1
+FFAB41h,CommandModeControl,,Spontaneous,,3,6,MasterFollowerMode_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,3,6,MasterFollowerMode_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,5,0,ForceRelayRelayK2_DCRun_comand,,2,,,m,Normal,0
+FFAB41h,CommandModeControl,,Spontaneous,,5,0,ForceRelayRelayK2_DCRun_comand,,2,,,m,Force On,1
+FFAB41h,CommandModeControl,,Spontaneous,,5,0,ForceRelayRelayK2_DCRun_comand,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,5,0,ForceRelayRelayK2_DCRun_comand,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,5,2,ForceRelayK1_Precharge_command,,2,,,m,Normal,0
+FFAB41h,CommandModeControl,,Spontaneous,,5,2,ForceRelayK1_Precharge_command,,2,,,m,Force On,1
+FFAB41h,CommandModeControl,,Spontaneous,,5,2,ForceRelayK1_Precharge_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,5,2,ForceRelayK1_Precharge_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,5,4,ForceRelayMX2_command,,2,,,m,Normal,0
+FFAB41h,CommandModeControl,,Spontaneous,,5,4,ForceRelayMX2_command,,2,,,m,Force On,1
+FFAB41h,CommandModeControl,,Spontaneous,,5,4,ForceRelayMX2_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,5,4,ForceRelayMX2_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,5,6,ForceRelayMX1_command,,2,,,m,Normal,0
+FFAB41h,CommandModeControl,,Spontaneous,,5,6,ForceRelayMX1_command,,2,,,m,Force On,1
+FFAB41h,CommandModeControl,,Spontaneous,,5,6,ForceRelayMX1_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,5,6,ForceRelayMX1_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,8,0,PhaseRotation_command,,2,,,m,Negative,0
+FFAB41h,CommandModeControl,,Spontaneous,,8,0,PhaseRotation_command,,2,,,m,Positive,1
+FFAB41h,CommandModeControl,,Spontaneous,,8,0,PhaseRotation_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,8,0,PhaseRotation_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,8,2,EnableSplitPhase_command,,2,,,m,Normal - Three Phase Mode,0
+FFAB41h,CommandModeControl,,Spontaneous,,8,2,EnableSplitPhase_command,,2,,,m,Enable Split Phase Mode,1
+FFAB41h,CommandModeControl,,Spontaneous,,8,2,EnableSplitPhase_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,8,2,EnableSplitPhase_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,8,4,EnableUPSMode_command,,2,,,m,Disable,0
+FFAB41h,CommandModeControl,,Spontaneous,,8,4,EnableUPSMode_command,,2,,,m,Enable,1
+FFAB41h,CommandModeControl,,Spontaneous,,8,4,EnableUPSMode_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,8,4,EnableUPSMode_command,,2,,,m,N/A,3
+FFAB41h,CommandModeControl,,Spontaneous,,8,6,InvertHwEnable_command,,2,,,m,No invert,0
+FFAB41h,CommandModeControl,,Spontaneous,,8,6,InvertHwEnable_command,,2,,,m,Invert,1
+FFAB41h,CommandModeControl,,Spontaneous,,8,6,InvertHwEnable_command,,2,,,m,Error,2
+FFAB41h,CommandModeControl,,Spontaneous,,8,6,InvertHwEnable_command,,2,,,m,N/A,3
+CFF9C41h,CommandPowerAPU2,,Spontaneous,,1,0,RealPower_command,,32,,,m
+CFF9C41h,CommandPowerAPU2,,Spontaneous,,5,0,ReactivePower_command,,32,,,m
+CFF9E41h,CommandVFAPU2,,Spontaneous,,1,0,Voltage_command,,16,,,m,,,0.1
+CFF9E41h,CommandVFAPU2,,Spontaneous,,3,0,Frequency_command,,16,,,m,,,0.1
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,Param0,0
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,LVM_ClearingTimes1,1
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,LVM_ClearingTimes2,2
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,LFM_Limits,3
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,LFM_ClearingTimes,4
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,J1939_Interface,5
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,Fault_Config,6
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,ContactorDelays1,7
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,ContactorDelays2,8
+CFFAA41h,CommandSetNVParam,,Spontaneous,,1,0,CommandSetNVParam_MUX,,16,,,m,ContactorDelays3,9
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,0,Dummy,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,0,FreqHi,,16,,,m,,,0.1
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,0,FreqVeryLo,,16,,,m,,,0.1
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,0,K2Open,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,0,MX1Open,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,0,MX2Close,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,0,NodeID,,8,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,0,VOver120,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,0,VUnder50pct,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,6,ThermalOverload,,2,,,m,Warning,0
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,6,ThermalOverload,,2,,,m,Fault,1
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,6,ThermalOverload,,2,,,m,Error,2
+CFFAA41h,CommandSetNVParam,,Spontaneous,,3,6,ThermalOverload,,2,,,m,N/A,3
+CFFAA41h,CommandSetNVParam,,Spontaneous,,4,0,SA_Mask,,8,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,5,0,Baudrate,,4,,,m,125K,0
+CFFAA41h,CommandSetNVParam,,Spontaneous,,5,0,Baudrate,,4,,,m,250K,1
+CFFAA41h,CommandSetNVParam,,Spontaneous,,5,0,Baudrate,,4,,,m,500K,2
+CFFAA41h,CommandSetNVParam,,Spontaneous,,5,0,Baudrate,,4,,,m,1M,3
+CFFAA41h,CommandSetNVParam,,Spontaneous,,5,0,FreqLo,,16,,,m,,,0.1
+CFFAA41h,CommandSetNVParam,,Spontaneous,,5,0,K1Open,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,5,0,K2Close,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,5,0,MX1Close,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,5,0,V50to88pct,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,7,0,FreqHi,,16,,,m,,,0.1
+CFFAA41h,CommandSetNVParam,,Spontaneous,,7,0,FreqVeryLo,,16,,,m,,,0.1
+CFFAA41h,CommandSetNVParam,,Spontaneous,,7,0,K1Close,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,7,0,MX2Open,,16,,,m
+CFFAA41h,CommandSetNVParam,,Spontaneous,,7,0,V110to120pct,,16,,,m
+CFFAC41h,CommandPower,,Spontaneous,,1,0,RealPower_command,,32,,,m
+CFFAC41h,CommandPower,,Spontaneous,,5,0,ReactivePower_command,,32,,,m
+CFFAE41h,CommandVF,,Spontaneous,,1,0,Voltage_command,,16,,,m,,,0.1
+CFFAE41h,CommandVF,,Spontaneous,,3,0,Frequency_command,,16,,,m,,,0.1
+CFFAF41h,CommandFactoryControl,,Spontaneous,,1,6,WriteSerialNumber,,2,,,m,Disable,0
+CFFAF41h,CommandFactoryControl,,Spontaneous,,1,6,WriteSerialNumber,,2,,,m,Enable,1
+CFFAF41h,CommandFactoryControl,,Spontaneous,,1,6,WriteSerialNumber,,2,,,m,Error,2
+CFFAF41h,CommandFactoryControl,,Spontaneous,,1,6,WriteSerialNumber,,2,,,m,N/A,3
+CFFAF41h,CommandFactoryControl,,Spontaneous,,3,0,FactoryAccess,,16,,,m
+CFFAF41h,CommandFactoryControl,,Spontaneous,,5,0,SerialNumber,,32,,,m
+CFFC2F7h,StatusACParameters,,Spontaneous,,1,0,VoltageAC_measured,,16,,,m,,,0.1
+CFFC2F7h,StatusACParameters,,Spontaneous,,3,0,CurrentAC_measured,,16,,,m
+CFFC2F7h,StatusACParameters,,Spontaneous,,5,0,Frequency_measured,,16,,,m,,,0.1
+CFFC3F7h,StatusBits,,Spontaneous,,1,0,FaultClr_echo,,2,,,m,Normal,0
+CFFC3F7h,StatusBits,,Spontaneous,,1,0,FaultClr_echo,,2,,,m,Clear Faults,1
+CFFC3F7h,StatusBits,,Spontaneous,,1,0,FaultClr_echo,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,1,0,FaultClr_echo,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,1,2,Enable_echo,,2,,,m,Disable,0
+CFFC3F7h,StatusBits,,Spontaneous,,1,2,Enable_echo,,2,,,m,Enable,1
+CFFC3F7h,StatusBits,,Spontaneous,,1,2,Enable_echo,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,1,2,Enable_echo,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,Power On Reset,0
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,Ready,1
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,Following,2
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,Fault,3
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,Forming,4
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,5
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,6
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,7
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,8
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,9
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,10
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,11
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,12
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,13
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,14
+CFFC3F7h,StatusBits,,Spontaneous,,1,4,State_status,,4,,,m,N/A,15
+CFFC3F7h,StatusBits,,Spontaneous,,2,0,PowerCircuitEnabled_status,,2,,,m,Disabled,0
+CFFC3F7h,StatusBits,,Spontaneous,,2,0,PowerCircuitEnabled_status,,2,,,m,Enabled,1
+CFFC3F7h,StatusBits,,Spontaneous,,2,0,PowerCircuitEnabled_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,2,0,PowerCircuitEnabled_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,2,2,PowerAvailDC_status,,2,,,m,None,0
+CFFC3F7h,StatusBits,,Spontaneous,,2,2,PowerAvailDC_status,,2,,,m,Available,1
+CFFC3F7h,StatusBits,,Spontaneous,,2,2,PowerAvailDC_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,2,2,PowerAvailDC_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,2,4,PowerAvailAC_status,,2,,,m,None,0
+CFFC3F7h,StatusBits,,Spontaneous,,2,4,PowerAvailAC_status,,2,,,m,Available,1
+CFFC3F7h,StatusBits,,Spontaneous,,2,4,PowerAvailAC_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,2,4,PowerAvailAC_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,2,6,HardwareEnable_status,,2,,,m,Not Active,0
+CFFC3F7h,StatusBits,,Spontaneous,,2,6,HardwareEnable_status,,2,,,m,Active,1
+CFFC3F7h,StatusBits,,Spontaneous,,2,6,HardwareEnable_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,2,6,HardwareEnable_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,3,0,K2DCRunPermissive_status,,2,,,m,Open,0
+CFFC3F7h,StatusBits,,Spontaneous,,3,0,K2DCRunPermissive_status,,2,,,m,Closed,1
+CFFC3F7h,StatusBits,,Spontaneous,,3,0,K2DCRunPermissive_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,3,0,K2DCRunPermissive_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,3,2,K1PrechargePermissive_status,,2,,,m,Open,0
+CFFC3F7h,StatusBits,,Spontaneous,,3,2,K1PrechargePermissive_status,,2,,,m,Closed,1
+CFFC3F7h,StatusBits,,Spontaneous,,3,2,K1PrechargePermissive_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,3,2,K1PrechargePermissive_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,3,4,MX2Permissive_status,,2,,,m,Open,0
+CFFC3F7h,StatusBits,,Spontaneous,,3,4,MX2Permissive_status,,2,,,m,Closed,1
+CFFC3F7h,StatusBits,,Spontaneous,,3,4,MX2Permissive_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,3,4,MX2Permissive_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,3,6,MX1Permissive_status,,2,,,m,Open,0
+CFFC3F7h,StatusBits,,Spontaneous,,3,6,MX1Permissive_status,,2,,,m,Closed,1
+CFFC3F7h,StatusBits,,Spontaneous,,3,6,MX1Permissive_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,3,6,MX1Permissive_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,4,0,CANbus_status,,2,,,m,Normal,0
+CFFC3F7h,StatusBits,,Spontaneous,,4,0,CANbus_status,,2,,,m,Warning,1
+CFFC3F7h,StatusBits,,Spontaneous,,4,0,CANbus_status,,2,,,m,ErrorPassive,3
+CFFC3F7h,StatusBits,,Spontaneous,,4,0,CANbus_status,,2,,,m,N/A,4
+CFFC3F7h,StatusBits,,Spontaneous,,4,2,MessageValidVF_status,,2,,,m,Invalid,0
+CFFC3F7h,StatusBits,,Spontaneous,,4,2,MessageValidVF_status,,2,,,m,Valid,1
+CFFC3F7h,StatusBits,,Spontaneous,,4,2,MessageValidVF_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,4,2,MessageValidVF_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,4,4,MessageValidPowerCMD_status,,2,,,m,Invalid,0
+CFFC3F7h,StatusBits,,Spontaneous,,4,4,MessageValidPowerCMD_status,,2,,,m,Valid,1
+CFFC3F7h,StatusBits,,Spontaneous,,4,4,MessageValidPowerCMD_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,4,4,MessageValidPowerCMD_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,4,6,MessageValidModeControl_status,,2,,,m,Invalid,0
+CFFC3F7h,StatusBits,,Spontaneous,,4,6,MessageValidModeControl_status,,2,,,m,Valid,1
+CFFC3F7h,StatusBits,,Spontaneous,,4,6,MessageValidModeControl_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,4,6,MessageValidModeControl_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,5,0,LineVoltageDetected_status,,2,,,m,No_Voltage,0
+CFFC3F7h,StatusBits,,Spontaneous,,5,0,LineVoltageDetected_status,,2,,,m,Voltage_Detected,1
+CFFC3F7h,StatusBits,,Spontaneous,,5,0,LineVoltageDetected_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,5,0,LineVoltageDetected_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,5,2,PhaseRotation_status,,2,,,m,Negative,0
+CFFC3F7h,StatusBits,,Spontaneous,,5,2,PhaseRotation_status,,2,,,m,Positive,1
+CFFC3F7h,StatusBits,,Spontaneous,,5,2,PhaseRotation_status,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,5,2,PhaseRotation_status,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,5,4,EnableSplitPhase_echo,,2,,,m,Normal - Three Phase Mode,0
+CFFC3F7h,StatusBits,,Spontaneous,,5,4,EnableSplitPhase_echo,,2,,,m,Enable Split Phase Mode,1
+CFFC3F7h,StatusBits,,Spontaneous,,5,4,EnableSplitPhase_echo,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,5,4,EnableSplitPhase_echo,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,5,6,EnableUPSMode_echo,,2,,,m,Disable,0
+CFFC3F7h,StatusBits,,Spontaneous,,5,6,EnableUPSMode_echo,,2,,,m,Enable,1
+CFFC3F7h,StatusBits,,Spontaneous,,5,6,EnableUPSMode_echo,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,5,6,EnableUPSMode_echo,,2,,,m,N/A,3
+CFFC3F7h,StatusBits,,Spontaneous,,6,6,PhaseRotation_echo,,2,,,m,Negative,0
+CFFC3F7h,StatusBits,,Spontaneous,,6,6,PhaseRotation_echo,,2,,,m,Positive,1
+CFFC3F7h,StatusBits,,Spontaneous,,6,6,PhaseRotation_echo,,2,,,m,Error,2
+CFFC3F7h,StatusBits,,Spontaneous,,6,6,PhaseRotation_echo,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,1,0,OvercurrentDC_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,1,0,OvercurrentDC_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,1,0,OvercurrentDC_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,1,0,OvercurrentDC_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,1,2,LossOfAC_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,1,2,LossOfAC_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,1,2,LossOfAC_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,1,2,LossOfAC_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,1,4,OvercurrentAC_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,1,4,OvercurrentAC_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,1,4,OvercurrentAC_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,1,4,OvercurrentAC_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,1,6,GeneralFault_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,1,6,GeneralFault_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,1,6,GeneralFault_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,1,6,GeneralFault_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,2,0,OvertempPowerDevice_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,2,0,OvertempPowerDevice_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,2,0,OvertempPowerDevice_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,2,0,OvertempPowerDevice_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,2,2,OvertempInternal_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,2,2,OvertempInternal_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,2,2,OvertempInternal_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,2,2,OvertempInternal_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,2,4,UndervoltageDC_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,2,4,UndervoltageDC_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,2,4,UndervoltageDC_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,2,4,UndervoltageDC_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,2,6,OvervoltageDC_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,2,6,OvervoltageDC_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,2,6,OvervoltageDC_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,2,6,OvervoltageDC_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,3,0,LossValidControlMessage_status,,4,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,3,0,LossValidControlMessage_status,,4,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,3,0,LossValidControlMessage_status,,4,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,3,0,LossValidControlMessage_status,,4,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,3,4,ControlHardwareFail_status,,4,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,3,4,ControlHardwareFail_status,,4,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,3,4,ControlHardwareFail_status,,4,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,3,4,ControlHardwareFail_status,,4,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,4,0,InvalidEESection_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,4,0,InvalidEESection_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,4,0,InvalidEESection_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,4,0,InvalidEESection_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,4,2,InvalidEEHeader_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,4,2,InvalidEEHeader_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,4,2,InvalidEEHeader_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,4,2,InvalidEEHeader_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,4,4,IllegalTransition_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,4,4,IllegalTransition_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,4,4,IllegalTransition_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,4,4,IllegalTransition_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,4,6,EStopShutdown_status,,2,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,4,6,EStopShutdown_status,,2,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,4,6,EStopShutdown_status,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,4,6,EStopShutdown_status,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,5,6,ThermalOverload,,2,,,m,Warning,0
+CFFC8F7h,StatusFaults,,Spontaneous,,5,6,ThermalOverload,,2,,,m,Fault,1
+CFFC8F7h,StatusFaults,,Spontaneous,,5,6,ThermalOverload,,2,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,5,6,ThermalOverload,,2,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,6,4,BridgeBVoltageOk_status,,1,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,6,4,BridgeBVoltageOk_status,,1,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,6,4,BridgeBVoltageOk_status,,1,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,6,4,BridgeBVoltageOk_status,,1,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,6,5,BridgeBFault_status,,3,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,6,5,BridgeBFault_status,,3,,,m,FLT_A,1
+CFFC8F7h,StatusFaults,,Spontaneous,,6,5,BridgeBFault_status,,3,,,m,N/A,2
+CFFC8F7h,StatusFaults,,Spontaneous,,6,5,BridgeBFault_status,,3,,,m,FLT_C,3
+CFFC8F7h,StatusFaults,,Spontaneous,,6,5,BridgeBFault_status,,3,,,m,OverVoltage,4
+CFFC8F7h,StatusFaults,,Spontaneous,,6,5,BridgeBFault_status,,3,,,m,FLT_B,5
+CFFC8F7h,StatusFaults,,Spontaneous,,6,5,BridgeBFault_status,,3,,,m,Overcurrent,6
+CFFC8F7h,StatusFaults,,Spontaneous,,6,5,BridgeBFault_status,,3,,,m,5V,7
+CFFC8F7h,StatusFaults,,Spontaneous,,8,4,BridgeAVoltageOk_status,,1,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,8,4,BridgeAVoltageOk_status,,1,,,m,Fault Active,1
+CFFC8F7h,StatusFaults,,Spontaneous,,8,4,BridgeAVoltageOk_status,,1,,,m,Error,2
+CFFC8F7h,StatusFaults,,Spontaneous,,8,4,BridgeAVoltageOk_status,,1,,,m,N/A,3
+CFFC8F7h,StatusFaults,,Spontaneous,,8,5,BridgeAFault_status,,3,,,m,Normal,0
+CFFC8F7h,StatusFaults,,Spontaneous,,8,5,BridgeAFault_status,,3,,,m,FLT_A,1
+CFFC8F7h,StatusFaults,,Spontaneous,,8,5,BridgeAFault_status,,3,,,m,N/A,2
+CFFC8F7h,StatusFaults,,Spontaneous,,8,5,BridgeAFault_status,,3,,,m,FLT_C,3
+CFFC8F7h,StatusFaults,,Spontaneous,,8,5,BridgeAFault_status,,3,,,m,OverVoltage,4
+CFFC8F7h,StatusFaults,,Spontaneous,,8,5,BridgeAFault_status,,3,,,m,FLT_B,5
+CFFC8F7h,StatusFaults,,Spontaneous,,8,5,BridgeAFault_status,,3,,,m,Overcurrent,6
+CFFC8F7h,StatusFaults,,Spontaneous,,8,5,BridgeAFault_status,,3,,,m,5V,7
+CFFCAF6h,MasterMeasuredPower,,Spontaneous,,1,0,RealPower_measured,,32,,,m
+CFFCAF6h,MasterMeasuredPower,,Spontaneous,,5,0,ReactivePower_measured,,32,,,m
+CFFCAF7h,StatusMeasuredPower,,Spontaneous,,1,0,RealPower_measured,,32,,,m
+CFFCAF7h,StatusMeasuredPower,,Spontaneous,,5,0,ReactivePower_measured,,32,,,m
+18FFC4F7h,StatusCommandedPower,,Spontaneous,,1,0,RealPower_echo,,32,,,m
+18FFC4F7h,StatusCommandedPower,,Spontaneous,,5,0,ReactivePower_echo,,32,,,m
+18FFC9F7h,StatusCommandVF,,Spontaneous,,1,0,Voltage_echo,,16,,,m,,,0.1
+18FFC9F7h,StatusCommandVF,,Spontaneous,,3,0,Frequency_echo,,16,,,m,,,0.1
+18FFCBF7h,StatusTemps,,Spontaneous,,1,0,TempInlet_measured,,16,,,m,,,0.1
+18FFCBF7h,StatusTemps,,Spontaneous,,3,0,TempInternal_measured,,16,,,m,,,0.1
+18FFCBF7h,StatusTemps,,Spontaneous,,5,0,ConverterLosses,,16,,,m
+18FFD0F7h,StatusLineCurrents,,Spontaneous,,1,0,L1Current_measured,,16,,,m
+18FFD0F7h,StatusLineCurrents,,Spontaneous,,3,0,L2Current_measured,,16,,,m
+18FFD0F7h,StatusLineCurrents,,Spontaneous,,5,0,L3Current_measured,,16,,,m
+18FFD1F7h,StatusLineVoltages,,Spontaneous,,1,0,L1Voltage_measured,,16,,,m,,,0.1
+18FFD1F7h,StatusLineVoltages,,Spontaneous,,3,0,L2Voltage_measured,,16,,,m,,,0.1
+18FFD1F7h,StatusLineVoltages,,Spontaneous,,5,0,L3Voltage_measured,,16,,,m,,,0.1
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,ActParam0,0
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,ActLVM_ClearingTimes1,1
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,ActLVM_ClearingTimes2,2
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,ActLFM_Limits,3
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,ActLFM_ClearingTimes,4
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,StatusJ1939_Interface,5
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,StatusFault_Config,6
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,StatusContactorDelays1,7
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,StatusContactorDelays2,8
+1CFFA9F7h,StatusNVParam,,Spontaneous,,1,0,StatusNVParam_MUX,,16,,,m,StatusContactorDelays3,9
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,0,Dummy,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,0,FreqHi,,16,,,m,,,0.1
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,0,FreqVeryLo,,16,,,m,,,0.1
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,0,StatusK2Open,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,0,StatusMX1Open,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,0,StatusMX2Close,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,0,StatusNodeID,,8,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,0,VOver120,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,0,VUnder50pct,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,6,StatusThermalOverload,,2,,,m,Warning,0
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,6,StatusThermalOverload,,2,,,m,Fault,1
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,6,StatusThermalOverload,,2,,,m,Error,2
+1CFFA9F7h,StatusNVParam,,Spontaneous,,3,6,StatusThermalOverload,,2,,,m,N/A,3
+1CFFA9F7h,StatusNVParam,,Spontaneous,,4,0,StatusSA_Mask,,8,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,5,0,FreqLo,,16,,,m,,,0.1
+1CFFA9F7h,StatusNVParam,,Spontaneous,,5,0,StatusBaudrate,,4,,,m,125K,0
+1CFFA9F7h,StatusNVParam,,Spontaneous,,5,0,StatusBaudrate,,4,,,m,250K,1
+1CFFA9F7h,StatusNVParam,,Spontaneous,,5,0,StatusBaudrate,,4,,,m,500K,2
+1CFFA9F7h,StatusNVParam,,Spontaneous,,5,0,StatusBaudrate,,4,,,m,1M,3
+1CFFA9F7h,StatusNVParam,,Spontaneous,,5,0,StatusK1Open,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,5,0,StatusK2Close,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,5,0,StatusMX1Close,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,5,0,V50to88pct,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,7,0,FreqHi,,16,,,m,,,0.1
+1CFFA9F7h,StatusNVParam,,Spontaneous,,7,0,FreqVeryLo,,16,,,m,,,0.1
+1CFFA9F7h,StatusNVParam,,Spontaneous,,7,0,StatusK1Close,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,7,0,StatusMX2Open,,16,,,m
+1CFFA9F7h,StatusNVParam,,Spontaneous,,7,0,V110to120pct,,16,,,m
+1CFFC1F7h,softwareRev,,Spontaneous,,1,0,ControlSwRev,,16,,,m,,,0.01
+1CFFC1F7h,softwareRev,,Spontaneous,,3,0,InterfaceRev,,16,,,m,,,0.01
+1CFFC1F7h,softwareRev,,Spontaneous,,5,0,BuildTime,,32,,,m
+1CFFC5F7h,StatusControlVoltage,,Spontaneous,,1,0,v5p0_Supply,,16,,,m,,,0.01
+1CFFC5F7h,StatusControlVoltage,,Spontaneous,,3,0,v3p3_Supply,,16,,,m,,,0.01
+1CFFC5F7h,StatusControlVoltage,,Spontaneous,,5,0,v24_Supply,,16,,,m,,,0.01
+1CFFC5F7h,StatusControlVoltage,,Spontaneous,,7,0,v15_Supply,,16,,,m,,,0.01
+1CFFC6F7h,StatusControlVolts2,,Spontaneous,,1,0,n15V_Supply,,16,,,m,,,0.01
+1CFFC6F7h,StatusControlVolts2,,Spontaneous,,5,0,DiodeTemperature,,16,,,m
+1CFFC6F7h,StatusControlVolts2,,Spontaneous,,7,0,IGBTTemperature,,16,,,m
+1CFFC7F7h,StatusDCParameters,,Spontaneous,,1,0,VoltageDCInput_measured,,16,,,m
+1CFFC7F7h,StatusDCParameters,,Spontaneous,,3,0,VoltageDCBus,,16,,,m
+1CFFC7F7h,StatusDCParameters,,Spontaneous,,5,0,CurrentDC_measured,,16,,,m
+1CFFCCF7h,serialNumber,,Spontaneous,,1,0,SerialNumber,,32,,,m
+1CFFCDF7h,softwareRevHash,,Spontaneous,,1,0,Hash,,28,,,m

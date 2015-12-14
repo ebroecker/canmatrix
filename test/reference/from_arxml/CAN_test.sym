@@ -1,6 +1,5 @@
 FormatVersion=5.0 // Do not edit this line!
 Title="canmatrix-Export"
-
 {ENUMS}
 enum Enable_command(0="Disable", 1="Enable", 2="Error", 3="N/A")
 enum FaultClear_command(0="Normal", 1="Clear Faults", 2="Error", 3="N/A")

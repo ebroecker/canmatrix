@@ -62,9 +62,6 @@ for i in import_types:
                 # TODO: be more specific: OSError: [Errno 17] File exists: 'converted/from_arxml'
                 pass
             out_file = os.path.join(directory, out_file)
-            if t == 'dbf':
-                # TODO: https://github.com/ebroecker/canmatrix/issues/9
-                continue
             canmatrix.convert.convert(in_file, out_file)
 
 exit_code = subprocess.call(['diff', '-r', 'reference', 'converted'])

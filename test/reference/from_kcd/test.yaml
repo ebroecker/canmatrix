@@ -9,18 +9,20 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 16755521
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Operational commands are received by the module via control bits within
       this message.
-    _extended: 0
+    _extended: 1
     _name: CommandModeControl
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Run command.  When set to a value of 'Enable', causes transition to
+        grid forming or grid following mode depending on whether AC power is detected.  Must
+        be set to 'Disable' to leave POR or FAULTED state.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -29,14 +31,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 1
+      _startbit: 0
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Clears the latched fault message.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -45,14 +47,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 3
+      _startbit: 2
       _unit: ''
       _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Inverts the logic of the Hardware Enable input.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -61,14 +63,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 57
+      _startbit: 56
       _unit: ''
       _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Enables uninterruptible operation when transitioning from GRID FOLLOWING
+        to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid
+        voltage is interrupted, the module will transition to GRID FORMING mode, with
+        no interruption in power.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -77,14 +82,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 59
+      _startbit: 58
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Dictates to the module whether it is connected to a three-phase (four
+        wire) or split phase (L1, L2 and N) electrical system.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -93,7 +99,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 61
+      _startbit: 60
       _unit: ''
       _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
         3: N/A}
@@ -101,7 +107,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: If set to 'Force On,' will force the relay closed, overriding firmware
+        state machine commands.  Meant for diagnostic purposes only.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -110,14 +117,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 33
+      _startbit: 32
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: If set to 'Force On,' will force the relay closed, overriding firmware
+        state machine commands.  Meant for diagnostic purposes only.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -126,14 +134,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 35
+      _startbit: 34
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: If set to 'Force On,' will force the relay closed, overriding firmware
+        state machine commands.  Meant for diagnostic purposes only.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -142,14 +151,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 37
+      _startbit: 36
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: If set to 'Force On,' will force the relay closed, overriding firmware
+        state machine commands.  Meant for diagnostic purposes only.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -158,14 +168,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 39
+      _startbit: 38
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Specifies phase rotation direction.  Only active while transitioning
+        from READY to GRID_FORMING.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -174,14 +185,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 63
+      _startbit: 62
       _unit: ''
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Specifies what power command the inverter will follow in GRID FOLLOWING
+        mode.  When configured as Master, CommandPower will be used as the power command.  When
+        configured as Slave, the values in StatusMeasuredPower of the master inverter
+        will be used.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -190,7 +204,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 17
+      _startbit: 16
       _unit: ''
       _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
       _valuetype: +
@@ -198,18 +212,19 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218082369
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
-    _extended: 0
+    _extended: 1
     _name: CommandPower
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Commanded real power (W) while in grid following mode - positive real
+        power is defined as power being put into the ac network.
       _factor: '1'
       _max: '90000'
       _min: '-90000'
@@ -218,14 +233,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 7
+      _startbit: 24
       _unit: W
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Commanded reactive power (VA) while in grid following mode - positive
+        reactive power is defined as the converter having a leading power factor.
       _factor: '1'
       _max: '90000'
       _min: '-90000'
@@ -234,7 +250,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 39
+      _startbit: 56
       _unit: VA
       _values: {}
       _valuetype: +
@@ -242,20 +258,20 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218082881
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Sets the desired voltage and frequency for the module to produce while
       in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
       modes, this message is used to set the nominal voltage levels for detection
       of acceptable AC line voltage.
-    _extended: 0
+    _extended: 1
     _name: CommandVF
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Desired output voltage while in grid forming mode.
       _factor: '0.1'
       _max: '500'
       _min: '10'
@@ -264,14 +280,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Desired output frequency while in grid forming mode.
       _factor: '0.1'
       _max: '65'
       _min: '45'
@@ -280,7 +296,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: Hz
       _values: {}
       _valuetype: +
@@ -288,17 +304,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218090230
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Returns the actual measured power.
-    _extended: 0
+    _extended: 1
     _name: MasterMeasuredPower
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured real power of master unit.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -307,14 +323,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 7
+      _startbit: 24
       _unit: W
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured reactive power of master unit.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -323,7 +339,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 39
+      _startbit: 56
       _unit: VA
       _values: {}
       _valuetype: +
@@ -331,11 +347,11 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218083137
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: ''
-    _extended: 0
+    _extended: 1
     _name: CommandFactoryControl
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
@@ -350,7 +366,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 1
+      _startbit: 0
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
@@ -366,7 +382,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 39
+      _startbit: 56
       _unit: ''
       _values: {}
       _valuetype: +
@@ -382,7 +398,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ''
       _values: {}
       _valuetype: +
@@ -390,13 +406,13 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218081857
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Provides access to configure non-volatile parameters.  Note that these
       parameters can only be set when the inverter's power stage is disabled (PowerCircuitEnabled_status
       in StatusBits message is 'Disabled.')
-    _extended: 0
+    _extended: 1
     _name: CommandSetNVParam
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
@@ -411,7 +427,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: ''
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: ''
       _values: {0: Param0, 1: LVM_ClearingTimes1, 2: LVM_ClearingTimes2, 3: LFM_Limits,
         4: LFM_ClearingTimes, 5: J1939_Interface, 6: Fault_Config, 7: ContactorDelays1,
@@ -429,14 +445,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the fault trip time when Line-to-line rms voltage for a
+        phase remains under 50 percent of the nominal value specified in the CommandVF
+        message while the inverter is running in GRID FOLLOWING mode.
       _factor: '1'
       _max: '30000'
       _min: '1'
@@ -445,14 +463,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the fault trip time when Line-to-line rms voltage for a
+        phase remains between 50 and 88 percent of the nominal value specified in
+        the CommandVF message while the inverter is running in GRID FOLLOWING mode.
       _factor: '1'
       _max: '30000'
       _min: '1'
@@ -461,14 +481,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the fault trip time when Line-to-line rms voltage for a
+        phase remains between 110 and 120 percent of the nominal value specified in
+        the CommandVF message while the inverter is running in GRID FOLLOWING mode.
       _factor: '1'
       _max: '30000'
       _min: '1'
@@ -477,14 +499,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the fault trip time when Line-to-line rms voltage for a
+        phase remains Over 120 percent of the nominal value specified in the CommandVF
+        message while the inverter is running in GRID FOLLOWING mode.
       _factor: '1'
       _max: '30000'
       _min: '1'
@@ -493,14 +517,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the upper bound, above which the frequency monitor will
+        trip if the line frequency remains for the time specified in FreqHi of the
+        LFM_ClearingTimes Mux.
       _factor: '0.1'
       _max: '70'
       _min: '40'
@@ -509,14 +535,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the upper bound, in which the frequency monitor will trip
+        if the line frequency remains below this bound but above the value of FreqVeryLo
+        for the time specified in FreqLo of the LFM_ClearingTimes Mux.
       _factor: '0.1'
       _max: '70'
       _min: '40'
@@ -525,14 +553,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the upper bound, in which the frequency monitor will trip
+        if the line frequency remains below this bound but above the value of FreqVeryLo
+        for the time specified in FreqLo of the LFM_ClearingTimes Mux.
       _factor: '0.1'
       _max: '70'
       _min: '40'
@@ -541,14 +571,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: Hz
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the time it will take for a fault trip to occur when line
+        frequency remains below the value specified in FreqVeryLo of the LFM_Limits
+        Mux when the inverter is in GRID FOLLOWING mode.
       _factor: '1'
       _max: '160'
       _min: '160'
@@ -557,14 +589,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the time it will take for a fault trip to occur when line
+        frequency remains between the value specified in FreqLo and FreqVeryLo of
+        the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.
       _factor: '1'
       _max: '30000'
       _min: '1'
@@ -573,14 +607,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Determines the time it will take for a fault trip to occur when line
+        frequency remains above the value specified in FreqHi of the LFM_Limits Mux
+        when the inverter is in GRID FOLLOWING mode.
       _factor: '1'
       _max: '160'
       _min: '160'
@@ -589,14 +625,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: J1939 Source Address node for the module.
       _factor: '1'
       _max: '247'
       _min: '0'
@@ -605,14 +641,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 8
-      _startbit: 23
+      _startbit: 16
       _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Not presently used.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -621,14 +657,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 8
-      _startbit: 31
+      _startbit: 24
       _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: CAN baudrate
       _factor: '1'
       _max: '3'
       _min: '0'
@@ -637,14 +673,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 4
-      _startbit: 39
+      _startbit: 36
       _unit: ''
       _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Configures action to take when thermal overload input is active.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -653,14 +689,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 17
+      _startbit: 16
       _unit: ''
       _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the MX1 contactor to open.
       _factor: '1'
       _max: '5000'
       _min: '0'
@@ -669,14 +705,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the MX1 contactor to close.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -685,14 +721,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the MX2 contactor to open.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -701,14 +737,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the MX2 contactor to open.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -717,14 +753,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the K1 contactor to open.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -733,14 +769,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the K1 contactor to close.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -749,14 +785,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the K2 contactor to open.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -765,14 +801,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the K2 contactor to close.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -781,7 +817,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
@@ -789,18 +825,20 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 16751425
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Operational commands are received by the module via control bits within
       this message.
-    _extended: 0
+    _extended: 1
     _name: CommandModeControlAPU2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Run command.  When set to a value of 'Enable', causes transition to
+        grid forming or grid following mode depending on whether AC power is detected.  Must
+        be set to 'Disable' to leave POR or FAULTED state.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -809,14 +847,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 1
+      _startbit: 0
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Clears the latched fault message.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -825,14 +863,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 3
+      _startbit: 2
       _unit: ''
       _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Inverts the logic of the Hardware Enable input.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -841,14 +879,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 57
+      _startbit: 56
       _unit: ''
       _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Enables uninterruptible operation when transitioning from GRID FOLLOWING
+        to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid
+        voltage is interrupted, the module will transition to GRID FORMING mode, with
+        no interruption in power.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -857,14 +898,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 59
+      _startbit: 58
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Dictates to the module whether it is connected to a three-phase (four
+        wire) or split phase (L1, L2 and N) electrical system.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -873,7 +915,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 61
+      _startbit: 60
       _unit: ''
       _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
         3: N/A}
@@ -881,7 +923,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: If set to 'Force On,' will force the relay closed, overriding firmware
+        state machine commands.  Meant for diagnostic purposes only.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -890,14 +933,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 33
+      _startbit: 32
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: If set to 'Force On,' will force the relay closed, overriding firmware
+        state machine commands.  Meant for diagnostic purposes only.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -906,14 +950,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 35
+      _startbit: 34
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: If set to 'Force On,' will force the relay closed, overriding firmware
+        state machine commands.  Meant for diagnostic purposes only.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -922,14 +967,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 37
+      _startbit: 36
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: If set to 'Force On,' will force the relay closed, overriding firmware
+        state machine commands.  Meant for diagnostic purposes only.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -938,14 +984,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 39
+      _startbit: 38
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Specifies phase rotation direction.  Only active while transitioning
+        from READY to GRID_FORMING
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -954,14 +1001,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 63
+      _startbit: 62
       _unit: ''
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Specifies what power command the inverter will follow in GRID FOLLOWING
+        mode.  When configured as Master, CommandPower will be used as the power command.  When
+        configured as Slave, the values in StatusMeasuredPower of the master inverter
+        will be used.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -970,7 +1020,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 17
+      _startbit: 16
       _unit: ''
       _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
       _valuetype: +
@@ -978,18 +1028,19 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218078273
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
-    _extended: 0
+    _extended: 1
     _name: CommandPowerAPU2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Commanded real power (W) while in grid following mode - positive real
+        power is defined as power being put into the ac network.
       _factor: '1'
       _max: '90000'
       _min: '-90000'
@@ -998,14 +1049,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 7
+      _startbit: 24
       _unit: W
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Commanded reactive power (VA) while in grid following mode - positive
+        reactive power is defined as the converter having a leading power factor.
       _factor: '1'
       _max: '90000'
       _min: '-90000'
@@ -1014,7 +1066,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 39
+      _startbit: 56
       _unit: VA
       _values: {}
       _valuetype: +
@@ -1022,20 +1074,20 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218078785
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Sets the desired voltage and frequency for the module to produce while
       in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
       modes, this message is used to set the nominal voltage levels for detection
       of acceptable AC line voltage.
-    _extended: 0
+    _extended: 1
     _name: CommandVFAPU2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Desired output voltage while in grid forming mode.
       _factor: '0.1'
       _max: '500'
       _min: '10'
@@ -1044,14 +1096,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Desired output frequency while in grid forming mode.
       _factor: '0.1'
       _max: '65'
       _min: '45'
@@ -1060,7 +1112,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: Hz
       _values: {}
       _valuetype: +
@@ -1068,17 +1120,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218090231
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Returns the actual measured power.
-    _extended: 0
+    _extended: 1
     _name: MasterMeasuredPowerAPU2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured real power of master unit.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1087,14 +1139,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 7
+      _startbit: 24
       _unit: W
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured reactive power of master unit.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1103,7 +1155,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 39
+      _startbit: 56
       _unit: VA
       _values: {}
       _valuetype: +
@@ -1111,17 +1163,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218090231
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Returns the actual measured power.
-    _extended: 0
+    _extended: 1
     _name: StatusMeasuredPower
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured real power.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1130,14 +1182,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 7
+      _startbit: 24
       _unit: W
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured reactive power.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1146,7 +1198,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 39
+      _startbit: 56
       _unit: VA
       _values: {}
       _valuetype: +
@@ -1154,17 +1206,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 419415287
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Echoes the commanded power (P&Q) as received in CommandPQ.
-    _extended: 0
+    _extended: 1
     _name: StatusCommandedPower
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Echoed real power command.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1173,14 +1225,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 7
+      _startbit: 24
       _unit: W
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Echoed reactive power command.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1189,7 +1241,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 39
+      _startbit: 56
       _unit: VA
       _values: {}
       _valuetype: +
@@ -1197,17 +1249,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218088439
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Bits representing the status of the power module.
-    _extended: 0
+    _extended: 1
     _name: StatusBits
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Active control mode.
       _factor: '1'
       _max: '7'
       _min: '0'
@@ -1216,7 +1268,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 4
-      _startbit: 3
+      _startbit: 0
       _unit: ''
       _values: {0: Power On Reset, 1: Ready, 2: Following, 3: Fault, 4: Forming, 5: N/A,
         6: N/A, 7: N/A, 8: N/A, 9: N/A, 10: N/A, 11: N/A, 12: N/A, 13: N/A, 14: N/A,
@@ -1225,7 +1277,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: MX2 relay status
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1234,14 +1286,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 19
+      _startbit: 18
       _unit: ''
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates that AC power is connected and that voltage and frequency
+        are within nominal ranges.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1250,14 +1303,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 11
+      _startbit: 10
       _unit: ''
       _values: {0: None, 1: Available, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates that DC bus voltage is within operating range.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1266,14 +1319,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 13
+      _startbit: 12
       _unit: ''
       _values: {0: None, 1: Available, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates whether the switching devices are active.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1282,14 +1335,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 15
+      _startbit: 14
       _unit: ''
       _values: {0: Disabled, 1: Enabled, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Status of the hardware enable.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1298,14 +1351,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 9
+      _startbit: 8
       _unit: ''
       _values: {0: Not Active, 1: Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Echos the state of the Enable command withing the CommandModeControl
+        message.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1314,14 +1368,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 5
+      _startbit: 4
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Echos the state of the FaultClear command withing the CommandModeControl
+        message.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1330,14 +1385,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 7
+      _startbit: 6
       _unit: ''
       _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates the validity of the CommandModeControl message.  Message
+        must be received at least once per second and parameter data within range
+        to be considered valid.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1346,14 +1403,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 25
+      _startbit: 24
       _unit: ''
       _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: MX1 relay status
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1362,14 +1419,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 17
+      _startbit: 16
       _unit: ''
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: K2 DC Run relay status.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1378,14 +1435,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 23
+      _startbit: 22
       _unit: ''
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: K1 precharge relay status.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1394,14 +1451,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 21
+      _startbit: 20
       _unit: ''
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates the validity of the CommandPQ message.  Message must be
+        received at least once per second and parameter data within range to be considered
+        valid.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1410,14 +1469,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 27
+      _startbit: 26
       _unit: ''
       _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates the validity of the CommandVF message.  Message must be
+        received at least once per second and parameter data within range to be considered
+        valid.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1426,14 +1487,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 29
+      _startbit: 28
       _unit: ''
       _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Operational status of the CAN bus driver.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1442,14 +1503,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 31
+      _startbit: 30
       _unit: ''
       _values: {0: Normal, 1: Warning, 3: ErrorPassive, 4: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Echos the state of the EnableUPSMode command withing the CommandModeControl
+        message.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1458,14 +1520,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 33
+      _startbit: 32
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Echos the state of the EnableSplitPhase command withing the CommandModeControl
+        message.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1474,7 +1537,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 35
+      _startbit: 34
       _unit: ''
       _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
         3: N/A}
@@ -1482,7 +1545,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation
+        is considered positive.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1491,14 +1555,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 37
+      _startbit: 36
       _unit: ''
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Flag indicating if voltage is detected on L1, L2 or L3.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1507,14 +1571,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 39
+      _startbit: 38
       _unit: ''
       _values: {0: No_Voltage, 1: Voltage_Detected, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Echos the state of PhaseRotation_command withing the CommandModeControl
+        message.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1523,7 +1588,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 41
+      _startbit: 40
       _unit: ''
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       _valuetype: +
@@ -1531,18 +1596,18 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 486524407
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Lists present voltage of each power supply on the control board (24V,
       15V, 5V, and 3.3V.)
-    _extended: 0
+    _extended: 1
     _name: StatusControlVoltage
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Present voltage of the control board 5V power suppy.
       _factor: '0.01'
       _max: '1'
       _min: '0'
@@ -1551,14 +1616,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: V
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Present voltage of the control board 3.3V power supply.
       _factor: '0.01'
       _max: '1'
       _min: '0'
@@ -1567,14 +1632,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: V
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Present voltage of the control board 24V power supply.
       _factor: '0.01'
       _max: '1'
       _min: '0'
@@ -1583,14 +1648,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: V
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Present voltage of the control board 15V power supply.
       _factor: '0.01'
       _max: '1'
       _min: '0'
@@ -1599,7 +1664,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: V
       _values: {}
       _valuetype: +
@@ -1607,18 +1672,18 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 419417079
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Returns the inlet water temperature to the module as well as module
       internal ambient temperature.
-    _extended: 0
+    _extended: 1
     _name: StatusTemps
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Coolant inlet temperature
       _factor: '0.1'
       _max: '1'
       _min: '0'
@@ -1627,14 +1692,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: C
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Internal ambient temperature
       _factor: '0.1'
       _max: '1'
       _min: '0'
@@ -1643,14 +1708,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: C
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Power converter thermal loss
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1659,7 +1724,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: W
       _values: {}
       _valuetype: +
@@ -1667,17 +1732,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218089719
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Fault bits.
-    _extended: 0
+    _extended: 1
     _name: StatusFaults
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates whether a hardware trip has been activated.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1693,7 +1758,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Set immediately upon the software detection of AC current exceeding
+        the threshold value.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1702,14 +1768,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 3
+      _startbit: 2
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates whether a hardware trip has been activated.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1725,7 +1791,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Set immediately upon the software detection of DC voltage exceeding
+        the threshold value.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1734,14 +1801,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 9
+      _startbit: 8
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Set immediately upon the software detection of an IGBT temperature
+        exceeding the threshold value.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1750,14 +1818,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 15
+      _startbit: 14
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Set immediately upon the software detection of an internal inverter
+        temperature exceeding the threshold value.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1766,14 +1835,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 13
+      _startbit: 12
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Set whenever a control message required for operation contains out
+        of range data or has not been received within the required timeout period.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1782,14 +1852,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 4
-      _startbit: 23
+      _startbit: 20
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates loss of DC source voltage.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1798,14 +1868,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 11
+      _startbit: 10
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Set upon the failure of control hardware to return expected response.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1814,14 +1884,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 4
-      _startbit: 19
+      _startbit: 16
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Set immediately upon the software detection of DC current exceeding
+        the threshold value.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1830,14 +1901,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 7
+      _startbit: 6
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Will be set any time a fault shutdown has occurred.  It is always
+        accompanied by an additional fault descriptor.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1846,14 +1918,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 1
+      _startbit: 0
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: In grid following mode, this fault will be triggered if AC voltage
+        or frequency goes outside of nominal bounds and EnableUPSMode is not set in
+        the CommandModeControl message.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1862,14 +1936,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 5
+      _startbit: 4
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Set when an enable request has been sent whithout the WakeUpSignal
+        flag (hardware enable) in the StatusBits message being active.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1878,14 +1953,16 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 25
+      _startbit: 24
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Each bridge has hardware protection features as a backup to software
+        protection.  This bitfield indicates which, if any of these protection trips
+        is active.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1894,7 +1971,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 3
-      _startbit: 58
+      _startbit: 56
       _unit: ''
       _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
         7: 5V}
@@ -1902,7 +1979,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Each bridge has hardware protection features as a backup to software
+        protection.  This bitfield indicates which, if any of these protection trips
+        is active.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1911,7 +1990,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 3
-      _startbit: 42
+      _startbit: 40
       _unit: ''
       _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
         7: 5V}
@@ -1919,7 +1998,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates that an illegal state transition was requested.  For example,
+        this fault will occur if Enable is commanded and line voltage is detected
+        but AC power is not available.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1928,14 +2009,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 27
+      _startbit: 26
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates that reading of non-volatile parameters at power-up failed.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1944,14 +2025,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 29
+      _startbit: 28
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Indicates that reading or writing of an non-volatile parameter section
+        failed.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -1960,7 +2042,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 31
+      _startbit: 30
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
@@ -1976,7 +2058,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 33
+      _startbit: 32
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       _valuetype: +
@@ -1984,17 +2066,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 218088183
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.
-    _extended: 0
+    _extended: 1
     _name: StatusACParameters
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured RMS AC voltage.
       _factor: '0.1'
       _max: '1'
       _min: '0'
@@ -2003,14 +2085,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: V
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured RMS AC current.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2019,14 +2101,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: A
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured frequency.
       _factor: '0.1'
       _max: '1'
       _min: '0'
@@ -2035,7 +2117,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: Hz
       _values: {}
       _valuetype: +
@@ -2043,18 +2125,18 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 486524919
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input
       voltage.
-    _extended: 0
+    _extended: 1
     _name: StatusDCParameters
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured DC bus voltage.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2063,14 +2145,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: V
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured DC current.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2079,14 +2161,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: A
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Estimated DC input voltage.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2095,7 +2177,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: V
       _values: {}
       _valuetype: +
@@ -2103,17 +2185,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 486524663
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Present voltage of the -15V power supply on the control board.
-    _extended: 0
+    _extended: 1
     _name: StatusControlVolts2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Present voltage of the control board -15V power supply.
       _factor: '0.01'
       _max: '1'
       _min: '0'
@@ -2122,14 +2204,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: V
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Hottest diode
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2138,14 +2220,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: C
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Hottest IGBT
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2154,7 +2236,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: C
       _values: {}
       _valuetype: +
@@ -2162,17 +2244,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 486523383
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Software revision.
-    _extended: 0
+    _extended: 1
     _name: softwareRev
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Software revision of the CAN communication interface.
       _factor: '0.01'
       _max: '1'
       _min: '0'
@@ -2181,14 +2263,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Software revision of the control firmware.
       _factor: '0.01'
       _max: '1'
       _min: '0'
@@ -2197,14 +2279,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Build timestamp.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2213,7 +2295,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 39
+      _startbit: 56
       _unit: ''
       _values: {}
       _valuetype: +
@@ -2221,17 +2303,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 419416567
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Echoes the voltage and frequency commands from commandVF.
-    _extended: 0
+    _extended: 1
     _name: StatusCommandVF
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Echoed voltage command
       _factor: '0.1'
       _max: '1'
       _min: '0'
@@ -2240,14 +2322,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Echoed frequency command.
       _factor: '0.1'
       _max: '1'
       _min: '0'
@@ -2256,7 +2338,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: Hz
       _values: {}
       _valuetype: +
@@ -2264,17 +2346,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 486526199
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Serial number of the power module.
-    _extended: 0
+    _extended: 1
     _name: serialNumber
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Serial number of the power module.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2283,7 +2365,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 32
-      _startbit: 7
+      _startbit: 24
       _unit: ''
       _values: {}
       _valuetype: +
@@ -2291,17 +2373,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 486526455
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Unique software revision identification hashcode.
-    _extended: 0
+    _extended: 1
     _name: softwareRevHash
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Unique revision identification hashcode.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2310,7 +2392,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 28
-      _startbit: 7
+      _startbit: 28
       _unit: ''
       _values: {}
       _valuetype: +
@@ -2318,11 +2400,11 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 486517239
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {}
     _comment: Echos back parameter values.
-    _extended: 0
+    _extended: 1
     _name: StatusNVParam
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2337,7 +2419,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: ''
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: ''
       _values: {0: ActParam0, 1: ActLVM_ClearingTimes1, 2: ActLVM_ClearingTimes2,
         3: ActLFM_Limits, 4: ActLFM_ClearingTimes, 5: StatusJ1939_Interface, 6: StatusFault_Config,
@@ -2355,7 +2437,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ''
       _values: {}
       _valuetype: +
@@ -2371,7 +2453,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
@@ -2387,7 +2469,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
@@ -2403,7 +2485,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: ms
       _values: {}
       _valuetype: +
@@ -2419,7 +2501,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ''
       _values: {}
       _valuetype: +
@@ -2435,7 +2517,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: Hz
       _values: {}
       _valuetype: +
@@ -2451,7 +2533,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: Hz
       _values: {}
       _valuetype: +
@@ -2467,7 +2549,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: Hz
       _values: {}
       _valuetype: +
@@ -2483,7 +2565,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
@@ -2499,7 +2581,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
@@ -2515,14 +2597,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: J1939 Source Address node for the module
       _factor: '1'
       _max: '247'
       _min: '0'
@@ -2531,14 +2613,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 8
-      _startbit: 23
+      _startbit: 16
       _unit: ''
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Mask used to configure from which master source addresses to accept
+        commands.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2547,7 +2630,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 8
-      _startbit: 31
+      _startbit: 24
       _unit: ''
       _values: {}
       _valuetype: +
@@ -2563,14 +2646,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 4
-      _startbit: 39
+      _startbit: 36
       _unit: ''
       _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Configured action to take when thermal overload input is active.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2579,14 +2662,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 2
-      _startbit: 17
+      _startbit: 16
       _unit: ''
       _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the MX1 contactor to open.
       _factor: '1'
       _max: '5000'
       _min: '0'
@@ -2595,14 +2678,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the MX1 contactor to close.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -2611,14 +2694,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the MX2 contactor to open.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2627,14 +2710,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the MX2 contactor to open.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -2643,14 +2726,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the K1 contactor to open.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -2659,14 +2742,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the K1 contactor to close.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -2675,14 +2758,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 55
+      _startbit: 56
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the K2 contactor to open.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -2691,14 +2774,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: ms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Maximum time required for the K2 contactor to close.
       _factor: '1'
       _max: '2000'
       _min: '0'
@@ -2707,7 +2790,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: ms
       _values: {}
       _valuetype: +
@@ -2715,17 +2798,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 419418359
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured RMS line currents.
-    _extended: 0
+    _extended: 1
     _name: StatusLineCurrents
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured L1 RMS line current.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2734,14 +2817,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: A
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured L2 RMS line current.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2750,14 +2833,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: A
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured L3 RMS line current.
       _factor: '1'
       _max: '1'
       _min: '0'
@@ -2766,7 +2849,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: A
       _values: {}
       _valuetype: +
@@ -2774,17 +2857,17 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Id: 419418615
     _Reciever: []
     _SignalGroups: []
-    _Size: 8
+    _Size: 1
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured RMS line voltages.
-    _extended: 0
+    _extended: 1
     _name: StatusLineVoltages
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured L1 RMS line-neutral voltage
       _factor: '0.1'
       _max: '1'
       _min: '0'
@@ -2793,14 +2876,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 7
+      _startbit: 8
       _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured L2 RMS line-neutral voltage
       _factor: '0.1'
       _max: '1'
       _min: '0'
@@ -2809,14 +2892,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 23
+      _startbit: 24
       _unit: Vrms
       _values: {}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: null
+      _comment: Measured L3 RMS line-neutral voltage
       _factor: '0.1'
       _max: '1'
       _min: '0'
@@ -2825,7 +2908,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: '0'
       _reciever: []
       _signalsize: 16
-      _startbit: 39
+      _startbit: 40
       _unit: Vrms
       _values: {}
       _valuetype: +

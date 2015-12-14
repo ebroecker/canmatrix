@@ -2,7 +2,7 @@
 _BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
   _list:
   - !!python/object:canmatrix.canmatrix.BoardUnit
-    _attributes: {NetworkNode: '273'}
+    _attributes: {NetworkNode: '7'}
     _comment: sender ECU
     _name: testBU
   - !!python/object:canmatrix.canmatrix.BoardUnit
@@ -11,8 +11,8 @@ _BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
     _name: recBU
 _attributes: {}
 _buDefines:
-  NetworkNode: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null, _definition: INT
-      0 65535, _max: 65535, _min: 0, _type: INT}
+  NetworkNode: !!python/object:canmatrix.canmatrix.Define {_defaultValue: '65535',
+    _definition: INT 0 0, _max: 0, _min: 0, _type: INT}
 _fl: !!python/object:canmatrix.canmatrix.FrameList
   _list:
   - !!python/object:canmatrix.canmatrix.Frame
@@ -22,24 +22,20 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Size: 8
     _Transmitter: [testBU]
     _attributes: {GenMsgCycleTime: '100'}
-    _comment: 'Multi
-
-      Line
-
-      Frame comment'
+    _comment: ' Multi  Line  Frame comment'
     _extended: 0
     _name: testFrame1
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _byteorder: 0
-      _comment: "Multi\nLine\nSignal comment with a-umlaut: \xE4"
-      _factor: '5.0'
-      _max: '500'
-      _min: '0'
+      _comment: "Multi  Line  Signal comment with a-umlaut: \xE4"
+      _factor: '5'
+      _max: '500.0'
+      _min: '0.0'
       _multiplex: null
       _name: someTestSignal
-      _offset: '1.0'
+      _offset: '1'
       _reciever: [recBU]
       _signalsize: 11
       _startbit: 9
@@ -50,12 +46,12 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _byteorder: 1
       _comment: null
-      _factor: '1.0'
-      _max: '6'
-      _min: '0'
+      _factor: '1'
+      _max: '6.0'
+      _min: '0.0'
       _multiplex: null
       _name: Signal
-      _offset: '0.0'
+      _offset: '0'
       _reciever: [recBU]
       _signalsize: 3
       _startbit: 20
@@ -74,8 +70,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _name: extendedFrame
     _signals: []
 _frameDefines:
-  GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+  GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: '65535',
+    _definition: INT 0 0, _max: 0, _min: 0, _type: INT}
 _globalDefines: {}
 _signalDefines: {}
 _valueTables: {}

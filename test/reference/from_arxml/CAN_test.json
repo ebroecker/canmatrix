@@ -4,67 +4,67 @@
             "id": "0xffab41",
             "name": "CommandModeControl",
             "signals": {
-                "1": {
+                "0": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "Enable_command",
                     "offset": "0.0"
                 },
-                "3": {
+                "2": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "FaultClear_command",
                     "offset": "0.0"
                 },
-                "17": {
+                "16": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "MasterFollowerMode_command",
                     "offset": "0.0"
                 },
-                "33": {
+                "32": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ForceRelayMX1_command",
                     "offset": "0.0"
                 },
-                "35": {
+                "34": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ForceRelayMX2_command",
                     "offset": "0.0"
                 },
-                "37": {
+                "36": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ForceRelayK1_Precharge_command",
                     "offset": "0.0"
                 },
-                "39": {
+                "38": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ForceRelayRelayK2_DCRun_comand",
                     "offset": "0.0"
                 },
-                "57": {
+                "56": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "InvertHwEnable_command",
                     "offset": "0.0"
                 },
-                "59": {
+                "58": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "EnableUPSMode_command",
                     "offset": "0.0"
                 },
-                "61": {
+                "60": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "EnableSplitPhase_command",
                     "offset": "0.0"
                 },
-                "63": {
+                "62": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "PhaseRotation_command",
@@ -76,13 +76,13 @@
             "id": "0xcffac41",
             "name": "CommandPower",
             "signals": {
-                "7": {
+                "24": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "RealPower_command",
                     "offset": "0.0"
                 },
-                "39": {
+                "56": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "ReactivePower_command",
@@ -94,13 +94,13 @@
             "id": "0xcffae41",
             "name": "CommandVF",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "Voltage_command",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "Frequency_command",
@@ -112,13 +112,13 @@
             "id": "0xcffcaf6",
             "name": "MasterMeasuredPower",
             "signals": {
-                "7": {
+                "24": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "RealPower_measured",
                     "offset": "0.0"
                 },
-                "39": {
+                "56": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "ReactivePower_measured",
@@ -130,19 +130,19 @@
             "id": "0xcffaf41",
             "name": "CommandFactoryControl",
             "signals": {
-                "1": {
+                "0": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "WriteSerialNumber",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "FactoryAccess",
                     "offset": "0.0"
                 },
-                "39": {
+                "56": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "SerialNumber",
@@ -154,37 +154,37 @@
             "id": "0xcffaa41",
             "name": "CommandSetNVParam",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "CommandSetNVParam_MUX",
                     "offset": "0.0"
                 },
-                "17": {
+                "16": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ThermalOverload",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "K2Open",
                     "offset": "0.0"
                 },
-                "31": {
-                    "bit_length": 8,
+                "36": {
+                    "bit_length": 4,
                     "factor": "1.0",
-                    "name": "SA_Mask",
+                    "name": "Baudrate",
                     "offset": "0.0"
                 },
-                "39": {
+                "40": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "K2Close",
                     "offset": "0.0"
                 },
-                "55": {
+                "56": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "K1Close",
@@ -196,67 +196,67 @@
             "id": "0xff9b41",
             "name": "CommandModeControlAPU2",
             "signals": {
-                "1": {
+                "0": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "Enable_command",
                     "offset": "0.0"
                 },
-                "3": {
+                "2": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "FaultClear_command",
                     "offset": "0.0"
                 },
-                "17": {
+                "16": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "MasterFollowerMode_command",
                     "offset": "0.0"
                 },
-                "33": {
+                "32": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ForceRelayMX1_command",
                     "offset": "0.0"
                 },
-                "35": {
+                "34": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ForceRelayMX2_command",
                     "offset": "0.0"
                 },
-                "37": {
+                "36": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ForceRelayK1_Precharge_command",
                     "offset": "0.0"
                 },
-                "39": {
+                "38": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ForceRelayRelayK2_DCRun_comand",
                     "offset": "0.0"
                 },
-                "57": {
+                "56": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "InvertHwEnable_command",
                     "offset": "0.0"
                 },
-                "59": {
+                "58": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "EnableUPSMode_command",
                     "offset": "0.0"
                 },
-                "61": {
+                "60": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "EnableSplitPhase_command",
                     "offset": "0.0"
                 },
-                "63": {
+                "62": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "PhaseRotation_command",
@@ -268,13 +268,13 @@
             "id": "0xcff9c41",
             "name": "CommandPowerAPU2",
             "signals": {
-                "7": {
+                "24": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "RealPower_command",
                     "offset": "0.0"
                 },
-                "39": {
+                "56": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "ReactivePower_command",
@@ -286,13 +286,13 @@
             "id": "0xcff9e41",
             "name": "CommandVFAPU2",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "Voltage_command",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "Frequency_command",
@@ -304,13 +304,13 @@
             "id": "0xcffcaf7",
             "name": "MasterMeasuredPowerAPU2",
             "signals": {
-                "7": {
+                "24": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "RealPower_measured",
                     "offset": "0.0"
                 },
-                "39": {
+                "56": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "ReactivePower_measured",
@@ -322,13 +322,13 @@
             "id": "0xcffcaf7",
             "name": "StatusMeasuredPower",
             "signals": {
-                "7": {
+                "24": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "RealPower_measured",
                     "offset": "0.0"
                 },
-                "39": {
+                "56": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "ReactivePower_measured",
@@ -340,13 +340,13 @@
             "id": "0x18ffc4f7",
             "name": "StatusCommandedPower",
             "signals": {
-                "7": {
+                "24": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "RealPower_echo",
                     "offset": "0.0"
                 },
-                "39": {
+                "56": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "ReactivePower_echo",
@@ -358,121 +358,121 @@
             "id": "0xcffc3f7",
             "name": "StatusBits",
             "signals": {
-                "3": {
+                "0": {
                     "bit_length": 4,
                     "factor": "1.0",
                     "name": "State_status",
                     "offset": "0.0"
                 },
-                "5": {
+                "4": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "Enable_echo",
                     "offset": "0.0"
                 },
-                "7": {
+                "6": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "FaultClr_echo",
                     "offset": "0.0"
                 },
-                "9": {
+                "8": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "HardwareEnable_status",
                     "offset": "0.0"
                 },
-                "11": {
+                "10": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "PowerAvailAC_status",
                     "offset": "0.0"
                 },
-                "13": {
+                "12": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "PowerAvailDC_status",
                     "offset": "0.0"
                 },
-                "15": {
+                "14": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "PowerCircuitEnabled_status",
                     "offset": "0.0"
                 },
-                "17": {
+                "16": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "MX1Permissive_status",
                     "offset": "0.0"
                 },
-                "19": {
+                "18": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "MX2Permissive_status",
                     "offset": "0.0"
                 },
-                "21": {
+                "20": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "K1PrechargePermissive_status",
                     "offset": "0.0"
                 },
-                "23": {
+                "22": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "K2DCRunPermissive_status",
                     "offset": "0.0"
                 },
-                "25": {
+                "24": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "MessageValidModeControl_status",
                     "offset": "0.0"
                 },
-                "27": {
+                "26": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "MessageValidPowerCMD_status",
                     "offset": "0.0"
                 },
-                "29": {
+                "28": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "MessageValidVF_status",
                     "offset": "0.0"
                 },
-                "31": {
+                "30": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "CANbus_status",
                     "offset": "0.0"
                 },
-                "33": {
+                "32": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "EnableUPSMode_echo",
                     "offset": "0.0"
                 },
-                "35": {
+                "34": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "EnableSplitPhase_echo",
                     "offset": "0.0"
                 },
-                "37": {
+                "36": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "PhaseRotation_status",
                     "offset": "0.0"
                 },
-                "39": {
+                "38": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "LineVoltageDetected_status",
                     "offset": "0.0"
                 },
-                "41": {
+                "40": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "PhaseRotation_echo",
@@ -484,25 +484,25 @@
             "id": "0x1cffc5f7",
             "name": "StatusControlVoltage",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "0.01",
                     "name": "v5p0_Supply",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "0.01",
                     "name": "v3p3_Supply",
                     "offset": "0.0"
                 },
-                "39": {
+                "40": {
                     "bit_length": 16,
                     "factor": "0.01",
                     "name": "v24_Supply",
                     "offset": "0.0"
                 },
-                "55": {
+                "56": {
                     "bit_length": 16,
                     "factor": "0.01",
                     "name": "v15_Supply",
@@ -514,19 +514,19 @@
             "id": "0x18ffcbf7",
             "name": "StatusTemps",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "TempInlet_measured",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "TempInternal_measured",
                     "offset": "0.0"
                 },
-                "39": {
+                "40": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "ConverterLosses",
@@ -538,97 +538,97 @@
             "id": "0xcffc8f7",
             "name": "StatusFaults",
             "signals": {
-                "1": {
+                "0": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "GeneralFault_status",
                     "offset": "0.0"
                 },
-                "3": {
+                "2": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "OvercurrentAC_status",
                     "offset": "0.0"
                 },
-                "5": {
+                "4": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "LossOfAC_status",
                     "offset": "0.0"
                 },
-                "7": {
+                "6": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "OvercurrentDC_status",
                     "offset": "0.0"
                 },
-                "9": {
+                "8": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "OvervoltageDC_status",
                     "offset": "0.0"
                 },
-                "11": {
+                "10": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "UndervoltageDC_status",
                     "offset": "0.0"
                 },
-                "13": {
+                "12": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "OvertempInternal_status",
                     "offset": "0.0"
                 },
-                "15": {
+                "14": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "OvertempPowerDevice_status",
                     "offset": "0.0"
                 },
-                "19": {
+                "16": {
                     "bit_length": 4,
                     "factor": "1.0",
                     "name": "ControlHardwareFail_status",
                     "offset": "0.0"
                 },
-                "23": {
+                "20": {
                     "bit_length": 4,
                     "factor": "1.0",
                     "name": "LossValidControlMessage_status",
                     "offset": "0.0"
                 },
-                "25": {
+                "24": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "EStopShutdown_status",
                     "offset": "0.0"
                 },
-                "27": {
+                "26": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "IllegalTransition_status",
                     "offset": "0.0"
                 },
-                "29": {
+                "28": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "InvalidEEHeader_status",
                     "offset": "0.0"
                 },
-                "31": {
+                "30": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "InvalidEESection_status",
                     "offset": "0.0"
                 },
-                "33": {
+                "32": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "ThermalOverload",
                     "offset": "0.0"
                 },
-                "42": {
+                "40": {
                     "bit_length": 3,
                     "factor": "1.0",
                     "name": "BridgeBFault_status",
@@ -640,7 +640,7 @@
                     "name": "BridgeBVoltageOk_status",
                     "offset": "0.0"
                 },
-                "58": {
+                "56": {
                     "bit_length": 3,
                     "factor": "1.0",
                     "name": "BridgeAFault_status",
@@ -658,19 +658,19 @@
             "id": "0xcffc2f7",
             "name": "StatusACParameters",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "VoltageAC_measured",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "CurrentAC_measured",
                     "offset": "0.0"
                 },
-                "39": {
+                "40": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "Frequency_measured",
@@ -682,19 +682,19 @@
             "id": "0x1cffc7f7",
             "name": "StatusDCParameters",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "VoltageDCInput_measured",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "VoltageDCBus",
                     "offset": "0.0"
                 },
-                "39": {
+                "40": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "CurrentDC_measured",
@@ -706,19 +706,19 @@
             "id": "0x1cffc6f7",
             "name": "StatusControlVolts2",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "0.01",
                     "name": "n15V_Supply",
                     "offset": "0.0"
                 },
-                "39": {
+                "40": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "DiodeTemperature",
                     "offset": "0.0"
                 },
-                "55": {
+                "56": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "IGBTTemperature",
@@ -730,19 +730,19 @@
             "id": "0x1cffc1f7",
             "name": "softwareRev",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "0.01",
                     "name": "ControlSwRev",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "0.01",
                     "name": "InterfaceRev",
                     "offset": "0.0"
                 },
-                "39": {
+                "56": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "BuildTime",
@@ -754,13 +754,13 @@
             "id": "0x18ffc9f7",
             "name": "StatusCommandVF",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "Voltage_echo",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "Frequency_echo",
@@ -772,7 +772,7 @@
             "id": "0x1cffccf7",
             "name": "serialNumber",
             "signals": {
-                "7": {
+                "24": {
                     "bit_length": 32,
                     "factor": "1.0",
                     "name": "SerialNumber",
@@ -784,7 +784,7 @@
             "id": "0x1cffcdf7",
             "name": "softwareRevHash",
             "signals": {
-                "7": {
+                "28": {
                     "bit_length": 28,
                     "factor": "1.0",
                     "name": "Hash",
@@ -796,37 +796,37 @@
             "id": "0x1cffa9f7",
             "name": "StatusNVParam",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "StatusNVParam_MUX",
                     "offset": "0.0"
                 },
-                "17": {
+                "16": {
                     "bit_length": 2,
                     "factor": "1.0",
                     "name": "StatusThermalOverload",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "StatusK2Open",
                     "offset": "0.0"
                 },
-                "31": {
-                    "bit_length": 8,
+                "36": {
+                    "bit_length": 4,
                     "factor": "1.0",
-                    "name": "StatusSA_Mask",
+                    "name": "StatusBaudrate",
                     "offset": "0.0"
                 },
-                "39": {
+                "40": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "StatusK2Close",
                     "offset": "0.0"
                 },
-                "55": {
+                "56": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "StatusK1Close",
@@ -838,19 +838,19 @@
             "id": "0x18ffd0f7",
             "name": "StatusLineCurrents",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "L1Current_measured",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "L2Current_measured",
                     "offset": "0.0"
                 },
-                "39": {
+                "40": {
                     "bit_length": 16,
                     "factor": "1.0",
                     "name": "L3Current_measured",
@@ -862,19 +862,19 @@
             "id": "0x18ffd1f7",
             "name": "StatusLineVoltages",
             "signals": {
-                "7": {
+                "8": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "L1Voltage_measured",
                     "offset": "0.0"
                 },
-                "23": {
+                "24": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "L2Voltage_measured",
                     "offset": "0.0"
                 },
-                "39": {
+                "40": {
                     "bit_length": 16,
                     "factor": "0.1",
                     "name": "L3Voltage_measured",
