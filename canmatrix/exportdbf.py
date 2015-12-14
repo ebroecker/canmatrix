@@ -84,7 +84,7 @@ def exportDbf(db, filename):
             outstr += "," + signal._unit + ",%s," % multiplex + ','.join(signal._reciever) + "\n"
 
             if len(signal._values) > 0:
-                for attrib,val in list(signal._values.items()):
+                for attrib,val in sorted(list(signal._values.items())):
                     outstr += '[VALUE_DESCRIPTION] "' + val + '",' + str(attrib) + '\n'
 
 
@@ -166,14 +166,14 @@ def exportDbf(db, filename):
     #boardunit-attributes:
     outstr += "[START_PARAM_NODE_VAL]\n"
     for bu in db._BUs._list:
-        for attrib,val in list(bu._attributes.items()):
+        for attrib,val in sorted(list(bu._attributes.items())):
             outstr += bu._name + ',"' + attrib + '","'  + val  + '"\n'
     outstr += "[END_PARAM_NODE_VAL]\n"
 
     #messages-attributes:
     outstr += "[START_PARAM_MSG_VAL]\n"
     for frame in db._fl._list:
-        for attrib,val in list(frame._attributes.items()):
+        for attrib,val in sorted(list(frame._attributes.items())):
             outstr +=  str(frame._Id) + ',S,"' + attrib + '","'  + val  + '"\n'
     outstr += "[END_PARAM_MSG_VAL]\n"
 
@@ -181,7 +181,7 @@ def exportDbf(db, filename):
     outstr += "[START_PARAM_SIG_VAL]\n"
     for frame in db._fl._list:
         for signal in frame._signals:
-            for attrib,val in list(signal._attributes.items()):
+            for attrib,val in sorted(list(signal._attributes.items())):
                 outstr +=  str(frame._Id) + ',S,' + signal._name + ',"'+ attrib  +  '","' + val  + '"\n'
     outstr += "[END_PARAM_SIG_VAL]\n"
     outstr += "[END_PARAM_VAL]\n"
