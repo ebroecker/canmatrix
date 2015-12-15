@@ -142,7 +142,7 @@ def exportDbc(db, filename, **options):
         if type not in defaults and define._defaultValue is not None:
             defaults[type] = define._defaultValue
 
-    for define in defaults:
+    for define in sorted(defaults):
         f.write(('BA_DEF_DEF_ "' + define + '" ').encode(dbcExportEncoding) + defaults[define].encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
 
 

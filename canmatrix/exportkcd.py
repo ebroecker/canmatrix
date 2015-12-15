@@ -105,7 +105,7 @@ def exportKcd(db, filename):
     bus.set("name",filename)
 
     for frame in db._fl._list:
-        message = etree.Element('Message', id="0x%03X" % frame._Id, name=frame._name, length = str(frame._Size))
+        message = etree.Element('Message', id="0x%03X" % frame._Id, name=frame._name, length = str(int(frame._Size)))
 
         if frame._extended == 1:
             message.set("format", "extended")
@@ -139,7 +139,7 @@ def exportKcd(db, filename):
         multiplexor = None
         for signal in frame._signals:
             if signal._multiplex is not None and signal._multiplex == 'Multiplexor':
-                multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal.getLsbStartbit()), length=str(signal._signalsize))
+                multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal.getLsbStartbit()), length=str(int(signal._signalsize)))
                 value = etree.Element('Value')
                 if float(signal._min) != 0:
                     value.set('min',str(signal._min))

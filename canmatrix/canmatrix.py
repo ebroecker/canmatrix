@@ -194,7 +194,7 @@ class Signal(object):
             startBit = startBit % 8
             startBit = (7-startBit)
             startBit += startByte * 8
-            return startBit
+            return int(startBit)
 
     def getMsbStartbit(self):
         if self._byteorder == 1:
@@ -213,7 +213,7 @@ class Signal(object):
                 ucStartBit = self._startbit + self._signalsize;
             else:
                 ucStartBit = nStartBit + nBitSize-1;
-            return ucStartBit
+            return int(ucStartBit)
 
     def getLsbStartbit(self):
         return int(self._startbit)
