@@ -132,7 +132,7 @@ examples/convert.py some-matrix.arxml some-matrix.dbc
   
                         Excel format for startbit of motorola coded signals
                         Valid values: msb, lsb, msbreverse default msbreverse
-                        [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
+[more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
 
 
  
@@ -140,6 +140,7 @@ examples/convert.py some-matrix.arxml some-matrix.dbc
 * yaml
 * json
 * kdc
+* csv
 
 ## Export
 
@@ -152,6 +153,9 @@ examples/convert.py some-matrix.arxml some-matrix.dbc
 |kcd   |+   |+    |		 |+        |+        |+        |        |         |       |       |          |+           |             |
 |sym   |    |+	   |		 |         |         |         |+       |+        |+      |+      |          |+           |             |
 |xls(x)|+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |          |+           |             |
+|csv |+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |*          |+           |             |
+
+
 
 ## Import
 |Format|ECUs|Mux  |S/R of Signal|Cycletype|Cycletime|Baudrate |Extended|Byteorder|scaling|min/max|attributes|value tables|signal groups| 
