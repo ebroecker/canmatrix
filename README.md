@@ -77,21 +77,68 @@ examples/convert.py some-matrix.arxml some-matrix.dbc
 
 ###Fileformats 
 * all formats support im-/export of signals and frames
-* dbc: complete Support; there are 2 commandline-options for dbc-files:
+* dbc: 
+  
+  --dbcImportEncoding
 
+                        Import charset of dbc (relevant for units), maybe
+                        utf-8 default iso-8859-1
+
+  --dbcImportCommentEncoding
+
+                        Import charset of Comments in dbc default iso-8859-1
+
+  --dbcExportEncoding
+
+                        Export charset of dbc (relevant for units), maybe
+                        utf-8 default iso-8859-1
+
+  --dbcExportCommentEncoding
+
+                        Export charset of comments in dbc default iso-8859-1
+ 
   --dbcCharset=CHARSET
 
-	set charset for dbc-file
+                        set charset for dbc-file
 
   --dbcCommentCharset=CHARSET
 
-	set charset for comments in dbc-file 
-* dbf complete support 
-* sym 
+                        set charset for comments in dbc-file 
+
+* dbf:
+
+  --dbfImportEncoding
+
+                        Import charset of dbf, maybe utf-8 default iso-8859-1
+
+  --dbfExportEncoding
+
+                        Export charset of dbf, maybe utf-8 default iso-8859-1
+* sym:
+
+  --symImportEncoding
+
+                        Import charset of sym format, maybe utf-8 default
+                        iso-8859-1
+
+  --symExportEncoding
+
+                        Export charset of sym format, maybe utf-8 default
+                        iso-8859-1
+
+* xls(x):
+
+  --xlsMotorolaBitFormat
+  
+                        Excel format for startbit of motorola coded signals
+                        Valid values: msb, lsb, msbreverse default msbreverse
+                        [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
+
+
+ 
 * arxml
 * yaml
 * json
-* xls(x)
 * kdc
 
 ## Export
