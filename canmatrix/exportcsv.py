@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2013, Eduard Broecker 
+# Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -25,33 +25,38 @@
 
 from collections import defaultdict
 import sys
+import csv
 
 if (sys.version_info > (3, 0)):
     import codecs
 
 class csvRow:
-    
+
     def __init__(self):
-        self._linedict = defaultdict(str)
-        
+        self._rowdict = defaultdict(str)
+
     def __getitem__(self, key):
-        return self._linedict[key]
-
-
+        return self._rowdict[key]
 
     def __setitem__(self, key, item):
         if (sys.version_info <= (3, 0)):
-            if type(item).__name__ == "unicode": 
+            if type(item).__name__ == "unicode":
                 item = item.encode('utf-8')
-        self._linedict[key] = item
-        
+        self._rowdict[key] = item
+
     def write(self, column, value):
-        self._linedict[column] = value
+        self._rowdict[column] = value
+
+    @property
+    def as_list(self):
+        # Generate list of single cells in the row till highest index (dictionary key)
+        # Empty cells (non-existent keys) are generated as empty string
+        return [str(self._rowdict[x]) for x in range(0, max(self._rowdict) + 1)]
 
     def toCSV(self, delimiter=','):
-        text = delimiter.join([str(self._linedict[x]) for x in range(0, max(self._linedict) + 1)])
-        return text.replace('\n', ' ') # TODO newline replacement OK?
-        
+        text = delimiter.join(self.as_list)
+        return text.replace('\n', ' ')
+
     def __str__(self):
         return self.toCSV()
 
@@ -61,11 +66,11 @@ def writeFramex(frame, row):
     row[0] =  "%3Xh" % frame._Id
     #frame-Name
     row[1] = frame._name
-    
+
     #determine cycle-time
     if "GenMsgCycleTime" in frame._attributes:
         row[2]  = int(frame._attributes["GenMsgCycleTime"])
-        
+
     #determine send-type
     if "GenMsgSendType" in frame._attributes:
         if frame._attributes["GenMsgSendType"] == "5":
@@ -76,7 +81,7 @@ def writeFramex(frame, row):
             row[3] = "Cyclic"
         elif frame._attributes["GenMsgSendType"] == "2":
             row[3] = "BAF"
-            if "GenMsgNrOfRepetitions" in frame._attributes:        
+            if "GenMsgNrOfRepetitions" in frame._attributes:
                 row[4] = int(frame._attributes["GenMsgNrOfRepetitions"])
         elif frame._attributes["GenMsgSendType"] == "8":
             row[3] = "DualCycle"
@@ -88,7 +93,7 @@ def writeFramex(frame, row):
                 row[3] = int(frame._attributes["GenMsgDelayTime"])
         elif frame._attributes["GenMsgSendType"] == "9":
             row[3] = "OnChange"
-            if "GenMsgNrOfRepetitions" in frame._attributes:        
+            if "GenMsgNrOfRepetitions" in frame._attributes:
                 row[4] = int(frame._attributes["GenMsgNrOfRepetitions"])
         elif frame._attributes["GenMsgSendType"] == "1":
             row[3] = "Spontaneous"
@@ -131,7 +136,7 @@ def writeSignalx(db, sig, row, rearCol):
         comment = ""
     else:
         comment = sig._comment
-    
+
     # eval multiplex-info
     if sig._multiplex == 'Multiplexor':
         comment = "Mode Signal: " + comment
@@ -172,7 +177,7 @@ def writeSignalx(db, sig, row, rearCol):
         # factor not 1.0 ?
         if float(sig._factor) != 1:
             row[rearCol + 2] = float(sig._factor)
-    
+
 def exportCsv(db, filename, delimiter=','):
     head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.', 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
@@ -219,10 +224,10 @@ def exportCsv(db, filename, delimiter=','):
         sigHash = {}
         for sig in frame._signals:
             sigHash["%02d" % int(sig.getMsbReverseStartbit()) + sig._name] = sig
-        
+
         # iterate over signals
         for sig_idx in sorted(sigHash.keys()):
-            sig = sigHash[sig_idx]      
+            sig = sigHash[sig_idx]
 
             # value table available?
             if sig._values.__len__() > 0:
@@ -236,40 +241,44 @@ def exportCsv(db, filename, delimiter=','):
                     writeValuex(val, sig._values[val], signalRow, col)
                     writeSignalx(db, sig, signalRow, col)
 
-                    # no min/max here, because min/max has same col as values...
-                    # next row                  
+                    # no min/max here, because min/max has same col as values.
+                    # next row
                     row += 1
                     csvtable.append(signalRow)
                 # loop over values ends here
             # no value table available
-            else: 
+            else:
                 signalRow = csvRow()
                 writeFramex(frame, signalRow)
                 col = head_top.__len__()
                 col = writeBuMatrixx(buList, sig, frame, signalRow, col)
                 writeSignalx(db, sig, signalRow, col)
-            
+
                 if float(sig._min) != 0 or float(sig._max) != 1.0:
                     signalRow[col+1] = str("%s..%s" %(sig._min, sig._max))
 
-                # next row                  
+                # next row
                 row += 1
                 csvtable.append(signalRow)
                 # set style to normal - without border
         # loop over signals ends here
     # loop over frames ends here
 
-    finalTableString = "\n".join([row.toCSV(delimiter) for row in csvtable])
-    
     if filename is not None:
         # save file
         if (sys.version_info > (3, 0)):
             with open(filename, 'w', encoding='utf8') as thefile:
-                thefile.write(finalTableString)
+                writer = csv.writer(thefile, delimiter=delimiter)
+                for row in csvtable:
+                    writer.writerow(row.as_list)
+
         else:
             with open(filename, 'w') as thefile:
-                thefile.write(finalTableString)
+                writer = csv.writer(thefile, delimiter=delimiter)
+                for row in csvtable:
+                    writer.writerow(row.as_list)
 
     else:
         # just print to stdout
+        finalTableString = "\n".join([row.toCSV(delimiter) for row in csvtable])
         print(finalTableString)
