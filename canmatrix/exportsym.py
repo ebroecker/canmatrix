@@ -72,13 +72,16 @@ def createSignal(signal):
     output += "\n"
     return output
 
-def exportSym(db, filename):
+def exportSym(db, filename, **options):
     """
     export canmatrix-object as .sym file (compatible to PEAK-Systems)
     """
     global enumDict
     global enums
-    symEncoding = 'latin1'
+    if hasattr(options,'symExportEncoding'):
+        symEncoding=options["symExportEncoding"]
+    else:
+        symEncoding='iso-8859-1'
 
     enumDict = {}
     enums = "{ENUMS}\n"

@@ -34,8 +34,12 @@ import math
 
 #CP1253
 
-def exportDbf(db, filename):
-    dbfExportEncoding = 'iso-8859-1'
+def exportDbf(db, filename, **options):
+    if hasattr(options,'dbfExportEncoding'):
+        dbfExportEncoding=options["dbfExportEncoding"]
+    else:
+        dbfExportEncoding='iso-8859-1'
+
     f = open(filename,"wb")
     outstr =  """//******************************BUSMASTER Messages and signals Database ******************************//
 

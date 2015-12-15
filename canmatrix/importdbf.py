@@ -34,7 +34,6 @@ import codecs
 #TODO support for [START_PARAM_NODE_RX_SIG]
 #TODO support for [START_PARAM_NODE_TX_MSG]
 
-dbfImportEncoding = 'iso-8859-1'
 
 def decodeDefine(line):
     (define, valueType, value) = line.split(',',2)
@@ -55,7 +54,11 @@ def decodeDefine(line):
     return define[1:-1], myDef, default
 
 
-def importDbf(filename):
+def importDbf(filename, **options):
+    if hasattr(options,'dbfImportEncoding'):
+        dbfImportEncoding=options["dbfImportEncoding"]
+    else:
+        dbfImportEncoding='iso-8859-1'
 
     db = CanMatrix()
     f = open(filename,"rb")

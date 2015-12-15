@@ -37,9 +37,9 @@ def convert(infile, outfileName, **options):
     if infile[-3:] == 'dbc':
         dbs[""] = im.importDbc(infile, **options)
     elif infile[-3:] == 'dbf':
-        dbs[""] = im.importDbf(infile)
+        dbs[""] = im.importDbf(infile, **options)
     elif infile[-3:] == 'sym':
-        dbs[""] = im.importSym(infile)
+        dbs[""] = im.importSym(infile, **options)
     elif infile[-3:] == 'kcd':
         dbs[""] = im.importKcd(infile)
     elif infile[-3:] == 'xls':
@@ -70,9 +70,9 @@ def convert(infile, outfileName, **options):
         if outfile[-3:] == 'dbc':
             ex.exportDbc(db, outfile, **options)
         elif outfile[-3:] == 'dbf':
-            ex.exportDbf(db, outfile)
+            ex.exportDbf(db, outfile, **options)
         elif outfile[-3:] == 'sym':
-            ex.exportSym(db, outfile)
+            ex.exportSym(db, outfile, **options)
         elif outfile[-3:] == 'kcd':
             ex.exportKcd(db, outfile)
         elif outfile[-4:] == 'xlsx':
@@ -118,6 +118,18 @@ def main():
     parser.add_option("", "--dbcExportCommentEncoding",
                                       dest="dbcExportCommentEncoding", default="iso-8859-1",
                                       help="Export charset of comments in dbc\ndefault iso-8859-1")
+    parser.add_option("", "--dbfImportEncoding",
+                                      dest="dbfImportEncoding", default="iso-8859-1",
+                                      help="Import charset of dbf, maybe utf-8\ndefault iso-8859-1")
+    parser.add_option("", "--dbfExportEncoding",
+                                      dest="dbfExportEncoding", default="iso-8859-1",
+                                      help="Export charset of dbf, maybe utf-8\ndefault iso-8859-1")
+    parser.add_option("", "--symImportEncoding",
+                                      dest="symImportEncoding", default="iso-8859-1",
+                                      help="Import charset of sym format, maybe utf-8\ndefault iso-8859-1")
+    parser.add_option("", "--symExportEncoding",
+                                      dest="symExportEncoding", default="iso-8859-1",
+                                      help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
     parser.add_option("", "--xlsMotorolaBitFormat",
                                       dest="xlsMotorolaBitFormat", default="msbreverse",
                                       help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")

@@ -38,8 +38,13 @@ import re
 import codecs
 
 
-def importSym(filename):
-    symImportEncoding = "latin1"
+def importSym(filename, **options):
+    if hasattr(options,'symImportEncoding'):
+        symImportEncoding=options["symImportEncoding"]
+    else:
+        symImportEncoding='iso-8859-1'
+
+
     class Mode(object):
         glob, enums, send, sendReceive = list(range(4))
     mode = Mode.glob
