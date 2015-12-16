@@ -47,9 +47,9 @@ def arParseTree(tag, ardict, namespace):
     for child in tag:
         name = child.find('./' + namespace + 'SHORT-NAME')
 #               namel = child.find('./' + namespace + 'LONG-NAME')
-        if name is not None:
+        if name is not None and child is not None:
             arParseTree(child, ardict.new(name.text, child), namespace)
-        if name is None:
+        if name is None and child is not None:
             arParseTree(child, ardict, namespace)
 #
 # some sort of X-Path in autosar-xml-files:
