@@ -350,8 +350,11 @@ def importArxml(filename):
     nsp = tree.xpath('namespace-uri(.)')
 
     topLevelPackages = root.find('./' + ns + 'TOP-LEVEL-PACKAGES')
+
+    if None == topLevelPackages:
+      # no "TOP-LEVEL-PACKAGES found, try root
+      topLevelPackages = root
     
-    print("%d toplevelpackages found\n" % (topLevelPackages.__len__()))
     print("Build arTree ...")
     arDict = arTree()
     arParseTree(topLevelPackages, arDict, ns)
