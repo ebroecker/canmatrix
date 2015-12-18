@@ -360,6 +360,11 @@ def importArxml(filename):
     arParseTree(topLevelPackages, arDict, ns)
     print(" Done\n")
 
+
+    frames = root.findall('.//' + ns + 'FRAME')
+    print("DEBUG %d frames in arxml..." % (frames.__len__()))    
+
+
     ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
     for cc in ccs:
         db = CanMatrix()
@@ -379,6 +384,8 @@ def importArxml(filename):
             print(" Speed: " + speed.text)
 
         physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
+        if physicalChannels == None:
+            print("Error - PHYSICAL-CHANNELS not found")
 
         busname = arGetName(cc,ns)
         if speed is not None:
@@ -401,7 +408,6 @@ def importArxml(filename):
         multiplexTranslation = {}
         for frame in canframetrig:
             db._fl.addFrame(getFrame(frame, arDict,multiplexTranslation, ns))
-
 
         isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERINGS/I-SIGNAL-TRIGGERING", arDict, ns)
         for sigTrig in isignaltriggerings:
