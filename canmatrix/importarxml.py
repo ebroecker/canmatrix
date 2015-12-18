@@ -387,9 +387,16 @@ def importArxml(filename):
         nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
 
         physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
+        if physicalChannel == None:
+            print("Error - PHYSICAL-CHANNEL not found")
         frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
+        if frametriggerings == None:
+            print("Error - FRAME-TRIGGERINGS not found")
         canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
-
+        if canframetrig == None:
+            print("Error - CAN-FRAME-TRIGGERING not found")
+        else:
+            print("%d frames found in arxml\n" % (canframetrig.__len__()))
 
         multiplexTranslation = {}
         for frame in canframetrig:
