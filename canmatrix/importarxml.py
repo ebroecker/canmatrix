@@ -156,21 +156,34 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 newSig.addValues(key, value)
             Bo.addSignal(newSig)
 
-def getFrame(frame, arDict, multiplexTranslation, ns):
-    extEle = arGetChild(frame, "CAN-ADDRESSING-MODE", arDict, ns)
-    idele = arGetChild(frame, "IDENTIFIER", arDict, ns)
-    frameR = arGetChild(frame, "FRAME", arDict, ns)
-    dlc = arGetChild(frameR, "FRAME-LENGTH", arDict, ns)
-    pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
-    pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
-    pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
+def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
+    extEle = arGetChild(frameTriggering, "CAN-ADDRESSING-MODE", arDict, ns)
+    idele = arGetChild(frameTriggering, "IDENTIFIER", arDict, ns)
+    frameR = arGetChild(frameTriggering, "FRAME", arDict, ns)
 
-    sn = arGetChild(frame, "SHORT-NAME", arDict, ns)
+    sn = arGetChild(frameTriggering, "SHORT-NAME", arDict, ns)
     idNum = int(idele.text)
 
-#       newBo = Frame(idNum, arGetName(pdumapping, ns), int(dlc.text), None)
-    newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
 
+    if None != frameR:
+        dlc = arGetChild(frameR, "FRAME-LENGTH", arDict, ns)
+        pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
+        pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
+        pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
+        newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+    else:
+        # without frameinfo take short-name of frametriggering and dlc = 8
+        ipduTriggeringRefs = arGetChild(frameTriggering, "I-PDU-TRIGGERING-REFS", arDict, ns)
+        ipduTriggering = arGetChild(ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
+        pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns)
+        dlc = arGetChild(pdu, "LENGTH", arDict, ns)
+        newBo = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
+        
+        if pdu == None:
+            print("ERROR: pdu")
+        else:
+            print (arGetName(pdu, ns))
+ 
 
     if "MULTIPLEXED-I-PDU" in pdu.tag:
         selectorByteOrder = arGetChild(pdu, "SELECTOR-FIELD-BYTE-ORDER", arDict, ns)
@@ -338,7 +351,12 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
         bu.addAttribute("NWM-Knoten", "0")
     return bu
 
-def importArxml(filename):
+def importArxml(filename, **options):
+    if hasattr(options,'arxmlIgnoreClusterInfo'):
+        ignoreClusterInfo=options["arxmlIgnoreClusterInfo"]
+    else:
+        ignoreClusterInfo=0
+
     result = {}
     print("Read arxml ...")
     tree = etree.parse(filename)
@@ -360,14 +378,15 @@ def importArxml(filename):
     arParseTree(topLevelPackages, arDict, ns)
     print(" Done\n")
 
-
     frames = root.findall('.//' + ns + 'FRAME')
     print("DEBUG %d frames in arxml..." % (frames.__len__()))    
     canTriggers = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
     print("DEBUG %d can-frame-triggering in arxml..." % (canTriggers.__len__()))    
 
-
-    ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
+    if ignoreClusterInfo == 1:
+        ccs = {"ignoreClusterInfo"}    
+    else:
+        ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
     for cc in ccs:
         db = CanMatrix()
 #Defines not jet imported...
@@ -380,54 +399,63 @@ def importArxml(filename):
         db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
         db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
 
-        speed = arGetChild(cc, "SPEED", arDict, ns)
-        print("Busname: " + arGetName(cc,ns), end=' ')
-        if speed is not None:
-            print(" Speed: " + speed.text)
-
-        physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
-        if physicalChannels == None:
-            print("Error - PHYSICAL-CHANNELS not found")
-
-        busname = arGetName(cc,ns)
-        if speed is not None:
-            print(" Speed: " + speed.text)
-
-        nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
-
-        physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
-        if physicalChannel == None:
-            print("Error - PHYSICAL-CHANNEL not found")
-        frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
-        if frametriggerings == None:
-            print("Error - FRAME-TRIGGERINGS not found")
-        canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
-        if canframetrig == None:
-            print("Error - CAN-FRAME-TRIGGERING not found")
+        if ignoreClusterInfo == 1:
+            canframetrig = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
+            busname = ""
         else:
-            print("%d frames found in arxml\n" % (canframetrig.__len__()))
+            speed = arGetChild(cc, "SPEED", arDict, ns)
+            print("Busname: " + arGetName(cc,ns), end=' ')
+            if speed is not None:
+                print(" Speed: " + speed.text)
+
+            busname = arGetName(cc,ns)
+            if speed is not None:
+                print(" Speed: " + speed.text)
+
+            physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
+            if physicalChannels == None:
+                print("Error - PHYSICAL-CHANNELS not found")
+
+            nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
+
+            physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
+            if physicalChannel == None:
+                print("Error - PHYSICAL-CHANNEL not found")
+            frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
+            if frametriggerings == None:
+                print("Error - FRAME-TRIGGERINGS not found")
+            canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
+            if canframetrig == None:
+                print("Error - CAN-FRAME-TRIGGERING not found")
+            else:
+                print("%d frames found in arxml\n" % (canframetrig.__len__()))
 
         multiplexTranslation = {}
-        for frame in canframetrig:
-            db._fl.addFrame(getFrame(frame, arDict,multiplexTranslation, ns))
+        for frameTrig in canframetrig:
+            db._fl.addFrame(getFrame(frameTrig, arDict,multiplexTranslation, ns))
 
-        isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERINGS/I-SIGNAL-TRIGGERING", arDict, ns)
-        for sigTrig in isignaltriggerings:
-            isignal = sigTrig.find('./' + ns + 'SIGNAL-REF')
-            portRefs =  arGetChild(sigTrig, "I-SIGNAL-PORT-REFS", arDict, ns)
-            portRef =  arGetChildren(portRefs, "I-SIGNAL-PORT", arDict, ns)
 
-            for port in portRef:
-                comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
-                if comDir.text == "IN":
-                    ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
-                    if isignal.text in signalRxs:
-                        signalRxs[isignal.text]._reciever.append(ecuName)
-#                               for fr in db._fl._list:
-#                                       for sig in fr._signals:
-#                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
-#                                                       sig._reciever.append(ecuName)
-                    #TODO
+        if ignoreClusterInfo == 1:
+            pass
+            # no support for signal direction 
+        else:
+            isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERINGS/I-SIGNAL-TRIGGERING", arDict, ns)
+            for sigTrig in isignaltriggerings:
+                isignal = sigTrig.find('./' + ns + 'SIGNAL-REF')
+                portRefs =  arGetChild(sigTrig, "I-SIGNAL-PORT-REFS", arDict, ns)
+                portRef =  arGetChildren(portRefs, "I-SIGNAL-PORT", arDict, ns)
+
+                for port in portRef:
+                    comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
+                    if comDir.text == "IN":
+                        ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
+                        if isignal.text in signalRxs:
+                            signalRxs[isignal.text]._reciever.append(ecuName)
+    #                               for fr in db._fl._list:
+    #                                       for sig in fr._signals:
+    #                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
+    #                                                       sig._reciever.append(ecuName)
+                        #TODO
 
     # find ECUs:
         nodes = root.findall('.//' + ns +'ECU-INSTANCE')
