@@ -62,7 +62,7 @@ def exportArxml(db, filename):
     createSubElement(arPackage, 'SHORT-NAME', 'Cluster')
     elements = etree.SubElement(arPackage,'ELEMENTS')
     cancluster = etree.SubElement(elements,'CAN-CLUSTER')
-    createSubElement(cancluster, 'SHORT-NAME', 'CAN')
+ #   createSubElement(cancluster, 'SHORT-NAME', 'CAN')
 #TODO: insert Speed - if possible
     createSubElement(cancluster, 'SPEED', '50000')
     physicalChannels = etree.SubElement(cancluster, 'PHYSICAL-CHANNELS')
@@ -79,12 +79,12 @@ def exportArxml(db, filename):
             createSubElement(canFrameTriggering, 'CAN-ADDRESSING-MODE', 'EXTENDED')
         frameRef = etree.SubElement(canFrameTriggering, 'FRAME-REF')
         frameRef.set('DEST','FRAME')
-        frameRef.text = "/Frame/" + frame._name
+        frameRef.text = "/Frame/FRAME_" + frame._name
 
         pduTriggeringRefs = etree.SubElement(canFrameTriggering, 'I-PDU-TRIGGERING-REFS')
         pduTriggeringRef = etree.SubElement(pduTriggeringRefs, 'I-PDU-TRIGGERING-REF')
         pduTriggeringRef.set('DEST','I-PDU-TRIGGERING')
-        pduTriggeringRef.text = "/Cluster/CAN/CAN" + frame._name
+        pduTriggeringRef.text = "/Cluster/CAN/IPDUTRIGG_" + frame._name
 
         framePortRefs = etree.SubElement(canFrameTriggering, 'FRAME-PORT-REFS')
         for transmitter in frame._Transmitter:
@@ -100,10 +100,10 @@ def exportArxml(db, filename):
     ipduTriggerings = etree.SubElement(physicalChannel, 'I-PDU-TRIGGERINGS')
     for frame in db._fl._list:
         ipduTriggering = etree.SubElement(ipduTriggerings, 'I-PDU-TRIGGERING')
-        createSubElement(ipduTriggering, 'SHORT-NAME', frame._name)
+        createSubElement(ipduTriggering, 'SHORT-NAME', "IPDUTRIGG_" + frame._name)
         ipduRef = etree.SubElement(ipduTriggering, 'I-PDU-REF')
         ipduRef.set('DEST','SIGNAL-I-PDU')
-        ipduRef.text = "/PDU/" + frame._name
+        ipduRef.text = "/PDU/PDU_" + frame._name
 
     isignalTriggerings = etree.SubElement(physicalChannel, 'I-SIGNAL-TRIGGERINGS')
     for frame in db._fl._list:
@@ -121,7 +121,7 @@ def exportArxml(db, filename):
     elements = etree.SubElement(arPackage,'ELEMENTS')
     for frame in db._fl._list:
         frameEle = etree.SubElement(elements,'FRAME')
-        createSubElement(frameEle, 'SHORT-NAME', frame._name)
+        createSubElement(frameEle, 'SHORT-NAME', "FRAME_" + frame._name)
         createSubElement(frameEle, 'FRAME-LENGTH', "%d" % frame._Size)
         pdumappings = etree.SubElement(frameEle, 'PDU-TO-FRAME-MAPPINGS')
         pdumapping = etree.SubElement(pdumappings, 'PDU-TO-FRAME-MAPPING')
@@ -129,7 +129,7 @@ def exportArxml(db, filename):
         createSubElement(pdumapping, 'PACKING-BYTE-ORDER', "MOST-SIGNIFICANT-BYTE-LAST")
         createSubElement(pdumapping, 'START-POSITION', '0')
         pduRef = etree.SubElement(pdumapping, 'PDU-REF')
-        pduRef.text = "/PDU/" + frame._name
+        pduRef.text = "/PDU/PDU_" + frame._name
         pduRef.set('DEST','SIGNAL-I-PDU')
 
     #
@@ -140,7 +140,7 @@ def exportArxml(db, filename):
     elements = etree.SubElement(arPackage,'ELEMENTS')
     for frame in db._fl._list:
         signalIpdu = etree.SubElement(elements,'SIGNAL-I-PDU')
-        createSubElement(signalIpdu, 'SHORT-NAME', frame._name)
+        createSubElement(signalIpdu, 'SHORT-NAME', "PDU_" + frame._name)
         createSubElement(signalIpdu, 'LENGTH', "%d" % int(frame._Size*8))
         # I-PDU-TIMING-SPECIFICATION
         signalToPduMappings = etree.SubElement(signalIpdu,'SIGNAL-TO-PDU-MAPPINGS')
@@ -339,7 +339,7 @@ def exportArxml(db, filename):
         for frame in txIPduGroups[pdugrp]:
             ipduRef = etree.SubElement(ipduRefs,'I-PDU-REF')
             ipduRef.set('DEST', "SIGNAL-I-PDU")
-            ipduRef.text = "/PDU/" + frame
+            ipduRef.text = "/PDU/PDU_" + frame
 
     for pdugrp in rxIPduGroups:
         ipduGrp = etree.SubElement(elements,'I-PDU-GROUP')
@@ -350,7 +350,7 @@ def exportArxml(db, filename):
         for frame in rxIPduGroups[pdugrp]:
             ipduRef = etree.SubElement(ipduRefs,'I-PDU-REF')
             ipduRef.set('DEST', "SIGNAL-I-PDU")
-            ipduRef.text = "/PDU/" + frame
+            ipduRef.text = "/PDU/PDU_" + frame
 
     f = open(filename,"wb");
     f.write(etree.tostring(root, pretty_print=True))
