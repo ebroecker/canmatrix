@@ -363,6 +363,8 @@ def importArxml(filename):
 
     frames = root.findall('.//' + ns + 'FRAME')
     print("DEBUG %d frames in arxml..." % (frames.__len__()))    
+    canTriggers = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
+    print("DEBUG %d can-frame-triggering in arxml..." % (canTriggers.__len__()))    
 
 
     ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
