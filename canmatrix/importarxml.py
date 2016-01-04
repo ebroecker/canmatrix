@@ -355,7 +355,7 @@ def importArxml(filename, **options):
     if 'arxmlIgnoreClusterInfo' in options:
         ignoreClusterInfo=options["arxmlIgnoreClusterInfo"]
     else:
-        ignoreClusterInfo=0
+        ignoreClusterInfo=False
 
     result = {}
     print("Read arxml ...")
@@ -383,7 +383,7 @@ def importArxml(filename, **options):
     canTriggers = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
     print("DEBUG %d can-frame-triggering in arxml..." % (canTriggers.__len__()))    
 
-    if ignoreClusterInfo == 1:
+    if ignoreClusterInfo == True:
         ccs = {"ignoreClusterInfo"}    
     else:
         ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
@@ -399,7 +399,7 @@ def importArxml(filename, **options):
         db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
         db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
 
-        if ignoreClusterInfo == 1:
+        if ignoreClusterInfo == True:
             canframetrig = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
             busname = ""
         else:
@@ -435,7 +435,7 @@ def importArxml(filename, **options):
             db._fl.addFrame(getFrame(frameTrig, arDict,multiplexTranslation, ns))
 
 
-        if ignoreClusterInfo == 1:
+        if ignoreClusterInfo == True:
             pass
             # no support for signal direction 
         else:
