@@ -267,7 +267,11 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         newBo.addAttribute("GenMsgCycleTime",str(int(float(value.text)*1000)))
 
     pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
+    if pdusigmappings is None or pdusigmappings.__len__() == 0:
+        print("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newBo._name))
     pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+    if pdusigmapping is None or pdusigmapping.__len__() == 0:
+        print("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newBo._name))
     getSignals(pdusigmapping, newBo, arDict, ns, None)
     return newBo
 
