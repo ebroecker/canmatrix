@@ -32,11 +32,11 @@ import codecs
 #CP1253
 
 def exportDbc(db, filename, **options):
-    if hasattr(options,'dbcExportEncoding'):
+    if 'dbcExportEncoding' in options:
         dbcExportEncoding=options["dbcExportEncoding"]
     else:
         dbcExportEncoding='iso-8859-1'
-    if hasattr(options,'dbcExportCommentEncoding'):
+    if 'dbcExportCommentEncoding' in options:
         dbcExportCommentEncoding=options["dbcExportCommentEncoding"]
     else:
         dbcExportCommentEncoding=dbcExportEncoding

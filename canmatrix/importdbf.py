@@ -55,7 +55,7 @@ def decodeDefine(line):
 
 
 def importDbf(filename, **options):
-    if hasattr(options,'dbfImportEncoding'):
+    if 'dbfImportEncoding' in options:
         dbfImportEncoding=options["dbfImportEncoding"]
     else:
         dbfImportEncoding='iso-8859-1'

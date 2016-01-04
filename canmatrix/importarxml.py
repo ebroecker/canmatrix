@@ -352,7 +352,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     return bu
 
 def importArxml(filename, **options):
-    if hasattr(options,'arxmlIgnoreClusterInfo'):
+    if 'arxmlIgnoreClusterInfo' in options:
         ignoreClusterInfo=options["arxmlIgnoreClusterInfo"]
     else:
         ignoreClusterInfo=0

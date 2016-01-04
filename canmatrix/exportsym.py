@@ -78,7 +78,7 @@ def exportSym(db, filename, **options):
     """
     global enumDict
     global enums
-    if hasattr(options,'symExportEncoding'):
+    if 'symExportEncoding' in options:
         symEncoding=options["symExportEncoding"]
     else:
         symEncoding='iso-8859-1'

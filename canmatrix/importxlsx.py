@@ -103,7 +103,7 @@ def getIfPossible(row, value):
         return None
 
 def importXlsx(filename, **options):
-    if hasattr(options, "xlsMotorolaBitFormat"):
+    if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:
         motorolaBitFormat = "msbreverse"

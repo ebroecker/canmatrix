@@ -224,7 +224,7 @@ def writeBuMatrixx(buList, sig, frame, worksheet, row, col, firstframe):
     return col
 
 def exportXlsx(db, filename, **options):
-    if hasattr(options, "xlsMotorolaBitFormat"):
+    if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:
         motorolaBitFormat = "msbreverse"
