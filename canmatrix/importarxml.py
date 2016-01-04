@@ -338,7 +338,16 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
         bu.addAttribute("NWM-Knoten", "0")
     return bu
 
+<<<<<<< HEAD
 def importArxml(filename):
+=======
+def importArxml(filename, **options):
+    if 'arxmlIgnoreClusterInfo' in options:
+        ignoreClusterInfo=options["arxmlIgnoreClusterInfo"]
+    else:
+        ignoreClusterInfo=0
+
+>>>>>>> af3543e... replaced wrong hasattr for options with "in" in several modules
     result = {}
     print("Read arxml ...")
     tree = etree.parse(filename)

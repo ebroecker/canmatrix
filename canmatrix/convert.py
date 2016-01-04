@@ -47,7 +47,7 @@ def convert(infile, outfileName, **options):
     elif infile[-4:] == 'xlsx' :
         dbs[""] = im.importXlsx(infile, **options)
     elif infile[-5:] == 'arxml':
-        dbs = im.importArxml(infile)
+        dbs = im.importArxml(infile, **options)
     elif infile[-4:] == 'yaml':
         dbs[""] = im.importYaml(infile)
     else:
@@ -106,6 +106,9 @@ def main():
     #parser.add_option("-d", "--debug",
     #                  dest="debug", default=False,
     #                  help="print debug messages to stdout")
+    parser.add_option("", "--arxmlIgnoreClusterInfo",
+                                      dest="arxmlIgnoreClusterInfo", default=0,
+                                      help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault 0")
     parser.add_option("", "--dbcImportEncoding",
                                       dest="dbcImportEncoding", default="iso-8859-1",
                                       help="Import charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")

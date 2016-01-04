@@ -39,7 +39,7 @@ import codecs
 
 
 def importSym(filename, **options):
-    if hasattr(options,'symImportEncoding'):
+    if 'symImportEncoding' in options:
         symImportEncoding=options["symImportEncoding"]
     else:
         symImportEncoding='iso-8859-1'

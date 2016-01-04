@@ -35,7 +35,7 @@ import math
 #CP1253
 
 def exportDbf(db, filename, **options):
-    if hasattr(options,'dbfExportEncoding'):
+    if 'dbfExportEncoding' in options:
         dbfExportEncoding=options["dbfExportEncoding"]
     else:
         dbfExportEncoding='iso-8859-1'

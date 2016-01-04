@@ -36,11 +36,11 @@ import codecs
 
 
 def importDbc(filename, **options):
-    if hasattr(options,'dbcImportEncoding'):
+    if 'dbcImportEncoding' in options:
         dbcImportEncoding=options["dbcImportEncoding"]
     else:
         dbcImportEncoding='iso-8859-1'
-    if hasattr(options,'dbcImportCommentEncoding'):
+    if 'dbcImportCommentEncoding' in options:
         dbcCommentEncoding=options["dbcImportCommentEncoding"]
     else:
         dbcCommentEncoding=dbcImportEncoding
