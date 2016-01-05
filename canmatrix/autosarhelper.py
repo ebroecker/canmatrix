@@ -80,7 +80,7 @@ def arGetPath(ardict, path):
 
 
 def arGetChild(parent, tagname, arTranslationTable, namespace):
-    logger.debug("getChild: " + tagname)
+#    logger.debug("getChild: " + tagname)
     if parent is None:
         return None
     ret = parent.find('./' + namespace + tagname)

@@ -390,8 +390,13 @@ def importArxml(filename, **options):
     logger.debug("DEBUG %d frames in arxml..." % (frames.__len__()))    
     canTriggers = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
     logger.debug("DEBUG %d can-frame-triggering in arxml..." % (canTriggers.__len__()))    
-    sigIpdu = root.findall('.//' + ns + 'SIGNAL-I-PDU')
-    logger.debug("DEBUG %d SIGNAL-I-PDU in arxml..." % (sigIpdu.__len__()))    
+
+    sigpdumap = root.findall('.//' + ns + 'SIGNAL-TO-PDU-MAPPINGS')
+    logger.debug("DEBUG %d SIGNAL-TO-PDU-MAPPINGS in arxml..." % (sigpdumap.__len__()))  
+
+    sigIpdu = root.findall('.//' + ns + 'I-SIGNAL-TO-I-PDU-MAPPING')
+    logger.debug("DEBUG %d I-SIGNAL-TO-I-PDU-MAPPING in arxml..." % (sigIpdu.__len__()))  
+  
 
     if ignoreClusterInfo == True:
         ccs = {"ignoreClusterInfo"}    
