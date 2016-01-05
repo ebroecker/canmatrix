@@ -1,39 +1,5 @@
-#!/usr/bin/env python
-from __future__ import print_function
 from __future__ import absolute_import
-from .importdbc import *
-from .importdbf import *
-from .importsym import *
-
-import logging
-logger = logging.getLogger('root')
-
-
-try:
-    from .importarxml import *
-except:
-    logger.warn("no arxml-import-support, some dependencies missing... , try pip install lxml ")
-
-try:
-    from .importkcd import *
-except:
-    logger.warn("no kcd-import-support, some dependencies missing... , try pip install lxml")
-
-try:
-    from .importxls import *
-except:
-    logger.warn("no xls-import-support, some dependencies missing... , try pip install xlrd xlwt")
-
-try:
-    from .importxlsx import *
-except:
-    logger.warn("no xlsx-import-support, some dependencies missing... , try pip install xlrd ")
-
-try:
-    from .importyaml import *
-except:
-    logger.warn("no yaml-import-support, some dependencies missing ... , try pip install yaml  ")
-
+#!/usr/bin/env python
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -54,3 +20,30 @@ except:
 #CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
+
+# Configurable logging
+# Author: Martin Hoffmann (m8ddin@gmail.com)
+
+import logging
+
+def setup_logger(name):
+    """Setup a project wide logger singleton"""
+    formatter = logging.Formatter(fmt='%(levelname)s - %(module)s - %(message)s')
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
+    return logger
+
+def set_log_level(logger, level):
+    """Dynamic reconfiguration of the log level"""
+    if level > 2:
+        level = 2
+    if level < -1:
+        level = -1
+        
+    lvls = {-1: logging.ERROR, 0: logging.WARN, 1: logging.INFO, 2: logging.DEBUG}
+    logger.setLevel(lvls[level])

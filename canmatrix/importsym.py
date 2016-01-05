@@ -1,5 +1,9 @@
 from __future__ import division
 from __future__ import absolute_import
+
+import logging
+logger = logging.getLogger('root')
+
 from builtins import *
 import math
 #!/usr/bin/env python

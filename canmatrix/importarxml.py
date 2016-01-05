@@ -2,6 +2,10 @@
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
+
+import logging
+logger = logging.getLogger('root')
+
 from builtins import *
 import math
 from lxml import etree
@@ -125,7 +129,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 const = arGetChild(compuscale, "COMPU-CONST", arDict, ns)
                 # value hinzufuegen
                 if const is None:
-                    print("unknown Compu-Method: " + compmethod.get('UUID'))
+                    logger.warn("unknown Compu-Method: " + compmethod.get('UUID'))
         byteorder = 0
         if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             byteorder = 1
@@ -345,21 +349,21 @@ def importArxml(filename, **options):
         ignoreClusterInfo=0
 
     result = {}
-    print("Read arxml ...")
+    logger.debug("Read arxml ...")
     tree = etree.parse(filename)
 
     root = tree.getroot()
-    print(" Done\n")
+    logger.debug(" Done\n")
 
     ns = "{" + tree.xpath('namespace-uri(.)') + "}"
     nsp = tree.xpath('namespace-uri(.)')
 
     topLevelPackages = root.find('./' + ns + 'TOP-LEVEL-PACKAGES')
 
-    print("Build arTree ...")
+    logger.debug("Build arTree ...")
     arDict = arTree()
     arParseTree(topLevelPackages, arDict, ns)
-    print(" Done\n")
+    logger.debug(" Done\n")
 
     ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
     for cc in ccs:
@@ -375,15 +379,15 @@ def importArxml(filename, **options):
         db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
 
         speed = arGetChild(cc, "SPEED", arDict, ns)
-        print("Busname: " + arGetName(cc,ns), end=' ')
+        logger.debug("Busname: " + arGetName(cc,ns), end=' ')
         if speed is not None:
-            print(" Speed: " + speed.text)
+            logger.debug(" Speed: " + speed.text)
 
         physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
 
         busname = arGetName(cc,ns)
         if speed is not None:
-            print(" Speed: " + speed.text)
+            logger.debug(" Speed: " + speed.text)
 
         nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
 

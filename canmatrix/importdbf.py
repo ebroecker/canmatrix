@@ -27,6 +27,10 @@
 
 from __future__ import print_function
 from __future__ import absolute_import
+
+import logging
+logger = logging.getLogger('root')
+
 from .canmatrix import *
 import re
 import codecs
@@ -49,7 +53,7 @@ def decodeDefine(line):
         myDef = valueType
         default = value
     else:
-        print(line)
+        logger.debug(line)
 
     return define[1:-1], myDef, default
 
@@ -188,7 +192,7 @@ def importDbf(filename, **options):
                 (name, Id, size, nSignals, dummy, extended,transmitter) = temstr.split(',')
                 newBo = db._fl.addFrame(Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
-                    print ("Extended")
+                    logger.debug ("Extended")
                     newBo._extended = 1
 
             if line.startswith("[NODE]"):

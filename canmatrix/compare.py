@@ -23,20 +23,19 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from builtins import *
-import canmatrix.importany as im
-import sys
-import codecs
 
-from .canmatrix import *
+from .log import setup_logger, set_log_level
+logger = setup_logger('root')
+
+import sys
 
 
 class compareResult(object):
-    def __init__(self, result= None, type= None, ref= None, changes = None):
+    def __init__(self, result= None, mtype= None, ref= None, changes = None):
         # equal, added, deleted, changed
         self._result = result
         # db, bu, frame, signal, attribute
-        self._type = type
+        self._type = mtype
         #reference to related object
         self._ref = ref
         self._changes = changes
@@ -140,7 +139,7 @@ def compareSignalGroup(sg1, sg2):
         result.addChild(compareResult("changed", "SignalName", [str(sg1._Id), str(sg2._Id)] ))
 
     if sg1._members == None or sg2._members == None:
-        print("Strange - sg wo members???")
+        logger.debug("Strange - sg wo members???")
         return result
     for member in sg1._members:
         if sg2.byName(member._name) is None:
@@ -298,7 +297,7 @@ def compareSignal(s1,s2, ignore = None):
 
 def dumpResult(res, depth = 0):
     if res._type is not None and res._result != "equal":
-        for i in range(0,depth):
+        for _ in range(0,depth):
             print(" ", end=' ')
         print(res._type + " " + res._result + " ", end=' ')
         if  hasattr(res._ref, '_name'):
@@ -306,32 +305,50 @@ def dumpResult(res, depth = 0):
         else:
             print(" ")
         if  res._changes is not None and res._changes[0] is not None and res._changes[1] is not None:
-            for i in range(0,depth):
+            for _ in range(0,depth):
                 print(" ", end=' ')
             print("old: " + str(res._changes[0].encode('ascii','replace')) + " new: " + str(res._changes[1].encode('ascii','replace')))
     for child in res._children:
         dumpResult(child, depth+1)
 
 def main():
-    if len(sys.argv) < 3:
-        sys.stderr.write('Usage: sys.argv[0] matrix1 matrix2\n')
-        sys.stderr.write('matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml\n')
+    
+    from optparse import OptionParser
+
+    usage = """
+    %prog [options] cancompare matrix1 matrix2
+    
+    matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml
+    """
+
+    parser = OptionParser(usage=usage)
+    parser.add_option("-s", dest="silent", action="store_true", help="don't print status messages to stdout. (only errors)", default=False)
+    parser.add_option("-v", dest="verbosity", action="count", help="Output verbosity", default=0)
+    (cmdlineOptions, args) = parser.parse_args()
+
+    if len(args) < 2:
+        parser.print_help()
         sys.exit(1)
 
-    matrix1 = sys.argv[1]
-    matrix2 = sys.argv[2]
+    matrix1 = args[0]
+    matrix2 = args[1]
 
-    print("Importing " + matrix1 + " ... ")
+    verbosity = cmdlineOptions.verbosity
+    if cmdlineOptions.silent:
+        # Only print ERROR messages (ignore import warnings)
+        verbosity = -1
+    set_log_level(logger, verbosity)
+   
+    # import only after setting log level, to also disable warning messages in silent mode.
+    import canmatrix.importany as im
+    
+    logger.info("Importing " + matrix1 + " ... ")
     db1 = im.importany(matrix1)
-    print("%d Frames found" % (db1._fl._list.__len__()))
+    logger.info("%d Frames found" % (db1._fl._list.__len__()))
 
-    print("Importing " + matrix2 + " ... ")
+    logger.info("Importing " + matrix2 + " ... ")
     db2 = im.importany(matrix2)
-    print("%d Frames found" % (db2._fl._list.__len__()))
-
-
-    print("\n\n")
-
+    logger.info("%d Frames found" % (db2._fl._list.__len__()))
 
     ignore = {}
     #ignore["ATTRIBUTE"] = "*"
