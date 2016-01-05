@@ -28,6 +28,10 @@
 
 from __future__ import division
 from __future__ import print_function
+
+import logging
+logger = logging.getLogger('root')
+
 from builtins import *
 import math
 from .canmatrix import *
@@ -233,7 +237,7 @@ def importXls(filename, **options):
                 try:
                     newSig._factor = float(factor)
                 except:
-                    print("Some error occured while decoding scale: Signal: %s; \"%s\"" % (signalName, sh.cell(rownum,index['function']).value))
+                    logger.warn("Some error occurred while decoding scale: Signal: %s; \"%s\"" % (signalName, sh.cell(rownum,index['function']).value))
             else:
                 unit = factor.strip()
                 newSig._unit = unit

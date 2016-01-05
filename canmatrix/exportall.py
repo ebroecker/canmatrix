@@ -1,39 +1,56 @@
 #!/usr/bin/env python
 from __future__ import print_function
 from __future__ import absolute_import
+
+import logging
+logger = logging.getLogger('root')
+
 from .exportdbc import *
 from .exportdbf import *
 from .exportsym import *
 from .exportJson import *
 from .exportcsv import *
 
+
 try:
     from .exportarxml import *
 except:
-    print("no arxml-export-support, some dependencys missing... try pip install lxml")
+    logger.warn("no arxml-export-support, some dependencies missing... try pip install lxml")
 
 try:
     from .exportkcd import *
 except:
-    print("no kcd-export-support, some dependencys missing...  try pip install lxml")
+    logger.warn("no kcd-export-support, some dependenies missing...  try pip install lxml")
+
 try:
     from .exportsym import *
 except:
-    print("no sym-export-support, some dependencys missing... ")
-
+    logger.warn("no sym-export-support, some dependencies missing... ")
 
 try:
     from .exportxls import *
 except:
-    print("no xls-export-support, some dependencys missing...  try pip install xlwt")
+    logger.warn("no xls-export-support, some dependencies missing...  try pip install xlwt")
+
 try:
     from .exportxlsx import *
 except:
-    print("no xlsx-export-support, some dependencys missing...  try pip install xlswriter")
+    logger.warn("no xlsx-export-support, some dependencies missing...  try pip install xlswriter")
+
 try:
     from .exportyaml import *
 except:
-    print("no yaml-export-support, some dependencys missing ...  try pip install pyyaml ")
+    logger.warn("no yaml-export-support, some dependencies missing ...  try pip install pyyaml ")
+
+try:
+    from .exportxlsx import *
+except:
+    logger.warn("no xlsx-export-support, some dependencies missing... ")
+
+try:
+    from .exportyaml import *
+except:
+    logger.warn("no yaml-export-support, some dependencies missing ... (probably yaml) ")
 
 
 

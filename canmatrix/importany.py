@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from __future__ import absolute_import
 #!/usr/bin/env python
-from . import importall as im
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -24,6 +23,8 @@ from . import importall as im
 #DAMAGE.
 
 def importany(filename):
+    # import within function to disable warning messages by log level
+    from . import importall as im
     db = None
     if filename[-3:] == 'dbc':
         db = im.importDbc(filename)

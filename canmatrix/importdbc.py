@@ -1,6 +1,10 @@
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
+
+import logging
+logger = logging.getLogger('root')
+
 from builtins import *
 import math
 #!/usr/bin/env python
@@ -64,7 +68,7 @@ def importDbc(filename, **options):
             try:
                 comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
             except:
-                print ("Error decoding line: %d (%s)" % (i, line))
+                logger.error("Error decoding line: %d (%s)" % (i, line))
             if l.endswith(b'";'):
                 followUp = FollowUps.nothing
                 if signal is not None:
@@ -74,7 +78,7 @@ def importDbc(filename, **options):
             try:
                 comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
             except:
-                print ("Error decoding line: %d (%s)" % (i, line))
+                logger.error("Error decoding line: %d (%s)" % (i, line))
             if l.endswith(b'";'):
                 followUp = FollowUps.nothing
                 if frame is not None:
@@ -84,7 +88,7 @@ def importDbc(filename, **options):
             try:
                 comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
             except:
-                print ("Error decoding line: %d (%s)" % (i, line))
+                logger.error("Error decoding line: %d (%s)" % (i, line))
             if l.endswith(b'";'):
                 followUp = FollowUps.nothing
                 if boardUnit is not None:
@@ -143,7 +147,7 @@ def importDbc(filename, **options):
                     try:
                         signal.addComment(temp_raw.group(3).decode(dbcCommentEncoding).replace('\\"','"'))
                     except:
-                        print ("Error decoding line: %d (%s)" % (i, line))
+                        logger.error("Error decoding line: %d (%s)" % (i, line))
             else:
                 pattern = "^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)"
                 regexp = re.compile(pattern)
@@ -156,7 +160,7 @@ def importDbc(filename, **options):
                     try:
                         comment = temp_raw.group(3).decode(dbcCommentEncoding).replace('\\"','"')
                     except:
-                        print ("Error decoding line: %d (%s)" % (i, line))
+                        logger.error("Error decoding line: %d (%s)" % (i, line))
                     followUp = FollowUps.signalComment
 
         elif decoded.startswith("CM_ BO_ "):
@@ -171,7 +175,7 @@ def importDbc(filename, **options):
                     try:
                         frame.addComment(temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
                     except:
-                        print ("Error decoding line: %d (%s)" % (i, line))
+                        logger.error("Error decoding line: %d (%s)" % (i, line))
             else:
                 pattern = "^CM\_ BO\_ *(\w+) *\"(.*)"
                 regexp = re.compile(pattern)
@@ -183,7 +187,7 @@ def importDbc(filename, **options):
                     try:
                         comment = temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"')
                     except:
-                        print ("Error decoding line: %d (%s)" % (i, line))
+                        logger.error("Error decoding line: %d (%s)" % (i, line))
                     followUp = FollowUps.frameComment
         elif decoded.startswith("CM_ BU_ "):
             pattern = "^CM\_ BU\_ *(\w+) *\"(.*)\";"
@@ -197,7 +201,7 @@ def importDbc(filename, **options):
                     try:
                         boardUnit.addComment(temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
                     except:
-                        print ("Error decoding line: %d (%s)" % (i, line))
+                        logger.error("Error decoding line: %d (%s)" % (i, line))
             else:
                 pattern = "^CM\_ BU\_ *(\w+) *\"(.*)"
                 regexp = re.compile(pattern)
@@ -210,7 +214,7 @@ def importDbc(filename, **options):
                         try:
                             comment = temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"')
                         except:
-                            print ("Error decoding line: %d (%s)" % (i, line))
+                            logger.error("Error decoding line: %d (%s)" % (i, line))
                         followUp = FollowUps.boardUnitComment
         elif decoded.startswith("BU_:"):
             pattern = "^BU\_\:(.*)"
@@ -240,7 +244,7 @@ def importDbc(filename, **options):
                         if sg:
                             sg.addValues(tempList[i*2], val)
                 except:
-                    print("Error with Line: ",tempList)
+                    logger.error("Error with Line: " + str(tempList))
 
         elif decoded.startswith("VAL_TABLE_ "):
             regexp = re.compile("^VAL\_TABLE\_ (\w+) (.*);")
@@ -254,10 +258,10 @@ def importDbc(filename, **options):
                         val = tempList[i*2+1]
                         valHash[tempList[i*2].strip()] = val.strip()
                 except:
-                    print("Error with Line: ",tempList)
+                    logger.error("Error with Line: " + str(tempList))
                 db.addValueTable(tableName, valHash)
             else:
-                print(l)
+                logger.debug(l)
 
         elif decoded.startswith("BA_DEF_ SG_ "):
             pattern = "^BA\_DEF\_ SG\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
