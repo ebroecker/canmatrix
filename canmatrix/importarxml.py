@@ -386,6 +386,8 @@ def importArxml(filename, **options):
     print("DEBUG %d frames in arxml..." % (frames.__len__()))    
     canTriggers = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
     print("DEBUG %d can-frame-triggering in arxml..." % (canTriggers.__len__()))    
+    sigIpdu = root.findall('.//' + ns + 'SIGNAL-I-PDU')
+    print("DEBUG %d SIGNAL-I-PDU in arxml..." % (sigIpdu.__len__()))    
 
     if ignoreClusterInfo == True:
         ccs = {"ignoreClusterInfo"}    
