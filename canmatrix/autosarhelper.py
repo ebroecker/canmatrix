@@ -1,6 +1,9 @@
 from __future__ import absolute_import
 from builtins import *
 #!/usr/bin/env python
+
+import logging
+logger = logging.getLogger('root')
 from .canmatrix import *
 
 #Copyright (c) 2013, Eduard Broecker
@@ -77,7 +80,7 @@ def arGetPath(ardict, path):
 
 
 def arGetChild(parent, tagname, arTranslationTable, namespace):
-#       print "getChild: " + tagname
+    logger.debug("getChild: " + tagname)
     if parent is None:
         return None
     ret = parent.find('./' + namespace + tagname)

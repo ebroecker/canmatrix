@@ -23,17 +23,17 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
+from .log import setup_logger, set_log_level
+logger = setup_logger('root')
 import sys
 sys.path.append('..')
-
-import canmatrix.exportall as ex
-import canmatrix.importall as im
-import canmatrix.canmatrix as cm
 import os
 
 def convert(infile, outfileName, **options):
+    import canmatrix.exportall as ex
+    import canmatrix.importall as im
     dbs = {}
-    print("Importing " + infile + " ... ")
+    logger.info("Importing " + infile + " ... ")
     if infile[-3:] == 'dbc':
         dbs[""] = im.importDbc(infile, **options)
     elif infile[-3:] == 'dbf':
@@ -51,16 +51,16 @@ def convert(infile, outfileName, **options):
     elif infile[-4:] == 'yaml':
         dbs[""] = im.importYaml(infile)
     else:
-        sys.stderr.write('\nFile not recognized: ' + infile + "\n")
-    print("done\n")
+        logger.error('\nFile not recognized: ' + infile + "\n")
+    logger.info("done\n")
 
 
-    print("Exporting " + outfileName + " ... ")
+    logger.info("Exporting " + outfileName + " ... ")
 
     for name in dbs:
         db = dbs[name]
-        print(name)
-        print("%d Frames found" % (db._fl._list.__len__()))
+        logger.info(name)
+        logger.info("%d Frames found" % (db._fl._list.__len__()))
 
         if len(name) > 0:
             path = os.path.split(outfileName)
@@ -88,8 +88,8 @@ def convert(infile, outfileName, **options):
         elif outfile[-3:] == 'csv':
             ex.exportCsv(db, outfile)
         else:
-            sys.stderr.write('File not recognized: ' + outfileName + "\n")
-    print("done")
+            logger.error('File not recognized: ' + outfileName + "\n")
+    logger.info("done")
 
 def main():
     from optparse import OptionParser
@@ -106,6 +106,9 @@ def main():
     #parser.add_option("-d", "--debug",
     #                  dest="debug", default=False,
     #                  help="print debug messages to stdout")
+
+    parser.add_option("-v", dest="verbosity", action="count", help="Output verbosity", default=0)
+    parser.add_option("-s", dest="silent", action="store_true", help="don't print status messages to stdout. (only errors)", default=False)
     parser.add_option("", "--arxmlIgnoreClusterInfo", action="store_true",
                                       dest="arxmlIgnoreClusterInfo", default=False,
                                       help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault 0")
@@ -137,14 +140,21 @@ def main():
                                       dest="xlsMotorolaBitFormat", default="msbreverse",
                                       help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")
 
-
     (cmdlineOptions, args) = parser.parse_args()
     if len(args) < 2:
         parser.print_help()
         sys.exit(1)
+
     infile = args[0]
     outfileName = args[1]
 
+    verbosity = cmdlineOptions.verbosity
+    if cmdlineOptions.silent:
+        # only print error messages, ignore verbosity flag
+        verbosity = -1
+ 
+    set_log_level(logger, verbosity)
+   
     convert(infile, outfileName, **cmdlineOptions.__dict__)
 
 if __name__ == '__main__':

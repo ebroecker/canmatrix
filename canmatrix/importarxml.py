@@ -2,6 +2,10 @@
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
+
+import logging
+logger = logging.getLogger('root')
+
 from builtins import *
 import math
 from lxml import etree
@@ -125,7 +129,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 const = arGetChild(compuscale, "COMPU-CONST", arDict, ns)
                 # value hinzufuegen
                 if const is None:
-                    print("unknown Compu-Method: " + compmethod.get('UUID'))
+                    logger.warn("unknown Compu-Method: " + compmethod.get('UUID'))
         byteorder = 0
         if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             byteorder = 1
@@ -180,9 +184,9 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         newBo = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
         
         if pdu == None:
-            print("ERROR: pdu")
+            logger.error("ERROR: pdu")
         else:
-            print (arGetName(pdu, ns))
+            logger.debug (arGetName(pdu, ns))
  
 
     if "MULTIPLEXED-I-PDU" in pdu.tag:
@@ -268,10 +272,10 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
 
     pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
     if pdusigmappings is None or pdusigmappings.__len__() == 0:
-        print("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newBo._name))
+        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newBo._name))
     pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
     if pdusigmapping is None or pdusigmapping.__len__() == 0:
-        print("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newBo._name))
+        logger.debug("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newBo._name))
     getSignals(pdusigmapping, newBo, arDict, ns, None)
     return newBo
 
@@ -362,11 +366,11 @@ def importArxml(filename, **options):
         ignoreClusterInfo=False
 
     result = {}
-    print("Read arxml ...")
+    logger.debug("Read arxml ...")
     tree = etree.parse(filename)
 
     root = tree.getroot()
-    print(" Done\n")
+    logger.debug(" Done\n")
 
     ns = "{" + tree.xpath('namespace-uri(.)') + "}"
     nsp = tree.xpath('namespace-uri(.)')
@@ -377,17 +381,17 @@ def importArxml(filename, **options):
       # no "TOP-LEVEL-PACKAGES found, try root
       topLevelPackages = root
     
-    print("Build arTree ...")
+    logger.debug("Build arTree ...")
     arDict = arTree()
     arParseTree(topLevelPackages, arDict, ns)
-    print(" Done\n")
+    logger.debug(" Done\n")
 
     frames = root.findall('.//' + ns + 'FRAME')
-    print("DEBUG %d frames in arxml..." % (frames.__len__()))    
+    logger.debug("DEBUG %d frames in arxml..." % (frames.__len__()))    
     canTriggers = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
-    print("DEBUG %d can-frame-triggering in arxml..." % (canTriggers.__len__()))    
+    logger.debug("DEBUG %d can-frame-triggering in arxml..." % (canTriggers.__len__()))    
     sigIpdu = root.findall('.//' + ns + 'SIGNAL-I-PDU')
-    print("DEBUG %d SIGNAL-I-PDU in arxml..." % (sigIpdu.__len__()))    
+    logger.debug("DEBUG %d SIGNAL-I-PDU in arxml..." % (sigIpdu.__len__()))    
 
     if ignoreClusterInfo == True:
         ccs = {"ignoreClusterInfo"}    
@@ -410,31 +414,31 @@ def importArxml(filename, **options):
             busname = ""
         else:
             speed = arGetChild(cc, "SPEED", arDict, ns)
-            print("Busname: " + arGetName(cc,ns), end=' ')
+            logger.debug("Busname: " + arGetName(cc,ns), end=' ')
             if speed is not None:
-                print(" Speed: " + speed.text)
+                logger.debug(" Speed: " + speed.text)
 
             busname = arGetName(cc,ns)
             if speed is not None:
-                print(" Speed: " + speed.text)
+                logger.debug(" Speed: " + speed.text)
 
             physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
             if physicalChannels == None:
-                print("Error - PHYSICAL-CHANNELS not found")
+                logger.error("Error - PHYSICAL-CHANNELS not found")
 
             nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", arDict, ns)
 
             physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
             if physicalChannel == None:
-                print("Error - PHYSICAL-CHANNEL not found")
+                logger.debug("Error - PHYSICAL-CHANNEL not found")
             frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
             if frametriggerings == None:
-                print("Error - FRAME-TRIGGERINGS not found")
+                logger.debug("Error - FRAME-TRIGGERINGS not found")
             canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
             if canframetrig == None:
-                print("Error - CAN-FRAME-TRIGGERING not found")
+                logger.error("Error - CAN-FRAME-TRIGGERING not found")
             else:
-                print("%d frames found in arxml\n" % (canframetrig.__len__()))
+                logger.debug("%d frames found in arxml\n" % (canframetrig.__len__()))
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
