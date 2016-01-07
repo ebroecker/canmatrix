@@ -67,25 +67,39 @@ def convert(infile, outfileName, **options):
             outfile = os.path.join(path[0], name + "_" + path[1])
         else:
             outfile = outfileName
-        if outfile[-3:] == 'dbc':
+           
+        # Get output file extension   
+        fileext = '' 
+        if options['force_output']:
+            # Provided by the command line
+            fileext = options['force_output']
+        else:
+            # Get extension from output filename
+            fileext = os.path.splitext(outfile)[1]
+       
+        # Strip leading '.' from extension, of exists
+        fileext = fileext[1:] if fileext.startswith('.') else fileext
+         
+                        
+        if fileext == 'dbc':
             ex.exportDbc(db, outfile, **options)
-        elif outfile[-3:] == 'dbf':
+        elif fileext == 'dbf':
             ex.exportDbf(db, outfile, **options)
-        elif outfile[-3:] == 'sym':
+        elif fileext == 'sym':
             ex.exportSym(db, outfile, **options)
-        elif outfile[-3:] == 'kcd':
+        elif fileext == 'kcd':
             ex.exportKcd(db, outfile)
-        elif outfile[-4:] == 'xlsx':
+        elif fileext == 'xlsx':
             ex.exportXlsx(db, outfile, **options)
-        elif outfile[-3:] == 'xls':
+        elif fileext == 'xls':
             ex.exportXls(db, outfile, **options)
-        elif outfile[-4:] == 'json':
+        elif fileext == 'json':
             ex.exportJson(db, outfile)
-        elif outfile[-5:] == 'arxml':
+        elif fileext == 'arxml':
             ex.exportArxml(db, outfile)
-        elif outfile[-4:] == 'yaml':
+        elif fileext == 'yaml':
             ex.exportYaml(db, outfile)
-        elif outfile[-3:] == 'csv':
+        elif fileext == 'csv':
             ex.exportCsv(db, outfile)
         else:
             logger.error('File not recognized: ' + outfileName + "\n")
@@ -108,6 +122,7 @@ def main():
     #                  help="print debug messages to stdout")
     parser.add_option("-v", dest="verbosity", action="count", help="Output verbosity", default=0)
     parser.add_option("-s", dest="silent", action="store_true", help="don't print status messages to stdout. (only errors)", default=False)
+    parser.add_option("-f", dest="force_output", help="enforce output format, ignoring output file extension (e.g., -f csv")
     parser.add_option("", "--arxmlIgnoreClusterInfo",
                                       dest="arxmlIgnoreClusterInfo", default=0,
                                       help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault 0")
