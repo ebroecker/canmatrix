@@ -55,19 +55,33 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         values = {}
         motorolla = arGetChild(signal, "PACKING-BYTE-ORDER", arDict, ns)
         startBit = arGetChild(signal, "START-POSITION", arDict, ns)
-        syssignal = arGetXchildren(signal, "SIGNAL/SYSTEM-SIGNAL", arDict, ns)
-        if syssignal is not None:
-            syssignal = syssignal[0]
+        isignal = arGetChild(signal, "SIGNAL", arDict, ns)
+        if isignal == None:
+            isignal = arGetChild(signal, "I-SIGNAL", arDict, ns)
+        if isignal == None:
+            isignal = arGetChild(signal, "I-SIGNAL-GROUP", arDict, ns)
+            if isignal != None:
+                isignalarray = arGetXchildren(isignal, "I-SIGNAL", arDict, ns)
+                getSysSignals(isignal, isignalarray, Bo, GroupId, ns)
+                GroupId = GroupId + 1
+                continue
+        if isignal == None:
+            logger.debug('Frame %s, no isignal for %s found', Bo._name, arGetChild(signal,  "SHORT-NAME", arDict, ns).text)
+        syssignal = arGetChild(isignal, "SYSTEM-SIGNAL", arDict, ns)
+        if syssignal == None:
+            logger.debug('Frame %s, signal %s has no systemsignal', isignal.tag, Bo._name)
+
         if "SYSTEM-SIGNAL-GROUP" in  syssignal.tag:
             syssignalarray = arGetXchildren(syssignal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL", arDict, ns)
             getSysSignals(syssignal, syssignalarray, Bo, GroupId, ns)
             GroupId = GroupId + 1
             continue
 
-        length = arGetChild(syssignal,  "LENGTH", arDict, ns)
+        length = arGetChild(isignal,  "LENGTH", arDict, ns)
+        if length == None:
+            length = arGetChild(syssignal,  "LENGTH", arDict, ns)
         name = arGetChild(syssignal,  "SHORT-NAME", arDict, ns)
-        isignal = signal.find('./' + ns + 'SIGNAL-REF')
-
+  
         Min = 0
         Max = 1
         factor = 1.0
@@ -134,6 +148,13 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             byteorder = 1
         valuetype = '+' # unsigned
+        if name == None:
+            logger.debug('no name for signal given')
+        if startBit == None:
+            logger.debug('no startBit for signal given')
+        if length == None:
+            logger.debug('no length for signal given')
+
         if startBit is not None:
             newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever, multiplexId)
             newSig._isigRef = isignal.text
@@ -177,6 +198,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
+        logger.debug("Frame %s has no FRAME-REF" % (sn))        
         ipduTriggeringRefs = arGetChild(frameTriggering, "I-PDU-TRIGGERING-REFS", arDict, ns)
         ipduTriggering = arGetChild(ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
         pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns)
@@ -270,10 +292,10 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     if value is not None:
         newBo.addAttribute("GenMsgCycleTime",str(int(float(value.text)*1000)))
 
-    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
-    if pdusigmappings is None or pdusigmappings.__len__() == 0:
-        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newBo._name))
-    pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+#    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
+#    if pdusigmappings is None or pdusigmappings.__len__() == 0:
+#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newBo._name))
+    pdusigmapping = arGetChildren(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
     if pdusigmapping is None or pdusigmapping.__len__() == 0:
         logger.debug("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newBo._name))
     getSignals(pdusigmapping, newBo, arDict, ns, None)
@@ -419,7 +441,7 @@ def importArxml(filename, **options):
             busname = ""
         else:
             speed = arGetChild(cc, "SPEED", arDict, ns)
-            logger.debug("Busname: " + arGetName(cc,ns), end=' ')
+            logger.debug("Busname: " + arGetName(cc,ns))
             if speed is not None:
                 logger.debug(" Speed: " + speed.text)
 
@@ -427,7 +449,8 @@ def importArxml(filename, **options):
             if speed is not None:
                 logger.debug(" Speed: " + speed.text)
 
-            physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
+#            physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
+            physicalChannels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")
             if physicalChannels == None:
                 logger.error("Error - PHYSICAL-CHANNELS not found")
 
@@ -435,11 +458,13 @@ def importArxml(filename, **options):
 
             physicalChannel = arGetChild(physicalChannels, "PHYSICAL-CHANNEL", arDict, ns)
             if physicalChannel == None:
+                physicalChannel = arGetChild(physicalChannels, "CAN-PHYSICAL-CHANNEL", arDict, ns)
+            if physicalChannel == None:
                 logger.debug("Error - PHYSICAL-CHANNEL not found")
-            frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
-            if frametriggerings == None:
-                logger.debug("Error - FRAME-TRIGGERINGS not found")
-            canframetrig = arGetChildren(frametriggerings, "CAN-FRAME-TRIGGERING", arDict, ns)
+#            frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
+#            if frametriggerings == None:
+#                logger.debug("Error - FRAME-TRIGGERINGS not found")
+            canframetrig = arGetChildren(physicalChannel, "CAN-FRAME-TRIGGERING", arDict, ns)
             if canframetrig == None:
                 logger.error("Error - CAN-FRAME-TRIGGERING not found")
             else:
@@ -464,8 +489,8 @@ def importArxml(filename, **options):
                     comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
                     if comDir.text == "IN":
                         ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
-                        if isignal.text in signalRxs:
-                            signalRxs[isignal.text]._reciever.append(ecuName)
+#                        if isignal.text in signalRxs:
+#                            signalRxs[isignal.text]._reciever.append(ecuName)
     #                               for fr in db._fl._list:
     #                                       for sig in fr._signals:
     #                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:

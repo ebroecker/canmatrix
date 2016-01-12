@@ -83,9 +83,9 @@ def arGetChild(parent, tagname, arTranslationTable, namespace):
 #    logger.debug("getChild: " + tagname)
     if parent is None:
         return None
-    ret = parent.find('./' + namespace + tagname)
+    ret = parent.find('.//' + namespace + tagname)
     if ret is None:
-        ret = parent.find('./' + namespace + tagname + '-REF')
+        ret = parent.find('.//' + namespace + tagname + '-REF')
         if ret is not None:
             ret = arGetPath(arTranslationTable, ret.text)
     return ret
@@ -93,9 +93,9 @@ def arGetChild(parent, tagname, arTranslationTable, namespace):
 def arGetChildren(parent, tagname, arTranslationTable, namespace):
     if parent is None:
         return []
-    ret = parent.findall('./' + namespace + tagname)
+    ret = parent.findall('.//' + namespace + tagname)
     if ret.__len__() == 0:
-        retlist = parent.findall('./' + namespace + tagname + '-REF')
+        retlist = parent.findall('.//' + namespace + tagname + '-REF')
         rettemp = []
         for ret in retlist:
             rettemp.append(arGetPath(arTranslationTable, ret.text))
@@ -103,7 +103,7 @@ def arGetChildren(parent, tagname, arTranslationTable, namespace):
     return ret
 
 def arGetName(parent, ns):
-    name = parent.find('.//' + ns + 'SHORT-NAME')
+    name = parent.find('./' + ns + 'SHORT-NAME')
     if name is not None:
         if name.text is not None:
             return name.text
