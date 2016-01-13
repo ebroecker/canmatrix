@@ -157,6 +157,10 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
         if startBit is not None:
             newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever, multiplexId)
+            if newSig._byteorder == 0:
+                # startbit of motorola coded signals are MSB in arxml
+                newSig.setMsbStartbit(int(startBit.text))                
+            
             newSig._isigRef = isignal.text
             signalRxs[isignal.text] = newSig
 
@@ -479,18 +483,23 @@ def importArxml(filename, **options):
             pass
             # no support for signal direction 
         else:
-            isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERINGS/I-SIGNAL-TRIGGERING", arDict, ns)
+            isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERING", arDict, ns)
             for sigTrig in isignaltriggerings:
-                isignal = sigTrig.find('./' + ns + 'SIGNAL-REF')
-                portRefs =  arGetChild(sigTrig, "I-SIGNAL-PORT-REFS", arDict, ns)
-                portRef =  arGetChildren(portRefs, "I-SIGNAL-PORT", arDict, ns)
+                isignal = arGetChild(sigTrig, 'SIGNAL', arDict, ns)
+                if isignal == None:
+                    isignal = arGetChild(sigTrig, 'I-SIGNAL', arDict, ns)  
+                if isignal == None:
+                    logger.debug("no isignal for %s" % arGetName(sigTrig, ns))
+                    continue
+                portRef =  arGetChildren(sigTrig, "I-SIGNAL-PORT", arDict, ns)
 
                 for port in portRef:
                     comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
                     if comDir.text == "IN":
                         ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
-#                        if isignal.text in signalRxs:
-#                            signalRxs[isignal.text]._reciever.append(ecuName)
+                        if isignal.text in signalRxs:
+                            if ecuName not in signalRxs[isignal.text]._reciever:
+                                signalRxs[isignal.text]._reciever.append(ecuName)
     #                               for fr in db._fl._list:
     #                                       for sig in fr._signals:
     #                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
