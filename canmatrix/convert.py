@@ -70,7 +70,7 @@ def convert(infile, outfileName, **options):
            
         # Get output file extension   
         fileext = '' 
-        if options['force_output']:
+        if 'force_output' in options and options['force_output']:
             # Provided by the command line
             fileext = options['force_output']
         else:
