@@ -62,7 +62,7 @@ def exportArxml(db, filename):
     createSubElement(arPackage, 'SHORT-NAME', 'Cluster')
     elements = etree.SubElement(arPackage,'ELEMENTS')
     cancluster = etree.SubElement(elements,'CAN-CLUSTER')
- #   createSubElement(cancluster, 'SHORT-NAME', 'CAN')
+    createSubElement(cancluster, 'SHORT-NAME', 'CAN')
 #TODO: insert Speed - if possible
     createSubElement(cancluster, 'SPEED', '50000')
     physicalChannels = etree.SubElement(cancluster, 'PHYSICAL-CHANNELS')
