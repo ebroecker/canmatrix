@@ -147,7 +147,7 @@ def exportArxml(db, filename):
         for signal in frame._signals:
             signalToPduMapping = etree.SubElement(signalToPduMappings,'I-SIGNAL-TO-I-PDU-MAPPING')
             createSubElement(signalToPduMapping, 'SHORT-NAME', signal._name)
-            createSubElement(signalToPduMapping, 'START-POSITION', str(signal.getLsbStartbit()))
+            createSubElement(signalToPduMapping, 'START-POSITION', str(signal.getMsbStartbit()))
             if signal._byteorder == 1: # Intel
                 createSubElement(signalToPduMapping, 'PACKING-BYTE-ORDER', 'MOST-SIGNIFICANT-BYTE-LAST')
             else: #Motorola
