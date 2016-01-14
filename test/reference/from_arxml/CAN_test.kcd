@@ -1,7 +1,7 @@
 <NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:schemaLocation="Definition.xsd">
   <Document name="Some Document Name">some text</Document>
   <Bus name="converted/from_arxml/CAN_test.kcd">
-    <Message id="0xFFAB41" length="8" name="CommandModeControl" format="extended">
+    <Message id="0xFFAB41" length="8" name="FRAME_CommandModeControl" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="Enable_command" offset="0" length="2" endianess="little">
@@ -115,7 +115,7 @@
         </LabelSet>
       </Signal>
     </Message>
-    <Message id="0xCFFAC41" length="8" name="CommandPower" format="extended">
+    <Message id="0xCFFAC41" length="8" name="FRAME_CommandPower" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="RealPower_command" offset="24" length="32" endianess="little">
@@ -129,7 +129,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFAE41" length="8" name="CommandVF" format="extended">
+    <Message id="0xCFFAE41" length="8" name="FRAME_CommandVF" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="Voltage_command" offset="8" length="16" endianess="little">
@@ -143,7 +143,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFCAF6" length="8" name="MasterMeasuredPower" format="extended">
+    <Message id="0xCFFCAF6" length="8" name="FRAME_MasterMeasuredPower" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="RealPower_measured" offset="24" length="32" endianess="little">
@@ -157,7 +157,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFAF41" length="8" name="CommandFactoryControl" format="extended">
+    <Message id="0xCFFAF41" length="8" name="FRAME_CommandFactoryControl" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="WriteSerialNumber" offset="0" length="2" endianess="little">
@@ -181,7 +181,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFAA41" length="8" name="CommandSetNVParam" format="extended">
+    <Message id="0xCFFAA41" length="8" name="FRAME_CommandSetNVParam" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="CommandSetNVParam_MUX" offset="8" length="16" endianess="little">
@@ -326,7 +326,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xFF9B41" length="8" name="CommandModeControlAPU2" format="extended">
+    <Message id="0xFF9B41" length="8" name="FRAME_CommandModeControlAPU2" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="Enable_command" offset="0" length="2" endianess="little">
@@ -440,7 +440,7 @@
         </LabelSet>
       </Signal>
     </Message>
-    <Message id="0xCFF9C41" length="8" name="CommandPowerAPU2" format="extended">
+    <Message id="0xCFF9C41" length="8" name="FRAME_CommandPowerAPU2" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="RealPower_command" offset="24" length="32" endianess="little">
@@ -454,7 +454,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFF9E41" length="8" name="CommandVFAPU2" format="extended">
+    <Message id="0xCFF9E41" length="8" name="FRAME_CommandVFAPU2" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="Voltage_command" offset="8" length="16" endianess="little">
@@ -468,7 +468,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFCAF7" length="8" name="MasterMeasuredPowerAPU2" format="extended">
+    <Message id="0xCFFCAF7" length="8" name="FRAME_MasterMeasuredPowerAPU2" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="RealPower_measured" offset="24" length="32" endianess="little">
@@ -482,7 +482,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFCAF7" length="8" name="StatusMeasuredPower" format="extended">
+    <Message id="0xCFFCAF7" length="8" name="FRAME_StatusMeasuredPower" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="RealPower_measured" offset="24" length="32" endianess="little">
@@ -496,7 +496,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x18FFC4F7" length="8" name="StatusCommandedPower" format="extended">
+    <Message id="0x18FFC4F7" length="8" name="FRAME_StatusCommandedPower" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="RealPower_echo" offset="24" length="32" endianess="little">
@@ -510,7 +510,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFC3F7" length="8" name="StatusBits" format="extended">
+    <Message id="0xCFFC3F7" length="8" name="FRAME_StatusBits" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="State_status" offset="0" length="4" endianess="little">
@@ -726,7 +726,7 @@
         </LabelSet>
       </Signal>
     </Message>
-    <Message id="0x1CFFC5F7" length="8" name="StatusControlVoltage" format="extended">
+    <Message id="0x1CFFC5F7" length="8" name="FRAME_StatusControlVoltage" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="v5p0_Supply" offset="8" length="16" endianess="little">
@@ -750,7 +750,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x18FFCBF7" length="8" name="StatusTemps" format="extended">
+    <Message id="0x18FFCBF7" length="8" name="FRAME_StatusTemps" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="TempInlet_measured" offset="8" length="16" endianess="little">
@@ -769,7 +769,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0xCFFC8F7" length="8" name="StatusFaults" format="extended">
+    <Message id="0xCFFC8F7" length="8" name="FRAME_StatusFaults" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="BridgeAVoltageOk_status" offset="59" endianess="little">
@@ -971,7 +971,7 @@
         </LabelSet>
       </Signal>
     </Message>
-    <Message id="0xCFFC2F7" length="8" name="StatusACParameters" format="extended">
+    <Message id="0xCFFC2F7" length="8" name="FRAME_StatusACParameters" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="VoltageAC_measured" offset="8" length="16" endianess="little">
@@ -990,7 +990,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFC7F7" length="8" name="StatusDCParameters" format="extended">
+    <Message id="0x1CFFC7F7" length="8" name="FRAME_StatusDCParameters" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="VoltageDCBus" offset="24" length="16" endianess="little">
@@ -1009,7 +1009,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFC6F7" length="8" name="StatusControlVolts2" format="extended">
+    <Message id="0x1CFFC6F7" length="8" name="FRAME_StatusControlVolts2" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="n15V_Supply" offset="8" length="16" endianess="little">
@@ -1028,7 +1028,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFC1F7" length="8" name="softwareRev" format="extended">
+    <Message id="0x1CFFC1F7" length="8" name="FRAME_softwareRev" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="InterfaceRev" offset="24" length="16" endianess="little">
@@ -1047,7 +1047,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x18FFC9F7" length="8" name="StatusCommandVF" format="extended">
+    <Message id="0x18FFC9F7" length="8" name="FRAME_StatusCommandVF" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="Voltage_echo" offset="8" length="16" endianess="little">
@@ -1061,7 +1061,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFCCF7" length="8" name="serialNumber" format="extended">
+    <Message id="0x1CFFCCF7" length="8" name="FRAME_serialNumber" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="SerialNumber" offset="24" length="32" endianess="little">
@@ -1070,7 +1070,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFCDF7" length="8" name="softwareRevHash" format="extended">
+    <Message id="0x1CFFCDF7" length="8" name="FRAME_softwareRevHash" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="Hash" offset="28" length="28" endianess="little">
@@ -1079,7 +1079,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x1CFFA9F7" length="8" name="StatusNVParam" format="extended">
+    <Message id="0x1CFFA9F7" length="8" name="FRAME_StatusNVParam" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="StatusNVParam_MUX" offset="8" length="16" endianess="little">
@@ -1224,7 +1224,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x18FFD0F7" length="8" name="StatusLineCurrents" format="extended">
+    <Message id="0x18FFD0F7" length="8" name="FRAME_StatusLineCurrents" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="L1Current_measured" offset="8" length="16" endianess="little">
@@ -1243,7 +1243,7 @@
         <LabelSet/>
       </Signal>
     </Message>
-    <Message id="0x18FFD1F7" length="8" name="StatusLineVoltages" format="extended">
+    <Message id="0x18FFD1F7" length="8" name="FRAME_StatusLineVoltages" format="extended">
       <Producer/>
       <Notes></Notes>
       <Signal name="L1Voltage_measured" offset="8" length="16" endianess="little">

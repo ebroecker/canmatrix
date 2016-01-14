@@ -6,7 +6,7 @@
 
 [BUSMASTER_VERSION] [1.7.2]
 [NUMBER_OF_MESSAGES] 26
-[START_MSG] CommandModeControl,16755521,8,11,1,X,Vector__XXX
+[START_MSG] FRAME_CommandModeControl,16755521,8,11,1,X,Vector__XXX
 [START_SIGNALS] Enable_command,2,1,0,U,1.0,0.0,0,0.0,1.0,,,
 [VALUE_DESCRIPTION] "Disable",0
 [VALUE_DESCRIPTION] "Enable",1
@@ -64,22 +64,22 @@
 [VALUE_DESCRIPTION] "N/A",3
 [END_MSG]
 
-[START_MSG] CommandPower,218082369,8,2,1,X,Vector__XXX
+[START_MSG] FRAME_CommandPower,218082369,8,2,1,X,Vector__XXX
 [START_SIGNALS] RealPower_command,32,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] ReactivePower_command,32,8,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] CommandVF,218082881,8,2,1,X,Vector__XXX
+[START_MSG] FRAME_CommandVF,218082881,8,2,1,X,Vector__XXX
 [START_SIGNALS] Voltage_command,16,2,0,U,10.0,0.0,0,0.0,0.1,,,
 [START_SIGNALS] Frequency_command,16,4,0,U,10.0,0.0,0,0.0,0.1,,,
 [END_MSG]
 
-[START_MSG] MasterMeasuredPower,218090230,8,2,1,X,Vector__XXX
+[START_MSG] FRAME_MasterMeasuredPower,218090230,8,2,1,X,Vector__XXX
 [START_SIGNALS] RealPower_measured,32,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] ReactivePower_measured,32,8,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] CommandFactoryControl,218083137,8,3,1,X,Vector__XXX
+[START_MSG] FRAME_CommandFactoryControl,218083137,8,3,1,X,Vector__XXX
 [START_SIGNALS] WriteSerialNumber,2,1,0,U,1.0,0.0,0,0.0,1.0,,,
 [VALUE_DESCRIPTION] "Disable",0
 [VALUE_DESCRIPTION] "Enable",1
@@ -89,7 +89,7 @@
 [START_SIGNALS] FactoryAccess,16,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] CommandSetNVParam,218081857,8,24,1,X,Vector__XXX
+[START_MSG] FRAME_CommandSetNVParam,218081857,8,24,1,X,Vector__XXX
 [START_SIGNALS] CommandSetNVParam_MUX,16,2,0,U,1.0,0.0,0,0.0,1.0,,,
 [VALUE_DESCRIPTION] "Param0",0
 [VALUE_DESCRIPTION] "LVM_ClearingTimes1",1
@@ -134,7 +134,7 @@
 [START_SIGNALS] K2Close,16,6,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] CommandModeControlAPU2,16751425,8,11,1,X,Vector__XXX
+[START_MSG] FRAME_CommandModeControlAPU2,16751425,8,11,1,X,Vector__XXX
 [START_SIGNALS] Enable_command,2,1,0,U,1.0,0.0,0,0.0,1.0,,,
 [VALUE_DESCRIPTION] "Disable",0
 [VALUE_DESCRIPTION] "Enable",1
@@ -192,32 +192,32 @@
 [VALUE_DESCRIPTION] "N/A",3
 [END_MSG]
 
-[START_MSG] CommandPowerAPU2,218078273,8,2,1,X,Vector__XXX
+[START_MSG] FRAME_CommandPowerAPU2,218078273,8,2,1,X,Vector__XXX
 [START_SIGNALS] RealPower_command,32,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] ReactivePower_command,32,8,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] CommandVFAPU2,218078785,8,2,1,X,Vector__XXX
+[START_MSG] FRAME_CommandVFAPU2,218078785,8,2,1,X,Vector__XXX
 [START_SIGNALS] Voltage_command,16,2,0,U,10.0,0.0,0,0.0,0.1,,,
 [START_SIGNALS] Frequency_command,16,4,0,U,10.0,0.0,0,0.0,0.1,,,
 [END_MSG]
 
-[START_MSG] MasterMeasuredPowerAPU2,218090231,8,2,1,X,Vector__XXX
+[START_MSG] FRAME_MasterMeasuredPowerAPU2,218090231,8,2,1,X,Vector__XXX
 [START_SIGNALS] RealPower_measured,32,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] ReactivePower_measured,32,8,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] StatusMeasuredPower,218090231,8,2,1,X,Vector__XXX
+[START_MSG] FRAME_StatusMeasuredPower,218090231,8,2,1,X,Vector__XXX
 [START_SIGNALS] RealPower_measured,32,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] ReactivePower_measured,32,8,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] StatusCommandedPower,419415287,8,2,1,X,Vector__XXX
+[START_MSG] FRAME_StatusCommandedPower,419415287,8,2,1,X,Vector__XXX
 [START_SIGNALS] RealPower_echo,32,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] ReactivePower_echo,32,8,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] StatusBits,218088439,8,20,1,X,Vector__XXX
+[START_MSG] FRAME_StatusBits,218088439,8,20,1,X,Vector__XXX
 [START_SIGNALS] State_status,4,1,0,U,1.0,0.0,0,0.0,1.0,,,
 [VALUE_DESCRIPTION] "Power On Reset",0
 [VALUE_DESCRIPTION] "Ready",1
@@ -332,20 +332,20 @@
 [VALUE_DESCRIPTION] "N/A",3
 [END_MSG]
 
-[START_MSG] StatusControlVoltage,486524407,8,4,1,X,Vector__XXX
+[START_MSG] FRAME_StatusControlVoltage,486524407,8,4,1,X,Vector__XXX
 [START_SIGNALS] v5p0_Supply,16,2,0,U,100.0,0.0,0,0.0,0.01,,,
 [START_SIGNALS] v3p3_Supply,16,4,0,U,100.0,0.0,0,0.0,0.01,,,
 [START_SIGNALS] v24_Supply,16,6,0,U,100.0,0.0,0,0.0,0.01,,,
 [START_SIGNALS] v15_Supply,16,8,0,U,100.0,0.0,0,0.0,0.01,,,
 [END_MSG]
 
-[START_MSG] StatusTemps,419417079,8,3,1,X,Vector__XXX
+[START_MSG] FRAME_StatusTemps,419417079,8,3,1,X,Vector__XXX
 [START_SIGNALS] TempInlet_measured,16,2,0,U,10.0,0.0,0,0.0,0.1,,,
 [START_SIGNALS] TempInternal_measured,16,4,0,U,10.0,0.0,0,0.0,0.1,,,
 [START_SIGNALS] ConverterLosses,16,6,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] StatusFaults,218089719,8,19,1,X,Vector__XXX
+[START_MSG] FRAME_StatusFaults,218089719,8,19,1,X,Vector__XXX
 [START_SIGNALS] BridgeAVoltageOk_status,1,8,3,U,1.0,0.0,0,0.0,1.0,,,
 [VALUE_DESCRIPTION] "Normal",0
 [VALUE_DESCRIPTION] "Fault Active",1
@@ -451,44 +451,44 @@
 [VALUE_DESCRIPTION] "N/A",3
 [END_MSG]
 
-[START_MSG] StatusACParameters,218088183,8,3,1,X,Vector__XXX
+[START_MSG] FRAME_StatusACParameters,218088183,8,3,1,X,Vector__XXX
 [START_SIGNALS] VoltageAC_measured,16,2,0,U,10.0,0.0,0,0.0,0.1,,,
 [START_SIGNALS] CurrentAC_measured,16,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] Frequency_measured,16,6,0,U,10.0,0.0,0,0.0,0.1,,,
 [END_MSG]
 
-[START_MSG] StatusDCParameters,486524919,8,3,1,X,Vector__XXX
+[START_MSG] FRAME_StatusDCParameters,486524919,8,3,1,X,Vector__XXX
 [START_SIGNALS] VoltageDCBus,16,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] CurrentDC_measured,16,6,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] VoltageDCInput_measured,16,2,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] StatusControlVolts2,486524663,8,3,1,X,Vector__XXX
+[START_MSG] FRAME_StatusControlVolts2,486524663,8,3,1,X,Vector__XXX
 [START_SIGNALS] n15V_Supply,16,2,0,U,100.0,0.0,0,0.0,0.01,,,
 [START_SIGNALS] DiodeTemperature,16,6,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] IGBTTemperature,16,8,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] softwareRev,486523383,8,3,1,X,Vector__XXX
+[START_MSG] FRAME_softwareRev,486523383,8,3,1,X,Vector__XXX
 [START_SIGNALS] InterfaceRev,16,4,0,U,100.0,0.0,0,0.0,0.01,,,
 [START_SIGNALS] ControlSwRev,16,2,0,U,100.0,0.0,0,0.0,0.01,,,
 [START_SIGNALS] BuildTime,32,8,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] StatusCommandVF,419416567,8,2,1,X,Vector__XXX
+[START_MSG] FRAME_StatusCommandVF,419416567,8,2,1,X,Vector__XXX
 [START_SIGNALS] Voltage_echo,16,2,0,U,10.0,0.0,0,0.0,0.1,,,
 [START_SIGNALS] Frequency_echo,16,4,0,U,10.0,0.0,0,0.0,0.1,,,
 [END_MSG]
 
-[START_MSG] serialNumber,486526199,8,1,1,X,Vector__XXX
+[START_MSG] FRAME_serialNumber,486526199,8,1,1,X,Vector__XXX
 [START_SIGNALS] SerialNumber,32,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] softwareRevHash,486526455,8,1,1,X,Vector__XXX
+[START_MSG] FRAME_softwareRevHash,486526455,8,1,1,X,Vector__XXX
 [START_SIGNALS] Hash,28,4,4,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] StatusNVParam,486517239,8,24,1,X,Vector__XXX
+[START_MSG] FRAME_StatusNVParam,486517239,8,24,1,X,Vector__XXX
 [START_SIGNALS] StatusNVParam_MUX,16,2,0,U,1.0,0.0,0,0.0,1.0,,,
 [VALUE_DESCRIPTION] "ActParam0",0
 [VALUE_DESCRIPTION] "ActLVM_ClearingTimes1",1
@@ -533,13 +533,13 @@
 [START_SIGNALS] StatusK2Close,16,6,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] StatusLineCurrents,419418359,8,3,1,X,Vector__XXX
+[START_MSG] FRAME_StatusLineCurrents,419418359,8,3,1,X,Vector__XXX
 [START_SIGNALS] L1Current_measured,16,2,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] L2Current_measured,16,4,0,U,1.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] L3Current_measured,16,6,0,U,1.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] StatusLineVoltages,419418615,8,3,1,X,Vector__XXX
+[START_MSG] FRAME_StatusLineVoltages,419418615,8,3,1,X,Vector__XXX
 [START_SIGNALS] L1Voltage_measured,16,2,0,U,10.0,0.0,0,0.0,0.1,,,
 [START_SIGNALS] L2Voltage_measured,16,4,0,U,10.0,0.0,0,0.0,0.1,,,
 [START_SIGNALS] L3Voltage_measured,16,6,0,U,10.0,0.0,0,0.0,0.1,,,

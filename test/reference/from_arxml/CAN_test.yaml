@@ -21,7 +21,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: CommandModeControl
+    _name: FRAME_CommandModeControl
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -29,7 +29,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/Enable_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -47,7 +47,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/FaultClear_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -65,7 +65,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/InvertHwEnable_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -83,7 +83,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/EnableUPSMode_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -101,7 +101,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/EnableSplitPhase_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -120,7 +120,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ForceRelayMX1_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -138,7 +138,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ForceRelayMX2_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -156,7 +156,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ForceRelayK1_Precharge_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -174,7 +174,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ForceRelayRelayK2_DCRun_comand
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -192,7 +192,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/PhaseRotation_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -210,7 +210,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MasterFollowerMode_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -231,7 +231,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: CommandPower
+    _name: FRAME_CommandPower
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -239,7 +239,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/RealPower_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -257,7 +257,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ReactivePower_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -278,7 +278,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: CommandVF
+    _name: FRAME_CommandVF
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -286,7 +286,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/Voltage_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -304,7 +304,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/Frequency_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -325,7 +325,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: MasterMeasuredPower
+    _name: FRAME_MasterMeasuredPower
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -333,7 +333,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/RealPower_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -351,7 +351,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ReactivePower_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -372,7 +372,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: CommandFactoryControl
+    _name: FRAME_CommandFactoryControl
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -380,7 +380,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/WriteSerialNumber
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -398,7 +398,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/SerialNumber
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -416,7 +416,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/FactoryAccess
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -437,7 +437,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: CommandSetNVParam
+    _name: FRAME_CommandSetNVParam
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -445,7 +445,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/CommandSetNVParam_MUX
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -465,7 +465,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/Dummy
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -483,7 +483,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/VUnder50pct
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -501,7 +501,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/V50to88pct
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -519,7 +519,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/V110to120pct
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -537,7 +537,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/VOver120
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -555,7 +555,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqHi
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -573,7 +573,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqLo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -591,7 +591,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqVeryLo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -609,7 +609,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqVeryLo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -627,7 +627,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqLo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -645,7 +645,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqHi
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -663,7 +663,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/NodeID
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -681,7 +681,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/SA_Mask
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -699,7 +699,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/Baudrate
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -717,7 +717,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ThermalOverload
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -735,7 +735,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MX1Open
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -753,7 +753,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MX1Close
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -771,7 +771,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MX2Open
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -789,7 +789,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MX2Close
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -807,7 +807,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/K1Open
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -825,7 +825,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/K1Close
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -843,7 +843,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/K2Open
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -861,7 +861,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/K2Close
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -882,7 +882,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: CommandModeControlAPU2
+    _name: FRAME_CommandModeControlAPU2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -890,7 +890,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/Enable_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -908,7 +908,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/FaultClear_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -926,7 +926,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/InvertHwEnable_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -944,7 +944,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/EnableUPSMode_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -962,7 +962,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/EnableSplitPhase_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -981,7 +981,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ForceRelayMX1_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -999,7 +999,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ForceRelayMX2_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1017,7 +1017,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ForceRelayK1_Precharge_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1035,7 +1035,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ForceRelayRelayK2_DCRun_comand
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1053,7 +1053,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/PhaseRotation_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1071,7 +1071,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MasterFollowerMode_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1092,7 +1092,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: CommandPowerAPU2
+    _name: FRAME_CommandPowerAPU2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1100,7 +1100,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/RealPower_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1118,7 +1118,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ReactivePower_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1139,7 +1139,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: CommandVFAPU2
+    _name: FRAME_CommandVFAPU2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1147,7 +1147,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/Voltage_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1165,7 +1165,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/Frequency_command
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1186,7 +1186,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: MasterMeasuredPowerAPU2
+    _name: FRAME_MasterMeasuredPowerAPU2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1194,7 +1194,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/RealPower_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1212,7 +1212,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ReactivePower_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1233,7 +1233,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusMeasuredPower
+    _name: FRAME_StatusMeasuredPower
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1241,7 +1241,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/RealPower_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1259,7 +1259,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ReactivePower_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1280,7 +1280,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusCommandedPower
+    _name: FRAME_StatusCommandedPower
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1288,7 +1288,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/RealPower_echo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1306,7 +1306,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ReactivePower_echo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1327,7 +1327,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusBits
+    _name: FRAME_StatusBits
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1335,7 +1335,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/State_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1355,7 +1355,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MX2Permissive_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1373,7 +1373,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/PowerAvailAC_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1391,7 +1391,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/PowerAvailDC_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1409,7 +1409,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/PowerCircuitEnabled_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1427,7 +1427,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/HardwareEnable_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1445,7 +1445,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/Enable_echo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1463,7 +1463,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/FaultClr_echo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1481,7 +1481,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MessageValidModeControl_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1499,7 +1499,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MX1Permissive_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1517,7 +1517,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/K2DCRunPermissive_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1535,7 +1535,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/K1PrechargePermissive_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1553,7 +1553,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MessageValidPowerCMD_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1571,7 +1571,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/MessageValidVF_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1589,7 +1589,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/CANbus_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1607,7 +1607,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/EnableUPSMode_echo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1625,7 +1625,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/EnableSplitPhase_echo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1644,7 +1644,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/PhaseRotation_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1662,7 +1662,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/LineVoltageDetected_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1680,7 +1680,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/PhaseRotation_echo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1701,7 +1701,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusControlVoltage
+    _name: FRAME_StatusControlVoltage
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1709,7 +1709,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.01'
       _initValue: 0
-      _isigRef: /ISignal/v5p0_Supply
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1727,7 +1727,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.01'
       _initValue: 0
-      _isigRef: /ISignal/v3p3_Supply
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1745,7 +1745,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.01'
       _initValue: 0
-      _isigRef: /ISignal/v24_Supply
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1763,7 +1763,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.01'
       _initValue: 0
-      _isigRef: /ISignal/v15_Supply
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1784,7 +1784,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusTemps
+    _name: FRAME_StatusTemps
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1792,7 +1792,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/TempInlet_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1810,7 +1810,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/TempInternal_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1828,7 +1828,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ConverterLosses
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1849,7 +1849,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusFaults
+    _name: FRAME_StatusFaults
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1857,7 +1857,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/BridgeAVoltageOk_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1875,7 +1875,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/OvercurrentAC_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1893,7 +1893,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/BridgeBVoltageOk_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1911,7 +1911,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/OvervoltageDC_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1929,7 +1929,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/OvertempPowerDevice_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1947,7 +1947,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/OvertempInternal_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1965,7 +1965,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/LossValidControlMessage_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1983,7 +1983,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/UndervoltageDC_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2001,7 +2001,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ControlHardwareFail_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2019,7 +2019,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/OvercurrentDC_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2037,7 +2037,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/GeneralFault_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2055,7 +2055,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/LossOfAC_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2073,7 +2073,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/EStopShutdown_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2091,7 +2091,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/BridgeAFault_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2110,7 +2110,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/BridgeBFault_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2129,7 +2129,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/IllegalTransition_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2147,7 +2147,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/InvalidEEHeader_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2165,7 +2165,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/InvalidEESection_status
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2183,7 +2183,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/ThermalOverload
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2204,7 +2204,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusACParameters
+    _name: FRAME_StatusACParameters
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2212,7 +2212,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/VoltageAC_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2230,7 +2230,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/CurrentAC_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2248,7 +2248,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/Frequency_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2269,7 +2269,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusDCParameters
+    _name: FRAME_StatusDCParameters
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2277,7 +2277,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/VoltageDCBus
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2295,7 +2295,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/CurrentDC_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2313,7 +2313,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/VoltageDCInput_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2334,7 +2334,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusControlVolts2
+    _name: FRAME_StatusControlVolts2
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2342,7 +2342,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.01'
       _initValue: 0
-      _isigRef: /ISignal/n15V_Supply
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2360,7 +2360,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/DiodeTemperature
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2378,7 +2378,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/IGBTTemperature
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2399,7 +2399,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: softwareRev
+    _name: FRAME_softwareRev
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2407,7 +2407,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.01'
       _initValue: 0
-      _isigRef: /ISignal/InterfaceRev
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2425,7 +2425,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.01'
       _initValue: 0
-      _isigRef: /ISignal/ControlSwRev
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2443,7 +2443,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/BuildTime
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2464,7 +2464,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusCommandVF
+    _name: FRAME_StatusCommandVF
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2472,7 +2472,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/Voltage_echo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2490,7 +2490,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/Frequency_echo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2511,7 +2511,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: serialNumber
+    _name: FRAME_serialNumber
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2519,7 +2519,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/SerialNumber
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2540,7 +2540,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: softwareRevHash
+    _name: FRAME_softwareRevHash
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2548,7 +2548,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/Hash
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2569,7 +2569,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusNVParam
+    _name: FRAME_StatusNVParam
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2577,7 +2577,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusNVParam_MUX
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2597,7 +2597,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/Dummy
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2615,7 +2615,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/VUnder50pct
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2633,7 +2633,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/V50to88pct
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2651,7 +2651,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/V110to120pct
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2669,7 +2669,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/VOver120
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2687,7 +2687,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqHi
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2705,7 +2705,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqLo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2723,7 +2723,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqVeryLo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2741,7 +2741,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqVeryLo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2759,7 +2759,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqLo
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2777,7 +2777,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/FreqHi
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2795,7 +2795,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusNodeID
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2813,7 +2813,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusSA_Mask
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2831,7 +2831,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusBaudrate
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2849,7 +2849,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusThermalOverload
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2867,7 +2867,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusMX1Open
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2885,7 +2885,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusMX1Close
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2903,7 +2903,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusMX2Open
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2921,7 +2921,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusMX2Close
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2939,7 +2939,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusK1Open
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2957,7 +2957,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusK1Close
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2975,7 +2975,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusK2Open
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2993,7 +2993,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/StatusK2Close
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -3014,7 +3014,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusLineCurrents
+    _name: FRAME_StatusLineCurrents
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3022,7 +3022,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/L1Current_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -3040,7 +3040,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/L2Current_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -3058,7 +3058,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '1.0'
       _initValue: 0
-      _isigRef: /ISignal/L3Current_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -3079,7 +3079,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgSendType: '1', GenMsgStartValue: '"0000000000000000"'}
     _comment: ''
     _extended: 1
-    _name: StatusLineVoltages
+    _name: FRAME_StatusLineVoltages
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3087,7 +3087,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/L1Voltage_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -3105,7 +3105,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/L2Voltage_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -3123,7 +3123,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: null
       _factor: '0.1'
       _initValue: 0
-      _isigRef: /ISignal/L3Voltage_measured
+      _isigRef: "\n          "
       _max: '1'
       _min: '0'
       _multiplex: null

@@ -2,7 +2,7 @@
     "messages": [
         {
             "id": "0xffab41",
-            "name": "CommandModeControl",
+            "name": "FRAME_CommandModeControl",
             "signals": {
                 "0": {
                     "bit_length": 2,
@@ -74,7 +74,7 @@
         },
         {
             "id": "0xcffac41",
-            "name": "CommandPower",
+            "name": "FRAME_CommandPower",
             "signals": {
                 "24": {
                     "bit_length": 32,
@@ -92,7 +92,7 @@
         },
         {
             "id": "0xcffae41",
-            "name": "CommandVF",
+            "name": "FRAME_CommandVF",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -110,7 +110,7 @@
         },
         {
             "id": "0xcffcaf6",
-            "name": "MasterMeasuredPower",
+            "name": "FRAME_MasterMeasuredPower",
             "signals": {
                 "24": {
                     "bit_length": 32,
@@ -128,7 +128,7 @@
         },
         {
             "id": "0xcffaf41",
-            "name": "CommandFactoryControl",
+            "name": "FRAME_CommandFactoryControl",
             "signals": {
                 "0": {
                     "bit_length": 2,
@@ -152,7 +152,7 @@
         },
         {
             "id": "0xcffaa41",
-            "name": "CommandSetNVParam",
+            "name": "FRAME_CommandSetNVParam",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -194,7 +194,7 @@
         },
         {
             "id": "0xff9b41",
-            "name": "CommandModeControlAPU2",
+            "name": "FRAME_CommandModeControlAPU2",
             "signals": {
                 "0": {
                     "bit_length": 2,
@@ -266,7 +266,7 @@
         },
         {
             "id": "0xcff9c41",
-            "name": "CommandPowerAPU2",
+            "name": "FRAME_CommandPowerAPU2",
             "signals": {
                 "24": {
                     "bit_length": 32,
@@ -284,7 +284,7 @@
         },
         {
             "id": "0xcff9e41",
-            "name": "CommandVFAPU2",
+            "name": "FRAME_CommandVFAPU2",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -302,7 +302,7 @@
         },
         {
             "id": "0xcffcaf7",
-            "name": "MasterMeasuredPowerAPU2",
+            "name": "FRAME_MasterMeasuredPowerAPU2",
             "signals": {
                 "24": {
                     "bit_length": 32,
@@ -320,7 +320,7 @@
         },
         {
             "id": "0xcffcaf7",
-            "name": "StatusMeasuredPower",
+            "name": "FRAME_StatusMeasuredPower",
             "signals": {
                 "24": {
                     "bit_length": 32,
@@ -338,7 +338,7 @@
         },
         {
             "id": "0x18ffc4f7",
-            "name": "StatusCommandedPower",
+            "name": "FRAME_StatusCommandedPower",
             "signals": {
                 "24": {
                     "bit_length": 32,
@@ -356,7 +356,7 @@
         },
         {
             "id": "0xcffc3f7",
-            "name": "StatusBits",
+            "name": "FRAME_StatusBits",
             "signals": {
                 "0": {
                     "bit_length": 4,
@@ -482,7 +482,7 @@
         },
         {
             "id": "0x1cffc5f7",
-            "name": "StatusControlVoltage",
+            "name": "FRAME_StatusControlVoltage",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -512,7 +512,7 @@
         },
         {
             "id": "0x18ffcbf7",
-            "name": "StatusTemps",
+            "name": "FRAME_StatusTemps",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -536,7 +536,7 @@
         },
         {
             "id": "0xcffc8f7",
-            "name": "StatusFaults",
+            "name": "FRAME_StatusFaults",
             "signals": {
                 "0": {
                     "bit_length": 2,
@@ -656,7 +656,7 @@
         },
         {
             "id": "0xcffc2f7",
-            "name": "StatusACParameters",
+            "name": "FRAME_StatusACParameters",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -680,7 +680,7 @@
         },
         {
             "id": "0x1cffc7f7",
-            "name": "StatusDCParameters",
+            "name": "FRAME_StatusDCParameters",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -704,7 +704,7 @@
         },
         {
             "id": "0x1cffc6f7",
-            "name": "StatusControlVolts2",
+            "name": "FRAME_StatusControlVolts2",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -728,7 +728,7 @@
         },
         {
             "id": "0x1cffc1f7",
-            "name": "softwareRev",
+            "name": "FRAME_softwareRev",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -752,7 +752,7 @@
         },
         {
             "id": "0x18ffc9f7",
-            "name": "StatusCommandVF",
+            "name": "FRAME_StatusCommandVF",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -770,7 +770,7 @@
         },
         {
             "id": "0x1cffccf7",
-            "name": "serialNumber",
+            "name": "FRAME_serialNumber",
             "signals": {
                 "24": {
                     "bit_length": 32,
@@ -782,7 +782,7 @@
         },
         {
             "id": "0x1cffcdf7",
-            "name": "softwareRevHash",
+            "name": "FRAME_softwareRevHash",
             "signals": {
                 "28": {
                     "bit_length": 28,
@@ -794,7 +794,7 @@
         },
         {
             "id": "0x1cffa9f7",
-            "name": "StatusNVParam",
+            "name": "FRAME_StatusNVParam",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -836,7 +836,7 @@
         },
         {
             "id": "0x18ffd0f7",
-            "name": "StatusLineCurrents",
+            "name": "FRAME_StatusLineCurrents",
             "signals": {
                 "8": {
                     "bit_length": 16,
@@ -860,7 +860,7 @@
         },
         {
             "id": "0x18ffd1f7",
-            "name": "StatusLineVoltages",
+            "name": "FRAME_StatusLineVoltages",
             "signals": {
                 "8": {
                     "bit_length": 16,

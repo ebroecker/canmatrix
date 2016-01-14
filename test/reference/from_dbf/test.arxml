@@ -13,9 +13,9 @@
                   <SHORT-NAME>testFrame1</SHORT-NAME>
                   <IDENTIFIER>291</IDENTIFIER>
                   <CAN-ADDRESSING-MODE>STANDARD</CAN-ADDRESSING-MODE>
-                  <FRAME-REF DEST="FRAME">/Frame/testFrame1</FRAME-REF>
+                  <FRAME-REF DEST="FRAME">/Frame/FRAME_testFrame1</FRAME-REF>
                   <I-PDU-TRIGGERING-REFS>
-                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/CANtestFrame1</I-PDU-TRIGGERING-REF>
+                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/IPDUTRIGG_testFrame1</I-PDU-TRIGGERING-REF>
                   </I-PDU-TRIGGERING-REFS>
                   <FRAME-PORT-REFS>
                     <FRAME-PORT-REF DEST="FRAME-PORT">/ECU/testBU/testFrame1</FRAME-PORT-REF>
@@ -26,9 +26,9 @@
                   <SHORT-NAME>extendedFrame</SHORT-NAME>
                   <IDENTIFIER>18</IDENTIFIER>
                   <CAN-ADDRESSING-MODE>EXTENDED</CAN-ADDRESSING-MODE>
-                  <FRAME-REF DEST="FRAME">/Frame/extendedFrame</FRAME-REF>
+                  <FRAME-REF DEST="FRAME">/Frame/FRAME_extendedFrame</FRAME-REF>
                   <I-PDU-TRIGGERING-REFS>
-                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/CANextendedFrame</I-PDU-TRIGGERING-REF>
+                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/IPDUTRIGG_extendedFrame</I-PDU-TRIGGERING-REF>
                   </I-PDU-TRIGGERING-REFS>
                   <FRAME-PORT-REFS>
                     <FRAME-PORT-REF DEST="FRAME-PORT">/ECU/testBU/extendedFrame</FRAME-PORT-REF>
@@ -37,12 +37,12 @@
               </FRAME-TRIGGERINGSS>
               <I-PDU-TRIGGERINGS>
                 <I-PDU-TRIGGERING>
-                  <SHORT-NAME>testFrame1</SHORT-NAME>
-                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/testFrame1</I-PDU-REF>
+                  <SHORT-NAME>IPDUTRIGG_testFrame1</SHORT-NAME>
+                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_testFrame1</I-PDU-REF>
                 </I-PDU-TRIGGERING>
                 <I-PDU-TRIGGERING>
-                  <SHORT-NAME>extendedFrame</SHORT-NAME>
-                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/extendedFrame</I-PDU-REF>
+                  <SHORT-NAME>IPDUTRIGG_extendedFrame</SHORT-NAME>
+                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_extendedFrame</I-PDU-REF>
                 </I-PDU-TRIGGERING>
               </I-PDU-TRIGGERINGS>
               <I-SIGNAL-TRIGGERINGS>
@@ -65,26 +65,26 @@
       <SHORT-NAME>Frame</SHORT-NAME>
       <ELEMENTS>
         <FRAME>
-          <SHORT-NAME>testFrame1</SHORT-NAME>
+          <SHORT-NAME>FRAME_testFrame1</SHORT-NAME>
           <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>testFrame1</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
               <START-POSITION>0</START-POSITION>
-              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/testFrame1</PDU-REF>
+              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_testFrame1</PDU-REF>
             </PDU-TO-FRAME-MAPPING>
           </PDU-TO-FRAME-MAPPINGS>
         </FRAME>
         <FRAME>
-          <SHORT-NAME>extendedFrame</SHORT-NAME>
+          <SHORT-NAME>FRAME_extendedFrame</SHORT-NAME>
           <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>extendedFrame</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
               <START-POSITION>0</START-POSITION>
-              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/extendedFrame</PDU-REF>
+              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_extendedFrame</PDU-REF>
             </PDU-TO-FRAME-MAPPING>
           </PDU-TO-FRAME-MAPPINGS>
         </FRAME>
@@ -94,12 +94,12 @@
       <SHORT-NAME>PDU</SHORT-NAME>
       <ELEMENTS>
         <SIGNAL-I-PDU>
-          <SHORT-NAME>testFrame1</SHORT-NAME>
+          <SHORT-NAME>PDU_testFrame1</SHORT-NAME>
           <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>someTestSignal</SHORT-NAME>
-              <START-POSITION>9</START-POSITION>
+              <START-POSITION>3</START-POSITION>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/someTestSignal</SIGNAL-REF>
             </I-SIGNAL-TO-I-PDU-MAPPING>
@@ -112,7 +112,7 @@
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
-          <SHORT-NAME>extendedFrame</SHORT-NAME>
+          <SHORT-NAME>PDU_extendedFrame</SHORT-NAME>
           <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS/>
         </SIGNAL-I-PDU>
@@ -300,15 +300,15 @@
           <SHORT-NAME>testBU_Tx</SHORT-NAME>
           <COMMUNICATION-DIRECTION>OUT</COMMUNICATION-DIRECTION>
           <I-PDU-REFS>
-            <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/testFrame1</I-PDU-REF>
-            <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/extendedFrame</I-PDU-REF>
+            <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_testFrame1</I-PDU-REF>
+            <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_extendedFrame</I-PDU-REF>
           </I-PDU-REFS>
         </I-PDU-GROUP>
         <I-PDU-GROUP>
           <SHORT-NAME>recBU_Rx</SHORT-NAME>
           <COMMUNICATION-DIRECTION>IN</COMMUNICATION-DIRECTION>
           <I-PDU-REFS>
-            <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/testFrame1</I-PDU-REF>
+            <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_testFrame1</I-PDU-REF>
           </I-PDU-REFS>
         </I-PDU-GROUP>
       </ELEMENTS>

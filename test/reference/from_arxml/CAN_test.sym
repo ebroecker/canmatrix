@@ -59,7 +59,7 @@ enum StatusBaudrate(0="125K", 1="250K", 2="500K", 3="1M")
 enum StatusThermalOverload(0="Warning", 1="Fault", 2="Error", 3="N/A")
 
 {SENDRECEIVE}
-[CommandModeControl]
+[FRAME_CommandModeControl]
 ID=  FFAB41h // 
 Type=Extended
 DLC=8
@@ -75,28 +75,28 @@ Var=ForceRelayRelayK2_DCRun_comand unsigned 32,2 -m /min:0 /max:1 /e:ForceRelayR
 Var=PhaseRotation_command unsigned 56,2 -m /min:0 /max:1 /e:PhaseRotation_command
 Var=MasterFollowerMode_command unsigned 22,2 -m /min:0 /max:1 /e:MasterFollowerMode_command
 
-[CommandPower]
+[FRAME_CommandPower]
 ID= CFFAC41h // 
 Type=Extended
 DLC=8
 Var=RealPower_command unsigned 0,32 -m /min:0 /max:1 
 Var=ReactivePower_command unsigned 32,32 -m /min:0 /max:1 
 
-[CommandVF]
+[FRAME_CommandVF]
 ID= CFFAE41h // 
 Type=Extended
 DLC=8
 Var=Voltage_command unsigned 0,16 -m /f:0.1 /min:0 /max:1 
 Var=Frequency_command unsigned 16,16 -m /f:0.1 /min:0 /max:1 
 
-[MasterMeasuredPower]
+[FRAME_MasterMeasuredPower]
 ID= CFFCAF6h // 
 Type=Extended
 DLC=8
 Var=RealPower_measured unsigned 0,32 -m /min:0 /max:1 
 Var=ReactivePower_measured unsigned 32,32 -m /min:0 /max:1 
 
-[CommandFactoryControl]
+[FRAME_CommandFactoryControl]
 ID= CFFAF41h // 
 Type=Extended
 DLC=8
@@ -104,7 +104,7 @@ Var=WriteSerialNumber unsigned 6,2 -m /min:0 /max:1 /e:WriteSerialNumber
 Var=SerialNumber unsigned 32,32 -m /min:0 /max:1 
 Var=FactoryAccess unsigned 16,16 -m /min:0 /max:1 
 
-[CommandSetNVParam]
+[FRAME_CommandSetNVParam]
 ID= CFFAA41h // 
 Type=Extended
 DLC=8
@@ -133,7 +133,7 @@ Var=K1Close unsigned 48,16 -m /min:0 /max:1
 Var=K2Open unsigned 16,16 -m /min:0 /max:1 
 Var=K2Close unsigned 32,16 -m /min:0 /max:1 
 
-[CommandModeControlAPU2]
+[FRAME_CommandModeControlAPU2]
 ID=  FF9B41h // 
 Type=Extended
 DLC=8
@@ -149,42 +149,42 @@ Var=ForceRelayRelayK2_DCRun_comand unsigned 32,2 -m /min:0 /max:1 /e:ForceRelayR
 Var=PhaseRotation_command unsigned 56,2 -m /min:0 /max:1 /e:PhaseRotation_command
 Var=MasterFollowerMode_command unsigned 22,2 -m /min:0 /max:1 /e:MasterFollowerMode_command
 
-[CommandPowerAPU2]
+[FRAME_CommandPowerAPU2]
 ID= CFF9C41h // 
 Type=Extended
 DLC=8
 Var=RealPower_command unsigned 0,32 -m /min:0 /max:1 
 Var=ReactivePower_command unsigned 32,32 -m /min:0 /max:1 
 
-[CommandVFAPU2]
+[FRAME_CommandVFAPU2]
 ID= CFF9E41h // 
 Type=Extended
 DLC=8
 Var=Voltage_command unsigned 0,16 -m /f:0.1 /min:0 /max:1 
 Var=Frequency_command unsigned 16,16 -m /f:0.1 /min:0 /max:1 
 
-[MasterMeasuredPowerAPU2]
+[FRAME_MasterMeasuredPowerAPU2]
 ID= CFFCAF7h // 
 Type=Extended
 DLC=8
 Var=RealPower_measured unsigned 0,32 -m /min:0 /max:1 
 Var=ReactivePower_measured unsigned 32,32 -m /min:0 /max:1 
 
-[StatusMeasuredPower]
+[FRAME_StatusMeasuredPower]
 ID= CFFCAF7h // 
 Type=Extended
 DLC=8
 Var=RealPower_measured unsigned 0,32 -m /min:0 /max:1 
 Var=ReactivePower_measured unsigned 32,32 -m /min:0 /max:1 
 
-[StatusCommandedPower]
+[FRAME_StatusCommandedPower]
 ID=18FFC4F7h // 
 Type=Extended
 DLC=8
 Var=RealPower_echo unsigned 0,32 -m /min:0 /max:1 
 Var=ReactivePower_echo unsigned 32,32 -m /min:0 /max:1 
 
-[StatusBits]
+[FRAME_StatusBits]
 ID= CFFC3F7h // 
 Type=Extended
 DLC=8
@@ -209,7 +209,7 @@ Var=PhaseRotation_status unsigned 34,2 -m /min:0 /max:1 /e:PhaseRotation_status
 Var=LineVoltageDetected_status unsigned 32,2 -m /min:0 /max:1 /e:LineVoltageDetected_status
 Var=PhaseRotation_echo unsigned 46,2 -m /min:0 /max:1 /e:PhaseRotation_echo
 
-[StatusControlVoltage]
+[FRAME_StatusControlVoltage]
 ID=1CFFC5F7h // 
 Type=Extended
 DLC=8
@@ -218,7 +218,7 @@ Var=v3p3_Supply unsigned 16,16 -m /f:0.01 /min:0 /max:1
 Var=v24_Supply unsigned 32,16 -m /f:0.01 /min:0 /max:1 
 Var=v15_Supply unsigned 48,16 -m /f:0.01 /min:0 /max:1 
 
-[StatusTemps]
+[FRAME_StatusTemps]
 ID=18FFCBF7h // 
 Type=Extended
 DLC=8
@@ -226,7 +226,7 @@ Var=TempInlet_measured unsigned 0,16 -m /f:0.1 /min:0 /max:1
 Var=TempInternal_measured unsigned 16,16 -m /f:0.1 /min:0 /max:1 
 Var=ConverterLosses unsigned 32,16 -m /min:0 /max:1 
 
-[StatusFaults]
+[FRAME_StatusFaults]
 ID= CFFC8F7h // 
 Type=Extended
 DLC=8
@@ -250,7 +250,7 @@ Var=InvalidEEHeader_status unsigned 26,2 -m /min:0 /max:1 /e:InvalidEEHeader_sta
 Var=InvalidEESection_status unsigned 24,2 -m /min:0 /max:1 /e:InvalidEESection_status
 Var=ThermalOverload unsigned 38,2 -m /min:0 /max:1 /e:ThermalOverload
 
-[StatusACParameters]
+[FRAME_StatusACParameters]
 ID= CFFC2F7h // 
 Type=Extended
 DLC=8
@@ -258,7 +258,7 @@ Var=VoltageAC_measured unsigned 0,16 -m /f:0.1 /min:0 /max:1
 Var=CurrentAC_measured unsigned 16,16 -m /min:0 /max:1 
 Var=Frequency_measured unsigned 32,16 -m /f:0.1 /min:0 /max:1 
 
-[StatusDCParameters]
+[FRAME_StatusDCParameters]
 ID=1CFFC7F7h // 
 Type=Extended
 DLC=8
@@ -266,7 +266,7 @@ Var=VoltageDCBus unsigned 16,16 -m /min:0 /max:1
 Var=CurrentDC_measured unsigned 32,16 -m /min:0 /max:1 
 Var=VoltageDCInput_measured unsigned 0,16 -m /min:0 /max:1 
 
-[StatusControlVolts2]
+[FRAME_StatusControlVolts2]
 ID=1CFFC6F7h // 
 Type=Extended
 DLC=8
@@ -274,7 +274,7 @@ Var=n15V_Supply unsigned 0,16 -m /f:0.01 /min:0 /max:1
 Var=DiodeTemperature unsigned 32,16 -m /min:0 /max:1 
 Var=IGBTTemperature unsigned 48,16 -m /min:0 /max:1 
 
-[softwareRev]
+[FRAME_softwareRev]
 ID=1CFFC1F7h // 
 Type=Extended
 DLC=8
@@ -282,26 +282,26 @@ Var=InterfaceRev unsigned 16,16 -m /f:0.01 /min:0 /max:1
 Var=ControlSwRev unsigned 0,16 -m /f:0.01 /min:0 /max:1 
 Var=BuildTime unsigned 32,32 -m /min:0 /max:1 
 
-[StatusCommandVF]
+[FRAME_StatusCommandVF]
 ID=18FFC9F7h // 
 Type=Extended
 DLC=8
 Var=Voltage_echo unsigned 0,16 -m /f:0.1 /min:0 /max:1 
 Var=Frequency_echo unsigned 16,16 -m /f:0.1 /min:0 /max:1 
 
-[serialNumber]
+[FRAME_serialNumber]
 ID=1CFFCCF7h // 
 Type=Extended
 DLC=8
 Var=SerialNumber unsigned 0,32 -m /min:0 /max:1 
 
-[softwareRevHash]
+[FRAME_softwareRevHash]
 ID=1CFFCDF7h // 
 Type=Extended
 DLC=8
 Var=Hash unsigned 0,28 -m /min:0 /max:1 
 
-[StatusNVParam]
+[FRAME_StatusNVParam]
 ID=1CFFA9F7h // 
 Type=Extended
 DLC=8
@@ -330,7 +330,7 @@ Var=StatusK1Close unsigned 48,16 -m /min:0 /max:1
 Var=StatusK2Open unsigned 16,16 -m /min:0 /max:1 
 Var=StatusK2Close unsigned 32,16 -m /min:0 /max:1 
 
-[StatusLineCurrents]
+[FRAME_StatusLineCurrents]
 ID=18FFD0F7h // 
 Type=Extended
 DLC=8
@@ -338,7 +338,7 @@ Var=L1Current_measured unsigned 0,16 -m /min:0 /max:1
 Var=L2Current_measured unsigned 16,16 -m /min:0 /max:1 
 Var=L3Current_measured unsigned 32,16 -m /min:0 /max:1 
 
-[StatusLineVoltages]
+[FRAME_StatusLineVoltages]
 ID=18FFD1F7h // 
 Type=Extended
 DLC=8
