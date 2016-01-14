@@ -14,6 +14,9 @@ import re
 import shutil
 import subprocess
 
+from canmatrix.log import setup_logger, set_log_level
+logger = setup_logger('root')
+set_log_level(logger, -1)
 
 export_types = []
 import_types = []
