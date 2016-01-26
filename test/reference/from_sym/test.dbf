@@ -65,7 +65,7 @@
 [END_MSG]
 
 [START_MSG] CommandPower,218082369,8,2,1,X,Vector__XXX
-[START_SIGNALS] RealPower_command,32,4,0,S,90000.0,-90000.0,0,0,1,W,,
+[START_SIGNALS] RealPower command,32,4,0,S,90000.0,-90000.0,0,0,1,W,,
 [START_SIGNALS] ReactivePower_command,32,8,0,S,90000.0,-90000.0,0,0,1,VA,,
 [END_MSG]
 
@@ -219,7 +219,7 @@
 
 [START_MSG] StatusBits,218088439,8,20,1,X,Vector__XXX
 [START_SIGNALS] State_status,4,1,0,U,7.0,0.0,0,0,1,,,
-[VALUE_DESCRIPTION] "Power On Reset",0
+[VALUE_DESCRIPTION] "Power On Reset, and a quoted comma",0
 [VALUE_DESCRIPTION] "Ready",1
 [VALUE_DESCRIPTION] "N/A",10
 [VALUE_DESCRIPTION] "N/A",11
@@ -590,7 +590,7 @@
 16755521 S ForceRelayRelayK2_DCRun_comand "If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.";
 16755521 S PhaseRotation_command "Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.";
 16755521 S MasterFollowerMode_command "Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.";
-218082369 S RealPower_command "Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.";
+218082369 S RealPower command "Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.";
 218082369 S ReactivePower_command "Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.";
 218082881 S Voltage_command "Desired output voltage while in grid forming mode.";
 218082881 S Frequency_command "Desired output frequency while in grid forming mode.";
@@ -777,7 +777,7 @@
 16755521,S,ForceRelayRelayK2_DCRun_comand,"GenSigStartValue","0.0"
 16755521,S,PhaseRotation_command,"GenSigStartValue","0.0"
 16755521,S,MasterFollowerMode_command,"GenSigStartValue","0.0"
-218082369,S,RealPower_command,"GenSigStartValue","0.0"
+218082369,S,RealPower command,"GenSigStartValue","0.0"
 218082369,S,ReactivePower_command,"GenSigStartValue","0.0"
 218082881,S,Voltage_command,"GenSigStartValue","2400.0"
 218082881,S,Frequency_command,"GenSigStartValue","500.0"

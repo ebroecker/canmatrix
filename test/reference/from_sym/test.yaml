@@ -229,7 +229,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _max: '90000'
       _min: '-90000'
       _multiplex: null
-      _name: RealPower_command
+      _name: RealPower command
       _offset: '0'
       _reciever: ''
       _signalsize: 32
@@ -1269,9 +1269,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 4
       _startbit: 0
       _unit: ''
-      _values: {'0': Power On Reset, '1': Ready, '10': N/A, '11': N/A, '12': N/A,
-        '13': N/A, '14': N/A, '15': N/A, '2': Following, '3': Fault, '4': Forming,
-        '5': N/A, '6': N/A, '7': N/A, '8': N/A, '9': N/A}
+      _values: {'0': 'Power On Reset, and a quoted comma', '1': Ready, '10': N/A,
+        '11': N/A, '12': N/A, '13': N/A, '14': N/A, '15': N/A, '2': Following, '3': Fault,
+        '4': Forming, '5': N/A, '6': N/A, '7': N/A, '8': N/A, '9': N/A}
       _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}

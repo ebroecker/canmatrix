@@ -2,7 +2,7 @@ FormatVersion=5.0 // Do not edit this line!
 Title="AFE_CAN_ID0"
 
 {ENUMS}
-enum State(0="Power On Reset", 1="Ready", 2="Following", 3="Fault", 
+enum State(0="Power On Reset, and a quoted comma", 1="Ready", 2="Following", 3="Fault",
   4="Forming", 5="N/A", 6="N/A", 7="N/A", 8="N/A", 9="N/A", 10="N/A", 11="N/A", 
   12="N/A", 13="N/A", 14="N/A", 15="N/A")
 enum Relay(0="Open", 1="Closed", 2="Error", 3="N/A")
@@ -51,7 +51,7 @@ Var=MasterFollowerMode_command unsigned 22,2 -m /max:1 /e:MasterFollower	// Spec
 ID=0CFFAC41h	// Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.
 Type=Extended
 DLC=8
-Var=RealPower_command signed 0,32 -m /u:W /min:-90000 /max:90000	// Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
+Var="RealPower command" signed 0,32 -m /u:W /min:-90000 /max:90000	// Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
 Var=ReactivePower_command signed 32,32 -m /u:VA /min:-90000 /max:90000	// Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
 
 [CommandVF]

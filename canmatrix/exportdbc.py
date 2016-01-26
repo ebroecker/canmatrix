@@ -27,9 +27,19 @@ from builtins import *
 
 from .canmatrix import *
 import codecs
+import re
 
 #dbcExportEncoding = 'iso-8859-1'
 #CP1253
+
+def normalizeName(name, whitespaceReplacement):
+    name = re.sub('\s+', whitespaceReplacement, name)
+
+    if ' ' in name:
+        name = '"' + name + '"'
+
+    return name
+
 
 def exportDbc(db, filename, **options):
     if 'dbcExportEncoding' in options:
@@ -40,6 +50,12 @@ def exportDbc(db, filename, **options):
         dbcExportCommentEncoding=options["dbcExportCommentEncoding"]
     else:
         dbcExportCommentEncoding=dbcExportEncoding
+    if 'whitespaceReplacement' in options:
+        whitespaceReplacement=options["whitespaceReplacement"]
+        if whitespaceReplacement in ['', None] or set([' ', '\t']).intersection(whitespaceReplacement):
+            print("Warning: Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
+    else:
+        whitespaceReplacement='_'
 
     f = open(filename,"wb")
 
@@ -75,7 +91,8 @@ def exportDbc(db, filename, **options):
 
         f.write(("BO_ %d " % bo._Id + bo._name + ": %d " % bo._Size + bo._Transmitter[0] + "\n").encode(dbcExportEncoding))
         for signal in bo._signals:
-            f.write((" SG_ " + signal._name).encode(dbcExportEncoding))
+            name = normalizeName(signal._name, whitespaceReplacement)
+            f.write((" SG_ " + name).encode(dbcExportEncoding))
             if signal._multiplex == 'Multiplexor':
                 f.write(' M '.encode(dbcExportEncoding))
             elif signal._multiplex is not None:
@@ -113,7 +130,8 @@ def exportDbc(db, filename, **options):
     for bo in db._fl._list:
         for signal in bo._signals:
             if signal._comment is not None and signal._comment.__len__() > 0:
-                f.write(("CM_ SG_ " + "%d " % bo._Id + signal._name  + ' "').encode(dbcExportEncoding))
+                name = normalizeName(signal._name, whitespaceReplacement)
+                f.write(("CM_ SG_ " + "%d " % bo._Id + name  + ' "').encode(dbcExportEncoding))
                 f.write(signal._comment.replace('"','\\"').encode(dbcExportCommentEncoding))
                 f.write('";\n'.encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
@@ -167,7 +185,8 @@ def exportDbc(db, filename, **options):
     for bo in db._fl._list:
         for signal in bo._signals:
             for attrib,val in sorted(signal._attributes.items()):
-                f.write(('BA_ "' + attrib + '" SG_ %d ' % bo._Id + signal._name + ' ' + val  + ';\n').encode(dbcExportEncoding))
+                name = normalizeName(signal._name, whitespaceReplacement)
+                f.write(('BA_ "' + attrib + '" SG_ %d ' % bo._Id + name + ' ' + val  + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #signal-values:

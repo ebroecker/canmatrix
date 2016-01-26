@@ -118,7 +118,7 @@
     <Message id="0xCFFAC41" length="8" name="CommandPower" format="extended">
       <Producer/>
       <Notes>Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.</Notes>
-      <Signal name="RealPower_command" offset="24" length="32" endianess="little">
+      <Signal name="RealPower command" offset="24" length="32" endianess="little">
         <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.</Notes>
         <Value min="-90000" max="90000" unit="W"/>
         <LabelSet/>
@@ -536,7 +536,7 @@
         <Notes>Active control mode.</Notes>
         <Value max="7"/>
         <LabelSet>
-          <Label name="Power On Reset" value="0"/>
+          <Label name="Power On Reset, and a quoted comma" value="0"/>
           <Label name="Ready" value="1"/>
           <Label name="Following" value="2"/>
           <Label name="Fault" value="3"/>

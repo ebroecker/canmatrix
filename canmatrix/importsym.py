@@ -6,6 +6,7 @@ logger = logging.getLogger('root')
 
 from builtins import *
 import math
+import shlex
 #!/usr/bin/env python
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -88,11 +89,12 @@ def importSym(filename, **options):
             if line.startswith('enum'):
                 while not line[5:].strip().endswith(')'):
                     line = line.split('//')[0]
-                    line += f.readline().decode(symImportEncoding).strip()
+                    line += ' ' + f.readline().decode(symImportEncoding).strip()
                 line = line.split('//')[0]
                 tempArray = line[5:].replace(')','').split('(')
                 valtabName = tempArray[0]
-                tempArray =  tempArray[1].split(',')
+                split = shlex.split(tempArray[1])
+                tempArray = [s.rstrip(',') for s in split]
                 tempValTable = {}
                 for entry in tempArray:
                     tempValTable[entry.split('=')[0].strip()] = entry.split('=')[1].replace('"','').strip()
@@ -124,7 +126,8 @@ def importSym(filename, **options):
                 if '//' in line:
                     comment = line.split('//')[1].strip()
                     line = line.split('//')[0]
-                tempArray = line.strip().split(' ')
+                line = line.replace('  ', ' "" ')
+                tempArray = shlex.split(line.strip())
                 sigName = tempArray[0]
                 if indexOffset == 1 and tempArray[1][:8] == "unsigned":
                     valuetype = "+"

@@ -79,7 +79,7 @@
                 "24": {
                     "bit_length": 32,
                     "factor": "1",
-                    "name": "RealPower_command",
+                    "name": "RealPower command",
                     "offset": "0"
                 },
                 "56": {
