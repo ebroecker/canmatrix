@@ -129,7 +129,7 @@ CFFAA41h,CommandSetNVParam,,,,7,0,FreqVeryLo,"Mode 3:Determines the upper bound,
 CFFAA41h,CommandSetNVParam,,,,7,0,K1Close,Mode 8:Maximum time required for the K1 contactor to close.,16,,,m,,0..2000,ms
 CFFAA41h,CommandSetNVParam,,,,7,0,MX2Open,Mode 7:Maximum time required for the MX2 contactor to open.,16,,,m,,,ms
 CFFAA41h,CommandSetNVParam,,,,7,0,V110to120pct,Mode 1:Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,m,,1..30000,ms
-CFFAC41h,CommandPower,,,,1,0,RealPower_command,Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.,32,,,m,,-90000..90000,W
+CFFAC41h,CommandPower,,,,1,0,RealPower command,Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.,32,,,m,,-90000..90000,W
 CFFAC41h,CommandPower,,,,5,0,ReactivePower_command,Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.,32,,,m,,-90000..90000,VA
 CFFAE41h,CommandVF,,,,1,0,Voltage_command,Desired output voltage while in grid forming mode.,16,,,m,,10..500,0.1  Vrms
 CFFAE41h,CommandVF,,,,3,0,Frequency_command,Desired output frequency while in grid forming mode.,16,,,m,,45..65,0.1  Hz
@@ -150,7 +150,7 @@ CFFC3F7h,StatusBits,100,,,1,2,Enable_echo,Echos the state of the Enable command 
 CFFC3F7h,StatusBits,100,,,1,2,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,m,Enable,1
 CFFC3F7h,StatusBits,100,,,1,2,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,m,Error,2
 CFFC3F7h,StatusBits,100,,,1,2,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,m,N/A,3
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,Power On Reset,0
+CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,"Power On Reset, and a quoted comma",0
 CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,Ready,1
 CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,N/A,10
 CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,N/A,11
