@@ -151,6 +151,7 @@ def importSym(filename, **options):
                         multiplexor = int(multiplexor[:-1], 16)
                     else:
                         multiplexor = int(multiplexor)
+                    multiplexor = str(multiplexor)
                     multiplexValTable[multiplexor] = sigName
                     indexOffset = 2
 
