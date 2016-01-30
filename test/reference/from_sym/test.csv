@@ -100,11 +100,11 @@ CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,J19
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,Fault_Config,6
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,ContactorDelays1,7
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,ContactorDelays2,8
-CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,ContactorDelays3,9
+CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,ContactorDelays3,10
 CFFAA41h,CommandSetNVParam,,,,3,0,Dummy,Mode 0:,16,,,m
 CFFAA41h,CommandSetNVParam,,,,3,0,FreqHi,"Mode 3:Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.",16,,,m,,40..70,0.1  Hz
 CFFAA41h,CommandSetNVParam,,,,3,0,FreqVeryLo,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains below the value specified in FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,m,,160..160,ms
-CFFAA41h,CommandSetNVParam,,,,3,0,K2Open,Mode 9:Maximum time required for the K2 contactor to open.,16,,,m,,0..2000,ms
+CFFAA41h,CommandSetNVParam,,,,3,0,K2Open,Mode 10:Maximum time required for the K2 contactor to open.,16,,,m,,0..2000,ms
 CFFAA41h,CommandSetNVParam,,,,3,0,MX1Open,Mode 7:Maximum time required for the MX1 contactor to open.,16,,,m,,0..5000,ms
 CFFAA41h,CommandSetNVParam,,,,3,0,MX2Close,Mode 8:Maximum time required for the MX2 contactor to open.,16,,,m,,0..2000,ms
 CFFAA41h,CommandSetNVParam,,,,3,0,NodeID,Mode 5:J1939 Source Address node for the module.,8,,,m,,0..247
@@ -121,7 +121,7 @@ CFFAA41h,CommandSetNVParam,,,,5,0,Baudrate,Mode 5:CAN baudrate,4,,,m,500K,2
 CFFAA41h,CommandSetNVParam,,,,5,0,Baudrate,Mode 5:CAN baudrate,4,,,m,1M,3
 CFFAA41h,CommandSetNVParam,,,,5,0,FreqLo,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains between the value specified in FreqLo and FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,m,,1..30000,ms
 CFFAA41h,CommandSetNVParam,,,,5,0,K1Open,Mode 8:Maximum time required for the K1 contactor to open.,16,,,m,,0..2000,ms
-CFFAA41h,CommandSetNVParam,,,,5,0,K2Close,Mode 9:Maximum time required for the K2 contactor to close.,16,,,m,,0..2000,ms
+CFFAA41h,CommandSetNVParam,,,,5,0,K2Close,Mode 10:Maximum time required for the K2 contactor to close.,16,,,m,,0..2000,ms
 CFFAA41h,CommandSetNVParam,,,,5,0,MX1Close,Mode 7:Maximum time required for the MX1 contactor to close.,16,,,m,,0..2000,ms
 CFFAA41h,CommandSetNVParam,,,,5,0,V50to88pct,Mode 1:Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,m,,1..30000,ms
 CFFAA41h,CommandSetNVParam,,,,7,0,FreqHi,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains above the value specified in FreqHi of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,m,,160..160,ms

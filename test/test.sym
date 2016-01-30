@@ -137,7 +137,7 @@ Var=K1Close unsigned 48,16 -m /u:ms /max:2000	// Maximum time required for the K
 
 [CommandSetNVParam]
 DLC=8
-Mux=ContactorDelays3 0,16 9  -m	// Sets the time the controller assumes it will take for contactors to open/close.
+Mux=ContactorDelays3 0,16 Ah  -m	// Sets the time the controller assumes it will take for contactors to open/close.
 Var=K2Open unsigned 16,16 -m /u:ms /max:2000	// Maximum time required for the K2 contactor to open.
 Var=K2Close unsigned 32,16 -m /u:ms /max:2000	// Maximum time required for the K2 contactor to close.
 

@@ -429,9 +429,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 16
       _startbit: 8
       _unit: ''
-      _values: {'0': Param0, '1': LVM_ClearingTimes1, '2': LVM_ClearingTimes2, '3': LFM_Limits,
-        '4': LFM_ClearingTimes, '5': J1939_Interface, '6': Fault_Config, '7': ContactorDelays1,
-        '8': ContactorDelays2, '9': ContactorDelays3}
+      _values: {0: Param0, 1: LVM_ClearingTimes1, 2: LVM_ClearingTimes2, 3: LFM_Limits,
+        4: LFM_ClearingTimes, 5: J1939_Interface, 6: Fault_Config, 7: ContactorDelays1,
+        8: ContactorDelays2, 10: ContactorDelays3}
       _valuetype: '-'
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
@@ -796,7 +796,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: '1'
       _max: '2000'
       _min: '0'
-      _multiplex: 9
+      _multiplex: 10
       _name: K2Open
       _offset: '0'
       _reciever: ''
@@ -812,7 +812,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: '1'
       _max: '2000'
       _min: '0'
-      _multiplex: 9
+      _multiplex: 10
       _name: K2Close
       _offset: '0'
       _reciever: ''
@@ -2418,10 +2418,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 16
       _startbit: 8
       _unit: ''
-      _values: {'0': ActParam0, '1': ActLVM_ClearingTimes1, '2': ActLVM_ClearingTimes2,
-        '3': ActLFM_Limits, '4': ActLFM_ClearingTimes, '5': StatusJ1939_Interface,
-        '6': StatusFault_Config, '7': StatusContactorDelays1, '8': StatusContactorDelays2,
-        '9': StatusContactorDelays3}
+      _values: {0: ActParam0, 1: ActLVM_ClearingTimes1, 2: ActLVM_ClearingTimes2,
+        3: ActLFM_Limits, 4: ActLFM_ClearingTimes, 5: StatusJ1939_Interface, 6: StatusFault_Config,
+        7: StatusContactorDelays1, 8: StatusContactorDelays2, 9: StatusContactorDelays3}
       _valuetype: '-'
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}

@@ -61,8 +61,8 @@ BO_ 2365565505 CommandSetNVParam: 8 Vector__XXX
  SG_ MX2Close m8  : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
  SG_ K1Open m8  : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
  SG_ K1Close m8  : 55|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K2Open m9  : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K2Close m9  : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K2Open m10  : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K2Close m10  : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
 
 BO_ 2164235073 CommandModeControlAPU2: 8 Vector__XXX
  SG_ Enable_command : 1|2@0+ (1,0) [0|1] "" Vector__XXX
@@ -569,7 +569,7 @@ VAL_ 2164239169 ForceRelayRelayK2_DCRun_comand 0 "Normal" 1 "Force On" 2 "Error"
 VAL_ 2164239169 PhaseRotation_command 0 "Negative" 1 "Positive" 2 "Error" 3 "N/A";
 VAL_ 2164239169 MasterFollowerMode_command 0 "Master" 1 "Follower" 2 "Error" 3 "N/A";
 VAL_ 2365566785 WriteSerialNumber 0 "Disable" 1 "Enable" 2 "Error" 3 "N/A";
-VAL_ 2365565505 CommandSetNVParam_MUX 0 "Param0" 1 "LVM_ClearingTimes1" 2 "LVM_ClearingTimes2" 3 "LFM_Limits" 4 "LFM_ClearingTimes" 5 "J1939_Interface" 6 "Fault_Config" 7 "ContactorDelays1" 8 "ContactorDelays2" 9 "ContactorDelays3";
+VAL_ 2365565505 CommandSetNVParam_MUX 0 "Param0" 1 "LVM_ClearingTimes1" 2 "LVM_ClearingTimes2" 3 "LFM_Limits" 4 "LFM_ClearingTimes" 5 "J1939_Interface" 6 "Fault_Config" 7 "ContactorDelays1" 8 "ContactorDelays2" 10 "ContactorDelays3";
 VAL_ 2365565505 Baudrate 0 "125K" 1 "250K" 2 "500K" 3 "1M";
 VAL_ 2365565505 ThermalOverload 0 "Warning" 1 "Fault" 2 "Error" 3 "N/A";
 VAL_ 2164235073 Enable_command 0 "Disable" 1 "Enable" 2 "Error" 3 "N/A";

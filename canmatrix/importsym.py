@@ -147,6 +147,10 @@ def importSym(filename, **options):
 
                 if tmpMux == "Mux":
                     multiplexor= tempArray[2]
+                    if multiplexor[-1] == 'h':
+                        multiplexor = int(multiplexor[:-1], 16)
+                    else:
+                        multiplexor = int(multiplexor)
                     multiplexValTable[multiplexor] = sigName
                     indexOffset = 2
 

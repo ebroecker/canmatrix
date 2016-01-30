@@ -196,7 +196,7 @@
           <Label name="Fault_Config" value="6"/>
           <Label name="ContactorDelays1" value="7"/>
           <Label name="ContactorDelays2" value="8"/>
-          <Label name="ContactorDelays3" value="9"/>
+          <Label name="ContactorDelays3" value="10"/>
         </LabelSet>
         <MuxGroup count="0">
           <Signal name="Dummy" offset="24" length="16" endianess="little">
@@ -331,7 +331,7 @@
             <LabelSet/>
           </Signal>
         </MuxGroup>
-        <MuxGroup count="9">
+        <MuxGroup count="10">
           <Signal name="K2Open" offset="24" length="16" endianess="little">
             <Notes>Maximum time required for the K2 contactor to open.</Notes>
             <Value max="2000" unit="ms"/>

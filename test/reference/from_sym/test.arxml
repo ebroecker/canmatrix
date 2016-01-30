@@ -5743,8 +5743,8 @@
                     <DESC>
                       <L-2 L="FOR-ALL">ContactorDelays3</L-2>
                     </DESC>
-                    <LOWER-LIMIT>9</LOWER-LIMIT>
-                    <UPPER-LIMIT>9</UPPER-LIMIT>
+                    <LOWER-LIMIT>10</LOWER-LIMIT>
+                    <UPPER-LIMIT>10</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>ContactorDelays3</VT>
                     </COMPU-CONST>
