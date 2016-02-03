@@ -309,7 +309,7 @@ def exportXlsx(db, filename, **options):
         #sort signals:
         sigHash ={}
         for sig in frame._signals:
-            sigHash["%02d" % int(sig.getMsbStartbitReverse()) + sig._name] = sig
+            sigHash["%02d" % int(sig.getMsbReverseStartbit()) + sig._name] = sig
 
         #set style for first line with border
         sigstyle = sty_first_frame
