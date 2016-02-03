@@ -265,7 +265,7 @@ def compareSignal(s1,s2, ignore = None):
     if s1._byteorder != s2._byteorder:
         result.addChild(compareResult("changed", "byteorder", s1, [" %d" % s1._byteorder, " %d" % s2._byteorder]))
     if s1._valuetype != s2._valuetype:
-        result.addChild(compareResult("changed", "valuetype", s1, [" %d" % s1._valuetype, " %d" % s2._valuetype]))
+        result.addChild(compareResult("changed", "valuetype", s1, [" %s" % s1._valuetype, " %s" % s2._valuetype]))
     if s1._multiplex != s2._multiplex:
         result.addChild(compareResult("changed", "multiplex", s1, [str(s1._multiplex), str(s2._multiplex)]))
     if s1._unit != s2._unit:
