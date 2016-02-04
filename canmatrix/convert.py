@@ -63,6 +63,9 @@ def convert(infile, outfileName, **options):
         if 'deleteZeroSignals' in options and options['deleteZeroSignals']:
             db.deleteZeroSignals()
         
+        if 'recalcDLC' in options and options['recalcDLC']:
+            db.recalcDLC(options['recalcDLC'])
+
         logger.info(name)
         logger.info("%d Frames found" % (db._fl._list.__len__()))
 
@@ -131,6 +134,9 @@ def main():
     parser.add_option("", "--deleteZeroSignals", action="store_true",
                                       dest="deleteZeroSignals", default=False,
                                      help="delete zero length signals (signals with 0 bit length) from matrix\ndefault False")
+    parser.add_option("", "--recalcDLC", 
+                                      dest="recalcDLC", default=False,
+                                     help="recalculate dlc; max: use maximum of stored and calculated dlc; force: force new calculated dlc")
     parser.add_option("", "--arxmlIgnoreClusterInfo", action="store_true",
                                       dest="arxmlIgnoreClusterInfo", default=False,
                                      help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault 0")

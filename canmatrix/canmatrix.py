@@ -457,6 +457,24 @@ class CanMatrix(object):
                 if 0 == signal._signalsize:
                     frame._signals.remove(signal)
 
+    def recalcDLC(self, strategy):
+        print("recalcDLC")
+        print(strategy)
+        for frame in self._fl._list:
+            originalDlc = frame._Size
+            if "max" == strategy:
+                frame.calcDLC()
+            if "force" == strategy:
+                maxBit = 0
+                for sig in frame._signals:
+                    if sig._byteorder == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
+                        # check intel signal (startbit + length):
+                        maxBit = sig.getLsbStartbit() + int(sig._signalsize)
+                    elif sig._byteorder == 0  and sig.getLsbStartbit() > maxBit:
+                        #check motorola signal (starbit is least significant bit):
+                        maxBit = sig.getLsbStartbit()
+                frame._Size = math.ceil(maxBit / 8)
+
 
 def loadPkl(filename):
     """
