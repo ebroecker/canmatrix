@@ -7,7 +7,7 @@ _BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
     _name: testBU
   - !!python/object:canmatrix.canmatrix.BoardUnit
     _attributes: {}
-    _comment: reciever ECU
+    _comment: receiver ECU
     _name: recBU
 _attributes: {}
 _buDefines:
@@ -17,7 +17,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   _list:
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 291
-    _Reciever: []
     _SignalGroups: []
     _Size: 8
     _Transmitter: [testBU]
@@ -29,6 +28,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       Frame comment'
     _extended: 0
     _name: testFrame1
+    _receiver: []
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -40,7 +40,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _multiplex: null
       _name: someTestSignal
       _offset: '1.0'
-      _reciever: [recBU]
+      _receiver: [recBU]
       _signalsize: 11
       _startbit: 9
       _unit: "specialCharUnit\xB0$"
@@ -56,7 +56,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _multiplex: null
       _name: Signal
       _offset: '0.0'
-      _reciever: [recBU]
+      _receiver: [recBU]
       _signalsize: 3
       _startbit: 20
       _unit: someUnit
@@ -64,7 +64,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _valuetype: +
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 18
-    _Reciever: []
     _SignalGroups: []
     _Size: 8
     _Transmitter: [testBU]
@@ -72,6 +71,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _comment: null
     _extended: 1
     _name: extendedFrame
+    _receiver: []
     _signals: []
 _frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,

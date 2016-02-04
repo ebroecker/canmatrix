@@ -240,7 +240,7 @@ def importXlsx(filename, **options):
         #new signal detected
         if row['Signal Name'] != signalName:
             # new Signal
-            reciever = []
+            receiver = []
             startbyte = int(row["Signal Byte No."])
             startbit = int(row['Signal Bit No.'])
             signalName = row['Signal Name']
@@ -275,11 +275,11 @@ def importXlsx(filename, **options):
                         if 's' in buSenderReceiver:
                             newBo.addTransmitter(buName)
                         if 'r' in buSenderReceiver:
-                            reciever.append(buName)
+                            receiver.append(buName)
                 if signalLength > 8:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
+                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", receiver, multiplex)
                 else:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
+                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", receiver, multiplex)
                 if byteorder == 0:
                     #motorola
                     if motorolaBitFormat == "msb":

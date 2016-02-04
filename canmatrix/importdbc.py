@@ -106,8 +106,8 @@ def importDbc(filename, **options):
             regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
             temp_raw = regexp_raw.match(l)
             if temp:
-                reciever = list(map(str.strip, temp.group(11).split(',')))
-                tempSig = Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp_raw.group(10).decode(dbcImportEncoding),reciever)     
+                receiver = list(map(str.strip, temp.group(11).split(',')))
+                tempSig = Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp_raw.group(10).decode(dbcImportEncoding),receiver)     
                 if tempSig._byteorder == 0:
                     # startbit of motorola coded signals are MSB in dbc
                     tempSig.setMsbStartbit(int(temp.group(2)))                
@@ -118,14 +118,14 @@ def importDbc(filename, **options):
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
-                reciever = list(map(str.strip, temp.group(12).split(',')))
+                receiver = list(map(str.strip, temp.group(12).split(',')))
                 multiplex = temp.group(2)
                 if multiplex == 'M':
                     multiplex = 'Multiplexor'
                 else:
                     multiplex = int(multiplex[1:])
 
-                db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp_raw.group(11).decode(dbcImportEncoding),reciever, multiplex))
+                db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp_raw.group(11).decode(dbcImportEncoding),receiver, multiplex))
 
 
         elif decoded.startswith("BO_TX_BU_ "):

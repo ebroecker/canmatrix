@@ -85,7 +85,7 @@ def exportDbf(db, filename, **options):
                 else:
                     multiplex = 'm' + str(signal._multiplex)
 
-            outstr += "," + signal._unit + ",%s," % multiplex + ','.join(signal._reciever) + "\n"
+            outstr += "," + signal._unit + ",%s," % multiplex + ','.join(signal._receiver) + "\n"
 
             if len(signal._values) > 0:
                 for attrib,val in sorted(list(signal._values.items())):

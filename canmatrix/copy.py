@@ -64,7 +64,7 @@ def copyBUwithFrames (buId, sourceDb, targetDb):
     #copy rx-frames
     for frame in sourceDb._fl._list:
         for signal in frame._signals:
-            if bu._name in signal._reciever:
+            if bu._name in signal._receiver:
                 copyFrame (frame, sourceDb, targetDb)
                 break
 
@@ -105,8 +105,8 @@ def copyFrame (frameId, sourceDb, targetDb):
 
     #trigger all signals of Frame
     for sig in frame._signals:
-        # each reciever of Signal could be ECU that is not listed already
-        for reciever in sig._reciever:
+        # each receiver of Signal could be ECU that is not listed already
+        for receiver in sig._receiver:
             targetBU = targetDb._BUs.byName(transmitter)
             sourceBU = sourceDb._BUs.byName(transmitter)
             if sourceBU is not None and targetBU is None:

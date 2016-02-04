@@ -277,13 +277,13 @@ def compareSignal(s1,s2, ignore = None):
             result.addChild(compareResult("changed", "comment", s1, ["only whitespaces differ", ""]))
 
 
-    for reciever in s1._reciever:
-        if reciever not in s2._reciever:
-            result.addChild(compareResult("removed", "Reciever " + reciever, s1._reciever))
+    for receiver in s1._receiver:
+        if receiver not in s2._receiver:
+            result.addChild(compareResult("removed", "receiver " + receiver, s1._receiver))
 
-    for reciever in s2._reciever:
-        if reciever not in s1._reciever:
-            result.addChild(compareResult("added", "Reciever " + reciever, s1._reciever))
+    for receiver in s2._receiver:
+        if receiver not in s1._receiver:
+            result.addChild(compareResult("added", "receiver " + receiver, s1._receiver))
 
     if ignore is not None and "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
         pass

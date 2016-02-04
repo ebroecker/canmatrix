@@ -38,7 +38,7 @@ db._fl.addFrame(myFrame2)
 
 db.boardUnitByName("testBU").addComment("sender ECU")
 db.boardUnitByName("testBU").addAttribute("NetworkNode", 0x111)
-db.boardUnitByName("recBU").addComment("reciever ECU")
+db.boardUnitByName("recBU").addComment("receiver ECU")
 
 db.frameByName("testFrame1").addAttribute("GenMsgCycleTime", 100)
 

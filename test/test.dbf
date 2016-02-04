@@ -28,7 +28,7 @@
 
 [START_DESC_NODE]
 testBU "sender ECU";
-recBU "reciever ECU";
+recBU "receiver ECU";
 [END_DESC_NODE]
 
 [START_DESC_MSG]

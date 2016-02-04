@@ -63,9 +63,9 @@ def createSignal(signal, nodeList):
     sig.append(labelset)
 
     consumer = etree.Element('Consumer')
-    for reciever in signal._reciever:
-        if len(reciever) > 1 and reciever in nodeList:
-            noderef = etree.Element('NodeRef', id=str(nodeList[reciever]))
+    for receiver in signal._receiver:
+        if len(receiver) > 1 and receiver in nodeList:
+            noderef = etree.Element('NodeRef', id=str(nodeList[receiver]))
             consumer.append(noderef)
             sig.append(consumer)
     return sig

@@ -164,7 +164,7 @@ def importXls(filename, **options):
         #new signal detected
         if sh.cell(rownum,index['signalName']).value != signalName:
             # new Signal
-            reciever = []
+            receiver = []
             startbyte = int(sh.cell(rownum,index['startbyte']).value)
             startbit = int(sh.cell(rownum,index['startbit']).value)
             signalName = sh.cell(rownum,index['signalName']).value
@@ -197,11 +197,11 @@ def importXls(filename, **options):
                     if 's' in sh.cell(rownum,x).value:
                         newBo.addTransmitter(sh.cell(0,x).value.strip())
                     if 'r' in sh.cell(rownum,x).value:
-                        reciever.append(sh.cell(0,x).value.strip())
+                        receiver.append(sh.cell(0,x).value.strip())
                 if signalLength > 8:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
+                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", receiver, multiplex)
                 else:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", reciever, multiplex)
+                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", receiver, multiplex)
                 if byteorder == 0:
                     #motorola
                     if motorolaBitFormat == "msb":

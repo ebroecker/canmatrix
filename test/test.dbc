@@ -24,7 +24,7 @@ CM_ SG_ 291 someTestSignal "Multi
  Signal comment with a-umlaut: ä";
 
 CM_ BU_ testBU "sender ECU";
-CM_ BU_ recBU "reciever ECU";
+CM_ BU_ recBU "receiver ECU";
 
 BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
 BA_DEF_ BU_ "NetworkNode" INT 0 65535;

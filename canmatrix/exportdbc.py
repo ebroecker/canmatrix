@@ -107,9 +107,9 @@ def exportDbc(db, filename, **options):
 
             f.write(signal._unit.encode(dbcExportEncoding))
             f.write('" '.encode(dbcExportEncoding))
-            if signal._reciever.__len__() == 0:
-                signal._reciever = ['Vector__XXX']
-            f.write((','.join(signal._reciever) + "\n").encode(dbcExportEncoding))
+            if signal._receiver.__len__() == 0:
+                signal._receiver = ['Vector__XXX']
+            f.write((','.join(signal._receiver) + "\n").encode(dbcExportEncoding))
         f.write("\n".encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 

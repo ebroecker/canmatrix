@@ -87,7 +87,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         factor = 1.0
         offset = 0
         Unit = ""
-        Reciever = []
+        receiver = []
 
         signalDescription = getDesc(syssignal, arDict, ns)
 
@@ -156,7 +156,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             logger.debug('no length for signal given')
 
         if startBit is not None:
-            newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, Reciever, multiplexId)
+            newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, receiver, multiplexId)
             if newSig._byteorder == 0:
                 # startbit of motorola coded signals are MSB in arxml
                 newSig.setMsbStartbit(int(startBit.text))                
@@ -372,8 +372,8 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 #                       if frame is not None:
 #                               for signal in frame._signals:
 #                                       rec_name = arGetName(ecu, ns)
-#                                       if rec_name not in  signal._reciever:
-#                                               signal._reciever.append(rec_name)
+#                                       if rec_name not in  signal._receiver:
+#                                               signal._receiver.append(rec_name)
 #                       else:
 #                               print "in not found: " + inf
     bu = BoardUnit(arGetName(ecu, ns))
@@ -498,12 +498,12 @@ def importArxml(filename, **options):
                     if comDir.text == "IN":
                         ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
                         if isignal.text in signalRxs:
-                            if ecuName not in signalRxs[isignal.text]._reciever:
-                                signalRxs[isignal.text]._reciever.append(ecuName)
+                            if ecuName not in signalRxs[isignal.text]._receiver:
+                                signalRxs[isignal.text]._receiver.append(ecuName)
     #                               for fr in db._fl._list:
     #                                       for sig in fr._signals:
     #                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
-    #                                                       sig._reciever.append(ecuName)
+    #                                                       sig._receiver.append(ecuName)
                         #TODO
 
     # find ECUs:

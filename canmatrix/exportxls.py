@@ -213,9 +213,9 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
             locStyleSender = sender_green
 
         # write "s" "r" "r/s" if signal is sent, recieved or send and recived by boardunit
-        if bu in sig._reciever and bu in frame._Transmitter:
+        if bu in sig._receiver and bu in frame._Transmitter:
             worksheet.write(row, col, label = "r/s", style = locStyleSender)
-        elif bu in sig._reciever:
+        elif bu in sig._receiver:
             worksheet.write(row, col, label = "r", style = locStyle)
         elif bu in frame._Transmitter:
             worksheet.write(row, col, label = "s", style = locStyleSender)

@@ -68,16 +68,16 @@ def parseSignal(signal, mux, namespace, nodelist):
         if 'max' in values.attrib:
             max = values.get('max')
 
-    reciever = []
+    receiver = []
     consumers = signal.findall('./' + namespace + 'Consumer')
     for consumer in consumers:
         noderefs = consumer.findall('./' + namespace + 'NodeRef')
         for noderef in noderefs:
-            reciever.append(nodelist[noderef.get('id')])
+            receiver.append(nodelist[noderef.get('id')])
 
 
     valuetype = '+'
-    newSig = Signal(signal.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, mux)
+    newSig = Signal(signal.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, receiver, mux)
 
     notes = signal.findall('./' + namespace + 'Notes')
     comment = ""
@@ -158,14 +158,14 @@ def importKcd(filename):
             factor = 1
             valuetype = '+'
 
-            reciever = ""
+            receiver = ""
             consumers = multiplex.findall('./' + namespace + 'Consumer')
             for consumer in consumers:
                 noderefs = consumer.findall('./' + namespace + 'NodeRef')
                 for noderef in noderefs:
-                    reciever += nodelist[noderef.get('id')] + ' '
+                    receiver += nodelist[noderef.get('id')] + ' '
 
-            newSig = Signal(multiplex.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, 'Multiplexor')
+            newSig = Signal(multiplex.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, receiver, 'Multiplexor')
             if byteorder == 0:
                 #motorola set/convert startbit
                 newSig.setLsbStartbit(startbit)

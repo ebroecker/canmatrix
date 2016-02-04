@@ -203,7 +203,7 @@ def importDbf(filename, **options):
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
-                (name, size, startbyte, startbit, sign, Max, Min, byteorder, offset, factor, unit, multiplex, reciever) = temstr.split(',',12)
+                (name, size, startbyte, startbit, sign, Max, Min, byteorder, offset, factor, unit, multiplex, receiver) = temstr.split(',',12)
 
 
                 if multiplex == 'M':
@@ -217,7 +217,7 @@ def importDbf(filename, **options):
                 startbit = int (startbit)
                 startbit += (int(startbyte)-1)*8
 
-                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, float(Min)*float(factor), float(Max)*float(factor), unit, reciever.split(','), multiplex))
+                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, float(Min)*float(factor), float(Max)*float(factor), unit, receiver.split(','), multiplex))
                 if int(byteorder) == 0:
                     # this is dummy here, because internal lsb is default - for now
                     newSig.setLsbStartbit(startbit)                    

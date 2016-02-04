@@ -109,11 +109,11 @@ class Signal(object):
             _byteorder (1: Intel, 0: Motorola)
             _valuetype ()
             _factor, _offset, _min, _max
-            _reciever  (Boarunit/ECU-Name)
+            _receiver  (Boarunit/ECU-Name)
             _attributes, _values, _unit, _comment
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
-    def __init__(self, name, startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, reciever, multiplex=None):
+    def __init__(self, name, startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, receiver, multiplex=None):
         self._name = name
         self._startbit = int(startbit)
         self._signalsize = int(signalsize)
@@ -124,7 +124,7 @@ class Signal(object):
         self._offset = str(offset)
         self._min = str(min)
         self._max = str(max)
-        self._reciever = reciever
+        self._receiver = receiver
         self._attributes = {}
         self._values = {}
         self._unit = unit
@@ -248,7 +248,7 @@ class Frame(object):
     contains one Frame with following attributes
     _Id, _name, _Transmitter (list of boardunits/ECU-names), _Size (= DLC),
     _signals (list of signal-objects), _attributes (list of attributes),
-    _Reciever (list of boardunits/ECU-names), _extended (Extended Frame = 1), _comment
+    _receiver (list of boardunits/ECU-names), _extended (Extended Frame = 1), _comment
     """
     def __init__(self,bid, name, size, transmitter):
         self._Id = int(bid)
@@ -260,7 +260,7 @@ class Frame(object):
         self._Size = int(size)
         self._signals = []
         self._attributes = {}
-        self._Reciever = []
+        self._receiver = []
         self._SignalGroups = []
         self._extended = 0
         self._comment = None

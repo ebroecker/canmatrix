@@ -32,7 +32,7 @@ from .importdbc import *
 #
 
 #TODO Well, ..., this is the first attempt to export a arxml-file; I did this without reading any spec;
-#TODO recievers of signals are missing
+#TODO receivers of signals are missing
 
 def createSubElement(elem, strElement, strName):
     sn = etree.SubElement(elem, strElement)
@@ -43,9 +43,9 @@ def exportArxml(db, filename):
     # create XML
     for frame in db._fl._list:
         for signal in frame._signals:
-            for rec in signal._reciever:
-                if rec.strip() not in frame._Reciever:
-                    frame._Reciever.append(rec.strip())
+            for rec in signal._receiver:
+                if rec.strip() not in frame._receiver:
+                    frame._receiver.append(rec.strip())
 
     root = etree.Element('AUTOSAR')
 # xsi:schemaLocation="http://autosar.org/3.1.4.DAI.3 AUTOSAR_314DAI3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -91,7 +91,7 @@ def exportArxml(db, filename):
             framePortRef = etree.SubElement(framePortRefs, 'FRAME-PORT-REF')
             framePortRef.set('DEST','FRAME-PORT')
             framePortRef.text = "/ECU/" + transmitter + "/" + frame._name
-        for rec in frame._Reciever:
+        for rec in frame._receiver:
             framePortRef = etree.SubElement(framePortRefs, 'FRAME-PORT-REF')
             framePortRef.set('DEST','FRAME-PORT')
             framePortRef.text = "/ECU/" + rec + "/" + frame._name
@@ -298,7 +298,7 @@ def exportArxml(db, filename):
                     signalPort = etree.SubElement(ecuCommPortInstances,'SIGNAL-PORT')
                     createSubElement(signalPort, 'SHORT-NAME', signal._name)
                     createSubElement(signalPort, 'COMMUNICATION-DIRECTION', 'OUT')
-            if ecu._name in frame._Reciever:
+            if ecu._name in frame._receiver:
                 frameport = etree.SubElement(ecuCommPortInstances,'FRAME-PORT')
                 createSubElement(frameport, 'SHORT-NAME', frame._name)
                 createSubElement(frameport, 'COMMUNICATION-DIRECTION', 'IN')
@@ -308,7 +308,7 @@ def exportArxml(db, filename):
                 rxIPduGroups[ecu._name + "_Rx"].append(frame._name)
 
                 for signal in frame._signals:
-                    if ecu._name in signal._reciever:
+                    if ecu._name in signal._receiver:
                         signalPort = etree.SubElement(ecuCommPortInstances,'SIGNAL-PORT')
                         createSubElement(signalPort, 'SHORT-NAME', signal._name)
                         createSubElement(signalPort, 'COMMUNICATION-DIRECTION', 'IN')

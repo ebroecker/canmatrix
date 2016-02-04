@@ -107,9 +107,9 @@ def writeBuMatrixx(buList, sig, frame, row, col):
     #iterate over boardunits:
     for bu in buList:
         # write "s" "r" "r/s" if signal is sent, received or send and received by boardunit
-        if bu in sig._reciever and bu in frame._Transmitter:
+        if bu in sig._receiver and bu in frame._Transmitter:
             row[col] = "r/s"
-        elif bu in sig._reciever:
+        elif bu in sig._receiver:
             row[col] = "r"
         elif bu in frame._Transmitter:
             row[col] = "s"
