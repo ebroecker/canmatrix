@@ -136,7 +136,14 @@ examples/convert.py some-matrix.arxml some-matrix.dbc
 
 
  
-* arxml
+* arxml:
+
+  --arxmlIgnoreClusterInfo
+
+                        Ignore any can cluster info from arxml; Import all
+                        frames in one matrix default 0
+
+
 * yaml
 * json
 * kdc

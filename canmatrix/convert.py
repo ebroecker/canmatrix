@@ -59,6 +59,10 @@ def convert(infile, outfileName, **options):
 
     for name in dbs:
         db = dbs[name]
+
+        if 'deleteZeroSignals' in options and options['deleteZeroSignals']:
+            db.deleteZeroSignals()
+        
         logger.info(name)
         logger.info("%d Frames found" % (db._fl._list.__len__()))
 
@@ -124,6 +128,9 @@ def main():
     parser.add_option("-v", dest="verbosity", action="count", help="Output verbosity", default=0)
     parser.add_option("-s", dest="silent", action="store_true", help="don't print status messages to stdout. (only errors)", default=False)
     parser.add_option("-f", dest="force_output", help="enforce output format, ignoring output file extension (e.g., -f csv")
+    parser.add_option("", "--deleteZeroSignals", action="store_true",
+                                      dest="deleteZeroSignals", default=False,
+                                     help="delete zero length signals (signals with 0 bit length) from matrix\ndefault False")
     parser.add_option("", "--arxmlIgnoreClusterInfo", action="store_true",
                                       dest="arxmlIgnoreClusterInfo", default=False,
                                      help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault 0")

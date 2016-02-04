@@ -450,6 +450,12 @@ class CanMatrix(object):
 
     def boardUnitByName(self, name):
         return self._BUs.byName(name)
+    
+    def deleteZeroSignals(self):
+        for frame in self._fl._list:
+            for signal in frame._signals:
+                if 0 == signal._signalsize:
+                    frame._signals.remove(signal)
 
 
 def loadPkl(filename):
