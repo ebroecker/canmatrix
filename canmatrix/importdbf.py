@@ -189,7 +189,16 @@ def importDbf(filename, **options):
 
             if line.startswith("[START_MSG]"):
                 temstr = line.strip()[11:].strip()
-                (name, Id, size, nSignals, dummy, extended,transmitter) = temstr.split(',')
+                temparray = temstr.split(',')
+                (name, Id, size, nSignals, dummy) = temparray[0:5]
+                if len(temparray) > 5:
+                    extended = temparray[5]
+                else:
+                    extended = None
+                if len(temparray) > 6:
+                    transmitter = temparray[6]
+                else:
+                    transmitter = None
                 newBo = db._fl.addFrame(Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug ("Extended")
@@ -203,7 +212,13 @@ def importDbf(filename, **options):
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
-                (name, size, startbyte, startbit, sign, Max, Min, byteorder, offset, factor, unit, multiplex, receiver) = temstr.split(',',12)
+                temparray = temstr.split(',')
+                (name, size, startbyte, startbit, sign, Max, Min, byteorder, offset, factor, unit, multiplex) = temparray[0:12]
+                if len(temparray) > 12:                
+                    receiver = temparray[12].split(',')
+                else:
+                    receiver = []
+
 
 
                 if multiplex == 'M':
@@ -217,7 +232,7 @@ def importDbf(filename, **options):
                 startbit = int (startbit)
                 startbit += (int(startbyte)-1)*8
 
-                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, float(Min)*float(factor), float(Max)*float(factor), unit, receiver.split(','), multiplex))
+                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, float(Min)*float(factor), float(Max)*float(factor), unit, receiver, multiplex))
                 if int(byteorder) == 0:
                     # this is dummy here, because internal lsb is default - for now
                     newSig.setLsbStartbit(startbit)                    
