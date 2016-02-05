@@ -1,868 +1,1531 @@
 {
     "messages": [
         {
-            "id": "0xff9b41",
+            "id": 16751425,
             "name": "CommandModeControlAPU2",
-            "signals": {
-                "3": {
+            "signals": [
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "FaultClear_command",
-                    "offset": "0"
-                },
-                "5": {
-                    "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Enable_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 5
                 },
-                "21": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FaultClear_command",
+                    "offset": 0.0,
+                    "start_bit": 3
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "MasterFollowerMode_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 21
                 },
-                "33": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "ForceRelayK1_Precharge_command",
-                    "offset": "0"
-                },
-                "35": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "ForceRelayMX2_command",
-                    "offset": "0"
-                },
-                "37": {
-                    "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "ForceRelayMX1_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 37
                 },
-                "47": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ForceRelayMX2_command",
+                    "offset": 0.0,
+                    "start_bit": 35
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ForceRelayK1_Precharge_command",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "ForceRelayRelayK2_DCRun_comand",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 47
                 },
-                "57": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "EnableSplitPhase_command",
-                    "offset": "0"
-                },
-                "59": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "EnableUPSMode_command",
-                    "offset": "0"
-                },
-                "61": {
-                    "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "InvertHwEnable_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 61
                 },
-                "71": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "EnableUPSMode_command",
+                    "offset": 0.0,
+                    "start_bit": 59
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "EnableSplitPhase_command",
+                    "offset": 0.0,
+                    "start_bit": 57
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "PhaseRotation_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 71
                 }
-            }
+            ]
         },
         {
-            "id": "0xffab41",
+            "id": 16755521,
             "name": "CommandModeControl",
-            "signals": {
-                "3": {
+            "signals": [
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "FaultClear_command",
-                    "offset": "0"
-                },
-                "5": {
-                    "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Enable_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 5
                 },
-                "21": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FaultClear_command",
+                    "offset": 0.0,
+                    "start_bit": 3
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "MasterFollowerMode_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 21
                 },
-                "33": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "ForceRelayK1_Precharge_command",
-                    "offset": "0"
-                },
-                "35": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "ForceRelayMX2_command",
-                    "offset": "0"
-                },
-                "37": {
-                    "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "ForceRelayMX1_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 37
                 },
-                "47": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ForceRelayMX2_command",
+                    "offset": 0.0,
+                    "start_bit": 35
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ForceRelayK1_Precharge_command",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "ForceRelayRelayK2_DCRun_comand",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 47
                 },
-                "57": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "EnableSplitPhase_command",
-                    "offset": "0"
-                },
-                "59": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "EnableUPSMode_command",
-                    "offset": "0"
-                },
-                "61": {
-                    "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "InvertHwEnable_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 61
                 },
-                "71": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "EnableUPSMode_command",
+                    "offset": 0.0,
+                    "start_bit": 59
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "EnableSplitPhase_command",
+                    "offset": 0.0,
+                    "start_bit": 57
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "PhaseRotation_command",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 71
                 }
-            }
+            ]
         },
         {
-            "id": "0xcff9c41",
+            "id": 218078273,
             "name": "CommandPowerAPU2",
-            "signals": {
-                "33": {
+            "signals": [
+                {
                     "bit_length": 32,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "RealPower_command",
-                    "offset": "-90000"
+                    "offset": -90000.0,
+                    "start_bit": 33
                 },
-                "65": {
+                {
                     "bit_length": 32,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "ReactivePower_command",
-                    "offset": "-90000"
+                    "offset": -90000.0,
+                    "start_bit": 65
                 }
-            }
+            ]
         },
         {
-            "id": "0xcff9e41",
+            "id": 218078785,
             "name": "CommandVFAPU2",
-            "signals": {
-                "17": {
+            "signals": [
+                {
                     "bit_length": 16,
                     "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Voltage_command",
-                    "offset": "10"
+                    "offset": 10.0,
+                    "start_bit": 17
                 },
-                "33": {
+                {
                     "bit_length": 16,
                     "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Frequency_command",
-                    "offset": "45"
+                    "offset": 45.0,
+                    "start_bit": 33
                 }
-            }
+            ]
         },
         {
-            "id": "0xcffaa41",
+            "id": 218081857,
             "name": "CommandSetNVParam",
-            "signals": {
-                "17": {
+            "signals": [
+                {
                     "bit_length": 16,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "CommandSetNVParam_MUX",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 17
                 },
-                "21": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "ThermalOverload",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 21
                 },
-                "25": {
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "Dummy",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqHi",
+                    "offset": 40.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqVeryLo",
+                    "offset": 160.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "K2Open",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "MX1Open",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "MX2Close",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
                     "bit_length": 8,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "NodeID",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 25
                 },
-                "33": {
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "VOver120",
+                    "offset": 1.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "VUnder50pct",
+                    "offset": 1.0,
+                    "start_bit": 33
+                },
+                {
                     "bit_length": 8,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "SA_Mask",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 33
                 },
-                "45": {
+                {
                     "bit_length": 4,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Baudrate",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 45
                 },
-                "49": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqLo",
+                    "offset": 1.0,
+                    "start_bit": 49
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "K1Open",
+                    "offset": 0.0,
+                    "start_bit": 49
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "K2Close",
+                    "offset": 0.0,
+                    "start_bit": 49
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "MX1Close",
+                    "offset": 0.0,
+                    "start_bit": 49
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "V50to88pct",
-                    "offset": "1"
+                    "offset": 1.0,
+                    "start_bit": 49
                 },
-                "65": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqHi",
+                    "offset": 160.0,
+                    "start_bit": 65
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqVeryLo",
+                    "offset": 40.0,
+                    "start_bit": 65
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "K1Close",
+                    "offset": 0.0,
+                    "start_bit": 65
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "MX2Open",
+                    "offset": 0.0,
+                    "start_bit": 65
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "V110to120pct",
-                    "offset": "1"
+                    "offset": 1.0,
+                    "start_bit": 65
                 }
-            }
+            ]
         },
         {
-            "id": "0xcffac41",
+            "id": 218082369,
             "name": "CommandPower",
-            "signals": {
-                "33": {
+            "signals": [
+                {
                     "bit_length": 32,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "RealPower_command",
-                    "offset": "-90000"
+                    "offset": -90000.0,
+                    "start_bit": 33
                 },
-                "65": {
+                {
                     "bit_length": 32,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "ReactivePower_command",
-                    "offset": "-90000"
+                    "offset": -90000.0,
+                    "start_bit": 65
                 }
-            }
+            ]
         },
         {
-            "id": "0xcffae41",
+            "id": 218082881,
             "name": "CommandVF",
-            "signals": {
-                "17": {
+            "signals": [
+                {
                     "bit_length": 16,
                     "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Voltage_command",
-                    "offset": "10"
+                    "offset": 10.0,
+                    "start_bit": 17
                 },
-                "33": {
+                {
                     "bit_length": 16,
                     "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Frequency_command",
-                    "offset": "45"
+                    "offset": 45.0,
+                    "start_bit": 33
                 }
-            }
+            ]
         },
         {
-            "id": "0xcffaf41",
+            "id": 218083137,
             "name": "CommandFactoryControl",
-            "signals": {
-                "5": {
+            "signals": [
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "WriteSerialNumber",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 5
                 },
-                "33": {
+                {
                     "bit_length": 16,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "FactoryAccess",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 33
                 },
-                "65": {
+                {
                     "bit_length": 32,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "SerialNumber",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 65
                 }
-            }
+            ]
         },
         {
-            "id": "0xcffc2f7",
+            "id": 218088183,
             "name": "StatusACParameters",
-            "signals": {
-                "17": {
+            "signals": [
+                {
                     "bit_length": 16,
                     "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "VoltageAC_measured",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 17
                 },
-                "33": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "CurrentAC_measured",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 33
                 },
-                "49": {
+                {
                     "bit_length": 16,
                     "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Frequency_measured",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 49
                 }
-            }
+            ]
         },
         {
-            "id": "0xcffc3f7",
+            "id": 218088439,
             "name": "StatusBits",
-            "signals": {
-                "1": {
+            "signals": [
+                {
+                    "bit_length": 4,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "State_status",
+                    "offset": 0.0,
+                    "start_bit": 1
+                },
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Enable_echo",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 1
                 },
-                "9": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "PowerAvailDC_status",
-                    "offset": "0"
-                },
-                "11": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "PowerAvailAC_status",
-                    "offset": "0"
-                },
-                "13": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "HardwareEnable_status",
-                    "offset": "0"
-                },
-                "15": {
-                    "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "FaultClr_echo",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 15
                 },
-                "17": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "K1PrechargePermissive_status",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "HardwareEnable_status",
+                    "offset": 0.0,
+                    "start_bit": 13
                 },
-                "19": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "MX2Permissive_status",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "PowerAvailAC_status",
+                    "offset": 0.0,
+                    "start_bit": 11
                 },
-                "21": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "MX1Permissive_status",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "PowerAvailDC_status",
+                    "offset": 0.0,
+                    "start_bit": 9
                 },
-                "23": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "PowerCircuitEnabled_status",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 23
                 },
-                "25": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "MessageValidVF_status",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "MX1Permissive_status",
+                    "offset": 0.0,
+                    "start_bit": 21
                 },
-                "27": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "MessageValidPowerCMD_status",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "MX2Permissive_status",
+                    "offset": 0.0,
+                    "start_bit": 19
                 },
-                "29": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "MessageValidModeControl_status",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "K1PrechargePermissive_status",
+                    "offset": 0.0,
+                    "start_bit": 17
                 },
-                "31": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "K2DCRunPermissive_status",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 31
                 },
-                "33": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "PhaseRotation_status",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "MessageValidModeControl_status",
+                    "offset": 0.0,
+                    "start_bit": 29
                 },
-                "35": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "EnableSplitPhase_echo",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "MessageValidPowerCMD_status",
+                    "offset": 0.0,
+                    "start_bit": 27
                 },
-                "37": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "EnableUPSMode_echo",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "MessageValidVF_status",
+                    "offset": 0.0,
+                    "start_bit": 25
                 },
-                "39": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "CANbus_status",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 39
                 },
-                "45": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "PhaseRotation_echo",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "EnableUPSMode_echo",
+                    "offset": 0.0,
+                    "start_bit": 37
                 },
-                "47": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "EnableSplitPhase_echo",
+                    "offset": 0.0,
+                    "start_bit": 35
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "PhaseRotation_status",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "LineVoltageDetected_status",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 47
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "PhaseRotation_echo",
+                    "offset": 0.0,
+                    "start_bit": 45
                 }
-            }
+            ]
         },
         {
-            "id": "0xcffc8f7",
+            "id": 218089719,
             "name": "StatusFaults",
-            "signals": {
-                "1": {
+            "signals": [
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "LossOfAC_status",
-                    "offset": "0"
-                },
-                "3": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "OvercurrentAC_status",
-                    "offset": "0"
-                },
-                "5": {
-                    "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "GeneralFault_status",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 5
                 },
-                "9": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "OvertempInternal_status",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "OvercurrentAC_status",
+                    "offset": 0.0,
+                    "start_bit": 3
                 },
-                "11": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "UndervoltageDC_status",
-                    "offset": "0"
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "LossOfAC_status",
+                    "offset": 0.0,
+                    "start_bit": 1
                 },
-                "13": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
-                    "name": "OvervoltageDC_status",
-                    "offset": "0"
-                },
-                "15": {
-                    "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "OvercurrentDC_status",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 15
                 },
-                "17": {
-                    "bit_length": 4,
-                    "factor": "1",
-                    "name": "ControlHardwareFail_status",
-                    "offset": "0"
-                },
-                "23": {
+                {
                     "bit_length": 2,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "OvervoltageDC_status",
+                    "offset": 0.0,
+                    "start_bit": 13
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "UndervoltageDC_status",
+                    "offset": 0.0,
+                    "start_bit": 11
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "OvertempInternal_status",
+                    "offset": 0.0,
+                    "start_bit": 9
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "OvertempPowerDevice_status",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 23
                 },
-                "25": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "InvalidEEHeader_status",
-                    "offset": "0"
-                },
-                "27": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "IllegalTransition_status",
-                    "offset": "0"
-                },
-                "29": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "EStopShutdown_status",
-                    "offset": "0"
-                },
-                "37": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "ThermalOverload",
-                    "offset": "0"
-                },
-                "39": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "InvalidEESection_status",
-                    "offset": "0"
-                },
-                "43": {
-                    "bit_length": 3,
-                    "factor": "1",
-                    "name": "BridgeBFault_status",
-                    "offset": "0"
-                },
-                "44": {
-                    "bit_length": 1,
-                    "factor": "1",
-                    "name": "BridgeBVoltageOk_status",
-                    "offset": "0"
-                },
-                "59": {
-                    "bit_length": 3,
-                    "factor": "1",
-                    "name": "BridgeAFault_status",
-                    "offset": "0"
-                },
-                "60": {
-                    "bit_length": 1,
-                    "factor": "1",
-                    "name": "BridgeAVoltageOk_status",
-                    "offset": "0"
-                }
-            }
-        },
-        {
-            "id": "0xcffcaf6",
-            "name": "MasterMeasuredPower",
-            "signals": {
-                "33": {
-                    "bit_length": 32,
-                    "factor": 1,
-                    "name": "RealPower_measured",
-                    "offset": "0"
-                },
-                "65": {
-                    "bit_length": 32,
-                    "factor": 1,
-                    "name": "ReactivePower_measured",
-                    "offset": "0"
-                }
-            }
-        },
-        {
-            "id": "0xcffcaf7",
-            "name": "StatusMeasuredPower",
-            "signals": {
-                "33": {
-                    "bit_length": 32,
-                    "factor": 1,
-                    "name": "RealPower_measured",
-                    "offset": "0"
-                },
-                "65": {
-                    "bit_length": 32,
-                    "factor": 1,
-                    "name": "ReactivePower_measured",
-                    "offset": "0"
-                }
-            }
-        },
-        {
-            "id": "0x18ffc4f7",
-            "name": "StatusCommandedPower",
-            "signals": {
-                "33": {
-                    "bit_length": 32,
-                    "factor": 1,
-                    "name": "RealPower_echo",
-                    "offset": "0"
-                },
-                "65": {
-                    "bit_length": 32,
-                    "factor": 1,
-                    "name": "ReactivePower_echo",
-                    "offset": "0"
-                }
-            }
-        },
-        {
-            "id": "0x18ffc9f7",
-            "name": "StatusCommandVF",
-            "signals": {
-                "17": {
-                    "bit_length": 16,
-                    "factor": 0.1,
-                    "name": "Voltage_echo",
-                    "offset": "0"
-                },
-                "33": {
-                    "bit_length": 16,
-                    "factor": 0.1,
-                    "name": "Frequency_echo",
-                    "offset": "0"
-                }
-            }
-        },
-        {
-            "id": "0x18ffcbf7",
-            "name": "StatusTemps",
-            "signals": {
-                "17": {
-                    "bit_length": 16,
-                    "factor": 0.1,
-                    "name": "TempInlet_measured",
-                    "offset": "0"
-                },
-                "33": {
-                    "bit_length": 16,
-                    "factor": 0.1,
-                    "name": "TempInternal_measured",
-                    "offset": "0"
-                },
-                "49": {
-                    "bit_length": 16,
-                    "factor": 1,
-                    "name": "ConverterLosses",
-                    "offset": "0"
-                }
-            }
-        },
-        {
-            "id": "0x18ffd0f7",
-            "name": "StatusLineCurrents",
-            "signals": {
-                "17": {
-                    "bit_length": 16,
-                    "factor": 1,
-                    "name": "L1Current_measured",
-                    "offset": "0"
-                },
-                "33": {
-                    "bit_length": 16,
-                    "factor": 1,
-                    "name": "L2Current_measured",
-                    "offset": "0"
-                },
-                "49": {
-                    "bit_length": 16,
-                    "factor": 1,
-                    "name": "L3Current_measured",
-                    "offset": "0"
-                }
-            }
-        },
-        {
-            "id": "0x18ffd1f7",
-            "name": "StatusLineVoltages",
-            "signals": {
-                "17": {
-                    "bit_length": 16,
-                    "factor": 0.1,
-                    "name": "L1Voltage_measured",
-                    "offset": "0"
-                },
-                "33": {
-                    "bit_length": 16,
-                    "factor": 0.1,
-                    "name": "L2Voltage_measured",
-                    "offset": "0"
-                },
-                "49": {
-                    "bit_length": 16,
-                    "factor": 0.1,
-                    "name": "L3Voltage_measured",
-                    "offset": "0"
-                }
-            }
-        },
-        {
-            "id": "0x1cffa9f7",
-            "name": "StatusNVParam",
-            "signals": {
-                "17": {
-                    "bit_length": 16,
-                    "factor": "1",
-                    "name": "StatusNVParam_MUX",
-                    "offset": "0"
-                },
-                "21": {
-                    "bit_length": 2,
-                    "factor": "1",
-                    "name": "StatusThermalOverload",
-                    "offset": "0"
-                },
-                "25": {
-                    "bit_length": 8,
-                    "factor": "1",
-                    "name": "StatusNodeID",
-                    "offset": "0"
-                },
-                "33": {
-                    "bit_length": 8,
-                    "factor": "1",
-                    "name": "StatusSA_Mask",
-                    "offset": "0"
-                },
-                "45": {
+                {
                     "bit_length": 4,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ControlHardwareFail_status",
+                    "offset": 0.0,
+                    "start_bit": 17
+                },
+                {
+                    "bit_length": 4,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "LossValidControlMessage_status",
+                    "offset": 0.0,
+                    "start_bit": 29
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "EStopShutdown_status",
+                    "offset": 0.0,
+                    "start_bit": 29
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "IllegalTransition_status",
+                    "offset": 0.0,
+                    "start_bit": 27
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "InvalidEEHeader_status",
+                    "offset": 0.0,
+                    "start_bit": 25
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "InvalidEESection_status",
+                    "offset": 0.0,
+                    "start_bit": 39
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ThermalOverload",
+                    "offset": 0.0,
+                    "start_bit": 37
+                },
+                {
+                    "bit_length": 3,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "BridgeBFault_status",
+                    "offset": 0.0,
+                    "start_bit": 43
+                },
+                {
+                    "bit_length": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "BridgeBVoltageOk_status",
+                    "offset": 0.0,
+                    "start_bit": 44
+                },
+                {
+                    "bit_length": 3,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "BridgeAFault_status",
+                    "offset": 0.0,
+                    "start_bit": 59
+                },
+                {
+                    "bit_length": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "BridgeAVoltageOk_status",
+                    "offset": 0.0,
+                    "start_bit": 60
+                }
+            ]
+        },
+        {
+            "id": 218090230,
+            "name": "MasterMeasuredPower",
+            "signals": [
+                {
+                    "bit_length": 32,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "RealPower_measured",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 32,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ReactivePower_measured",
+                    "offset": 0.0,
+                    "start_bit": 65
+                }
+            ]
+        },
+        {
+            "id": 218090231,
+            "name": "StatusMeasuredPower",
+            "signals": [
+                {
+                    "bit_length": 32,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "RealPower_measured",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 32,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ReactivePower_measured",
+                    "offset": 0.0,
+                    "start_bit": 65
+                }
+            ]
+        },
+        {
+            "id": 419415287,
+            "name": "StatusCommandedPower",
+            "signals": [
+                {
+                    "bit_length": 32,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "RealPower_echo",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 32,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ReactivePower_echo",
+                    "offset": 0.0,
+                    "start_bit": 65
+                }
+            ]
+        },
+        {
+            "id": 419416567,
+            "name": "StatusCommandVF",
+            "signals": [
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "Voltage_echo",
+                    "offset": 0.0,
+                    "start_bit": 17
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "Frequency_echo",
+                    "offset": 0.0,
+                    "start_bit": 33
+                }
+            ]
+        },
+        {
+            "id": 419417079,
+            "name": "StatusTemps",
+            "signals": [
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "TempInlet_measured",
+                    "offset": 0.0,
+                    "start_bit": 17
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "TempInternal_measured",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "ConverterLosses",
+                    "offset": 0.0,
+                    "start_bit": 49
+                }
+            ]
+        },
+        {
+            "id": 419418359,
+            "name": "StatusLineCurrents",
+            "signals": [
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "L1Current_measured",
+                    "offset": 0.0,
+                    "start_bit": 17
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "L2Current_measured",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "L3Current_measured",
+                    "offset": 0.0,
+                    "start_bit": 49
+                }
+            ]
+        },
+        {
+            "id": 419418615,
+            "name": "StatusLineVoltages",
+            "signals": [
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "L1Voltage_measured",
+                    "offset": 0.0,
+                    "start_bit": 17
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "L2Voltage_measured",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "L3Voltage_measured",
+                    "offset": 0.0,
+                    "start_bit": 49
+                }
+            ]
+        },
+        {
+            "id": 486517239,
+            "name": "StatusNVParam",
+            "signals": [
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusNVParam_MUX",
+                    "offset": 0.0,
+                    "start_bit": 17
+                },
+                {
+                    "bit_length": 2,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusThermalOverload",
+                    "offset": 0.0,
+                    "start_bit": 21
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "Dummy",
+                    "offset": 5.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqHi",
+                    "offset": 40.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqVeryLo",
+                    "offset": 160.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusK2Open",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusMX1Open",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusMX2Close",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 8,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusNodeID",
+                    "offset": 0.0,
+                    "start_bit": 25
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "VOver120",
+                    "offset": 1.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "VUnder50pct",
+                    "offset": 1.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 8,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusSA_Mask",
+                    "offset": 0.0,
+                    "start_bit": 33
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqLo",
+                    "offset": 1.0,
+                    "start_bit": 49
+                },
+                {
+                    "bit_length": 4,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "StatusBaudrate",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 45
                 },
-                "49": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusK1Open",
+                    "offset": 0.0,
+                    "start_bit": 49
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusK2Close",
+                    "offset": 0.0,
+                    "start_bit": 49
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusMX1Close",
+                    "offset": 0.0,
+                    "start_bit": 49
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "V50to88pct",
-                    "offset": "1"
+                    "offset": 1.0,
+                    "start_bit": 49
                 },
-                "65": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqHi",
+                    "offset": 160.0,
+                    "start_bit": 65
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 0.1,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "FreqVeryLo",
+                    "offset": 40.0,
+                    "start_bit": 65
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusK1Close",
+                    "offset": 0.0,
+                    "start_bit": 65
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "StatusMX2Open",
+                    "offset": 0.0,
+                    "start_bit": 65
+                },
+                {
+                    "bit_length": 16,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "V110to120pct",
-                    "offset": "1"
+                    "offset": 1.0,
+                    "start_bit": 65
                 }
-            }
+            ]
         },
         {
-            "id": "0x1cffc1f7",
+            "id": 486523383,
             "name": "softwareRev",
-            "signals": {
-                "17": {
+            "signals": [
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "ControlSwRev",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 17
                 },
-                "33": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "InterfaceRev",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 33
                 },
-                "65": {
+                {
                     "bit_length": 32,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "BuildTime",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 65
                 }
-            }
+            ]
         },
         {
-            "id": "0x1cffc5f7",
+            "id": 486524407,
             "name": "StatusControlVoltage",
-            "signals": {
-                "17": {
+            "signals": [
+                {
                     "bit_length": 16,
                     "factor": 0.01,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "v5p0_Supply",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 17
                 },
-                "33": {
+                {
                     "bit_length": 16,
                     "factor": 0.01,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "v3p3_Supply",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 33
                 },
-                "49": {
+                {
                     "bit_length": 16,
                     "factor": 0.01,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "v24_Supply",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 49
                 },
-                "65": {
+                {
                     "bit_length": 16,
                     "factor": 0.01,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "v15_Supply",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 65
                 }
-            }
+            ]
         },
         {
-            "id": "0x1cffc6f7",
+            "id": 486524663,
             "name": "StatusControlVolts2",
-            "signals": {
-                "17": {
+            "signals": [
+                {
                     "bit_length": 16,
                     "factor": 0.01,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "n15V_Supply",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 17
                 },
-                "49": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "DiodeTemperature",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 49
                 },
-                "65": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "IGBTTemperature",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 65
                 }
-            }
+            ]
         },
         {
-            "id": "0x1cffc7f7",
+            "id": 486524919,
             "name": "StatusDCParameters",
-            "signals": {
-                "17": {
+            "signals": [
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "VoltageDCInput_measured",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 17
                 },
-                "33": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "VoltageDCBus",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 33
                 },
-                "49": {
+                {
                     "bit_length": 16,
-                    "factor": 1,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "CurrentDC_measured",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 49
                 }
-            }
+            ]
         },
         {
-            "id": "0x1cffccf7",
+            "id": 486526199,
             "name": "serialNumber",
-            "signals": {
-                "33": {
+            "signals": [
+                {
                     "bit_length": 32,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "SerialNumber",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 33
                 }
-            }
+            ]
         },
         {
-            "id": "0x1cffcdf7",
+            "id": 486526455,
             "name": "softwareRevHash",
-            "signals": {
-                "37": {
+            "signals": [
+                {
                     "bit_length": 28,
-                    "factor": "1",
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
                     "name": "Hash",
-                    "offset": "0"
+                    "offset": 0.0,
+                    "start_bit": 37
                 }
-            }
+            ]
         }
     ]
 }
