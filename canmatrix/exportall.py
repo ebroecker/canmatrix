@@ -8,7 +8,7 @@ logger = logging.getLogger('root')
 from .exportdbc import *
 from .exportdbf import *
 from .exportsym import *
-from .exportJson import *
+from .exportjson import *
 from .exportcsv import *
 
 

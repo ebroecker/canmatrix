@@ -50,6 +50,8 @@ def convert(infile, outfileName, **options):
         dbs = im.importArxml(infile, **options)
     elif infile[-4:] == 'yaml':
         dbs[""] = im.importYaml(infile)
+    elif infile[-4:] == 'json':
+        dbs[""] = im.importJson(infile)
     else:
         logger.error('\nFile not recognized: ' + infile + "\n")
     logger.info("done\n")

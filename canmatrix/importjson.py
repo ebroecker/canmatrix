@@ -1,4 +1,6 @@
+from builtins import *
 #!/usr/bin/env python
+
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
@@ -18,39 +20,39 @@
 #CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
-from __future__ import print_function
-from __future__ import absolute_import
-from .importdbc import *
-from .importdbf import *
-from .importsym import *
-from .importjson import *
 
-import logging
-logger = logging.getLogger('root')
+#
+# this script imports json-files from a canmatrix-object
+# json-files are the can-matrix-definitions of the CANard-project (https://github.com/ericevenchick/CANard)
 
+from .canmatrix import *
+import codecs
+import json
+import sys
 
-try:
-    from .importarxml import *
-except:
-    logger.warn("no arxml-import-support, some dependencies missing... , try pip install lxml ")
+def importJson(filename, **options):
+    db = CanMatrix()
 
-try:
-    from .importkcd import *
-except:
-    logger.warn("no kcd-import-support, some dependencies missing... , try pip install lxml")
+    f = open(filename, "r")
+    jsonData = json.load(f)
 
-try:
-    from .importxls import *
-except:
-    logger.warn("no xls-import-support, some dependencies missing... , try pip install xlrd xlwt")
+    if "messages" in jsonData:
+        for frame in jsonData["messages"]:
+            newframe = Frame(frame["id"],frame["name"],8,None)
 
-try:
-    from .importxlsx import *
-except:
-    logger.warn("no xlsx-import-support, some dependencies missing... , try pip install xlrd ")
-
-try:
-    from .importyaml import *
-except:
-    logger.warn("no yaml-import-support, some dependencies missing ... , try pip install yaml  ")
+            for signal in frame["signals"]:
+                if signal["is_big_endian"]:
+                    byteorder = 0
+                else:
+                    byteorder = 1
+                if signal["is_signed"]:
+                    valuetype = '-'
+                else:
+                    valuetype = '+'
+                newsignal = Signal(signal["name"], signal["start_bit"], signal["bit_length"], 
+                            byteorder, valuetype, signal["factor"], signal["offset"],0,0,"",[])
+                newframe.addSignal(newsignal)
+            db._fl.addFrame(newframe)
+    f.close()
+    return db
 
