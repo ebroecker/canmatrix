@@ -2,6 +2,7 @@
     "messages": [
         {
             "id": 16755521,
+            "is_extended_frame": true,
             "name": "FRAME_CommandModeControl",
             "signals": [
                 {
@@ -107,6 +108,7 @@
         },
         {
             "id": 218082369,
+            "is_extended_frame": true,
             "name": "FRAME_CommandPower",
             "signals": [
                 {
@@ -131,6 +133,7 @@
         },
         {
             "id": 218082881,
+            "is_extended_frame": true,
             "name": "FRAME_CommandVF",
             "signals": [
                 {
@@ -155,6 +158,7 @@
         },
         {
             "id": 218090230,
+            "is_extended_frame": true,
             "name": "FRAME_MasterMeasuredPower",
             "signals": [
                 {
@@ -179,6 +183,7 @@
         },
         {
             "id": 218083137,
+            "is_extended_frame": true,
             "name": "FRAME_CommandFactoryControl",
             "signals": [
                 {
@@ -212,6 +217,7 @@
         },
         {
             "id": 218081857,
+            "is_extended_frame": true,
             "name": "FRAME_CommandSetNVParam",
             "signals": [
                 {
@@ -434,6 +440,7 @@
         },
         {
             "id": 16751425,
+            "is_extended_frame": true,
             "name": "FRAME_CommandModeControlAPU2",
             "signals": [
                 {
@@ -539,6 +546,7 @@
         },
         {
             "id": 218078273,
+            "is_extended_frame": true,
             "name": "FRAME_CommandPowerAPU2",
             "signals": [
                 {
@@ -563,6 +571,7 @@
         },
         {
             "id": 218078785,
+            "is_extended_frame": true,
             "name": "FRAME_CommandVFAPU2",
             "signals": [
                 {
@@ -587,6 +596,7 @@
         },
         {
             "id": 218090231,
+            "is_extended_frame": true,
             "name": "FRAME_MasterMeasuredPowerAPU2",
             "signals": [
                 {
@@ -611,6 +621,7 @@
         },
         {
             "id": 218090231,
+            "is_extended_frame": true,
             "name": "FRAME_StatusMeasuredPower",
             "signals": [
                 {
@@ -635,6 +646,7 @@
         },
         {
             "id": 419415287,
+            "is_extended_frame": true,
             "name": "FRAME_StatusCommandedPower",
             "signals": [
                 {
@@ -659,6 +671,7 @@
         },
         {
             "id": 218088439,
+            "is_extended_frame": true,
             "name": "FRAME_StatusBits",
             "signals": [
                 {
@@ -845,6 +858,7 @@
         },
         {
             "id": 486524407,
+            "is_extended_frame": true,
             "name": "FRAME_StatusControlVoltage",
             "signals": [
                 {
@@ -887,6 +901,7 @@
         },
         {
             "id": 419417079,
+            "is_extended_frame": true,
             "name": "FRAME_StatusTemps",
             "signals": [
                 {
@@ -920,6 +935,7 @@
         },
         {
             "id": 218089719,
+            "is_extended_frame": true,
             "name": "FRAME_StatusFaults",
             "signals": [
                 {
@@ -1097,6 +1113,7 @@
         },
         {
             "id": 218088183,
+            "is_extended_frame": true,
             "name": "FRAME_StatusACParameters",
             "signals": [
                 {
@@ -1130,6 +1147,7 @@
         },
         {
             "id": 486524919,
+            "is_extended_frame": true,
             "name": "FRAME_StatusDCParameters",
             "signals": [
                 {
@@ -1163,6 +1181,7 @@
         },
         {
             "id": 486524663,
+            "is_extended_frame": true,
             "name": "FRAME_StatusControlVolts2",
             "signals": [
                 {
@@ -1196,6 +1215,7 @@
         },
         {
             "id": 486523383,
+            "is_extended_frame": true,
             "name": "FRAME_softwareRev",
             "signals": [
                 {
@@ -1229,6 +1249,7 @@
         },
         {
             "id": 419416567,
+            "is_extended_frame": true,
             "name": "FRAME_StatusCommandVF",
             "signals": [
                 {
@@ -1253,6 +1274,7 @@
         },
         {
             "id": 486526199,
+            "is_extended_frame": true,
             "name": "FRAME_serialNumber",
             "signals": [
                 {
@@ -1268,6 +1290,7 @@
         },
         {
             "id": 486526455,
+            "is_extended_frame": true,
             "name": "FRAME_softwareRevHash",
             "signals": [
                 {
@@ -1283,6 +1306,7 @@
         },
         {
             "id": 486517239,
+            "is_extended_frame": true,
             "name": "FRAME_StatusNVParam",
             "signals": [
                 {
@@ -1505,6 +1529,7 @@
         },
         {
             "id": 419418359,
+            "is_extended_frame": true,
             "name": "FRAME_StatusLineCurrents",
             "signals": [
                 {
@@ -1538,6 +1563,7 @@
         },
         {
             "id": 419418615,
+            "is_extended_frame": true,
             "name": "FRAME_StatusLineVoltages",
             "signals": [
                 {

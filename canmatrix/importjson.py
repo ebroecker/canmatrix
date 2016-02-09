@@ -1,4 +1,3 @@
-from builtins import *
 #!/usr/bin/env python
 
 #Copyright (c) 2013, Eduard Broecker
@@ -25,6 +24,7 @@ from builtins import *
 # this script imports json-files from a canmatrix-object
 # json-files are the can-matrix-definitions of the CANard-project (https://github.com/ericevenchick/CANard)
 
+from builtins import *
 from .canmatrix import *
 import codecs
 import json
@@ -39,6 +39,11 @@ def importJson(filename, **options):
     if "messages" in jsonData:
         for frame in jsonData["messages"]:
             newframe = Frame(frame["id"],frame["name"],8,None)
+            if "is_extended_frame" in frame and frame["is_extended_frame"]:
+                newframe._extended = 1
+            else:
+                newframe._extended = 0
+
 
             for signal in frame["signals"]:
                 if signal["is_big_endian"]:

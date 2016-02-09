@@ -1,11 +1,4 @@
-from builtins import *
 #!/usr/bin/env python
-
-from .canmatrix import *
-import codecs
-import json
-import sys
-
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
@@ -30,10 +23,20 @@ import sys
 # this script exports json-files from a canmatrix-object
 # json-files are the can-matrix-definitions of the CANard-project (https://github.com/ericevenchick/CANard)
 
+from builtins import *
+from .canmatrix import *
+import codecs
+import json
+import sys
 
-def exportJson(db, filename):
-    dbfExportEncoding = 'iso-8859-1'
 
+
+def exportJson(db, filename, **options):
+    if 'jsonCanard' in options:
+        exportCanard = options['jsonCanard']
+    else:
+        exportCanard = False
+ 
     if (sys.version_info > (3, 0)):
         mode = 'w'
     else:
@@ -42,19 +45,26 @@ def exportJson(db, filename):
 
     exportArray = []
 
-    for frame in db._fl._list:
-        signals = []
-        for signal in frame._signals:
-            signals.append({
-                "name" : signal._name,
-                "start_bit" : signal.getLsbStartbit(),
-                "bit_length" : signal._signalsize,
-                "factor":float(signal._factor),
-                "offset":float(signal._offset),
-                "is_big_endian":signal._byteorder == 0,
-                "is_signed":signal._valuetype == "-"
-            })
+    if exportCanard:
+        for frame in db._fl._list:
+            signals = {}
+            for signal in frame._signals:
+                signals[signal.getLsbStartbit()]= {"name" : signal._name, "bit_length" : signal._signalsize, "factor":signal._factor, "offset":signal._offset}
+            exportArray.append({"name" : frame._name, "id" :  hex(frame._Id), "signals": signals })
 
-        exportArray.append({"name" : frame._name, "id" : int(frame._Id), "signals": signals })
+    else:
+        for frame in db._fl._list:
+            signals = []
+            for signal in frame._signals:
+                signals.append({
+                    "name" : signal._name,
+                    "start_bit" : signal.getLsbStartbit(),
+                    "bit_length" : signal._signalsize,
+                    "factor":float(signal._factor),
+                    "offset":float(signal._offset),
+                    "is_big_endian":signal._byteorder == 0,
+                    "is_signed":signal._valuetype == "-"
+                })
+            exportArray.append({"name" : frame._name, "id" : int(frame._Id), "is_extended_frame": frame._extended == 1,"signals": signals })
 
     json.dump({"messages" : exportArray}, f, sort_keys=True, indent=4, separators=(',', ': '))

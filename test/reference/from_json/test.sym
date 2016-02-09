@@ -1,0 +1,292 @@
+FormatVersion=5.0 // Do not edit this line!
+Title="canmatrix-Export"
+{ENUMS}
+
+{SENDRECEIVE}
+[CommandModeControl]
+ID=  FFAB41h
+Type=Extended
+DLC=8
+Var=Enable_command unsigned 6,2 -m /min:0 /max:0 
+Var=FaultClear_command unsigned 4,2 -m /min:0 /max:0 
+Var=InvertHwEnable_command unsigned 62,2 -m /min:0 /max:0 
+Var=EnableUPSMode_command unsigned 60,2 -m /min:0 /max:0 
+Var=EnableSplitPhase_command unsigned 58,2 -m /min:0 /max:0 
+Var=ForceRelayMX1_command unsigned 38,2 -m /min:0 /max:0 
+Var=ForceRelayMX2_command unsigned 36,2 -m /min:0 /max:0 
+Var=ForceRelayK1_Precharge_command unsigned 34,2 -m /min:0 /max:0 
+Var=ForceRelayRelayK2_DCRun_comand unsigned 32,2 -m /min:0 /max:0 
+Var=PhaseRotation_command unsigned 56,2 -m /min:0 /max:0 
+Var=MasterFollowerMode_command unsigned 22,2 -m /min:0 /max:0 
+
+[CommandPower]
+ID= CFFAC41h
+Type=Extended
+DLC=8
+Var=RealPower command signed 0,32 -m /min:0 /max:0 
+Var=ReactivePower_command signed 32,32 -m /min:0 /max:0 
+
+[CommandVF]
+ID= CFFAE41h
+Type=Extended
+DLC=8
+Var=Voltage_command unsigned 0,16 -m /f:0.1 /min:0 /max:0 
+Var=Frequency_command unsigned 16,16 -m /f:0.1 /min:0 /max:0 
+
+[MasterMeasuredPower]
+ID= CFFCAF6h
+Type=Extended
+DLC=8
+Var=RealPower_measured signed 0,32 -m /min:0 /max:0 
+Var=ReactivePower_measured signed 32,32 -m /min:0 /max:0 
+
+[CommandFactoryControl]
+ID= CFFAF41h
+Type=Extended
+DLC=8
+Var=WriteSerialNumber unsigned 6,2 -m /min:0 /max:0 
+Var=SerialNumber unsigned 32,32 -m /min:0 /max:0 
+Var=FactoryAccess unsigned 16,16 -m /min:0 /max:0 
+
+[CommandSetNVParam]
+ID= CFFAA41h
+Type=Extended
+DLC=8
+Var=CommandSetNVParam_MUX signed 0,16 -m /min:0 /max:0 
+Var=Dummy unsigned 16,16 -m /min:0 /max:0 
+Var=VUnder50pct unsigned 16,16 -m /min:0 /max:0 
+Var=V50to88pct unsigned 32,16 -m /min:0 /max:0 
+Var=V110to120pct unsigned 48,16 -m /min:0 /max:0 
+Var=VOver120 unsigned 16,16 -m /min:0 /max:0 
+Var=FreqHi unsigned 16,16 -m /f:0.1 /min:0 /max:0 
+Var=FreqLo unsigned 32,16 -m /f:0.1 /min:0 /max:0 
+Var=FreqVeryLo unsigned 48,16 -m /f:0.1 /min:0 /max:0 
+Var=FreqVeryLo unsigned 16,16 -m /min:0 /max:0 
+Var=FreqLo unsigned 32,16 -m /min:0 /max:0 
+Var=FreqHi unsigned 48,16 -m /min:0 /max:0 
+Var=NodeID unsigned 16,8 -m /min:0 /max:0 
+Var=SA_Mask unsigned 24,8 -m /min:0 /max:0 
+Var=Baudrate unsigned 32,4 -m /min:0 /max:0 
+Var=ThermalOverload unsigned 22,2 -m /min:0 /max:0 
+Var=MX1Open unsigned 16,16 -m /min:0 /max:0 
+Var=MX1Close unsigned 32,16 -m /min:0 /max:0 
+Var=MX2Open unsigned 48,16 -m /min:0 /max:0 
+Var=MX2Close unsigned 16,16 -m /min:0 /max:0 
+Var=K1Open unsigned 32,16 -m /min:0 /max:0 
+Var=K1Close unsigned 48,16 -m /min:0 /max:0 
+Var=K2Open unsigned 16,16 -m /min:0 /max:0 
+Var=K2Close unsigned 32,16 -m /min:0 /max:0 
+
+[CommandModeControlAPU2]
+ID=  FF9B41h
+Type=Extended
+DLC=8
+Var=Enable_command unsigned 6,2 -m /min:0 /max:0 
+Var=FaultClear_command unsigned 4,2 -m /min:0 /max:0 
+Var=InvertHwEnable_command unsigned 62,2 -m /min:0 /max:0 
+Var=EnableUPSMode_command unsigned 60,2 -m /min:0 /max:0 
+Var=EnableSplitPhase_command unsigned 58,2 -m /min:0 /max:0 
+Var=ForceRelayMX1_command unsigned 38,2 -m /min:0 /max:0 
+Var=ForceRelayMX2_command unsigned 36,2 -m /min:0 /max:0 
+Var=ForceRelayK1_Precharge_command unsigned 34,2 -m /min:0 /max:0 
+Var=ForceRelayRelayK2_DCRun_comand unsigned 32,2 -m /min:0 /max:0 
+Var=PhaseRotation_command unsigned 56,2 -m /min:0 /max:0 
+Var=MasterFollowerMode_command unsigned 22,2 -m /min:0 /max:0 
+
+[CommandPowerAPU2]
+ID= CFF9C41h
+Type=Extended
+DLC=8
+Var=RealPower_command signed 0,32 -m /min:0 /max:0 
+Var=ReactivePower_command signed 32,32 -m /min:0 /max:0 
+
+[CommandVFAPU2]
+ID= CFF9E41h
+Type=Extended
+DLC=8
+Var=Voltage_command unsigned 0,16 -m /f:0.1 /min:0 /max:0 
+Var=Frequency_command unsigned 16,16 -m /f:0.1 /min:0 /max:0 
+
+[MasterMeasuredPowerAPU2]
+ID= CFFCAF7h
+Type=Extended
+DLC=8
+Var=RealPower_measured signed 0,32 -m /min:0 /max:0 
+Var=ReactivePower_measured signed 32,32 -m /min:0 /max:0 
+
+[StatusMeasuredPower]
+ID= CFFCAF7h
+Type=Extended
+DLC=8
+Var=RealPower_measured signed 0,32 -m /min:0 /max:0 
+Var=ReactivePower_measured signed 32,32 -m /min:0 /max:0 
+
+[StatusCommandedPower]
+ID=18FFC4F7h
+Type=Extended
+DLC=8
+Var=RealPower_echo signed 0,32 -m /min:0 /max:0 
+Var=ReactivePower_echo signed 32,32 -m /min:0 /max:0 
+
+[StatusBits]
+ID= CFFC3F7h
+Type=Extended
+DLC=8
+Var=State_status unsigned 4,4 -m /min:0 /max:0 
+Var=MX2Permissive_status unsigned 20,2 -m /min:0 /max:0 
+Var=PowerAvailAC_status unsigned 12,2 -m /min:0 /max:0 
+Var=PowerAvailDC_status unsigned 10,2 -m /min:0 /max:0 
+Var=PowerCircuitEnabled_status unsigned 8,2 -m /min:0 /max:0 
+Var=HardwareEnable_status unsigned 14,2 -m /min:0 /max:0 
+Var=Enable_echo unsigned 2,2 -m /min:0 /max:0 
+Var=FaultClr_echo unsigned 0,2 -m /min:0 /max:0 
+Var=MessageValidModeControl_status unsigned 30,2 -m /min:0 /max:0 
+Var=MX1Permissive_status unsigned 22,2 -m /min:0 /max:0 
+Var=K2DCRunPermissive_status unsigned 16,2 -m /min:0 /max:0 
+Var=K1PrechargePermissive_status unsigned 18,2 -m /min:0 /max:0 
+Var=MessageValidPowerCMD_status unsigned 28,2 -m /min:0 /max:0 
+Var=MessageValidVF_status unsigned 26,2 -m /min:0 /max:0 
+Var=CANbus_status unsigned 24,2 -m /min:0 /max:0 
+Var=EnableUPSMode_echo unsigned 38,2 -m /min:0 /max:0 
+Var=EnableSplitPhase_echo unsigned 36,2 -m /min:0 /max:0 
+Var=PhaseRotation_status unsigned 34,2 -m /min:0 /max:0 
+Var=LineVoltageDetected_status unsigned 32,2 -m /min:0 /max:0 
+Var=PhaseRotation_echo unsigned 46,2 -m /min:0 /max:0 
+
+[StatusControlVoltage]
+ID=1CFFC5F7h
+Type=Extended
+DLC=8
+Var=v5p0_Supply signed 0,16 -m /f:0.01 /min:0 /max:0 
+Var=v3p3_Supply signed 16,16 -m /f:0.01 /min:0 /max:0 
+Var=v24_Supply signed 32,16 -m /f:0.01 /min:0 /max:0 
+Var=v15_Supply signed 48,16 -m /f:0.01 /min:0 /max:0 
+
+[StatusTemps]
+ID=18FFCBF7h
+Type=Extended
+DLC=8
+Var=TempInlet_measured signed 0,16 -m /f:0.1 /min:0 /max:0 
+Var=TempInternal_measured signed 16,16 -m /f:0.1 /min:0 /max:0 
+Var=ConverterLosses unsigned 32,16 -m /min:0 /max:0 
+
+[StatusFaults]
+ID= CFFC8F7h
+Type=Extended
+DLC=8
+Var=BridgeAVoltageOk_status unsigned 60,1 -m /min:0 /max:0 
+Var=OvercurrentAC_status unsigned 4,2 -m /min:0 /max:0 
+Var=BridgeBVoltageOk_status unsigned 44,1 -m /min:0 /max:0 
+Var=OvervoltageDC_status unsigned 14,2 -m /min:0 /max:0 
+Var=OvertempPowerDevice_status unsigned 8,2 -m /min:0 /max:0 
+Var=OvertempInternal_status unsigned 10,2 -m /min:0 /max:0 
+Var=LossValidControlMessage_status unsigned 16,4 -m /min:0 /max:0 
+Var=UndervoltageDC_status unsigned 12,2 -m /min:0 /max:0 
+Var=ControlHardwareFail_status unsigned 20,4 -m /min:0 /max:0 
+Var=OvercurrentDC_status unsigned 0,2 -m /min:0 /max:0 
+Var=GeneralFault_status unsigned 6,2 -m /min:0 /max:0 
+Var=LossOfAC_status unsigned 2,2 -m /min:0 /max:0 
+Var=EStopShutdown_status unsigned 30,2 -m /min:0 /max:0 
+Var=BridgeAFault_status unsigned 61,3 -m /min:0 /max:0 
+Var=BridgeBFault_status unsigned 45,3 -m /min:0 /max:0 
+Var=IllegalTransition_status unsigned 28,2 -m /min:0 /max:0 
+Var=InvalidEEHeader_status unsigned 26,2 -m /min:0 /max:0 
+Var=InvalidEESection_status unsigned 24,2 -m /min:0 /max:0 
+Var=ThermalOverload unsigned 38,2 -m /min:0 /max:0 
+
+[StatusACParameters]
+ID= CFFC2F7h
+Type=Extended
+DLC=8
+Var=VoltageAC_measured signed 0,16 -m /f:0.1 /min:0 /max:0 
+Var=CurrentAC_measured signed 16,16 -m /min:0 /max:0 
+Var=Frequency_measured signed 32,16 -m /f:0.1 /min:0 /max:0 
+
+[StatusDCParameters]
+ID=1CFFC7F7h
+Type=Extended
+DLC=8
+Var=VoltageDCBus signed 16,16 -m /min:0 /max:0 
+Var=CurrentDC_measured signed 32,16 -m /min:0 /max:0 
+Var=VoltageDCInput_measured signed 0,16 -m /min:0 /max:0 
+
+[StatusControlVolts2]
+ID=1CFFC6F7h
+Type=Extended
+DLC=8
+Var=n15V_Supply signed 0,16 -m /f:0.01 /min:0 /max:0 
+Var=DiodeTemperature unsigned 32,16 -m /min:0 /max:0 
+Var=IGBTTemperature unsigned 48,16 -m /min:0 /max:0 
+
+[softwareRev]
+ID=1CFFC1F7h
+Type=Extended
+DLC=8
+Var=InterfaceRev unsigned 16,16 -m /f:0.01 /min:0 /max:0 
+Var=ControlSwRev unsigned 0,16 -m /f:0.01 /min:0 /max:0 
+Var=BuildTime unsigned 32,32 -m /min:0 /max:0 
+
+[StatusCommandVF]
+ID=18FFC9F7h
+Type=Extended
+DLC=8
+Var=Voltage_echo unsigned 0,16 -m /f:0.1 /min:0 /max:0 
+Var=Frequency_echo unsigned 16,16 -m /f:0.1 /min:0 /max:0 
+
+[serialNumber]
+ID=1CFFCCF7h
+Type=Extended
+DLC=8
+Var=SerialNumber unsigned 0,32 -m /min:0 /max:0 
+
+[softwareRevHash]
+ID=1CFFCDF7h
+Type=Extended
+DLC=8
+Var=Hash unsigned 0,28 -m /min:0 /max:0 
+
+[StatusNVParam]
+ID=1CFFA9F7h
+Type=Extended
+DLC=8
+Var=StatusNVParam_MUX signed 0,16 -m /min:0 /max:0 
+Var=Dummy unsigned 16,16 -m /min:0 /max:0 
+Var=VUnder50pct unsigned 16,16 -m /min:0 /max:0 
+Var=V50to88pct unsigned 32,16 -m /min:0 /max:0 
+Var=V110to120pct unsigned 48,16 -m /min:0 /max:0 
+Var=VOver120 unsigned 16,16 -m /min:0 /max:0 
+Var=FreqHi unsigned 16,16 -m /f:0.1 /min:0 /max:0 
+Var=FreqLo unsigned 32,16 -m /f:0.1 /min:0 /max:0 
+Var=FreqVeryLo unsigned 48,16 -m /f:0.1 /min:0 /max:0 
+Var=FreqVeryLo unsigned 16,16 -m /min:0 /max:0 
+Var=FreqLo unsigned 32,16 -m /min:0 /max:0 
+Var=FreqHi unsigned 48,16 -m /min:0 /max:0 
+Var=StatusNodeID unsigned 16,8 -m /min:0 /max:0 
+Var=StatusSA_Mask unsigned 24,8 -m /min:0 /max:0 
+Var=StatusBaudrate unsigned 32,4 -m /min:0 /max:0 
+Var=StatusThermalOverload unsigned 22,2 -m /min:0 /max:0 
+Var=StatusMX1Open unsigned 16,16 -m /min:0 /max:0 
+Var=StatusMX1Close unsigned 32,16 -m /min:0 /max:0 
+Var=StatusMX2Open unsigned 48,16 -m /min:0 /max:0 
+Var=StatusMX2Close unsigned 16,16 -m /min:0 /max:0 
+Var=StatusK1Open unsigned 32,16 -m /min:0 /max:0 
+Var=StatusK1Close unsigned 48,16 -m /min:0 /max:0 
+Var=StatusK2Open unsigned 16,16 -m /min:0 /max:0 
+Var=StatusK2Close unsigned 32,16 -m /min:0 /max:0 
+
+[StatusLineCurrents]
+ID=18FFD0F7h
+Type=Extended
+DLC=8
+Var=L1Current_measured unsigned 0,16 -m /min:0 /max:0 
+Var=L2Current_measured unsigned 16,16 -m /min:0 /max:0 
+Var=L3Current_measured unsigned 32,16 -m /min:0 /max:0 
+
+[StatusLineVoltages]
+ID=18FFD1F7h
+Type=Extended
+DLC=8
+Var=L1Voltage_measured unsigned 0,16 -m /f:0.1 /min:0 /max:0 
+Var=L2Voltage_measured unsigned 16,16 -m /f:0.1 /min:0 /max:0 
+Var=L3Voltage_measured unsigned 32,16 -m /f:0.1 /min:0 /max:0 
+

@@ -103,7 +103,7 @@ def convert(infile, outfileName, **options):
         elif fileext == 'xls':
             ex.exportXls(db, outfile, **options)
         elif fileext == 'json':
-            ex.exportJson(db, outfile)
+            ex.exportJson(db, outfile, **options)
         elif fileext == 'arxml':
             ex.exportArxml(db, outfile)
         elif fileext == 'yaml':
@@ -169,6 +169,10 @@ def main():
     parser.add_option("", "--xlsMotorolaBitFormat",
                                       dest="xlsMotorolaBitFormat", default="msbreverse",
                                       help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")
+    parser.add_option("", "--jsonExportCanard",
+                                      dest="jsonCanard", action="store_true", default=False,
+                                      help="Export Canard compatible json format")
+
 
     (cmdlineOptions, args) = parser.parse_args()
     if len(args) < 2:
