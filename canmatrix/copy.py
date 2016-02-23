@@ -30,7 +30,7 @@ def copyBU (buId, sourceDb, targetDb):
     while copying is easy, this function additionally copys all relevant Defines
     """
     # check wether buId is object or symbolic name
-    if type(buId).__name__ == 'instance':
+    if type(buId).__name__ == 'BoardUnit':
         bu = buId
     else:
         bu = sourceDb._BUs.byName(buId)
@@ -86,11 +86,10 @@ def copyFrame (frameId, sourceDb, targetDb):
     # check wether frameId is object, id or symbolic name
     if type(frameId).__name__ == 'int':
         frame = sourceDb.frameById(frameId)
-    elif type(frameId).__name__ == 'instance':
+    elif type(frameId).__name__ == 'Frame':
         frame = frameId
     else:
         frame = sourceDb.frameByName(frameId)
-
 
     # copy Frame-Object:
     targetDb._fl.addFrame(frame)

@@ -32,6 +32,8 @@ import os
 def convert(infile, outfileName, **options):
     import canmatrix.exportall as ex
     import canmatrix.importall as im
+    import canmatrix.canmatrix as cm
+    import canmatrix.copy as cmcp
     dbs = {}
     logger.info("Importing " + infile + " ... ")
     if infile[-3:] == 'dbc':
@@ -60,7 +62,21 @@ def convert(infile, outfileName, **options):
     logger.info("Exporting " + outfileName + " ... ")
 
     for name in dbs:
-        db = dbs[name]
+        db = None        
+        if 'ecus' in options and options['ecus'] != None:
+            ecuList = options['ecus'].split(',')
+            db = cm.CanMatrix()
+            for ecu in ecuList:
+                logger.info("Copying ECU " + ecu)
+                cmcp.copyBUwithFrames(ecu, dbs[name], db) 
+        if 'frames' in options and options['frames'] != None:
+            frameList = options['frames'].split(',')
+            db = cm.CanMatrix()
+            for frame in frameList:
+                logger.info("Copying Frame " + frame)
+                cmcp.copyFrame(frame, dbs[name], db) 
+        if db == None:
+            db = dbs[name]
 
         if 'deleteZeroSignals' in options and options['deleteZeroSignals']:
             db.deleteZeroSignals()
@@ -172,6 +188,12 @@ def main():
     parser.add_option("", "--jsonExportCanard",
                                       dest="jsonCanard", action="store_true", default=False,
                                       help="Export Canard compatible json format")
+    parser.add_option("", "--ecus",
+                                      dest="ecus", default=None,
+                                      help="Copy only given ECUs (comma separated list) to target matrix")
+    parser.add_option("", "--frames",
+                                      dest="frames", default=None,
+                                      help="Copy only given Framess (comma separated list) to target matrix")
 
 
     (cmdlineOptions, args) = parser.parse_args()
