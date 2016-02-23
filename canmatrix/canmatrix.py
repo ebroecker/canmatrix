@@ -113,7 +113,7 @@ class Signal(object):
             _attributes, _values, _unit, _comment
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
-    def __init__(self, name, startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, receiver, multiplex=None):
+    def __init__(self, name, startbit, signalsize, byteorder, valuetype="+", factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
         self._name = name
         self._startbit = int(startbit)
         self._signalsize = int(signalsize)
@@ -299,6 +299,14 @@ class Frame(object):
         if transmitter not in self._Transmitter:
             self._Transmitter.append(transmitter)
 
+    def addReceiver(self, receiver):
+        """
+        add receiver Boardunit/ECU-Name to Frame
+        """
+        if receiver not in self._receiver:
+            self._receiver.append(receiver)
+
+
     def signalByName(self, name):
         """
         returns signal-object by signalname
@@ -333,6 +341,14 @@ class Frame(object):
                 #check motorola signal (starbit is least significant bit):
                 maxBit = sig.getLsbStartbit()
         self._Size =  max(self._Size, math.ceil(maxBit / 8))
+    
+    def updateReceiver(self):
+        """
+        collect receivers of frame out of receiver given in each signal        
+        """
+        for sig in self._signals:
+            for receiver in sig._receiver:            
+                self.addReceiver(receiver)
 
 class Define(object):
     """

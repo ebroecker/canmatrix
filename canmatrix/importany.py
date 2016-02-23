@@ -38,6 +38,10 @@ def importany(filename):
         db = im.importXls(filename)
     elif filename[-4:] == 'xlsx' :
         db = im.importXlsx(filename)
+    elif filename[-4:] == 'json' :
+        db = im.importJson(filename)
+    elif filename[-4:] == 'yaml' :
+        db = im.importYaml(filename)
     elif filename[-5:] == 'arxml':
         dbs = im.importArxml(filename)
         db = next(iter(dbs.values()))

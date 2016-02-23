@@ -120,8 +120,8 @@ def main():
     usage = """
     %prog [options] import-file export-file
 
-    import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
-    export-file: *.dbc|*.dbf|*.kcd|*.json|*.xls(x)
+    import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
+    export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
 
     """
 

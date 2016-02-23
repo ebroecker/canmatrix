@@ -247,5 +247,7 @@ def importDbf(filename, **options):
                     value = temp.group(2)
                     newSig.addValues(value, name)
 
-
+        for frame in db._fl._list:
+            # receiver is only given in the signals, so do propagate the receiver to the frame:
+            frame.updateReceiver();        
     return db

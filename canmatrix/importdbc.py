@@ -337,8 +337,10 @@ def importDbc(filename, **options):
 #               else:
 #                       print "Unrecocniced line: " + l + " (%d) " % i
 
-# extended-flag is implicite in canid, thus repair this:
     for bo in db._fl._list:
+        # receiver is only given in the signals, so do propagate the receiver to the frame:
+        bo.updateReceiver();        
+        # extended-flag is implicite in canid, thus repair this:
         if bo._Id > 0x80000000:
             bo._Id -= 0x80000000
             bo._extended = 1

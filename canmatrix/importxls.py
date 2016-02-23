@@ -270,6 +270,7 @@ def importXls(filename, **options):
 
 
     for frame in db._fl._list:
+        frame.updateReceiver()
         frame.calcDLC()
 
     return db

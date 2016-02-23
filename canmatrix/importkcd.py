@@ -217,5 +217,6 @@ def importKcd(filename):
         if dlc is None:
             newBo.calcDLC()
 
+        newBo.updateReceiver()
         db._fl.addFrame(newBo)
     return db

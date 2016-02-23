@@ -346,6 +346,7 @@ def importXlsx(filename, **options):
 
     # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
     for frame in db._fl._list:
+        frame.updateReceiver()
         frame.calcDLC()
 
     return db
