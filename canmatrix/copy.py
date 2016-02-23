@@ -91,6 +91,11 @@ def copyFrame (frameId, sourceDb, targetDb):
     else:
         frame = sourceDb.frameByName(frameId)
 
+    
+    if targetDb.frameById(frame._Id) != None:
+        #frame already in targetdb...    
+        return
+ 
     # copy Frame-Object:
     targetDb._fl.addFrame(frame)
 
