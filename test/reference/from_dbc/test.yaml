@@ -28,7 +28,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       Frame comment'
     _extended: 0
     _name: testFrame1
-    _receiver: []
+    _receiver: [recBU]
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
