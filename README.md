@@ -72,17 +72,60 @@ There are some example python scripts in the example-folder
 examples/convert.py some-matrix.dbc some-matrix.dbf
 examples/convert.py some-matrix.arxml some-matrix.dbc
 
+merge ECU1 (with all frames and attributes) and frame "A_C" of second.dbc into first.dbc and save all together in third.dbc
+examples/convert.py --merge second.dbc:ecu=ECU1:frame=A_C first.dbc third.dbc
+
 
 ***
 
 ###Fileformats 
 * all formats support im-/export of signals and frames
+
+  -h, --help            
+			
+			show help message and exit
+
+  -v                    
+  
+  			Output verbosity
+  			
+  -s                    
+  
+  			don't print status messages to stdout. (only errors)
+  			
+  -f FORCE_OUTPUT       
+  
+  			enforce output format, ignoring output file extension (e.g., -f csv)
+                        
+  --deleteZeroSignals  
+  
+  			delete zero length signals (signals with 0 bit length) from matrix default False
+                        
+  --recalcDLC=RECALCDLC
+  
+                        recalculate dlc; max: use maximum of stored and calculated dlc; force: force new calculated dlc
+
+  --jsonExportCanard    
+  			
+  			Export Canard compatible json format
+  			
+  --ecus=ECUS           
+  
+  			Copy only given ECUs (comma separated list) to target matrix
+  			
+  --frames=FRAMES
+  			
+  			Copy only given Framess (comma separated list) to target matrix
+  			
+  --merge=MERGE         
+  
+  			merge additional can databases. Syntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2
+
 * dbc: 
   
   --dbcImportEncoding
 
-                        Import charset of dbc (relevant for units), maybe
-                        utf-8 default iso-8859-1
+                        Import charset of dbc (relevant for units), maybe utf-8 default iso-8859-1
 
   --dbcImportCommentEncoding
 
@@ -90,8 +133,7 @@ examples/convert.py some-matrix.arxml some-matrix.dbc
 
   --dbcExportEncoding
 
-                        Export charset of dbc (relevant for units), maybe
-                        utf-8 default iso-8859-1
+                        Export charset of dbc (relevant for units), maybe utf-8 default iso-8859-1
 
   --dbcExportCommentEncoding
 
@@ -118,21 +160,17 @@ examples/convert.py some-matrix.arxml some-matrix.dbc
 
   --symImportEncoding
 
-                        Import charset of sym format, maybe utf-8 default
-                        iso-8859-1
+                        Import charset of sym format, maybe utf-8 default iso-8859-1
 
   --symExportEncoding
 
-                        Export charset of sym format, maybe utf-8 default
-                        iso-8859-1
+                        Export charset of sym format, maybe utf-8 default iso-8859-1
 
 * xls(x):
 
   --xlsMotorolaBitFormat
   
-                        Excel format for startbit of motorola coded signals
-                        Valid values: msb, lsb, msbreverse default msbreverse
-[more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
+                        Excel format for startbit of motorola coded signals. Valid values: msb, lsb, msbreverse default msbreverse. [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
 
 
  
@@ -140,8 +178,7 @@ examples/convert.py some-matrix.arxml some-matrix.dbc
 
   --arxmlIgnoreClusterInfo
 
-                        Ignore any can cluster info from arxml; Import all
-                        frames in one matrix default 0
+                        Ignore any can cluster info from arxml; Import all frames in one matrix default 0
 
 
 * yaml
