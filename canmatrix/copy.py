@@ -82,7 +82,6 @@ def copyFrame (frameId, sourceDb, targetDb):
     This function copys a Frame identified by frameId from soruce-Canmatrix to target-Canmatrix
     while copying is easy, this function additionally copys all relevant Boardunits, and Defines
     """
-
     # check wether frameId is object, id or symbolic name
     if type(frameId).__name__ == 'int':
         frame = sourceDb.frameById(frameId)
@@ -91,7 +90,6 @@ def copyFrame (frameId, sourceDb, targetDb):
     else:
         frame = sourceDb.frameByName(frameId)
 
-    
     if targetDb.frameById(frame._Id) != None:
         #frame already in targetdb...    
         return

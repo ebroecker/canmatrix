@@ -9,7 +9,7 @@ def createDecodeMacro(signal, prefix=""):
     byteOrder = signal._byteorder
     length = signal._signalsize
     
-    mask = ((0xffffffff)>> (32-length))
+    mask = ((0xffffffffffffffff)>> (64-length))
 
     startByte = int(startBit/8)
     startBitInByte = startBit % 8
@@ -67,7 +67,8 @@ def main():
     infile = args[0]
     outfile = args[1]
  
-    db = im.importany(infile)
+    dbs = im.importany(infile)
+    db = next(iter(dbs.values()))
 
     sourceCode = ""
     if cmdlineOptions.exportframe == None and cmdlineOptions.exportecu == None:

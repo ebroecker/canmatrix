@@ -22,27 +22,33 @@ from __future__ import absolute_import
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-def importany(filename):
+import logging
+logger = logging.getLogger('root')
+
+def importany(infile, **options):
     # import within function to disable warning messages by log level
     from . import importall as im
-    db = None
-    if filename[-3:] == 'dbc':
-        db = im.importDbc(filename)
-    elif filename[-3:] == 'dbf':
-        db = im.importDbf(filename)
-    elif filename[-3:] == 'kcd':
-        db = im.importKcd(filename)
-    elif filename[-3:] == 'sym':
-        db = im.importSym(filename)
-    elif filename[-3:] == 'xls':
-        db = im.importXls(filename)
-    elif filename[-4:] == 'xlsx' :
-        db = im.importXlsx(filename)
-    elif filename[-4:] == 'json' :
-        db = im.importJson(filename)
-    elif filename[-4:] == 'yaml' :
-        db = im.importYaml(filename)
-    elif filename[-5:] == 'arxml':
-        dbs = im.importArxml(filename)
-        db = next(iter(dbs.values()))
-    return db
+    dbs = {}
+    if infile[-3:] == 'dbc':
+        dbs[""] = im.importDbc(infile, **options)
+    elif infile[-3:] == 'dbf':
+        dbs[""] = im.importDbf(infile, **options)
+    elif infile[-3:] == 'sym':
+        dbs[""] = im.importSym(infile, **options)
+    elif infile[-3:] == 'kcd':
+        dbs[""] = im.importKcd(infile)
+    elif infile[-3:] == 'xls':
+        dbs[""] = im.importXls(infile, **options)
+    elif infile[-4:] == 'xlsx' :
+        dbs[""] = im.importXlsx(infile, **options)
+    elif infile[-5:] == 'arxml':
+        dbs = im.importArxml(infile, **options)
+    elif infile[-4:] == 'yaml':
+        dbs[""] = im.importYaml(infile)
+    elif infile[-4:] == 'json':
+        dbs[""] = im.importJson(infile)
+    else:
+        logger.error('\nFile not recognized: ' + infile + "\n")
+    logger.info("done\n")
+
+    return dbs

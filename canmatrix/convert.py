@@ -31,38 +31,20 @@ import os
 
 def convert(infile, outfileName, **options):
     import canmatrix.exportall as ex
-    import canmatrix.importall as im
+    import canmatrix.importany as im
     import canmatrix.canmatrix as cm
     import canmatrix.copy as cmcp
     dbs = {}
-    logger.info("Importing " + infile + " ... ")
-    if infile[-3:] == 'dbc':
-        dbs[""] = im.importDbc(infile, **options)
-    elif infile[-3:] == 'dbf':
-        dbs[""] = im.importDbf(infile, **options)
-    elif infile[-3:] == 'sym':
-        dbs[""] = im.importSym(infile, **options)
-    elif infile[-3:] == 'kcd':
-        dbs[""] = im.importKcd(infile)
-    elif infile[-3:] == 'xls':
-        dbs[""] = im.importXls(infile, **options)
-    elif infile[-4:] == 'xlsx' :
-        dbs[""] = im.importXlsx(infile, **options)
-    elif infile[-5:] == 'arxml':
-        dbs = im.importArxml(infile, **options)
-    elif infile[-4:] == 'yaml':
-        dbs[""] = im.importYaml(infile)
-    elif infile[-4:] == 'json':
-        dbs[""] = im.importJson(infile)
-    else:
-        logger.error('\nFile not recognized: ' + infile + "\n")
-    logger.info("done\n")
 
+    logger.info("Importing " + infile + " ... ")
+    dbs = im.importany(infile, **options)
+    logger.info("done\n")
 
     logger.info("Exporting " + outfileName + " ... ")
 
     for name in dbs:
         db = None        
+
         if 'ecus' in options and options['ecus'] != None:
             ecuList = options['ecus'].split(',')
             db = cm.CanMatrix()
@@ -77,6 +59,23 @@ def convert(infile, outfileName, **options):
                 cmcp.copyFrame(frame, dbs[name], db) 
         if db == None:
             db = dbs[name]
+
+        if 'merge' in options and options['merge'] != None:
+            mergeFiles = options['merge'].split(',')
+            for database in mergeFiles:
+                mergeString = database.split(':')
+                dbTempList = im.importany(mergeString[0])
+                for dbTemp in dbTempList:
+                    if mergeString.__len__() == 1:
+                        print ("merge complete: " + mergeString[0])                    
+                        for frame in dbTemp._fl._list:
+                            cmcp.copyFrame (frame._Id, dbTempList[dbTemp], db)
+                    for mergeOpt in mergeString[1:]:
+                        if mergeOpt.split('=')[0] == "ecu":
+                            cmcp.copyBUwithFrames(mergeOpt.split('=')[1], dbTempList[dbTemp], db) 
+                        if mergeOpt.split('=')[0] == "frame":
+                            cmcp.copyFrame(mergeOpt.split('=')[1], dbTempList[dbTemp], db) 
+
 
         if 'deleteZeroSignals' in options and options['deleteZeroSignals']:
             db.deleteZeroSignals()
@@ -194,6 +193,10 @@ def main():
     parser.add_option("", "--frames",
                                       dest="frames", default=None,
                                       help="Copy only given Framess (comma separated list) to target matrix")
+
+    parser.add_option("", "--merge",
+                                      dest="merge", default=None,
+                                      help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
 
 
     (cmdlineOptions, args) = parser.parse_args()
