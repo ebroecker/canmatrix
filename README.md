@@ -69,16 +69,131 @@ If you are using a Windows system, these scripts are usually installed at the lo
 
 There are some example python scripts in the example-folder
 
-examples/convert.py some-matrix.dbc some-matrix.dbf
-examples/convert.py some-matrix.arxml some-matrix.dbc
 
-merge ECU1 (with all frames and attributes) and frame "A_C" of second.dbc into first.dbc and save all together in third.dbc
-examples/convert.py --merge second.dbc:ecu=ECU1:frame=A_C first.dbc third.dbc
+***
+###Usage
 
+####General
+
+```canconvert.py -h```
+```canconvert.py --help```
+			show help message/usage and exits
+
+```canconvert.py -v```
+  			Output verbosity
+  			
+```canconvert.py -s```
+  			don't print status messages to stdout. (only errors)
+  			
+```canconvert.py -f FORCE_OUTPUT```
+    			enforce output format, ignoring output file extension (e.g., -f csv)
+
+				
+####Conversion of file formats
+
+**convert dbc file to xlsx:**
+
+```canconvert.py source.dbc target.xlsx```
+
+**convert dbc file to dbf:**
+
+```canconvert.py source.dbc target.dbf```
+
+**convert arxml file to dbc:**
+
+```canconvert.py source.arxml target.dbc```
+
+Note: in case of .arxml there can be multiple can databases in. 
+Thus the target ```target.dbc``` may in this case be called ```BUS-NAME-IN-ARXML_target.dbc```. 
+There will be one target .dbc for each database in .arxml.
+
+You can even convert to the same format:
+
+**convert dbc file to dbc:**
+
+```canconvert.py source.dbc target.dbc```
+
+Multiple charset support:
+
+**convert dbc file to dbc with different charset:**
+
+```canconvert.py --dbcImportEncoding=iso-8859-1 --dbcImportCommentEncoding=cp-1252 --dbcExportEncoding=utf-8 --dbcExportCommentEncoding=utf-8 source.dbc target.dbc```
+
+This converts ```source.dbc``` where units are coded in ```iso-8859-1``` and comments are coded in ```cp-1252``` in a ```target.dbc``` where everything is coded in ```utf-8```.
+Similar charset conversions are possible or even mandatory for following formats: dbc, dbf and sym.
+
+
+It is also possible to do some modifications:
+
+**delete zero sized signals:**
+
+```canconvert.py --deleteZeroSignals source.dbc target.dbc```
+
+will delete signals signals with 0 bit length from matrix
+
+**recalculate DLC:**
+
+```canconvert.py --recalcDLC=max source.dbc target.dbc```
+
+this will recalculate DLC for each frame in ```source.dbc```. 
+In ```target.dlc```  the same DLC like in ```source.dbc``` will be stored, except the calculated DLC is bigger.
+Than the calculated DLC will be stored.
+
+**recalculate DLC:**
+
+```canconvert.py --recalcDLC=force source.dbc target.dbc```
+
+this will recalculate DLC for each frame in ```source.dbc```. 
+In ```target.dlc``` the calculated DLC will be stored independently from ```source.dbc```.
+
+
+####Extract and Merge:
+
+**extract one ecu out of matrix**
+
+```canconvert.py --ecus=REAR_ECU source.dbc target.dbc```
+
+This generates a ```target.dbc``` with all Informations out of ```source.dbc``` which are needed for ```REAR_ECU```.
+All frames which are received or sent by ```REAR_ECU``` are extracted. Also all attributes of the frames and the ECU.
+This is some *lite* ECU-Extract.
+
+**extract multiple ecus out of matrix:**
+
+```canconvert.py --ecus=FRONT_ECU,REAR_ECU source.dbc target.dbc```
+
+**extract frame[s] out of matrix:**
+
+```canconvert.py --frames=REAR_FRAME,FRONT_FRAME source.dbc target.dbc```
+
+Extracts the frames ```REAR_FRAME``` and ```FRONT_FRAME``` with the needed ECUs and attributes.
+
+**merge multiple databases:**
+
+```canconvert.py --merge=second.dbc source.dbc target.dbc```
+
+Merges ```source.dbc``` and ```second.dbc``` in ```target.dbc```.
+
+**merge ECU from other  database:**
+
+```canconvert.py --merge=second.dbc:ecu=REAR_ECU source.dbc target.dbc```
+ 
+Merges REAR_ECU out of ```second.dbc``` with ```source.dbc``` and store result in ```target.dbc```.
+
+**merge FRAME from other database:**
+
+```canconvert.py --merge=second.dbc:frame=REAR_FRAME source.dbc target.dbc```
+ 
+Merges REAR_FRAME out of ```second.dbc``` with ```source.dbc``` and store result in ```target.dbc```.
+
+**combinations and multiple extraction possible:**
+
+```canconvert.py second.dbc:ecu=REAR_ECU:ecu=FRONT_ECU:frame=FRAME1:FRAME=FRAME2 source.dbc target.dbc```
+
+Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with ```source.dbc``` and store result in ```target.dbc```.
 
 ***
 
-###Fileformats 
+###Commandline 
 * all formats support im-/export of signals and frames
 
   -h, --help            
@@ -139,13 +254,6 @@ examples/convert.py --merge second.dbc:ecu=ECU1:frame=A_C first.dbc third.dbc
 
                         Export charset of comments in dbc default iso-8859-1
  
-  --dbcCharset=CHARSET
-
-                        set charset for dbc-file
-
-  --dbcCommentCharset=CHARSET
-
-                        set charset for comments in dbc-file 
 
 * dbf:
 
