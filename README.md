@@ -293,6 +293,7 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
 * json:
 
  --jsonExportCanard  
+ 
                         Export Canard compatible json format
 	
 * kdc
