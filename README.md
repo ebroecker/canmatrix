@@ -123,7 +123,7 @@ This converts ```source.dbc``` where units are coded in ```iso-8859-1``` and com
 Similar charset conversions are possible or even mandatory for following formats: dbc, dbf and sym.
 
 
-It is also possible to do some modifications:
+####possible Modifications:
 
 **delete zero sized signals:**
 
