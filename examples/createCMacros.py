@@ -4,7 +4,7 @@ import sys
 sys.path.append('..')
 import canmatrix.importany as im
 
-def createDecodeMacro(signal, prefix=""):
+def createDecodeMacro(signal, prefix="", macrosource="source", source="source"):
     startBit = signal._startbit
     byteOrder = signal._byteorder
     length = signal._signalsize
@@ -14,31 +14,38 @@ def createDecodeMacro(signal, prefix=""):
     startByte = int(startBit/8)
     startBitInByte = startBit % 8
 
-    code = "#define getSignal%s%s(source)  ((source[%d]>>%d" % (prefix, signal._name, startByte, startBitInByte)
+    code = "#define getSignal%s%s(%s)  ((((%s[%d])>>%d" % (prefix, signal._name, macrosource, source, startByte, startBitInByte)
     currentTargetLength = (8-startBitInByte)
 
-    if byteOrder == 0:
+    if byteOrder == 1:
         endByte = int((startBit+length) / 8)
         if (startBit+length) %  8 == 0:
             endByte -= 1
         for count in range(startByte +1, endByte+1):
-            code += "|source[%d]<<%d" % (count, currentTargetLength)
+            code += "|(%s[%d])<<%d" % (source, count, currentTargetLength)
             currentTargetLength += 8
     
     else: # motorola / big-endian
         endByte = int((startByte * 8 + 8 - startBitInByte - length) / 8);
 
         for count in range(startByte-1, endByte-1, -1):
-            code += "|source[%d]<<%d" % (count, currentTargetLength)
+            code += "|%s[%d]<<%d" % (source, count, currentTargetLength)
             currentTargetLength += 8;
 
-    code += ")&=0x%X)\n" % (mask)
+    code += ")&0x%X)" % (mask)
+
+    if signal._valuetype != '+':
+        msb_sign_mask = 1 << (length - 1);
+        code += "^0x%x)-0x%x " % (msb_sign_mask,msb_sign_mask);
+    else:
+        code += ")"
+    code += "\n"
     return code
 
-def createDecodeMacrosForFrame(Frame, prefix=""):
+def createDecodeMacrosForFrame(Frame, prefix="", macrosource="source", source="source"):
     code = ""    
     for signal in Frame._signals:
-        code += createDecodeMacro(signal, prefix)
+        code += createDecodeMacro(signal, prefix, macrosource, source)
     return code
 
 def main():
