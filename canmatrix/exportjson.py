@@ -62,8 +62,8 @@ def exportJson(db, filename, **options):
                     "bit_length" : signal._signalsize,
                     "factor":float(signal._factor),
                     "offset":float(signal._offset),
-                    "is_big_endian":signal._byteorder == 0,
-                    "is_signed":signal._valuetype == "-"
+                    "is_big_endian":signal._is_little_endian == 0,
+                    "is_signed":signal._is_signed
                 })
             exportArray.append({"name" : frame._name, "id" : int(frame._Id), "is_extended_frame": frame._extended == 1,"signals": signals })
 

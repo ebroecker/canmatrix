@@ -34,7 +34,7 @@ def createSignal(signal, nodeList):
     sig = etree.Element('Signal', name=signal._name, offset=str(signal.getLsbStartbit()))
     if signal._signalsize > 1:
         sig.set("length", str(signal._signalsize))
-    if signal._byteorder == 0:
+    if signal._is_little_endian == 0:
         sig.set('endianess',"little")
 
     notes = etree.Element('Notes')
@@ -43,6 +43,11 @@ def createSignal(signal, nodeList):
     sig.append(notes)
 
     value = etree.Element('Value')
+    if signal._is_signed:
+        value.set('type',"signed")
+    else:
+        value.set('type',"unsigned")
+
     if float(signal._factor) != 1:
         value.set('slope',str(signal._factor))
     if float(signal._offset) != 0:

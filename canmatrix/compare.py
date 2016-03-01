@@ -262,10 +262,10 @@ def compareSignal(s1,s2, ignore = None):
         result.addChild(compareResult("changed", "min", s1, [ s1._min, s2._min]))
     if s1._max != s2._max:
         result.addChild(compareResult("changed", "max", s1, [ s1._max,  s2._max]))
-    if s1._byteorder != s2._byteorder:
-        result.addChild(compareResult("changed", "byteorder", s1, [" %d" % s1._byteorder, " %d" % s2._byteorder]))
-    if s1._valuetype != s2._valuetype:
-        result.addChild(compareResult("changed", "valuetype", s1, [" %s" % s1._valuetype, " %s" % s2._valuetype]))
+    if s1._is_little_endian != s2._is_little_endian:
+        result.addChild(compareResult("changed", "is_little_endian", s1, [" %d" % s1._is_little_endian, " %d" % s2._is_little_endian]))
+    if s1._is_signed != s2._is_signed:
+        result.addChild(compareResult("changed", "sign", s1, [" %d" % s1._is_signed, " %d" % s2._is_signed]))
     if s1._multiplex != s2._multiplex:
         result.addChild(compareResult("changed", "multiplex", s1, [str(s1._multiplex), str(s2._multiplex)]))
     if s1._unit != s2._unit:

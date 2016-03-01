@@ -107,8 +107,8 @@ def importDbc(filename, **options):
             temp_raw = regexp_raw.match(l)
             if temp:
                 receiver = list(map(str.strip, temp.group(11).split(',')))
-                tempSig = Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp_raw.group(10).decode(dbcImportEncoding),receiver)     
-                if tempSig._byteorder == 0:
+                tempSig = Signal(temp.group(1), temp.group(2), temp.group(3), int(temp.group(4)) == 1, temp.group(5) == '-', temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp_raw.group(10).decode(dbcImportEncoding),receiver)     
+                if not tempSig._is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc
                     tempSig.setMsbStartbit(int(temp.group(2)))                
                 db._fl.addSignalToLastFrame(tempSig)
@@ -124,8 +124,12 @@ def importDbc(filename, **options):
                     multiplex = 'Multiplexor'
                 else:
                     multiplex = int(multiplex[1:])
-
-                db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp_raw.group(11).decode(dbcImportEncoding),receiver, multiplex))
+                tempSig = Signal(temp.group(1), temp.group(3), temp.group(4), int(temp.group(5)) == 1, temp.group(6) == '-', temp.group(7),temp.group(8),temp.group(9),temp.group(10),temp_raw.group(11).decode(dbcImportEncoding),receiver, multiplex)
+                if not tempSig._is_little_endian:
+                    # startbit of motorola coded signals are MSB in dbc
+                    tempSig.setMsbStartbit(int(temp.group(3)))                
+                
+                db._fl.addSignalToLastFrame(tempSig)
 
 
         elif decoded.startswith("BO_TX_BU_ "):

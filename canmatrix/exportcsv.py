@@ -159,7 +159,7 @@ def writeSignalx(db, sig, row, rearCol):
         row[11] = sig._attributes["GenSigSNA"][1:-1]
 
     # eval byteorder (intel == 1 / motorola == 0)
-    if sig._byteorder == 1:
+    if sig._is_little_endian == True:
         row[12] = "i"
     else:
         row[12] = "m"

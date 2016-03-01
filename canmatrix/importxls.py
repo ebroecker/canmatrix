@@ -184,13 +184,13 @@ def importXls(filename, **options):
                 signalByteorder = sh.cell(rownum,index['byteorder']).value
 
                 if 'i' in signalByteorder:
-                    byteorder = 1
+                    is_little_endian = True
                 else:
-                    byteorder = 0
+                    is_little_endian = False
             else:
-                byteorder = 1 # Default Intel
+                is_little_endian = True # Default Intel
 
-            valuetype = '+'
+            is_signed = False
 
             if signalName != "-":
                 for x in range(index['BUstart'],index['BUend']):
@@ -199,10 +199,10 @@ def importXls(filename, **options):
                     if 'r' in sh.cell(rownum,x).value:
                         receiver.append(sh.cell(0,x).value.strip())
                 if signalLength > 8:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", receiver, multiplex)
+                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
                 else:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", receiver, multiplex)
-                if byteorder == 0:
+                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
+                if not is_little_endian:
                     #motorola
                     if motorolaBitFormat == "msb":
                         newSig.setMsbStartbit((startbyte-1)*8+startbit)

@@ -106,20 +106,20 @@ class Signal(object):
     contains on Signal of canmatrix-object
     with following attributes:
             _name, _startbit,_signalsize (in Bits)
-            _byteorder (1: Intel, 0: Motorola)
-            _valuetype ()
+            _is_little_endian (1: Intel, 0: Motorola)
+            _is_signed ()
             _factor, _offset, _min, _max
             _receiver  (Boarunit/ECU-Name)
             _attributes, _values, _unit, _comment
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
-    def __init__(self, name, startbit, signalsize, byteorder, valuetype="+", factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
+    def __init__(self, name, startbit, signalsize, is_little_endian, is_signed=False, factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
         self._name = name
         self._startbit = int(startbit)
         self._signalsize = int(signalsize)
-        self._byteorder = int(byteorder)
-        # byteorder: 1: Intel, 0: Motorola
-        self._valuetype = valuetype
+        self._is_little_endian = is_little_endian
+        # is_little_endian: True: Intel, False: Motorola
+        self._is_signed = is_signed
         self._factor = str(factor)
         self._offset = str(offset)
         self._min = str(min)
@@ -150,7 +150,7 @@ class Signal(object):
         """
         self._values[int(value)] = valueName
     def setMsbReverseStartbit(self, msbStartBitReverse, length=None):
-        if self._byteorder == 1:
+        if self._is_little_endian == 1:
             #Intel
             self._startbit = msbStartBitReverse
         else:
@@ -164,7 +164,7 @@ class Signal(object):
         set startbit while given startbit is most significant bit
         if length is not given, use length from object
         """
-        if self._byteorder == 1:
+        if self._is_little_endian == 1:
             #Intel
             self._startbit = msbStartBit
         else:
@@ -185,7 +185,7 @@ class Signal(object):
         self._startbit = lsbStartBit
         
     def getMsbReverseStartbit(self):
-        if self._byteorder == 1:
+        if self._is_little_endian == 1:
             #Intel
             return self._startbit
         else:
@@ -197,7 +197,7 @@ class Signal(object):
             return int(startBit)
 
     def getMsbStartbit(self):
-        if self._byteorder == 1:
+        if self._is_little_endian == 1:
             #Intel
             return self._startbit
         else:
@@ -334,10 +334,10 @@ class Frame(object):
         """
         maxBit = 0
         for sig in self._signals:
-            if sig._byteorder == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
+            if sig._is_little_endian == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
                 # check intel signal (startbit + length):
                 maxBit = sig.getLsbStartbit() + int(sig._signalsize)
-            elif sig._byteorder == 0  and sig.getLsbStartbit() > maxBit:
+            elif sig._is_little_endian == 0  and sig.getLsbStartbit() > maxBit:
                 #check motorola signal (starbit is least significant bit):
                 maxBit = sig.getLsbStartbit()
         self._Size =  max(self._Size, math.ceil(maxBit / 8))
@@ -483,10 +483,10 @@ class CanMatrix(object):
             if "force" == strategy:
                 maxBit = 0
                 for sig in frame._signals:
-                    if sig._byteorder == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
+                    if sig._is_little_endian == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
                         # check intel signal (startbit + length):
                         maxBit = sig.getLsbStartbit() + int(sig._signalsize)
-                    elif sig._byteorder == 0  and sig.getLsbStartbit() > maxBit:
+                    elif sig._is_little_endian == 0  and sig.getLsbStartbit() > maxBit:
                         #check motorola signal (starbit is least significant bit):
                         maxBit = sig.getLsbStartbit()
                 frame._Size = math.ceil(maxBit / 8)

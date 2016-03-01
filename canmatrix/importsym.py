@@ -130,9 +130,9 @@ def importSym(filename, **options):
                 tempArray = shlex.split(line.strip())
                 sigName = tempArray[0]
                 if indexOffset == 1 and tempArray[1][:8] == "unsigned":
-                    valuetype = "+"
+                    is_signed = False
                 else:
-                    valuetype = "-"
+                    is_signed = True
 
                 startBit = int(tempArray[indexOffset+1].split(',')[0])
                 signalLength = int(tempArray[indexOffset+1].split(',')[1])
@@ -188,7 +188,7 @@ def importSym(filename, **options):
                 if tmpMux == "Mux":
                     signal = frame.signalByName(frameName + "_MUX")
                     if signal == None:
-                        signal = Signal(frameName + "_MUX", startBit, signalLength, intel, valuetype, factor, offset, min, max, unit, "", 'Multiplexor')
+                        signal = Signal(frameName + "_MUX", startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", 'Multiplexor')
                         signal.addComment(comment)
                         if intel == 0:
                             #motorola set/convert startbit
@@ -196,7 +196,7 @@ def importSym(filename, **options):
                         frame.addSignal(signal)
 
                 else:
-                    signal = Signal(sigName, startBit, signalLength, intel, valuetype, factor, offset, min, max, unit, "", multiplexor)
+                    signal = Signal(sigName, startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", multiplexor)
                     if intel == 0:
                         #motorola set/convert startbit
                         signal.setMsbReverseStartbit(startBit)

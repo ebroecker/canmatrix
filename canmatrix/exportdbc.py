@@ -100,7 +100,11 @@ def exportDbc(db, filename, **options):
 
             startbit = signal.getMsbStartbit()
                 
-            f.write((" : %d|%d@%d%c" % (startbit, signal._signalsize,signal._byteorder, signal._valuetype)).encode(dbcExportEncoding))
+            if signal._is_signed:            
+                sign = '-'
+            else:
+                sign = '+'             
+            f.write((" : %d|%d@%d%c" % (startbit, signal._signalsize,signal._is_little_endian, sign)).encode(dbcExportEncoding))
             f.write((" (%s,%s)" % (signal._factor, signal._offset)).encode(dbcExportEncoding))
             f.write((" [%s|%s]" % (signal._min, signal._max)).encode(dbcExportEncoding))
             f.write(' "'.encode(dbcExportEncoding))

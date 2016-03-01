@@ -259,13 +259,13 @@ def importXlsx(filename, **options):
             signalByteorder = getIfPossible(row,'Byteorder')
             if signalByteorder is not None:
                 if 'i' in signalByteorder:
-                    byteorder = 1
+                    is_little_endian = True
                 else:
-                    byteorder = 0
+                    is_little_endian = False
             else:
-                byteorder = 1 # Default Intel
+                is_little_endian = True # Default Intel
 
-            valuetype = '+'
+            is_signed = False
 
             if signalName != "-":
                 for x in range(_BUstart,_BUend):
@@ -277,10 +277,10 @@ def importXlsx(filename, **options):
                         if 'r' in buSenderReceiver:
                             receiver.append(buName)
                 if signalLength > 8:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", receiver, multiplex)
+                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
                 else:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, byteorder, valuetype, 1, 0, 0, 1, "", receiver, multiplex)
-                if byteorder == 0:
+                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
+                if is_little_endian == False:
                     #motorola
                     if motorolaBitFormat == "msb":
                         newSig.setMsbStartbit((startbyte-1)*8+startbit)

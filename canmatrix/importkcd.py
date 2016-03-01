@@ -44,19 +44,26 @@ def parseSignal(signal, mux, namespace, nodelist):
         signalsize = signal.get('length')
 
 
-    byteorder = 1
+    is_little_endian = True
     if 'endianess' in signal.attrib:
         if signal.get('endianess') == 'little':
-            byteorder = 0
+            is_little_endian = False
 
     unit = ""
     offset = 0
     factor = 1
     min = 0
     max = 1
+    is_signed = False
 
     values = signal.find('./' + namespace + 'Value')
     if values is not None:
+        if 'type' in values.attrib:
+            valuetype = values.get('type')             
+            if valuetype == "unsigned":            
+                is_signed = False
+            else:
+                is_signed = True      
         if 'slope' in values.attrib:
             factor = values.get('slope')
         if 'intercept' in values.attrib:
@@ -76,8 +83,7 @@ def parseSignal(signal, mux, namespace, nodelist):
             receiver.append(nodelist[noderef.get('id')])
 
 
-    valuetype = '+'
-    newSig = Signal(signal.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, receiver, mux)
+    newSig = Signal(signal.get('name'), startbit, signalsize, is_little_endian, is_signed, factor, offset, min, max, unit, receiver, mux)
 
     notes = signal.findall('./' + namespace + 'Notes')
     comment = ""
@@ -142,7 +148,7 @@ def importKcd(filename):
                 signalsize = multiplex.get('length')
 
 
-            byteorder = 1
+            is_little_endian = True
   
             min = 0
             max = 1
@@ -156,7 +162,7 @@ def importKcd(filename):
             unit = ""
             offset = 0
             factor = 1
-            valuetype = '+'
+            is_signed = False
 
             receiver = ""
             consumers = multiplex.findall('./' + namespace + 'Consumer')
@@ -165,8 +171,8 @@ def importKcd(filename):
                 for noderef in noderefs:
                     receiver += nodelist[noderef.get('id')] + ' '
 
-            newSig = Signal(multiplex.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, receiver, 'Multiplexor')
-            if byteorder == 0:
+            newSig = Signal(multiplex.get('name'), startbit, signalsize, is_little_endian, is_signed, factor, offset, min, max, unit, receiver, 'Multiplexor')
+            if is_little_endian == 0:
                 #motorola set/convert startbit
                 newSig.setLsbStartbit(startbit)
             notes = multiplex.findall('./' + namespace + 'Notes')

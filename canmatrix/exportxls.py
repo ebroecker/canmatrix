@@ -159,8 +159,8 @@ def writeSignal(db, sig, worksheet, row, mystyle, rearCol, motorolaBitFormat):
     else:
         worksheet.write(row, 11, label = " ", style=mystyle)
 
-    # eval byteorder (intel == 1 / motorola == 0)
-    if sig._byteorder == 1:
+    # eval byteorder (little_endian: intel == True / motorola == 0)
+    if sig._is_little_endian:
         worksheet.write(row, 12, label = "i", style=mystyle)
     else:
         worksheet.write(row, 12, label = "m", style=mystyle)

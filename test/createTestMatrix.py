@@ -18,8 +18,8 @@ db._BUs.add(BoardUnit("recBU"))
 
 myFrame = Frame(0x123, "testFrame1", 8, "testBU" )
 
-mySignal = Signal("someTestSignal", 9, 11, 0, "+", 5.0, 1.0, 0, 500, "specialCharUnit°$".decode("utf-8"), ["recBU"])
-mySignal2 = Signal("Signal", 20, 3, 1, "+", 1.0, 0.0, 0, 6, "someUnit", ["recBU"])
+mySignal = Signal("someTestSignal", 9, 11, 0, False, 5.0, 1.0, 0, 500, "specialCharUnit°$".decode("utf-8"), ["recBU"])
+mySignal2 = Signal("Signal", 20, 3, 1, False, 1.0, 0.0, 0, 6, "someUnit", ["recBU"])
 mySignal2.addValues(1, "one")
 mySignal2.addValues(2, "two")
 mySignal2.addValues(3, "three")
@@ -51,5 +51,5 @@ db.addBUDefines("NetworkNode", 'INT 0 65535')
 # export the new (target)-Matrix for example as .dbc:
 #
 
-ex.exportDbc(db, "test.dbc", 'iso-8859-1', 'iso-8859-1')
+ex.exportDbc(db, "test.dbc", dbcExportEncoding='iso-8859-1', dbcExportCommentEncoding='iso-8859-1')
 
