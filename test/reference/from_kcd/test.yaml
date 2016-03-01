@@ -226,11 +226,11 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
         power is defined as power being put into the ac network.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '90000'
       _min: '-90000'
       _multiplex: null
-      _name: RealPower_command
+      _name: RealPower command
       _offset: '0'
       _receiver: []
       _signalsize: 32
@@ -243,7 +243,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
         reactive power is defined as the converter having a leading power factor.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '90000'
       _min: '-90000'
       _multiplex: null
@@ -316,7 +316,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured real power of master unit.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -332,7 +332,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured reactive power of master unit.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -432,7 +432,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _unit: ''
       _values: {0: Param0, 1: LVM_ClearingTimes1, 2: LVM_ClearingTimes2, 3: LFM_Limits,
         4: LFM_ClearingTimes, 5: J1939_Interface, 6: Fault_Config, 7: ContactorDelays1,
-        8: ContactorDelays2, 9: ContactorDelays3}
+        8: ContactorDelays2, 10: ContactorDelays3}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
@@ -797,7 +797,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_signed: false
       _max: '2000'
       _min: '0'
-      _multiplex: 9
+      _multiplex: 10
       _name: K2Open
       _offset: '0'
       _receiver: []
@@ -813,7 +813,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_signed: false
       _max: '2000'
       _min: '0'
-      _multiplex: 9
+      _multiplex: 10
       _name: K2Close
       _offset: '0'
       _receiver: []
@@ -1042,7 +1042,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
         power is defined as power being put into the ac network.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '90000'
       _min: '-90000'
       _multiplex: null
@@ -1059,7 +1059,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
         reactive power is defined as the converter having a leading power factor.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '90000'
       _min: '-90000'
       _multiplex: null
@@ -1132,7 +1132,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured real power of master unit.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1148,7 +1148,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured reactive power of master unit.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1175,7 +1175,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured real power.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1191,7 +1191,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured reactive power.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1218,7 +1218,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Echoed real power command.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1234,7 +1234,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Echoed reactive power command.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1271,9 +1271,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 4
       _startbit: 0
       _unit: ''
-      _values: {0: Power On Reset, 1: Ready, 2: Following, 3: Fault, 4: Forming, 5: N/A,
-        6: N/A, 7: N/A, 8: N/A, 9: N/A, 10: N/A, 11: N/A, 12: N/A, 13: N/A, 14: N/A,
-        15: N/A}
+      _values: {0: 'Power On Reset, and a quoted comma', 1: Ready, 2: Following, 3: Fault,
+        4: Forming, 5: N/A, 6: N/A, 7: N/A, 8: N/A, 9: N/A, 10: N/A, 11: N/A, 12: N/A,
+        13: N/A, 14: N/A, 15: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: MX2 relay status
@@ -1609,7 +1609,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Present voltage of the control board 5V power suppy.
       _factor: '0.01'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1625,7 +1625,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Present voltage of the control board 3.3V power supply.
       _factor: '0.01'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1641,7 +1641,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Present voltage of the control board 24V power supply.
       _factor: '0.01'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1657,7 +1657,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Present voltage of the control board 15V power supply.
       _factor: '0.01'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1685,7 +1685,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Coolant inlet temperature
       _factor: '0.1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -1701,7 +1701,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Internal ambient temperature
       _factor: '0.1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2078,7 +2078,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured RMS AC voltage.
       _factor: '0.1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2094,7 +2094,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured RMS AC current.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2110,7 +2110,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured frequency.
       _factor: '0.1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2138,7 +2138,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured DC bus voltage.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2154,7 +2154,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Measured DC current.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2170,7 +2170,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Estimated DC input voltage.
       _factor: '1'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null
@@ -2197,7 +2197,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Present voltage of the control board -15V power supply.
       _factor: '0.01'
       _is_little_endian: false
-      _is_signed: false
+      _is_signed: true
       _max: '1'
       _min: '0'
       _multiplex: null

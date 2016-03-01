@@ -15,7 +15,7 @@ enum MasterFollowerMode_command(0="Master", 1="Follower", 2="Error", 3="N/A")
 enum WriteSerialNumber(0="Disable", 1="Enable", 2="Error", 3="N/A")
 enum Baudrate(0="125K", 1="250K", 2="500K", 3="1M")
 enum ThermalOverload(0="Warning", 1="Fault", 2="Error", 3="N/A")
-enum State_status(0="Power On Reset", 1="Ready", 2="Following", 3="Fault", 4="Forming", 5="N/A", 6="N/A", 7="N/A", 8="N/A", 9="N/A", 10="N/A", 11="N/A", 12="N/A", 13="N/A", 14="N/A", 15="N/A")
+enum State_status(0="Power On Reset, and a quoted comma", 1="Ready", 2="Following", 3="Fault", 4="Forming", 5="N/A", 6="N/A", 7="N/A", 8="N/A", 9="N/A", 10="N/A", 11="N/A", 12="N/A", 13="N/A", 14="N/A", 15="N/A")
 enum MX2Permissive_status(0="Open", 1="Closed", 2="Error", 3="N/A")
 enum PowerAvailAC_status(0="None", 1="Available", 2="Error", 3="N/A")
 enum PowerAvailDC_status(0="None", 1="Available", 2="Error", 3="N/A")
@@ -77,8 +77,8 @@ Var=MasterFollowerMode_command unsigned 22,2 -m /min:0 /max:1 /e:MasterFollowerM
 ID= CFFAC41h // Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.
 Type=Extended
 DLC=1
-Var=RealPower_command unsigned 0,32 -m /u:W /min:-90000 /max:90000  // Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
-Var=ReactivePower_command unsigned 32,32 -m /u:VA /min:-90000 /max:90000  // Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
+Var=RealPower command signed 0,32 -m /u:W /min:-90000 /max:90000  // Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
+Var=ReactivePower_command signed 32,32 -m /u:VA /min:-90000 /max:90000  // Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
 
 [CommandVF]
 ID= CFFAE41h // Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.
@@ -91,8 +91,8 @@ Var=Frequency_command unsigned 16,16 -m /u:Hz /f:0.1 /min:45 /max:65  // Desired
 ID= CFFCAF6h // Returns the actual measured power.
 Type=Extended
 DLC=1
-Var=RealPower_measured unsigned 0,32 -m /u:W /min:0 /max:1  // Measured real power of master unit.
-Var=ReactivePower_measured unsigned 32,32 -m /u:VA /min:0 /max:1  // Measured reactive power of master unit.
+Var=RealPower_measured signed 0,32 -m /u:W /min:0 /max:1  // Measured real power of master unit.
+Var=ReactivePower_measured signed 32,32 -m /u:VA /min:0 /max:1  // Measured reactive power of master unit.
 
 [CommandFactoryControl]
 ID= CFFAF41h // 
@@ -163,7 +163,7 @@ Var=K1Close unsigned 48,16 -m /u:ms /min:0 /max:2000  // Maximum time required f
 
 [CommandSetNVParam]
 DLC=1
-Mux=CommandSetNVParam_MUX9 8,16 9 -m// ContactorDelays3
+Mux=CommandSetNVParam_MUX10 8,16 10 -m// ContactorDelays3
 Var=K2Open unsigned 16,16 -m /u:ms /min:0 /max:2000  // Maximum time required for the K2 contactor to open.
 Var=K2Close unsigned 32,16 -m /u:ms /min:0 /max:2000  // Maximum time required for the K2 contactor to close.
 
@@ -187,8 +187,8 @@ Var=MasterFollowerMode_command unsigned 22,2 -m /min:0 /max:1 /e:MasterFollowerM
 ID= CFF9C41h // Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.
 Type=Extended
 DLC=1
-Var=RealPower_command unsigned 0,32 -m /u:W /min:-90000 /max:90000  // Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
-Var=ReactivePower_command unsigned 32,32 -m /u:VA /min:-90000 /max:90000  // Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
+Var=RealPower_command signed 0,32 -m /u:W /min:-90000 /max:90000  // Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
+Var=ReactivePower_command signed 32,32 -m /u:VA /min:-90000 /max:90000  // Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
 
 [CommandVFAPU2]
 ID= CFF9E41h // Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.
@@ -201,24 +201,24 @@ Var=Frequency_command unsigned 16,16 -m /u:Hz /f:0.1 /min:45 /max:65  // Desired
 ID= CFFCAF7h // Returns the actual measured power.
 Type=Extended
 DLC=1
-Var=RealPower_measured unsigned 0,32 -m /u:W /min:0 /max:1  // Measured real power of master unit.
-Var=ReactivePower_measured unsigned 32,32 -m /u:VA /min:0 /max:1  // Measured reactive power of master unit.
+Var=RealPower_measured signed 0,32 -m /u:W /min:0 /max:1  // Measured real power of master unit.
+Var=ReactivePower_measured signed 32,32 -m /u:VA /min:0 /max:1  // Measured reactive power of master unit.
 
 [StatusMeasuredPower]
 ID= CFFCAF7h // Returns the actual measured power.
 Type=Extended
 DLC=1
 CycleTime=100
-Var=RealPower_measured unsigned 0,32 -m /u:W /min:0 /max:1  // Measured real power.
-Var=ReactivePower_measured unsigned 32,32 -m /u:VA /min:0 /max:1  // Measured reactive power.
+Var=RealPower_measured signed 0,32 -m /u:W /min:0 /max:1  // Measured real power.
+Var=ReactivePower_measured signed 32,32 -m /u:VA /min:0 /max:1  // Measured reactive power.
 
 [StatusCommandedPower]
 ID=18FFC4F7h // Echoes the commanded power (P&Q) as received in CommandPQ.
 Type=Extended
 DLC=1
 CycleTime=100
-Var=RealPower_echo unsigned 0,32 -m /u:W /min:0 /max:1  // Echoed real power command.
-Var=ReactivePower_echo unsigned 32,32 -m /u:VA /min:0 /max:1  // Echoed reactive power command.
+Var=RealPower_echo signed 0,32 -m /u:W /min:0 /max:1  // Echoed real power command.
+Var=ReactivePower_echo signed 32,32 -m /u:VA /min:0 /max:1  // Echoed reactive power command.
 
 [StatusBits]
 ID= CFFC3F7h // Bits representing the status of the power module.
@@ -251,18 +251,18 @@ ID=1CFFC5F7h // Lists present voltage of each power supply on the control board 
 Type=Extended
 DLC=1
 CycleTime=100
-Var=v5p0_Supply unsigned 0,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board 5V power suppy.
-Var=v3p3_Supply unsigned 16,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board 3.3V power supply.
-Var=v24_Supply unsigned 32,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board 24V power supply.
-Var=v15_Supply unsigned 48,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board 15V power supply.
+Var=v5p0_Supply signed 0,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board 5V power suppy.
+Var=v3p3_Supply signed 16,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board 3.3V power supply.
+Var=v24_Supply signed 32,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board 24V power supply.
+Var=v15_Supply signed 48,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board 15V power supply.
 
 [StatusTemps]
 ID=18FFCBF7h // Returns the inlet water temperature to the module as well as module internal ambient temperature.
 Type=Extended
 DLC=1
 CycleTime=100
-Var=TempInlet_measured unsigned 0,16 -m /u:C /f:0.1 /min:0 /max:1  // Coolant inlet temperature
-Var=TempInternal_measured unsigned 16,16 -m /u:C /f:0.1 /min:0 /max:1  // Internal ambient temperature
+Var=TempInlet_measured signed 0,16 -m /u:C /f:0.1 /min:0 /max:1  // Coolant inlet temperature
+Var=TempInternal_measured signed 16,16 -m /u:C /f:0.1 /min:0 /max:1  // Internal ambient temperature
 Var=ConverterLosses unsigned 32,16 -m /u:W /min:0 /max:1  // Power converter thermal loss
 
 [StatusFaults]
@@ -295,25 +295,25 @@ ID= CFFC2F7h // RMS AC Voltage, current, and frequency measured by line A, B and
 Type=Extended
 DLC=1
 CycleTime=100
-Var=VoltageAC_measured unsigned 0,16 -m /u:V /f:0.1 /min:0 /max:1  // Measured RMS AC voltage.
-Var=CurrentAC_measured unsigned 16,16 -m /u:A /min:0 /max:1  // Measured RMS AC current.
-Var=Frequency_measured unsigned 32,16 -m /u:Hz /f:0.1 /min:0 /max:1  // Measured frequency.
+Var=VoltageAC_measured signed 0,16 -m /u:V /f:0.1 /min:0 /max:1  // Measured RMS AC voltage.
+Var=CurrentAC_measured signed 16,16 -m /u:A /min:0 /max:1  // Measured RMS AC current.
+Var=Frequency_measured signed 32,16 -m /u:Hz /f:0.1 /min:0 /max:1  // Measured frequency.
 
 [StatusDCParameters]
 ID=1CFFC7F7h // Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input voltage.
 Type=Extended
 DLC=1
 CycleTime=100
-Var=VoltageDCBus unsigned 16,16 -m /u:V /min:0 /max:1  // Measured DC bus voltage.
-Var=CurrentDC_measured unsigned 32,16 -m /u:A /min:0 /max:1  // Measured DC current.
-Var=VoltageDCInput_measured unsigned 0,16 -m /u:V /min:0 /max:1  // Estimated DC input voltage.
+Var=VoltageDCBus signed 16,16 -m /u:V /min:0 /max:1  // Measured DC bus voltage.
+Var=CurrentDC_measured signed 32,16 -m /u:A /min:0 /max:1  // Measured DC current.
+Var=VoltageDCInput_measured signed 0,16 -m /u:V /min:0 /max:1  // Estimated DC input voltage.
 
 [StatusControlVolts2]
 ID=1CFFC6F7h // Present voltage of the -15V power supply on the control board.
 Type=Extended
 DLC=1
 CycleTime=100
-Var=n15V_Supply unsigned 0,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board -15V power supply.
+Var=n15V_Supply signed 0,16 -m /u:V /f:0.01 /min:0 /max:1  // Present voltage of the control board -15V power supply.
 Var=DiodeTemperature unsigned 32,16 -m /u:C /min:0 /max:1  // Hottest diode
 Var=IGBTTemperature unsigned 48,16 -m /u:C /min:0 /max:1  // Hottest IGBT
 

@@ -422,8 +422,8 @@
                   <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MasterFollowerMode_command</SIGNAL-REF>
                 </I-SIGNAL-TRIGGERING>
                 <I-SIGNAL-TRIGGERING>
-                  <SHORT-NAME>RealPower_command</SHORT-NAME>
-                  <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_command</SIGNAL-REF>
+                  <SHORT-NAME>RealPower command</SHORT-NAME>
+                  <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower command</SIGNAL-REF>
                 </I-SIGNAL-TRIGGERING>
                 <I-SIGNAL-TRIGGERING>
                   <SHORT-NAME>ReactivePower_command</SHORT-NAME>
@@ -1409,10 +1409,10 @@
           <LENGTH>8</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
-              <SHORT-NAME>RealPower_command</SHORT-NAME>
+              <SHORT-NAME>RealPower command</SHORT-NAME>
               <START-POSITION>7</START-POSITION>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
-              <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_command</SIGNAL-REF>
+              <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower command</SIGNAL-REF>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ReactivePower_command</SHORT-NAME>
@@ -2480,8 +2480,8 @@
           <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/MasterFollowerMode_command</SYSTEM-SIGNAL-REF>
         </I-SIGNAL>
         <I-SIGNAL>
-          <SHORT-NAME>RealPower_command</SHORT-NAME>
-          <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/RealPower_command</SYSTEM-SIGNAL-REF>
+          <SHORT-NAME>RealPower command</SHORT-NAME>
+          <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/RealPower command</SYSTEM-SIGNAL-REF>
         </I-SIGNAL>
         <I-SIGNAL>
           <SHORT-NAME>ReactivePower_command</SHORT-NAME>
@@ -3124,9 +3124,9 @@
           <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/MasterFollowerMode_command</DATA-TYPE-REF>
         </SYSTEM-SIGNAL>
         <SYSTEM-SIGNAL>
-          <SHORT-NAME>RealPower_command</SHORT-NAME>
+          <SHORT-NAME>RealPower command</SHORT-NAME>
           <LENGTH>32</LENGTH>
-          <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/RealPower_command</DATA-TYPE-REF>
+          <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/RealPower command</DATA-TYPE-REF>
         </SYSTEM-SIGNAL>
         <SYSTEM-SIGNAL>
           <SHORT-NAME>ReactivePower_command</SHORT-NAME>
@@ -3925,9 +3925,9 @@
           </SW-DATA-DEF-PROPS>
         </INTEGER-TYPE>
         <INTEGER-TYPE>
-          <SHORT-NAME>RealPower_command</SHORT-NAME>
+          <SHORT-NAME>RealPower command</SHORT-NAME>
           <SW-DATA-DEF-PROPS>
-            <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/RealPower_command</COMPU-METHOD-REF>
+            <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/RealPower command</COMPU-METHOD-REF>
           </SW-DATA-DEF-PROPS>
         </INTEGER-TYPE>
         <INTEGER-TYPE>
@@ -5444,7 +5444,7 @@
               </COMPU-INTERNAL-TO-PHYS>
             </COMPU-METHOD>
             <COMPU-METHOD>
-              <SHORT-NAME>RealPower_command</SHORT-NAME>
+              <SHORT-NAME>RealPower command</SHORT-NAME>
               <COMPU-INTERNAL-TO-PHYS>
                 <COMPU-SCALES>
                   <COMPU-SCALE>
@@ -5743,8 +5743,8 @@
                     <DESC>
                       <L-2 L="FOR-ALL">ContactorDelays3</L-2>
                     </DESC>
-                    <LOWER-LIMIT>9</LOWER-LIMIT>
-                    <UPPER-LIMIT>9</UPPER-LIMIT>
+                    <LOWER-LIMIT>10</LOWER-LIMIT>
+                    <UPPER-LIMIT>10</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>ContactorDelays3</VT>
                     </COMPU-CONST>
@@ -7081,12 +7081,12 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Power On Reset</L-2>
+                      <L-2 L="FOR-ALL">Power On Reset, and a quoted comma</L-2>
                     </DESC>
                     <LOWER-LIMIT>0</LOWER-LIMIT>
                     <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Power On Reset</VT>
+                      <VT>Power On Reset, and a quoted comma</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>

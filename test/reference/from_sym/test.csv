@@ -93,6 +93,7 @@ CFF9E41h,CommandVFAPU2,,,,1,0,Voltage_command,Desired output voltage while in gr
 CFF9E41h,CommandVFAPU2,,,,3,0,Frequency_command,Desired output frequency while in grid forming mode.,16,,,m,,45..65,0.1  Hz
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,Param0,0
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,LVM_ClearingTimes1,1
+CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,ContactorDelays3,10
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,LVM_ClearingTimes2,2
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,LFM_Limits,3
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,LFM_ClearingTimes,4
@@ -100,7 +101,6 @@ CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,J19
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,Fault_Config,6
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,ContactorDelays1,7
 CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,ContactorDelays2,8
-CFFAA41h,CommandSetNVParam,,,,1,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,ContactorDelays3,10
 CFFAA41h,CommandSetNVParam,,,,3,0,Dummy,Mode 0:,16,,,m
 CFFAA41h,CommandSetNVParam,,,,3,0,FreqHi,"Mode 3:Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.",16,,,m,,40..70,0.1  Hz
 CFFAA41h,CommandSetNVParam,,,,3,0,FreqVeryLo,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains below the value specified in FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,m,,160..160,ms

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
-# importany laed alle verfuegbaren importfilter
+import sys
+sys.path.append('..')
+
+# importany loads all import filter
 from canmatrix.copy import *
 import canmatrix.importany as im
 import canmatrix.exportall as ex
@@ -12,9 +15,9 @@ import sys
 #
 
 # import of one CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db1 = im.importany("first.dbc")
+db1 = next(iter(im.importany("first.dbc").values()))
 # import of a second CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db2 = im.importany("second.dbc")
+db2 = next(iter(im.importany("second.dbc").values()))
 
 #
 # create target Matrix

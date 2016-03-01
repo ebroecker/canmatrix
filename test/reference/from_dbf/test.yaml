@@ -28,9 +28,10 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _signals:
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
-      _byteorder: 0
       _comment: "Multi  Line  Signal comment with a-umlaut: \xE4"
       _factor: '5'
+      _is_little_endian: false
+      _is_signed: false
       _max: '500.0'
       _min: '0.0'
       _multiplex: null
@@ -41,12 +42,12 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 9
       _unit: "specialCharUnit\xB0$"
       _values: {}
-      _valuetype: +
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
-      _byteorder: 1
       _comment: null
       _factor: '1'
+      _is_little_endian: true
+      _is_signed: false
       _max: '6.0'
       _min: '0.0'
       _multiplex: null
@@ -57,7 +58,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 20
       _unit: someUnit
       _values: {1: one, 2: two, 3: three}
-      _valuetype: +
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 18
     _SignalGroups: []
