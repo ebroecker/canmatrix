@@ -1,18 +1,4 @@
-#!/usr/bin/env python
-#import re
-#from BitVector import BitVector
-from __future__ import division
-from builtins import *
-import math
-from struct import *
-import canmatrix.importany as im
-import zipfile
-import sys
-import os
-
-import glob
-import string
-
+#!/usr/bin/env python2
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
@@ -33,9 +19,24 @@ import string
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
-def genString(str):
-    retStr =  "%c" % len(str)
-    retStr += str
+from __future__ import division
+from builtins import *
+import math
+from struct import *
+import zipfile
+import sys
+sys.path.append('..')
+import canmatrix.importany as im
+
+import os
+
+import glob
+import string
+
+
+def genString(string):
+    retStr =  "%c" % len(string)
+    retStr += string
     return retStr
 
 def genZeros(count):
@@ -57,8 +58,8 @@ def genSimulatonFile(nodes):
 
     #each node
     for (nodename,source) in list(nodes.items()):
-        retStr += genString(source)
-        retStr += genString(nodename)
+        retStr += genString(source).encode('ascii')
+        retStr += genString(nodename).encode('ascii')
         retStr += genZeros(10)
 
     #checksum
@@ -201,7 +202,8 @@ def main():
     infile = sys.argv[1]
     outfile = os.path.splitext(sys.argv[2])[0]
 
-    db = im.importany(infile)
+
+    db = next(iter(im.importany(infile).values()))
     tickerBoardUnits(db, outfile)
 
 main()
