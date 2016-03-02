@@ -18,8 +18,29 @@ db._BUs.add(BoardUnit("recBU"))
 
 myFrame = Frame(0x123, "testFrame1", 8, "testBU" )
 
-mySignal = Signal("someTestSignal", 9, 11, 0, False, 5.0, 1.0, 0, 500, "specialCharUnit°$".decode("utf-8"), ["recBU"])
-mySignal2 = Signal("Signal", 20, 3, 1, False, 1.0, 0.0, 0, 6, "someUnit", ["recBU"])
+mySignal = Signal("someTestSignal", 
+          startBit = 9, 
+          signalSize = 11,
+          is_little_endian=False, 
+          is_signed = True, 
+          factor=5.0, 
+          offset=1.0,
+          min=0,
+          max=500,
+          unit="specialCharUnit°$".decode("utf-8"),
+          receiver=["recBU"])
+mySignal2 = Signal("Signal", 
+          startBit = 20, 
+          signalSize = 3,
+          is_little_endian=True, 
+          is_signed = True, 
+          factor=1.0, 
+          offset=0.0,
+          min=0,
+          max=6,
+          unit="someUnit",
+          receiver=["recBU"])
+
 mySignal2.addValues(1, "one")
 mySignal2.addValues(2, "two")
 mySignal2.addValues(3, "three")

@@ -83,7 +83,18 @@ def parseSignal(signal, mux, namespace, nodelist):
             receiver.append(nodelist[noderef.get('id')])
 
 
-    newSig = Signal(signal.get('name'), startbit, signalsize, is_little_endian, is_signed, factor, offset, min, max, unit, receiver, mux)
+    newSig = Signal(signal.get('name'), 
+                      startBit = startbit, 
+                      signalSize = signalsize,
+                      is_little_endian=is_little_endian, 
+                      is_signed = is_signed, 
+                      factor=factor, 
+                      offset=offset,
+                      min=min,
+                      max=max,
+                      unit=unit,
+                      receiver=receiver,
+                      multiplex=mux)     
 
     notes = signal.findall('./' + namespace + 'Notes')
     comment = ""
@@ -171,7 +182,19 @@ def importKcd(filename):
                 for noderef in noderefs:
                     receiver += nodelist[noderef.get('id')] + ' '
 
-            newSig = Signal(multiplex.get('name'), startbit, signalsize, is_little_endian, is_signed, factor, offset, min, max, unit, receiver, 'Multiplexor')
+            newSig = Signal(signal.get('name'), 
+                              startBit = startbit, 
+                              signalSize = signalsize,
+                              is_little_endian=is_little_endian, 
+                              is_signed = is_signed, 
+                              factor=factor, 
+                              offset=offset,
+                              min=min,
+                              max=max,
+                              unit=unit,
+                              receiver=receiver,
+                              multiplex='Multiplexor')     
+
             if is_little_endian == 0:
                 #motorola set/convert startbit
                 newSig.setLsbStartbit(startbit)

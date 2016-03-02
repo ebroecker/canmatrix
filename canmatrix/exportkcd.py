@@ -49,13 +49,13 @@ def createSignal(signal, nodeList):
         value.set('type',"unsigned")
 
     if float(signal._factor) != 1:
-        value.set('slope',str(signal._factor))
+        value.set('slope',str("%g" % signal._factor))
     if float(signal._offset) != 0:
-        value.set('intercept',str(signal._offset))
+        value.set('intercept',str("%g" % signal._offset))
     if float(signal._min) != 0:
-        value.set('min',str(signal._min))
+        value.set('min',str("%g" % signal._min))
     if float(signal._max) != 1:
-        value.set('max',str(signal._max))
+        value.set('max',str("%g" % signal._max))
     if len(signal._unit) > 0:
         value.set('unit',signal._unit)
     sig.append(value)

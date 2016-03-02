@@ -156,7 +156,19 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             logger.debug('no length for signal given')
 
         if startBit is not None:
-            newSig = Signal(name.text, startBit.text, length.text, is_little_endian, is_signed, factor, offset, Min, Max, Unit, receiver, multiplexId)
+            newSig = Signal(name.text, 
+                                  startBit = startBit.text, 
+                                  signalSize = length.text,
+                                  is_little_endian=is_little_endian, 
+                                  is_signed = is_signed, 
+                                  factor=factor, 
+                                  offset=offset,
+                                  min=Min,
+                                  max=Max,
+                                  unit=Unit,
+                                  receiver=receiver,
+                                  multiplex=multiplexId)     
+ 
             if newSig._is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
                 newSig.setMsbStartbit(int(startBit.text))                
@@ -223,7 +235,12 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
         is_signed = False # unsigned
-        multiplexor = Signal("Multiplexor", selectorStart.text, selectorLen.text, is_little_endian, is_signed, 1, 0, 0, 1, "", [], "Multiplexor")
+        multiplexor = Signal("Multiplexor", 
+                              startBit = selectorStart.text, 
+                              signalSize = selectorLen.text,
+                              is_little_endian=is_little_endian, 
+                              multiplex="Multiplexor")     
+
         multiplexor._initValue = 0
         newBo.addSignal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", arDict, ns)

@@ -54,8 +54,14 @@ def importJson(filename, **options):
                     is_signed = True
                 else:
                     is_signed = False
-                newsignal = Signal(signal["name"], signal["start_bit"], signal["bit_length"], 
-                            is_little_endian, is_signed, signal["factor"], signal["offset"],0,0,"",[])
+                newsignal = Signal(signal["name"], 
+                                startBit=signal["start_bit"], 
+                                signalSize=signal["bit_length"], 
+                                is_little_endian=is_little_endian,
+                                is_signed = is_signed, 
+                                factor=signal["factor"], 
+                                offset=signal["offset"])     
+
                 newframe.addSignal(newsignal)
             db._fl.addFrame(newframe)
     f.close()

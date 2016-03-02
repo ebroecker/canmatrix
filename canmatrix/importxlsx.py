@@ -276,10 +276,18 @@ def importXlsx(filename, **options):
                             newBo.addTransmitter(buName)
                         if 'r' in buSenderReceiver:
                             receiver.append(buName)
-                if signalLength > 8:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
-                else:
-                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
+#                if signalLength > 8:
+#                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
+                newSig = Signal(signalName, 
+                          startBit = (startbyte-1)*8+startbit, 
+                          signalSize = signalLength,
+                          is_little_endian = is_little_endian, 
+                          is_signed = is_signed, 
+                          receiver=receiver,
+                          multiplex=multiplex)     
+
+#                else:
+#                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
                 if is_little_endian == False:
                     #motorola
                     if motorolaBitFormat == "msb":
@@ -324,13 +332,13 @@ def importXlsx(filename, **options):
             (mini, maxi) = test.strip().split("..",2)
             unit = ""
             try:
-                newSig._offset = mini
-                newSig._min = str(mini)
-                newSig._max = str(maxi)
+                newSig._offset = float(mini)
+                newSig._min = float(mini)
+                newSig._max = float(maxi)
             except:
-                newSig._offset = "0"
-                newSig._min = "0"
-                newSig._max = "1"
+                newSig._offset = 0
+                newSig._min = 0
+                newSig._max = 1
 
 
         elif valueName.__len__() > 0:
@@ -338,11 +346,11 @@ def importXlsx(filename, **options):
                 value = int(float(value))
                 newSig.addValues(value, valueName)
             maxi = pow(2,signalLength)-1
-            newSig._max = maxi
+            newSig._max = float(maxi)
         else:
-            newSig._offset = "0"
-            newSig._min = "0"
-            newSig._max = "1"
+            newSig._offset = 0
+            newSig._min = 0
+            newSig._max = 1
 
     # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
     for frame in db._fl._list:

@@ -255,7 +255,7 @@ def exportCsv(db, filename, delimiter=','):
                 writeSignalx(db, sig, signalRow, col)
 
                 if float(sig._min) != 0 or float(sig._max) != 1.0:
-                    signalRow[col+1] = str("%s..%s" %(sig._min, sig._max))
+                    signalRow[col+1] = str("%g..%g" %(sig._min, sig._max))
 
                 # next row
                 row += 1

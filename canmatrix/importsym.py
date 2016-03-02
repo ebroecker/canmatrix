@@ -188,21 +188,45 @@ def importSym(filename, **options):
                 if tmpMux == "Mux":
                     signal = frame.signalByName(frameName + "_MUX")
                     if signal == None:
-                        signal = Signal(frameName + "_MUX", startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", 'Multiplexor')
-                        signal.addComment(comment)
+                        signal = Signal(frameName + "_MUX", 
+                                          startBit = startBit, 
+                                          signalSize = signalLength,
+                                          is_little_endian=intel, 
+                                          is_signed = is_signed, 
+                                          factor=factor, 
+                                          offset=offset,
+                                          min=min,
+                                          max=max,
+                                          unit=unit,
+                                          multiplex='Multiplexor',
+                                          comment=comment)     
+#                        signal.addComment(comment)
                         if intel == 0:
                             #motorola set/convert startbit
                             signal.setMsbReverseStartbit(startBit)
                         frame.addSignal(signal)
 
                 else:
-                    signal = Signal(sigName, startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", multiplexor)
+ #                   signal = Signal(sigName, startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", multiplexor)
+                    signal = Signal(sigName, 
+                                      startBit = startBit, 
+                                      signalSize = signalLength,
+                                      is_little_endian=intel, 
+                                      is_signed = is_signed, 
+                                      factor=factor, 
+                                      offset=offset,
+                                      min=min,
+                                      max=max,
+                                      unit=unit,
+                                      multiplex=multiplexor,
+                                      comment=comment)     
+#
                     if intel == 0:
                         #motorola set/convert startbit
                         signal.setMsbReverseStartbit(startBit)
                     if valueTableName is not None:
                         signal._values = valueTables[valueTableName]
-                    signal.addComment(comment)
+  #                  signal.addComment(comment)
                     signal.addAttribute("GenSigStartValue", str(startValue))
                     frame.addSignal(signal)
                 #variable processing

@@ -235,7 +235,19 @@ def importDbf(filename, **options):
                 startbit = int (startbit)
                 startbit += (int(startbyte)-1)*8
 
-                newSig = newBo.addSignal(Signal(name, startbit, size, int(byteorder) == 1, is_signed, factor, offset, float(Min)*float(factor), float(Max)*float(factor), unit, receiver, multiplex))
+                newSig = newBo.addSignal(Signal(name, 
+                          startBit = startbit, 
+                          signalSize = size,
+                          is_little_endian=(int(byteorder)==1), 
+                          is_signed = is_signed, 
+                          factor=factor, 
+                          offset=offset,
+                          min=float(Min)*float(factor),
+                          max=float(Max)*float(factor),
+                          unit=unit,
+                          receiver=receiver,
+                          multiplex=multiplex))   
+ 
                 if int(byteorder) == 0:
                     # this is dummy here, because internal lsb is default - for now
                     newSig.setLsbStartbit(startbit)                    

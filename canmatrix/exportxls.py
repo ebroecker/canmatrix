@@ -177,7 +177,7 @@ def writeSignal(db, sig, worksheet, row, mystyle, rearCol, motorolaBitFormat):
     else:
         # factor not 1.0 ?
         if float(sig._factor) != 1:
-            worksheet.write(row, rearCol+2, label = float(sig._factor), style=mystyle)
+            worksheet.write(row, rearCol+2, label = "%g" % float(sig._factor), style=mystyle)
         #factor == 1.0
         else:
             worksheet.write(row, rearCol+2, label = "", style=mystyle)
@@ -332,7 +332,7 @@ def exportXls(db, filename, **options):
                 writeSignal(db, sig, worksheet, row, sigstyle, col, motorolaBitFormat)
 
                 if float(sig._min) != 0 or float(sig._max) != 1.0:
-                    worksheet.write(row, col+1, label = str("%s..%s" %(sig._min, sig._max)), style=sigstyle)
+                    worksheet.write(row, col+1, label = str("%g..%g" %(sig._min, sig._max)), style=sigstyle)
                 else:
                     worksheet.write(row, col+1, label = "", style=sigstyle)
 

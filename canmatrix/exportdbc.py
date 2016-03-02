@@ -105,8 +105,8 @@ def exportDbc(db, filename, **options):
             else:
                 sign = '+'             
             f.write((" : %d|%d@%d%c" % (startbit, signal._signalsize,signal._is_little_endian, sign)).encode(dbcExportEncoding))
-            f.write((" (%s,%s)" % (signal._factor, signal._offset)).encode(dbcExportEncoding))
-            f.write((" [%s|%s]" % (signal._min, signal._max)).encode(dbcExportEncoding))
+            f.write((" (%g,%g)" % (signal._factor, signal._offset)).encode(dbcExportEncoding))
+            f.write((" [%g|%g]" % (signal._min, signal._max)).encode(dbcExportEncoding))
             f.write(' "'.encode(dbcExportEncoding))
 
             f.write(signal._unit.encode(dbcExportEncoding))

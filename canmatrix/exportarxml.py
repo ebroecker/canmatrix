@@ -258,8 +258,8 @@ def exportArxml(db, filename):
                 compuScale = etree.SubElement(compuScales,'COMPU-SCALE')
                 compuRationslCoeff = etree.SubElement(compuScale,'COMPU-RATIONAL-COEFFS')
                 compuNumerator = etree.SubElement(compuRationslCoeff,'COMPU-NUMERATOR')
-                createSubElement(compuNumerator, 'V', signal._offset)
-                createSubElement(compuNumerator, 'V', signal._factor)
+                createSubElement(compuNumerator, 'V', "%g" % signal._offset)
+                createSubElement(compuNumerator, 'V', "%g" % signal._factor)
                 compuDenomiator = etree.SubElement(compuRationslCoeff,'COMPU-DENOMINATOR')
                 createSubElement(compuDenomiator, 'V', "1")
 

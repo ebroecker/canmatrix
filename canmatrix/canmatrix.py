@@ -113,25 +113,77 @@ class Signal(object):
             _attributes, _values, _unit, _comment
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
-    def __init__(self, name, startbit, signalsize, is_little_endian, is_signed=False, factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
+#    def __init__(self, name, startbit, signalsize, is_little_endian, is_signed=False, factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
+    def __init__(self, name, **kwargs):
+
+        if 'startBit' in kwargs:
+            self._startbit = int(kwargs["startBit"])
+        else:
+            self._startbit = 0
+ 
+        if 'signalSize' in kwargs:
+            self._signalsize = int(kwargs["signalSize"])
+        else:
+            self._signalsize = 0
+
+        if 'is_little_endian' in kwargs:
+            self._is_little_endian = kwargs["is_little_endian"]
+        else:
+            self._is_little_endian = True
+
+        if 'is_signed' in kwargs:
+            self._is_signed = kwargs["is_signed"]
+        else:
+            self._is_signed = True
+
+        if 'factor' in kwargs:
+            self._factor = float(kwargs["factor"])
+        else:
+            self._factor = float(1)
+
+        if 'offset' in kwargs:
+            self._offset = float(kwargs["offset"])
+        else:
+            self._offset = float(0)
+ 
+        if 'min' in kwargs:
+            self._min = float(kwargs["min"])
+        else:
+            self._min = float(0)
+
+        if 'max' in kwargs:
+            self._max = float(kwargs["max"])
+        else:
+            self._max = float(0)
+
+        if 'unit' in kwargs:
+            self._unit = kwargs["unit"]
+        else:
+            self._unit = ""
+
+        if 'receiver' in kwargs:
+            self._receiver = kwargs["receiver"]
+        else:
+            self._receiver = []
+
+        if 'comment' in kwargs:
+            self._comment = kwargs["comment"]
+        else:
+            self._comment = None
+
+        if 'multiplex' in kwargs:
+            if kwargs["multiplex"] is not None and kwargs["multiplex"] != 'Multiplexor':
+                multiplex = int(kwargs["multiplex"])
+            else:
+                multiplex = kwargs["multiplex"]
+            self._multiplex = multiplex
+        else:
+            self._multiplex = None
+
         self._name = name
-        self._startbit = int(startbit)
-        self._signalsize = int(signalsize)
-        self._is_little_endian = is_little_endian
-        # is_little_endian: True: Intel, False: Motorola
-        self._is_signed = is_signed
-        self._factor = str(factor)
-        self._offset = str(offset)
-        self._min = str(min)
-        self._max = str(max)
-        self._receiver = receiver
         self._attributes = {}
         self._values = {}
-        self._unit = unit
-        self._comment = None
-        if multiplex is not None and multiplex != 'Multiplexor':
-            multiplex = int(multiplex)
-        self._multiplex = multiplex
+
     def addComment(self, comment):
         """
         Set comment of Signal
