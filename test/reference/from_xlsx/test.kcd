@@ -456,7 +456,7 @@
       </Signal>
       <Signal name="SerialNumber" offset="65" length="32" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="4294967295"/>
+        <Value type="unsigned" max="4.29497e+09"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -898,12 +898,12 @@
       <Producer/>
       <Signal name="RealPower_measured" offset="33" length="32" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="4294967295" unit="W"/>
+        <Value type="unsigned" max="4.29497e+09" unit="W"/>
         <LabelSet/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="65" length="32" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="4294967295" unit="VA"/>
+        <Value type="unsigned" max="4.29497e+09" unit="VA"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -911,12 +911,12 @@
       <Producer/>
       <Signal name="RealPower_measured" offset="33" length="32" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="4294967295" unit="W"/>
+        <Value type="unsigned" max="4.29497e+09" unit="W"/>
         <LabelSet/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="65" length="32" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="4294967295" unit="VA"/>
+        <Value type="unsigned" max="4.29497e+09" unit="VA"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -924,12 +924,12 @@
       <Producer/>
       <Signal name="RealPower_echo" offset="33" length="32" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="4294967295" unit="W"/>
+        <Value type="unsigned" max="4.29497e+09" unit="W"/>
         <LabelSet/>
       </Signal>
       <Signal name="ReactivePower_echo" offset="65" length="32" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="4294967295" unit="VA"/>
+        <Value type="unsigned" max="4.29497e+09" unit="VA"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -1172,7 +1172,7 @@
       </Signal>
       <Signal name="BuildTime" offset="65" length="32" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="4294967295"/>
+        <Value type="unsigned" max="4.29497e+09"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -1239,7 +1239,7 @@
       <Producer/>
       <Signal name="SerialNumber" offset="33" length="32" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="4294967295"/>
+        <Value type="unsigned" max="4.29497e+09"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -1247,7 +1247,7 @@
       <Producer/>
       <Signal name="Hash" offset="37" length="28" endianess="little">
         <Notes/>
-        <Value type="unsigned" max="268435455"/>
+        <Value type="unsigned" max="2.68435e+08"/>
         <LabelSet/>
       </Signal>
     </Message>

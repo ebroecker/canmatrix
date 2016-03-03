@@ -19,14 +19,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Enable_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 0
@@ -35,14 +35,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FaultClear_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 2
@@ -51,14 +51,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: InvertHwEnable_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 56
@@ -67,14 +67,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: EnableUPSMode_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 58
@@ -83,14 +83,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: EnableSplitPhase_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 60
@@ -99,14 +99,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayMX1_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 32
@@ -115,14 +115,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayMX2_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 34
@@ -131,14 +131,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayK1_Precharge_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 36
@@ -147,14 +147,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayRelayK2_DCRun_comand
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 38
@@ -163,14 +163,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: PhaseRotation_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 62
@@ -179,14 +179,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MasterFollowerMode_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 16
@@ -206,14 +206,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 24
@@ -222,14 +222,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 56
@@ -249,14 +249,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Voltage_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -265,14 +265,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Frequency_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -292,14 +292,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 24
@@ -308,14 +308,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 56
@@ -335,14 +335,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: WriteSerialNumber
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 0
@@ -351,14 +351,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: SerialNumber
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 56
@@ -367,14 +367,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FactoryAccess
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -394,14 +394,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: CommandSetNVParam_MUX
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -410,14 +410,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Dummy
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -426,14 +426,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: VUnder50pct
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -442,14 +442,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: V50to88pct
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -458,14 +458,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: V110to120pct
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -474,14 +474,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: VOver120
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -490,14 +490,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqHi
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -506,14 +506,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqLo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -522,14 +522,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqVeryLo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -538,14 +538,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqVeryLo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -554,14 +554,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqLo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -570,14 +570,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqHi
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -586,14 +586,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: NodeID
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 8
       _startbit: 16
@@ -602,14 +602,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: SA_Mask
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 8
       _startbit: 24
@@ -618,14 +618,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Baudrate
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 4
       _startbit: 36
@@ -634,14 +634,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ThermalOverload
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 16
@@ -650,14 +650,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MX1Open
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -666,14 +666,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MX1Close
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -682,14 +682,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MX2Open
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -698,14 +698,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MX2Close
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -714,14 +714,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: K1Open
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -730,14 +730,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: K1Close
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -746,14 +746,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: K2Open
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -762,14 +762,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: K2Close
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -789,14 +789,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Enable_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 0
@@ -805,14 +805,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FaultClear_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 2
@@ -821,14 +821,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: InvertHwEnable_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 56
@@ -837,14 +837,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: EnableUPSMode_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 58
@@ -853,14 +853,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: EnableSplitPhase_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 60
@@ -869,14 +869,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayMX1_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 32
@@ -885,14 +885,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayMX2_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 34
@@ -901,14 +901,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayK1_Precharge_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 36
@@ -917,14 +917,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayRelayK2_DCRun_comand
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 38
@@ -933,14 +933,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: PhaseRotation_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 62
@@ -949,14 +949,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MasterFollowerMode_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 16
@@ -976,14 +976,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 24
@@ -992,14 +992,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 56
@@ -1019,14 +1019,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Voltage_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -1035,14 +1035,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Frequency_command
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -1062,14 +1062,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 24
@@ -1078,14 +1078,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 56
@@ -1105,14 +1105,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 24
@@ -1121,14 +1121,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 56
@@ -1148,14 +1148,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower_echo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 24
@@ -1164,14 +1164,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_echo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 56
@@ -1191,14 +1191,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: State_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 4
       _startbit: 0
@@ -1207,14 +1207,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MX2Permissive_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 18
@@ -1223,14 +1223,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: PowerAvailAC_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 10
@@ -1239,14 +1239,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: PowerAvailDC_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 12
@@ -1255,14 +1255,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: PowerCircuitEnabled_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 14
@@ -1271,14 +1271,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: HardwareEnable_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 8
@@ -1287,14 +1287,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Enable_echo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 4
@@ -1303,14 +1303,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FaultClr_echo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 6
@@ -1319,14 +1319,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MessageValidModeControl_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 24
@@ -1335,14 +1335,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MX1Permissive_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 16
@@ -1351,14 +1351,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: K2DCRunPermissive_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 22
@@ -1367,14 +1367,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: K1PrechargePermissive_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 20
@@ -1383,14 +1383,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MessageValidPowerCMD_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 26
@@ -1399,14 +1399,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: MessageValidVF_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 28
@@ -1415,14 +1415,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: CANbus_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 30
@@ -1431,14 +1431,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: EnableUPSMode_echo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 32
@@ -1447,14 +1447,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: EnableSplitPhase_echo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 34
@@ -1463,14 +1463,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: PhaseRotation_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 36
@@ -1479,14 +1479,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: LineVoltageDetected_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 38
@@ -1495,14 +1495,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: PhaseRotation_echo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 40
@@ -1522,14 +1522,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: v5p0_Supply
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -1538,14 +1538,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: v3p3_Supply
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -1554,14 +1554,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: v24_Supply
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -1570,14 +1570,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: v15_Supply
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -1597,14 +1597,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: TempInlet_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -1613,14 +1613,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: TempInternal_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -1629,14 +1629,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ConverterLosses
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -1656,14 +1656,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: BridgeAVoltageOk_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 1
       _startbit: 59
@@ -1672,14 +1672,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: OvercurrentAC_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 2
@@ -1688,14 +1688,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: BridgeBVoltageOk_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 1
       _startbit: 43
@@ -1704,14 +1704,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: OvervoltageDC_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 8
@@ -1720,14 +1720,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: OvertempPowerDevice_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 14
@@ -1736,14 +1736,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: OvertempInternal_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 12
@@ -1752,14 +1752,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: LossValidControlMessage_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 4
       _startbit: 20
@@ -1768,14 +1768,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: UndervoltageDC_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 10
@@ -1784,14 +1784,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ControlHardwareFail_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 4
       _startbit: 16
@@ -1800,14 +1800,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: OvercurrentDC_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 6
@@ -1816,14 +1816,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: GeneralFault_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 0
@@ -1832,14 +1832,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: LossOfAC_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 4
@@ -1848,14 +1848,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: EStopShutdown_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 24
@@ -1864,14 +1864,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: BridgeAFault_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 3
       _startbit: 56
@@ -1880,14 +1880,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: BridgeBFault_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 3
       _startbit: 40
@@ -1896,14 +1896,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: IllegalTransition_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 26
@@ -1912,14 +1912,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: InvalidEEHeader_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 28
@@ -1928,14 +1928,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: InvalidEESection_status
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 30
@@ -1944,14 +1944,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ThermalOverload
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 32
@@ -1971,14 +1971,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: VoltageAC_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -1987,14 +1987,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: CurrentAC_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2003,14 +2003,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Frequency_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2030,14 +2030,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: VoltageDCBus
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2046,14 +2046,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: CurrentDC_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2062,14 +2062,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: VoltageDCInput_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -2089,14 +2089,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: n15V_Supply
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -2105,14 +2105,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: DiodeTemperature
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2121,14 +2121,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: IGBTTemperature
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -2148,14 +2148,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: InterfaceRev
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2164,14 +2164,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: ControlSwRev
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -2180,14 +2180,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: BuildTime
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 56
@@ -2207,14 +2207,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Voltage_echo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -2223,14 +2223,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Frequency_echo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2250,14 +2250,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: SerialNumber
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 32
       _startbit: 24
@@ -2277,14 +2277,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Hash
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 28
       _startbit: 28
@@ -2304,14 +2304,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusNVParam_MUX
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -2320,14 +2320,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: Dummy
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2336,14 +2336,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: VUnder50pct
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2352,14 +2352,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: V50to88pct
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2368,14 +2368,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: V110to120pct
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -2384,14 +2384,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: VOver120
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2400,14 +2400,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqHi
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2416,14 +2416,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqLo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2432,14 +2432,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqVeryLo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -2448,14 +2448,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqVeryLo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2464,14 +2464,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqLo
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2480,14 +2480,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: FreqHi
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -2496,14 +2496,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusNodeID
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 8
       _startbit: 16
@@ -2512,14 +2512,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusSA_Mask
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 8
       _startbit: 24
@@ -2528,14 +2528,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusBaudrate
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 4
       _startbit: 36
@@ -2544,14 +2544,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusThermalOverload
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 2
       _startbit: 16
@@ -2560,14 +2560,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusMX1Open
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2576,14 +2576,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusMX1Close
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2592,14 +2592,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusMX2Open
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -2608,14 +2608,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusMX2Close
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2624,14 +2624,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusK1Open
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2640,14 +2640,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusK1Close
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 56
@@ -2656,14 +2656,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusK2Open
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2672,14 +2672,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: StatusK2Close
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2699,14 +2699,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: L1Current_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -2715,14 +2715,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: L2Current_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2731,14 +2731,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '1.0'
+      _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: L3Current_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40
@@ -2758,14 +2758,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: L1Voltage_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 8
@@ -2774,14 +2774,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: L2Voltage_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 24
@@ -2790,14 +2790,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: '0'
-      _min: '0'
+      _max: 0.0
+      _min: 0.0
       _multiplex: null
       _name: L3Voltage_measured
-      _offset: '0.0'
+      _offset: 0.0
       _receiver: []
       _signalsize: 16
       _startbit: 40

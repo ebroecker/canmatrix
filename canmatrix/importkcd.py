@@ -182,7 +182,7 @@ def importKcd(filename):
                 for noderef in noderefs:
                     receiver += nodelist[noderef.get('id')] + ' '
 
-            newSig = Signal(signal.get('name'), 
+            newSig = Signal(multiplex.get('name'), 
                               startBit = startbit, 
                               signalSize = signalsize,
                               is_little_endian=is_little_endian, 
@@ -195,8 +195,8 @@ def importKcd(filename):
                               receiver=receiver,
                               multiplex='Multiplexor')     
 
-            if is_little_endian == 0:
-                #motorola set/convert startbit
+            if is_little_endian == False:
+                #motorola/big_endian set/convert startbit
                 newSig.setLsbStartbit(startbit)
             notes = multiplex.findall('./' + namespace + 'Notes')
             comment = ""

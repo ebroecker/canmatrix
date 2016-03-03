@@ -4812,8 +4812,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4830,8 +4830,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4848,8 +4848,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4866,8 +4866,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4884,8 +4884,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4902,8 +4902,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4920,8 +4920,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4938,8 +4938,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4956,8 +4956,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4974,8 +4974,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -4992,8 +4992,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5010,8 +5010,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5028,8 +5028,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5046,7 +5046,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -5064,7 +5064,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -5082,8 +5082,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5100,8 +5100,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5118,8 +5118,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5136,8 +5136,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5154,8 +5154,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5172,8 +5172,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5190,8 +5190,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5208,8 +5208,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5226,8 +5226,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5244,8 +5244,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5262,8 +5262,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5280,7 +5280,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -5298,7 +5298,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -5316,7 +5316,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -5334,8 +5334,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5352,8 +5352,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5370,8 +5370,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5388,8 +5388,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5406,8 +5406,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5424,8 +5424,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5442,8 +5442,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5460,8 +5460,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5478,8 +5478,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5496,8 +5496,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5514,8 +5514,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5532,8 +5532,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5550,8 +5550,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5568,8 +5568,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5586,8 +5586,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5604,8 +5604,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5622,8 +5622,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5640,8 +5640,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5658,8 +5658,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5676,8 +5676,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5694,8 +5694,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5712,8 +5712,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5730,8 +5730,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5748,8 +5748,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5766,8 +5766,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5784,8 +5784,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5802,8 +5802,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5820,8 +5820,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5838,7 +5838,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -5856,7 +5856,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -5874,8 +5874,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5892,8 +5892,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5910,8 +5910,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5928,8 +5928,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5946,8 +5946,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5964,8 +5964,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -5982,8 +5982,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6000,8 +6000,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6018,8 +6018,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6036,8 +6036,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6054,8 +6054,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6072,8 +6072,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6090,8 +6090,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6108,8 +6108,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6126,8 +6126,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6144,8 +6144,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6162,8 +6162,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6180,8 +6180,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6198,8 +6198,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6216,8 +6216,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6234,8 +6234,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6252,8 +6252,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6270,8 +6270,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6288,8 +6288,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6306,8 +6306,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6324,8 +6324,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6342,7 +6342,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.01</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6360,7 +6360,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.01</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6378,7 +6378,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.01</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6396,7 +6396,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.01</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6414,7 +6414,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6432,7 +6432,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6450,8 +6450,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6468,8 +6468,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6486,8 +6486,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6504,8 +6504,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6522,8 +6522,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6540,8 +6540,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6558,8 +6558,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6576,8 +6576,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6594,8 +6594,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6612,8 +6612,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6630,8 +6630,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6648,8 +6648,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6666,8 +6666,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6684,8 +6684,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6702,8 +6702,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6720,8 +6720,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6738,8 +6738,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6756,8 +6756,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6774,8 +6774,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6792,8 +6792,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6810,7 +6810,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6828,8 +6828,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6846,7 +6846,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6864,8 +6864,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6882,8 +6882,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6900,8 +6900,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6918,7 +6918,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.01</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6936,8 +6936,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6954,8 +6954,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -6972,7 +6972,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.01</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -6990,7 +6990,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.01</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -7008,8 +7008,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7026,7 +7026,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -7044,7 +7044,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -7062,8 +7062,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7080,8 +7080,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7098,8 +7098,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7116,8 +7116,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7134,8 +7134,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7152,8 +7152,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7170,8 +7170,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7188,8 +7188,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7206,7 +7206,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -7224,7 +7224,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -7242,7 +7242,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -7260,8 +7260,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7278,8 +7278,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7296,8 +7296,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7314,8 +7314,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7332,8 +7332,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7350,8 +7350,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7368,8 +7368,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7386,8 +7386,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7404,8 +7404,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7422,8 +7422,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7440,8 +7440,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7458,8 +7458,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7476,8 +7476,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7494,8 +7494,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7512,8 +7512,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7530,8 +7530,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7548,8 +7548,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7566,8 +7566,8 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
-                        <V>1.0</V>
+                        <V>0</V>
+                        <V>1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
                         <V>1</V>
@@ -7584,7 +7584,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -7602,7 +7602,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>
@@ -7620,7 +7620,7 @@
                   <COMPU-SCALE>
                     <COMPU-RATIONAL-COEFFS>
                       <COMPU-NUMERATOR>
-                        <V>0.0</V>
+                        <V>0</V>
                         <V>0.1</V>
                       </COMPU-NUMERATOR>
                       <COMPU-DENOMINATOR>

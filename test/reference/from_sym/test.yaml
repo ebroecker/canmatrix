@@ -22,15 +22,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Run command.  When set to a value of 'Enable', causes transition to
         grid forming or grid following mode depending on whether AC power is detected.  Must
         be set to 'Disable' to leave POR or FAULTED state.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: Enable_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 0
       _unit: ''
@@ -38,15 +38,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Clears the latched fault message.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: FaultClear_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 2
       _unit: ''
@@ -54,15 +54,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Inverts the logic of the Hardware Enable input.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: InvertHwEnable_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 56
       _unit: ''
@@ -73,15 +73,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
         to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid
         voltage is interrupted, the module will transition to GRID FORMING mode, with
         no interruption in power.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: EnableUPSMode_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 58
       _unit: ''
@@ -90,15 +90,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Dictates to the module whether it is connected to a three-phase (four
         wire) or split phase (L1, L2 and N) electrical system.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: EnableSplitPhase_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 60
       _unit: ''
@@ -108,15 +108,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
         state machine commands.  Meant for diagnostic purposes only.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayMX1_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 32
       _unit: ''
@@ -125,15 +125,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
         state machine commands.  Meant for diagnostic purposes only.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayMX2_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 34
       _unit: ''
@@ -142,15 +142,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
         state machine commands.  Meant for diagnostic purposes only.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayK1_Precharge_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 36
       _unit: ''
@@ -159,15 +159,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
         state machine commands.  Meant for diagnostic purposes only.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayRelayK2_DCRun_comand
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 38
       _unit: ''
@@ -176,15 +176,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Specifies phase rotation direction.  Only active while transitioning
         from READY to GRID_FORMING.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: PhaseRotation_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 62
       _unit: ''
@@ -195,15 +195,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
         mode.  When configured as Master, CommandPower will be used as the power command.  When
         configured as Slave, the values in StatusMeasuredPower of the master inverter
         will be used.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: MasterFollowerMode_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 16
       _unit: ''
@@ -224,15 +224,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Commanded real power (W) while in grid following mode - positive real
         power is defined as power being put into the ac network.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '90000'
-      _min: '-90000'
+      _max: 90000.0
+      _min: -90000.0
       _multiplex: null
       _name: RealPower command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 24
       _unit: W
@@ -241,15 +241,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Commanded reactive power (VA) while in grid following mode - positive
         reactive power is defined as the converter having a leading power factor.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '90000'
-      _min: '-90000'
+      _max: 90000.0
+      _min: -90000.0
       _multiplex: null
       _name: ReactivePower_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 56
       _unit: VA
@@ -271,15 +271,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2400.0'}
       _comment: Desired output voltage while in grid forming mode.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '500'
-      _min: '10'
+      _max: 500.0
+      _min: 10.0
       _multiplex: null
       _name: Voltage_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: Vrms
@@ -287,15 +287,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '500.0'}
       _comment: Desired output frequency while in grid forming mode.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '65'
-      _min: '45'
+      _max: 65.0
+      _min: 45.0
       _multiplex: null
       _name: Frequency_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: Hz
@@ -314,15 +314,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured real power of master unit.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 24
       _unit: W
@@ -330,15 +330,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured reactive power of master unit.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 56
       _unit: VA
@@ -357,15 +357,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: WriteSerialNumber
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 0
       _unit: ''
@@ -373,15 +373,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: SerialNumber
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 56
       _unit: ''
@@ -389,15 +389,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: FactoryAccess
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ''
@@ -418,15 +418,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: Multiplexor
       _name: CommandSetNVParam_MUX
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: ''
@@ -436,15 +436,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: 0
       _name: Dummy
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ''
@@ -454,15 +454,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the fault trip time when Line-to-line rms voltage for a
         phase remains under 50 percent of the nominal value specified in the CommandVF
         message while the inverter is running in GRID FOLLOWING mode.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 1
       _name: VUnder50pct
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -472,15 +472,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the fault trip time when Line-to-line rms voltage for a
         phase remains between 50 and 88 percent of the nominal value specified in
         the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 1
       _name: V50to88pct
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -490,15 +490,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the fault trip time when Line-to-line rms voltage for a
         phase remains between 110 and 120 percent of the nominal value specified in
         the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 1
       _name: V110to120pct
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: ms
@@ -508,15 +508,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the fault trip time when Line-to-line rms voltage for a
         phase remains Over 120 percent of the nominal value specified in the CommandVF
         message while the inverter is running in GRID FOLLOWING mode.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 2
       _name: VOver120
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ''
@@ -526,15 +526,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the upper bound, above which the frequency monitor will
         trip if the line frequency remains for the time specified in FreqHi of the
         LFM_ClearingTimes Mux.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '70'
-      _min: '40'
+      _max: 70.0
+      _min: 40.0
       _multiplex: 3
       _name: FreqHi
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: Hz
@@ -544,15 +544,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the upper bound, in which the frequency monitor will trip
         if the line frequency remains below this bound but above the value of FreqVeryLo
         for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '70'
-      _min: '40'
+      _max: 70.0
+      _min: 40.0
       _multiplex: 3
       _name: FreqLo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: Hz
@@ -562,15 +562,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the upper bound, in which the frequency monitor will trip
         if the line frequency remains below this bound but above the value of FreqVeryLo
         for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '70'
-      _min: '40'
+      _max: 70.0
+      _min: 40.0
       _multiplex: 3
       _name: FreqVeryLo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: Hz
@@ -580,15 +580,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the time it will take for a fault trip to occur when line
         frequency remains below the value specified in FreqVeryLo of the LFM_Limits
         Mux when the inverter is in GRID FOLLOWING mode.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '160'
-      _min: '160'
+      _max: 160.0
+      _min: 160.0
       _multiplex: 4
       _name: FreqVeryLo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -598,15 +598,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the time it will take for a fault trip to occur when line
         frequency remains between the value specified in FreqLo and FreqVeryLo of
         the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 4
       _name: FreqLo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -616,15 +616,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Determines the time it will take for a fault trip to occur when line
         frequency remains above the value specified in FreqHi of the LFM_Limits Mux
         when the inverter is in GRID FOLLOWING mode.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '160'
-      _min: '160'
+      _max: 160.0
+      _min: 160.0
       _multiplex: 4
       _name: FreqHi
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: ms
@@ -632,15 +632,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '247.0'}
       _comment: J1939 Source Address node for the module.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '247'
-      _min: '0'
+      _max: 247.0
+      _min: 0.0
       _multiplex: 5
       _name: NodeID
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 8
       _startbit: 16
       _unit: ''
@@ -648,15 +648,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '65.0'}
       _comment: Not presently used.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: 5
       _name: SA_Mask
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 8
       _startbit: 24
       _unit: ''
@@ -664,15 +664,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2.0'}
       _comment: CAN baudrate
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '3'
-      _min: '0'
+      _max: 3.0
+      _min: 0.0
       _multiplex: 5
       _name: Baudrate
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 4
       _startbit: 36
       _unit: ''
@@ -680,15 +680,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Configures action to take when thermal overload input is active.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: 6
       _name: ThermalOverload
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 16
       _unit: ''
@@ -696,15 +696,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _comment: Maximum time required for the MX1 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '5000'
-      _min: '0'
+      _max: 5000.0
+      _min: 0.0
       _multiplex: 7
       _name: MX1Open
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -712,15 +712,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _comment: Maximum time required for the MX1 contactor to close.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 7
       _name: MX1Close
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -728,15 +728,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the MX2 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: 7
       _name: MX2Open
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: ms
@@ -744,15 +744,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the MX2 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 8
       _name: MX2Close
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -760,15 +760,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the K1 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 8
       _name: K1Open
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -776,15 +776,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the K1 contactor to close.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 8
       _name: K1Close
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: ms
@@ -792,15 +792,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the K2 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 10
       _name: K2Open
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -808,15 +808,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the K2 contactor to close.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 10
       _name: K2Close
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -838,15 +838,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Run command.  When set to a value of 'Enable', causes transition to
         grid forming or grid following mode depending on whether AC power is detected.  Must
         be set to 'Disable' to leave POR or FAULTED state.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: Enable_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 0
       _unit: ''
@@ -854,15 +854,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Clears the latched fault message.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: FaultClear_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 2
       _unit: ''
@@ -870,15 +870,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Inverts the logic of the Hardware Enable input.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: InvertHwEnable_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 56
       _unit: ''
@@ -889,15 +889,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
         to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid
         voltage is interrupted, the module will transition to GRID FORMING mode, with
         no interruption in power.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: EnableUPSMode_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 58
       _unit: ''
@@ -906,15 +906,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Dictates to the module whether it is connected to a three-phase (four
         wire) or split phase (L1, L2 and N) electrical system.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: EnableSplitPhase_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 60
       _unit: ''
@@ -923,15 +923,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
         state machine commands.  Meant for diagnostic purposes only.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayMX1_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 32
       _unit: ''
@@ -940,15 +940,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
         state machine commands.  Meant for diagnostic purposes only.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayMX2_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 34
       _unit: ''
@@ -957,15 +957,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
         state machine commands.  Meant for diagnostic purposes only.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayK1_Precharge_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 36
       _unit: ''
@@ -974,15 +974,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
         state machine commands.  Meant for diagnostic purposes only.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ForceRelayRelayK2_DCRun_comand
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 38
       _unit: ''
@@ -991,15 +991,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Specifies phase rotation direction.  Only active while transitioning
         from READY to GRID_FORMING
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: PhaseRotation_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 62
       _unit: ''
@@ -1010,15 +1010,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
         mode.  When configured as Master, CommandPower will be used as the power command.  When
         configured as Slave, the values in StatusMeasuredPower of the master inverter
         will be used.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: MasterFollowerMode_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 16
       _unit: ''
@@ -1039,15 +1039,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Commanded real power (W) while in grid following mode - positive real
         power is defined as power being put into the ac network.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '90000'
-      _min: '-90000'
+      _max: 90000.0
+      _min: -90000.0
       _multiplex: null
       _name: RealPower_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 24
       _unit: W
@@ -1056,15 +1056,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Commanded reactive power (VA) while in grid following mode - positive
         reactive power is defined as the converter having a leading power factor.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '90000'
-      _min: '-90000'
+      _max: 90000.0
+      _min: -90000.0
       _multiplex: null
       _name: ReactivePower_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 56
       _unit: VA
@@ -1086,15 +1086,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2400.0'}
       _comment: Desired output voltage while in grid forming mode.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '500'
-      _min: '10'
+      _max: 500.0
+      _min: 10.0
       _multiplex: null
       _name: Voltage_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: Vrms
@@ -1102,15 +1102,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '500.0'}
       _comment: Desired output frequency while in grid forming mode.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '65'
-      _min: '45'
+      _max: 65.0
+      _min: 45.0
       _multiplex: null
       _name: Frequency_command
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: Hz
@@ -1129,15 +1129,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured real power of master unit.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 24
       _unit: W
@@ -1145,15 +1145,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured reactive power of master unit.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 56
       _unit: VA
@@ -1172,15 +1172,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured real power.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 24
       _unit: W
@@ -1188,15 +1188,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured reactive power.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 56
       _unit: VA
@@ -1215,15 +1215,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echoed real power command.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: RealPower_echo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 24
       _unit: W
@@ -1231,15 +1231,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echoed reactive power command.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ReactivePower_echo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 56
       _unit: VA
@@ -1258,15 +1258,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Active control mode.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '7'
-      _min: '0'
+      _max: 7.0
+      _min: 0.0
       _multiplex: null
       _name: State_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 4
       _startbit: 0
       _unit: ''
@@ -1276,15 +1276,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: MX2 relay status
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: MX2Permissive_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 18
       _unit: ''
@@ -1293,15 +1293,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates that AC power is connected and that voltage and frequency
         are within nominal ranges.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: PowerAvailAC_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 10
       _unit: ''
@@ -1309,15 +1309,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates that DC bus voltage is within operating range.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: PowerAvailDC_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 12
       _unit: ''
@@ -1325,15 +1325,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates whether the switching devices are active.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: PowerCircuitEnabled_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 14
       _unit: ''
@@ -1341,15 +1341,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Status of the hardware enable.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: HardwareEnable_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 8
       _unit: ''
@@ -1358,15 +1358,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of the Enable command withing the CommandModeControl
         message.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: Enable_echo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 4
       _unit: ''
@@ -1375,15 +1375,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of the FaultClear command withing the CommandModeControl
         message.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: FaultClr_echo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 6
       _unit: ''
@@ -1393,15 +1393,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Indicates the validity of the CommandModeControl message.  Message
         must be received at least once per second and parameter data within range
         to be considered valid.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: MessageValidModeControl_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 24
       _unit: ''
@@ -1409,15 +1409,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: MX1 relay status
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: MX1Permissive_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 16
       _unit: ''
@@ -1425,15 +1425,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: K2 DC Run relay status.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: K2DCRunPermissive_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 22
       _unit: ''
@@ -1441,15 +1441,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: K1 precharge relay status.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: K1PrechargePermissive_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 20
       _unit: ''
@@ -1459,15 +1459,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Indicates the validity of the CommandPQ message.  Message must be
         received at least once per second and parameter data within range to be considered
         valid.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: MessageValidPowerCMD_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 26
       _unit: ''
@@ -1477,15 +1477,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Indicates the validity of the CommandVF message.  Message must be
         received at least once per second and parameter data within range to be considered
         valid.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: MessageValidVF_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 28
       _unit: ''
@@ -1493,15 +1493,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Operational status of the CAN bus driver.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: CANbus_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 30
       _unit: ''
@@ -1510,15 +1510,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of the EnableUPSMode command withing the CommandModeControl
         message.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: EnableUPSMode_echo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 32
       _unit: ''
@@ -1527,15 +1527,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of the EnableSplitPhase command withing the CommandModeControl
         message.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: EnableSplitPhase_echo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 34
       _unit: ''
@@ -1544,15 +1544,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation
         is considered positive.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: PhaseRotation_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 36
       _unit: ''
@@ -1560,15 +1560,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Flag indicating if voltage is detected on L1, L2 or L3.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: LineVoltageDetected_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 38
       _unit: ''
@@ -1577,15 +1577,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of PhaseRotation_command withing the CommandModeControl
         message.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: PhaseRotation_echo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 40
       _unit: ''
@@ -1605,15 +1605,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Present voltage of the control board 5V power suppy.
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: v5p0_Supply
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: V
@@ -1621,15 +1621,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Present voltage of the control board 3.3V power supply.
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: v3p3_Supply
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: V
@@ -1637,15 +1637,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Present voltage of the control board 24V power supply.
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: v24_Supply
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: V
@@ -1653,15 +1653,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Present voltage of the control board 15V power supply.
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: v15_Supply
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: V
@@ -1681,15 +1681,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Coolant inlet temperature
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: TempInlet_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: C
@@ -1697,15 +1697,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Internal ambient temperature
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: TempInternal_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: C
@@ -1713,15 +1713,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Power converter thermal loss
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ConverterLosses
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: W
@@ -1740,15 +1740,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates whether a hardware trip has been activated.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: BridgeAVoltageOk_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 1
       _startbit: 59
       _unit: ''
@@ -1757,15 +1757,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of AC current exceeding
         the threshold value.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: OvercurrentAC_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 2
       _unit: ''
@@ -1773,15 +1773,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates whether a hardware trip has been activated.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: BridgeBVoltageOk_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 1
       _startbit: 43
       _unit: ''
@@ -1790,15 +1790,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of DC voltage exceeding
         the threshold value.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: OvervoltageDC_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 8
       _unit: ''
@@ -1807,15 +1807,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of an IGBT temperature
         exceeding the threshold value.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: OvertempPowerDevice_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 14
       _unit: ''
@@ -1824,15 +1824,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of an internal inverter
         temperature exceeding the threshold value.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: OvertempInternal_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 12
       _unit: ''
@@ -1841,15 +1841,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set whenever a control message required for operation contains out
         of range data or has not been received within the required timeout period.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: LossValidControlMessage_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 4
       _startbit: 20
       _unit: ''
@@ -1857,15 +1857,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates loss of DC source voltage.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: UndervoltageDC_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 10
       _unit: ''
@@ -1873,15 +1873,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set upon the failure of control hardware to return expected response.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ControlHardwareFail_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 4
       _startbit: 16
       _unit: ''
@@ -1890,15 +1890,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of DC current exceeding
         the threshold value.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: OvercurrentDC_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 6
       _unit: ''
@@ -1907,15 +1907,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Will be set any time a fault shutdown has occurred.  It is always
         accompanied by an additional fault descriptor.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: GeneralFault_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 0
       _unit: ''
@@ -1925,15 +1925,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: In grid following mode, this fault will be triggered if AC voltage
         or frequency goes outside of nominal bounds and EnableUPSMode is not set in
         the CommandModeControl message.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: LossOfAC_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 4
       _unit: ''
@@ -1942,15 +1942,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set when an enable request has been sent whithout the WakeUpSignal
         flag (hardware enable) in the StatusBits message being active.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: EStopShutdown_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 24
       _unit: ''
@@ -1960,15 +1960,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Each bridge has hardware protection features as a backup to software
         protection.  This bitfield indicates which, if any of these protection trips
         is active.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: BridgeAFault_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 3
       _startbit: 56
       _unit: ''
@@ -1979,15 +1979,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Each bridge has hardware protection features as a backup to software
         protection.  This bitfield indicates which, if any of these protection trips
         is active.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: BridgeBFault_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 3
       _startbit: 40
       _unit: ''
@@ -1997,15 +1997,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _comment: Indicates that an illegal state transition was requested.  For example,
         this fault will occur if Enable is commanded and line voltage is detected
         but AC power is not available.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: IllegalTransition_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 26
       _unit: ''
@@ -2013,15 +2013,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates that reading of non-volatile parameters at power-up failed.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: InvalidEEHeader_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 28
       _unit: ''
@@ -2030,15 +2030,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates that reading or writing of an non-volatile parameter section
         failed.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: InvalidEESection_status
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 30
       _unit: ''
@@ -2046,15 +2046,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ThermalOverload
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 32
       _unit: ''
@@ -2073,15 +2073,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured RMS AC voltage.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: VoltageAC_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: V
@@ -2089,15 +2089,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured RMS AC current.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: CurrentAC_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: A
@@ -2105,15 +2105,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured frequency.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: Frequency_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: Hz
@@ -2133,15 +2133,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured DC bus voltage.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: VoltageDCBus
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: V
@@ -2149,15 +2149,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured DC current.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: CurrentDC_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: A
@@ -2165,15 +2165,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Estimated DC input voltage.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: VoltageDCInput_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: V
@@ -2192,15 +2192,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Present voltage of the control board -15V power supply.
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: n15V_Supply
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: V
@@ -2208,15 +2208,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Hottest diode
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: DiodeTemperature
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: C
@@ -2224,15 +2224,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Hottest IGBT
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: IGBTTemperature
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: C
@@ -2251,15 +2251,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Software revision of the CAN communication interface.
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: InterfaceRev
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ''
@@ -2267,15 +2267,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Software revision of the control firmware.
-      _factor: '0.01'
+      _factor: 0.01
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: ControlSwRev
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: ''
@@ -2283,15 +2283,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Build timestamp.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: BuildTime
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 56
       _unit: ''
@@ -2310,15 +2310,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echoed voltage command
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: Voltage_echo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: Vrms
@@ -2326,15 +2326,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echoed frequency command.
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: Frequency_echo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: Hz
@@ -2353,15 +2353,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Serial number of the power module.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: SerialNumber
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 32
       _startbit: 24
       _unit: ''
@@ -2380,15 +2380,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Unique revision identification hashcode.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: Hash
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 28
       _startbit: 28
       _unit: ''
@@ -2407,15 +2407,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: true
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: Multiplexor
       _name: StatusNVParam_MUX
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: ''
@@ -2426,15 +2426,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '10'
-      _min: '5'
+      _max: 10.0
+      _min: 5.0
       _multiplex: 0
       _name: Dummy
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ''
@@ -2442,15 +2442,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 1
       _name: VUnder50pct
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -2458,15 +2458,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2000.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 1
       _name: V50to88pct
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -2474,15 +2474,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '1000.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 1
       _name: V110to120pct
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: ms
@@ -2490,15 +2490,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 2
       _name: VOver120
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ''
@@ -2506,15 +2506,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '605.0'}
       _comment: ''
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '70'
-      _min: '40'
+      _max: 70.0
+      _min: 40.0
       _multiplex: 3
       _name: FreqHi
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: Hz
@@ -2522,15 +2522,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '598.0'}
       _comment: ''
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '70'
-      _min: '40'
+      _max: 70.0
+      _min: 40.0
       _multiplex: 3
       _name: FreqLo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: Hz
@@ -2538,15 +2538,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '570.0'}
       _comment: ''
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '70'
-      _min: '40'
+      _max: 70.0
+      _min: 40.0
       _multiplex: 3
       _name: FreqVeryLo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: Hz
@@ -2554,15 +2554,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '160'
-      _min: '160'
+      _max: 160.0
+      _min: 160.0
       _multiplex: 4
       _name: FreqVeryLo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -2570,15 +2570,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '30000'
-      _min: '1'
+      _max: 30000.0
+      _min: 1.0
       _multiplex: 4
       _name: FreqLo
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -2586,15 +2586,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '160.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '160'
-      _min: '160'
+      _max: 160.0
+      _min: 160.0
       _multiplex: 4
       _name: FreqHi
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: ms
@@ -2602,15 +2602,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '247.0'}
       _comment: J1939 Source Address node for the module
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '247'
-      _min: '0'
+      _max: 247.0
+      _min: 0.0
       _multiplex: 5
       _name: StatusNodeID
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 8
       _startbit: 16
       _unit: ''
@@ -2619,15 +2619,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {GenSigStartValue: '65.0'}
       _comment: Mask used to configure from which master source addresses to accept
         commands.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: 5
       _name: StatusSA_Mask
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 8
       _startbit: 24
       _unit: ''
@@ -2635,15 +2635,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '2.0'}
       _comment: ''
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '3'
-      _min: '0'
+      _max: 3.0
+      _min: 0.0
       _multiplex: 5
       _name: StatusBaudrate
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 4
       _startbit: 36
       _unit: ''
@@ -2651,15 +2651,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Configured action to take when thermal overload input is active.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: 6
       _name: StatusThermalOverload
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 2
       _startbit: 16
       _unit: ''
@@ -2667,15 +2667,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _comment: Maximum time required for the MX1 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '5000'
-      _min: '0'
+      _max: 5000.0
+      _min: 0.0
       _multiplex: 7
       _name: StatusMX1Open
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -2683,15 +2683,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _comment: Maximum time required for the MX1 contactor to close.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 7
       _name: StatusMX1Close
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -2699,15 +2699,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the MX2 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: 7
       _name: StatusMX2Open
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: ms
@@ -2715,15 +2715,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the MX2 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 8
       _name: StatusMX2Close
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -2731,15 +2731,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the K1 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 8
       _name: StatusK1Open
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -2747,15 +2747,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the K1 contactor to close.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 8
       _name: StatusK1Close
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 56
       _unit: ms
@@ -2763,15 +2763,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the K2 contactor to open.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 9
       _name: StatusK2Open
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: ms
@@ -2779,15 +2779,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Maximum time required for the K2 contactor to close.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '2000'
-      _min: '0'
+      _max: 2000.0
+      _min: 0.0
       _multiplex: 9
       _name: StatusK2Close
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: ms
@@ -2806,15 +2806,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured L1 RMS line current.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: L1Current_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: A
@@ -2822,15 +2822,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured L2 RMS line current.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: L2Current_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: A
@@ -2838,15 +2838,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured L3 RMS line current.
-      _factor: '1'
+      _factor: 1.0
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: L3Current_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: A
@@ -2865,15 +2865,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured L1 RMS line-neutral voltage
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: L1Voltage_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: Vrms
@@ -2881,15 +2881,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured L2 RMS line-neutral voltage
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: L2Voltage_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 24
       _unit: Vrms
@@ -2897,15 +2897,15 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Measured L3 RMS line-neutral voltage
-      _factor: '0.1'
+      _factor: 0.1
       _is_little_endian: 0
       _is_signed: false
-      _max: '1'
-      _min: '0'
+      _max: 1.0
+      _min: 0.0
       _multiplex: null
       _name: L3Voltage_measured
-      _offset: '0'
-      _receiver: ''
+      _offset: 0.0
+      _receiver: []
       _signalsize: 16
       _startbit: 40
       _unit: Vrms

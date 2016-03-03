@@ -147,9 +147,9 @@ def exportKcd(db, filename):
                 multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal.getLsbStartbit()), length=str(int(signal._signalsize)))
                 value = etree.Element('Value')
                 if float(signal._min) != 0:
-                    value.set('min',str(signal._min))
+                    value.set('min', "%g" % signal._min)
                 if float(signal._max) != 1:
-                    value.set('max',str(signal._max))
+                    value.set('max', "%g" % signal._max)
                 multiplexor.append(value)
                 labelset = etree.Element('LabelSet')
                 for valueVal,valName in sorted(signal._values.items(), key=lambda x: int(x[0])):

@@ -14,7 +14,7 @@ Frame comment</Notes>
         <Notes>Multi
 Line
 Signal comment with a-umlaut: &#228;</Notes>
-        <Value type="unsigned" slope="5.0" intercept="1.0" max="500" unit="specialCharUnit&#176;$"/>
+        <Value type="unsigned" slope="5" intercept="1" max="500" unit="specialCharUnit&#176;$"/>
         <LabelSet/>
         <Consumer>
           <NodeRef id="2"/>
