@@ -302,20 +302,42 @@ class Frame(object):
     _signals (list of signal-objects), _attributes (list of attributes),
     _receiver (list of boardunits/ECU-names), _extended (Extended Frame = 1), _comment
     """
-    def __init__(self,bid, name, size, transmitter):
-        self._Id = int(bid)
+#    def __init__(self,bid, name, size, transmitter):
+    def __init__(self, name, **kwargs):
         self._name = name
-        if transmitter is not None:
-            self._Transmitter = [transmitter]
+        if 'Id' in kwargs:
+            self._Id = int(kwargs["Id"])
+        else:
+            self._Id = 0
+
+        if 'dlc' in kwargs:
+            self._Size = int(kwargs["dlc"])
+        else:
+            self._Size = 0
+
+        if 'transmitter' in kwargs:
+            self._Transmitter = [kwargs["transmitter"]]
         else:
             self._Transmitter = []
-        self._Size = int(size)
-        self._signals = []
+
+        if 'extended' in kwargs:
+            self._extended = kwargs["extended"]
+        else:
+            self._extended = 0
+
+        if 'comment' in kwargs:
+            self._comment = kwargs["comment"]
+        else:
+            self._comment = None
+
+        if 'signals' in kwargs:
+            self._signals = kwargs["signals"]
+        else:
+            self._signals = []
+
         self._attributes = {}
         self._receiver = []
         self._SignalGroups = []
-        self._extended = 0
-        self._comment = None
 
     def addSignalGroup(self, Name, Id, signalNames):
         newGroup = SignalGroup(Name, Id)
@@ -526,8 +548,6 @@ class CanMatrix(object):
                     frame._signals.remove(signal)
 
     def recalcDLC(self, strategy):
-        print("recalcDLC")
-        print(strategy)
         for frame in self._fl._list:
             originalDlc = frame._Size
             if "max" == strategy:

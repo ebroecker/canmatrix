@@ -98,7 +98,11 @@ def importDbc(filename, **options):
         if decoded.startswith("BO_ "):
             regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")
             temp = regexp.match(decoded)
-            db._fl.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
+#            db._fl.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
+            db._fl.addFrame(Frame(temp.group(2), 
+                                  Id=temp.group(1),
+                                  dlc=temp.group(3),
+                                  transmitter=temp.group(4)))
         elif decoded.startswith("SG_ "):
             pattern = "^SG\_ (\w+) : (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)"
             regexp = re.compile(pattern)

@@ -130,7 +130,8 @@ def importXls(filename, **options):
                 launchParam = 0.0
             launchParam = str(int(launchParam))
 
-            newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
+#            newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
+            newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
             db._fl.addFrame(newBo)
 
             #eval launctype

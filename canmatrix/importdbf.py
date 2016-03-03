@@ -199,7 +199,12 @@ def importDbf(filename, **options):
                     transmitter = temparray[6]
                 else:
                     transmitter = None
-                newBo = db._fl.addFrame(Frame(int(Id), name, size, transmitter))
+                newBo = db._fl.addFrame(
+                    Frame(name, 
+                      Id=int(Id),
+                      dlc=size,
+                      transmitter=transmitter))
+                  #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug ("Extended")
                     newBo._extended = 1

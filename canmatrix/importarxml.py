@@ -211,7 +211,10 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
         pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
         pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
-        newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+#        newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+        newBo = Frame(arGetName(frameR, ns), 
+                      Id=idNum,
+                      dlc=int(dlc.text))
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF" % (sn))        
@@ -219,7 +222,10 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         ipduTriggering = arGetChild(ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
         pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns)
         dlc = arGetChild(pdu, "LENGTH", arDict, ns)
-        newBo = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
+#        newBo = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
+        newBo = Frame(sn.text, 
+                      Id=idNum,
+                      dlc=int(dlc.text)/8)
         
         if pdu == None:
             logger.error("ERROR: pdu")

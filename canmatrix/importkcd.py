@@ -134,7 +134,9 @@ def importKcd(filename):
 
     for message in messages:
         dlc = None
-        newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
+        #newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
+        newBo = Frame(message.get('name'), Id=int(message.get('id'), 16))
+
 
         if 'triggered' in message.attrib:
             newBo.addAttribute("GenMsgCycleTime", message.get('interval'))
@@ -245,6 +247,9 @@ def importKcd(filename):
 
         if dlc is None:
             newBo.calcDLC()
+        else:
+            newBo._Size = dlc
+
 
         newBo.updateReceiver()
         db._fl.addFrame(newBo)

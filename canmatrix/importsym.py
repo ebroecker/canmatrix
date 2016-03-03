@@ -111,7 +111,7 @@ def importSym(filename, **options):
                             frame.signalByName(frame._name + "_MUX")._values = multiplexValTable
                         db._fl.addFrame(frame)
 
-                    frame = Frame(0,frameName,8,None)
+                    frame = Frame(frameName)
                     multiplexValTable = {}
 
             #key value:

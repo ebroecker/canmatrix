@@ -38,7 +38,11 @@ def importJson(filename, **options):
 
     if "messages" in jsonData:
         for frame in jsonData["messages"]:
-            newframe = Frame(frame["id"],frame["name"],8,None)
+#            newframe = Frame(frame["id"],frame["name"],8,None)
+            newframe = Frame(frame["name"],
+                              Id=frame["id"],
+                              dlc=8)
+    
             if "is_extended_frame" in frame and frame["is_extended_frame"]:
                 newframe._extended = 1
             else:

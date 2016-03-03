@@ -8,7 +8,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 16755521
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Operational commands are received by the module via control bits within
@@ -211,7 +211,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218082369
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
@@ -257,7 +257,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218082881
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Sets the desired voltage and frequency for the module to produce while
@@ -303,7 +303,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218090230
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Returns the actual measured power.
@@ -346,7 +346,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218083137
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: ''
@@ -405,7 +405,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218081857
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Provides access to configure non-volatile parameters.  Note that these
@@ -824,7 +824,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 16751425
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Operational commands are received by the module via control bits within
@@ -1027,7 +1027,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218078273
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
@@ -1073,7 +1073,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218078785
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Sets the desired voltage and frequency for the module to produce while
@@ -1119,7 +1119,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218090231
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Returns the actual measured power.
@@ -1162,7 +1162,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218090231
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Returns the actual measured power.
@@ -1205,7 +1205,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419415287
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Echoes the commanded power (P&Q) as received in CommandPQ.
@@ -1248,7 +1248,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218088439
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Bits representing the status of the power module.
@@ -1595,7 +1595,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486524407
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Lists present voltage of each power supply on the control board (24V,
@@ -1671,7 +1671,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419417079
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Returns the inlet water temperature to the module as well as module
@@ -1731,7 +1731,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218089719
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Fault bits.
@@ -2065,7 +2065,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218088183
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.
@@ -2124,7 +2124,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486524919
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input
@@ -2184,7 +2184,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486524663
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Present voltage of the -15V power supply on the control board.
@@ -2243,7 +2243,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486523383
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Software revision.
@@ -2302,7 +2302,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419416567
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Echoes the voltage and frequency commands from commandVF.
@@ -2345,7 +2345,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486526199
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Serial number of the power module.
@@ -2372,7 +2372,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486526455
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Unique software revision identification hashcode.
@@ -2399,7 +2399,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486517239
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {}
     _comment: Echos back parameter values.
@@ -2797,7 +2797,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419418359
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured RMS line currents.
@@ -2856,7 +2856,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 419418615
     _SignalGroups: []
-    _Size: 1
+    _Size: 8
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured RMS line voltages.
