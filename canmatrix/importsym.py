@@ -141,6 +141,7 @@ def importSym(filename, **options):
                 factor = 1
                 max = 1
                 min = 0
+                longName = None
                 startValue = 0
                 offset = 0
                 valueTableName = None
@@ -179,6 +180,8 @@ def importSym(filename, **options):
                             max = switch[1:].split(':')[1]
                         elif switch[1:].split(':')[0] == 'min':
                             min = switch[1:].split(':')[1]
+                        elif switch[1:].split(':')[0] == 'ln':
+                            longName = switch[1:].split(':')[1]
 #                                               else:
 #                                                       print switch
 #                                       else:
@@ -205,6 +208,8 @@ def importSym(filename, **options):
                     signal.addComment(comment)
                     signal.addAttribute("GenSigStartValue", str(startValue))
                     frame.addSignal(signal)
+                if longName is not None:
+                    signal.addAttribute("LongName", longName)
                 #variable processing
             elif line.startswith('ID'):
                 comment = ""
