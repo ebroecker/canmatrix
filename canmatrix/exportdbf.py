@@ -73,11 +73,11 @@ def exportDbf(db, filename, **options):
             whichbyte = int(math.floor(signal.getLsbStartbit() / 8) +1 )
             sign = 'S'
 
-            if signal._valuetype == '+':
+            if not signal._is_signed:
                 sign = 'U'
-            outstr += "[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%s,%s" % (signal._signalsize,whichbyte,int(signal.getLsbStartbit())%8,sign,float(signal._max)/float(signal._factor),float(signal._min)/float(signal._factor))
+            outstr += "[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c,%g,%g" % (signal._signalsize,whichbyte,int(signal.getLsbStartbit())%8,sign,float(signal._max)/float(signal._factor),float(signal._min)/float(signal._factor))
 
-            outstr += ",%d,%s,%s" % (signal._byteorder, signal._offset, signal._factor)
+            outstr += ",%d,%s,%s" % (signal._is_little_endian, signal._offset, signal._factor)
             multiplex = ""
             if signal._multiplex is not None:
                 if signal._multiplex == 'Multiplexor':

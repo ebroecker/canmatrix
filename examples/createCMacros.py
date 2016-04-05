@@ -6,7 +6,7 @@ import canmatrix.importany as im
 
 def createDecodeMacro(signal, prefix="", macrosource="source", source="source"):
     startBit = signal._startbit
-    byteOrder = signal._byteorder
+    byteOrder = signal._is_little_endian
     length = signal._signalsize
     
     mask = ((0xffffffffffffffff)>> (64-length))
@@ -17,7 +17,7 @@ def createDecodeMacro(signal, prefix="", macrosource="source", source="source"):
     code = "#define getSignal%s%s(%s)  ((((%s[%d])>>%d" % (prefix, signal._name, macrosource, source, startByte, startBitInByte)
     currentTargetLength = (8-startBitInByte)
 
-    if byteOrder == 1:
+    if byteOrder:
         endByte = int((startBit+length) / 8)
         if (startBit+length) %  8 == 0:
             endByte -= 1
@@ -34,7 +34,7 @@ def createDecodeMacro(signal, prefix="", macrosource="source", source="source"):
 
     code += ")&0x%X)" % (mask)
 
-    if signal._valuetype != '+':
+    if signal._is_signed:
         msb_sign_mask = 1 << (length - 1);
         code += "^0x%x)-0x%x " % (msb_sign_mask,msb_sign_mask);
     else:

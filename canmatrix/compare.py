@@ -254,18 +254,18 @@ def compareSignal(s1,s2, ignore = None):
         result.addChild(compareResult("changed", "startbit", s1, [" %d" % s1._startbit, " %d" % s2._startbit]))
     if s1._signalsize != s2._signalsize:
         result.addChild(compareResult("changed", "signalsize", s1, [" %d" % s1._signalsize, " %d" % s2._signalsize]))
-    if s1._factor != s2._factor:
+    if float(s1._factor) != float(s2._factor):
         result.addChild(compareResult("changed", "factor", s1, [s1._factor, s2._factor]))
-    if s1._offset != s2._offset:
+    if float(s1._offset) != float(s2._offset):
         result.addChild(compareResult("changed", "offset", s1, [ s1._offset, s2._offset]))
-    if s1._min != s2._min:
+    if float(s1._min) != float(s2._min):
         result.addChild(compareResult("changed", "min", s1, [ s1._min, s2._min]))
-    if s1._max != s2._max:
+    if float(s1._max) != float(s2._max):
         result.addChild(compareResult("changed", "max", s1, [ s1._max,  s2._max]))
-    if s1._byteorder != s2._byteorder:
-        result.addChild(compareResult("changed", "byteorder", s1, [" %d" % s1._byteorder, " %d" % s2._byteorder]))
-    if s1._valuetype != s2._valuetype:
-        result.addChild(compareResult("changed", "valuetype", s1, [" %s" % s1._valuetype, " %s" % s2._valuetype]))
+    if s1._is_little_endian != s2._is_little_endian:
+        result.addChild(compareResult("changed", "is_little_endian", s1, [" %d" % s1._is_little_endian, " %d" % s2._is_little_endian]))
+    if s1._is_signed != s2._is_signed:
+        result.addChild(compareResult("changed", "sign", s1, [" %d" % s1._is_signed, " %d" % s2._is_signed]))
     if s1._multiplex != s2._multiplex:
         result.addChild(compareResult("changed", "multiplex", s1, [str(s1._multiplex), str(s2._multiplex)]))
     if s1._unit != s2._unit:
@@ -343,11 +343,11 @@ def main():
     import canmatrix.importany as im
     
     logger.info("Importing " + matrix1 + " ... ")
-    db1 = im.importany(matrix1)
+    db1 = next(iter(im.importany(matrix1).values()))
     logger.info("%d Frames found" % (db1._fl._list.__len__()))
 
     logger.info("Importing " + matrix2 + " ... ")
-    db2 = im.importany(matrix2)
+    db2 = next(iter(im.importany(matrix2).values()))
     logger.info("%d Frames found" % (db2._fl._list.__len__()))
 
     ignore = {}

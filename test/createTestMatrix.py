@@ -16,10 +16,31 @@ db = CanMatrix()
 db._BUs.add(BoardUnit("testBU"))
 db._BUs.add(BoardUnit("recBU"))
 
-myFrame = Frame(0x123, "testFrame1", 8, "testBU" )
+myFrame = Frame("testFrame1",Id = 0x123, dlc=8, transmitter = "testBU" )
 
-mySignal = Signal("someTestSignal", 9, 11, 0, "+", 5.0, 1.0, 0, 500, "specialCharUnit°$".decode("utf-8"), ["recBU"])
-mySignal2 = Signal("Signal", 20, 3, 1, "+", 1.0, 0.0, 0, 6, "someUnit", ["recBU"])
+mySignal = Signal("someTestSignal", 
+          startBit = 9, 
+          signalSize = 11,
+          is_little_endian=False, 
+          is_signed = False, 
+          factor=5.0, 
+          offset=1.0,
+          min=0,
+          max=500,
+          unit="specialCharUnit°$".decode("utf-8"),
+          receiver=["recBU"])
+mySignal2 = Signal("Signal", 
+          startBit = 20, 
+          signalSize = 3,
+          is_little_endian=True, 
+          is_signed = False, 
+          factor=1.0, 
+          offset=0.0,
+          min=0,
+          max=6,
+          unit="someUnit",
+          receiver=["recBU"])
+
 mySignal2.addValues(1, "one")
 mySignal2.addValues(2, "two")
 mySignal2.addValues(3, "three")
@@ -30,7 +51,7 @@ myFrame.addComment("Multi \n Line \n Frame comment")
 myFrame.addSignal(mySignal)
 myFrame.addSignal(mySignal2)
 
-myFrame2 = Frame(0x12, "extendedFrame", 8, "testBU" )
+myFrame2 = Frame("extendedFrame", Id = 0x12,  dlc = 8, transmitter = "testBU" )
 myFrame2._extended = 1
 
 db._fl.addFrame(myFrame)
@@ -51,5 +72,5 @@ db.addBUDefines("NetworkNode", 'INT 0 65535')
 # export the new (target)-Matrix for example as .dbc:
 #
 
-ex.exportDbc(db, "test.dbc", 'iso-8859-1', 'iso-8859-1')
+ex.exportDbc(db, "test.dbc", dbcExportEncoding='iso-8859-1', dbcExportCommentEncoding='iso-8859-1')
 

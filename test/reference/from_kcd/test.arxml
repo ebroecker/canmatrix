@@ -422,8 +422,8 @@
                   <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MasterFollowerMode_command</SIGNAL-REF>
                 </I-SIGNAL-TRIGGERING>
                 <I-SIGNAL-TRIGGERING>
-                  <SHORT-NAME>RealPower_command</SHORT-NAME>
-                  <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_command</SIGNAL-REF>
+                  <SHORT-NAME>RealPower command</SHORT-NAME>
+                  <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower command</SIGNAL-REF>
                 </I-SIGNAL-TRIGGERING>
                 <I-SIGNAL-TRIGGERING>
                   <SHORT-NAME>ReactivePower_command</SHORT-NAME>
@@ -1017,7 +1017,7 @@
       <ELEMENTS>
         <FRAME>
           <SHORT-NAME>FRAME_CommandModeControl</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>CommandModeControl</SHORT-NAME>
@@ -1029,7 +1029,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_CommandPower</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>CommandPower</SHORT-NAME>
@@ -1041,7 +1041,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_CommandVF</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>CommandVF</SHORT-NAME>
@@ -1053,7 +1053,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_MasterMeasuredPower</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>MasterMeasuredPower</SHORT-NAME>
@@ -1065,7 +1065,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_CommandFactoryControl</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>CommandFactoryControl</SHORT-NAME>
@@ -1077,7 +1077,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_CommandSetNVParam</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>CommandSetNVParam</SHORT-NAME>
@@ -1089,7 +1089,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_CommandModeControlAPU2</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>CommandModeControlAPU2</SHORT-NAME>
@@ -1101,7 +1101,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_CommandPowerAPU2</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>CommandPowerAPU2</SHORT-NAME>
@@ -1113,7 +1113,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_CommandVFAPU2</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>CommandVFAPU2</SHORT-NAME>
@@ -1125,7 +1125,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_MasterMeasuredPowerAPU2</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>MasterMeasuredPowerAPU2</SHORT-NAME>
@@ -1137,7 +1137,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusMeasuredPower</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusMeasuredPower</SHORT-NAME>
@@ -1149,7 +1149,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusCommandedPower</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusCommandedPower</SHORT-NAME>
@@ -1161,7 +1161,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusBits</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusBits</SHORT-NAME>
@@ -1173,7 +1173,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusControlVoltage</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusControlVoltage</SHORT-NAME>
@@ -1185,7 +1185,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusTemps</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusTemps</SHORT-NAME>
@@ -1197,7 +1197,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusFaults</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusFaults</SHORT-NAME>
@@ -1209,7 +1209,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusACParameters</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusACParameters</SHORT-NAME>
@@ -1221,7 +1221,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusDCParameters</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusDCParameters</SHORT-NAME>
@@ -1233,7 +1233,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusControlVolts2</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusControlVolts2</SHORT-NAME>
@@ -1245,7 +1245,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_softwareRev</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>softwareRev</SHORT-NAME>
@@ -1257,7 +1257,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusCommandVF</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusCommandVF</SHORT-NAME>
@@ -1269,7 +1269,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_serialNumber</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>serialNumber</SHORT-NAME>
@@ -1281,7 +1281,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_softwareRevHash</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>softwareRevHash</SHORT-NAME>
@@ -1293,7 +1293,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusNVParam</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusNVParam</SHORT-NAME>
@@ -1305,7 +1305,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusLineCurrents</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusLineCurrents</SHORT-NAME>
@@ -1317,7 +1317,7 @@
         </FRAME>
         <FRAME>
           <SHORT-NAME>FRAME_StatusLineVoltages</SHORT-NAME>
-          <FRAME-LENGTH>1</FRAME-LENGTH>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
           <PDU-TO-FRAME-MAPPINGS>
             <PDU-TO-FRAME-MAPPING>
               <SHORT-NAME>StatusLineVoltages</SHORT-NAME>
@@ -1334,7 +1334,7 @@
       <ELEMENTS>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_CommandModeControl</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Enable_command</SHORT-NAME>
@@ -1406,13 +1406,13 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_CommandPower</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
-              <SHORT-NAME>RealPower_command</SHORT-NAME>
+              <SHORT-NAME>RealPower command</SHORT-NAME>
               <START-POSITION>7</START-POSITION>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
-              <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_command</SIGNAL-REF>
+              <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower command</SIGNAL-REF>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ReactivePower_command</SHORT-NAME>
@@ -1424,7 +1424,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_CommandVF</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Voltage_command</SHORT-NAME>
@@ -1442,7 +1442,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_MasterMeasuredPower</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>RealPower_measured</SHORT-NAME>
@@ -1460,7 +1460,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_CommandFactoryControl</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>WriteSerialNumber</SHORT-NAME>
@@ -1484,7 +1484,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_CommandSetNVParam</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>CommandSetNVParam_MUX</SHORT-NAME>
@@ -1634,7 +1634,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_CommandModeControlAPU2</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Enable_command</SHORT-NAME>
@@ -1706,7 +1706,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_CommandPowerAPU2</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>RealPower_command</SHORT-NAME>
@@ -1724,7 +1724,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_CommandVFAPU2</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Voltage_command</SHORT-NAME>
@@ -1742,7 +1742,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_MasterMeasuredPowerAPU2</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>RealPower_measured</SHORT-NAME>
@@ -1760,7 +1760,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusMeasuredPower</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>RealPower_measured</SHORT-NAME>
@@ -1778,7 +1778,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusCommandedPower</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>RealPower_echo</SHORT-NAME>
@@ -1796,7 +1796,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusBits</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>State_status</SHORT-NAME>
@@ -1922,7 +1922,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusControlVoltage</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>v5p0_Supply</SHORT-NAME>
@@ -1952,7 +1952,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusTemps</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>TempInlet_measured</SHORT-NAME>
@@ -1976,7 +1976,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusFaults</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>BridgeAVoltageOk_status</SHORT-NAME>
@@ -2096,7 +2096,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusACParameters</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>VoltageAC_measured</SHORT-NAME>
@@ -2120,7 +2120,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusDCParameters</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>VoltageDCBus</SHORT-NAME>
@@ -2144,7 +2144,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusControlVolts2</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>n15V_Supply</SHORT-NAME>
@@ -2168,7 +2168,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_softwareRev</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>InterfaceRev</SHORT-NAME>
@@ -2192,7 +2192,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusCommandVF</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Voltage_echo</SHORT-NAME>
@@ -2210,7 +2210,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_serialNumber</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>SerialNumber</SHORT-NAME>
@@ -2222,7 +2222,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_softwareRevHash</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Hash</SHORT-NAME>
@@ -2234,7 +2234,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusNVParam</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusNVParam_MUX</SHORT-NAME>
@@ -2384,7 +2384,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusLineCurrents</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>L1Current_measured</SHORT-NAME>
@@ -2408,7 +2408,7 @@
         </SIGNAL-I-PDU>
         <SIGNAL-I-PDU>
           <SHORT-NAME>PDU_StatusLineVoltages</SHORT-NAME>
-          <LENGTH>8</LENGTH>
+          <LENGTH>64</LENGTH>
           <SIGNAL-TO-PDU-MAPPINGS>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>L1Voltage_measured</SHORT-NAME>
@@ -2480,8 +2480,8 @@
           <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/MasterFollowerMode_command</SYSTEM-SIGNAL-REF>
         </I-SIGNAL>
         <I-SIGNAL>
-          <SHORT-NAME>RealPower_command</SHORT-NAME>
-          <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/RealPower_command</SYSTEM-SIGNAL-REF>
+          <SHORT-NAME>RealPower command</SHORT-NAME>
+          <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/RealPower command</SYSTEM-SIGNAL-REF>
         </I-SIGNAL>
         <I-SIGNAL>
           <SHORT-NAME>ReactivePower_command</SHORT-NAME>
@@ -3124,9 +3124,9 @@
           <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/MasterFollowerMode_command</DATA-TYPE-REF>
         </SYSTEM-SIGNAL>
         <SYSTEM-SIGNAL>
-          <SHORT-NAME>RealPower_command</SHORT-NAME>
+          <SHORT-NAME>RealPower command</SHORT-NAME>
           <LENGTH>32</LENGTH>
-          <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/RealPower_command</DATA-TYPE-REF>
+          <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/RealPower command</DATA-TYPE-REF>
         </SYSTEM-SIGNAL>
         <SYSTEM-SIGNAL>
           <SHORT-NAME>ReactivePower_command</SHORT-NAME>
@@ -3925,9 +3925,9 @@
           </SW-DATA-DEF-PROPS>
         </INTEGER-TYPE>
         <INTEGER-TYPE>
-          <SHORT-NAME>RealPower_command</SHORT-NAME>
+          <SHORT-NAME>RealPower command</SHORT-NAME>
           <SW-DATA-DEF-PROPS>
-            <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/RealPower_command</COMPU-METHOD-REF>
+            <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/RealPower command</COMPU-METHOD-REF>
           </SW-DATA-DEF-PROPS>
         </INTEGER-TYPE>
         <INTEGER-TYPE>
@@ -5444,7 +5444,7 @@
               </COMPU-INTERNAL-TO-PHYS>
             </COMPU-METHOD>
             <COMPU-METHOD>
-              <SHORT-NAME>RealPower_command</SHORT-NAME>
+              <SHORT-NAME>RealPower command</SHORT-NAME>
               <COMPU-INTERNAL-TO-PHYS>
                 <COMPU-SCALES>
                   <COMPU-SCALE>
@@ -5743,8 +5743,8 @@
                     <DESC>
                       <L-2 L="FOR-ALL">ContactorDelays3</L-2>
                     </DESC>
-                    <LOWER-LIMIT>9</LOWER-LIMIT>
-                    <UPPER-LIMIT>9</UPPER-LIMIT>
+                    <LOWER-LIMIT>10</LOWER-LIMIT>
+                    <UPPER-LIMIT>10</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>ContactorDelays3</VT>
                     </COMPU-CONST>
@@ -7081,12 +7081,12 @@
                 <COMPU-SCALES>
                   <COMPU-SCALE>
                     <DESC>
-                      <L-2 L="FOR-ALL">Power On Reset</L-2>
+                      <L-2 L="FOR-ALL">Power On Reset, and a quoted comma</L-2>
                     </DESC>
                     <LOWER-LIMIT>0</LOWER-LIMIT>
                     <UPPER-LIMIT>0</UPPER-LIMIT>
                     <COMPU-CONST>
-                      <VT>Power On Reset</VT>
+                      <VT>Power On Reset, and a quoted comma</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                   <COMPU-SCALE>

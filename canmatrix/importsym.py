@@ -111,7 +111,7 @@ def importSym(filename, **options):
                             frame.signalByName(frame._name + "_MUX")._values = multiplexValTable
                         db._fl.addFrame(frame)
 
-                    frame = Frame(0,frameName,8,None)
+                    frame = Frame(frameName)
                     multiplexValTable = {}
 
             #key value:
@@ -130,9 +130,9 @@ def importSym(filename, **options):
                 tempArray = shlex.split(line.strip())
                 sigName = tempArray[0]
                 if indexOffset == 1 and tempArray[1][:8] == "unsigned":
-                    valuetype = "+"
+                    is_signed = False
                 else:
-                    valuetype = "-"
+                    is_signed = True
 
                 startBit = int(tempArray[indexOffset+1].split(',')[0])
                 signalLength = int(tempArray[indexOffset+1].split(',')[1])
@@ -191,21 +191,45 @@ def importSym(filename, **options):
                 if tmpMux == "Mux":
                     signal = frame.signalByName(frameName + "_MUX")
                     if signal == None:
-                        signal = Signal(frameName + "_MUX", startBit, signalLength, intel, valuetype, factor, offset, min, max, unit, "", 'Multiplexor')
-                        signal.addComment(comment)
+                        signal = Signal(frameName + "_MUX", 
+                                          startBit = startBit, 
+                                          signalSize = signalLength,
+                                          is_little_endian=intel, 
+                                          is_signed = is_signed, 
+                                          factor=factor, 
+                                          offset=offset,
+                                          min=min,
+                                          max=max,
+                                          unit=unit,
+                                          multiplex='Multiplexor',
+                                          comment=comment)     
+#                        signal.addComment(comment)
                         if intel == 0:
                             #motorola set/convert startbit
                             signal.setMsbReverseStartbit(startBit)
                         frame.addSignal(signal)
 
                 else:
-                    signal = Signal(sigName, startBit, signalLength, intel, valuetype, factor, offset, min, max, unit, "", multiplexor)
+ #                   signal = Signal(sigName, startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", multiplexor)
+                    signal = Signal(sigName, 
+                                      startBit = startBit, 
+                                      signalSize = signalLength,
+                                      is_little_endian=intel, 
+                                      is_signed = is_signed, 
+                                      factor=factor, 
+                                      offset=offset,
+                                      min=min,
+                                      max=max,
+                                      unit=unit,
+                                      multiplex=multiplexor,
+                                      comment=comment)     
+#
                     if intel == 0:
                         #motorola set/convert startbit
                         signal.setMsbReverseStartbit(startBit)
                     if valueTableName is not None:
                         signal._values = valueTables[valueTableName]
-                    signal.addComment(comment)
+  #                  signal.addComment(comment)
                     signal.addAttribute("GenSigStartValue", str(startValue))
                     frame.addSignal(signal)
                 if longName is not None:

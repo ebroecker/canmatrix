@@ -38,11 +38,11 @@ def createSignal(signal):
     global enumDict
     output = ""
     output += "Var=%s " % (signal._name)
-    if signal._valuetype == '+':
+    if not signal._is_signed:
         output += "unsigned "
     else:
         output += "signed "
-    if signal._byteorder == 0:
+    if signal._is_little_endian == 0:
         #Motorola
         startBit = signal.getMsbReverseStartbit()
         output += "%d,%d -m " % (startBit, signal._signalsize)
@@ -144,7 +144,7 @@ Title=\"canmatrix-Export\"
                         muxName = muxSignal._name + "%d" % i
 
                         muxOut += "Mux=" + muxName
-                        if signal._byteorder == 0:
+                        if signal._is_little_endian == 0:
                             #Motorola
                             startBit = muxSignal.getMsbReverseStartbit()
                             muxOut += " %d,%d %d -m" % (startBit, muxSignal._signalsize, i)

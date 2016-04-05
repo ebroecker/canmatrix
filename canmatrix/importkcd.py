@@ -44,19 +44,26 @@ def parseSignal(signal, mux, namespace, nodelist):
         signalsize = signal.get('length')
 
 
-    byteorder = 1
+    is_little_endian = True
     if 'endianess' in signal.attrib:
         if signal.get('endianess') == 'little':
-            byteorder = 0
+            is_little_endian = False
 
     unit = ""
     offset = 0
     factor = 1
     min = 0
     max = 1
+    is_signed = False
 
     values = signal.find('./' + namespace + 'Value')
     if values is not None:
+        if 'type' in values.attrib:
+            valuetype = values.get('type')             
+            if valuetype == "unsigned":            
+                is_signed = False
+            else:
+                is_signed = True      
         if 'slope' in values.attrib:
             factor = values.get('slope')
         if 'intercept' in values.attrib:
@@ -76,8 +83,18 @@ def parseSignal(signal, mux, namespace, nodelist):
             receiver.append(nodelist[noderef.get('id')])
 
 
-    valuetype = '+'
-    newSig = Signal(signal.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, receiver, mux)
+    newSig = Signal(signal.get('name'), 
+                      startBit = startbit, 
+                      signalSize = signalsize,
+                      is_little_endian=is_little_endian, 
+                      is_signed = is_signed, 
+                      factor=factor, 
+                      offset=offset,
+                      min=min,
+                      max=max,
+                      unit=unit,
+                      receiver=receiver,
+                      multiplex=mux)     
 
     notes = signal.findall('./' + namespace + 'Notes')
     comment = ""
@@ -117,7 +134,9 @@ def importKcd(filename):
 
     for message in messages:
         dlc = None
-        newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
+        #newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
+        newBo = Frame(message.get('name'), Id=int(message.get('id'), 16))
+
 
         if 'triggered' in message.attrib:
             newBo.addAttribute("GenMsgCycleTime", message.get('interval'))
@@ -142,7 +161,7 @@ def importKcd(filename):
                 signalsize = multiplex.get('length')
 
 
-            byteorder = 1
+            is_little_endian = True
   
             min = 0
             max = 1
@@ -156,7 +175,7 @@ def importKcd(filename):
             unit = ""
             offset = 0
             factor = 1
-            valuetype = '+'
+            is_signed = False
 
             receiver = ""
             consumers = multiplex.findall('./' + namespace + 'Consumer')
@@ -165,9 +184,21 @@ def importKcd(filename):
                 for noderef in noderefs:
                     receiver += nodelist[noderef.get('id')] + ' '
 
-            newSig = Signal(multiplex.get('name'), startbit, signalsize, byteorder, valuetype, factor, offset, min, max, unit, receiver, 'Multiplexor')
-            if byteorder == 0:
-                #motorola set/convert startbit
+            newSig = Signal(multiplex.get('name'), 
+                              startBit = startbit, 
+                              signalSize = signalsize,
+                              is_little_endian=is_little_endian, 
+                              is_signed = is_signed, 
+                              factor=factor, 
+                              offset=offset,
+                              min=min,
+                              max=max,
+                              unit=unit,
+                              receiver=receiver,
+                              multiplex='Multiplexor')     
+
+            if is_little_endian == False:
+                #motorola/big_endian set/convert startbit
                 newSig.setLsbStartbit(startbit)
             notes = multiplex.findall('./' + namespace + 'Notes')
             comment = ""
@@ -216,6 +247,9 @@ def importKcd(filename):
 
         if dlc is None:
             newBo.calcDLC()
+        else:
+            newBo._Size = dlc
+
 
         newBo.updateReceiver()
         db._fl.addFrame(newBo)

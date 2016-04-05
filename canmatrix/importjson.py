@@ -38,7 +38,11 @@ def importJson(filename, **options):
 
     if "messages" in jsonData:
         for frame in jsonData["messages"]:
-            newframe = Frame(frame["id"],frame["name"],8,None)
+#            newframe = Frame(frame["id"],frame["name"],8,None)
+            newframe = Frame(frame["name"],
+                              Id=frame["id"],
+                              dlc=8)
+    
             if "is_extended_frame" in frame and frame["is_extended_frame"]:
                 newframe._extended = 1
             else:
@@ -47,15 +51,21 @@ def importJson(filename, **options):
 
             for signal in frame["signals"]:
                 if signal["is_big_endian"]:
-                    byteorder = 0
+                    is_little_endian = False
                 else:
-                    byteorder = 1
+                    is_little_endian = True
                 if signal["is_signed"]:
-                    valuetype = '-'
+                    is_signed = True
                 else:
-                    valuetype = '+'
-                newsignal = Signal(signal["name"], signal["start_bit"], signal["bit_length"], 
-                            byteorder, valuetype, signal["factor"], signal["offset"],0,0,"",[])
+                    is_signed = False
+                newsignal = Signal(signal["name"], 
+                                startBit=signal["start_bit"], 
+                                signalSize=signal["bit_length"], 
+                                is_little_endian=is_little_endian,
+                                is_signed = is_signed, 
+                                factor=signal["factor"], 
+                                offset=signal["offset"])     
+
                 newframe.addSignal(newsignal)
             db._fl.addFrame(newframe)
     f.close()

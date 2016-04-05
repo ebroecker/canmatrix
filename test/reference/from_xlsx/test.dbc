@@ -78,7 +78,7 @@ BO_ 218082881 CommandVF: 8 Vector__XXX
 BO_ 218083137 CommandFactoryControl: 9 Vector__XXX
  SG_ WriteSerialNumber : 6|2@0+ (1,0) [0|3] "" Vector__XXX
  SG_ FactoryAccess : 32|16@0+ (1,0) [0|65535] "" Vector__XXX
- SG_ SerialNumber : 48|32@0+ (1,0) [0|4294967295] "" Vector__XXX
+ SG_ SerialNumber : 48|32@0+ (1,0) [0|4.29497e+09] "" Vector__XXX
 
 BO_ 218088183 StatusACParameters: 8 Vector__XXX
  SG_ VoltageAC_measured : 16|16@0+ (0.1,0) [0|65535] "V" Vector__XXX
@@ -129,16 +129,16 @@ BO_ 218089719 StatusFaults: 8 Vector__XXX
  SG_ BridgeAVoltageOk_status : 60|1@0+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 218090230 MasterMeasuredPower: 9 Vector__XXX
- SG_ RealPower_measured : 16|32@0+ (1,0) [0|4294967295] "W" Vector__XXX
- SG_ ReactivePower_measured : 48|32@0+ (1,0) [0|4294967295] "VA" Vector__XXX
+ SG_ RealPower_measured : 16|32@0+ (1,0) [0|4.29497e+09] "W" Vector__XXX
+ SG_ ReactivePower_measured : 48|32@0+ (1,0) [0|4.29497e+09] "VA" Vector__XXX
 
 BO_ 218090231 StatusMeasuredPower: 9 Vector__XXX
- SG_ RealPower_measured : 16|32@0+ (1,0) [0|4294967295] "W" Vector__XXX
- SG_ ReactivePower_measured : 48|32@0+ (1,0) [0|4294967295] "VA" Vector__XXX
+ SG_ RealPower_measured : 16|32@0+ (1,0) [0|4.29497e+09] "W" Vector__XXX
+ SG_ ReactivePower_measured : 48|32@0+ (1,0) [0|4.29497e+09] "VA" Vector__XXX
 
 BO_ 419415287 StatusCommandedPower: 9 Vector__XXX
- SG_ RealPower_echo : 16|32@0+ (1,0) [0|4294967295] "W" Vector__XXX
- SG_ ReactivePower_echo : 48|32@0+ (1,0) [0|4294967295] "VA" Vector__XXX
+ SG_ RealPower_echo : 16|32@0+ (1,0) [0|4.29497e+09] "W" Vector__XXX
+ SG_ ReactivePower_echo : 48|32@0+ (1,0) [0|4.29497e+09] "VA" Vector__XXX
 
 BO_ 419416567 StatusCommandVF: 8 Vector__XXX
  SG_ Voltage_echo : 16|16@0+ (0.1,0) [0|65535] "Vrms" Vector__XXX
@@ -187,7 +187,7 @@ BO_ 486517239 StatusNVParam: 9 Vector__XXX
 BO_ 486523383 softwareRev: 9 Vector__XXX
  SG_ ControlSwRev : 16|16@0+ (1,0) [0|65535] "0.01" Vector__XXX
  SG_ InterfaceRev : 32|16@0+ (1,0) [0|65535] "0.01" Vector__XXX
- SG_ BuildTime : 48|32@0+ (1,0) [0|4294967295] "" Vector__XXX
+ SG_ BuildTime : 48|32@0+ (1,0) [0|4.29497e+09] "" Vector__XXX
 
 BO_ 486524407 StatusControlVoltage: 9 Vector__XXX
  SG_ v5p0_Supply : 16|16@0+ (0.01,0) [0|65535] "V" Vector__XXX
@@ -206,10 +206,10 @@ BO_ 486524919 StatusDCParameters: 8 Vector__XXX
  SG_ CurrentDC_measured : 48|16@0+ (1,0) [0|65535] "A" Vector__XXX
 
 BO_ 486526199 serialNumber: 8 Vector__XXX
- SG_ SerialNumber : 16|32@0+ (1,0) [0|4294967295] "" Vector__XXX
+ SG_ SerialNumber : 16|32@0+ (1,0) [0|4.29497e+09] "" Vector__XXX
 
 BO_ 486526455 softwareRevHash: 8 Vector__XXX
- SG_ Hash : 16|28@0+ (1,0) [0|268435455] "" Vector__XXX
+ SG_ Hash : 16|28@0+ (1,0) [0|2.68435e+08] "" Vector__XXX
 
 
 

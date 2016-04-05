@@ -144,10 +144,10 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 # value hinzufuegen
                 if const is None:
                     logger.warn("unknown Compu-Method: " + compmethod.get('UUID'))
-        byteorder = 0
+        is_little_endian = False
         if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
-            byteorder = 1
-        valuetype = '+' # unsigned
+            is_little_endian = True
+        is_signed = False # unsigned
         if name == None:
             logger.debug('no name for signal given')
         if startBit == None:
@@ -156,8 +156,20 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             logger.debug('no length for signal given')
 
         if startBit is not None:
-            newSig = Signal(name.text, startBit.text, length.text, byteorder, valuetype, factor, offset, Min, Max, Unit, receiver, multiplexId)
-            if newSig._byteorder == 0:
+            newSig = Signal(name.text, 
+                                  startBit = startBit.text, 
+                                  signalSize = length.text,
+                                  is_little_endian=is_little_endian, 
+                                  is_signed = is_signed, 
+                                  factor=factor, 
+                                  offset=offset,
+                                  min=Min,
+                                  max=Max,
+                                  unit=Unit,
+                                  receiver=receiver,
+                                  multiplex=multiplexId)     
+ 
+            if newSig._is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
                 newSig.setMsbStartbit(int(startBit.text))                
             
@@ -199,7 +211,10 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
         pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
         pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
-        newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+#        newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+        newBo = Frame(arGetName(frameR, ns), 
+                      Id=idNum,
+                      dlc=int(dlc.text))
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF" % (sn))        
@@ -207,7 +222,10 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         ipduTriggering = arGetChild(ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
         pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns)
         dlc = arGetChild(pdu, "LENGTH", arDict, ns)
-        newBo = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
+#        newBo = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
+        newBo = Frame(sn.text, 
+                      Id=idNum,
+                      dlc=int(dlc.text)/8)
         
         if pdu == None:
             logger.error("ERROR: pdu")
@@ -219,11 +237,16 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         selectorByteOrder = arGetChild(pdu, "SELECTOR-FIELD-BYTE-ORDER", arDict, ns)
         selectorLen = arGetChild(pdu, "SELECTOR-FIELD-LENGTH", arDict, ns)
         selectorStart = arGetChild(pdu, "SELECTOR-FIELD-START-POSITION", arDict, ns)
-        byteorder = 0
+        is_little_endian = False
         if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
-            byteorder = 1
-        valuetype = '+' # unsigned
-        multiplexor = Signal("Multiplexor", selectorStart.text, selectorLen.text, byteorder, valuetype, 1, 0, 0, 1, "", [], "Multiplexor")
+            is_little_endian = True
+        is_signed = False # unsigned
+        multiplexor = Signal("Multiplexor", 
+                              startBit = selectorStart.text, 
+                              signalSize = selectorLen.text,
+                              is_little_endian=is_little_endian, 
+                              multiplex="Multiplexor")     
+
         multiplexor._initValue = 0
         newBo.addSignal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", arDict, ns)
@@ -516,7 +539,7 @@ def importArxml(filename, **options):
             frame = [0, 0, 0, 0, 0, 0, 0, 0]
             for sig in bo._signals:
                 if sig._initValue != 0:
-                    putSignalValueInFrame(sig.getLsbStartbit(), sig._signalsize, sig._byteorder, sig._initValue, frame)
+                    putSignalValueInFrame(sig.getLsbStartbit(), sig._signalsize, sig._is_little_endian, sig._initValue, frame)
             hexStr = '"'
             for i in range(bo._Size):
                 hexStr += "%02X" % frame[i]

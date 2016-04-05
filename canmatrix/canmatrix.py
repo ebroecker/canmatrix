@@ -106,32 +106,84 @@ class Signal(object):
     contains on Signal of canmatrix-object
     with following attributes:
             _name, _startbit,_signalsize (in Bits)
-            _byteorder (1: Intel, 0: Motorola)
-            _valuetype ()
+            _is_little_endian (1: Intel, 0: Motorola)
+            _is_signed ()
             _factor, _offset, _min, _max
             _receiver  (Boarunit/ECU-Name)
             _attributes, _values, _unit, _comment
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
-    def __init__(self, name, startbit, signalsize, byteorder, valuetype="+", factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
+#    def __init__(self, name, startbit, signalsize, is_little_endian, is_signed=False, factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
+    def __init__(self, name, **kwargs):
+
+        if 'startBit' in kwargs:
+            self._startbit = int(kwargs["startBit"])
+        else:
+            self._startbit = 0
+ 
+        if 'signalSize' in kwargs:
+            self._signalsize = int(kwargs["signalSize"])
+        else:
+            self._signalsize = 0
+
+        if 'is_little_endian' in kwargs:
+            self._is_little_endian = kwargs["is_little_endian"]
+        else:
+            self._is_little_endian = True
+
+        if 'is_signed' in kwargs:
+            self._is_signed = kwargs["is_signed"]
+        else:
+            self._is_signed = True
+
+        if 'factor' in kwargs:
+            self._factor = float(kwargs["factor"])
+        else:
+            self._factor = float(1)
+
+        if 'offset' in kwargs:
+            self._offset = float(kwargs["offset"])
+        else:
+            self._offset = float(0)
+ 
+        if 'min' in kwargs:
+            self._min = float(kwargs["min"])
+        else:
+            self._min = float(0)
+
+        if 'max' in kwargs:
+            self._max = float(kwargs["max"])
+        else:
+            self._max = float(0)
+
+        if 'unit' in kwargs:
+            self._unit = kwargs["unit"]
+        else:
+            self._unit = ""
+
+        if 'receiver' in kwargs:
+            self._receiver = kwargs["receiver"]
+        else:
+            self._receiver = []
+
+        if 'comment' in kwargs:
+            self._comment = kwargs["comment"]
+        else:
+            self._comment = None
+
+        if 'multiplex' in kwargs:
+            if kwargs["multiplex"] is not None and kwargs["multiplex"] != 'Multiplexor':
+                multiplex = int(kwargs["multiplex"])
+            else:
+                multiplex = kwargs["multiplex"]
+            self._multiplex = multiplex
+        else:
+            self._multiplex = None
+
         self._name = name
-        self._startbit = int(startbit)
-        self._signalsize = int(signalsize)
-        self._byteorder = int(byteorder)
-        # byteorder: 1: Intel, 0: Motorola
-        self._valuetype = valuetype
-        self._factor = str(factor)
-        self._offset = str(offset)
-        self._min = str(min)
-        self._max = str(max)
-        self._receiver = receiver
         self._attributes = {}
         self._values = {}
-        self._unit = unit
-        self._comment = None
-        if multiplex is not None and multiplex != 'Multiplexor':
-            multiplex = int(multiplex)
-        self._multiplex = multiplex
+
     def addComment(self, comment):
         """
         Set comment of Signal
@@ -150,7 +202,7 @@ class Signal(object):
         """
         self._values[int(value)] = valueName
     def setMsbReverseStartbit(self, msbStartBitReverse, length=None):
-        if self._byteorder == 1:
+        if self._is_little_endian == 1:
             #Intel
             self._startbit = msbStartBitReverse
         else:
@@ -164,7 +216,7 @@ class Signal(object):
         set startbit while given startbit is most significant bit
         if length is not given, use length from object
         """
-        if self._byteorder == 1:
+        if self._is_little_endian == 1:
             #Intel
             self._startbit = msbStartBit
         else:
@@ -185,7 +237,7 @@ class Signal(object):
         self._startbit = lsbStartBit
         
     def getMsbReverseStartbit(self):
-        if self._byteorder == 1:
+        if self._is_little_endian == 1:
             #Intel
             return self._startbit
         else:
@@ -197,7 +249,7 @@ class Signal(object):
             return int(startBit)
 
     def getMsbStartbit(self):
-        if self._byteorder == 1:
+        if self._is_little_endian == 1:
             #Intel
             return self._startbit
         else:
@@ -250,20 +302,42 @@ class Frame(object):
     _signals (list of signal-objects), _attributes (list of attributes),
     _receiver (list of boardunits/ECU-names), _extended (Extended Frame = 1), _comment
     """
-    def __init__(self,bid, name, size, transmitter):
-        self._Id = int(bid)
+#    def __init__(self,bid, name, size, transmitter):
+    def __init__(self, name, **kwargs):
         self._name = name
-        if transmitter is not None:
-            self._Transmitter = [transmitter]
+        if 'Id' in kwargs:
+            self._Id = int(kwargs["Id"])
+        else:
+            self._Id = 0
+
+        if 'dlc' in kwargs:
+            self._Size = int(kwargs["dlc"])
+        else:
+            self._Size = 0
+
+        if 'transmitter' in kwargs:
+            self._Transmitter = [kwargs["transmitter"]]
         else:
             self._Transmitter = []
-        self._Size = int(size)
-        self._signals = []
+
+        if 'extended' in kwargs:
+            self._extended = kwargs["extended"]
+        else:
+            self._extended = 0
+
+        if 'comment' in kwargs:
+            self._comment = kwargs["comment"]
+        else:
+            self._comment = None
+
+        if 'signals' in kwargs:
+            self._signals = kwargs["signals"]
+        else:
+            self._signals = []
+
         self._attributes = {}
         self._receiver = []
         self._SignalGroups = []
-        self._extended = 0
-        self._comment = None
 
     def addSignalGroup(self, Name, Id, signalNames):
         newGroup = SignalGroup(Name, Id)
@@ -334,10 +408,10 @@ class Frame(object):
         """
         maxBit = 0
         for sig in self._signals:
-            if sig._byteorder == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
+            if sig._is_little_endian == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
                 # check intel signal (startbit + length):
                 maxBit = sig.getLsbStartbit() + int(sig._signalsize)
-            elif sig._byteorder == 0  and sig.getLsbStartbit() > maxBit:
+            elif sig._is_little_endian == 0  and sig.getLsbStartbit() > maxBit:
                 #check motorola signal (starbit is least significant bit):
                 maxBit = sig.getLsbStartbit()
         self._Size =  max(self._Size, math.ceil(maxBit / 8))
@@ -474,8 +548,6 @@ class CanMatrix(object):
                     frame._signals.remove(signal)
 
     def recalcDLC(self, strategy):
-        print("recalcDLC")
-        print(strategy)
         for frame in self._fl._list:
             originalDlc = frame._Size
             if "max" == strategy:
@@ -483,10 +555,10 @@ class CanMatrix(object):
             if "force" == strategy:
                 maxBit = 0
                 for sig in frame._signals:
-                    if sig._byteorder == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
+                    if sig._is_little_endian == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
                         # check intel signal (startbit + length):
                         maxBit = sig.getLsbStartbit() + int(sig._signalsize)
-                    elif sig._byteorder == 0  and sig.getLsbStartbit() > maxBit:
+                    elif sig._is_little_endian == 0  and sig.getLsbStartbit() > maxBit:
                         #check motorola signal (starbit is least significant bit):
                         maxBit = sig.getLsbStartbit()
                 frame._Size = math.ceil(maxBit / 8)

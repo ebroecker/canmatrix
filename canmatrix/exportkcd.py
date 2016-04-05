@@ -34,7 +34,7 @@ def createSignal(signal, nodeList):
     sig = etree.Element('Signal', name=signal._name, offset=str(signal.getLsbStartbit()))
     if signal._signalsize > 1:
         sig.set("length", str(signal._signalsize))
-    if signal._byteorder == 0:
+    if signal._is_little_endian == 0:
         sig.set('endianess',"little")
 
     notes = etree.Element('Notes')
@@ -43,14 +43,19 @@ def createSignal(signal, nodeList):
     sig.append(notes)
 
     value = etree.Element('Value')
+    if signal._is_signed:
+        value.set('type',"signed")
+    else:
+        value.set('type',"unsigned")
+
     if float(signal._factor) != 1:
-        value.set('slope',str(signal._factor))
+        value.set('slope',str("%g" % signal._factor))
     if float(signal._offset) != 0:
-        value.set('intercept',str(signal._offset))
+        value.set('intercept',str("%g" % signal._offset))
     if float(signal._min) != 0:
-        value.set('min',str(signal._min))
+        value.set('min',str("%g" % signal._min))
     if float(signal._max) != 1:
-        value.set('max',str(signal._max))
+        value.set('max',str("%g" % signal._max))
     if len(signal._unit) > 0:
         value.set('unit',signal._unit)
     sig.append(value)
@@ -142,9 +147,9 @@ def exportKcd(db, filename):
                 multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal.getLsbStartbit()), length=str(int(signal._signalsize)))
                 value = etree.Element('Value')
                 if float(signal._min) != 0:
-                    value.set('min',str(signal._min))
+                    value.set('min', "%g" % signal._min)
                 if float(signal._max) != 1:
-                    value.set('max',str(signal._max))
+                    value.set('max', "%g" % signal._max)
                 multiplexor.append(value)
                 labelset = etree.Element('LabelSet')
                 for valueVal,valName in sorted(signal._values.items(), key=lambda x: int(x[0])):

@@ -199,7 +199,12 @@ def importDbf(filename, **options):
                     transmitter = temparray[6]
                 else:
                     transmitter = None
-                newBo = db._fl.addFrame(Frame(int(Id), name, size, transmitter))
+                newBo = db._fl.addFrame(
+                    Frame(name, 
+                      Id=int(Id),
+                      dlc=size,
+                      transmitter=transmitter))
+                  #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug ("Extended")
                     newBo._extended = 1
@@ -228,11 +233,26 @@ def importDbf(filename, **options):
                 else:
                     multiplex = None
 
-                sign = '+'
+                if sign == "U":
+                    is_signed = False
+                else:
+                    is_signed = True
                 startbit = int (startbit)
                 startbit += (int(startbyte)-1)*8
 
-                newSig = newBo.addSignal(Signal(name, startbit, size, byteorder, sign, factor, offset, float(Min)*float(factor), float(Max)*float(factor), unit, receiver, multiplex))
+                newSig = newBo.addSignal(Signal(name, 
+                          startBit = startbit, 
+                          signalSize = size,
+                          is_little_endian=(int(byteorder)==1), 
+                          is_signed = is_signed, 
+                          factor=factor, 
+                          offset=offset,
+                          min=float(Min)*float(factor),
+                          max=float(Max)*float(factor),
+                          unit=unit,
+                          receiver=receiver,
+                          multiplex=multiplex))   
+ 
                 if int(byteorder) == 0:
                     # this is dummy here, because internal lsb is default - for now
                     newSig.setLsbStartbit(startbit)                    

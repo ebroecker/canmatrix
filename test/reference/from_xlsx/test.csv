@@ -138,7 +138,7 @@ CFFAF41h,CommandFactoryControl,0,,,1,1,WriteSerialNumber,,2,,,m,Enable,1
 CFFAF41h,CommandFactoryControl,0,,,1,1,WriteSerialNumber,,2,,,m,Error,2
 CFFAF41h,CommandFactoryControl,0,,,1,1,WriteSerialNumber,,2,,,m,N/A,3
 CFFAF41h,CommandFactoryControl,0,,,5,7,FactoryAccess,,16,,,m,,0..65535
-CFFAF41h,CommandFactoryControl,0,,,7,7,SerialNumber,,32,,,m,,0..4294967295
+CFFAF41h,CommandFactoryControl,0,,,7,7,SerialNumber,,32,,,m,,0..4.29497e+09
 CFFC2F7h,StatusACParameters,0,,,3,7,VoltageAC_measured,,16,,,m,,0..65535,0.1  V
 CFFC2F7h,StatusACParameters,0,,,5,7,CurrentAC_measured,,16,,,m,,0..65535,A
 CFFC2F7h,StatusACParameters,0,,,7,7,Frequency_measured,,16,,,m,,0..65535,0.1  Hz
@@ -318,12 +318,12 @@ CFFC8F7h,StatusFaults,0,,,8,3,BridgeAVoltageOk_status,,1,,,m,Normal,0
 CFFC8F7h,StatusFaults,0,,,8,3,BridgeAVoltageOk_status,,1,,,m,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,8,3,BridgeAVoltageOk_status,,1,,,m,Error,2
 CFFC8F7h,StatusFaults,0,,,8,3,BridgeAVoltageOk_status,,1,,,m,N/A,3
-CFFCAF6h,MasterMeasuredPower,0,,,3,7,RealPower_measured,,32,,,m,,0..4294967295,W
-CFFCAF6h,MasterMeasuredPower,0,,,7,7,ReactivePower_measured,,32,,,m,,0..4294967295,VA
-CFFCAF7h,StatusMeasuredPower,0,,,3,7,RealPower_measured,,32,,,m,,0..4294967295,W
-CFFCAF7h,StatusMeasuredPower,0,,,7,7,ReactivePower_measured,,32,,,m,,0..4294967295,VA
-18FFC4F7h,StatusCommandedPower,0,,,3,7,RealPower_echo,,32,,,m,,0..4294967295,W
-18FFC4F7h,StatusCommandedPower,0,,,7,7,ReactivePower_echo,,32,,,m,,0..4294967295,VA
+CFFCAF6h,MasterMeasuredPower,0,,,3,7,RealPower_measured,,32,,,m,,0..4.29497e+09,W
+CFFCAF6h,MasterMeasuredPower,0,,,7,7,ReactivePower_measured,,32,,,m,,0..4.29497e+09,VA
+CFFCAF7h,StatusMeasuredPower,0,,,3,7,RealPower_measured,,32,,,m,,0..4.29497e+09,W
+CFFCAF7h,StatusMeasuredPower,0,,,7,7,ReactivePower_measured,,32,,,m,,0..4.29497e+09,VA
+18FFC4F7h,StatusCommandedPower,0,,,3,7,RealPower_echo,,32,,,m,,0..4.29497e+09,W
+18FFC4F7h,StatusCommandedPower,0,,,7,7,ReactivePower_echo,,32,,,m,,0..4.29497e+09,VA
 18FFC9F7h,StatusCommandVF,0,,,3,7,Voltage_echo,,16,,,m,,0..65535,0.1  Vrms
 18FFC9F7h,StatusCommandVF,0,,,5,7,Frequency_echo,,16,,,m,,0..65535,0.1  Hz
 18FFCBF7h,StatusTemps,0,,,3,7,TempInlet_measured,,16,,,m,,0..65535,0.1  C
@@ -375,7 +375,7 @@ CFFCAF7h,StatusMeasuredPower,0,,,7,7,ReactivePower_measured,,32,,,m,,0..42949672
 1CFFA9F7h,StatusNVParam,0,,,9,7,V110to120pct,Mode 1:,16,,,m,,1..30000,ms
 1CFFC1F7h,softwareRev,0,,,3,7,ControlSwRev,,16,,,m,,0..65535,0.01
 1CFFC1F7h,softwareRev,0,,,5,7,InterfaceRev,,16,,,m,,0..65535,0.01
-1CFFC1F7h,softwareRev,0,,,7,7,BuildTime,,32,,,m,,0..4294967295
+1CFFC1F7h,softwareRev,0,,,7,7,BuildTime,,32,,,m,,0..4.29497e+09
 1CFFC5F7h,StatusControlVoltage,0,,,3,7,v5p0_Supply,,16,,,m,,0..65535,0.01  V
 1CFFC5F7h,StatusControlVoltage,0,,,5,7,v3p3_Supply,,16,,,m,,0..65535,0.01  V
 1CFFC5F7h,StatusControlVoltage,0,,,7,7,v24_Supply,,16,,,m,,0..65535,0.01  V
@@ -386,5 +386,5 @@ CFFCAF7h,StatusMeasuredPower,0,,,7,7,ReactivePower_measured,,32,,,m,,0..42949672
 1CFFC7F7h,StatusDCParameters,0,,,3,7,VoltageDCInput_measured,,16,,,m,,0..65535,V
 1CFFC7F7h,StatusDCParameters,0,,,5,7,VoltageDCBus,,16,,,m,,0..65535,V
 1CFFC7F7h,StatusDCParameters,0,,,7,7,CurrentDC_measured,,16,,,m,,0..65535,A
-1CFFCCF7h,serialNumber,0,,,3,7,SerialNumber,,32,,,m,,0..4294967295
-1CFFCDF7h,softwareRevHash,0,,,3,7,Hash,,28,,,m,,0..268435455
+1CFFCCF7h,serialNumber,0,,,3,7,SerialNumber,,32,,,m,,0..4.29497e+09
+1CFFCDF7h,softwareRevHash,0,,,3,7,Hash,,28,,,m,,0..2.68435e+08
