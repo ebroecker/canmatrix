@@ -1,4 +1,4 @@
-##**Canmatrix** is a python package to read and write several CAN database formats.##
+##**Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats.##
 
 ###About
 
