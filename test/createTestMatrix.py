@@ -16,7 +16,7 @@ db = CanMatrix()
 db._BUs.add(BoardUnit("testBU"))
 db._BUs.add(BoardUnit("recBU"))
 
-myFrame = Frame(0x123, "testFrame1", 8, "testBU" )
+myFrame = Frame("testFrame1",Id = 0x123, dlc=8, transmitter = "testBU" )
 
 mySignal = Signal("someTestSignal", 
           startBit = 9, 
@@ -51,7 +51,7 @@ myFrame.addComment("Multi \n Line \n Frame comment")
 myFrame.addSignal(mySignal)
 myFrame.addSignal(mySignal2)
 
-myFrame2 = Frame(0x12, "extendedFrame", 8, "testBU" )
+myFrame2 = Frame("extendedFrame", Id = 0x12,  dlc = 8, transmitter = "testBU" )
 myFrame2._extended = 1
 
 db._fl.addFrame(myFrame)
