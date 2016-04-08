@@ -187,6 +187,9 @@ def main():
     parser.add_option("", "--jsonExportCanard",
                                       dest="jsonCanard", action="store_true", default=False,
                                       help="Export Canard compatible json format")
+    parser.add_option("", "--jsonExportAll",
+                                      dest="jsonAll", action="store_true", default=False,
+                                      help="Export more data to json format")
     parser.add_option("", "--ecus",
                                       dest="ecus", default=None,
                                       help="Copy only given ECUs (comma separated list) to target matrix")
