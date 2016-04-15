@@ -145,6 +145,7 @@ def importKcd(filename):
 
         if 'length' in message.attrib:
             dlc = int(message.get('length'))
+            newBo._Size = dlc
 
         if 'format' in message.attrib:
             if message.get('format') == "extended":
@@ -177,6 +178,9 @@ def importKcd(filename):
             offset = 0
             factor = 1
             is_signed = False
+            if 'type' in multiplex.attrib:
+                if multiplex.get('type') == 'signed':
+                    is_signed = True
 
             receiver = ""
             consumers = multiplex.findall('./' + namespace + 'Consumer')
