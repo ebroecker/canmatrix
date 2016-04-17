@@ -219,18 +219,10 @@ class Signal(object):
         Add Value/Description to Signal
         """
         self._values[int(value)] = valueName
-    def setMsbReverseStartbit(self, msbStartBitReverse, length=None):
-        if self._is_little_endian == 1:
-            #Intel
-            self._startbit = startBit
-        else:
-            if(length == None):
-                length = self._signalsize
-            startBit = startBit + length - 1
+    def setMsbReverseStartbit(self, startBit):
+        self._startbit = startBit
 
-            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-            self._startbit = startBit
-    def setMsbStartbit(self, startBit, length=None):
+    def setMsbStartbit(self, startBit):
         """
         set startbit while given startbit is most significant bit
         if length is not given, use length from object
@@ -239,34 +231,23 @@ class Signal(object):
             #Intel
             self._startbit = startBit
         else:
-            if length == None:
-                length = self._signalsize
-
-            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-
-            startBit = startBit + length - 1
-
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
 
             self._startbit = startBit
-    def setLsbStartbit(self, lsbStartBit):
+    def setLsbStartbit(self, startBit):
         """
         set startbit while given startbit is least significant bit
         """
-        self._startbit = lsbStartBit
-        
-    def getMsbReverseStartbit(self):
         if self._is_little_endian == 1:
-            #Intel
-            return self._startbit
+            self._startbit = startBit
         else:
-            startBit = self._startbit
-
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
 
-            startBit = startBit + 1 - self._signalsize
-
-            return int(startBit)
+            startBit = startBit  + 1 - self._signalsize
+            self._startbit = startBit
+        
+    def getMsbReverseStartbit(self):
+        return self._startbit
 
     def getMsbStartbit(self):
         if self._is_little_endian == 1:
@@ -277,13 +258,18 @@ class Signal(object):
 
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
 
-            startBit = startBit + 1 - self._signalsize
-
-            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
             return int(startBit)
 
     def getLsbStartbit(self):
-        return int(self._startbit)
+        if self._is_little_endian == 1:
+            return int(self._startbit)
+        else:
+            startBit = self._startbit
+
+            startBit = startBit + self._signalsize - 1
+
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+            return int(startBit)
 
     def calculateRawRange(self):
         rawRange = 2 ** self._signalsize
@@ -307,7 +293,6 @@ class Signal(object):
         if self._max is None:
             rawMax = self.calculateRawRange()[1]
             self._max = self._offset + (rawMax * self._factor)
-
 
 class SignalGroup(object):
     """
