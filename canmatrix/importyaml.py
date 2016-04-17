@@ -36,4 +36,10 @@ def importYaml(filename):
     db = yaml.load(f)
     f.close()
 
+    for i,frame in enumerate(db._fl._list):
+        for j,signal in enumerate(frame._signals):
+            if signal._is_little_endian == False:
+                signal.setLsbStartbit(signal._startbit)
+                db._fl._list[i]._signals[j]._startbit = signal._startbit
+
     return db
