@@ -219,57 +219,45 @@ class Signal(object):
         Add Value/Description to Signal
         """
         self._values[int(value)] = valueName
-    def setMsbReverseStartbit(self, startBit):
+    def setStartbit(self, startBit, bitNumbering = None, startLittle = None):
+        """
+        set startbit.
+        bitNumbering is 1 for LSB0/LSBFirst, 0 for MSB0/MSBFirst.
+        If bit numbering is consistent with byte order (little=LSB0, big=MSB0) (KCD, SYM), start bit unmodified.
+        Otherwise reverse bit numbering. For DBC, ArXML (OSEK), both little endian and big endian use LSB0.
+        If bitNumbering is None, assume consistent with byte order.
+        If startLittle is set, given startBit is assumed start from lsb bit rather than the start of the signal data in the message data
+        """
+        # bit numbering not consistent with byte order. reverse
+        if bitNumbering != None and bitNumbering != self._is_little_endian:
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+        # if given startbit is for the end of signal data (lsbit), convert to start of signal data (msbit)
+        if startLittle == True and self._is_little_endian == False:
+            startBit = startBit + 1 - self._signalsize
         self._startbit = startBit
-
+    def setMsbReverseStartbit(self, startBit):
+        self.setStartbit(startBit)
     def setMsbStartbit(self, startBit):
-        """
-        set startbit while given startbit is most significant bit
-        if length is not given, use length from object
-        """
-        if self._is_little_endian == 1:
-            #Intel
-            self._startbit = startBit
-        else:
-            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-
-            self._startbit = startBit
+        self.setStartbit(startBit, bitNumbering = 1)
     def setLsbStartbit(self, startBit):
-        """
-        set startbit while given startbit is least significant bit
-        """
-        if self._is_little_endian == 1:
-            self._startbit = startBit
-        else:
+        self.setStartbit(startBit, bitNumbering = 1, startLittle = True)
+    def getStartbit(self, bitNumbering = None, startLittle = None):
+        startBit = self._startbit
+        # convert from big endian start bit at start bit(msbit) to end bit(lsbit)
+        if startLittle == True and self._is_little_endian == False:
+            startBit = startBit + self._signalsize - 1
+        # bit numbering not consistent with byte order. reverse
+        if bitNumbering != None and bitNumbering != self._is_little_endian:
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+        return int(startBit)
 
-            startBit = startBit  + 1 - self._signalsize
-            self._startbit = startBit
-        
     def getMsbReverseStartbit(self):
-        return self._startbit
+        return self.getStartbit()
 
     def getMsbStartbit(self):
-        if self._is_little_endian == 1:
-            #Intel
-            return self._startbit
-        else:
-            startBit = self._startbit
-
-            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-
-            return int(startBit)
-
+        return self.getStartbit( bitNumbering = 1)
     def getLsbStartbit(self):
-        if self._is_little_endian == 1:
-            return int(self._startbit)
-        else:
-            startBit = self._startbit
-
-            startBit = startBit + self._signalsize - 1
-
-            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-            return int(startBit)
+        return self.getStartbit( bitNumbering = 1, startLittle = True)
 
     def calculateRawRange(self):
         rawRange = 2 ** self._signalsize
