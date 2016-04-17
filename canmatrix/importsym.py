@@ -227,7 +227,7 @@ def importSym(filename, **options):
 #                        signal.addComment(comment)
                         if intel == 0:
                             #motorola set/convert startbit
-                            signal.setMsbReverseStartbit(startBit)
+                            signal.setStartbit(startBit)
                         frame.addSignal(signal)
 
                 else:
@@ -248,7 +248,7 @@ def importSym(filename, **options):
 #
                     if intel == 0:
                         #motorola set/convert startbit
-                        signal.setMsbReverseStartbit(startBit)
+                        signal.setStartbit(startBit)
                     if valueTableName is not None:
                         signal._values = valueTables[valueTableName]
   #                  signal.addComment(comment)

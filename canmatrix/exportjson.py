@@ -52,7 +52,7 @@ def exportJson(db, filename, **options):
         for frame in db._fl._list:
             signals = {}
             for signal in frame._signals:
-                signals[signal.getLsbStartbit()]= {"name" : signal._name, "bit_length" : signal._signalsize, "factor":signal._factor, "offset":signal._offset}
+                signals[signal.getStartbit(bitNumbering = 1, startLittle = True)]= {"name" : signal._name, "bit_length" : signal._signalsize, "factor":signal._factor, "offset":signal._offset}
             exportArray.append({"name" : frame._name, "id" :  hex(frame._Id), "signals": signals })
 
     elif exportAll == False:
@@ -61,7 +61,7 @@ def exportJson(db, filename, **options):
             for signal in frame._signals:
                 signals.append({
                     "name" : signal._name,
-                    "start_bit" : signal.getLsbStartbit(),
+                    "start_bit" : signal.getStartbit(bitNumbering = 1, startLittle = True),
                     "bit_length" : signal._signalsize,
                     "factor":float(signal._factor),
                     "offset":float(signal._offset),

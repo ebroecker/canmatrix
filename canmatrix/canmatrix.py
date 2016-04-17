@@ -235,12 +235,7 @@ class Signal(object):
         if startLittle == True and self._is_little_endian == False:
             startBit = startBit + 1 - self._signalsize
         self._startbit = startBit
-    def setMsbReverseStartbit(self, startBit):
-        self.setStartbit(startBit)
-    def setMsbStartbit(self, startBit):
-        self.setStartbit(startBit, bitNumbering = 1)
-    def setLsbStartbit(self, startBit):
-        self.setStartbit(startBit, bitNumbering = 1, startLittle = True)
+
     def getStartbit(self, bitNumbering = None, startLittle = None):
         startBit = self._startbit
         # convert from big endian start bit at start bit(msbit) to end bit(lsbit)
@@ -250,14 +245,6 @@ class Signal(object):
         if bitNumbering != None and bitNumbering != self._is_little_endian:
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
         return int(startBit)
-
-    def getMsbReverseStartbit(self):
-        return self.getStartbit()
-
-    def getMsbStartbit(self):
-        return self.getStartbit( bitNumbering = 1)
-    def getLsbStartbit(self):
-        return self.getStartbit( bitNumbering = 1, startLittle = True)
 
     def calculateRawRange(self):
         rawRange = 2 ** self._signalsize

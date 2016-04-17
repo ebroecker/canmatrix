@@ -125,9 +125,9 @@ def writeValuex(label, value, row, rearCol):
 
 def writeSignalx(db, sig, row, rearCol):
     #startbyte
-    row[5] = int((sig.getMsbReverseStartbit())/8+1)
+    row[5] = int((sig.getStartbit())/8+1)
     #startbit
-    row[6] = (sig.getMsbReverseStartbit())%8
+    row[6] = (sig.getStartbit())%8
     #signalname
     row[7] = sig._name
 
@@ -229,7 +229,7 @@ def exportCsv(db, filename, delimiter=','):
         # sort signals:
         sigHash = {}
         for sig in frame._signals:
-            sigHash["%02d" % int(sig.getMsbReverseStartbit()) + sig._name] = sig
+            sigHash["%02d" % int(sig.getStartbit()) + sig._name] = sig
 
         # iterate over signals
         for sig_idx in sorted(sigHash.keys()):

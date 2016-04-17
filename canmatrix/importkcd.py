@@ -95,7 +95,7 @@ def parseSignal(signal, mux, namespace, nodelist):
                       unit=unit,
                       receiver=receiver,
                       multiplex=mux)
-    newSig.setMsbReverseStartbit(int(startbit))
+    newSig.setStartbit(int(startbit))
 
     notes = signal.findall('./' + namespace + 'Notes')
     comment = ""
@@ -204,7 +204,7 @@ def importKcd(filename):
 
             if is_little_endian == False:
                 #motorola/big_endian set/convert startbit
-                newSig.setMsbReverseStartbit(startbit)
+                newSig.setStartbit(startbit)
             notes = multiplex.findall('./' + namespace + 'Notes')
             comment = ""
             for note in notes:

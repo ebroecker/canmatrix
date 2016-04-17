@@ -125,7 +125,7 @@ def importDbc(filename, **options):
                                 receiver=receiver)     
                 if not tempSig._is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc
-                    tempSig.setMsbStartbit(int(temp.group(2)))                
+                    tempSig.setStartbit(int(temp.group(2)), bitNumbering = 1)
                 db._fl.addSignalToLastFrame(tempSig)
             else:
                 pattern = "^SG\_ (\w+) (\w+) *: (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)"
