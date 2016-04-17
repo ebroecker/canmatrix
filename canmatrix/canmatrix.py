@@ -418,13 +418,9 @@ class Frame(object):
         """
         maxBit = 0
         for sig in self._signals:
-            if sig._is_little_endian == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
-                # check intel signal (startbit + length):
-                maxBit = sig.getLsbStartbit() + int(sig._signalsize)
-            elif sig._is_little_endian == 0  and sig.getLsbStartbit() > maxBit:
-                #check motorola signal (starbit is least significant bit):
-                maxBit = sig.getLsbStartbit()
-        self._Size =  max(self._Size, math.ceil(maxBit / 8))
+            if sig.getStartbit() + int(sig._signalsize) > maxBit:
+                maxBit = sig.getStartbit() + int(sig._signalsize)
+        self._Size =  max(self._Size, int(math.ceil(maxBit / 8)))
     
     def updateReceiver(self):
         """
@@ -565,12 +561,8 @@ class CanMatrix(object):
             if "force" == strategy:
                 maxBit = 0
                 for sig in frame._signals:
-                    if sig._is_little_endian == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
-                        # check intel signal (startbit + length):
-                        maxBit = sig.getLsbStartbit() + int(sig._signalsize)
-                    elif sig._is_little_endian == 0  and sig.getLsbStartbit() > maxBit:
-                        #check motorola signal (starbit is least significant bit):
-                        maxBit = sig.getLsbStartbit()
+                    if sig.getStartbit() + int(sig._signalsize) > maxBit:
+                        maxBit = sig.getStartbit() + int(sig._signalsize)
                 frame._Size = math.ceil(maxBit / 8)
 
 
