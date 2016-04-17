@@ -222,32 +222,33 @@ class Signal(object):
     def setMsbReverseStartbit(self, msbStartBitReverse, length=None):
         if self._is_little_endian == 1:
             #Intel
-            self._startbit = msbStartBitReverse
+            self._startbit = startBit
         else:
-            startByte = math.floor(msbStartBitReverse / 8)
-            startBit = msbStartBitReverse % 8
-            startBit = (7-startBit)
-            startBit += startByte * 8
-            self.setMsbStartbit(startBit, length)
-    def setMsbStartbit(self, msbStartBit, length=None):
+            if(length == None):
+                length = self._signalsize
+            startBit = startBit + length - 1
+
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+            self._startbit = startBit
+    def setMsbStartbit(self, startBit, length=None):
         """
         set startbit while given startbit is most significant bit
         if length is not given, use length from object
         """
         if self._is_little_endian == 1:
             #Intel
-            self._startbit = msbStartBit
+            self._startbit = startBit
         else:
             if length == None:
                 length = self._signalsize
-            # following code is from https://github.com/julietkilo/CANBabel/blob/master/src/main/java/com/github/canbabel/canio/dbc/DbcReader.java:
-            pos = 7 - (msbStartBit % 8) + (length - 1)
-            if (pos < 8):
-                self._startbit = msbStartBit - length + 1;
-            else:
-                cpos = 7 - (pos % 8);
-                bytes = int(pos / 8);
-                self._startbit = cpos + (bytes * 8) + int(msbStartBit/8) * 8;
+
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+
+            startBit = startBit + length - 1
+
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+
+            self._startbit = startBit
     def setLsbStartbit(self, lsbStartBit):
         """
         set startbit while given startbit is least significant bit
@@ -259,11 +260,12 @@ class Signal(object):
             #Intel
             return self._startbit
         else:
-            startBit = self.getMsbStartbit()
-            startByte = math.floor(startBit / 8)
-            startBit = startBit % 8
-            startBit = (7-startBit)
-            startBit += startByte * 8
+            startBit = self._startbit
+
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+
+            startBit = startBit + 1 - self._signalsize
+
             return int(startBit)
 
     def getMsbStartbit(self):
@@ -271,19 +273,14 @@ class Signal(object):
             #Intel
             return self._startbit
         else:
-            #code from https://github.com/rbei-etas/busmaster/blob/master/Sources/Format%20Converter/DBF2DBCConverter/Signal.cpp
-            nByte = int(self._signalsize/8);
-            if (self._signalsize % 8) != 0:
-                nByte += 1
+            startBit = self._startbit
 
-            nStartBit = (1 - nByte) * 8;
-            nBitSize = self._signalsize - (8 * (nByte - 1))+ self._startbit;
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
 
-            if(nBitSize == 0):
-                ucStartBit = self._startbit + self._signalsize;
-            else:
-                ucStartBit = nStartBit + nBitSize-1;
-            return int(ucStartBit)
+            startBit = startBit + 1 - self._signalsize
+
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+            return int(startBit)
 
     def getLsbStartbit(self):
         return int(self._startbit)
