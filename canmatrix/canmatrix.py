@@ -1,5 +1,8 @@
 from __future__ import division
+
 import math
+
+
 #!/usr/bin/env python
 
 #Copyright (c) 2013, Eduard Broecker
@@ -629,3 +632,28 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
             restLen -= nbits
             frame[i] |= ((value >> restLen) << end) & mask
             nbits = min(restLen, 8)
+
+
+class CanId(object):
+    """
+    Split Id into Global source addresses (source, destination) off ECU and PGN
+    """
+    # TODO link to BoardUnit/ECU
+    source = None  # Source Address
+    destination = None  # Destination Address
+    pgn = None  # PGN
+
+    def __init__(self, id, extended=True):
+        if extended:
+            self.source = id & int('0xFF', 16)
+            self.pgn = (id >> 8) & int('0xFFFF', 16)
+            self.destination = id >> 8 * 3 & int('0xFF', 16)
+        else:
+            # TODO implement for standard Id
+            pass
+
+    def tuples(self):
+        return self.destination, self.pgn, self.source
+
+    def __str__(self):
+        return "DA:{da:#02X} PGN:{pgn:#04X} SA:{sa:#02X}".format(da=self.destination, pgn=self.pgn, sa=self.source)

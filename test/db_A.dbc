@@ -1,0 +1,47 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/4/%%%/4/'%**4YYY///"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+
+BS_:
+
+BU_:
+
+
+BO_ 2561396001 MSG_A: 8 Vector__XXX
+ SG_ dbA_msgA_s1 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ dbA_msgA_s2 : 12|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ dbA_msgA_s3 : 27|8@0- (1,0) [0|0] "" Vector__XXX
+
+BO_ 2566839392 MSG_B: 8 Vector__XXX
+ SG_ dbA_msgB_s1 : 2|16@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 2147484432 MSG_C: 8 Vector__XXX
+ SG_ NewSignal4_A : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+
+CM_ BO_ 2561396001 "Same PGN";
+CM_ SG_ 2561396001 dbA_msgA_s2 "same";
+CM_ SG_ 2561396001 dbA_msgA_s3 "Motorola";
+CM_ BO_ 2566839392 "Same Frame";
+CM_ BO_ 2147484432 "Nothing";
