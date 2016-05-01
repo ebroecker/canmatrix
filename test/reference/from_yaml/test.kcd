@@ -120,12 +120,12 @@
       <Notes>Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.</Notes>
       <Signal name="RealPower command" offset="24" length="32" endianess="little">
         <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.</Notes>
-        <Value type="signed" min="-90000" max="90000" unit="W"/>
+        <Value type="signed" min="-90000.0" max="90000.0" unit="W"/>
         <LabelSet/>
       </Signal>
       <Signal name="ReactivePower_command" offset="56" length="32" endianess="little">
         <Notes>Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.</Notes>
-        <Value type="signed" min="-90000" max="90000" unit="VA"/>
+        <Value type="signed" min="-90000.0" max="90000.0" unit="VA"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -134,12 +134,12 @@
       <Notes>Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.</Notes>
       <Signal name="Voltage_command" offset="8" length="16" endianess="little">
         <Notes>Desired output voltage while in grid forming mode.</Notes>
-        <Value type="unsigned" slope="0.1" min="10" max="500" unit="Vrms"/>
+        <Value type="unsigned" slope="0.1" min="10.0" max="500.0" unit="Vrms"/>
         <LabelSet/>
       </Signal>
       <Signal name="Frequency_command" offset="24" length="16" endianess="little">
         <Notes>Desired output frequency while in grid forming mode.</Notes>
-        <Value type="unsigned" slope="0.1" min="45" max="65" unit="Hz"/>
+        <Value type="unsigned" slope="0.1" min="45.0" max="65.0" unit="Hz"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -208,65 +208,65 @@
         <MuxGroup count="1">
           <Signal name="VUnder50pct" offset="24" length="16" endianess="little">
             <Notes>Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.</Notes>
-            <Value type="unsigned" min="1" max="30000" unit="ms"/>
+            <Value type="unsigned" min="1.0" max="30000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="V50to88pct" offset="40" length="16" endianess="little">
             <Notes>Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.</Notes>
-            <Value type="unsigned" min="1" max="30000" unit="ms"/>
+            <Value type="unsigned" min="1.0" max="30000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="V110to120pct" offset="56" length="16" endianess="little">
             <Notes>Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.</Notes>
-            <Value type="unsigned" min="1" max="30000" unit="ms"/>
+            <Value type="unsigned" min="1.0" max="30000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="2">
           <Signal name="VOver120" offset="24" length="16" endianess="little">
             <Notes>Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.</Notes>
-            <Value type="unsigned" min="1" max="30000"/>
+            <Value type="unsigned" min="1.0" max="30000.0"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="3">
           <Signal name="FreqHi" offset="24" length="16" endianess="little">
             <Notes>Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.</Notes>
-            <Value type="unsigned" slope="0.1" min="40" max="70" unit="Hz"/>
+            <Value type="unsigned" slope="0.1" min="40.0" max="70.0" unit="Hz"/>
             <LabelSet/>
           </Signal>
           <Signal name="FreqLo" offset="40" length="16" endianess="little">
             <Notes>Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.</Notes>
-            <Value type="unsigned" slope="0.1" min="40" max="70" unit="Hz"/>
+            <Value type="unsigned" slope="0.1" min="40.0" max="70.0" unit="Hz"/>
             <LabelSet/>
           </Signal>
           <Signal name="FreqVeryLo" offset="56" length="16" endianess="little">
             <Notes>Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.</Notes>
-            <Value type="unsigned" slope="0.1" min="40" max="70" unit="Hz"/>
+            <Value type="unsigned" slope="0.1" min="40.0" max="70.0" unit="Hz"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="4">
           <Signal name="FreqVeryLo" offset="24" length="16" endianess="little">
             <Notes>Determines the time it will take for a fault trip to occur when line frequency remains below the value specified in FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.</Notes>
-            <Value type="unsigned" min="160" max="160" unit="ms"/>
+            <Value type="unsigned" min="160.0" max="160.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="FreqLo" offset="40" length="16" endianess="little">
             <Notes>Determines the time it will take for a fault trip to occur when line frequency remains between the value specified in FreqLo and FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.</Notes>
-            <Value type="unsigned" min="1" max="30000" unit="ms"/>
+            <Value type="unsigned" min="1.0" max="30000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="FreqHi" offset="56" length="16" endianess="little">
             <Notes>Determines the time it will take for a fault trip to occur when line frequency remains above the value specified in FreqHi of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.</Notes>
-            <Value type="unsigned" min="160" max="160" unit="ms"/>
+            <Value type="unsigned" min="160.0" max="160.0" unit="ms"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="5">
           <Signal name="NodeID" offset="16" length="8" endianess="little">
             <Notes>J1939 Source Address node for the module.</Notes>
-            <Value type="unsigned" max="247"/>
+            <Value type="unsigned" max="247.0"/>
             <LabelSet/>
           </Signal>
           <Signal name="SA_Mask" offset="24" length="8" endianess="little">
@@ -276,7 +276,7 @@
           </Signal>
           <Signal name="Baudrate" offset="36" length="4" endianess="little">
             <Notes>CAN baudrate</Notes>
-            <Value type="unsigned" max="3"/>
+            <Value type="unsigned" max="3.0"/>
             <LabelSet>
               <Label name="125K" value="0"/>
               <Label name="250K" value="1"/>
@@ -300,12 +300,12 @@
         <MuxGroup count="7">
           <Signal name="MX1Open" offset="24" length="16" endianess="little">
             <Notes>Maximum time required for the MX1 contactor to open.</Notes>
-            <Value type="unsigned" max="5000" unit="ms"/>
+            <Value type="unsigned" max="5000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="MX1Close" offset="40" length="16" endianess="little">
             <Notes>Maximum time required for the MX1 contactor to close.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="MX2Open" offset="56" length="16" endianess="little">
@@ -317,29 +317,29 @@
         <MuxGroup count="8">
           <Signal name="MX2Close" offset="24" length="16" endianess="little">
             <Notes>Maximum time required for the MX2 contactor to open.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="K1Open" offset="40" length="16" endianess="little">
             <Notes>Maximum time required for the K1 contactor to open.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="K1Close" offset="56" length="16" endianess="little">
             <Notes>Maximum time required for the K1 contactor to close.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="10">
           <Signal name="K2Open" offset="24" length="16" endianess="little">
             <Notes>Maximum time required for the K2 contactor to open.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="K2Close" offset="40" length="16" endianess="little">
             <Notes>Maximum time required for the K2 contactor to close.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
@@ -464,12 +464,12 @@
       <Notes>Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.</Notes>
       <Signal name="RealPower_command" offset="24" length="32" endianess="little">
         <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.</Notes>
-        <Value type="signed" min="-90000" max="90000" unit="W"/>
+        <Value type="signed" min="-90000.0" max="90000.0" unit="W"/>
         <LabelSet/>
       </Signal>
       <Signal name="ReactivePower_command" offset="56" length="32" endianess="little">
         <Notes>Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.</Notes>
-        <Value type="signed" min="-90000" max="90000" unit="VA"/>
+        <Value type="signed" min="-90000.0" max="90000.0" unit="VA"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -478,12 +478,12 @@
       <Notes>Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.</Notes>
       <Signal name="Voltage_command" offset="8" length="16" endianess="little">
         <Notes>Desired output voltage while in grid forming mode.</Notes>
-        <Value type="unsigned" slope="0.1" min="10" max="500" unit="Vrms"/>
+        <Value type="unsigned" slope="0.1" min="10.0" max="500.0" unit="Vrms"/>
         <LabelSet/>
       </Signal>
       <Signal name="Frequency_command" offset="24" length="16" endianess="little">
         <Notes>Desired output frequency while in grid forming mode.</Notes>
-        <Value type="unsigned" slope="0.1" min="45" max="65" unit="Hz"/>
+        <Value type="unsigned" slope="0.1" min="45.0" max="65.0" unit="Hz"/>
         <LabelSet/>
       </Signal>
     </Message>
@@ -534,7 +534,7 @@
       <Notes>Bits representing the status of the power module.</Notes>
       <Signal name="State_status" offset="0" length="4" endianess="little">
         <Notes>Active control mode.</Notes>
-        <Value type="unsigned" max="7"/>
+        <Value type="unsigned" max="7.0"/>
         <LabelSet>
           <Label name="Power On Reset, and a quoted comma" value="0"/>
           <Label name="Ready" value="1"/>
@@ -1118,72 +1118,72 @@
         <MuxGroup count="0">
           <Signal name="Dummy" offset="24" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" min="5" max="10"/>
+            <Value type="unsigned" min="5.0" max="10.0"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="1">
           <Signal name="VUnder50pct" offset="24" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" min="1" max="30000" unit="ms"/>
+            <Value type="unsigned" min="1.0" max="30000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="V50to88pct" offset="40" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" min="1" max="30000" unit="ms"/>
+            <Value type="unsigned" min="1.0" max="30000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="V110to120pct" offset="56" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" min="1" max="30000" unit="ms"/>
+            <Value type="unsigned" min="1.0" max="30000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="2">
           <Signal name="VOver120" offset="24" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" min="1" max="30000"/>
+            <Value type="unsigned" min="1.0" max="30000.0"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="3">
           <Signal name="FreqHi" offset="24" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" slope="0.1" min="40" max="70" unit="Hz"/>
+            <Value type="unsigned" slope="0.1" min="40.0" max="70.0" unit="Hz"/>
             <LabelSet/>
           </Signal>
           <Signal name="FreqLo" offset="40" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" slope="0.1" min="40" max="70" unit="Hz"/>
+            <Value type="unsigned" slope="0.1" min="40.0" max="70.0" unit="Hz"/>
             <LabelSet/>
           </Signal>
           <Signal name="FreqVeryLo" offset="56" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" slope="0.1" min="40" max="70" unit="Hz"/>
+            <Value type="unsigned" slope="0.1" min="40.0" max="70.0" unit="Hz"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="4">
           <Signal name="FreqVeryLo" offset="24" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" min="160" max="160" unit="ms"/>
+            <Value type="unsigned" min="160.0" max="160.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="FreqLo" offset="40" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" min="1" max="30000" unit="ms"/>
+            <Value type="unsigned" min="1.0" max="30000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="FreqHi" offset="56" length="16" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" min="160" max="160" unit="ms"/>
+            <Value type="unsigned" min="160.0" max="160.0" unit="ms"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="5">
           <Signal name="StatusNodeID" offset="16" length="8" endianess="little">
             <Notes>J1939 Source Address node for the module</Notes>
-            <Value type="unsigned" max="247"/>
+            <Value type="unsigned" max="247.0"/>
             <LabelSet/>
           </Signal>
           <Signal name="StatusSA_Mask" offset="24" length="8" endianess="little">
@@ -1193,7 +1193,7 @@
           </Signal>
           <Signal name="StatusBaudrate" offset="36" length="4" endianess="little">
             <Notes></Notes>
-            <Value type="unsigned" max="3"/>
+            <Value type="unsigned" max="3.0"/>
             <LabelSet>
               <Label name="125K" value="0"/>
               <Label name="250K" value="1"/>
@@ -1217,12 +1217,12 @@
         <MuxGroup count="7">
           <Signal name="StatusMX1Open" offset="24" length="16" endianess="little">
             <Notes>Maximum time required for the MX1 contactor to open.</Notes>
-            <Value type="unsigned" max="5000" unit="ms"/>
+            <Value type="unsigned" max="5000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="StatusMX1Close" offset="40" length="16" endianess="little">
             <Notes>Maximum time required for the MX1 contactor to close.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="StatusMX2Open" offset="56" length="16" endianess="little">
@@ -1234,29 +1234,29 @@
         <MuxGroup count="8">
           <Signal name="StatusMX2Close" offset="24" length="16" endianess="little">
             <Notes>Maximum time required for the MX2 contactor to open.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="StatusK1Open" offset="40" length="16" endianess="little">
             <Notes>Maximum time required for the K1 contactor to open.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="StatusK1Close" offset="56" length="16" endianess="little">
             <Notes>Maximum time required for the K1 contactor to close.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="9">
           <Signal name="StatusK2Open" offset="24" length="16" endianess="little">
             <Notes>Maximum time required for the K2 contactor to open.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
           <Signal name="StatusK2Close" offset="40" length="16" endianess="little">
             <Notes>Maximum time required for the K2 contactor to close.</Notes>
-            <Value type="unsigned" max="2000" unit="ms"/>
+            <Value type="unsigned" max="2000.0" unit="ms"/>
             <LabelSet/>
           </Signal>
         </MuxGroup>

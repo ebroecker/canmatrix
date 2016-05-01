@@ -254,8 +254,8 @@ def exportCsv(db, filename, delimiter=','):
                 col = writeBuMatrixx(buList, sig, frame, signalRow, col)
                 writeSignalx(db, sig, signalRow, col)
 
-                if float(sig._min) != 0 or float(sig._max) != 1.0:
-                    signalRow[col+1] = str("%g..%g" %(sig._min, sig._max))
+                if sig._min is not None or sig._max is not None:
+                    signalRow[col+1] = str("{}..{}".format(sig._min, sig._max))
 
                 # next row
                 row += 1

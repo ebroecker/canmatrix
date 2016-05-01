@@ -53,9 +53,9 @@ def createSignal(signal, nodeList):
     if float(signal._offset) != 0:
         value.set('intercept',str("%g" % signal._offset))
     if float(signal._min) != 0:
-        value.set('min',str("%g" % signal._min))
+        value.set('min',str("{}".format(signal._min)))
     if float(signal._max) != 1:
-        value.set('max',str("%g" % signal._max))
+        value.set('max',str("{}".format(signal._max)))
     if len(signal._unit) > 0:
         value.set('unit',signal._unit)
     sig.append(value)

@@ -139,8 +139,8 @@ def importSym(filename, **options):
                 intel = 1
                 unit = ""
                 factor = 1
-                max = 1
-                min = 0
+                max = None
+                min = None
                 longName = None
                 startValue = 0
                 offset = 0

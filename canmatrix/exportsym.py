@@ -54,7 +54,7 @@ def createSignal(signal):
         output += "/f:%g " % (float(signal._factor))
     if float(signal._offset) != 0:
         output += "/o:%g " % (float(signal._offset))
-    output += "/min:%g /max:%g " % (float(signal._min), float(signal._max))
+    output += "/min:{} /max:{} ".format(float(signal._min), float(signal._max))
 
     if "GenSigStartValue" in signal._attributes:
         default = float(signal._attributes["GenSigStartValue"]) * float(signal._factor)

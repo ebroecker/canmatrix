@@ -260,8 +260,6 @@ def importXls(filename, **options):
                 newSig._max = float(maxi)
             except:
                 newSig._offset = 0
-                newSig._min = 0
-                newSig._max = 1
 
 
         elif valueName.__len__() > 0:
@@ -272,8 +270,6 @@ def importXls(filename, **options):
             newSig._max = float(maxi)
         else:
             newSig._offset = 0
-            newSig._min = 0
-            newSig._max = 1
 
 
     for frame in db._fl._list:

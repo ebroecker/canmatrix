@@ -149,16 +149,6 @@ class Signal(object):
         else:
             self._offset = float(0)
  
-        if 'min' in kwargs:
-            self._min = float(kwargs["min"])
-        else:
-            self._min = float(0)
-
-        if 'max' in kwargs:
-            self._max = float(kwargs["max"])
-        else:
-            self._max = float(0)
-
         if 'unit' in kwargs:
             self._unit = kwargs["unit"]
         else:
@@ -182,6 +172,26 @@ class Signal(object):
             self._multiplex = multiplex
         else:
             self._multiplex = None
+
+        if 'min' in kwargs:
+            min = kwargs["min"]
+        else:
+            min = None
+
+        if min is None:
+            self.setMin()
+        else:
+            self._min = float(min)
+
+        if 'max' in kwargs:
+            max = kwargs["max"]
+        else:
+            max = None
+
+        if max is None:
+            self.setMax()
+        else:
+            self._max = float(max)
 
         self._name = name
         self._attributes = {}
@@ -272,7 +282,29 @@ class Signal(object):
 
     def getLsbStartbit(self):
         return int(self._startbit)
-       
+
+    def calculateRawRange(self):
+        rawRange = 2 ** self._signalsize
+
+        if self._is_signed:
+            rawRange /= 2
+
+        return (-rawRange if self._is_signed else 0,
+                rawRange - 1)
+
+    def setMin(self, min=None):
+        self._min = min
+
+        if self._min is None:
+            rawMin = self.calculateRawRange()[0]
+            self._min = self._offset + (rawMin * self._factor)
+
+    def setMax(self, max=None):
+        self._max = max
+
+        if self._max is None:
+            rawMax = self.calculateRawRange()[1]
+            self._max = self._offset + (rawMax * self._factor)
 
 
 class SignalGroup(object):

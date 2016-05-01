@@ -82,8 +82,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             length = arGetChild(syssignal,  "LENGTH", arDict, ns)
         name = arGetChild(syssignal,  "SHORT-NAME", arDict, ns)
   
-        Min = 0
-        Max = 1
+        Min = None
+        Max = None
         factor = 1.0
         offset = 0
         Unit = ""

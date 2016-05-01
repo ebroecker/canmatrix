@@ -52,8 +52,8 @@ def parseSignal(signal, mux, namespace, nodelist):
     unit = ""
     offset = 0
     factor = 1
-    min = 0
-    max = 1
+    min = None
+    max = None
     is_signed = False
 
     values = signal.find('./' + namespace + 'Value')
@@ -163,8 +163,8 @@ def importKcd(filename):
 
             is_little_endian = True
   
-            min = 0
-            max = 1
+            min = None
+            max = None
             values = multiplex.find('./' + namespace + 'Value')
             if values is not None:
                 if 'min' in values.attrib:

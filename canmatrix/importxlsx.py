@@ -339,8 +339,8 @@ def importXlsx(filename, **options):
                 newSig._max = float(maxi)
             except:
                 newSig._offset = 0
-                newSig._min = 0
-                newSig._max = 1
+                newSig._min = None
+                newSig._max = None
 
 
         elif valueName.__len__() > 0:
@@ -351,8 +351,8 @@ def importXlsx(filename, **options):
             newSig._max = float(maxi)
         else:
             newSig._offset = 0
-            newSig._min = 0
-            newSig._max = 1
+            newSig._min = None
+            newSig._max = None
 
     # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
     for frame in db._fl._list:

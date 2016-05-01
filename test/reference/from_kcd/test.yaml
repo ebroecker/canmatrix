@@ -25,7 +25,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: Enable_command
@@ -41,7 +41,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: FaultClear_command
@@ -57,7 +57,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: InvertHwEnable_command
@@ -76,7 +76,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: EnableUPSMode_command
@@ -93,7 +93,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: EnableSplitPhase_command
@@ -111,7 +111,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: ForceRelayMX1_command
@@ -128,7 +128,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: ForceRelayMX2_command
@@ -145,7 +145,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: ForceRelayK1_Precharge_command
@@ -162,7 +162,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: ForceRelayRelayK2_DCRun_comand
@@ -179,7 +179,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: PhaseRotation_command
@@ -198,7 +198,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: MasterFollowerMode_command
@@ -317,8 +317,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 2147483647.0
+      _min: -2147483648.0
       _multiplex: null
       _name: RealPower_measured
       _offset: 0.0
@@ -333,8 +333,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 2147483647.0
+      _min: -2147483648.0
       _multiplex: null
       _name: ReactivePower_measured
       _offset: 0.0
@@ -360,7 +360,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: WriteSerialNumber
@@ -376,7 +376,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 4294967295.0
       _min: 0.0
       _multiplex: null
       _name: SerialNumber
@@ -392,7 +392,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: null
       _name: FactoryAccess
@@ -421,7 +421,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: true
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: Multiplexor
       _name: CommandSetNVParam_MUX
@@ -439,7 +439,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: 0
       _name: Dummy
@@ -651,7 +651,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 255.0
       _min: 0.0
       _multiplex: 5
       _name: SA_Mask
@@ -683,7 +683,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: 6
       _name: ThermalOverload
@@ -731,7 +731,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: 7
       _name: MX2Open
@@ -841,7 +841,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: Enable_command
@@ -857,7 +857,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: FaultClear_command
@@ -873,7 +873,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: InvertHwEnable_command
@@ -892,7 +892,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: EnableUPSMode_command
@@ -909,7 +909,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: EnableSplitPhase_command
@@ -927,7 +927,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: ForceRelayMX1_command
@@ -944,7 +944,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: ForceRelayMX2_command
@@ -961,7 +961,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: ForceRelayK1_Precharge_command
@@ -978,7 +978,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: ForceRelayRelayK2_DCRun_comand
@@ -995,7 +995,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: PhaseRotation_command
@@ -1014,7 +1014,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: MasterFollowerMode_command
@@ -1133,8 +1133,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 2147483647.0
+      _min: -2147483648.0
       _multiplex: null
       _name: RealPower_measured
       _offset: 0.0
@@ -1149,8 +1149,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 2147483647.0
+      _min: -2147483648.0
       _multiplex: null
       _name: ReactivePower_measured
       _offset: 0.0
@@ -1176,8 +1176,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 2147483647.0
+      _min: -2147483648.0
       _multiplex: null
       _name: RealPower_measured
       _offset: 0.0
@@ -1192,8 +1192,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 2147483647.0
+      _min: -2147483648.0
       _multiplex: null
       _name: ReactivePower_measured
       _offset: 0.0
@@ -1219,8 +1219,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 2147483647.0
+      _min: -2147483648.0
       _multiplex: null
       _name: RealPower_echo
       _offset: 0.0
@@ -1235,8 +1235,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 2147483647.0
+      _min: -2147483648.0
       _multiplex: null
       _name: ReactivePower_echo
       _offset: 0.0
@@ -1280,7 +1280,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: MX2Permissive_status
@@ -1297,7 +1297,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: PowerAvailAC_status
@@ -1313,7 +1313,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: PowerAvailDC_status
@@ -1329,7 +1329,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: PowerCircuitEnabled_status
@@ -1345,7 +1345,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: HardwareEnable_status
@@ -1362,7 +1362,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: Enable_echo
@@ -1379,7 +1379,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: FaultClr_echo
@@ -1397,7 +1397,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: MessageValidModeControl_status
@@ -1413,7 +1413,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: MX1Permissive_status
@@ -1429,7 +1429,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: K2DCRunPermissive_status
@@ -1445,7 +1445,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: K1PrechargePermissive_status
@@ -1463,7 +1463,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: MessageValidPowerCMD_status
@@ -1481,7 +1481,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: MessageValidVF_status
@@ -1497,7 +1497,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: CANbus_status
@@ -1514,7 +1514,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: EnableUPSMode_echo
@@ -1531,7 +1531,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: EnableSplitPhase_echo
@@ -1549,7 +1549,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: PhaseRotation_status
@@ -1565,7 +1565,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: LineVoltageDetected_status
@@ -1582,7 +1582,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: PhaseRotation_echo
@@ -1610,8 +1610,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 327.67
+      _min: -327.68
       _multiplex: null
       _name: v5p0_Supply
       _offset: 0.0
@@ -1626,8 +1626,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 327.67
+      _min: -327.68
       _multiplex: null
       _name: v3p3_Supply
       _offset: 0.0
@@ -1642,8 +1642,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 327.67
+      _min: -327.68
       _multiplex: null
       _name: v24_Supply
       _offset: 0.0
@@ -1658,8 +1658,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 327.67
+      _min: -327.68
       _multiplex: null
       _name: v15_Supply
       _offset: 0.0
@@ -1686,8 +1686,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.1
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 3276.7000000000003
+      _min: -3276.8
       _multiplex: null
       _name: TempInlet_measured
       _offset: 0.0
@@ -1702,8 +1702,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.1
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 3276.7000000000003
+      _min: -3276.8
       _multiplex: null
       _name: TempInternal_measured
       _offset: 0.0
@@ -1718,7 +1718,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: null
       _name: ConverterLosses
@@ -1762,7 +1762,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: OvercurrentAC_status
@@ -1795,7 +1795,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: OvervoltageDC_status
@@ -1812,7 +1812,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: OvertempPowerDevice_status
@@ -1829,7 +1829,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: OvertempInternal_status
@@ -1846,7 +1846,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 15.0
       _min: 0.0
       _multiplex: null
       _name: LossValidControlMessage_status
@@ -1862,7 +1862,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: UndervoltageDC_status
@@ -1878,7 +1878,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 15.0
       _min: 0.0
       _multiplex: null
       _name: ControlHardwareFail_status
@@ -1895,7 +1895,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: OvercurrentDC_status
@@ -1912,7 +1912,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: GeneralFault_status
@@ -1930,7 +1930,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: LossOfAC_status
@@ -1947,7 +1947,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: EStopShutdown_status
@@ -1965,7 +1965,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 7.0
       _min: 0.0
       _multiplex: null
       _name: BridgeAFault_status
@@ -1984,7 +1984,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 7.0
       _min: 0.0
       _multiplex: null
       _name: BridgeBFault_status
@@ -2003,7 +2003,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: IllegalTransition_status
@@ -2019,7 +2019,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: InvalidEEHeader_status
@@ -2036,7 +2036,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: InvalidEESection_status
@@ -2052,7 +2052,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: null
       _name: ThermalOverload
@@ -2079,8 +2079,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.1
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 3276.7000000000003
+      _min: -3276.8
       _multiplex: null
       _name: VoltageAC_measured
       _offset: 0.0
@@ -2095,8 +2095,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 32767.0
+      _min: -32768.0
       _multiplex: null
       _name: CurrentAC_measured
       _offset: 0.0
@@ -2111,8 +2111,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.1
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 3276.7000000000003
+      _min: -3276.8
       _multiplex: null
       _name: Frequency_measured
       _offset: 0.0
@@ -2139,8 +2139,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 32767.0
+      _min: -32768.0
       _multiplex: null
       _name: VoltageDCBus
       _offset: 0.0
@@ -2155,8 +2155,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 32767.0
+      _min: -32768.0
       _multiplex: null
       _name: CurrentDC_measured
       _offset: 0.0
@@ -2171,8 +2171,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 32767.0
+      _min: -32768.0
       _multiplex: null
       _name: VoltageDCInput_measured
       _offset: 0.0
@@ -2198,8 +2198,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.01
       _is_little_endian: false
       _is_signed: true
-      _max: 1.0
-      _min: 0.0
+      _max: 327.67
+      _min: -327.68
       _multiplex: null
       _name: n15V_Supply
       _offset: 0.0
@@ -2214,7 +2214,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: null
       _name: DiodeTemperature
@@ -2230,7 +2230,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: null
       _name: IGBTTemperature
@@ -2257,7 +2257,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.01
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 655.35
       _min: 0.0
       _multiplex: null
       _name: InterfaceRev
@@ -2273,7 +2273,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.01
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 655.35
       _min: 0.0
       _multiplex: null
       _name: ControlSwRev
@@ -2289,7 +2289,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 4294967295.0
       _min: 0.0
       _multiplex: null
       _name: BuildTime
@@ -2316,7 +2316,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 6553.5
       _min: 0.0
       _multiplex: null
       _name: Voltage_echo
@@ -2332,7 +2332,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 6553.5
       _min: 0.0
       _multiplex: null
       _name: Frequency_echo
@@ -2359,7 +2359,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 4294967295.0
       _min: 0.0
       _multiplex: null
       _name: SerialNumber
@@ -2386,7 +2386,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 268435455.0
       _min: 0.0
       _multiplex: null
       _name: Hash
@@ -2413,7 +2413,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: true
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: Multiplexor
       _name: StatusNVParam_MUX
@@ -2624,7 +2624,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 255.0
       _min: 0.0
       _multiplex: 5
       _name: StatusSA_Mask
@@ -2656,7 +2656,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 3.0
       _min: 0.0
       _multiplex: 6
       _name: StatusThermalOverload
@@ -2704,7 +2704,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: 7
       _name: StatusMX2Open
@@ -2811,7 +2811,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: null
       _name: L1Current_measured
@@ -2827,7 +2827,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: null
       _name: L2Current_measured
@@ -2843,7 +2843,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 1.0
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 65535.0
       _min: 0.0
       _multiplex: null
       _name: L3Current_measured
@@ -2870,7 +2870,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 6553.5
       _min: 0.0
       _multiplex: null
       _name: L1Voltage_measured
@@ -2886,7 +2886,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 6553.5
       _min: 0.0
       _multiplex: null
       _name: L2Voltage_measured
@@ -2902,7 +2902,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _factor: 0.1
       _is_little_endian: false
       _is_signed: false
-      _max: 1.0
+      _max: 6553.5
       _min: 0.0
       _multiplex: null
       _name: L3Voltage_measured
