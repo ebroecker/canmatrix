@@ -99,11 +99,11 @@ def exportDbc(db, filename, **options):
                 f.write((" m%d " % int(signal._multiplex)).encode(dbcExportEncoding))
 
             startbit = signal.getMsbStartbit()
-                
-            if signal._is_signed:            
+
+            if signal._is_signed:
                 sign = '-'
             else:
-                sign = '+'             
+                sign = '+'
             f.write((" : %d|%d@%d%c" % (startbit, signal._signalsize,signal._is_little_endian, sign)).encode(dbcExportEncoding))
             f.write((" (%g,%g)" % (signal._factor, signal._offset)).encode(dbcExportEncoding))
             f.write((" [{}|{}]".format(signal._min, signal._max)).encode(dbcExportEncoding))
@@ -171,17 +171,23 @@ def exportDbc(db, filename, **options):
     #boardunit-attributes:
     for bu in db._BUs._list:
         for attrib,val in sorted(bu._attributes.items()):
+            if not val:
+                val = '""'
             f.write(('BA_ "' + attrib + '" BU_ ' + bu._name + ' ' + str(val)  + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #global-attributes:
     for attrib,val in sorted(db._attributes.items()):
+        if not val:
+            val = '""'
         f.write(('BA_ "' + attrib + '" ' + val  + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #messages-attributes:
     for bo in db._fl._list:
         for attrib,val in sorted(bo._attributes.items()):
+            if not val:
+                val = '""'
             f.write(('BA_ "' + attrib + '" BO_ %d ' % bo._Id + val + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
@@ -190,13 +196,15 @@ def exportDbc(db, filename, **options):
         for signal in bo._signals:
             for attrib,val in sorted(signal._attributes.items()):
                 name = normalizeName(signal._name, whitespaceReplacement)
+                if not val:
+                    val = '""'
                 f.write(('BA_ "' + attrib + '" SG_ %d ' % bo._Id + name + ' ' + val  + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #signal-values:
     for bo in db._fl._list:
         for signal in bo._signals:
-            if len(signal._values) > 0:
+            if signal._values:
                 f.write(('VAL_ %d ' % bo._Id + signal._name).encode(dbcExportEncoding))
                 for attrib,val in sorted(signal._values.items(), key=lambda x: int(x[0])):
                     f.write((' ' + str(attrib) + ' "' + val + '"').encode(dbcExportEncoding))
