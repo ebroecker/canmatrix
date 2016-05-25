@@ -164,6 +164,12 @@ def writeSignalx(db, sig, row, rearCol):
     else:
         row[12] = "m"
 
+    # signed / unsigned
+    if sig._is_signed == True:
+        row[13] = "s"
+    else:
+        row[13] = "u"
+
     # is a unit defined for signal?
     if sig._unit.strip().__len__() > 0:
         # factor not 1.0 ?
@@ -179,7 +185,7 @@ def writeSignalx(db, sig, row, rearCol):
             row[rearCol + 2] = float(sig._factor)
 
 def exportCsv(db, filename, delimiter=','):
-    head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.', 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
+    head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.', 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder','is signed']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 
     csvtable = list() # List holding all csv rows
