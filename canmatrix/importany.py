@@ -28,25 +28,29 @@ logger = logging.getLogger('root')
 def importany(infile, **options):
     # import within function to disable warning messages by log level
     from . import importall as im
+    if "key" in options:
+        key = options["key"]
+    else:
+        key = ""
     dbs = {}
     if infile[-3:] == 'dbc':
-        dbs[""] = im.importDbc(infile, **options)
+        dbs[key] = im.importDbc(infile, **options)
     elif infile[-3:] == 'dbf':
-        dbs[""] = im.importDbf(infile, **options)
+        dbs[key] = im.importDbf(infile, **options)
     elif infile[-3:] == 'sym':
-        dbs[""] = im.importSym(infile, **options)
+        dbs[key] = im.importSym(infile, **options)
     elif infile[-3:] == 'kcd':
-        dbs[""] = im.importKcd(infile)
+        dbs[key] = im.importKcd(infile)
     elif infile[-3:] == 'xls':
-        dbs[""] = im.importXls(infile, **options)
+        dbs[key] = im.importXls(infile, **options)
     elif infile[-4:] == 'xlsx' :
-        dbs[""] = im.importXlsx(infile, **options)
+        dbs[key] = im.importXlsx(infile, **options)
     elif infile[-5:] == 'arxml':
         dbs = im.importArxml(infile, **options)
     elif infile[-4:] == 'yaml':
-        dbs[""] = im.importYaml(infile)
+        dbs[key] = im.importYaml(infile)
     elif infile[-4:] == 'json':
-        dbs[""] = im.importJson(infile)
+        dbs[key] = im.importJson(infile)
     else:
         logger.error('\nFile not recognized: ' + infile + "\n")
     logger.info("done\n")
