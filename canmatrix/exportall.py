@@ -35,7 +35,7 @@ except:
 try:
     from .exportxlsx import *
 except:
-    logger.warn("no xlsx-export-support, some dependencies missing...  try pip install xlswriter")
+    logger.warn("no xlsx-export-support, some dependencies missing...  try pip install xlsxwriter")
 
 try:
     from .exportyaml import *
