@@ -129,10 +129,16 @@ def importSym(filename, **options):
                 line = line.replace('  ', ' "" ')
                 tempArray = shlex.split(line.strip())
                 sigName = tempArray[0]
-                if indexOffset == 1 and tempArray[1][:8] == "unsigned":
-                    is_signed = False
-                else:
+
+                if indexOffset != 1:
                     is_signed = True
+                else:
+                    if tempArray[1] == 'unsigned':
+                        is_signed = False
+                    elif tempArray[1] == 'signed':
+                        is_signed = True
+                    else:
+                        raise ValueError('Unknown type \'{}\' found'.format(tempArray[1]))
 
                 startBit = int(tempArray[indexOffset+1].split(',')[0])
                 signalLength = int(tempArray[indexOffset+1].split(',')[1])
