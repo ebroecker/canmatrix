@@ -620,6 +620,28 @@
             ]
         },
         {
+            "id": 486517952,
+            "is_extended_frame": true,
+            "name": "justString",
+            "signals": []
+        },
+        {
+            "id": 486517696,
+            "is_extended_frame": true,
+            "name": "stringAndOther",
+            "signals": [
+                {
+                    "bit_length": 32,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": true,
+                    "name": "RealPower_measured",
+                    "offset": 0.0,
+                    "start_bit": 24
+                }
+            ]
+        },
+        {
             "id": 218090231,
             "is_extended_frame": true,
             "name": "StatusMeasuredPower",

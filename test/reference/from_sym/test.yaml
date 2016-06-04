@@ -1159,6 +1159,44 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _unit: VA
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
+    _Id: 486517952
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {}
+    _comment: ''
+    _extended: 1
+    _name: justString
+    _receiver: []
+    _signals: []
+  - !!python/object:canmatrix.canmatrix.Frame
+    _Id: 486517696
+    _SignalGroups: []
+    _Size: 8
+    _Transmitter: []
+    _attributes: {}
+    _comment: ''
+    _extended: 1
+    _name: stringAndOther
+    _receiver: []
+    _signals:
+    - !!python/object:canmatrix.canmatrix.Signal
+      _attributes: {GenSigStartValue: '0.0'}
+      _comment: Measured real power.
+      _factor: 1.0
+      _is_little_endian: 0
+      _is_signed: true
+      _max: 2147483647.0
+      _min: -2147483648.0
+      _multiplex: null
+      _name: RealPower_measured
+      _offset: 0.0
+      _receiver: []
+      _signalsize: 32
+      _startbit: 24
+      _unit: W
+      _values: {}
+  - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218090231
     _SignalGroups: []
     _Size: 8

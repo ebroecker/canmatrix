@@ -180,6 +180,19 @@ Var=ReactivePower_measured signed 32,32 -m /u:VA	// Measured reactive power of m
 
 {SENDRECEIVE}
 
+[justString]
+ID=1CFFACC0h
+Type=Extended
+DLC=8
+Var=rev string 0,64 -m /d:"ICUx-03i"
+
+[stringAndOther]
+ID=1CFFABC0h
+Type=Extended
+DLC=8
+Var=rev string 0,64 -m /d:"ICUx-03i"
+Var=RealPower_measured signed 0,32 -m /u:W	// Measured real power.
+
 [StatusMeasuredPower]
 ID=0CFFCAF7h	// Returns the actual measured power.
 Type=Extended

@@ -501,6 +501,19 @@
         <LabelSet/>
       </Signal>
     </Message>
+    <Message id="0x1CFFACC0" length="8" name="justString" format="extended">
+      <Producer/>
+      <Notes></Notes>
+    </Message>
+    <Message id="0x1CFFABC0" length="8" name="stringAndOther" format="extended">
+      <Producer/>
+      <Notes></Notes>
+      <Signal name="RealPower_measured" offset="24" length="32" endianess="little">
+        <Notes>Measured real power.</Notes>
+        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="W"/>
+        <LabelSet/>
+      </Signal>
+    </Message>
     <Message id="0xCFFCAF7" length="8" name="StatusMeasuredPower" format="extended" triggered="true" interval="100">
       <Producer/>
       <Notes>Returns the actual measured power.</Notes>

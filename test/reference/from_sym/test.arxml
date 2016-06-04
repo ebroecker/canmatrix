@@ -110,6 +110,26 @@
                   <FRAME-PORT-REFS/>
                 </CAN-FRAME-TRIGGERING>
                 <CAN-FRAME-TRIGGERING>
+                  <SHORT-NAME>justString</SHORT-NAME>
+                  <IDENTIFIER>486517952</IDENTIFIER>
+                  <CAN-ADDRESSING-MODE>EXTENDED</CAN-ADDRESSING-MODE>
+                  <FRAME-REF DEST="FRAME">/Frame/FRAME_justString</FRAME-REF>
+                  <I-PDU-TRIGGERING-REFS>
+                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/IPDUTRIGG_justString</I-PDU-TRIGGERING-REF>
+                  </I-PDU-TRIGGERING-REFS>
+                  <FRAME-PORT-REFS/>
+                </CAN-FRAME-TRIGGERING>
+                <CAN-FRAME-TRIGGERING>
+                  <SHORT-NAME>stringAndOther</SHORT-NAME>
+                  <IDENTIFIER>486517696</IDENTIFIER>
+                  <CAN-ADDRESSING-MODE>EXTENDED</CAN-ADDRESSING-MODE>
+                  <FRAME-REF DEST="FRAME">/Frame/FRAME_stringAndOther</FRAME-REF>
+                  <I-PDU-TRIGGERING-REFS>
+                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/IPDUTRIGG_stringAndOther</I-PDU-TRIGGERING-REF>
+                  </I-PDU-TRIGGERING-REFS>
+                  <FRAME-PORT-REFS/>
+                </CAN-FRAME-TRIGGERING>
+                <CAN-FRAME-TRIGGERING>
                   <SHORT-NAME>StatusMeasuredPower</SHORT-NAME>
                   <IDENTIFIER>218090231</IDENTIFIER>
                   <CAN-ADDRESSING-MODE>EXTENDED</CAN-ADDRESSING-MODE>
@@ -310,6 +330,14 @@
                 <I-PDU-TRIGGERING>
                   <SHORT-NAME>IPDUTRIGG_MasterMeasuredPowerAPU2</SHORT-NAME>
                   <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_MasterMeasuredPowerAPU2</I-PDU-REF>
+                </I-PDU-TRIGGERING>
+                <I-PDU-TRIGGERING>
+                  <SHORT-NAME>IPDUTRIGG_justString</SHORT-NAME>
+                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_justString</I-PDU-REF>
+                </I-PDU-TRIGGERING>
+                <I-PDU-TRIGGERING>
+                  <SHORT-NAME>IPDUTRIGG_stringAndOther</SHORT-NAME>
+                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_stringAndOther</I-PDU-REF>
                 </I-PDU-TRIGGERING>
                 <I-PDU-TRIGGERING>
                   <SHORT-NAME>IPDUTRIGG_StatusMeasuredPower</SHORT-NAME>
@@ -620,6 +648,10 @@
                 <I-SIGNAL-TRIGGERING>
                   <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
                   <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ReactivePower_measured</SIGNAL-REF>
+                </I-SIGNAL-TRIGGERING>
+                <I-SIGNAL-TRIGGERING>
+                  <SHORT-NAME>RealPower_measured</SHORT-NAME>
+                  <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_measured</SIGNAL-REF>
                 </I-SIGNAL-TRIGGERING>
                 <I-SIGNAL-TRIGGERING>
                   <SHORT-NAME>RealPower_measured</SHORT-NAME>
@@ -1132,6 +1164,30 @@
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
               <START-POSITION>0</START-POSITION>
               <PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_MasterMeasuredPowerAPU2</PDU-REF>
+            </PDU-TO-FRAME-MAPPING>
+          </PDU-TO-FRAME-MAPPINGS>
+        </FRAME>
+        <FRAME>
+          <SHORT-NAME>FRAME_justString</SHORT-NAME>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
+          <PDU-TO-FRAME-MAPPINGS>
+            <PDU-TO-FRAME-MAPPING>
+              <SHORT-NAME>justString</SHORT-NAME>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
+              <START-POSITION>0</START-POSITION>
+              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_justString</PDU-REF>
+            </PDU-TO-FRAME-MAPPING>
+          </PDU-TO-FRAME-MAPPINGS>
+        </FRAME>
+        <FRAME>
+          <SHORT-NAME>FRAME_stringAndOther</SHORT-NAME>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
+          <PDU-TO-FRAME-MAPPINGS>
+            <PDU-TO-FRAME-MAPPING>
+              <SHORT-NAME>stringAndOther</SHORT-NAME>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
+              <START-POSITION>0</START-POSITION>
+              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_stringAndOther</PDU-REF>
             </PDU-TO-FRAME-MAPPING>
           </PDU-TO-FRAME-MAPPINGS>
         </FRAME>
@@ -1755,6 +1811,23 @@
               <START-POSITION>39</START-POSITION>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ReactivePower_measured</SIGNAL-REF>
+            </I-SIGNAL-TO-I-PDU-MAPPING>
+          </SIGNAL-TO-PDU-MAPPINGS>
+        </SIGNAL-I-PDU>
+        <SIGNAL-I-PDU>
+          <SHORT-NAME>PDU_justString</SHORT-NAME>
+          <LENGTH>64</LENGTH>
+          <SIGNAL-TO-PDU-MAPPINGS/>
+        </SIGNAL-I-PDU>
+        <SIGNAL-I-PDU>
+          <SHORT-NAME>PDU_stringAndOther</SHORT-NAME>
+          <LENGTH>64</LENGTH>
+          <SIGNAL-TO-PDU-MAPPINGS>
+            <I-SIGNAL-TO-I-PDU-MAPPING>
+              <SHORT-NAME>RealPower_measured</SHORT-NAME>
+              <START-POSITION>7</START-POSITION>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
+              <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_measured</SIGNAL-REF>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2684,6 +2757,10 @@
           <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/RealPower_measured</SYSTEM-SIGNAL-REF>
         </I-SIGNAL>
         <I-SIGNAL>
+          <SHORT-NAME>RealPower_measured</SHORT-NAME>
+          <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/RealPower_measured</SYSTEM-SIGNAL-REF>
+        </I-SIGNAL>
+        <I-SIGNAL>
           <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
           <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/ReactivePower_measured</SYSTEM-SIGNAL-REF>
         </I-SIGNAL>
@@ -3372,6 +3449,11 @@
           <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
           <LENGTH>32</LENGTH>
           <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/ReactivePower_measured</DATA-TYPE-REF>
+        </SYSTEM-SIGNAL>
+        <SYSTEM-SIGNAL>
+          <SHORT-NAME>RealPower_measured</SHORT-NAME>
+          <LENGTH>32</LENGTH>
+          <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/RealPower_measured</DATA-TYPE-REF>
         </SYSTEM-SIGNAL>
         <SYSTEM-SIGNAL>
           <SHORT-NAME>RealPower_measured</SHORT-NAME>
@@ -4222,6 +4304,12 @@
           <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
           <SW-DATA-DEF-PROPS>
             <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/ReactivePower_measured</COMPU-METHOD-REF>
+          </SW-DATA-DEF-PROPS>
+        </INTEGER-TYPE>
+        <INTEGER-TYPE>
+          <SHORT-NAME>RealPower_measured</SHORT-NAME>
+          <SW-DATA-DEF-PROPS>
+            <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/RealPower_measured</COMPU-METHOD-REF>
           </SW-DATA-DEF-PROPS>
         </INTEGER-TYPE>
         <INTEGER-TYPE>
@@ -6987,6 +7075,24 @@
             </COMPU-METHOD>
             <COMPU-METHOD>
               <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <COMPU-RATIONAL-COEFFS>
+                      <COMPU-NUMERATOR>
+                        <V>0</V>
+                        <V>1</V>
+                      </COMPU-NUMERATOR>
+                      <COMPU-DENOMINATOR>
+                        <V>1</V>
+                      </COMPU-DENOMINATOR>
+                    </COMPU-RATIONAL-COEFFS>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+            <COMPU-METHOD>
+              <SHORT-NAME>RealPower_measured</SHORT-NAME>
               <COMPU-INTERNAL-TO-PHYS>
                 <COMPU-SCALES>
                   <COMPU-SCALE>

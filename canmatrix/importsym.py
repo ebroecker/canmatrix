@@ -137,6 +137,10 @@ def importSym(filename, **options):
                         is_signed = False
                     elif tempArray[1] == 'signed':
                         is_signed = True
+                    elif tempArray[1] == 'string':
+                        # TODO: actually support string variables instead of skipping
+                        print('Variable type \'string\' found and skipped')
+                        continue
                     else:
                         raise ValueError('Unknown type \'{}\' found'.format(tempArray[1]))
 

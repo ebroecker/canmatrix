@@ -89,6 +89,11 @@ BO_ 2365573879 MasterMeasuredPowerAPU2: 8 Vector__XXX
  SG_ RealPower_measured : 7|32@0- (1,0) [-2147483648.0|2147483647.0] "W" Vector__XXX
  SG_ ReactivePower_measured : 39|32@0- (1,0) [-2147483648.0|2147483647.0] "VA" Vector__XXX
 
+BO_ 2634001600 justString: 8 Vector__XXX
+
+BO_ 2634001344 stringAndOther: 8 Vector__XXX
+ SG_ RealPower_measured : 7|32@0- (1,0) [-2147483648.0|2147483647.0] "W" Vector__XXX
+
 BO_ 2365573879 StatusMeasuredPower: 8 Vector__XXX
  SG_ RealPower_measured : 7|32@0- (1,0) [-2147483648.0|2147483647.0] "W" Vector__XXX
  SG_ ReactivePower_measured : 39|32@0- (1,0) [-2147483648.0|2147483647.0] "VA" Vector__XXX
@@ -300,6 +305,7 @@ CM_ SG_ 2365562433 Voltage_command "Desired output voltage while in grid forming
 CM_ SG_ 2365562433 Frequency_command "Desired output frequency while in grid forming mode.";
 CM_ SG_ 2365573879 RealPower_measured "Measured real power of master unit.";
 CM_ SG_ 2365573879 ReactivePower_measured "Measured reactive power of master unit.";
+CM_ SG_ 2634001344 RealPower_measured "Measured real power.";
 CM_ SG_ 2365573879 RealPower_measured "Measured real power.";
 CM_ SG_ 2365573879 ReactivePower_measured "Measured reactive power.";
 CM_ SG_ 2566898935 RealPower_echo "Echoed real power command.";
@@ -461,6 +467,7 @@ BA_ "GenSigStartValue" SG_ 2365562433 Voltage_command 2400.0;
 BA_ "GenSigStartValue" SG_ 2365562433 Frequency_command 500.0;
 BA_ "GenSigStartValue" SG_ 2365573879 RealPower_measured 0.0;
 BA_ "GenSigStartValue" SG_ 2365573879 ReactivePower_measured 0.0;
+BA_ "GenSigStartValue" SG_ 2634001344 RealPower_measured 0.0;
 BA_ "GenSigStartValue" SG_ 2365573879 RealPower_measured 0.0;
 BA_ "GenSigStartValue" SG_ 2365573879 ReactivePower_measured 0.0;
 BA_ "GenSigStartValue" SG_ 2566898935 RealPower_echo 0.0;

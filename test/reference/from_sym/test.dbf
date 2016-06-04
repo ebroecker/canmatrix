@@ -5,7 +5,7 @@
 [PROTOCOL] CAN
 
 [BUSMASTER_VERSION] [1.7.2]
-[NUMBER_OF_MESSAGES] 26
+[NUMBER_OF_MESSAGES] 28
 [START_MSG] CommandModeControl,16755521,8,11,1,X,Vector__XXX
 [START_SIGNALS] Enable_command,2,1,0,U,1.0,0.0,0,0.0,1.0,,,
 [VALUE_DESCRIPTION] "Disable",0
@@ -205,6 +205,13 @@
 [START_MSG] MasterMeasuredPowerAPU2,218090231,8,2,1,X,Vector__XXX
 [START_SIGNALS] RealPower_measured,32,4,0,S,2147483647.0,-2147483648.0,0,0.0,1.0,W,,
 [START_SIGNALS] ReactivePower_measured,32,8,0,S,2147483647.0,-2147483648.0,0,0.0,1.0,VA,,
+[END_MSG]
+
+[START_MSG] justString,486517952,8,0,1,X,Vector__XXX
+[END_MSG]
+
+[START_MSG] stringAndOther,486517696,8,1,1,X,Vector__XXX
+[START_SIGNALS] RealPower_measured,32,4,0,S,2147483647.0,-2147483648.0,0,0.0,1.0,W,,
 [END_MSG]
 
 [START_MSG] StatusMeasuredPower,218090231,8,2,1,X,Vector__XXX
@@ -559,6 +566,8 @@
 218078273 S "Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.";
 218078785 S "Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.";
 218090231 S "Returns the actual measured power.";
+486517952 S "";
+486517696 S "";
 218090231 S "Returns the actual measured power.";
 419415287 S "Echoes the commanded power (P&Q) as received in CommandPQ.";
 218088439 S "Bits representing the status of the power module.";
@@ -640,6 +649,7 @@
 218078785 S Frequency_command "Desired output frequency while in grid forming mode.";
 218090231 S RealPower_measured "Measured real power of master unit.";
 218090231 S ReactivePower_measured "Measured reactive power of master unit.";
+486517696 S RealPower_measured "Measured real power.";
 218090231 S RealPower_measured "Measured real power.";
 218090231 S ReactivePower_measured "Measured reactive power.";
 419415287 S RealPower_echo "Echoed real power command.";
@@ -826,6 +836,7 @@
 218078785,S,Frequency_command,"GenSigStartValue","500.0"
 218090231,S,RealPower_measured,"GenSigStartValue","0.0"
 218090231,S,ReactivePower_measured,"GenSigStartValue","0.0"
+486517696,S,RealPower_measured,"GenSigStartValue","0.0"
 218090231,S,RealPower_measured,"GenSigStartValue","0.0"
 218090231,S,ReactivePower_measured,"GenSigStartValue","0.0"
 419415287,S,RealPower_echo,"GenSigStartValue","0.0"

@@ -373,6 +373,7 @@ CFFCAF7h,StatusMeasuredPower,100,,,5,0,ReactivePower_measured,Measured reactive 
 1CFFA9F7h,StatusNVParam,,,,7,0,StatusK1Close,Mode 8:Maximum time required for the K1 contactor to close.,16,,,m,u,,0.0..2000.0,ms
 1CFFA9F7h,StatusNVParam,,,,7,0,StatusMX2Open,Mode 7:Maximum time required for the MX2 contactor to open.,16,,,m,u,,0.0..1.0,ms
 1CFFA9F7h,StatusNVParam,,,,7,0,V110to120pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
+1CFFABC0h,stringAndOther,,,,1,0,RealPower_measured,Measured real power.,32,,,m,s,,-2147483648.0..2147483647.0,W
 1CFFC1F7h,softwareRev,,,,1,0,ControlSwRev,Software revision of the control firmware.,16,,,m,u,,0.0..655.35,0.01
 1CFFC1F7h,softwareRev,,,,3,0,InterfaceRev,Software revision of the CAN communication interface.,16,,,m,u,,0.0..655.35,0.01
 1CFFC1F7h,softwareRev,,,,5,0,BuildTime,Build timestamp.,32,,,m,u,,0.0..4294967295.0
