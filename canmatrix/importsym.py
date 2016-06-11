@@ -131,17 +131,22 @@ def importSym(filename, **options):
                 tempArray = shlex.split(line.strip())
                 sigName = tempArray[0]
 
+                is_float = False
                 if indexOffset != 1:
                     is_signed = True
                 else:
+                    is_signed = False
+
                     if tempArray[1] == 'unsigned':
-                        is_signed = False
+                        pass
                     elif tempArray[1] == 'bit':
                         # TODO: actually support bit instead of interpreting as an unsigned
-                        is_signed = False
+                        pass
                     elif tempArray[1] == 'signed':
                         is_signed = True
-                    elif tempArray[1] in ['string', 'float']:
+                    elif tempArray[1] == 'float':
+                        is_float = True
+                    elif tempArray[1] in ['string']:
                         # TODO: actually support these variable types instead of skipping
                         print('Variable type \'{}\' found and skipped'
                               .format(tempArray[1]))
@@ -210,7 +215,8 @@ def importSym(filename, **options):
                                           startBit = startBit, 
                                           signalSize = signalLength,
                                           is_little_endian=intel, 
-                                          is_signed = is_signed, 
+                                          is_signed = is_signed,
+                                          is_float=is_float,
                                           factor=factor, 
                                           offset=offset,
                                           min=min,
@@ -231,7 +237,8 @@ def importSym(filename, **options):
                                       signalSize = signalLength,
                                       is_little_endian=intel, 
                                       is_signed = is_signed, 
-                                      factor=factor, 
+                                      is_float=is_float,
+                                      factor=factor,
                                       offset=offset,
                                       min=min,
                                       max=max,

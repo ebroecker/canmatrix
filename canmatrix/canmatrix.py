@@ -139,6 +139,11 @@ class Signal(object):
         else:
             self._is_signed = True
 
+        if 'is_float' in kwargs:
+            self._is_float = kwargs["is_float"]
+        else:
+            self._is_float = False
+
         if 'factor' in kwargs:
             self._factor = float(kwargs["factor"])
         else:
