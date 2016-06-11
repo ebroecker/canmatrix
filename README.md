@@ -5,7 +5,6 @@
 *Canmatrix* implements a "Python Can Matrix Object" which describes the can-communication and the needed objects (Boardunits, Frames, Signals, Values, ...)
 *Canmatrix* also includes two **Tools** (canconvert and cancompare) for converting and comparing **CAN** databases.
 
-There is some outdated german Documentation and windows ".exe" of both scripts at [my personal homepage](http://eduard-broecker.de/Software/canmatrix.html)
 There are several importers (read) and exporters (write) for this object.
 
 supported file formats for import:
