@@ -4,6 +4,37 @@ import sys
 sys.path.append('..')
 import canmatrix.importany as im
 
+def createStoreMacro(signal, prefix="", frame="frame"):
+    startBit = signal._startbit
+    byteOrder = signal._is_little_endian
+    length = signal._signalsize
+    startByte = int(startBit/8)
+    startBitInByte = startBit % 8
+    currentTargetLength = (8-startBitInByte)
+    mask = ((0xffffffffffffffff)>> (64-length))
+    
+    code = "#define storeSignal%s%s(value) do{" % (prefix,signal._name)
+    if signal._is_signed:
+        code += "value|=((value&0x8000000000000000)>>(64-length));"
+    
+    code += "value&=0x%X;" % (mask)
+
+    code += "%s[%d]|=value<<%d;" % (frame, startByte, startBitInByte)
+
+    if byteOrder:
+        endByte = int((startBit+length) / 8)
+        for count in range(startByte+1, endByte):
+            code += "%s[%d]|=value<<%d;" % (frame, count, currentTargetLength)
+            currentTargetLength += 8;
+    else: # motorola / big-endian
+        endByte = int((startByte * 8 + 8 - startBitInByte - length) / 8);
+        for count in range(startByte-1, endByte-1, -1):
+            code += "%s[%d]|=value<<%d;" % (frame, count, currentTargetLength)
+            currentTargetLength += 8;
+    code += "}while(0);\n"
+    return code
+        
+
 def createDecodeMacro(signal, prefix="", macrosource="source", source="source"):
     startBit = signal._startbit
     byteOrder = signal._is_little_endian
@@ -48,6 +79,13 @@ def createDecodeMacrosForFrame(Frame, prefix="", macrosource="source", source="s
         code += createDecodeMacro(signal, prefix, macrosource, source)
     return code
 
+def createStoreMacrosForFrame(Frame, prefix= "", framename = "frame"):
+    code = ""    
+    for signal in Frame._signals:
+        code += createStoreMacro(signal, prefix, frame = framename)
+    return code
+
+
 def main():
     from optparse import OptionParser
 
@@ -81,6 +119,7 @@ def main():
     if cmdlineOptions.exportframe == None and cmdlineOptions.exportecu == None:
         for frame in db._fl._list:
             sourceCode += createDecodeMacrosForFrame(frame, "_" + frame._name + "_")
+            sourceCode += createStoreMacrosForFrame(frame, "_" + frame._name + "_")
 
     if cmdlineOptions.exportframe != None:
         for frameId in cmdlineOptions.exportframe.split(','):
@@ -90,17 +129,18 @@ def main():
                 frame = db.frameByName(frameId)
             if frame != None:            
                 sourceCode += createDecodeMacrosForFrame(frame, "_" + frame._name + "_")
-         
+                sourceCode += createStoreMacrosForFrame(frame, "_" + frame._name + "_")
+        
     if cmdlineOptions.exportecu != None:
         ecuList = cmdlineOptions.exportecu.split(',')
         for frame in db._fl._list:
             for ecu in ecuList:
                 if ecu in frame._Transmitter:
-                    sourceCode += createDecodeMacrosForFrame(frame, "_" + frame._name + "_")
+                    sourceCode += createStoreMacrosForFrame(frame, "_" + frame._name + "_")
                 for signal in frame._signals:
                     if ecu in signal._receiver:
                         sourceCode += createDecodeMacro(signal, "_" + frame._name + "_")
- 
+                 
     cfile = open(outfile, "w")    
     cfile.write(sourceCode)
     cfile.close()    
