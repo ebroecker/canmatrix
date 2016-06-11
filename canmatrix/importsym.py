@@ -106,6 +106,7 @@ def importSym(filename, **options):
                 # found new frame:
                 if frameName != line.replace('[','').replace(']','').strip():
                     frameName = line.replace('[','').replace(']','').strip()
+                    # TODO: CAMPid 939921818394902983238
                     if frame is not None:
                         if len(multiplexValTable) > 0:
                             frame.signalByName(frame._name + "_MUX")._values = multiplexValTable
@@ -268,7 +269,10 @@ def importSym(filename, **options):
 #                               print line
 #               else:
 #                       print "Unrecocniced line: " + l + " (%d) " % i
+    # TODO: CAMPid 939921818394902983238
     if frame is not None:
+        if len(multiplexValTable) > 0:
+            frame.signalByName(frame._name + "_MUX")._values = multiplexValTable
         db._fl.addFrame(frame)
 
     return db
