@@ -135,11 +135,15 @@ def importSym(filename, **options):
                 else:
                     if tempArray[1] == 'unsigned':
                         is_signed = False
+                    elif tempArray[1] == 'bit':
+                        # TODO: actually support bit instead of interpreting as an unsigned
+                        is_signed = False
                     elif tempArray[1] == 'signed':
                         is_signed = True
-                    elif tempArray[1] == 'string':
-                        # TODO: actually support string variables instead of skipping
-                        print('Variable type \'string\' found and skipped')
+                    elif tempArray[1] in ['string', 'float']:
+                        # TODO: actually support these variable types instead of skipping
+                        print('Variable type \'{}\' found and skipped'
+                              .format(tempArray[1]))
                         continue
                     else:
                         raise ValueError('Unknown type \'{}\' found'.format(tempArray[1]))
