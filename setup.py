@@ -47,12 +47,13 @@ Topic :: Scientific/Engineering
 """
 
 from setuptools import setup, find_packages
+from canmatrix.version import version
 
 doclines = __doc__.split("\n")
 
 setup(
     name = "canmatrix",
-    version = "0.4",
+    version = version,
     maintainer = "Eduard Broecker",
     maintainer_email = "eduard at gmx dot de",
     url = "http://github.com/ebroecker/canmatrix",
