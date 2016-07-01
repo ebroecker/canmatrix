@@ -10,11 +10,11 @@
       <Notes>Multi
 Line
 Frame comment</Notes>
-      <Signal name="someTestSignal" offset="9" length="11" endianess="little">
+      <Signal name="someTestSignal" offset="4" length="11" endianess="big">
         <Notes>Multi
 Line
 Signal comment with a-umlaut: &#228;</Notes>
-        <Value type="unsigned" slope="5" intercept="1" max="500.0" unit="specialCharUnit&#176;$"/>
+        <Value slope="5" intercept="1" max="500.0" unit="specialCharUnit&#176;$"/>
         <LabelSet/>
         <Consumer>
           <NodeRef id="2"/>
@@ -22,7 +22,7 @@ Signal comment with a-umlaut: &#228;</Notes>
       </Signal>
       <Signal name="Signal" offset="20" length="3">
         <Notes/>
-        <Value type="unsigned" max="6.0" unit="someUnit"/>
+        <Value max="6.0" unit="someUnit"/>
         <LabelSet>
           <Label name="one" value="1"/>
           <Label name="two" value="2"/>
