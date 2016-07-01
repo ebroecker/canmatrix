@@ -126,8 +126,8 @@ BO_ 2634008055 StatusControlVoltage: 8 Vector__XXX
  SG_ v15_Supply : 55|16@0- (0.01,0) [-327.68|327.67] "" Vector__XXX
 
 BO_ 2566900727 StatusTemps: 8 Vector__XXX
- SG_ TempInlet_measured : 7|16@0- (0.1,0) [-3276.8|3276.7000000000003] "" Vector__XXX
- SG_ TempInternal_measured : 23|16@0- (0.1,0) [-3276.8|3276.7000000000003] "" Vector__XXX
+ SG_ TempInlet_measured : 7|16@0- (0.1,0) [-3276.8|3276.7] "" Vector__XXX
+ SG_ TempInternal_measured : 23|16@0- (0.1,0) [-3276.8|3276.7] "" Vector__XXX
  SG_ ConverterLosses : 39|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
 
 BO_ 2365573367 StatusFaults: 8 Vector__XXX
@@ -152,9 +152,9 @@ BO_ 2365573367 StatusFaults: 8 Vector__XXX
  SG_ ThermalOverload : 33|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
 
 BO_ 2365571831 StatusACParameters: 8 Vector__XXX
- SG_ VoltageAC_measured : 7|16@0- (0.1,0) [-3276.8|3276.7000000000003] "" Vector__XXX
+ SG_ VoltageAC_measured : 7|16@0- (0.1,0) [-3276.8|3276.7] "" Vector__XXX
  SG_ CurrentAC_measured : 23|16@0- (1,0) [-32768.0|32767.0] "" Vector__XXX
- SG_ Frequency_measured : 39|16@0- (0.1,0) [-3276.8|3276.7000000000003] "" Vector__XXX
+ SG_ Frequency_measured : 39|16@0- (0.1,0) [-3276.8|3276.7] "" Vector__XXX
 
 BO_ 2634008567 StatusDCParameters: 8 Vector__XXX
  SG_ VoltageDCBus : 23|16@0- (1,0) [-32768.0|32767.0] "" Vector__XXX

@@ -166,8 +166,8 @@ Var=v15_Supply signed 48,16 -m /f:0.01 /min:-327.68 /max:327.67
 ID=18FFCBF7h
 Type=Extended
 DLC=8
-Var=TempInlet_measured signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003 
-Var=TempInternal_measured signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003 
+Var=TempInlet_measured signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7 
+Var=TempInternal_measured signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7 
 Var=ConverterLosses unsigned 32,16 -m /min:0.0 /max:65535.0 
 
 [StatusFaults]
@@ -198,9 +198,9 @@ Var=ThermalOverload unsigned 38,2 -m /min:0.0 /max:3.0
 ID= CFFC2F7h
 Type=Extended
 DLC=8
-Var=VoltageAC_measured signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003 
+Var=VoltageAC_measured signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7 
 Var=CurrentAC_measured signed 16,16 -m /min:-32768.0 /max:32767.0 
-Var=Frequency_measured signed 32,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003 
+Var=Frequency_measured signed 32,16 -m /f:0.1 /min:-3276.8 /max:3276.7 
 
 [StatusDCParameters]
 ID=1CFFC7F7h

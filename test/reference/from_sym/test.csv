@@ -139,9 +139,9 @@ CFFAF41h,CommandFactoryControl,,,,1,6,WriteSerialNumber,,2,,,m,u,Error,2
 CFFAF41h,CommandFactoryControl,,,,1,6,WriteSerialNumber,,2,,,m,u,N/A,3
 CFFAF41h,CommandFactoryControl,,,,3,0,FactoryAccess,,16,,,m,u,,0.0..65535.0
 CFFAF41h,CommandFactoryControl,,,,5,0,SerialNumber,,32,,,m,u,,0.0..4294967295.0
-CFFC2F7h,StatusACParameters,100,,,1,0,VoltageAC_measured,Measured RMS AC voltage.,16,,,m,s,,-3276.8..3276.7000000000003,0.1  V
+CFFC2F7h,StatusACParameters,100,,,1,0,VoltageAC_measured,Measured RMS AC voltage.,16,,,m,s,,-3276.8..3276.7,0.1  V
 CFFC2F7h,StatusACParameters,100,,,3,0,CurrentAC_measured,Measured RMS AC current.,16,,,m,s,,-32768.0..32767.0,A
-CFFC2F7h,StatusACParameters,100,,,5,0,Frequency_measured,Measured frequency.,16,,,m,s,,-3276.8..3276.7000000000003,0.1  Hz
+CFFC2F7h,StatusACParameters,100,,,5,0,Frequency_measured,Measured frequency.,16,,,m,s,,-3276.8..3276.7,0.1  Hz
 CFFC3F7h,StatusBits,100,,,1,0,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,m,u,Normal,0
 CFFC3F7h,StatusBits,100,,,1,0,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,m,u,Clear Faults,1
 CFFC3F7h,StatusBits,100,,,1,0,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,m,u,Error,2
@@ -326,8 +326,8 @@ CFFCAF7h,StatusMeasuredPower,100,,,5,0,ReactivePower_measured,Measured reactive 
 18FFC4F7h,StatusCommandedPower,100,,,5,0,ReactivePower_echo,Echoed reactive power command.,32,,,m,s,,-2147483648.0..2147483647.0,VA
 18FFC9F7h,StatusCommandVF,100,,,1,0,Voltage_echo,Echoed voltage command,16,,,m,u,,0.0..6553.5,0.1  Vrms
 18FFC9F7h,StatusCommandVF,100,,,3,0,Frequency_echo,Echoed frequency command.,16,,,m,u,,0.0..6553.5,0.1  Hz
-18FFCBF7h,StatusTemps,100,,,1,0,TempInlet_measured,Coolant inlet temperature,16,,,m,s,,-3276.8..3276.7000000000003,0.1  C
-18FFCBF7h,StatusTemps,100,,,3,0,TempInternal_measured,Internal ambient temperature,16,,,m,s,,-3276.8..3276.7000000000003,0.1  C
+18FFCBF7h,StatusTemps,100,,,1,0,TempInlet_measured,Coolant inlet temperature,16,,,m,s,,-3276.8..3276.7,0.1  C
+18FFCBF7h,StatusTemps,100,,,3,0,TempInternal_measured,Internal ambient temperature,16,,,m,s,,-3276.8..3276.7,0.1  C
 18FFCBF7h,StatusTemps,100,,,5,0,ConverterLosses,Power converter thermal loss,16,,,m,u,,0.0..1.0,W
 18FFD0F7h,StatusLineCurrents,100,,,1,0,L1Current_measured,Measured L1 RMS line current.,16,,,m,u,,0.0..1.0,A
 18FFD0F7h,StatusLineCurrents,100,,,3,0,L2Current_measured,Measured L2 RMS line current.,16,,,m,u,,0.0..1.0,A
