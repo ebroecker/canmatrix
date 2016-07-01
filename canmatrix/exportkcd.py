@@ -45,8 +45,6 @@ def createSignal(signal, nodeList):
     value = etree.Element('Value')
     if signal._is_signed:
         value.set('type',"signed")
-    else:
-        value.set('type',"unsigned")
 
     if float(signal._factor) != 1:
         value.set('slope',str("%g" % signal._factor))
