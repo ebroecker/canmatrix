@@ -44,10 +44,10 @@ def parseSignal(signal, mux, namespace, nodelist):
         signalsize = signal.get('length')
 
 
-    is_little_endian = True
+    is_little_endian = False
     if 'endianess' in signal.attrib:
         if signal.get('endianess') == 'little':
-            is_little_endian = False
+            is_little_endian = True
 
     unit = ""
     offset = 0
@@ -59,11 +59,11 @@ def parseSignal(signal, mux, namespace, nodelist):
     values = signal.find('./' + namespace + 'Value')
     if values is not None:
         if 'type' in values.attrib:
-            valuetype = values.get('type')             
-            if valuetype == "unsigned":            
+            valuetype = values.get('type')
+            if valuetype == "unsigned":
                 is_signed = False
             else:
-                is_signed = True      
+                is_signed = True
         if 'slope' in values.attrib:
             factor = values.get('slope')
         if 'intercept' in values.attrib:
@@ -83,18 +83,18 @@ def parseSignal(signal, mux, namespace, nodelist):
             receiver.append(nodelist[noderef.get('id')])
 
 
-    newSig = Signal(signal.get('name'), 
-                      startBit = startbit, 
+    newSig = Signal(signal.get('name'),
+                      startBit = startbit,
                       signalSize = signalsize,
-                      is_little_endian=is_little_endian, 
-                      is_signed = is_signed, 
-                      factor=factor, 
+                      is_little_endian=is_little_endian,
+                      is_signed = is_signed,
+                      factor=factor,
                       offset=offset,
                       min=min,
                       max=max,
                       unit=unit,
                       receiver=receiver,
-                      multiplex=mux)     
+                      multiplex=mux)
 
     notes = signal.findall('./' + namespace + 'Notes')
     comment = ""
@@ -162,7 +162,7 @@ def importKcd(filename):
 
 
             is_little_endian = True
-  
+
             min = None
             max = None
             values = multiplex.find('./' + namespace + 'Value')
@@ -184,18 +184,18 @@ def importKcd(filename):
                 for noderef in noderefs:
                     receiver += nodelist[noderef.get('id')] + ' '
 
-            newSig = Signal(multiplex.get('name'), 
-                              startBit = startbit, 
+            newSig = Signal(multiplex.get('name'),
+                              startBit = startbit,
                               signalSize = signalsize,
-                              is_little_endian=is_little_endian, 
-                              is_signed = is_signed, 
-                              factor=factor, 
+                              is_little_endian=is_little_endian,
+                              is_signed = is_signed,
+                              factor=factor,
                               offset=offset,
                               min=min,
                               max=max,
                               unit=unit,
                               receiver=receiver,
-                              multiplex='Multiplexor')     
+                              multiplex='Multiplexor')
 
             if is_little_endian == False:
                 #motorola/big_endian set/convert startbit
