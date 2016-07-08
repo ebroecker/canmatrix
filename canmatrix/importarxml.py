@@ -171,7 +171,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
  
             if newSig._is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
-                newSig.setMsbStartbit(int(startBit.text))                
+                newSig.setStartbit(int(startBit.text), bitNumbering = 1)
             
             newSig._isigRef = isignal.text
             signalRxs[isignal.text] = newSig
@@ -539,7 +539,7 @@ def importArxml(filename, **options):
             frame = [0, 0, 0, 0, 0, 0, 0, 0]
             for sig in bo._signals:
                 if sig._initValue != 0:
-                    putSignalValueInFrame(sig.getLsbStartbit(), sig._signalsize, sig._is_little_endian, sig._initValue, frame)
+                    putSignalValueInFrame(sig.getStartbit(bitNumbering = 1, startLittle = True), sig._signalsize, sig._is_little_endian, sig._initValue, frame)
             hexStr = '"'
             for i in range(bo._Size):
                 hexStr += "%02X" % frame[i]

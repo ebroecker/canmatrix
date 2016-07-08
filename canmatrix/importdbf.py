@@ -255,7 +255,7 @@ def importDbf(filename, **options):
  
                 if int(byteorder) == 0:
                     # this is dummy here, because internal lsb is default - for now
-                    newSig.setLsbStartbit(startbit)                    
+                    newSig.setStartbit(startbit, bitNumbering = 1, startLittle = True)
 
             if line.startswith("[VALUE_DESCRIPTION]"):
                 temstr = line.strip()[19:].strip()

@@ -44,10 +44,10 @@ def parseSignal(signal, mux, namespace, nodelist):
         signalsize = signal.get('length')
 
 
-    is_little_endian = False
+    is_little_endian = True
     if 'endianess' in signal.attrib:
-        if signal.get('endianess') == 'little':
-            is_little_endian = True
+        if signal.get('endianess') == 'big':
+            is_little_endian = False
 
     unit = ""
     offset = 0
@@ -95,6 +95,7 @@ def parseSignal(signal, mux, namespace, nodelist):
                       unit=unit,
                       receiver=receiver,
                       multiplex=mux)
+    newSig.setStartbit(int(startbit))
 
     notes = signal.findall('./' + namespace + 'Notes')
     comment = ""
@@ -144,6 +145,7 @@ def importKcd(filename):
 
         if 'length' in message.attrib:
             dlc = int(message.get('length'))
+            newBo._Size = dlc
 
         if 'format' in message.attrib:
             if message.get('format') == "extended":
@@ -176,6 +178,9 @@ def importKcd(filename):
             offset = 0
             factor = 1
             is_signed = False
+            if 'type' in multiplex.attrib:
+                if multiplex.get('type') == 'signed':
+                    is_signed = True
 
             receiver = ""
             consumers = multiplex.findall('./' + namespace + 'Consumer')
@@ -199,7 +204,7 @@ def importKcd(filename):
 
             if is_little_endian == False:
                 #motorola/big_endian set/convert startbit
-                newSig.setLsbStartbit(startbit)
+                newSig.setStartbit(startbit)
             notes = multiplex.findall('./' + namespace + 'Notes')
             comment = ""
             for note in notes:

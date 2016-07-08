@@ -1,96 +1,96 @@
 ID,Frame Name,Cycle Time [ms],Launch Type,Launch Parameter,Signal Byte No.,Signal Bit No.,Signal Name,Signal Function,Signal Length [Bit],Signal Default, Signal Not Available,Byteorder,is signed,Value,Name / Phys. Range,Function / Increment Unit
-FF9B41h,CommandModeControlAPU2,,,,1,4,FaultClear_command,Clears the latched fault message.,2,,,m,u,Normal,0
-FF9B41h,CommandModeControlAPU2,,,,1,4,FaultClear_command,Clears the latched fault message.,2,,,m,u,Clear Faults,1
-FF9B41h,CommandModeControlAPU2,,,,1,4,FaultClear_command,Clears the latched fault message.,2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,1,4,FaultClear_command,Clears the latched fault message.,2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,1,6,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,m,u,Disable,0
-FF9B41h,CommandModeControlAPU2,,,,1,6,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,m,u,Enable,1
-FF9B41h,CommandModeControlAPU2,,,,1,6,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,1,6,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,3,6,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,m,u,Master,0
-FF9B41h,CommandModeControlAPU2,,,,3,6,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,m,u,Follower,1
-FF9B41h,CommandModeControlAPU2,,,,3,6,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,3,6,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,5,0,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Normal,0
-FF9B41h,CommandModeControlAPU2,,,,5,0,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Force On,1
-FF9B41h,CommandModeControlAPU2,,,,5,0,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,5,0,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,5,2,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Normal,0
-FF9B41h,CommandModeControlAPU2,,,,5,2,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Force On,1
-FF9B41h,CommandModeControlAPU2,,,,5,2,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,5,2,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,5,4,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Normal,0
-FF9B41h,CommandModeControlAPU2,,,,5,4,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Force On,1
-FF9B41h,CommandModeControlAPU2,,,,5,4,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,5,4,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,5,6,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Normal,0
-FF9B41h,CommandModeControlAPU2,,,,5,6,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Force On,1
-FF9B41h,CommandModeControlAPU2,,,,5,6,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,5,6,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,8,0,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING,2,,,m,u,Negative,0
-FF9B41h,CommandModeControlAPU2,,,,8,0,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING,2,,,m,u,Positive,1
-FF9B41h,CommandModeControlAPU2,,,,8,0,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING,2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,8,0,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING,2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,8,2,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,m,u,Normal - Three Phase Mode,0
-FF9B41h,CommandModeControlAPU2,,,,8,2,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,m,u,Enable Split Phase Mode,1
-FF9B41h,CommandModeControlAPU2,,,,8,2,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,8,2,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,8,4,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,m,u,Disable,0
-FF9B41h,CommandModeControlAPU2,,,,8,4,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,m,u,Enable,1
-FF9B41h,CommandModeControlAPU2,,,,8,4,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,8,4,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,,,,8,6,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,m,u,No invert,0
-FF9B41h,CommandModeControlAPU2,,,,8,6,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,m,u,Invert,1
-FF9B41h,CommandModeControlAPU2,,,,8,6,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,,,,8,6,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,1,4,FaultClear_command,Clears the latched fault message.,2,,,m,u,Normal,0
-FFAB41h,CommandModeControl,,,,1,4,FaultClear_command,Clears the latched fault message.,2,,,m,u,Clear Faults,1
-FFAB41h,CommandModeControl,,,,1,4,FaultClear_command,Clears the latched fault message.,2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,1,4,FaultClear_command,Clears the latched fault message.,2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,1,6,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,m,u,Disable,0
-FFAB41h,CommandModeControl,,,,1,6,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,m,u,Enable,1
-FFAB41h,CommandModeControl,,,,1,6,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,1,6,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,3,6,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,m,u,Master,0
-FFAB41h,CommandModeControl,,,,3,6,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,m,u,Follower,1
-FFAB41h,CommandModeControl,,,,3,6,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,3,6,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,5,0,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Normal,0
-FFAB41h,CommandModeControl,,,,5,0,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Force On,1
-FFAB41h,CommandModeControl,,,,5,0,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,5,0,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,5,2,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Normal,0
-FFAB41h,CommandModeControl,,,,5,2,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Force On,1
-FFAB41h,CommandModeControl,,,,5,2,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,5,2,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,5,4,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Normal,0
-FFAB41h,CommandModeControl,,,,5,4,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Force On,1
-FFAB41h,CommandModeControl,,,,5,4,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,5,4,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,5,6,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Normal,0
-FFAB41h,CommandModeControl,,,,5,6,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Force On,1
-FFAB41h,CommandModeControl,,,,5,6,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,5,6,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,8,0,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.,2,,,m,u,Negative,0
-FFAB41h,CommandModeControl,,,,8,0,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.,2,,,m,u,Positive,1
-FFAB41h,CommandModeControl,,,,8,0,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.,2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,8,0,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.,2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,8,2,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,m,u,Normal - Three Phase Mode,0
-FFAB41h,CommandModeControl,,,,8,2,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,m,u,Enable Split Phase Mode,1
-FFAB41h,CommandModeControl,,,,8,2,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,8,2,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,8,4,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,m,u,Disable,0
-FFAB41h,CommandModeControl,,,,8,4,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,m,u,Enable,1
-FFAB41h,CommandModeControl,,,,8,4,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,8,4,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,,,,8,6,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,m,u,No invert,0
-FFAB41h,CommandModeControl,,,,8,6,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,m,u,Invert,1
-FFAB41h,CommandModeControl,,,,8,6,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,m,u,Error,2
-FFAB41h,CommandModeControl,,,,8,6,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,m,u,N/A,3
-CFF9C41h,CommandPowerAPU2,,,,1,0,RealPower_command,Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.,32,,,m,s,,-90000.0..90000.0,W
-CFF9C41h,CommandPowerAPU2,,,,5,0,ReactivePower_command,Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.,32,,,m,s,,-90000.0..90000.0,VA
-CFF9E41h,CommandVFAPU2,,,,1,0,Voltage_command,Desired output voltage while in grid forming mode.,16,,,m,u,,10.0..500.0,0.1  Vrms
-CFF9E41h,CommandVFAPU2,,,,3,0,Frequency_command,Desired output frequency while in grid forming mode.,16,,,m,u,,45.0..65.0,0.1  Hz
+FF9B41h,CommandModeControlAPU2,,,,1,0,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,i,u,Disable,0
+FF9B41h,CommandModeControlAPU2,,,,1,0,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,i,u,Enable,1
+FF9B41h,CommandModeControlAPU2,,,,1,0,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,1,0,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,1,2,FaultClear_command,Clears the latched fault message.,2,,,i,u,Normal,0
+FF9B41h,CommandModeControlAPU2,,,,1,2,FaultClear_command,Clears the latched fault message.,2,,,i,u,Clear Faults,1
+FF9B41h,CommandModeControlAPU2,,,,1,2,FaultClear_command,Clears the latched fault message.,2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,1,2,FaultClear_command,Clears the latched fault message.,2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,3,0,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,i,u,Master,0
+FF9B41h,CommandModeControlAPU2,,,,3,0,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,i,u,Follower,1
+FF9B41h,CommandModeControlAPU2,,,,3,0,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,3,0,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,5,0,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Normal,0
+FF9B41h,CommandModeControlAPU2,,,,5,0,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Force On,1
+FF9B41h,CommandModeControlAPU2,,,,5,0,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,5,0,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,5,2,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Normal,0
+FF9B41h,CommandModeControlAPU2,,,,5,2,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Force On,1
+FF9B41h,CommandModeControlAPU2,,,,5,2,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,5,2,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,5,4,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Normal,0
+FF9B41h,CommandModeControlAPU2,,,,5,4,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Force On,1
+FF9B41h,CommandModeControlAPU2,,,,5,4,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,5,4,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,5,6,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Normal,0
+FF9B41h,CommandModeControlAPU2,,,,5,6,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Force On,1
+FF9B41h,CommandModeControlAPU2,,,,5,6,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,5,6,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,8,0,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,i,u,No invert,0
+FF9B41h,CommandModeControlAPU2,,,,8,0,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,i,u,Invert,1
+FF9B41h,CommandModeControlAPU2,,,,8,0,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,8,0,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,8,2,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,i,u,Disable,0
+FF9B41h,CommandModeControlAPU2,,,,8,2,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,i,u,Enable,1
+FF9B41h,CommandModeControlAPU2,,,,8,2,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,8,2,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,8,4,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,i,u,Normal - Three Phase Mode,0
+FF9B41h,CommandModeControlAPU2,,,,8,4,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,i,u,Enable Split Phase Mode,1
+FF9B41h,CommandModeControlAPU2,,,,8,4,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,8,4,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,i,u,N/A,3
+FF9B41h,CommandModeControlAPU2,,,,8,6,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING,2,,,i,u,Negative,0
+FF9B41h,CommandModeControlAPU2,,,,8,6,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING,2,,,i,u,Positive,1
+FF9B41h,CommandModeControlAPU2,,,,8,6,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING,2,,,i,u,Error,2
+FF9B41h,CommandModeControlAPU2,,,,8,6,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING,2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,1,0,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,i,u,Disable,0
+FFAB41h,CommandModeControl,,,,1,0,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,i,u,Enable,1
+FFAB41h,CommandModeControl,,,,1,0,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,1,0,Enable_command,"Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.",2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,1,2,FaultClear_command,Clears the latched fault message.,2,,,i,u,Normal,0
+FFAB41h,CommandModeControl,,,,1,2,FaultClear_command,Clears the latched fault message.,2,,,i,u,Clear Faults,1
+FFAB41h,CommandModeControl,,,,1,2,FaultClear_command,Clears the latched fault message.,2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,1,2,FaultClear_command,Clears the latched fault message.,2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,3,0,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,i,u,Master,0
+FFAB41h,CommandModeControl,,,,3,0,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,i,u,Follower,1
+FFAB41h,CommandModeControl,,,,3,0,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,3,0,MasterFollowerMode_command,"Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.",2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,5,0,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Normal,0
+FFAB41h,CommandModeControl,,,,5,0,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Force On,1
+FFAB41h,CommandModeControl,,,,5,0,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,5,0,ForceRelayMX1_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,5,2,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Normal,0
+FFAB41h,CommandModeControl,,,,5,2,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Force On,1
+FFAB41h,CommandModeControl,,,,5,2,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,5,2,ForceRelayMX2_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,5,4,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Normal,0
+FFAB41h,CommandModeControl,,,,5,4,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Force On,1
+FFAB41h,CommandModeControl,,,,5,4,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,5,4,ForceRelayK1_Precharge_command,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,5,6,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Normal,0
+FFAB41h,CommandModeControl,,,,5,6,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Force On,1
+FFAB41h,CommandModeControl,,,,5,6,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,5,6,ForceRelayRelayK2_DCRun_comand,"If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.",2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,8,0,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,i,u,No invert,0
+FFAB41h,CommandModeControl,,,,8,0,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,i,u,Invert,1
+FFAB41h,CommandModeControl,,,,8,0,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,8,0,InvertHwEnable_command,Inverts the logic of the Hardware Enable input.,2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,8,2,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,i,u,Disable,0
+FFAB41h,CommandModeControl,,,,8,2,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,i,u,Enable,1
+FFAB41h,CommandModeControl,,,,8,2,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,8,2,EnableUPSMode_command,"Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.",2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,8,4,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,i,u,Normal - Three Phase Mode,0
+FFAB41h,CommandModeControl,,,,8,4,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,i,u,Enable Split Phase Mode,1
+FFAB41h,CommandModeControl,,,,8,4,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,8,4,EnableSplitPhase_command,"Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.",2,,,i,u,N/A,3
+FFAB41h,CommandModeControl,,,,8,6,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.,2,,,i,u,Negative,0
+FFAB41h,CommandModeControl,,,,8,6,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.,2,,,i,u,Positive,1
+FFAB41h,CommandModeControl,,,,8,6,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.,2,,,i,u,Error,2
+FFAB41h,CommandModeControl,,,,8,6,PhaseRotation_command,Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.,2,,,i,u,N/A,3
+CFF9C41h,CommandPowerAPU2,,,,4,0,RealPower_command,Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.,32,,,i,s,,-90000.0..90000.0,W
+CFF9C41h,CommandPowerAPU2,,,,8,0,ReactivePower_command,Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.,32,,,i,s,,-90000.0..90000.0,VA
+CFF9E41h,CommandVFAPU2,,,,2,0,Voltage_command,Desired output voltage while in grid forming mode.,16,,,i,u,,10.0..500.0,0.1  Vrms
+CFF9E41h,CommandVFAPU2,,,,4,0,Frequency_command,Desired output frequency while in grid forming mode.,16,,,i,u,,45.0..65.0,0.1  Hz
 CFFAA41h,CommandSetNVParam,,,,2,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,i,u,Param0,0
 CFFAA41h,CommandSetNVParam,,,,2,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,i,u,LVM_ClearingTimes1,1
 CFFAA41h,CommandSetNVParam,,,,2,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,i,u,LVM_ClearingTimes2,2
@@ -101,240 +101,240 @@ CFFAA41h,CommandSetNVParam,,,,2,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,i,u,F
 CFFAA41h,CommandSetNVParam,,,,2,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,i,u,ContactorDelays1,7
 CFFAA41h,CommandSetNVParam,,,,2,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,i,u,ContactorDelays2,8
 CFFAA41h,CommandSetNVParam,,,,2,0,CommandSetNVParam_MUX,Mode Signal: ,16,,,i,u,ContactorDelays3,10
-CFFAA41h,CommandSetNVParam,,,,3,0,Dummy,Mode 0:,16,,,m,u,,0.0..65535.0
-CFFAA41h,CommandSetNVParam,,,,3,0,FreqHi,"Mode 3:Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.",16,,,m,u,,40.0..70.0,0.1  Hz
-CFFAA41h,CommandSetNVParam,,,,3,0,FreqVeryLo,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains below the value specified in FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,m,u,,160.0..160.0,ms
-CFFAA41h,CommandSetNVParam,,,,3,0,K2Open,Mode 10:Maximum time required for the K2 contactor to open.,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,,,,3,0,MX1Open,Mode 7:Maximum time required for the MX1 contactor to open.,16,,,m,u,,0.0..5000.0,ms
-CFFAA41h,CommandSetNVParam,,,,3,0,MX2Close,Mode 8:Maximum time required for the MX2 contactor to open.,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,,,,3,0,NodeID,Mode 5:J1939 Source Address node for the module.,8,,,m,u,,0.0..247.0
-CFFAA41h,CommandSetNVParam,,,,3,0,VOver120,Mode 2:Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,m,u,,1.0..30000.0
-CFFAA41h,CommandSetNVParam,,,,3,0,VUnder50pct,Mode 1:Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,m,u,,1.0..30000.0,ms
-CFFAA41h,CommandSetNVParam,,,,3,6,ThermalOverload,Mode 6:Configures action to take when thermal overload input is active.,2,,,m,u,Warning,0
-CFFAA41h,CommandSetNVParam,,,,3,6,ThermalOverload,Mode 6:Configures action to take when thermal overload input is active.,2,,,m,u,Fault,1
-CFFAA41h,CommandSetNVParam,,,,3,6,ThermalOverload,Mode 6:Configures action to take when thermal overload input is active.,2,,,m,u,Error,2
-CFFAA41h,CommandSetNVParam,,,,3,6,ThermalOverload,Mode 6:Configures action to take when thermal overload input is active.,2,,,m,u,N/A,3
-CFFAA41h,CommandSetNVParam,,,,4,0,SA_Mask,Mode 5:Not presently used.,8,,,m,u,,0.0..255.0
-CFFAA41h,CommandSetNVParam,,,,5,0,Baudrate,Mode 5:CAN baudrate,4,,,m,u,125K,0
-CFFAA41h,CommandSetNVParam,,,,5,0,Baudrate,Mode 5:CAN baudrate,4,,,m,u,250K,1
-CFFAA41h,CommandSetNVParam,,,,5,0,Baudrate,Mode 5:CAN baudrate,4,,,m,u,500K,2
-CFFAA41h,CommandSetNVParam,,,,5,0,Baudrate,Mode 5:CAN baudrate,4,,,m,u,1M,3
-CFFAA41h,CommandSetNVParam,,,,5,0,FreqLo,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains between the value specified in FreqLo and FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,m,u,,1.0..30000.0,ms
-CFFAA41h,CommandSetNVParam,,,,5,0,K1Open,Mode 8:Maximum time required for the K1 contactor to open.,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,,,,5,0,K2Close,Mode 10:Maximum time required for the K2 contactor to close.,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,,,,5,0,MX1Close,Mode 7:Maximum time required for the MX1 contactor to close.,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,,,,5,0,V50to88pct,Mode 1:Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,m,u,,1.0..30000.0,ms
-CFFAA41h,CommandSetNVParam,,,,7,0,FreqHi,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains above the value specified in FreqHi of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,m,u,,160.0..160.0,ms
-CFFAA41h,CommandSetNVParam,,,,7,0,FreqVeryLo,"Mode 3:Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.",16,,,m,u,,40.0..70.0,0.1  Hz
-CFFAA41h,CommandSetNVParam,,,,7,0,K1Close,Mode 8:Maximum time required for the K1 contactor to close.,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,,,,7,0,MX2Open,Mode 7:Maximum time required for the MX2 contactor to open.,16,,,m,u,,0.0..65535.0,ms
-CFFAA41h,CommandSetNVParam,,,,7,0,V110to120pct,Mode 1:Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,m,u,,1.0..30000.0,ms
-CFFAC41h,CommandPower,,,,1,0,RealPower command,Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.,32,,,m,s,,-90000.0..90000.0,W
-CFFAC41h,CommandPower,,,,5,0,ReactivePower_command,Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.,32,,,m,s,,-90000.0..90000.0,VA
-CFFAE41h,CommandVF,,,,1,0,Voltage_command,Desired output voltage while in grid forming mode.,16,,,m,u,,10.0..500.0,0.1  Vrms
-CFFAE41h,CommandVF,,,,3,0,Frequency_command,Desired output frequency while in grid forming mode.,16,,,m,u,,45.0..65.0,0.1  Hz
-CFFAF41h,CommandFactoryControl,,,,1,6,WriteSerialNumber,,2,,,m,u,Disable,0
-CFFAF41h,CommandFactoryControl,,,,1,6,WriteSerialNumber,,2,,,m,u,Enable,1
-CFFAF41h,CommandFactoryControl,,,,1,6,WriteSerialNumber,,2,,,m,u,Error,2
-CFFAF41h,CommandFactoryControl,,,,1,6,WriteSerialNumber,,2,,,m,u,N/A,3
-CFFAF41h,CommandFactoryControl,,,,3,0,FactoryAccess,,16,,,m,u,,0.0..65535.0
-CFFAF41h,CommandFactoryControl,,,,5,0,SerialNumber,,32,,,m,u,,0.0..4294967295.0
-CFFC2F7h,StatusACParameters,100,,,1,0,VoltageAC_measured,Measured RMS AC voltage.,16,,,m,s,,-3276.8..3276.7000000000003,0.1  V
-CFFC2F7h,StatusACParameters,100,,,3,0,CurrentAC_measured,Measured RMS AC current.,16,,,m,s,,-32768.0..32767.0,A
-CFFC2F7h,StatusACParameters,100,,,5,0,Frequency_measured,Measured frequency.,16,,,m,s,,-3276.8..3276.7000000000003,0.1  Hz
-CFFC3F7h,StatusBits,100,,,1,0,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,m,u,Normal,0
-CFFC3F7h,StatusBits,100,,,1,0,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,m,u,Clear Faults,1
-CFFC3F7h,StatusBits,100,,,1,0,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,1,0,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,1,2,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,m,u,Disable,0
-CFFC3F7h,StatusBits,100,,,1,2,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,m,u,Enable,1
-CFFC3F7h,StatusBits,100,,,1,2,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,1,2,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,"Power On Reset, and a quoted comma",0
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,Ready,1
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,Following,2
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,Fault,3
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,Forming,4
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,5
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,6
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,7
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,8
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,9
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,10
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,11
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,12
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,13
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,14
-CFFC3F7h,StatusBits,100,,,1,4,State_status,Active control mode.,4,,,m,u,N/A,15
-CFFC3F7h,StatusBits,100,,,2,0,PowerCircuitEnabled_status,Indicates whether the switching devices are active.,2,,,m,u,Disabled,0
-CFFC3F7h,StatusBits,100,,,2,0,PowerCircuitEnabled_status,Indicates whether the switching devices are active.,2,,,m,u,Enabled,1
-CFFC3F7h,StatusBits,100,,,2,0,PowerCircuitEnabled_status,Indicates whether the switching devices are active.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,2,0,PowerCircuitEnabled_status,Indicates whether the switching devices are active.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,2,2,PowerAvailDC_status,Indicates that DC bus voltage is within operating range.,2,,,m,u,None,0
-CFFC3F7h,StatusBits,100,,,2,2,PowerAvailDC_status,Indicates that DC bus voltage is within operating range.,2,,,m,u,Available,1
-CFFC3F7h,StatusBits,100,,,2,2,PowerAvailDC_status,Indicates that DC bus voltage is within operating range.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,2,2,PowerAvailDC_status,Indicates that DC bus voltage is within operating range.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,2,4,PowerAvailAC_status,Indicates that AC power is connected and that voltage and frequency are within nominal ranges.,2,,,m,u,None,0
-CFFC3F7h,StatusBits,100,,,2,4,PowerAvailAC_status,Indicates that AC power is connected and that voltage and frequency are within nominal ranges.,2,,,m,u,Available,1
-CFFC3F7h,StatusBits,100,,,2,4,PowerAvailAC_status,Indicates that AC power is connected and that voltage and frequency are within nominal ranges.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,2,4,PowerAvailAC_status,Indicates that AC power is connected and that voltage and frequency are within nominal ranges.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,2,6,HardwareEnable_status,Status of the hardware enable.,2,,,m,u,Not Active,0
-CFFC3F7h,StatusBits,100,,,2,6,HardwareEnable_status,Status of the hardware enable.,2,,,m,u,Active,1
-CFFC3F7h,StatusBits,100,,,2,6,HardwareEnable_status,Status of the hardware enable.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,2,6,HardwareEnable_status,Status of the hardware enable.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,3,0,K2DCRunPermissive_status,K2 DC Run relay status.,2,,,m,u,Open,0
-CFFC3F7h,StatusBits,100,,,3,0,K2DCRunPermissive_status,K2 DC Run relay status.,2,,,m,u,Closed,1
-CFFC3F7h,StatusBits,100,,,3,0,K2DCRunPermissive_status,K2 DC Run relay status.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,3,0,K2DCRunPermissive_status,K2 DC Run relay status.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,3,2,K1PrechargePermissive_status,K1 precharge relay status.,2,,,m,u,Open,0
-CFFC3F7h,StatusBits,100,,,3,2,K1PrechargePermissive_status,K1 precharge relay status.,2,,,m,u,Closed,1
-CFFC3F7h,StatusBits,100,,,3,2,K1PrechargePermissive_status,K1 precharge relay status.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,3,2,K1PrechargePermissive_status,K1 precharge relay status.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,3,4,MX2Permissive_status,MX2 relay status,2,,,m,u,Open,0
-CFFC3F7h,StatusBits,100,,,3,4,MX2Permissive_status,MX2 relay status,2,,,m,u,Closed,1
-CFFC3F7h,StatusBits,100,,,3,4,MX2Permissive_status,MX2 relay status,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,3,4,MX2Permissive_status,MX2 relay status,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,3,6,MX1Permissive_status,MX1 relay status,2,,,m,u,Open,0
-CFFC3F7h,StatusBits,100,,,3,6,MX1Permissive_status,MX1 relay status,2,,,m,u,Closed,1
-CFFC3F7h,StatusBits,100,,,3,6,MX1Permissive_status,MX1 relay status,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,3,6,MX1Permissive_status,MX1 relay status,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,4,0,CANbus_status,Operational status of the CAN bus driver.,2,,,m,u,Normal,0
-CFFC3F7h,StatusBits,100,,,4,0,CANbus_status,Operational status of the CAN bus driver.,2,,,m,u,Warning,1
-CFFC3F7h,StatusBits,100,,,4,0,CANbus_status,Operational status of the CAN bus driver.,2,,,m,u,ErrorPassive,3
-CFFC3F7h,StatusBits,100,,,4,0,CANbus_status,Operational status of the CAN bus driver.,2,,,m,u,N/A,4
-CFFC3F7h,StatusBits,100,,,4,2,MessageValidVF_status,Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,Invalid,0
-CFFC3F7h,StatusBits,100,,,4,2,MessageValidVF_status,Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,Valid,1
-CFFC3F7h,StatusBits,100,,,4,2,MessageValidVF_status,Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,4,2,MessageValidVF_status,Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,4,4,MessageValidPowerCMD_status,Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,Invalid,0
-CFFC3F7h,StatusBits,100,,,4,4,MessageValidPowerCMD_status,Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,Valid,1
-CFFC3F7h,StatusBits,100,,,4,4,MessageValidPowerCMD_status,Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,4,4,MessageValidPowerCMD_status,Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,4,6,MessageValidModeControl_status,Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,Invalid,0
-CFFC3F7h,StatusBits,100,,,4,6,MessageValidModeControl_status,Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,Valid,1
-CFFC3F7h,StatusBits,100,,,4,6,MessageValidModeControl_status,Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,4,6,MessageValidModeControl_status,Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,5,0,LineVoltageDetected_status,"Flag indicating if voltage is detected on L1, L2 or L3.",2,,,m,u,No_Voltage,0
-CFFC3F7h,StatusBits,100,,,5,0,LineVoltageDetected_status,"Flag indicating if voltage is detected on L1, L2 or L3.",2,,,m,u,Voltage_Detected,1
-CFFC3F7h,StatusBits,100,,,5,0,LineVoltageDetected_status,"Flag indicating if voltage is detected on L1, L2 or L3.",2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,5,0,LineVoltageDetected_status,"Flag indicating if voltage is detected on L1, L2 or L3.",2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,5,2,PhaseRotation_status,"Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.",2,,,m,u,Negative,0
-CFFC3F7h,StatusBits,100,,,5,2,PhaseRotation_status,"Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.",2,,,m,u,Positive,1
-CFFC3F7h,StatusBits,100,,,5,2,PhaseRotation_status,"Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.",2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,5,2,PhaseRotation_status,"Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.",2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,5,4,EnableSplitPhase_echo,Echos the state of the EnableSplitPhase command withing the CommandModeControl message.,2,,,m,u,Normal - Three Phase Mode,0
-CFFC3F7h,StatusBits,100,,,5,4,EnableSplitPhase_echo,Echos the state of the EnableSplitPhase command withing the CommandModeControl message.,2,,,m,u,Enable Split Phase Mode,1
-CFFC3F7h,StatusBits,100,,,5,4,EnableSplitPhase_echo,Echos the state of the EnableSplitPhase command withing the CommandModeControl message.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,5,4,EnableSplitPhase_echo,Echos the state of the EnableSplitPhase command withing the CommandModeControl message.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,5,6,EnableUPSMode_echo,Echos the state of the EnableUPSMode command withing the CommandModeControl message.,2,,,m,u,Disable,0
-CFFC3F7h,StatusBits,100,,,5,6,EnableUPSMode_echo,Echos the state of the EnableUPSMode command withing the CommandModeControl message.,2,,,m,u,Enable,1
-CFFC3F7h,StatusBits,100,,,5,6,EnableUPSMode_echo,Echos the state of the EnableUPSMode command withing the CommandModeControl message.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,5,6,EnableUPSMode_echo,Echos the state of the EnableUPSMode command withing the CommandModeControl message.,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,100,,,6,6,PhaseRotation_echo,Echos the state of PhaseRotation_command withing the CommandModeControl message.,2,,,m,u,Negative,0
-CFFC3F7h,StatusBits,100,,,6,6,PhaseRotation_echo,Echos the state of PhaseRotation_command withing the CommandModeControl message.,2,,,m,u,Positive,1
-CFFC3F7h,StatusBits,100,,,6,6,PhaseRotation_echo,Echos the state of PhaseRotation_command withing the CommandModeControl message.,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,100,,,6,6,PhaseRotation_echo,Echos the state of PhaseRotation_command withing the CommandModeControl message.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,1,0,OvercurrentDC_status,Set immediately upon the software detection of DC current exceeding the threshold value.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,1,0,OvercurrentDC_status,Set immediately upon the software detection of DC current exceeding the threshold value.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,1,0,OvercurrentDC_status,Set immediately upon the software detection of DC current exceeding the threshold value.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,1,0,OvercurrentDC_status,Set immediately upon the software detection of DC current exceeding the threshold value.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,1,2,LossOfAC_status,"In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.",2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,1,2,LossOfAC_status,"In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.",2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,1,2,LossOfAC_status,"In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.",2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,1,2,LossOfAC_status,"In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.",2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,1,4,OvercurrentAC_status,Set immediately upon the software detection of AC current exceeding the threshold value.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,1,4,OvercurrentAC_status,Set immediately upon the software detection of AC current exceeding the threshold value.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,1,4,OvercurrentAC_status,Set immediately upon the software detection of AC current exceeding the threshold value.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,1,4,OvercurrentAC_status,Set immediately upon the software detection of AC current exceeding the threshold value.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,1,6,GeneralFault_status,Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,1,6,GeneralFault_status,Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,1,6,GeneralFault_status,Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,1,6,GeneralFault_status,Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,2,0,OvertempPowerDevice_status,Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,2,0,OvertempPowerDevice_status,Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,2,0,OvertempPowerDevice_status,Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,2,0,OvertempPowerDevice_status,Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,2,2,OvertempInternal_status,Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,2,2,OvertempInternal_status,Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,2,2,OvertempInternal_status,Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,2,2,OvertempInternal_status,Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,2,4,UndervoltageDC_status,Indicates loss of DC source voltage.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,2,4,UndervoltageDC_status,Indicates loss of DC source voltage.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,2,4,UndervoltageDC_status,Indicates loss of DC source voltage.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,2,4,UndervoltageDC_status,Indicates loss of DC source voltage.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,2,6,OvervoltageDC_status,Set immediately upon the software detection of DC voltage exceeding the threshold value.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,2,6,OvervoltageDC_status,Set immediately upon the software detection of DC voltage exceeding the threshold value.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,2,6,OvervoltageDC_status,Set immediately upon the software detection of DC voltage exceeding the threshold value.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,2,6,OvervoltageDC_status,Set immediately upon the software detection of DC voltage exceeding the threshold value.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,3,0,LossValidControlMessage_status,Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.,4,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,3,0,LossValidControlMessage_status,Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.,4,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,3,0,LossValidControlMessage_status,Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.,4,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,3,0,LossValidControlMessage_status,Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.,4,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,3,4,ControlHardwareFail_status,Set upon the failure of control hardware to return expected response.,4,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,3,4,ControlHardwareFail_status,Set upon the failure of control hardware to return expected response.,4,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,3,4,ControlHardwareFail_status,Set upon the failure of control hardware to return expected response.,4,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,3,4,ControlHardwareFail_status,Set upon the failure of control hardware to return expected response.,4,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,4,0,InvalidEESection_status,Indicates that reading or writing of an non-volatile parameter section failed.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,4,0,InvalidEESection_status,Indicates that reading or writing of an non-volatile parameter section failed.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,4,0,InvalidEESection_status,Indicates that reading or writing of an non-volatile parameter section failed.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,4,0,InvalidEESection_status,Indicates that reading or writing of an non-volatile parameter section failed.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,4,2,InvalidEEHeader_status,Indicates that reading of non-volatile parameters at power-up failed.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,4,2,InvalidEEHeader_status,Indicates that reading of non-volatile parameters at power-up failed.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,4,2,InvalidEEHeader_status,Indicates that reading of non-volatile parameters at power-up failed.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,4,2,InvalidEEHeader_status,Indicates that reading of non-volatile parameters at power-up failed.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,4,4,IllegalTransition_status,"Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.",2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,4,4,IllegalTransition_status,"Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.",2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,4,4,IllegalTransition_status,"Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.",2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,4,4,IllegalTransition_status,"Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.",2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,4,6,EStopShutdown_status,Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,4,6,EStopShutdown_status,Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,4,6,EStopShutdown_status,Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,4,6,EStopShutdown_status,Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,5,6,ThermalOverload,,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,5,6,ThermalOverload,,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,5,6,ThermalOverload,,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,5,6,ThermalOverload,,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,6,4,BridgeBVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,6,4,BridgeBVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,6,4,BridgeBVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,6,4,BridgeBVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,6,5,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,6,5,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,FLT_A,1
-CFFC8F7h,StatusFaults,100,,,6,5,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,N/A,2
-CFFC8F7h,StatusFaults,100,,,6,5,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,FLT_C,3
-CFFC8F7h,StatusFaults,100,,,6,5,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,OverVoltage,4
-CFFC8F7h,StatusFaults,100,,,6,5,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,FLT_B,5
-CFFC8F7h,StatusFaults,100,,,6,5,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,Overcurrent,6
-CFFC8F7h,StatusFaults,100,,,6,5,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,5V,7
-CFFC8F7h,StatusFaults,100,,,8,4,BridgeAVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,8,4,BridgeAVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,100,,,8,4,BridgeAVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,m,u,Error,2
-CFFC8F7h,StatusFaults,100,,,8,4,BridgeAVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,100,,,8,5,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,100,,,8,5,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,FLT_A,1
-CFFC8F7h,StatusFaults,100,,,8,5,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,N/A,2
-CFFC8F7h,StatusFaults,100,,,8,5,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,FLT_C,3
-CFFC8F7h,StatusFaults,100,,,8,5,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,OverVoltage,4
-CFFC8F7h,StatusFaults,100,,,8,5,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,FLT_B,5
-CFFC8F7h,StatusFaults,100,,,8,5,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,Overcurrent,6
-CFFC8F7h,StatusFaults,100,,,8,5,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,m,u,5V,7
-CFFCAF6h,MasterMeasuredPower,,,,1,0,RealPower_measured,Measured real power of master unit.,32,,,m,s,,-2147483648.0..2147483647.0,W
-CFFCAF6h,MasterMeasuredPower,,,,5,0,ReactivePower_measured,Measured reactive power of master unit.,32,,,m,s,,-2147483648.0..2147483647.0,VA
-CFFCAF7h,StatusMeasuredPower,100,,,1,0,RealPower_measured,Measured real power.,32,,,m,s,,-2147483648.0..2147483647.0,W
-CFFCAF7h,StatusMeasuredPower,100,,,5,0,ReactivePower_measured,Measured reactive power.,32,,,m,s,,-2147483648.0..2147483647.0,VA
-18FFC4F7h,StatusCommandedPower,100,,,1,0,RealPower_echo,Echoed real power command.,32,,,m,s,,-2147483648.0..2147483647.0,W
-18FFC4F7h,StatusCommandedPower,100,,,5,0,ReactivePower_echo,Echoed reactive power command.,32,,,m,s,,-2147483648.0..2147483647.0,VA
-18FFC9F7h,StatusCommandVF,100,,,1,0,Voltage_echo,Echoed voltage command,16,,,m,u,,0.0..6553.5,0.1  Vrms
-18FFC9F7h,StatusCommandVF,100,,,3,0,Frequency_echo,Echoed frequency command.,16,,,m,u,,0.0..6553.5,0.1  Hz
-18FFCBF7h,StatusTemps,100,,,1,0,TempInlet_measured,Coolant inlet temperature,16,,,m,s,,-3276.8..3276.7000000000003,0.1  C
-18FFCBF7h,StatusTemps,100,,,3,0,TempInternal_measured,Internal ambient temperature,16,,,m,s,,-3276.8..3276.7000000000003,0.1  C
-18FFCBF7h,StatusTemps,100,,,5,0,ConverterLosses,Power converter thermal loss,16,,,m,u,,0.0..65535.0,W
-18FFD0F7h,StatusLineCurrents,100,,,1,0,L1Current_measured,Measured L1 RMS line current.,16,,,m,u,,0.0..65535.0,A
-18FFD0F7h,StatusLineCurrents,100,,,3,0,L2Current_measured,Measured L2 RMS line current.,16,,,m,u,,0.0..65535.0,A
-18FFD0F7h,StatusLineCurrents,100,,,5,0,L3Current_measured,Measured L3 RMS line current.,16,,,m,u,,0.0..65535.0,A
-18FFD1F7h,StatusLineVoltages,100,,,1,0,L1Voltage_measured,Measured L1 RMS line-neutral voltage,16,,,m,u,,0.0..6553.5,0.1  Vrms
-18FFD1F7h,StatusLineVoltages,100,,,3,0,L2Voltage_measured,Measured L2 RMS line-neutral voltage,16,,,m,u,,0.0..6553.5,0.1  Vrms
-18FFD1F7h,StatusLineVoltages,100,,,5,0,L3Voltage_measured,Measured L3 RMS line-neutral voltage,16,,,m,u,,0.0..6553.5,0.1  Vrms
+CFFAA41h,CommandSetNVParam,,,,3,0,NodeID,Mode 5:J1939 Source Address node for the module.,8,,,i,u,,0.0..247.0
+CFFAA41h,CommandSetNVParam,,,,3,0,ThermalOverload,Mode 6:Configures action to take when thermal overload input is active.,2,,,i,u,Warning,0
+CFFAA41h,CommandSetNVParam,,,,3,0,ThermalOverload,Mode 6:Configures action to take when thermal overload input is active.,2,,,i,u,Fault,1
+CFFAA41h,CommandSetNVParam,,,,3,0,ThermalOverload,Mode 6:Configures action to take when thermal overload input is active.,2,,,i,u,Error,2
+CFFAA41h,CommandSetNVParam,,,,3,0,ThermalOverload,Mode 6:Configures action to take when thermal overload input is active.,2,,,i,u,N/A,3
+CFFAA41h,CommandSetNVParam,,,,4,0,Dummy,Mode 0:,16,,,i,u,,0.0..65535.0
+CFFAA41h,CommandSetNVParam,,,,4,0,FreqHi,"Mode 3:Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.",16,,,i,u,,40.0..70.0,0.1  Hz
+CFFAA41h,CommandSetNVParam,,,,4,0,FreqVeryLo,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains below the value specified in FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,i,u,,160.0..160.0,ms
+CFFAA41h,CommandSetNVParam,,,,4,0,K2Open,Mode 10:Maximum time required for the K2 contactor to open.,16,,,i,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,,,,4,0,MX1Open,Mode 7:Maximum time required for the MX1 contactor to open.,16,,,i,u,,0.0..5000.0,ms
+CFFAA41h,CommandSetNVParam,,,,4,0,MX2Close,Mode 8:Maximum time required for the MX2 contactor to open.,16,,,i,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,,,,4,0,SA_Mask,Mode 5:Not presently used.,8,,,i,u,,0.0..255.0
+CFFAA41h,CommandSetNVParam,,,,4,0,VOver120,Mode 2:Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,i,u,,1.0..30000.0
+CFFAA41h,CommandSetNVParam,,,,4,0,VUnder50pct,Mode 1:Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,i,u,,1.0..30000.0,ms
+CFFAA41h,CommandSetNVParam,,,,5,4,Baudrate,Mode 5:CAN baudrate,4,,,i,u,125K,0
+CFFAA41h,CommandSetNVParam,,,,5,4,Baudrate,Mode 5:CAN baudrate,4,,,i,u,250K,1
+CFFAA41h,CommandSetNVParam,,,,5,4,Baudrate,Mode 5:CAN baudrate,4,,,i,u,500K,2
+CFFAA41h,CommandSetNVParam,,,,5,4,Baudrate,Mode 5:CAN baudrate,4,,,i,u,1M,3
+CFFAA41h,CommandSetNVParam,,,,6,0,FreqLo,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains between the value specified in FreqLo and FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,i,u,,1.0..30000.0,ms
+CFFAA41h,CommandSetNVParam,,,,6,0,K1Open,Mode 8:Maximum time required for the K1 contactor to open.,16,,,i,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,,,,6,0,K2Close,Mode 10:Maximum time required for the K2 contactor to close.,16,,,i,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,,,,6,0,MX1Close,Mode 7:Maximum time required for the MX1 contactor to close.,16,,,i,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,,,,6,0,V50to88pct,Mode 1:Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,i,u,,1.0..30000.0,ms
+CFFAA41h,CommandSetNVParam,,,,8,0,FreqHi,Mode 4:Determines the time it will take for a fault trip to occur when line frequency remains above the value specified in FreqHi of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.,16,,,i,u,,160.0..160.0,ms
+CFFAA41h,CommandSetNVParam,,,,8,0,FreqVeryLo,"Mode 3:Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.",16,,,i,u,,40.0..70.0,0.1  Hz
+CFFAA41h,CommandSetNVParam,,,,8,0,K1Close,Mode 8:Maximum time required for the K1 contactor to close.,16,,,i,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,,,,8,0,MX2Open,Mode 7:Maximum time required for the MX2 contactor to open.,16,,,i,u,,0.0..65535.0,ms
+CFFAA41h,CommandSetNVParam,,,,8,0,V110to120pct,Mode 1:Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.,16,,,i,u,,1.0..30000.0,ms
+CFFAC41h,CommandPower,,,,4,0,RealPower command,Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.,32,,,i,s,,-90000.0..90000.0,W
+CFFAC41h,CommandPower,,,,8,0,ReactivePower_command,Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.,32,,,i,s,,-90000.0..90000.0,VA
+CFFAE41h,CommandVF,,,,2,0,Voltage_command,Desired output voltage while in grid forming mode.,16,,,i,u,,10.0..500.0,0.1  Vrms
+CFFAE41h,CommandVF,,,,4,0,Frequency_command,Desired output frequency while in grid forming mode.,16,,,i,u,,45.0..65.0,0.1  Hz
+CFFAF41h,CommandFactoryControl,,,,1,0,WriteSerialNumber,,2,,,i,u,Disable,0
+CFFAF41h,CommandFactoryControl,,,,1,0,WriteSerialNumber,,2,,,i,u,Enable,1
+CFFAF41h,CommandFactoryControl,,,,1,0,WriteSerialNumber,,2,,,i,u,Error,2
+CFFAF41h,CommandFactoryControl,,,,1,0,WriteSerialNumber,,2,,,i,u,N/A,3
+CFFAF41h,CommandFactoryControl,,,,4,0,FactoryAccess,,16,,,i,u,,0.0..65535.0
+CFFAF41h,CommandFactoryControl,,,,8,0,SerialNumber,,32,,,i,u,,0.0..4294967295.0
+CFFC2F7h,StatusACParameters,100,,,2,0,VoltageAC_measured,Measured RMS AC voltage.,16,,,i,s,,-3276.8..3276.7,0.1  V
+CFFC2F7h,StatusACParameters,100,,,4,0,CurrentAC_measured,Measured RMS AC current.,16,,,i,s,,-32768.0..32767.0,A
+CFFC2F7h,StatusACParameters,100,,,6,0,Frequency_measured,Measured frequency.,16,,,i,s,,-3276.8..3276.7,0.1  Hz
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,"Power On Reset, and a quoted comma",0
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,Ready,1
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,Following,2
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,Fault,3
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,Forming,4
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,5
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,6
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,7
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,8
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,9
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,10
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,11
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,12
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,13
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,14
+CFFC3F7h,StatusBits,100,,,1,0,State_status,Active control mode.,4,,,i,u,N/A,15
+CFFC3F7h,StatusBits,100,,,1,4,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,i,u,Disable,0
+CFFC3F7h,StatusBits,100,,,1,4,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,i,u,Enable,1
+CFFC3F7h,StatusBits,100,,,1,4,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,1,4,Enable_echo,Echos the state of the Enable command withing the CommandModeControl message.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,1,6,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,i,u,Normal,0
+CFFC3F7h,StatusBits,100,,,1,6,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,i,u,Clear Faults,1
+CFFC3F7h,StatusBits,100,,,1,6,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,1,6,FaultClr_echo,Echos the state of the FaultClear command withing the CommandModeControl message.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,2,0,HardwareEnable_status,Status of the hardware enable.,2,,,i,u,Not Active,0
+CFFC3F7h,StatusBits,100,,,2,0,HardwareEnable_status,Status of the hardware enable.,2,,,i,u,Active,1
+CFFC3F7h,StatusBits,100,,,2,0,HardwareEnable_status,Status of the hardware enable.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,2,0,HardwareEnable_status,Status of the hardware enable.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,2,2,PowerAvailAC_status,Indicates that AC power is connected and that voltage and frequency are within nominal ranges.,2,,,i,u,None,0
+CFFC3F7h,StatusBits,100,,,2,2,PowerAvailAC_status,Indicates that AC power is connected and that voltage and frequency are within nominal ranges.,2,,,i,u,Available,1
+CFFC3F7h,StatusBits,100,,,2,2,PowerAvailAC_status,Indicates that AC power is connected and that voltage and frequency are within nominal ranges.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,2,2,PowerAvailAC_status,Indicates that AC power is connected and that voltage and frequency are within nominal ranges.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,2,4,PowerAvailDC_status,Indicates that DC bus voltage is within operating range.,2,,,i,u,None,0
+CFFC3F7h,StatusBits,100,,,2,4,PowerAvailDC_status,Indicates that DC bus voltage is within operating range.,2,,,i,u,Available,1
+CFFC3F7h,StatusBits,100,,,2,4,PowerAvailDC_status,Indicates that DC bus voltage is within operating range.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,2,4,PowerAvailDC_status,Indicates that DC bus voltage is within operating range.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,2,6,PowerCircuitEnabled_status,Indicates whether the switching devices are active.,2,,,i,u,Disabled,0
+CFFC3F7h,StatusBits,100,,,2,6,PowerCircuitEnabled_status,Indicates whether the switching devices are active.,2,,,i,u,Enabled,1
+CFFC3F7h,StatusBits,100,,,2,6,PowerCircuitEnabled_status,Indicates whether the switching devices are active.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,2,6,PowerCircuitEnabled_status,Indicates whether the switching devices are active.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,3,0,MX1Permissive_status,MX1 relay status,2,,,i,u,Open,0
+CFFC3F7h,StatusBits,100,,,3,0,MX1Permissive_status,MX1 relay status,2,,,i,u,Closed,1
+CFFC3F7h,StatusBits,100,,,3,0,MX1Permissive_status,MX1 relay status,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,3,0,MX1Permissive_status,MX1 relay status,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,3,2,MX2Permissive_status,MX2 relay status,2,,,i,u,Open,0
+CFFC3F7h,StatusBits,100,,,3,2,MX2Permissive_status,MX2 relay status,2,,,i,u,Closed,1
+CFFC3F7h,StatusBits,100,,,3,2,MX2Permissive_status,MX2 relay status,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,3,2,MX2Permissive_status,MX2 relay status,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,3,4,K1PrechargePermissive_status,K1 precharge relay status.,2,,,i,u,Open,0
+CFFC3F7h,StatusBits,100,,,3,4,K1PrechargePermissive_status,K1 precharge relay status.,2,,,i,u,Closed,1
+CFFC3F7h,StatusBits,100,,,3,4,K1PrechargePermissive_status,K1 precharge relay status.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,3,4,K1PrechargePermissive_status,K1 precharge relay status.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,3,6,K2DCRunPermissive_status,K2 DC Run relay status.,2,,,i,u,Open,0
+CFFC3F7h,StatusBits,100,,,3,6,K2DCRunPermissive_status,K2 DC Run relay status.,2,,,i,u,Closed,1
+CFFC3F7h,StatusBits,100,,,3,6,K2DCRunPermissive_status,K2 DC Run relay status.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,3,6,K2DCRunPermissive_status,K2 DC Run relay status.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,4,0,MessageValidModeControl_status,Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,Invalid,0
+CFFC3F7h,StatusBits,100,,,4,0,MessageValidModeControl_status,Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,Valid,1
+CFFC3F7h,StatusBits,100,,,4,0,MessageValidModeControl_status,Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,4,0,MessageValidModeControl_status,Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,4,2,MessageValidPowerCMD_status,Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,Invalid,0
+CFFC3F7h,StatusBits,100,,,4,2,MessageValidPowerCMD_status,Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,Valid,1
+CFFC3F7h,StatusBits,100,,,4,2,MessageValidPowerCMD_status,Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,4,2,MessageValidPowerCMD_status,Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,4,4,MessageValidVF_status,Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,Invalid,0
+CFFC3F7h,StatusBits,100,,,4,4,MessageValidVF_status,Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,Valid,1
+CFFC3F7h,StatusBits,100,,,4,4,MessageValidVF_status,Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,4,4,MessageValidVF_status,Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,4,6,CANbus_status,Operational status of the CAN bus driver.,2,,,i,u,Normal,0
+CFFC3F7h,StatusBits,100,,,4,6,CANbus_status,Operational status of the CAN bus driver.,2,,,i,u,Warning,1
+CFFC3F7h,StatusBits,100,,,4,6,CANbus_status,Operational status of the CAN bus driver.,2,,,i,u,ErrorPassive,3
+CFFC3F7h,StatusBits,100,,,4,6,CANbus_status,Operational status of the CAN bus driver.,2,,,i,u,N/A,4
+CFFC3F7h,StatusBits,100,,,5,0,EnableUPSMode_echo,Echos the state of the EnableUPSMode command withing the CommandModeControl message.,2,,,i,u,Disable,0
+CFFC3F7h,StatusBits,100,,,5,0,EnableUPSMode_echo,Echos the state of the EnableUPSMode command withing the CommandModeControl message.,2,,,i,u,Enable,1
+CFFC3F7h,StatusBits,100,,,5,0,EnableUPSMode_echo,Echos the state of the EnableUPSMode command withing the CommandModeControl message.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,5,0,EnableUPSMode_echo,Echos the state of the EnableUPSMode command withing the CommandModeControl message.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,5,2,EnableSplitPhase_echo,Echos the state of the EnableSplitPhase command withing the CommandModeControl message.,2,,,i,u,Normal - Three Phase Mode,0
+CFFC3F7h,StatusBits,100,,,5,2,EnableSplitPhase_echo,Echos the state of the EnableSplitPhase command withing the CommandModeControl message.,2,,,i,u,Enable Split Phase Mode,1
+CFFC3F7h,StatusBits,100,,,5,2,EnableSplitPhase_echo,Echos the state of the EnableSplitPhase command withing the CommandModeControl message.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,5,2,EnableSplitPhase_echo,Echos the state of the EnableSplitPhase command withing the CommandModeControl message.,2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,5,4,PhaseRotation_status,"Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.",2,,,i,u,Negative,0
+CFFC3F7h,StatusBits,100,,,5,4,PhaseRotation_status,"Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.",2,,,i,u,Positive,1
+CFFC3F7h,StatusBits,100,,,5,4,PhaseRotation_status,"Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.",2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,5,4,PhaseRotation_status,"Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.",2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,5,6,LineVoltageDetected_status,"Flag indicating if voltage is detected on L1, L2 or L3.",2,,,i,u,No_Voltage,0
+CFFC3F7h,StatusBits,100,,,5,6,LineVoltageDetected_status,"Flag indicating if voltage is detected on L1, L2 or L3.",2,,,i,u,Voltage_Detected,1
+CFFC3F7h,StatusBits,100,,,5,6,LineVoltageDetected_status,"Flag indicating if voltage is detected on L1, L2 or L3.",2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,5,6,LineVoltageDetected_status,"Flag indicating if voltage is detected on L1, L2 or L3.",2,,,i,u,N/A,3
+CFFC3F7h,StatusBits,100,,,6,0,PhaseRotation_echo,Echos the state of PhaseRotation_command withing the CommandModeControl message.,2,,,i,u,Negative,0
+CFFC3F7h,StatusBits,100,,,6,0,PhaseRotation_echo,Echos the state of PhaseRotation_command withing the CommandModeControl message.,2,,,i,u,Positive,1
+CFFC3F7h,StatusBits,100,,,6,0,PhaseRotation_echo,Echos the state of PhaseRotation_command withing the CommandModeControl message.,2,,,i,u,Error,2
+CFFC3F7h,StatusBits,100,,,6,0,PhaseRotation_echo,Echos the state of PhaseRotation_command withing the CommandModeControl message.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,1,0,GeneralFault_status,Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,1,0,GeneralFault_status,Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,1,0,GeneralFault_status,Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,1,0,GeneralFault_status,Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,1,2,OvercurrentAC_status,Set immediately upon the software detection of AC current exceeding the threshold value.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,1,2,OvercurrentAC_status,Set immediately upon the software detection of AC current exceeding the threshold value.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,1,2,OvercurrentAC_status,Set immediately upon the software detection of AC current exceeding the threshold value.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,1,2,OvercurrentAC_status,Set immediately upon the software detection of AC current exceeding the threshold value.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,1,4,LossOfAC_status,"In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.",2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,1,4,LossOfAC_status,"In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.",2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,1,4,LossOfAC_status,"In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.",2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,1,4,LossOfAC_status,"In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.",2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,1,6,OvercurrentDC_status,Set immediately upon the software detection of DC current exceeding the threshold value.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,1,6,OvercurrentDC_status,Set immediately upon the software detection of DC current exceeding the threshold value.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,1,6,OvercurrentDC_status,Set immediately upon the software detection of DC current exceeding the threshold value.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,1,6,OvercurrentDC_status,Set immediately upon the software detection of DC current exceeding the threshold value.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,2,0,OvervoltageDC_status,Set immediately upon the software detection of DC voltage exceeding the threshold value.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,2,0,OvervoltageDC_status,Set immediately upon the software detection of DC voltage exceeding the threshold value.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,2,0,OvervoltageDC_status,Set immediately upon the software detection of DC voltage exceeding the threshold value.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,2,0,OvervoltageDC_status,Set immediately upon the software detection of DC voltage exceeding the threshold value.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,2,2,UndervoltageDC_status,Indicates loss of DC source voltage.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,2,2,UndervoltageDC_status,Indicates loss of DC source voltage.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,2,2,UndervoltageDC_status,Indicates loss of DC source voltage.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,2,2,UndervoltageDC_status,Indicates loss of DC source voltage.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,2,4,OvertempInternal_status,Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,2,4,OvertempInternal_status,Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,2,4,OvertempInternal_status,Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,2,4,OvertempInternal_status,Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,2,6,OvertempPowerDevice_status,Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,2,6,OvertempPowerDevice_status,Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,2,6,OvertempPowerDevice_status,Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,2,6,OvertempPowerDevice_status,Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,3,0,ControlHardwareFail_status,Set upon the failure of control hardware to return expected response.,4,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,3,0,ControlHardwareFail_status,Set upon the failure of control hardware to return expected response.,4,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,3,0,ControlHardwareFail_status,Set upon the failure of control hardware to return expected response.,4,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,3,0,ControlHardwareFail_status,Set upon the failure of control hardware to return expected response.,4,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,3,4,LossValidControlMessage_status,Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.,4,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,3,4,LossValidControlMessage_status,Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.,4,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,3,4,LossValidControlMessage_status,Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.,4,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,3,4,LossValidControlMessage_status,Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.,4,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,4,0,EStopShutdown_status,Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,4,0,EStopShutdown_status,Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,4,0,EStopShutdown_status,Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,4,0,EStopShutdown_status,Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,4,2,IllegalTransition_status,"Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.",2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,4,2,IllegalTransition_status,"Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.",2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,4,2,IllegalTransition_status,"Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.",2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,4,2,IllegalTransition_status,"Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.",2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,4,4,InvalidEEHeader_status,Indicates that reading of non-volatile parameters at power-up failed.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,4,4,InvalidEEHeader_status,Indicates that reading of non-volatile parameters at power-up failed.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,4,4,InvalidEEHeader_status,Indicates that reading of non-volatile parameters at power-up failed.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,4,4,InvalidEEHeader_status,Indicates that reading of non-volatile parameters at power-up failed.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,4,6,InvalidEESection_status,Indicates that reading or writing of an non-volatile parameter section failed.,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,4,6,InvalidEESection_status,Indicates that reading or writing of an non-volatile parameter section failed.,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,4,6,InvalidEESection_status,Indicates that reading or writing of an non-volatile parameter section failed.,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,4,6,InvalidEESection_status,Indicates that reading or writing of an non-volatile parameter section failed.,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,5,0,ThermalOverload,,2,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,5,0,ThermalOverload,,2,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,5,0,ThermalOverload,,2,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,5,0,ThermalOverload,,2,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,6,0,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,6,0,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,FLT_A,1
+CFFC8F7h,StatusFaults,100,,,6,0,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,N/A,2
+CFFC8F7h,StatusFaults,100,,,6,0,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,FLT_C,3
+CFFC8F7h,StatusFaults,100,,,6,0,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,OverVoltage,4
+CFFC8F7h,StatusFaults,100,,,6,0,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,FLT_B,5
+CFFC8F7h,StatusFaults,100,,,6,0,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,Overcurrent,6
+CFFC8F7h,StatusFaults,100,,,6,0,BridgeBFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,5V,7
+CFFC8F7h,StatusFaults,100,,,6,3,BridgeBVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,6,3,BridgeBVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,6,3,BridgeBVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,6,3,BridgeBVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,i,u,N/A,3
+CFFC8F7h,StatusFaults,100,,,8,0,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,8,0,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,FLT_A,1
+CFFC8F7h,StatusFaults,100,,,8,0,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,N/A,2
+CFFC8F7h,StatusFaults,100,,,8,0,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,FLT_C,3
+CFFC8F7h,StatusFaults,100,,,8,0,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,OverVoltage,4
+CFFC8F7h,StatusFaults,100,,,8,0,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,FLT_B,5
+CFFC8F7h,StatusFaults,100,,,8,0,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,Overcurrent,6
+CFFC8F7h,StatusFaults,100,,,8,0,BridgeAFault_status,"Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.",3,,,i,u,5V,7
+CFFC8F7h,StatusFaults,100,,,8,3,BridgeAVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,i,u,Normal,0
+CFFC8F7h,StatusFaults,100,,,8,3,BridgeAVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,i,u,Fault Active,1
+CFFC8F7h,StatusFaults,100,,,8,3,BridgeAVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,i,u,Error,2
+CFFC8F7h,StatusFaults,100,,,8,3,BridgeAVoltageOk_status,Indicates whether a hardware trip has been activated.,1,,,i,u,N/A,3
+CFFCAF6h,MasterMeasuredPower,,,,4,0,RealPower_measured,Measured real power of master unit.,32,,,i,s,,-2147483648.0..2147483647.0,W
+CFFCAF6h,MasterMeasuredPower,,,,8,0,ReactivePower_measured,Measured reactive power of master unit.,32,,,i,s,,-2147483648.0..2147483647.0,VA
+CFFCAF7h,StatusMeasuredPower,100,,,4,0,RealPower_measured,Measured real power.,32,,,i,s,,-2147483648.0..2147483647.0,W
+CFFCAF7h,StatusMeasuredPower,100,,,8,0,ReactivePower_measured,Measured reactive power.,32,,,i,s,,-2147483648.0..2147483647.0,VA
+18FFC4F7h,StatusCommandedPower,100,,,4,0,RealPower_echo,Echoed real power command.,32,,,i,s,,-2147483648.0..2147483647.0,W
+18FFC4F7h,StatusCommandedPower,100,,,8,0,ReactivePower_echo,Echoed reactive power command.,32,,,i,s,,-2147483648.0..2147483647.0,VA
+18FFC9F7h,StatusCommandVF,100,,,2,0,Voltage_echo,Echoed voltage command,16,,,i,u,,0.0..6553.5,0.1  Vrms
+18FFC9F7h,StatusCommandVF,100,,,4,0,Frequency_echo,Echoed frequency command.,16,,,i,u,,0.0..6553.5,0.1  Hz
+18FFCBF7h,StatusTemps,100,,,2,0,TempInlet_measured,Coolant inlet temperature,16,,,i,s,,-3276.8..3276.7,0.1  C
+18FFCBF7h,StatusTemps,100,,,4,0,TempInternal_measured,Internal ambient temperature,16,,,i,s,,-3276.8..3276.7,0.1  C
+18FFCBF7h,StatusTemps,100,,,6,0,ConverterLosses,Power converter thermal loss,16,,,i,u,,0.0..65535.0,W
+18FFD0F7h,StatusLineCurrents,100,,,2,0,L1Current_measured,Measured L1 RMS line current.,16,,,i,u,,0.0..65535.0,A
+18FFD0F7h,StatusLineCurrents,100,,,4,0,L2Current_measured,Measured L2 RMS line current.,16,,,i,u,,0.0..65535.0,A
+18FFD0F7h,StatusLineCurrents,100,,,6,0,L3Current_measured,Measured L3 RMS line current.,16,,,i,u,,0.0..65535.0,A
+18FFD1F7h,StatusLineVoltages,100,,,2,0,L1Voltage_measured,Measured L1 RMS line-neutral voltage,16,,,i,u,,0.0..6553.5,0.1  Vrms
+18FFD1F7h,StatusLineVoltages,100,,,4,0,L2Voltage_measured,Measured L2 RMS line-neutral voltage,16,,,i,u,,0.0..6553.5,0.1  Vrms
+18FFD1F7h,StatusLineVoltages,100,,,6,0,L3Voltage_measured,Measured L3 RMS line-neutral voltage,16,,,i,u,,0.0..6553.5,0.1  Vrms
 1CFFA9F7h,StatusNVParam,,,,2,0,StatusNVParam_MUX,Mode Signal: ,16,,,i,u,ActParam0,0
 1CFFA9F7h,StatusNVParam,,,,2,0,StatusNVParam_MUX,Mode Signal: ,16,,,i,u,ActLVM_ClearingTimes1,1
 1CFFA9F7h,StatusNVParam,,,,2,0,StatusNVParam_MUX,Mode Signal: ,16,,,i,u,ActLVM_ClearingTimes2,2
@@ -345,46 +345,46 @@ CFFCAF7h,StatusMeasuredPower,100,,,5,0,ReactivePower_measured,Measured reactive 
 1CFFA9F7h,StatusNVParam,,,,2,0,StatusNVParam_MUX,Mode Signal: ,16,,,i,u,StatusContactorDelays1,7
 1CFFA9F7h,StatusNVParam,,,,2,0,StatusNVParam_MUX,Mode Signal: ,16,,,i,u,StatusContactorDelays2,8
 1CFFA9F7h,StatusNVParam,,,,2,0,StatusNVParam_MUX,Mode Signal: ,16,,,i,u,StatusContactorDelays3,9
-1CFFA9F7h,StatusNVParam,,,,3,0,Dummy,Mode 0:,16,,,m,u,,5.0..10.0
-1CFFA9F7h,StatusNVParam,,,,3,0,FreqHi,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
-1CFFA9F7h,StatusNVParam,,,,3,0,FreqVeryLo,Mode 4:,16,,,m,u,,160.0..160.0,ms
-1CFFA9F7h,StatusNVParam,,,,3,0,StatusK2Open,Mode 9:Maximum time required for the K2 contactor to open.,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,,,,3,0,StatusMX1Open,Mode 7:Maximum time required for the MX1 contactor to open.,16,,,m,u,,0.0..5000.0,ms
-1CFFA9F7h,StatusNVParam,,,,3,0,StatusMX2Close,Mode 8:Maximum time required for the MX2 contactor to open.,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,,,,3,0,StatusNodeID,Mode 5:J1939 Source Address node for the module,8,,,m,u,,0.0..247.0
-1CFFA9F7h,StatusNVParam,,,,3,0,VOver120,Mode 2:,16,,,m,u,,1.0..30000.0
-1CFFA9F7h,StatusNVParam,,,,3,0,VUnder50pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
-1CFFA9F7h,StatusNVParam,,,,3,6,StatusThermalOverload,Mode 6:Configured action to take when thermal overload input is active.,2,,,m,u,Warning,0
-1CFFA9F7h,StatusNVParam,,,,3,6,StatusThermalOverload,Mode 6:Configured action to take when thermal overload input is active.,2,,,m,u,Fault,1
-1CFFA9F7h,StatusNVParam,,,,3,6,StatusThermalOverload,Mode 6:Configured action to take when thermal overload input is active.,2,,,m,u,Error,2
-1CFFA9F7h,StatusNVParam,,,,3,6,StatusThermalOverload,Mode 6:Configured action to take when thermal overload input is active.,2,,,m,u,N/A,3
-1CFFA9F7h,StatusNVParam,,,,4,0,StatusSA_Mask,Mode 5:Mask used to configure from which master source addresses to accept commands.,8,,,m,u,,0.0..255.0
-1CFFA9F7h,StatusNVParam,,,,5,0,FreqLo,Mode 4:,16,,,m,u,,1.0..30000.0,ms
-1CFFA9F7h,StatusNVParam,,,,5,0,StatusBaudrate,Mode 5:,4,,,m,u,125K,0
-1CFFA9F7h,StatusNVParam,,,,5,0,StatusBaudrate,Mode 5:,4,,,m,u,250K,1
-1CFFA9F7h,StatusNVParam,,,,5,0,StatusBaudrate,Mode 5:,4,,,m,u,500K,2
-1CFFA9F7h,StatusNVParam,,,,5,0,StatusBaudrate,Mode 5:,4,,,m,u,1M,3
-1CFFA9F7h,StatusNVParam,,,,5,0,StatusK1Open,Mode 8:Maximum time required for the K1 contactor to open.,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,,,,5,0,StatusK2Close,Mode 9:Maximum time required for the K2 contactor to close.,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,,,,5,0,StatusMX1Close,Mode 7:Maximum time required for the MX1 contactor to close.,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,,,,5,0,V50to88pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
-1CFFA9F7h,StatusNVParam,,,,7,0,FreqHi,Mode 4:,16,,,m,u,,160.0..160.0,ms
-1CFFA9F7h,StatusNVParam,,,,7,0,FreqVeryLo,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
-1CFFA9F7h,StatusNVParam,,,,7,0,StatusK1Close,Mode 8:Maximum time required for the K1 contactor to close.,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,,,,7,0,StatusMX2Open,Mode 7:Maximum time required for the MX2 contactor to open.,16,,,m,u,,0.0..65535.0,ms
-1CFFA9F7h,StatusNVParam,,,,7,0,V110to120pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
-1CFFC1F7h,softwareRev,,,,1,0,ControlSwRev,Software revision of the control firmware.,16,,,m,u,,0.0..655.35,0.01
-1CFFC1F7h,softwareRev,,,,3,0,InterfaceRev,Software revision of the CAN communication interface.,16,,,m,u,,0.0..655.35,0.01
-1CFFC1F7h,softwareRev,,,,5,0,BuildTime,Build timestamp.,32,,,m,u,,0.0..4294967295.0
-1CFFC5F7h,StatusControlVoltage,100,,,1,0,v5p0_Supply,Present voltage of the control board 5V power suppy.,16,,,m,s,,-327.68..327.67,0.01  V
-1CFFC5F7h,StatusControlVoltage,100,,,3,0,v3p3_Supply,Present voltage of the control board 3.3V power supply.,16,,,m,s,,-327.68..327.67,0.01  V
-1CFFC5F7h,StatusControlVoltage,100,,,5,0,v24_Supply,Present voltage of the control board 24V power supply.,16,,,m,s,,-327.68..327.67,0.01  V
-1CFFC5F7h,StatusControlVoltage,100,,,7,0,v15_Supply,Present voltage of the control board 15V power supply.,16,,,m,s,,-327.68..327.67,0.01  V
-1CFFC6F7h,StatusControlVolts2,100,,,1,0,n15V_Supply,Present voltage of the control board -15V power supply.,16,,,m,s,,-327.68..327.67,0.01  V
-1CFFC6F7h,StatusControlVolts2,100,,,5,0,DiodeTemperature,Hottest diode,16,,,m,u,,0.0..65535.0,C
-1CFFC6F7h,StatusControlVolts2,100,,,7,0,IGBTTemperature,Hottest IGBT,16,,,m,u,,0.0..65535.0,C
-1CFFC7F7h,StatusDCParameters,100,,,1,0,VoltageDCInput_measured,Estimated DC input voltage.,16,,,m,s,,-32768.0..32767.0,V
-1CFFC7F7h,StatusDCParameters,100,,,3,0,VoltageDCBus,Measured DC bus voltage.,16,,,m,s,,-32768.0..32767.0,V
-1CFFC7F7h,StatusDCParameters,100,,,5,0,CurrentDC_measured,Measured DC current.,16,,,m,s,,-32768.0..32767.0,A
-1CFFCCF7h,serialNumber,,,,1,0,SerialNumber,Serial number of the power module.,32,,,m,u,,0.0..4294967295.0
-1CFFCDF7h,softwareRevHash,,,,1,0,Hash,Unique revision identification hashcode.,28,,,m,u,,0.0..268435455.0
+1CFFA9F7h,StatusNVParam,,,,3,0,StatusNodeID,Mode 5:J1939 Source Address node for the module,8,,,i,u,,0.0..247.0
+1CFFA9F7h,StatusNVParam,,,,3,0,StatusThermalOverload,Mode 6:Configured action to take when thermal overload input is active.,2,,,i,u,Warning,0
+1CFFA9F7h,StatusNVParam,,,,3,0,StatusThermalOverload,Mode 6:Configured action to take when thermal overload input is active.,2,,,i,u,Fault,1
+1CFFA9F7h,StatusNVParam,,,,3,0,StatusThermalOverload,Mode 6:Configured action to take when thermal overload input is active.,2,,,i,u,Error,2
+1CFFA9F7h,StatusNVParam,,,,3,0,StatusThermalOverload,Mode 6:Configured action to take when thermal overload input is active.,2,,,i,u,N/A,3
+1CFFA9F7h,StatusNVParam,,,,4,0,Dummy,Mode 0:,16,,,i,u,,5.0..10.0
+1CFFA9F7h,StatusNVParam,,,,4,0,FreqHi,Mode 3:,16,,,i,u,,40.0..70.0,0.1  Hz
+1CFFA9F7h,StatusNVParam,,,,4,0,FreqVeryLo,Mode 4:,16,,,i,u,,160.0..160.0,ms
+1CFFA9F7h,StatusNVParam,,,,4,0,StatusK2Open,Mode 9:Maximum time required for the K2 contactor to open.,16,,,i,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,,,,4,0,StatusMX1Open,Mode 7:Maximum time required for the MX1 contactor to open.,16,,,i,u,,0.0..5000.0,ms
+1CFFA9F7h,StatusNVParam,,,,4,0,StatusMX2Close,Mode 8:Maximum time required for the MX2 contactor to open.,16,,,i,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,,,,4,0,StatusSA_Mask,Mode 5:Mask used to configure from which master source addresses to accept commands.,8,,,i,u,,0.0..255.0
+1CFFA9F7h,StatusNVParam,,,,4,0,VOver120,Mode 2:,16,,,i,u,,1.0..30000.0
+1CFFA9F7h,StatusNVParam,,,,4,0,VUnder50pct,Mode 1:,16,,,i,u,,1.0..30000.0,ms
+1CFFA9F7h,StatusNVParam,,,,5,4,StatusBaudrate,Mode 5:,4,,,i,u,125K,0
+1CFFA9F7h,StatusNVParam,,,,5,4,StatusBaudrate,Mode 5:,4,,,i,u,250K,1
+1CFFA9F7h,StatusNVParam,,,,5,4,StatusBaudrate,Mode 5:,4,,,i,u,500K,2
+1CFFA9F7h,StatusNVParam,,,,5,4,StatusBaudrate,Mode 5:,4,,,i,u,1M,3
+1CFFA9F7h,StatusNVParam,,,,6,0,FreqLo,Mode 4:,16,,,i,u,,1.0..30000.0,ms
+1CFFA9F7h,StatusNVParam,,,,6,0,StatusK1Open,Mode 8:Maximum time required for the K1 contactor to open.,16,,,i,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,,,,6,0,StatusK2Close,Mode 9:Maximum time required for the K2 contactor to close.,16,,,i,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,,,,6,0,StatusMX1Close,Mode 7:Maximum time required for the MX1 contactor to close.,16,,,i,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,,,,6,0,V50to88pct,Mode 1:,16,,,i,u,,1.0..30000.0,ms
+1CFFA9F7h,StatusNVParam,,,,8,0,FreqHi,Mode 4:,16,,,i,u,,160.0..160.0,ms
+1CFFA9F7h,StatusNVParam,,,,8,0,FreqVeryLo,Mode 3:,16,,,i,u,,40.0..70.0,0.1  Hz
+1CFFA9F7h,StatusNVParam,,,,8,0,StatusK1Close,Mode 8:Maximum time required for the K1 contactor to close.,16,,,i,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,,,,8,0,StatusMX2Open,Mode 7:Maximum time required for the MX2 contactor to open.,16,,,i,u,,0.0..65535.0,ms
+1CFFA9F7h,StatusNVParam,,,,8,0,V110to120pct,Mode 1:,16,,,i,u,,1.0..30000.0,ms
+1CFFC1F7h,softwareRev,,,,2,0,ControlSwRev,Software revision of the control firmware.,16,,,i,u,,0.0..655.35,0.01
+1CFFC1F7h,softwareRev,,,,4,0,InterfaceRev,Software revision of the CAN communication interface.,16,,,i,u,,0.0..655.35,0.01
+1CFFC1F7h,softwareRev,,,,8,0,BuildTime,Build timestamp.,32,,,i,u,,0.0..4294967295.0
+1CFFC5F7h,StatusControlVoltage,100,,,2,0,v5p0_Supply,Present voltage of the control board 5V power suppy.,16,,,i,s,,-327.68..327.67,0.01  V
+1CFFC5F7h,StatusControlVoltage,100,,,4,0,v3p3_Supply,Present voltage of the control board 3.3V power supply.,16,,,i,s,,-327.68..327.67,0.01  V
+1CFFC5F7h,StatusControlVoltage,100,,,6,0,v24_Supply,Present voltage of the control board 24V power supply.,16,,,i,s,,-327.68..327.67,0.01  V
+1CFFC5F7h,StatusControlVoltage,100,,,8,0,v15_Supply,Present voltage of the control board 15V power supply.,16,,,i,s,,-327.68..327.67,0.01  V
+1CFFC6F7h,StatusControlVolts2,100,,,2,0,n15V_Supply,Present voltage of the control board -15V power supply.,16,,,i,s,,-327.68..327.67,0.01  V
+1CFFC6F7h,StatusControlVolts2,100,,,6,0,DiodeTemperature,Hottest diode,16,,,i,u,,0.0..65535.0,C
+1CFFC6F7h,StatusControlVolts2,100,,,8,0,IGBTTemperature,Hottest IGBT,16,,,i,u,,0.0..65535.0,C
+1CFFC7F7h,StatusDCParameters,100,,,2,0,VoltageDCInput_measured,Estimated DC input voltage.,16,,,i,s,,-32768.0..32767.0,V
+1CFFC7F7h,StatusDCParameters,100,,,4,0,VoltageDCBus,Measured DC bus voltage.,16,,,i,s,,-32768.0..32767.0,V
+1CFFC7F7h,StatusDCParameters,100,,,6,0,CurrentDC_measured,Measured DC current.,16,,,i,s,,-32768.0..32767.0,A
+1CFFCCF7h,serialNumber,,,,4,0,SerialNumber,Serial number of the power module.,32,,,i,u,,0.0..4294967295.0
+1CFFCDF7h,softwareRevHash,,,,4,4,Hash,Unique revision identification hashcode.,28,,,i,u,,0.0..268435455.0

@@ -70,12 +70,12 @@ def exportDbf(db, filename, **options):
     # m_acName ucLength m_ucWhichByte m_ucStartBit
     #m_ucDataFormat m_fOffset m_fScaleFactor m_acUnit m_acMultiplex m_rxNode
             #m_ucDataFormat
-            whichbyte = int(math.floor(signal.getLsbStartbit() / 8) +1 )
+            whichbyte = int(math.floor(signal.getStartbit(bitNumbering = 1, startLittle = True) / 8) +1 )
             sign = 'S'
 
             if not signal._is_signed:
                 sign = 'U'
-            outstr += "[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c," % (signal._signalsize,whichbyte,int(signal.getLsbStartbit())%8,sign) + '{},{}'.format(float(signal._max)/float(signal._factor),float(signal._min)/float(signal._factor))
+            outstr += "[START_SIGNALS] " + signal._name + ",%d,%d,%d,%c," % (signal._signalsize,whichbyte,int(signal.getStartbit(bitNumbering = 1, startLittle = True))%8,sign) + '{},{}'.format(float(signal._max)/float(signal._factor),float(signal._min)/float(signal._factor))
 
             outstr += ",%d,%s,%s" % (signal._is_little_endian, signal._offset, signal._factor)
             multiplex = ""

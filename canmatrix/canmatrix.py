@@ -219,74 +219,32 @@ class Signal(object):
         Add Value/Description to Signal
         """
         self._values[int(value)] = valueName
-    def setMsbReverseStartbit(self, msbStartBitReverse, length=None):
-        if self._is_little_endian == 1:
-            #Intel
-            self._startbit = msbStartBitReverse
-        else:
-            startByte = math.floor(msbStartBitReverse / 8)
-            startBit = msbStartBitReverse % 8
-            startBit = (7-startBit)
-            startBit += startByte * 8
-            self.setMsbStartbit(startBit, length)
-    def setMsbStartbit(self, msbStartBit, length=None):
+    def setStartbit(self, startBit, bitNumbering = None, startLittle = None):
         """
-        set startbit while given startbit is most significant bit
-        if length is not given, use length from object
+        set startbit.
+        bitNumbering is 1 for LSB0/LSBFirst, 0 for MSB0/MSBFirst.
+        If bit numbering is consistent with byte order (little=LSB0, big=MSB0) (KCD, SYM), start bit unmodified.
+        Otherwise reverse bit numbering. For DBC, ArXML (OSEK), both little endian and big endian use LSB0.
+        If bitNumbering is None, assume consistent with byte order.
+        If startLittle is set, given startBit is assumed start from lsb bit rather than the start of the signal data in the message data
         """
-        if self._is_little_endian == 1:
-            #Intel
-            self._startbit = msbStartBit
-        else:
-            if length == None:
-                length = self._signalsize
-            # following code is from https://github.com/julietkilo/CANBabel/blob/master/src/main/java/com/github/canbabel/canio/dbc/DbcReader.java:
-            pos = 7 - (msbStartBit % 8) + (length - 1)
-            if (pos < 8):
-                self._startbit = msbStartBit - length + 1;
-            else:
-                cpos = 7 - (pos % 8);
-                bytes = int(pos / 8);
-                self._startbit = cpos + (bytes * 8) + int(msbStartBit/8) * 8;
-    def setLsbStartbit(self, lsbStartBit):
-        """
-        set startbit while given startbit is least significant bit
-        """
-        self._startbit = lsbStartBit
-        
-    def getMsbReverseStartbit(self):
-        if self._is_little_endian == 1:
-            #Intel
-            return self._startbit
-        else:
-            startBit = self.getMsbStartbit()
-            startByte = math.floor(startBit / 8)
-            startBit = startBit % 8
-            startBit = (7-startBit)
-            startBit += startByte * 8
-            return int(startBit)
+        # bit numbering not consistent with byte order. reverse
+        if bitNumbering != None and bitNumbering != self._is_little_endian:
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+        # if given startbit is for the end of signal data (lsbit), convert to start of signal data (msbit)
+        if startLittle == True and self._is_little_endian == False:
+            startBit = startBit + 1 - self._signalsize
+        self._startbit = startBit
 
-    def getMsbStartbit(self):
-        if self._is_little_endian == 1:
-            #Intel
-            return self._startbit
-        else:
-            #code from https://github.com/rbei-etas/busmaster/blob/master/Sources/Format%20Converter/DBF2DBCConverter/Signal.cpp
-            nByte = int(self._signalsize/8);
-            if (self._signalsize % 8) != 0:
-                nByte += 1
-
-            nStartBit = (1 - nByte) * 8;
-            nBitSize = self._signalsize - (8 * (nByte - 1))+ self._startbit;
-
-            if(nBitSize == 0):
-                ucStartBit = self._startbit + self._signalsize;
-            else:
-                ucStartBit = nStartBit + nBitSize-1;
-            return int(ucStartBit)
-
-    def getLsbStartbit(self):
-        return int(self._startbit)
+    def getStartbit(self, bitNumbering = None, startLittle = None):
+        startBit = self._startbit
+        # convert from big endian start bit at start bit(msbit) to end bit(lsbit)
+        if startLittle == True and self._is_little_endian == False:
+            startBit = startBit + self._signalsize - 1
+        # bit numbering not consistent with byte order. reverse
+        if bitNumbering != None and bitNumbering != self._is_little_endian:
+            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
+        return int(startBit)
 
     def calculateRawRange(self):
         rawRange = 2 ** self._signalsize
@@ -310,7 +268,6 @@ class Signal(object):
         if self._max is None:
             rawMax = self.calculateRawRange()[1]
             self._max = self._offset + (rawMax * self._factor)
-
 
 class SignalGroup(object):
     """
@@ -448,13 +405,9 @@ class Frame(object):
         """
         maxBit = 0
         for sig in self._signals:
-            if sig._is_little_endian == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
-                # check intel signal (startbit + length):
-                maxBit = sig.getLsbStartbit() + int(sig._signalsize)
-            elif sig._is_little_endian == 0  and sig.getLsbStartbit() > maxBit:
-                #check motorola signal (starbit is least significant bit):
-                maxBit = sig.getLsbStartbit()
-        self._Size =  max(self._Size, math.ceil(maxBit / 8))
+            if sig.getStartbit() + int(sig._signalsize) > maxBit:
+                maxBit = sig.getStartbit() + int(sig._signalsize)
+        self._Size =  max(self._Size, int(math.ceil(maxBit / 8)))
     
     def updateReceiver(self):
         """
@@ -595,12 +548,8 @@ class CanMatrix(object):
             if "force" == strategy:
                 maxBit = 0
                 for sig in frame._signals:
-                    if sig._is_little_endian == 1  and sig.getLsbStartbit() + int(sig._signalsize) > maxBit:
-                        # check intel signal (startbit + length):
-                        maxBit = sig.getLsbStartbit() + int(sig._signalsize)
-                    elif sig._is_little_endian == 0  and sig.getLsbStartbit() > maxBit:
-                        #check motorola signal (starbit is least significant bit):
-                        maxBit = sig.getLsbStartbit()
+                    if sig.getStartbit() + int(sig._signalsize) > maxBit:
+                        maxBit = sig.getStartbit() + int(sig._signalsize)
                 frame._Size = math.ceil(maxBit / 8)
 
 

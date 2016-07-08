@@ -293,11 +293,11 @@ def importXlsx(filename, **options):
                 if is_little_endian == False:
                     #motorola
                     if motorolaBitFormat == "msb":
-                        newSig.setMsbStartbit((startbyte-1)*8+startbit)
+                        newSig.setStartbit((startbyte-1)*8+startbit, bitNumbering = 1)
                     elif motorolaBitFormat == "msbreverse":
-                        newSig.setMsbReverseStartbit((startbyte-1)*8+startbit)
+                        newSig.setStartbit((startbyte-1)*8+startbit)
                     else: # motorolaBitFormat == "lsb"
-                        newSig.setLsbStartbit((startbyte-1)*8+startbit)
+                        newSig.setStartbit((startbyte-1)*8+startbit, bitNumbering = 1, startLittle = True)
 
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)

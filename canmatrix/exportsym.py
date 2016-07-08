@@ -42,12 +42,12 @@ def createSignal(signal):
         output += "unsigned "
     else:
         output += "signed "
+    startBit = signal.getStartbit()
     if signal._is_little_endian == 0:
         #Motorola
-        startBit = signal.getMsbReverseStartbit()
         output += "%d,%d -m " % (startBit, signal._signalsize)
     else:
-        output += "%d,%d -i " % (signal.getMsbStartbit(), signal._signalsize)
+        output += "%d,%d -i " % (startBit, signal._signalsize)
     if len(signal._unit) > 0:
         output += "/u:%s " % ( signal._unit[0:16])
     if float(signal._factor) != 1:
@@ -144,12 +144,12 @@ Title=\"canmatrix-Export\"
                         muxName = muxSignal._name + "%d" % i
 
                         muxOut += "Mux=" + muxName
+                        startBit = muxSignal.getStartbit()
                         if signal._is_little_endian == 0:
                             #Motorola
-                            startBit = muxSignal.getMsbReverseStartbit()
                             muxOut += " %d,%d %d -m" % (startBit, muxSignal._signalsize, i)
                         else:
-                            muxOut += " %d,%d %d" % (muxSignal.getMsbStartbit(), muxSignal._signalsize, i)
+                            muxOut += " %d,%d %d" % (startBit, muxSignal._signalsize, i)
                         if muxSignal._values is not None and i in muxSignal._values:
                             muxOut += "// " + muxSignal._values[i].replace('\n','').replace('\r','')
                         muxOut += "\n"

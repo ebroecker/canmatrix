@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
+from __future__ import absolute_import
+
 from .canmatrix import *
 import codecs
 import yaml
-
+from yaml.representer import SafeRepresenter
+from builtins import *
+import copy
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
@@ -29,7 +33,21 @@ import yaml
 # yaml-files are just object-dumps human readable.
 # This export is complete, no information lost
 
+yaml.add_representer(int, SafeRepresenter.represent_int)
+yaml.add_representer(long, SafeRepresenter.represent_long)
+yaml.add_representer(unicode, SafeRepresenter.represent_unicode)
+yaml.add_representer(str, SafeRepresenter.represent_unicode)
+yaml.add_representer(list, SafeRepresenter.represent_list)
 
-def exportYaml(db, filename):
+def exportYaml(db, filename, **options):
+
+    newdb = copy.deepcopy(db)
+
+    for i,frame in enumerate(newdb._fl._list):
+        for j,signal in enumerate(frame._signals):
+            if signal._is_little_endian == False:
+		signal._startbit = signal.getStartbit(bitNumbering = 1, startLittle = True)
+                newdb._fl._list[i]._signals[j]._startbit = signal._startbit
+
     f = open(filename,"w")
-    f.write(yaml.dump(db))
+    f.write(unicode(yaml.dump(newdb)))

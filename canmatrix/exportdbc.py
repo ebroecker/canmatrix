@@ -98,7 +98,7 @@ def exportDbc(db, filename, **options):
             elif signal._multiplex is not None:
                 f.write((" m%d " % int(signal._multiplex)).encode(dbcExportEncoding))
 
-            startbit = signal.getMsbStartbit()
+            startbit = signal.getStartbit(bitNumbering = 1)
 
             if signal._is_signed:
                 sign = '-'

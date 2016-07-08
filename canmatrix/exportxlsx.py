@@ -111,11 +111,11 @@ def writeFramex(frame, worksheet, row, mystyle):
 
 def writeSignalx(db, sig, worksheet, row, rearCol, mystyle, motorolaBitFormat):
     if motorolaBitFormat == "msb":
-        startBit = sig.getMsbStartbit()
+        startBit = sig.getStartbit(bitNumbering = 1)
     elif motorolaBitFormat == "msbreverse":
-        startBit = sig.getMsbReverseStartbit()
+        startBit = sig.getStartbit()
     else: # motorolaBitFormat == "lsb"
-        startBit = sig.getLsbStartbit()
+        startBit = sig.getStartbit(bitNumbering = 1, startLittle = True)
 
     #startbyte
     worksheet.write(row, 5,  math.floor(startBit/8)+1, mystyle)
@@ -309,7 +309,7 @@ def exportXlsx(db, filename, **options):
         #sort signals:
         sigHash ={}
         for sig in frame._signals:
-            sigHash["%02d" % int(sig.getMsbReverseStartbit()) + sig._name] = sig
+            sigHash["%02d" % int(sig.getStartbit()) + sig._name] = sig
 
         #set style for first line with border
         sigstyle = sty_first_frame

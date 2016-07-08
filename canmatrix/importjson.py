@@ -66,6 +66,9 @@ def importJson(filename, **options):
                                 factor=signal["factor"], 
                                 offset=signal["offset"])     
 
+                if newsignal._is_little_endian == False:
+
+                    newsignal.setStartbit(newsignal._startbit, bitNumbering = 1, startLittle = True)
                 newframe.addSignal(newsignal)
             db._fl.addFrame(newframe)
     f.close()

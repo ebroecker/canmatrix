@@ -23,10 +23,10 @@ FF9B41h,CommandModeControlAPU2,0,,,5,5,ForceRelayK1_Precharge_command,,2,,,m,u,N
 FF9B41h,CommandModeControlAPU2,0,,,5,5,ForceRelayK1_Precharge_command,,2,,,m,u,Force On,1
 FF9B41h,CommandModeControlAPU2,0,,,5,5,ForceRelayK1_Precharge_command,,2,,,m,u,Error,2
 FF9B41h,CommandModeControlAPU2,0,,,5,5,ForceRelayK1_Precharge_command,,2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,0,,,7,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Normal,0
-FF9B41h,CommandModeControlAPU2,0,,,7,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Force On,1
-FF9B41h,CommandModeControlAPU2,0,,,7,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,0,,,7,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,N/A,3
+FF9B41h,CommandModeControlAPU2,0,,,5,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Normal,0
+FF9B41h,CommandModeControlAPU2,0,,,5,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Force On,1
+FF9B41h,CommandModeControlAPU2,0,,,5,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Error,2
+FF9B41h,CommandModeControlAPU2,0,,,5,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,N/A,3
 FF9B41h,CommandModeControlAPU2,0,,,8,1,InvertHwEnable_command,,2,,,m,u,No invert,0
 FF9B41h,CommandModeControlAPU2,0,,,8,1,InvertHwEnable_command,,2,,,m,u,Invert,1
 FF9B41h,CommandModeControlAPU2,0,,,8,1,InvertHwEnable_command,,2,,,m,u,Error,2
@@ -39,10 +39,10 @@ FF9B41h,CommandModeControlAPU2,0,,,8,5,EnableSplitPhase_command,,2,,,m,u,Normal 
 FF9B41h,CommandModeControlAPU2,0,,,8,5,EnableSplitPhase_command,,2,,,m,u,Enable Split Phase Mode,1
 FF9B41h,CommandModeControlAPU2,0,,,8,5,EnableSplitPhase_command,,2,,,m,u,Error,2
 FF9B41h,CommandModeControlAPU2,0,,,8,5,EnableSplitPhase_command,,2,,,m,u,N/A,3
-FF9B41h,CommandModeControlAPU2,0,,,10,7,PhaseRotation_command,,2,,,m,u,Negative,0
-FF9B41h,CommandModeControlAPU2,0,,,10,7,PhaseRotation_command,,2,,,m,u,Positive,1
-FF9B41h,CommandModeControlAPU2,0,,,10,7,PhaseRotation_command,,2,,,m,u,Error,2
-FF9B41h,CommandModeControlAPU2,0,,,10,7,PhaseRotation_command,,2,,,m,u,N/A,3
+FF9B41h,CommandModeControlAPU2,0,,,8,7,PhaseRotation_command,,2,,,m,u,Negative,0
+FF9B41h,CommandModeControlAPU2,0,,,8,7,PhaseRotation_command,,2,,,m,u,Positive,1
+FF9B41h,CommandModeControlAPU2,0,,,8,7,PhaseRotation_command,,2,,,m,u,Error,2
+FF9B41h,CommandModeControlAPU2,0,,,8,7,PhaseRotation_command,,2,,,m,u,N/A,3
 FFAB41h,CommandModeControl,0,,,1,1,Enable_command,,2,,,m,u,Disable,0
 FFAB41h,CommandModeControl,0,,,1,1,Enable_command,,2,,,m,u,Enable,1
 FFAB41h,CommandModeControl,0,,,1,1,Enable_command,,2,,,m,u,Error,2
@@ -67,10 +67,10 @@ FFAB41h,CommandModeControl,0,,,5,5,ForceRelayK1_Precharge_command,,2,,,m,u,Norma
 FFAB41h,CommandModeControl,0,,,5,5,ForceRelayK1_Precharge_command,,2,,,m,u,Force On,1
 FFAB41h,CommandModeControl,0,,,5,5,ForceRelayK1_Precharge_command,,2,,,m,u,Error,2
 FFAB41h,CommandModeControl,0,,,5,5,ForceRelayK1_Precharge_command,,2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,0,,,7,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Normal,0
-FFAB41h,CommandModeControl,0,,,7,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Force On,1
-FFAB41h,CommandModeControl,0,,,7,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Error,2
-FFAB41h,CommandModeControl,0,,,7,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,N/A,3
+FFAB41h,CommandModeControl,0,,,5,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Normal,0
+FFAB41h,CommandModeControl,0,,,5,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Force On,1
+FFAB41h,CommandModeControl,0,,,5,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,Error,2
+FFAB41h,CommandModeControl,0,,,5,7,ForceRelayRelayK2_DCRun_comand,,2,,,m,u,N/A,3
 FFAB41h,CommandModeControl,0,,,8,1,InvertHwEnable_command,,2,,,m,u,No invert,0
 FFAB41h,CommandModeControl,0,,,8,1,InvertHwEnable_command,,2,,,m,u,Invert,1
 FFAB41h,CommandModeControl,0,,,8,1,InvertHwEnable_command,,2,,,m,u,Error,2
@@ -83,65 +83,65 @@ FFAB41h,CommandModeControl,0,,,8,5,EnableSplitPhase_command,,2,,,m,u,Normal - Th
 FFAB41h,CommandModeControl,0,,,8,5,EnableSplitPhase_command,,2,,,m,u,Enable Split Phase Mode,1
 FFAB41h,CommandModeControl,0,,,8,5,EnableSplitPhase_command,,2,,,m,u,Error,2
 FFAB41h,CommandModeControl,0,,,8,5,EnableSplitPhase_command,,2,,,m,u,N/A,3
-FFAB41h,CommandModeControl,0,,,10,7,PhaseRotation_command,,2,,,m,u,Negative,0
-FFAB41h,CommandModeControl,0,,,10,7,PhaseRotation_command,,2,,,m,u,Positive,1
-FFAB41h,CommandModeControl,0,,,10,7,PhaseRotation_command,,2,,,m,u,Error,2
-FFAB41h,CommandModeControl,0,,,10,7,PhaseRotation_command,,2,,,m,u,N/A,3
-CFF9C41h,CommandPowerAPU2,0,,,3,7,RealPower_command,,32,,,m,u,,-90000.0..90000.0,W
-CFF9C41h,CommandPowerAPU2,0,,,7,7,ReactivePower_command,,32,,,m,u,,-90000.0..90000.0,VA
-CFF9E41h,CommandVFAPU2,0,,,3,7,Voltage_command,,16,,,m,u,,10.0..500.0,0.1  Vrms
-CFF9E41h,CommandVFAPU2,0,,,5,7,Frequency_command,,16,,,m,u,,45.0..65.0,0.1  Hz
+FFAB41h,CommandModeControl,0,,,8,7,PhaseRotation_command,,2,,,m,u,Negative,0
+FFAB41h,CommandModeControl,0,,,8,7,PhaseRotation_command,,2,,,m,u,Positive,1
+FFAB41h,CommandModeControl,0,,,8,7,PhaseRotation_command,,2,,,m,u,Error,2
+FFAB41h,CommandModeControl,0,,,8,7,PhaseRotation_command,,2,,,m,u,N/A,3
+CFF9C41h,CommandPowerAPU2,0,,,1,7,RealPower_command,,32,,,m,u,,-90000.0..90000.0,W
+CFF9C41h,CommandPowerAPU2,0,,,5,7,ReactivePower_command,,32,,,m,u,,-90000.0..90000.0,VA
+CFF9E41h,CommandVFAPU2,0,,,1,7,Voltage_command,,16,,,m,u,,10.0..500.0,0.1  Vrms
+CFF9E41h,CommandVFAPU2,0,,,3,7,Frequency_command,,16,,,m,u,,45.0..65.0,0.1  Hz
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,Param0,0
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,LVM_ClearingTimes1,1
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,LVM_ClearingTimes2,2
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,LFM_Limits,3
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,LFM_ClearingTimes,4
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,J1939_Interface,5
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,Fault_Config,6
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,ContactorDelays1,7
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,ContactorDelays2,8
+CFFAA41h,CommandSetNVParam,0,,,1,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,ContactorDelays3,9
 CFFAA41h,CommandSetNVParam,0,,,3,1,ThermalOverload,Mode 6:,2,,,m,u,Warning,0
 CFFAA41h,CommandSetNVParam,0,,,3,1,ThermalOverload,Mode 6:,2,,,m,u,Fault,1
 CFFAA41h,CommandSetNVParam,0,,,3,1,ThermalOverload,Mode 6:,2,,,m,u,Error,2
 CFFAA41h,CommandSetNVParam,0,,,3,1,ThermalOverload,Mode 6:,2,,,m,u,N/A,3
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,Param0,0
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,LVM_ClearingTimes1,1
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,LVM_ClearingTimes2,2
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,LFM_Limits,3
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,LFM_ClearingTimes,4
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,J1939_Interface,5
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,Fault_Config,6
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,ContactorDelays1,7
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,ContactorDelays2,8
-CFFAA41h,CommandSetNVParam,0,,,3,7,CommandSetNVParam_MUX,Mode Signal: ,16,,,m,u,ContactorDelays3,9
-CFFAA41h,CommandSetNVParam,0,,,5,7,Dummy,Mode 0:,16,,,m,u,,0.0..65535.0
-CFFAA41h,CommandSetNVParam,0,,,5,7,FreqHi,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
-CFFAA41h,CommandSetNVParam,0,,,5,7,FreqVeryLo,Mode 4:,16,,,m,u,,160.0..160.0,ms
-CFFAA41h,CommandSetNVParam,0,,,5,7,K2Open,Mode 9:,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,5,7,MX1Open,Mode 7:,16,,,m,u,,0.0..5000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,5,7,MX2Close,Mode 8:,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,5,7,NodeID,Mode 5:,8,,,m,u,,0.0..247.0
-CFFAA41h,CommandSetNVParam,0,,,5,7,VOver120,Mode 2:,16,,,m,u,,1.0..30000.0
-CFFAA41h,CommandSetNVParam,0,,,5,7,VUnder50pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,6,7,SA_Mask,Mode 5:,8,,,m,u,,0.0..255.0
-CFFAA41h,CommandSetNVParam,0,,,7,7,Baudrate,Mode 5:,4,,,m,u,125K,0
-CFFAA41h,CommandSetNVParam,0,,,7,7,Baudrate,Mode 5:,4,,,m,u,250K,1
-CFFAA41h,CommandSetNVParam,0,,,7,7,Baudrate,Mode 5:,4,,,m,u,500K,2
-CFFAA41h,CommandSetNVParam,0,,,7,7,Baudrate,Mode 5:,4,,,m,u,1M,3
-CFFAA41h,CommandSetNVParam,0,,,7,7,FreqLo,Mode 4:,16,,,m,u,,1.0..30000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,7,7,K1Open,Mode 8:,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,7,7,K2Close,Mode 9:,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,7,7,MX1Close,Mode 7:,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,7,7,V50to88pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,9,7,FreqHi,Mode 4:,16,,,m,u,,160.0..160.0,ms
-CFFAA41h,CommandSetNVParam,0,,,9,7,FreqVeryLo,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
-CFFAA41h,CommandSetNVParam,0,,,9,7,K1Close,Mode 8:,16,,,m,u,,0.0..2000.0,ms
-CFFAA41h,CommandSetNVParam,0,,,9,7,MX2Open,Mode 7:,16,,,m,u,,0.0..65535.0,ms
-CFFAA41h,CommandSetNVParam,0,,,9,7,V110to120pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
-CFFAC41h,CommandPower,0,,,3,7,RealPower_command,,32,,,m,u,,-90000.0..90000.0,W
-CFFAC41h,CommandPower,0,,,7,7,ReactivePower_command,,32,,,m,u,,-90000.0..90000.0,VA
-CFFAE41h,CommandVF,0,,,3,7,Voltage_command,,16,,,m,u,,10.0..500.0,0.1  Vrms
-CFFAE41h,CommandVF,0,,,5,7,Frequency_command,,16,,,m,u,,45.0..65.0,0.1  Hz
+CFFAA41h,CommandSetNVParam,0,,,3,7,Dummy,Mode 0:,16,,,m,u,,0.0..65535.0
+CFFAA41h,CommandSetNVParam,0,,,3,7,FreqHi,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
+CFFAA41h,CommandSetNVParam,0,,,3,7,FreqVeryLo,Mode 4:,16,,,m,u,,160.0..160.0,ms
+CFFAA41h,CommandSetNVParam,0,,,3,7,K2Open,Mode 9:,16,,,m,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,3,7,MX1Open,Mode 7:,16,,,m,u,,0.0..5000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,3,7,MX2Close,Mode 8:,16,,,m,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,3,7,NodeID,Mode 5:,8,,,m,u,,0.0..247.0
+CFFAA41h,CommandSetNVParam,0,,,3,7,VOver120,Mode 2:,16,,,m,u,,1.0..30000.0
+CFFAA41h,CommandSetNVParam,0,,,3,7,VUnder50pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,4,7,SA_Mask,Mode 5:,8,,,m,u,,0.0..255.0
+CFFAA41h,CommandSetNVParam,0,,,5,7,Baudrate,Mode 5:,4,,,m,u,125K,0
+CFFAA41h,CommandSetNVParam,0,,,5,7,Baudrate,Mode 5:,4,,,m,u,250K,1
+CFFAA41h,CommandSetNVParam,0,,,5,7,Baudrate,Mode 5:,4,,,m,u,500K,2
+CFFAA41h,CommandSetNVParam,0,,,5,7,Baudrate,Mode 5:,4,,,m,u,1M,3
+CFFAA41h,CommandSetNVParam,0,,,5,7,FreqLo,Mode 4:,16,,,m,u,,1.0..30000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,5,7,K1Open,Mode 8:,16,,,m,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,5,7,K2Close,Mode 9:,16,,,m,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,5,7,MX1Close,Mode 7:,16,,,m,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,5,7,V50to88pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,7,7,FreqHi,Mode 4:,16,,,m,u,,160.0..160.0,ms
+CFFAA41h,CommandSetNVParam,0,,,7,7,FreqVeryLo,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
+CFFAA41h,CommandSetNVParam,0,,,7,7,K1Close,Mode 8:,16,,,m,u,,0.0..2000.0,ms
+CFFAA41h,CommandSetNVParam,0,,,7,7,MX2Open,Mode 7:,16,,,m,u,,0.0..65535.0,ms
+CFFAA41h,CommandSetNVParam,0,,,7,7,V110to120pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
+CFFAC41h,CommandPower,0,,,1,7,RealPower_command,,32,,,m,u,,-90000.0..90000.0,W
+CFFAC41h,CommandPower,0,,,5,7,ReactivePower_command,,32,,,m,u,,-90000.0..90000.0,VA
+CFFAE41h,CommandVF,0,,,1,7,Voltage_command,,16,,,m,u,,10.0..500.0,0.1  Vrms
+CFFAE41h,CommandVF,0,,,3,7,Frequency_command,,16,,,m,u,,45.0..65.0,0.1  Hz
 CFFAF41h,CommandFactoryControl,0,,,1,1,WriteSerialNumber,,2,,,m,u,Disable,0
 CFFAF41h,CommandFactoryControl,0,,,1,1,WriteSerialNumber,,2,,,m,u,Enable,1
 CFFAF41h,CommandFactoryControl,0,,,1,1,WriteSerialNumber,,2,,,m,u,Error,2
 CFFAF41h,CommandFactoryControl,0,,,1,1,WriteSerialNumber,,2,,,m,u,N/A,3
-CFFAF41h,CommandFactoryControl,0,,,5,7,FactoryAccess,,16,,,m,u,,0.0..65535.0
-CFFAF41h,CommandFactoryControl,0,,,7,7,SerialNumber,,32,,,m,u,,0.0..4294967295.0
-CFFC2F7h,StatusACParameters,0,,,3,7,VoltageAC_measured,,16,,,m,u,,0.0..65535.0,0.1  V
-CFFC2F7h,StatusACParameters,0,,,5,7,CurrentAC_measured,,16,,,m,u,,0.0..65535.0,A
-CFFC2F7h,StatusACParameters,0,,,7,7,Frequency_measured,,16,,,m,u,,0.0..65535.0,0.1  Hz
+CFFAF41h,CommandFactoryControl,0,,,3,7,FactoryAccess,,16,,,m,u,,0.0..65535.0
+CFFAF41h,CommandFactoryControl,0,,,5,7,SerialNumber,,32,,,m,u,,0.0..4294967295.0
+CFFC2F7h,StatusACParameters,0,,,1,7,VoltageAC_measured,,16,,,m,u,,0.0..65535.0,0.1  V
+CFFC2F7h,StatusACParameters,0,,,3,7,CurrentAC_measured,,16,,,m,u,,0.0..65535.0,A
+CFFC2F7h,StatusACParameters,0,,,5,7,Frequency_measured,,16,,,m,u,,0.0..65535.0,0.1  Hz
 CFFC3F7h,StatusBits,0,,,1,3,State_status,,4,,,m,u,Power On Reset,0
 CFFC3F7h,StatusBits,0,,,1,3,State_status,,4,,,m,u,Ready,1
 CFFC3F7h,StatusBits,0,,,1,3,State_status,,4,,,m,u,Following,2
@@ -162,6 +162,10 @@ CFFC3F7h,StatusBits,0,,,1,5,Enable_echo,,2,,,m,u,Disable,0
 CFFC3F7h,StatusBits,0,,,1,5,Enable_echo,,2,,,m,u,Enable,1
 CFFC3F7h,StatusBits,0,,,1,5,Enable_echo,,2,,,m,u,Error,2
 CFFC3F7h,StatusBits,0,,,1,5,Enable_echo,,2,,,m,u,N/A,3
+CFFC3F7h,StatusBits,0,,,1,7,FaultClr_echo,,2,,,m,u,Normal,0
+CFFC3F7h,StatusBits,0,,,1,7,FaultClr_echo,,2,,,m,u,Clear Faults,1
+CFFC3F7h,StatusBits,0,,,1,7,FaultClr_echo,,2,,,m,u,Error,2
+CFFC3F7h,StatusBits,0,,,1,7,FaultClr_echo,,2,,,m,u,N/A,3
 CFFC3F7h,StatusBits,0,,,2,1,HardwareEnable_status,,2,,,m,u,Not Active,0
 CFFC3F7h,StatusBits,0,,,2,1,HardwareEnable_status,,2,,,m,u,Active,1
 CFFC3F7h,StatusBits,0,,,2,1,HardwareEnable_status,,2,,,m,u,Error,2
@@ -174,6 +178,10 @@ CFFC3F7h,StatusBits,0,,,2,5,PowerAvailDC_status,,2,,,m,u,None,0
 CFFC3F7h,StatusBits,0,,,2,5,PowerAvailDC_status,,2,,,m,u,Available,1
 CFFC3F7h,StatusBits,0,,,2,5,PowerAvailDC_status,,2,,,m,u,Error,2
 CFFC3F7h,StatusBits,0,,,2,5,PowerAvailDC_status,,2,,,m,u,N/A,3
+CFFC3F7h,StatusBits,0,,,2,7,PowerCircuitEnabled_status,,2,,,m,u,Disabled,0
+CFFC3F7h,StatusBits,0,,,2,7,PowerCircuitEnabled_status,,2,,,m,u,Enabled,1
+CFFC3F7h,StatusBits,0,,,2,7,PowerCircuitEnabled_status,,2,,,m,u,Error,2
+CFFC3F7h,StatusBits,0,,,2,7,PowerCircuitEnabled_status,,2,,,m,u,N/A,3
 CFFC3F7h,StatusBits,0,,,3,1,MX1Permissive_status,,2,,,m,u,Open,0
 CFFC3F7h,StatusBits,0,,,3,1,MX1Permissive_status,,2,,,m,u,Closed,1
 CFFC3F7h,StatusBits,0,,,3,1,MX1Permissive_status,,2,,,m,u,Error,2
@@ -186,10 +194,10 @@ CFFC3F7h,StatusBits,0,,,3,5,K1PrechargePermissive_status,,2,,,m,u,Open,0
 CFFC3F7h,StatusBits,0,,,3,5,K1PrechargePermissive_status,,2,,,m,u,Closed,1
 CFFC3F7h,StatusBits,0,,,3,5,K1PrechargePermissive_status,,2,,,m,u,Error,2
 CFFC3F7h,StatusBits,0,,,3,5,K1PrechargePermissive_status,,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,0,,,3,7,FaultClr_echo,,2,,,m,u,Normal,0
-CFFC3F7h,StatusBits,0,,,3,7,FaultClr_echo,,2,,,m,u,Clear Faults,1
-CFFC3F7h,StatusBits,0,,,3,7,FaultClr_echo,,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,0,,,3,7,FaultClr_echo,,2,,,m,u,N/A,3
+CFFC3F7h,StatusBits,0,,,3,7,K2DCRunPermissive_status,,2,,,m,u,Open,0
+CFFC3F7h,StatusBits,0,,,3,7,K2DCRunPermissive_status,,2,,,m,u,Closed,1
+CFFC3F7h,StatusBits,0,,,3,7,K2DCRunPermissive_status,,2,,,m,u,Error,2
+CFFC3F7h,StatusBits,0,,,3,7,K2DCRunPermissive_status,,2,,,m,u,N/A,3
 CFFC3F7h,StatusBits,0,,,4,1,MessageValidModeControl_status,,2,,,m,u,Invalid,0
 CFFC3F7h,StatusBits,0,,,4,1,MessageValidModeControl_status,,2,,,m,u,Valid,1
 CFFC3F7h,StatusBits,0,,,4,1,MessageValidModeControl_status,,2,,,m,u,Error,2
@@ -202,10 +210,10 @@ CFFC3F7h,StatusBits,0,,,4,5,MessageValidVF_status,,2,,,m,u,Invalid,0
 CFFC3F7h,StatusBits,0,,,4,5,MessageValidVF_status,,2,,,m,u,Valid,1
 CFFC3F7h,StatusBits,0,,,4,5,MessageValidVF_status,,2,,,m,u,Error,2
 CFFC3F7h,StatusBits,0,,,4,5,MessageValidVF_status,,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,0,,,4,7,PowerCircuitEnabled_status,,2,,,m,u,Disabled,0
-CFFC3F7h,StatusBits,0,,,4,7,PowerCircuitEnabled_status,,2,,,m,u,Enabled,1
-CFFC3F7h,StatusBits,0,,,4,7,PowerCircuitEnabled_status,,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,0,,,4,7,PowerCircuitEnabled_status,,2,,,m,u,N/A,3
+CFFC3F7h,StatusBits,0,,,4,7,CANbus_status,,2,,,m,u,Normal,0
+CFFC3F7h,StatusBits,0,,,4,7,CANbus_status,,2,,,m,u,Warning,1
+CFFC3F7h,StatusBits,0,,,4,7,CANbus_status,,2,,,m,u,ErrorPassive,3
+CFFC3F7h,StatusBits,0,,,4,7,CANbus_status,,2,,,m,u,N/A,4
 CFFC3F7h,StatusBits,0,,,5,1,EnableUPSMode_echo,,2,,,m,u,Disable,0
 CFFC3F7h,StatusBits,0,,,5,1,EnableUPSMode_echo,,2,,,m,u,Enable,1
 CFFC3F7h,StatusBits,0,,,5,1,EnableUPSMode_echo,,2,,,m,u,Error,2
@@ -218,22 +226,14 @@ CFFC3F7h,StatusBits,0,,,5,5,PhaseRotation_status,,2,,,m,u,Negative,0
 CFFC3F7h,StatusBits,0,,,5,5,PhaseRotation_status,,2,,,m,u,Positive,1
 CFFC3F7h,StatusBits,0,,,5,5,PhaseRotation_status,,2,,,m,u,Error,2
 CFFC3F7h,StatusBits,0,,,5,5,PhaseRotation_status,,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,0,,,5,7,K2DCRunPermissive_status,,2,,,m,u,Open,0
-CFFC3F7h,StatusBits,0,,,5,7,K2DCRunPermissive_status,,2,,,m,u,Closed,1
-CFFC3F7h,StatusBits,0,,,5,7,K2DCRunPermissive_status,,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,0,,,5,7,K2DCRunPermissive_status,,2,,,m,u,N/A,3
+CFFC3F7h,StatusBits,0,,,5,7,LineVoltageDetected_status,,2,,,m,u,No_Voltage,0
+CFFC3F7h,StatusBits,0,,,5,7,LineVoltageDetected_status,,2,,,m,u,Voltage_Detected,1
+CFFC3F7h,StatusBits,0,,,5,7,LineVoltageDetected_status,,2,,,m,u,Error,2
+CFFC3F7h,StatusBits,0,,,5,7,LineVoltageDetected_status,,2,,,m,u,N/A,3
 CFFC3F7h,StatusBits,0,,,6,1,PhaseRotation_echo,,2,,,m,u,Negative,0
 CFFC3F7h,StatusBits,0,,,6,1,PhaseRotation_echo,,2,,,m,u,Positive,1
 CFFC3F7h,StatusBits,0,,,6,1,PhaseRotation_echo,,2,,,m,u,Error,2
 CFFC3F7h,StatusBits,0,,,6,1,PhaseRotation_echo,,2,,,m,u,N/A,3
-CFFC3F7h,StatusBits,0,,,6,7,CANbus_status,,2,,,m,u,Normal,0
-CFFC3F7h,StatusBits,0,,,6,7,CANbus_status,,2,,,m,u,Warning,1
-CFFC3F7h,StatusBits,0,,,6,7,CANbus_status,,2,,,m,u,ErrorPassive,3
-CFFC3F7h,StatusBits,0,,,6,7,CANbus_status,,2,,,m,u,N/A,4
-CFFC3F7h,StatusBits,0,,,7,7,LineVoltageDetected_status,,2,,,m,u,No_Voltage,0
-CFFC3F7h,StatusBits,0,,,7,7,LineVoltageDetected_status,,2,,,m,u,Voltage_Detected,1
-CFFC3F7h,StatusBits,0,,,7,7,LineVoltageDetected_status,,2,,,m,u,Error,2
-CFFC3F7h,StatusBits,0,,,7,7,LineVoltageDetected_status,,2,,,m,u,N/A,3
 CFFC8F7h,StatusFaults,0,,,1,1,GeneralFault_status,,2,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,1,1,GeneralFault_status,,2,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,1,1,GeneralFault_status,,2,,,m,u,Error,2
@@ -246,6 +246,10 @@ CFFC8F7h,StatusFaults,0,,,1,5,LossOfAC_status,,2,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,1,5,LossOfAC_status,,2,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,1,5,LossOfAC_status,,2,,,m,u,Error,2
 CFFC8F7h,StatusFaults,0,,,1,5,LossOfAC_status,,2,,,m,u,N/A,3
+CFFC8F7h,StatusFaults,0,,,1,7,OvercurrentDC_status,,2,,,m,u,Normal,0
+CFFC8F7h,StatusFaults,0,,,1,7,OvercurrentDC_status,,2,,,m,u,Fault Active,1
+CFFC8F7h,StatusFaults,0,,,1,7,OvercurrentDC_status,,2,,,m,u,Error,2
+CFFC8F7h,StatusFaults,0,,,1,7,OvercurrentDC_status,,2,,,m,u,N/A,3
 CFFC8F7h,StatusFaults,0,,,2,1,OvervoltageDC_status,,2,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,2,1,OvervoltageDC_status,,2,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,2,1,OvervoltageDC_status,,2,,,m,u,Error,2
@@ -258,14 +262,18 @@ CFFC8F7h,StatusFaults,0,,,2,5,OvertempInternal_status,,2,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,2,5,OvertempInternal_status,,2,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,2,5,OvertempInternal_status,,2,,,m,u,Error,2
 CFFC8F7h,StatusFaults,0,,,2,5,OvertempInternal_status,,2,,,m,u,N/A,3
+CFFC8F7h,StatusFaults,0,,,2,7,OvertempPowerDevice_status,,2,,,m,u,Normal,0
+CFFC8F7h,StatusFaults,0,,,2,7,OvertempPowerDevice_status,,2,,,m,u,Fault Active,1
+CFFC8F7h,StatusFaults,0,,,2,7,OvertempPowerDevice_status,,2,,,m,u,Error,2
+CFFC8F7h,StatusFaults,0,,,2,7,OvertempPowerDevice_status,,2,,,m,u,N/A,3
 CFFC8F7h,StatusFaults,0,,,3,3,ControlHardwareFail_status,,4,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,3,3,ControlHardwareFail_status,,4,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,3,3,ControlHardwareFail_status,,4,,,m,u,Error,2
 CFFC8F7h,StatusFaults,0,,,3,3,ControlHardwareFail_status,,4,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,0,,,3,7,OvercurrentDC_status,,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,0,,,3,7,OvercurrentDC_status,,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,0,,,3,7,OvercurrentDC_status,,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,0,,,3,7,OvercurrentDC_status,,2,,,m,u,N/A,3
+CFFC8F7h,StatusFaults,0,,,3,7,LossValidControlMessage_status,,4,,,m,u,Normal,0
+CFFC8F7h,StatusFaults,0,,,3,7,LossValidControlMessage_status,,4,,,m,u,Fault Active,1
+CFFC8F7h,StatusFaults,0,,,3,7,LossValidControlMessage_status,,4,,,m,u,Error,2
+CFFC8F7h,StatusFaults,0,,,3,7,LossValidControlMessage_status,,4,,,m,u,N/A,3
 CFFC8F7h,StatusFaults,0,,,4,1,EStopShutdown_status,,2,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,4,1,EStopShutdown_status,,2,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,4,1,EStopShutdown_status,,2,,,m,u,Error,2
@@ -278,18 +286,14 @@ CFFC8F7h,StatusFaults,0,,,4,5,InvalidEEHeader_status,,2,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,4,5,InvalidEEHeader_status,,2,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,4,5,InvalidEEHeader_status,,2,,,m,u,Error,2
 CFFC8F7h,StatusFaults,0,,,4,5,InvalidEEHeader_status,,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,0,,,4,7,OvertempPowerDevice_status,,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,0,,,4,7,OvertempPowerDevice_status,,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,0,,,4,7,OvertempPowerDevice_status,,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,0,,,4,7,OvertempPowerDevice_status,,2,,,m,u,N/A,3
+CFFC8F7h,StatusFaults,0,,,4,7,InvalidEESection_status,,2,,,m,u,Normal,0
+CFFC8F7h,StatusFaults,0,,,4,7,InvalidEESection_status,,2,,,m,u,Fault Active,1
+CFFC8F7h,StatusFaults,0,,,4,7,InvalidEESection_status,,2,,,m,u,Error,2
+CFFC8F7h,StatusFaults,0,,,4,7,InvalidEESection_status,,2,,,m,u,N/A,3
 CFFC8F7h,StatusFaults,0,,,5,1,ThermalOverload,,2,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,5,1,ThermalOverload,,2,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,5,1,ThermalOverload,,2,,,m,u,Error,2
 CFFC8F7h,StatusFaults,0,,,5,1,ThermalOverload,,2,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,0,,,5,7,LossValidControlMessage_status,,4,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,0,,,5,7,LossValidControlMessage_status,,4,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,0,,,5,7,LossValidControlMessage_status,,4,,,m,u,Error,2
-CFFC8F7h,StatusFaults,0,,,5,7,LossValidControlMessage_status,,4,,,m,u,N/A,3
 CFFC8F7h,StatusFaults,0,,,6,2,BridgeBFault_status,,3,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,6,2,BridgeBFault_status,,3,,,m,u,FLT_A,1
 CFFC8F7h,StatusFaults,0,,,6,2,BridgeBFault_status,,3,,,m,u,N/A,2
@@ -302,10 +306,6 @@ CFFC8F7h,StatusFaults,0,,,6,3,BridgeBVoltageOk_status,,1,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,6,3,BridgeBVoltageOk_status,,1,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,6,3,BridgeBVoltageOk_status,,1,,,m,u,Error,2
 CFFC8F7h,StatusFaults,0,,,6,3,BridgeBVoltageOk_status,,1,,,m,u,N/A,3
-CFFC8F7h,StatusFaults,0,,,6,7,InvalidEESection_status,,2,,,m,u,Normal,0
-CFFC8F7h,StatusFaults,0,,,6,7,InvalidEESection_status,,2,,,m,u,Fault Active,1
-CFFC8F7h,StatusFaults,0,,,6,7,InvalidEESection_status,,2,,,m,u,Error,2
-CFFC8F7h,StatusFaults,0,,,6,7,InvalidEESection_status,,2,,,m,u,N/A,3
 CFFC8F7h,StatusFaults,0,,,8,2,BridgeAFault_status,,3,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,8,2,BridgeAFault_status,,3,,,m,u,FLT_A,1
 CFFC8F7h,StatusFaults,0,,,8,2,BridgeAFault_status,,3,,,m,u,N/A,2
@@ -318,73 +318,73 @@ CFFC8F7h,StatusFaults,0,,,8,3,BridgeAVoltageOk_status,,1,,,m,u,Normal,0
 CFFC8F7h,StatusFaults,0,,,8,3,BridgeAVoltageOk_status,,1,,,m,u,Fault Active,1
 CFFC8F7h,StatusFaults,0,,,8,3,BridgeAVoltageOk_status,,1,,,m,u,Error,2
 CFFC8F7h,StatusFaults,0,,,8,3,BridgeAVoltageOk_status,,1,,,m,u,N/A,3
-CFFCAF6h,MasterMeasuredPower,0,,,3,7,RealPower_measured,,32,,,m,u,,0.0..4294967295.0,W
-CFFCAF6h,MasterMeasuredPower,0,,,7,7,ReactivePower_measured,,32,,,m,u,,0.0..4294967295.0,VA
-CFFCAF7h,StatusMeasuredPower,0,,,3,7,RealPower_measured,,32,,,m,u,,0.0..4294967295.0,W
-CFFCAF7h,StatusMeasuredPower,0,,,7,7,ReactivePower_measured,,32,,,m,u,,0.0..4294967295.0,VA
-18FFC4F7h,StatusCommandedPower,0,,,3,7,RealPower_echo,,32,,,m,u,,0.0..4294967295.0,W
-18FFC4F7h,StatusCommandedPower,0,,,7,7,ReactivePower_echo,,32,,,m,u,,0.0..4294967295.0,VA
-18FFC9F7h,StatusCommandVF,0,,,3,7,Voltage_echo,,16,,,m,u,,0.0..65535.0,0.1  Vrms
-18FFC9F7h,StatusCommandVF,0,,,5,7,Frequency_echo,,16,,,m,u,,0.0..65535.0,0.1  Hz
-18FFCBF7h,StatusTemps,0,,,3,7,TempInlet_measured,,16,,,m,u,,0.0..65535.0,0.1  C
-18FFCBF7h,StatusTemps,0,,,5,7,TempInternal_measured,,16,,,m,u,,0.0..65535.0,0.1  C
-18FFCBF7h,StatusTemps,0,,,7,7,ConverterLosses,,16,,,m,u,,0.0..65535.0,W
-18FFD0F7h,StatusLineCurrents,0,,,3,7,L1Current_measured,,16,,,m,u,,0.0..65535.0,A
-18FFD0F7h,StatusLineCurrents,0,,,5,7,L2Current_measured,,16,,,m,u,,0.0..65535.0,A
-18FFD0F7h,StatusLineCurrents,0,,,7,7,L3Current_measured,,16,,,m,u,,0.0..65535.0,A
-18FFD1F7h,StatusLineVoltages,0,,,3,7,L1Voltage_measured,,16,,,m,u,,0.0..65535.0,0.1  Vrms
-18FFD1F7h,StatusLineVoltages,0,,,5,7,L2Voltage_measured,,16,,,m,u,,0.0..65535.0,0.1  Vrms
-18FFD1F7h,StatusLineVoltages,0,,,7,7,L3Voltage_measured,,16,,,m,u,,0.0..65535.0,0.1  Vrms
+CFFCAF6h,MasterMeasuredPower,0,,,1,7,RealPower_measured,,32,,,m,u,,0.0..4294967295.0,W
+CFFCAF6h,MasterMeasuredPower,0,,,5,7,ReactivePower_measured,,32,,,m,u,,0.0..4294967295.0,VA
+CFFCAF7h,StatusMeasuredPower,0,,,1,7,RealPower_measured,,32,,,m,u,,0.0..4294967295.0,W
+CFFCAF7h,StatusMeasuredPower,0,,,5,7,ReactivePower_measured,,32,,,m,u,,0.0..4294967295.0,VA
+18FFC4F7h,StatusCommandedPower,0,,,1,7,RealPower_echo,,32,,,m,u,,0.0..4294967295.0,W
+18FFC4F7h,StatusCommandedPower,0,,,5,7,ReactivePower_echo,,32,,,m,u,,0.0..4294967295.0,VA
+18FFC9F7h,StatusCommandVF,0,,,1,7,Voltage_echo,,16,,,m,u,,0.0..65535.0,0.1  Vrms
+18FFC9F7h,StatusCommandVF,0,,,3,7,Frequency_echo,,16,,,m,u,,0.0..65535.0,0.1  Hz
+18FFCBF7h,StatusTemps,0,,,1,7,TempInlet_measured,,16,,,m,u,,0.0..65535.0,0.1  C
+18FFCBF7h,StatusTemps,0,,,3,7,TempInternal_measured,,16,,,m,u,,0.0..65535.0,0.1  C
+18FFCBF7h,StatusTemps,0,,,5,7,ConverterLosses,,16,,,m,u,,0.0..65535.0,W
+18FFD0F7h,StatusLineCurrents,0,,,1,7,L1Current_measured,,16,,,m,u,,0.0..65535.0,A
+18FFD0F7h,StatusLineCurrents,0,,,3,7,L2Current_measured,,16,,,m,u,,0.0..65535.0,A
+18FFD0F7h,StatusLineCurrents,0,,,5,7,L3Current_measured,,16,,,m,u,,0.0..65535.0,A
+18FFD1F7h,StatusLineVoltages,0,,,1,7,L1Voltage_measured,,16,,,m,u,,0.0..65535.0,0.1  Vrms
+18FFD1F7h,StatusLineVoltages,0,,,3,7,L2Voltage_measured,,16,,,m,u,,0.0..65535.0,0.1  Vrms
+18FFD1F7h,StatusLineVoltages,0,,,5,7,L3Voltage_measured,,16,,,m,u,,0.0..65535.0,0.1  Vrms
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActParam0,0
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActLVM_ClearingTimes1,1
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActLVM_ClearingTimes2,2
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActLFM_Limits,3
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActLFM_ClearingTimes,4
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusJ1939_Interface,5
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusFault_Config,6
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusContactorDelays1,7
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusContactorDelays2,8
+1CFFA9F7h,StatusNVParam,0,,,1,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusContactorDelays3,9
 1CFFA9F7h,StatusNVParam,0,,,3,1,StatusThermalOverload,Mode 6:,2,,,m,u,Warning,0
 1CFFA9F7h,StatusNVParam,0,,,3,1,StatusThermalOverload,Mode 6:,2,,,m,u,Fault,1
 1CFFA9F7h,StatusNVParam,0,,,3,1,StatusThermalOverload,Mode 6:,2,,,m,u,Error,2
 1CFFA9F7h,StatusNVParam,0,,,3,1,StatusThermalOverload,Mode 6:,2,,,m,u,N/A,3
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActParam0,0
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActLVM_ClearingTimes1,1
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActLVM_ClearingTimes2,2
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActLFM_Limits,3
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,ActLFM_ClearingTimes,4
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusJ1939_Interface,5
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusFault_Config,6
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusContactorDelays1,7
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusContactorDelays2,8
-1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNVParam_MUX,Mode Signal: ,16,,,m,u,StatusContactorDelays3,9
-1CFFA9F7h,StatusNVParam,0,,,5,7,Dummy,Mode 0:,16,,,m,u,,5.0..10.0
-1CFFA9F7h,StatusNVParam,0,,,5,7,FreqHi,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
-1CFFA9F7h,StatusNVParam,0,,,5,7,FreqVeryLo,Mode 4:,16,,,m,u,,160.0..160.0,ms
-1CFFA9F7h,StatusNVParam,0,,,5,7,StatusK2Open,Mode 9:,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,5,7,StatusMX1Open,Mode 7:,16,,,m,u,,0.0..5000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,5,7,StatusMX2Close,Mode 8:,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,5,7,StatusNodeID,Mode 5:,8,,,m,u,,0.0..247.0
-1CFFA9F7h,StatusNVParam,0,,,5,7,VOver120,Mode 2:,16,,,m,u,,1.0..30000.0
-1CFFA9F7h,StatusNVParam,0,,,5,7,VUnder50pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,6,7,StatusSA_Mask,Mode 5:,8,,,m,u,,0.0..255.0
-1CFFA9F7h,StatusNVParam,0,,,7,7,FreqLo,Mode 4:,16,,,m,u,,1.0..30000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,7,7,StatusBaudrate,Mode 5:,4,,,m,u,125K,0
-1CFFA9F7h,StatusNVParam,0,,,7,7,StatusBaudrate,Mode 5:,4,,,m,u,250K,1
-1CFFA9F7h,StatusNVParam,0,,,7,7,StatusBaudrate,Mode 5:,4,,,m,u,500K,2
-1CFFA9F7h,StatusNVParam,0,,,7,7,StatusBaudrate,Mode 5:,4,,,m,u,1M,3
-1CFFA9F7h,StatusNVParam,0,,,7,7,StatusK1Open,Mode 8:,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,7,7,StatusK2Close,Mode 9:,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,7,7,StatusMX1Close,Mode 7:,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,7,7,V50to88pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,9,7,FreqHi,Mode 4:,16,,,m,u,,160.0..160.0,ms
-1CFFA9F7h,StatusNVParam,0,,,9,7,FreqVeryLo,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
-1CFFA9F7h,StatusNVParam,0,,,9,7,StatusK1Close,Mode 8:,16,,,m,u,,0.0..2000.0,ms
-1CFFA9F7h,StatusNVParam,0,,,9,7,StatusMX2Open,Mode 7:,16,,,m,u,,0.0..65535.0,ms
-1CFFA9F7h,StatusNVParam,0,,,9,7,V110to120pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
-1CFFC1F7h,softwareRev,0,,,3,7,ControlSwRev,,16,,,m,u,,0.0..65535.0,0.01
-1CFFC1F7h,softwareRev,0,,,5,7,InterfaceRev,,16,,,m,u,,0.0..65535.0,0.01
-1CFFC1F7h,softwareRev,0,,,7,7,BuildTime,,32,,,m,u,,0.0..4294967295.0
-1CFFC5F7h,StatusControlVoltage,0,,,3,7,v5p0_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
-1CFFC5F7h,StatusControlVoltage,0,,,5,7,v3p3_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
-1CFFC5F7h,StatusControlVoltage,0,,,7,7,v24_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
-1CFFC5F7h,StatusControlVoltage,0,,,9,7,v15_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
-1CFFC6F7h,StatusControlVolts2,0,,,3,7,n15V_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
-1CFFC6F7h,StatusControlVolts2,0,,,7,7,DiodeTemperature,,16,,,m,u,,0.0..65535.0,C
-1CFFC6F7h,StatusControlVolts2,0,,,9,7,IGBTTemperature,,16,,,m,u,,0.0..65535.0,C
-1CFFC7F7h,StatusDCParameters,0,,,3,7,VoltageDCInput_measured,,16,,,m,u,,0.0..65535.0,V
-1CFFC7F7h,StatusDCParameters,0,,,5,7,VoltageDCBus,,16,,,m,u,,0.0..65535.0,V
-1CFFC7F7h,StatusDCParameters,0,,,7,7,CurrentDC_measured,,16,,,m,u,,0.0..65535.0,A
-1CFFCCF7h,serialNumber,0,,,3,7,SerialNumber,,32,,,m,u,,0.0..4294967295.0
-1CFFCDF7h,softwareRevHash,0,,,3,7,Hash,,28,,,m,u,,0.0..268435455.0
+1CFFA9F7h,StatusNVParam,0,,,3,7,Dummy,Mode 0:,16,,,m,u,,5.0..10.0
+1CFFA9F7h,StatusNVParam,0,,,3,7,FreqHi,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
+1CFFA9F7h,StatusNVParam,0,,,3,7,FreqVeryLo,Mode 4:,16,,,m,u,,160.0..160.0,ms
+1CFFA9F7h,StatusNVParam,0,,,3,7,StatusK2Open,Mode 9:,16,,,m,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,3,7,StatusMX1Open,Mode 7:,16,,,m,u,,0.0..5000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,3,7,StatusMX2Close,Mode 8:,16,,,m,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,3,7,StatusNodeID,Mode 5:,8,,,m,u,,0.0..247.0
+1CFFA9F7h,StatusNVParam,0,,,3,7,VOver120,Mode 2:,16,,,m,u,,1.0..30000.0
+1CFFA9F7h,StatusNVParam,0,,,3,7,VUnder50pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,4,7,StatusSA_Mask,Mode 5:,8,,,m,u,,0.0..255.0
+1CFFA9F7h,StatusNVParam,0,,,5,7,FreqLo,Mode 4:,16,,,m,u,,1.0..30000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,5,7,StatusBaudrate,Mode 5:,4,,,m,u,125K,0
+1CFFA9F7h,StatusNVParam,0,,,5,7,StatusBaudrate,Mode 5:,4,,,m,u,250K,1
+1CFFA9F7h,StatusNVParam,0,,,5,7,StatusBaudrate,Mode 5:,4,,,m,u,500K,2
+1CFFA9F7h,StatusNVParam,0,,,5,7,StatusBaudrate,Mode 5:,4,,,m,u,1M,3
+1CFFA9F7h,StatusNVParam,0,,,5,7,StatusK1Open,Mode 8:,16,,,m,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,5,7,StatusK2Close,Mode 9:,16,,,m,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,5,7,StatusMX1Close,Mode 7:,16,,,m,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,5,7,V50to88pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,7,7,FreqHi,Mode 4:,16,,,m,u,,160.0..160.0,ms
+1CFFA9F7h,StatusNVParam,0,,,7,7,FreqVeryLo,Mode 3:,16,,,m,u,,40.0..70.0,0.1  Hz
+1CFFA9F7h,StatusNVParam,0,,,7,7,StatusK1Close,Mode 8:,16,,,m,u,,0.0..2000.0,ms
+1CFFA9F7h,StatusNVParam,0,,,7,7,StatusMX2Open,Mode 7:,16,,,m,u,,0.0..65535.0,ms
+1CFFA9F7h,StatusNVParam,0,,,7,7,V110to120pct,Mode 1:,16,,,m,u,,1.0..30000.0,ms
+1CFFC1F7h,softwareRev,0,,,1,7,ControlSwRev,,16,,,m,u,,0.0..65535.0,0.01
+1CFFC1F7h,softwareRev,0,,,3,7,InterfaceRev,,16,,,m,u,,0.0..65535.0,0.01
+1CFFC1F7h,softwareRev,0,,,5,7,BuildTime,,32,,,m,u,,0.0..4294967295.0
+1CFFC5F7h,StatusControlVoltage,0,,,1,7,v5p0_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
+1CFFC5F7h,StatusControlVoltage,0,,,3,7,v3p3_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
+1CFFC5F7h,StatusControlVoltage,0,,,5,7,v24_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
+1CFFC5F7h,StatusControlVoltage,0,,,7,7,v15_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
+1CFFC6F7h,StatusControlVolts2,0,,,1,7,n15V_Supply,,16,,,m,u,,0.0..65535.0,0.01  V
+1CFFC6F7h,StatusControlVolts2,0,,,5,7,DiodeTemperature,,16,,,m,u,,0.0..65535.0,C
+1CFFC6F7h,StatusControlVolts2,0,,,7,7,IGBTTemperature,,16,,,m,u,,0.0..65535.0,C
+1CFFC7F7h,StatusDCParameters,0,,,1,7,VoltageDCInput_measured,,16,,,m,u,,0.0..65535.0,V
+1CFFC7F7h,StatusDCParameters,0,,,3,7,VoltageDCBus,,16,,,m,u,,0.0..65535.0,V
+1CFFC7F7h,StatusDCParameters,0,,,5,7,CurrentDC_measured,,16,,,m,u,,0.0..65535.0,A
+1CFFCCF7h,serialNumber,0,,,1,7,SerialNumber,,32,,,m,u,,0.0..4294967295.0
+1CFFCDF7h,softwareRevHash,0,,,1,7,Hash,,28,,,m,u,,0.0..268435455.0
