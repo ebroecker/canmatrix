@@ -79,6 +79,14 @@ def convert(infile, outfileName, **options):
 
         if 'deleteZeroSignals' in options and options['deleteZeroSignals']:
             db.deleteZeroSignals()
+            
+        if 'deleteSignalAttributes' in options and options['deleteSignalAttributes']:
+            unwantedAttributes = options['deleteSignalAttributes'].split(',')
+            db.delSignalAttributes(unwantedAttributes)
+        
+        if 'deleteFrameAttributes' in options and options['deleteFrameAttributes']:
+            unwantedAttributes = options['deleteFrameAttributes'].split(',')
+            db.delFrameAttributes(unwantedAttributes)
         
         if 'recalcDLC' in options and options['recalcDLC']:
             db.recalcDLC(options['recalcDLC'])
@@ -151,6 +159,12 @@ def main():
     parser.add_option("", "--deleteZeroSignals", action="store_true",
                                       dest="deleteZeroSignals", default=False,
                                      help="delete zero length signals (signals with 0 bit length) from matrix\ndefault False")
+    parser.add_option("", "--deleteSignalAttributes",
+                                      dest="deleteSignalAttributes", default=None,
+                                     help="delete attributes from all signals\nExample --deleteSignalAttributes GenMsgCycle,CycleTime")
+    parser.add_option("", "--deleteFrameAttributes",
+                                      dest="deleteFrameAttributes", default=None,
+                                     help="delete attributes from all frames\nExample --deleteFrameAttributes GenMsgCycle,CycleTime")
     parser.add_option("", "--recalcDLC", 
                                       dest="recalcDLC", default=False,
                                      help="recalculate dlc; max: use maximum of stored and calculated dlc; force: force new calculated dlc")
