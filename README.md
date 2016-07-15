@@ -128,7 +128,19 @@ Similar charset conversions are possible or even mandatory for following formats
 
 ```canconvert.py --deleteZeroSignals source.dbc target.dbc```
 
-will delete signals signals with 0 bit length from matrix
+will delete signals with 0 bit length from matrix
+
+**delete unwanted attributes from signals:**
+
+```convert.py --deleteSignalAttributes GenMsgCycleTime,MyAttrib source.dbc target.dbc```
+
+will delete the attributes ```GenMsgCycleTime``` and ```MyAttrib``` from all signals in ```source.dbc``` and save the result in ```target.dbc```
+
+**delete unwanted attributes from frames:**
+
+```convert.py --deleteFrameAttributes GenMsgCycleTime,MyAttrib source.dbc target.dbc```
+
+will delete the attributes ```GenMsgCycleTime``` and ```MyAttrib``` from all frames in ```source.dbc``` and save the result in ```target.dbc```
 
 **recalculate DLC:**
 
