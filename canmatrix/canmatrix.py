@@ -214,6 +214,13 @@ class Signal(object):
 
         if attribute not in self._attributes:
             self._attributes[attribute]=value.replace('"','')
+    def delAttribute(self, attribute):
+        """
+        Remove Attribute to Signal
+        """
+
+        if attribute in self._attributes:
+            del self._attributes[attribute]
     def addValues(self, value, valueName):
         """
         Add Value/Description to Signal
@@ -393,6 +400,13 @@ class Frame(object):
         if attribute not in self._attributes:
             self._attributes[attribute]=str(value)
 
+    def delAttribute(self, attribute):
+        """
+        Remove attribute to attribute-list of frame
+        """
+        if attribute in self._attributes:
+            del self._attributes[attribute]
+
     def addComment(self, comment):
         """
         set comment of frame
@@ -539,6 +553,17 @@ class CanMatrix(object):
             for signal in frame._signals:
                 if 0 == signal._signalsize:
                     frame._signals.remove(signal)
+             
+    def delSignalAttributes(self, unwantedAttribute):
+        for frame in self._fl._list:
+            for signal in frame._signals:
+                for attrib in unwantedAttribute:
+                    signal.delAttribute(attrib)
+
+    def delFrameAttributes(self, unwantedAttribute):
+        for frame in self._fl._list:
+            for attrib in unwantedAttribute:
+                frame.delAttribute(attrib)
 
     def recalcDLC(self, strategy):
         for frame in self._fl._list:
