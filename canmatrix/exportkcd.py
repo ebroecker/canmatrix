@@ -37,10 +37,10 @@ def createSignal(signal, nodeList):
     if signal._is_little_endian == 0:
         sig.set('endianess',"big")
 
-    notes = etree.Element('Notes')
     if signal._comment is not None:
+        notes = etree.Element('Notes')
         notes.text = signal._comment
-    sig.append(notes)
+        sig.append(notes)
 
     value = etree.Element('Value')
     if signal._is_signed:
@@ -52,24 +52,27 @@ def createSignal(signal, nodeList):
         value.set('intercept',str("%g" % signal._offset))
     if float(signal._min) != 0:
         value.set('min',str("{:.16g}".format(signal._min)))
-    if float(signal._max) != 1:
+    if float(signal._max) != 1 and float(signal._max) != 0:
         value.set('max',str("{:.16g}".format(signal._max)))
     if len(signal._unit) > 0:
         value.set('unit',signal._unit)
-    sig.append(value)
 
+    if len(value.attrib) > 0:
+        sig.append(value)
 
-    labelset = etree.Element('LabelSet')
-    for valueVal,valName in sorted(signal._values.items(), key=lambda x: int(x[0])):
-        label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
-        labelset.append(label)
-    sig.append(labelset)
+    if len(signal._values) > 0:
+        labelset = etree.Element('LabelSet')
+        for valueVal,valName in sorted(signal._values.items(), key=lambda x: int(x[0])):
+            label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
+            labelset.append(label)
+        sig.append(labelset)
 
     consumer = etree.Element('Consumer')
     for receiver in signal._receiver:
         if len(receiver) > 1 and receiver in nodeList:
             noderef = etree.Element('NodeRef', id=str(nodeList[receiver]))
             consumer.append(noderef)
+        if consumer.__len__() > 0:
             sig.append(consumer)
     return sig
 
