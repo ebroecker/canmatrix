@@ -29,6 +29,7 @@ from builtins import *
 
 from lxml import etree
 from .canmatrix import *
+import os.path
 
 def createSignal(signal, nodeList):
     sig = etree.Element('Signal', name=signal._name, offset=str(signal.getStartbit()))
@@ -108,7 +109,7 @@ def exportKcd(db, filename):
     else:
         bus = etree.Element('Bus')
 
-    bus.set("name",filename)
+    bus.set("name",os.path.splitext(filename)[0])
 
     for frame in db._fl._list:
         message = etree.Element('Message', id="0x%03X" % frame._Id, name=frame._name, length = str(int(frame._Size)))
