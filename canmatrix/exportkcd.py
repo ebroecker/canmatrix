@@ -29,6 +29,7 @@ from builtins import *
 
 from lxml import etree
 from .canmatrix import *
+import os.path
 
 def createSignal(signal, nodeList):
     sig = etree.Element('Signal', name=signal._name, offset=str(signal.getStartbit()))
@@ -37,10 +38,10 @@ def createSignal(signal, nodeList):
     if signal._is_little_endian == 0:
         sig.set('endianess',"big")
 
-    notes = etree.Element('Notes')
     if signal._comment is not None:
+        notes = etree.Element('Notes')
         notes.text = signal._comment
-    sig.append(notes)
+        sig.append(notes)
 
     value = etree.Element('Value')
     if signal._is_signed:
@@ -51,25 +52,28 @@ def createSignal(signal, nodeList):
     if float(signal._offset) != 0:
         value.set('intercept',str("%g" % signal._offset))
     if float(signal._min) != 0:
-        value.set('min',str("{}".format(signal._min)))
-    if float(signal._max) != 1:
-        value.set('max',str("{}".format(signal._max)))
+        value.set('min',str("{:.16g}".format(signal._min)))
+    if float(signal._max) != 1 and float(signal._max) != 0:
+        value.set('max',str("{:.16g}".format(signal._max)))
     if len(signal._unit) > 0:
         value.set('unit',signal._unit)
-    sig.append(value)
 
+    if len(value.attrib) > 0:
+        sig.append(value)
 
-    labelset = etree.Element('LabelSet')
-    for valueVal,valName in sorted(signal._values.items(), key=lambda x: int(x[0])):
-        label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
-        labelset.append(label)
-    sig.append(labelset)
+    if len(signal._values) > 0:
+        labelset = etree.Element('LabelSet')
+        for valueVal,valName in sorted(signal._values.items(), key=lambda x: int(x[0])):
+            label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
+            labelset.append(label)
+        sig.append(labelset)
 
     consumer = etree.Element('Consumer')
     for receiver in signal._receiver:
         if len(receiver) > 1 and receiver in nodeList:
             noderef = etree.Element('NodeRef', id=str(nodeList[receiver]))
             consumer.append(noderef)
+        if consumer.__len__() > 0:
             sig.append(consumer)
     return sig
 
@@ -105,7 +109,7 @@ def exportKcd(db, filename):
     else:
         bus = etree.Element('Bus')
 
-    bus.set("name",filename)
+    bus.set("name",os.path.splitext(filename)[0])
 
     for frame in db._fl._list:
         message = etree.Element('Message', id="0x%03X" % frame._Id, name=frame._name, length = str(int(frame._Size)))
