@@ -25,7 +25,7 @@ sys.path.append('..')
 import canmatrix.importany as im
 
 def createStoreMacro(signal, prefix="", frame="frame"):
-    startBit = signal._startbit
+    startBit = signal.getStartbit(bitNumbering = 1, startLittle = 1)
     byteOrder = signal._is_little_endian
     length = signal._signalsize
     startByte = int(startBit/8)
@@ -56,7 +56,7 @@ def createStoreMacro(signal, prefix="", frame="frame"):
         
 
 def createDecodeMacro(signal, prefix="", macrosource="source", source="source"):
-    startBit = signal._startbit
+    startBit = signal.getStartbit(bitNumbering = 1, startLittle = 1)
     byteOrder = signal._is_little_endian
     length = signal._signalsize
     
