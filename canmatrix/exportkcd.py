@@ -29,18 +29,33 @@ from builtins import *
 
 from lxml import etree
 from .canmatrix import *
-import os.path
+import os
+import re
 
-def createSignal(signal, nodeList):
+def createSignal(signal, nodeList, typeEnums):
     sig = etree.Element('Signal', name=signal._name, offset=str(signal.getStartbit()))
     if signal._signalsize > 1:
         sig.set("length", str(signal._signalsize))
     if signal._is_little_endian == 0:
         sig.set('endianess',"big")
 
-    if signal._comment is not None:
+    comment = signal._comment
+
+    if len(signal._attributes.items()) > 0:
+        if comment is None:
+            comment = ''
+        else:
+	    comment += '\n'
+
+    for attrib,val in sorted(signal._attributes.items()):
+        val = int(val)
+	if attrib in typeEnums and val < len(typeEnums[attrib]):
+            val = typeEnums[attrib][val]
+	comment += ( "\n" + attrib + ': ' + str(val))
+
+    if comment is not None:
         notes = etree.Element('Notes')
-        notes.text = signal._comment
+        notes.text = comment
         sig.append(notes)
 
     value = etree.Element('Value')
@@ -79,6 +94,17 @@ def createSignal(signal, nodeList):
 
 
 def exportKcd(db, filename):
+
+    signalTypeEnums = {}
+    for (typename,define) in list(db._signalDefines.items()):
+        defines = re.split(r"\s+", define._definition)
+        define_type = defines[0]
+        if define_type != 'ENUM':
+            continue
+	defines = defines[1].strip('"')
+        defines = defines.split('","')
+        signalTypeEnums[typename] = defines
+
     # create XML
     root = etree.Element('NetworkDefinition')
     root.set("xmlns","http://kayak.2codeornot2code.org/1.0")
@@ -139,7 +165,7 @@ def exportKcd(db, filename):
         # standard-signals:
         for signal in frame._signals:
             if signal._multiplex is None:
-                sig = createSignal(signal, nodeList)
+                sig = createSignal(signal, nodeList, signalTypeEnums)
                 message.append(sig)
 
         # check Multiplexor if present:
@@ -169,7 +195,7 @@ def exportKcd(db, filename):
                 muxgroup = etree.Element('MuxGroup', count=str(i))
                 for signal in frame._signals:
                     if signal._multiplex is not None and signal._multiplex == i:
-                        sig = createSignal(signal, nodeList)
+                        sig = createSignal(signal, nodeList, signalTypeEnums)
                         muxgroup.append(sig)
                         empty = 1
                 if empty == 1:
