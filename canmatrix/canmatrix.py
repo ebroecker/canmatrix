@@ -81,6 +81,8 @@ class BoardUnit(object):
         Set comment of Signal
         """
         self._comment = comment
+    def __str__(self):
+        return self._name
 
 class BoardUnitListe(object):
     """
@@ -123,7 +125,7 @@ class Signal(object):
             self._startbit = int(kwargs["startBit"])
         else:
             self._startbit = 0
- 
+
         if 'signalSize' in kwargs:
             self._signalsize = int(kwargs["signalSize"])
         else:
@@ -153,7 +155,7 @@ class Signal(object):
             self._offset = float(kwargs["offset"])
         else:
             self._offset = float(0)
- 
+
         if 'unit' in kwargs:
             self._unit = kwargs["unit"]
         else:
@@ -276,6 +278,9 @@ class Signal(object):
             rawMax = self.calculateRawRange()[1]
             self._max = self._offset + (rawMax * self._factor)
 
+    def __str__(self):
+        return self._name
+
 class SignalGroup(object):
     """
     contains Signals, which belong to signal-group
@@ -298,6 +303,8 @@ class SignalGroup(object):
             if test._name == name:
                 return test
         return None
+    def __str__(self):
+        return self._name
 
 class Frame(object):
     """
@@ -412,7 +419,7 @@ class Frame(object):
         set comment of frame
         """
         self._comment = comment
-        
+
     def calcDLC(self):
         """
         calc minimal DLC/length for frame (using signal information)
@@ -422,14 +429,17 @@ class Frame(object):
             if sig.getStartbit() + int(sig._signalsize) > maxBit:
                 maxBit = sig.getStartbit() + int(sig._signalsize)
         self._Size =  max(self._Size, int(math.ceil(maxBit / 8)))
-    
+
     def updateReceiver(self):
         """
-        collect receivers of frame out of receiver given in each signal        
+        collect receivers of frame out of receiver given in each signal
         """
         for sig in self._signals:
-            for receiver in sig._receiver:            
+            for receiver in sig._receiver:
                 self.addReceiver(receiver)
+
+    def __str__(self):
+        return self._name
 
 class Define(object):
     """
@@ -547,13 +557,13 @@ class CanMatrix(object):
 
     def boardUnitByName(self, name):
         return self._BUs.byName(name)
-    
+
     def deleteZeroSignals(self):
         for frame in self._fl._list:
             for signal in frame._signals:
                 if 0 == signal._signalsize:
                     frame._signals.remove(signal)
-             
+
     def delSignalAttributes(self, unwantedAttribute):
         for frame in self._fl._list:
             for signal in frame._signals:
@@ -626,7 +636,7 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
             frame[i] |= (((value >> len ) << end) & mask)
             lastbit = startbit + len
     else: # Motorola
-		  # TODO needs review, is probably wrong till we use LSB for startbit 
+		  # TODO needs review, is probably wrong till we use LSB for startbit
         firstbyte = math.floor(startbit/8)
         bitsInfirstByte = startbit % 8 + 1
         restnBits = len - bitsInfirstByte
