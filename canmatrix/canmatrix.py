@@ -81,6 +81,8 @@ class BoardUnit(object):
         Set comment of Signal
         """
         self._comment = comment
+    def __str__(self):
+        return self._name
 
 class BoardUnitListe(object):
     """
@@ -276,6 +278,9 @@ class Signal(object):
             rawMax = self.calculateRawRange()[1]
             self._max = self._offset + (rawMax * self._factor)
 
+    def __str__(self):
+        return self._name
+
 class SignalGroup(object):
     """
     contains Signals, which belong to signal-group
@@ -298,6 +303,8 @@ class SignalGroup(object):
             if test._name == name:
                 return test
         return None
+    def __str__(self):
+        return self._name
 
 class Frame(object):
     """
@@ -430,6 +437,9 @@ class Frame(object):
         for sig in self._signals:
             for receiver in sig._receiver:
                 self.addReceiver(receiver)
+
+    def __str__(self):
+        return self._name
 
 class Define(object):
     """
