@@ -154,7 +154,8 @@ def exportKcd(db, filename):
             if len(transmitter) > 1 and transmitter in nodeList:
                 noderef = etree.Element('NodeRef', id=str(nodeList[transmitter]))
                 producer.append(noderef)
-        message.append(producer)
+        if producer.__len__() > 0:
+            message.append(producer)
 
         comment = etree.Element('Notes')
         if frame._comment is not None:
