@@ -3,12 +3,12 @@ from __future__ import division
 import math
 
 
-#!/usr/bin/env python
+# !/usr/bin/env python
 
-#Copyright (c) 2013, Eduard Broecker
-#All rights reserved.
+# Copyright (c) 2013, Eduard Broecker
+# All rights reserved.
 #
-#Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+# Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 # the following conditions are met:
 #
 #    Redistributions of source code must retain the above copyright notice, this list of conditions and the
@@ -16,21 +16,22 @@ import math
 #    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
 #    following disclaimer in the documentation and/or other materials provided with the distribution.
 #
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-#WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-#PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-#DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-#CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-#DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+# DAMAGE.
 
-#TODO: Definitions should be imported with disassembling not as complete string
+# TODO: Definitions should be imported with disassembling not as complete string
 
 class FrameList(object):
     """
     Keeps all Frames of a Canmatrix
     """
+
     def __init__(self):
         self._list = []
 
@@ -38,13 +39,14 @@ class FrameList(object):
         """
         Adds a Signal to the last addes Frame, this is mainly for importers
         """
-        self._list[len(self._list)-1].addSignal(signal)
+        self._list[len(self._list) - 1].addSignal(signal)
+
     def addFrame(self, botschaft):
         """
         Adds a Frame
         """
         self._list.append(botschaft)
-        return self._list[len(self._list)-1]
+        return self._list[len(self._list) - 1]
 
     def byId(self, Id):
         """
@@ -54,6 +56,7 @@ class FrameList(object):
             if test._Id == int(Id):
                 return test
         return None
+
     def byName(self, Name):
         """
         returns a Frame-Object by given Frame-Name
@@ -63,32 +66,42 @@ class FrameList(object):
                 return test
         return None
 
+
 class BoardUnit(object):
     """
     Contains one Boardunit/ECU
     """
-    def __init__(self,name):
+
+    def __init__(self, name):
         self._name = name.strip()
         self._attributes = {}
         self._comment = None
+
     def addAttribute(self, attribute, value):
         """
         adds some Attribute to current Boardunit/ECU
         """
-        self._attributes[attribute]=value
+        self._attributes[attribute] = value
+
     def addComment(self, comment):
         """
         Set comment of Signal
         """
         self._comment = comment
 
+    def __str__(self):
+        return self._name
+
+
 class BoardUnitListe(object):
     """
     Contains all Boardunits/ECUs of a canmatrix in a list
     """
+
     def __init__(self):
         self._list = []
-    def add(self,BU):
+
+    def add(self, BU):
         """
         add Boardunit/EDU to list
         """
@@ -104,6 +117,7 @@ class BoardUnitListe(object):
                 return test
         return None
 
+
 class Signal(object):
     """
     contains on Signal of canmatrix-object
@@ -116,14 +130,15 @@ class Signal(object):
             _attributes, _values, _unit, _comment
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
-#    def __init__(self, name, startbit, signalsize, is_little_endian, is_signed=False, factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
+
+    #    def __init__(self, name, startbit, signalsize, is_little_endian, is_signed=False, factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
     def __init__(self, name, **kwargs):
 
         if 'startBit' in kwargs:
             self._startbit = int(kwargs["startBit"])
         else:
             self._startbit = 0
- 
+
         if 'signalSize' in kwargs:
             self._signalsize = int(kwargs["signalSize"])
         else:
@@ -153,7 +168,7 @@ class Signal(object):
             self._offset = float(kwargs["offset"])
         else:
             self._offset = float(0)
- 
+
         if 'unit' in kwargs:
             self._unit = kwargs["unit"]
         else:
@@ -207,13 +222,15 @@ class Signal(object):
         Set comment of Signal
         """
         self._comment = comment
+
     def addAttribute(self, attribute, value):
         """
         Add Attribute to Signal
         """
 
         if attribute not in self._attributes:
-            self._attributes[attribute]=value.replace('"','')
+            self._attributes[attribute] = value.replace('"', '')
+
     def delAttribute(self, attribute):
         """
         Remove Attribute to Signal
@@ -221,12 +238,14 @@ class Signal(object):
 
         if attribute in self._attributes:
             del self._attributes[attribute]
+
     def addValues(self, value, valueName):
         """
         Add Value/Description to Signal
         """
         self._values[int(value)] = valueName
-    def setStartbit(self, startBit, bitNumbering = None, startLittle = None):
+
+    def setStartbit(self, startBit, bitNumbering=None, startLittle=None):
         """
         set startbit.
         bitNumbering is 1 for LSB0/LSBFirst, 0 for MSB0/MSBFirst.
@@ -243,7 +262,7 @@ class Signal(object):
             startBit = startBit + 1 - self._signalsize
         self._startbit = startBit
 
-    def getStartbit(self, bitNumbering = None, startLittle = None):
+    def getStartbit(self, bitNumbering=None, startLittle=None):
         startBit = self._startbit
         # convert from big endian start bit at start bit(msbit) to end bit(lsbit)
         if startLittle == True and self._is_little_endian == False:
@@ -276,20 +295,28 @@ class Signal(object):
             rawMax = self.calculateRawRange()[1]
             self._max = self._offset + (rawMax * self._factor)
 
+    def __str__(self):
+        return self._name
+
+
 class SignalGroup(object):
     """
     contains Signals, which belong to signal-group
     """
+
     def __init__(self, name, Id):
         self._members = []
         self._name = name
         self._Id = Id
+
     def addSignal(self, signal):
         if signal not in self._members:
             self._members.append(signal)
+
     def delSignal(self, signal):
         if signal in self._members:
             self._members[signal].remove()
+
     def byName(self, name):
         """
         returns Signalobject-Object of list by Name
@@ -299,6 +326,10 @@ class SignalGroup(object):
                 return test
         return None
 
+    def __str__(self):
+        return self._name
+
+
 class Frame(object):
     """
     contains one Frame with following attributes
@@ -306,7 +337,8 @@ class Frame(object):
     _signals (list of signal-objects), _attributes (list of attributes),
     _receiver (list of boardunits/ECU-names), _extended (Extended Frame = 1), _comment
     """
-#    def __init__(self,bid, name, size, transmitter):
+
+    #    def __init__(self,bid, name, size, transmitter):
     def __init__(self, name, **kwargs):
         self._name = name
         if 'Id' in kwargs:
@@ -368,7 +400,7 @@ class Frame(object):
         add Signal to Frame
         """
         self._signals.append(signal)
-        return self._signals[len(self._signals)-1]
+        return self._signals[len(self._signals) - 1]
 
     def addTransmitter(self, transmitter):
         """
@@ -384,7 +416,6 @@ class Frame(object):
         if receiver not in self._receiver:
             self._receiver.append(receiver)
 
-
     def signalByName(self, name):
         """
         returns signal-object by signalname
@@ -393,12 +424,13 @@ class Frame(object):
             if signal._name == name:
                 return signal
         return None
+
     def addAttribute(self, attribute, value):
         """
         add attribute to attribute-list of frame
         """
         if attribute not in self._attributes:
-            self._attributes[attribute]=str(value)
+            self._attributes[attribute] = str(value)
 
     def delAttribute(self, attribute):
         """
@@ -412,7 +444,7 @@ class Frame(object):
         set comment of frame
         """
         self._comment = comment
-        
+
     def calcDLC(self):
         """
         calc minimal DLC/length for frame (using signal information)
@@ -421,20 +453,25 @@ class Frame(object):
         for sig in self._signals:
             if sig.getStartbit() + int(sig._signalsize) > maxBit:
                 maxBit = sig.getStartbit() + int(sig._signalsize)
-        self._Size =  max(self._Size, int(math.ceil(maxBit / 8)))
-    
+        self._Size = max(self._Size, int(math.ceil(maxBit / 8)))
+
     def updateReceiver(self):
         """
-        collect receivers of frame out of receiver given in each signal        
+        collect receivers of frame out of receiver given in each signal
         """
         for sig in self._signals:
-            for receiver in sig._receiver:            
+            for receiver in sig._receiver:
                 self.addReceiver(receiver)
+
+    def __str__(self):
+        return self._name
+
 
 class Define(object):
     """
     these objects hold the defines and default-values
     """
+
     def __init__(self, definition):
         definition = definition.strip()
         self._definition = definition
@@ -443,7 +480,7 @@ class Define(object):
         # for any known type:
         if definition[0:3] == 'INT':
             self._type = 'INT'
-            _min, _max = definition[4:].split(' ',2)
+            _min, _max = definition[4:].split(' ', 2)
             self._min = int(_min)
             self._max = int(_max)
         elif definition[0:6] == 'STRING':
@@ -455,12 +492,12 @@ class Define(object):
             self._values = definition[5:].split(',')
         elif definition[0:3] == 'HEX':
             self._type = 'HEX'
-            _min, _max = definition[4:].split(' ',2)
+            _min, _max = definition[4:].split(' ', 2)
             self._min = int(_min)
             self._max = int(_max)
         elif definition[0:5] == 'FLOAT':
             self._type = 'FLOAT'
-            _min, _max = definition[6:].split(' ',2)
+            _min, _max = definition[6:].split(' ', 2)
             self._min = float(_min)
             self._max = float(_max)
 
@@ -468,6 +505,7 @@ class Define(object):
 
     def addDefault(self, default):
         self._defaultValue = default
+
 
 class CanMatrix(object):
     """
@@ -481,6 +519,7 @@ class CanMatrix(object):
     _globalDefines (list of global attribute types)
     _valueTables (global defined values)
     """
+
     def __init__(self):
         self._attributes = {}
         self._BUs = BoardUnitListe()
@@ -499,35 +538,35 @@ class CanMatrix(object):
         add attribute to attribute-list of canmatrix
         """
         if attribute not in self._attributes:
-            self._attributes[attribute]=value
+            self._attributes[attribute] = value
 
     def addSignalDefines(self, type, definition):
         """
         add signal-attribute definition to canmatrix
         """
         if type not in self._signalDefines:
-            self._signalDefines[type]=Define(definition)
+            self._signalDefines[type] = Define(definition)
 
     def addFrameDefines(self, type, definition):
         """
         add frame-attribute definition to canmatrix
         """
         if type not in self._frameDefines:
-            self._frameDefines[type]=Define(definition)
+            self._frameDefines[type] = Define(definition)
 
     def addBUDefines(self, type, definition):
         """
         add Boardunit-attribute definition to canmatrix
         """
         if type not in self._buDefines:
-            self._buDefines[type]=Define(definition)
+            self._buDefines[type] = Define(definition)
 
     def addGlobalDefines(self, type, definition):
         """
         add global-attribute definition to canmatrix
         """
         if type not in self._globalDefines:
-            self._globalDefines[type]=Define(definition)
+            self._globalDefines[type] = Define(definition)
 
     def addDefineDefault(self, name, value):
         if name in self._signalDefines:
@@ -547,13 +586,13 @@ class CanMatrix(object):
 
     def boardUnitByName(self, name):
         return self._BUs.byName(name)
-    
+
     def deleteZeroSignals(self):
         for frame in self._fl._list:
             for signal in frame._signals:
                 if 0 == signal._signalsize:
                     frame._signals.remove(signal)
-             
+
     def delSignalAttributes(self, unwantedAttribute):
         for frame in self._fl._list:
             for signal in frame._signals:
@@ -587,6 +626,7 @@ def loadPkl(filename):
     pkl_file.close()
     return db1
 
+
 def savePkl(db, filename):
     """
     helper for saving a python-object-dump of canmatrix
@@ -604,42 +644,42 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
     puts a signal-value to the right position in a frame
     """
 
-    if format == 1: # Intel
+    if format == 1:  # Intel
         lastbit = startbit + len
-        firstbyte = math.floor(startbit/8)-1
-        lastbyte = math.floor((lastbit-1)/8)
+        firstbyte = math.floor(startbit / 8) - 1
+        lastbyte = math.floor((lastbit - 1) / 8)
         # im lastbyte mit dem msb anfangen
         # im firstbyte mit dem lsb aufhoeren
         for i in range(lastbyte, firstbyte, -1):
-            if lastbit %8 != 0:
+            if lastbit % 8 != 0:
                 nbits = lastbit % 8
             else:
                 nbits = min(len, 8)
             nbits = min(len, nbits)
 
-            start = lastbit-1 - int(math.floor((lastbit-1)/8))*8
-            end = lastbit-nbits - int(math.floor((lastbit-nbits)/8))*8
+            start = lastbit - 1 - int(math.floor((lastbit - 1) / 8)) * 8
+            end = lastbit - nbits - int(math.floor((lastbit - nbits) / 8)) * 8
 
             len -= nbits
-            mask = (0xff >> 7-start) << end
+            mask = (0xff >> 7 - start) << end
             mask &= 0xff;
-            frame[i] |= (((value >> len ) << end) & mask)
+            frame[i] |= (((value >> len) << end) & mask)
             lastbit = startbit + len
-    else: # Motorola
-		  # TODO needs review, is probably wrong till we use LSB for startbit 
-        firstbyte = math.floor(startbit/8)
+    else:  # Motorola
+        # TODO needs review, is probably wrong till we use LSB for startbit
+        firstbyte = math.floor(startbit / 8)
         bitsInfirstByte = startbit % 8 + 1
         restnBits = len - bitsInfirstByte
-        lastbyte = firstbyte + math.floor(restnBits/8)
-        if restnBits %8 > 0:
+        lastbyte = firstbyte + math.floor(restnBits / 8)
+        if restnBits % 8 > 0:
             lastbyte += 1
         restLen = len
         nbits = bitsInfirstByte
-        for i in range(firstbyte, lastbyte+1):
+        for i in range(firstbyte, lastbyte + 1):
             end = 0
             if restLen < 8:
-                end = 8-restLen
-            mask = (0xff >> (8-nbits)) << end
+                end = 8 - restLen
+            mask = (0xff >> (8 - nbits)) << end
             restLen -= nbits
             frame[i] |= ((value >> restLen) << end) & mask
             nbits = min(restLen, 8)
