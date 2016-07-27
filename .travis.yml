@@ -5,4 +5,5 @@ python:
 # command to install dependencies
 # install: "pip install -r requirements.txt"
 # command to run tests
-script: test/test.py
+before_install: cd test
+script: test.py
