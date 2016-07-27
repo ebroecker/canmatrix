@@ -54,7 +54,7 @@ def exportYaml(db, filename, **options):
                 signal._startbit = signal.getStartbit(bitNumbering = 1, startLittle = True)
                 newdb._fl._list[i]._signals[j]._startbit = signal._startbit
 
-    f = open(filename,"wb")
+    f = open(filename,"w")
     if representers:
       f.write(unicode(yaml.dump(newdb)))
     else:
