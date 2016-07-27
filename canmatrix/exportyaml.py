@@ -32,7 +32,7 @@ import copy
 # this script exports yaml-files from a canmatrix-object
 # yaml-files are just object-dumps human readable.
 # This export is complete, no information lost
-
+representers = False
 try:
    yaml.add_representer(int, SafeRepresenter.represent_int)
    yaml.add_representer(long, SafeRepresenter.represent_long)
@@ -40,7 +40,7 @@ try:
    yaml.add_representer(str, SafeRepresenter.represent_unicode)
    yaml.add_representer(list, SafeRepresenter.represent_list)
 except:
-   pass
+   representers = True
    # some error with representers ... continue anyway
 
 def exportYaml(db, filename, **options):
@@ -54,4 +54,7 @@ def exportYaml(db, filename, **options):
                 newdb._fl._list[i]._signals[j]._startbit = signal._startbit
 
     f = open(filename,"w")
-    f.write(unicode(yaml.dump(newdb)))
+    if representers:
+      f.write(unicode(yaml.dump(newdb)))
+    else:
+      f.write(yaml.dump(newdb))
