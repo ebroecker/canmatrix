@@ -46,7 +46,7 @@ def exportYaml(db, filename, **options):
     for i,frame in enumerate(newdb._fl._list):
         for j,signal in enumerate(frame._signals):
             if signal._is_little_endian == False:
-		signal._startbit = signal.getStartbit(bitNumbering = 1, startLittle = True)
+                signal._startbit = signal.getStartbit(bitNumbering = 1, startLittle = True)
                 newdb._fl._list[i]._signals[j]._startbit = signal._startbit
 
     f = open(filename,"w")
