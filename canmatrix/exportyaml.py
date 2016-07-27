@@ -33,11 +33,15 @@ import copy
 # yaml-files are just object-dumps human readable.
 # This export is complete, no information lost
 
-yaml.add_representer(int, SafeRepresenter.represent_int)
-yaml.add_representer(long, SafeRepresenter.represent_long)
-yaml.add_representer(unicode, SafeRepresenter.represent_unicode)
-yaml.add_representer(str, SafeRepresenter.represent_unicode)
-yaml.add_representer(list, SafeRepresenter.represent_list)
+try:
+   yaml.add_representer(int, SafeRepresenter.represent_int)
+   yaml.add_representer(long, SafeRepresenter.represent_long)
+   yaml.add_representer(unicode, SafeRepresenter.represent_unicode)
+   yaml.add_representer(str, SafeRepresenter.represent_unicode)
+   yaml.add_representer(list, SafeRepresenter.represent_list)
+except:
+   pass
+   # some error with representers ... continue anyway
 
 def exportYaml(db, filename, **options):
 
