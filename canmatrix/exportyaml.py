@@ -39,8 +39,9 @@ try:
    yaml.add_representer(unicode, SafeRepresenter.represent_unicode)
    yaml.add_representer(str, SafeRepresenter.represent_unicode)
    yaml.add_representer(list, SafeRepresenter.represent_list)
-except:
    representers = True
+except:
+   representers = False
    # some error with representers ... continue anyway
 
 def exportYaml(db, filename, **options):
