@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ebroecker/canmatrix.svg?branch=master)](https://travis-ci.org/ebroecker/canmatrix.svg?branch=master)
+
 ##**Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats.##
 
 ###About
