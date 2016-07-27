@@ -29,7 +29,7 @@ supported file formats for export:
 ***
 
 ###Install instructions
-Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install"
+Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install" and "pip install -r requirements.txt"
 
 This installs the *canmatrix* package into your python installation.
 
