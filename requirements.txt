@@ -2,4 +2,4 @@ lxml
 xlwt
 xlrd
 xlsxwriter
-yaml
+pyaml
