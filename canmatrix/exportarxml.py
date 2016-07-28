@@ -47,11 +47,9 @@ def exportArxml(db, filename):
                 if rec.strip() not in frame._receiver:
                     frame._receiver.append(rec.strip())
 
-    root = etree.Element('AUTOSAR')
-# xsi:schemaLocation="http://autosar.org/3.1.4.DAI.3 AUTOSAR_314DAI3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-#       root.set("xmlns","http://autosar.org/3.1.4")
-#       NS_XSI = "{http://www.w3.org/2001/XMLSchema-instance}"
-#       root.set(NS_XSI + "schemaLocation", "Definition.xsd")
+    xsi = 'http://www.w3.org/2001/XMLSchema-instance'
+    root = etree.Element('AUTOSAR', nsmap={None: "http://autosar.org/3.2.1", 'xsi': xsi})
+    root.attrib['{{{pre}}}schemaLocation'.format(pre=xsi)] = 'http://autosar.org/3.2.1 AUTOSAR_321.xsd'
 
     toplevelPackages = etree.SubElement(root,'TOP-LEVEL-PACKAGES')
 
@@ -353,4 +351,5 @@ def exportArxml(db, filename):
             ipduRef.text = "/PDU/PDU_" + frame
 
     f = open(filename,"wb");
-    f.write(etree.tostring(root, pretty_print=True))
+    f.write(etree.tostring(root, pretty_print=True, xml_declaration=True))
+
