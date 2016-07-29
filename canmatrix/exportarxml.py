@@ -41,17 +41,25 @@ def createSubElement(elem, strElement, strName):
 
 def exportArxml(db, filename):
     # create XML
+    arVersion = "3.2.1"
+    arVersion = "4.1.0"
+
     for frame in db._fl._list:
         for signal in frame._signals:
             for rec in signal._receiver:
                 if rec.strip() not in frame._receiver:
                     frame._receiver.append(rec.strip())
 
-    xsi = 'http://www.w3.org/2001/XMLSchema-instance'
-    root = etree.Element('AUTOSAR', nsmap={None: "http://autosar.org/3.2.1", 'xsi': xsi})
-    root.attrib['{{{pre}}}schemaLocation'.format(pre=xsi)] = 'http://autosar.org/3.2.1 AUTOSAR_321.xsd'
-
-    toplevelPackages = etree.SubElement(root,'TOP-LEVEL-PACKAGES')
+    if arVersion[0] == "3":
+        xsi = 'http://www.w3.org/2001/XMLSchema-instance'
+        root = etree.Element('AUTOSAR', nsmap={None: "http://autosar.org/3.2.1", 'xsi': xsi})
+        root.attrib['{{{pre}}}schemaLocation'.format(pre=xsi)] = 'http://autosar.org/3.2.1 AUTOSAR_321.xsd'
+        toplevelPackages = etree.SubElement(root,'TOP-LEVEL-PACKAGES')
+    else:
+        xsi = 'http://www.w3.org/2001/XMLSchema-instance'
+        root = etree.Element('AUTOSAR', nsmap={None: "http://autosar.org/schema/r4.0", 'xsi': xsi})
+        root.attrib['{{{pre}}}schemaLocation'.format(pre=xsi)] = 'http://autosar.org/schema/r4.0 AUTOSAR_' + arVersion.replace('.','-') + '.xsd'
+        toplevelPackages = etree.SubElement(root,'AR-PACKAGES')
 
     #
     #AR-PACKAGE Cluster
@@ -63,8 +71,14 @@ def exportArxml(db, filename):
     createSubElement(cancluster, 'SHORT-NAME', 'CAN')
 #TODO: insert Speed - if possible
     createSubElement(cancluster, 'SPEED', '50000')
-    physicalChannels = etree.SubElement(cancluster, 'PHYSICAL-CHANNELS')
-    physicalChannel = etree.SubElement(physicalChannels, 'PHYSICAL-CHANNEL')
+    if arVersion[0] == "3":
+        physicalChannels = etree.SubElement(cancluster, 'PHYSICAL-CHANNELS')
+        physicalChannel = etree.SubElement(physicalChannels, 'PHYSICAL-CHANNEL')
+    else:
+        canClusterVaraints = etree.SubElement(cancluster,'CAN-CLUSTER-VARIANTS')            
+        canClusterConditional = etree.SubElement(canClusterVaraints,'CAN-CLUSTER-CONDITIONAL')            
+        physicalChannels = etree.SubElement(canClusterConditional, 'PHYSICAL-CHANNELS')
+        physicalChannel = etree.SubElement(physicalChannels, 'CAN-PHYSICAL-CHANNEL')
     createSubElement(physicalChannels, 'SHORT-NAME', 'CAN')
     frameTriggering = etree.SubElement(physicalChannel, 'FRAME-TRIGGERINGSS')
     for frame in db._fl._list:
@@ -76,15 +90,24 @@ def exportArxml(db, filename):
         else:
             createSubElement(canFrameTriggering, 'CAN-ADDRESSING-MODE', 'EXTENDED')
         frameRef = etree.SubElement(canFrameTriggering, 'FRAME-REF')
-        frameRef.set('DEST','FRAME')
-        frameRef.text = "/Frame/FRAME_" + frame._name
+        if arVersion[0] == "3":
+            frameRef.set('DEST','FRAME')
+            frameRef.text = "/Frame/FRAME_" + frame._name
+            pduTriggeringRefs = etree.SubElement(canFrameTriggering, 'I-PDU-TRIGGERING-REFS')
+            pduTriggeringRef = etree.SubElement(pduTriggeringRefs, 'I-PDU-TRIGGERING-REF')
+            pduTriggeringRef.set('DEST','I-PDU-TRIGGERING')
+            framePortRefs = etree.SubElement(canFrameTriggering, 'FRAME-PORT-REFS')
+        else:
+            frameRef.set('DEST','CAN-FRAME')
+            frameRef.text = "/CanFrame/FRAME_" + frame._name
+            pduTriggering = etree.SubElement(canFrameTriggering, 'PDU-TRIGGERINGS')
+            pduTriggeringRefConditional = etree.SubElement(pduTriggering, 'PDU-TRIGGERING-REF-CONDITIONAL')
+            pduTriggeringRef = etree.SubElement(pduTriggeringRefConditional, 'I-PDU-TRIGGERING-REF')
+            pduTriggeringRef.set('DEST','PDU-TRIGGERING')
 
-        pduTriggeringRefs = etree.SubElement(canFrameTriggering, 'I-PDU-TRIGGERING-REFS')
-        pduTriggeringRef = etree.SubElement(pduTriggeringRefs, 'I-PDU-TRIGGERING-REF')
-        pduTriggeringRef.set('DEST','I-PDU-TRIGGERING')
         pduTriggeringRef.text = "/Cluster/CAN/IPDUTRIGG_" + frame._name
-
         framePortRefs = etree.SubElement(canFrameTriggering, 'FRAME-PORT-REFS')
+  
         for transmitter in frame._Transmitter:
             framePortRef = etree.SubElement(framePortRefs, 'FRAME-PORT-REF')
             framePortRef.set('DEST','FRAME-PORT')
@@ -103,6 +126,7 @@ def exportArxml(db, filename):
         ipduRef.set('DEST','SIGNAL-I-PDU')
         ipduRef.text = "/PDU/PDU_" + frame._name
 
+
     isignalTriggerings = etree.SubElement(physicalChannel, 'I-SIGNAL-TRIGGERINGS')
     for frame in db._fl._list:
         for signal in frame._signals:
@@ -115,10 +139,17 @@ def exportArxml(db, filename):
     #AR-PACKAGE FRAME
     #
     arPackage = etree.SubElement(toplevelPackages,'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'Frame')
+    if arVersion[0] == "3":
+        createSubElement(arPackage, 'SHORT-NAME', 'Frame')
+    else:
+        createSubElement(arPackage, 'SHORT-NAME', 'CanFrame')
+
     elements = etree.SubElement(arPackage,'ELEMENTS')
     for frame in db._fl._list:
-        frameEle = etree.SubElement(elements,'FRAME')
+        if arVersion[0] == "3":
+            frameEle = etree.SubElement(elements,'FRAME')
+        else:
+            frameEle = etree.SubElement(elements,'CAN-FRAME')
         createSubElement(frameEle, 'SHORT-NAME', "FRAME_" + frame._name)
         createSubElement(frameEle, 'FRAME-LENGTH', "%d" % frame._Size)
         pdumappings = etree.SubElement(frameEle, 'PDU-TO-FRAME-MAPPINGS')
@@ -137,11 +168,19 @@ def exportArxml(db, filename):
     createSubElement(arPackage, 'SHORT-NAME', 'PDU')
     elements = etree.SubElement(arPackage,'ELEMENTS')
     for frame in db._fl._list:
-        signalIpdu = etree.SubElement(elements,'SIGNAL-I-PDU')
+        if arVersion[0] == "3":
+            signalIpdu = etree.SubElement(elements,'SIGNAL-I-PDU')
+        else:
+            signalIpdu = etree.SubElement(elements,'I-SIGNAL-I-PDU')
+
         createSubElement(signalIpdu, 'SHORT-NAME', "PDU_" + frame._name)
         createSubElement(signalIpdu, 'LENGTH', "%d" % int(frame._Size*8))
         # I-PDU-TIMING-SPECIFICATION
-        signalToPduMappings = etree.SubElement(signalIpdu,'SIGNAL-TO-PDU-MAPPINGS')
+        if arVersion[0] == "3":
+            signalToPduMappings = etree.SubElement(signalIpdu,'SIGNAL-TO-PDU-MAPPINGS')
+        else:
+            signalToPduMappings = etree.SubElement(signalIpdu,'I-SIGNAL-TO-PDU-MAPPINGS')
+
         for signal in frame._signals:
             signalToPduMapping = etree.SubElement(signalToPduMappings,'I-SIGNAL-TO-I-PDU-MAPPING')
             createSubElement(signalToPduMapping, 'SHORT-NAME', signal._name)
@@ -152,7 +191,10 @@ def exportArxml(db, filename):
                 createSubElement(signalToPduMapping, 'PACKING-BYTE-ORDER', 'MOST-SIGNIFICANT-BYTE-FIRST')
 
             # laut xsd nur signal-ref erlaubt
-            signalRef = etree.SubElement(signalToPduMapping, 'SIGNAL-REF')
+            if arVersion[0] == "3":
+                signalRef = etree.SubElement(signalToPduMapping, 'SIGNAL-REF')
+            else:
+                signalRef = etree.SubElement(signalToPduMapping, 'I-SIGNAL-REF')
             signalRef.text = "/ISignal/" + signal._name
             signalRef.set('DEST','I-SIGNAL')
             #TODO: TRANSFER-PROPERTY: PENDING???
@@ -217,7 +259,7 @@ def exportArxml(db, filename):
 
 
     #
-    #AR-PACKAGE Datatyle
+    #AR-PACKAGE Datatype
     #
     arPackage = etree.SubElement(toplevelPackages,'AR-PACKAGE')
     createSubElement(arPackage, 'SHORT-NAME', 'DataType')
@@ -231,7 +273,10 @@ def exportArxml(db, filename):
             compuMethodRef.set('DEST','COMPU-METHOD')
             compuMethodRef.text = "/DataType/Semantics/" + signal._name
 
-    subpackages = etree.SubElement(arPackage,'SUB-PACKAGES')
+    if arVersion[0] == "3":
+        subpackages = etree.SubElement(arPackage,'SUB-PACKAGES')
+    else:
+        subpackages = etree.SubElement(arPackage,'AR-PACKAGES')
     arPackage = etree.SubElement(subpackages,'AR-PACKAGE')
     createSubElement(arPackage, 'SHORT-NAME', 'Semantics')
     elements = etree.SubElement(arPackage,'ELEMENTS')
@@ -274,9 +319,15 @@ def exportArxml(db, filename):
         ecuInstance = etree.SubElement(elements,'ECU-INSTANCE')
         createSubElement(ecuInstance, 'SHORT-NAME', ecu._name)
         connectors = etree.SubElement(ecuInstance,'CONNECTORS')
-        commConnector = etree.SubElement(connectors,'COMMUNICATION-CONNECTOR')
+
+        if arVersion[0] == "3":
+            commConnector = etree.SubElement(connectors,'COMMUNICATION-CONNECTOR')
+            assoIpduGroupRefs = etree.SubElement(ecuInstance,'ASSOCIATED-I-PDU-GROUP-REFS')
+        else:
+            commConnector = etree.SubElement(connectors,'CAN-COMMUNICATION-CONNECTOR')
+            assoIpduGroupRefs = etree.SubElement(ecuInstance,'ASSOCIATED-COM-I-PDU-GROUP-REFS')
+
         ecuCommPortInstances = etree.SubElement(commConnector,'ECU-COMM-PORT-INSTANCES')
-        assoIpduGroupRefs = etree.SubElement(ecuInstance,'ASSOCIATED-I-PDU-GROUP-REFS')
 
         recTemp = None
         sendTemp = None
@@ -293,7 +344,11 @@ def exportArxml(db, filename):
                 txIPduGroups[ecu._name + "_Tx"].append(frame._name)
 
                 for signal in frame._signals:
-                    signalPort = etree.SubElement(ecuCommPortInstances,'SIGNAL-PORT')
+                    if arVersion[0] == "3":
+                       signalPort = etree.SubElement(ecuCommPortInstances,'SIGNAL-PORT')
+                    else:
+                       signalPort = etree.SubElement(ecuCommPortInstances,'I-SIGNAL-PORT')
+
                     createSubElement(signalPort, 'SHORT-NAME', signal._name)
                     createSubElement(signalPort, 'COMMUNICATION-DIRECTION', 'OUT')
             if ecu._name in frame._receiver:
@@ -312,13 +367,22 @@ def exportArxml(db, filename):
                         createSubElement(signalPort, 'COMMUNICATION-DIRECTION', 'IN')
 
         if recTemp is not None:
-            assoIpduGroupRef = etree.SubElement(assoIpduGroupRefs,'ASSOCIATED-I-PDU-GROUP-REF')
-            assoIpduGroupRef.set('DEST',"I-PDU-GROUP")
+            if arVersion[0] == "3":
+                assoIpduGroupRef = etree.SubElement(assoIpduGroupRefs,'ASSOCIATED-I-PDU-GROUP-REF')
+                assoIpduGroupRef.set('DEST',"I-PDU-GROUP")
+            else:
+                assoIpduGroupRef = etree.SubElement(assoIpduGroupRefs,'ASSOCIATED-COM-I-PDU-GROUP-REF')
+                assoIpduGroupRef.set('DEST',"I-SIGNAL-PDU-GROUP")
+
             assoIpduGroupRef.text = "/IPDUGroup/" + ecu._name + "_Rx"
 
         if sendTemp is not None:
-            assoIpduGroupRef = etree.SubElement(assoIpduGroupRefs,'ASSOCIATED-I-PDU-GROUP-REF')
-            assoIpduGroupRef.set('DEST',"I-PDU-GROUP")
+            if arVersion[0] == "3":
+                assoIpduGroupRef = etree.SubElement(assoIpduGroupRefs,'ASSOCIATED-I-PDU-GROUP-REF')
+                assoIpduGroupRef.set('DEST',"I-PDU-GROUP")
+            else:
+                assoIpduGroupRef = etree.SubElement(assoIpduGroupRefs,'ASSOCIATED-COM-I-PDU-GROUP-REF')
+                assoIpduGroupRef.set('DEST',"I-SIGNAL-PDU-GROUP")
             assoIpduGroupRef.text = "/IPDUGroup/" + ecu._name + "_Tx"
 
 
@@ -329,27 +393,49 @@ def exportArxml(db, filename):
     createSubElement(arPackage, 'SHORT-NAME', 'IPDUGroup')
     elements = etree.SubElement(arPackage,'ELEMENTS')
     for pdugrp in txIPduGroups:
-        ipduGrp = etree.SubElement(elements,'I-PDU-GROUP')
+        if arVersion[0] == "3":
+            ipduGrp = etree.SubElement(elements,'I-PDU-GROUP')
+        else:
+            ipduGrp = etree.SubElement(elements,'I-SIGNAL-I-PDU-GROUP')
+
         createSubElement(ipduGrp, 'SHORT-NAME', pdugrp)
         createSubElement(ipduGrp, 'COMMUNICATION-DIRECTION', "OUT")
 
-        ipduRefs = etree.SubElement(ipduGrp,'I-PDU-REFS')
-        for frame in txIPduGroups[pdugrp]:
-            ipduRef = etree.SubElement(ipduRefs,'I-PDU-REF')
-            ipduRef.set('DEST', "SIGNAL-I-PDU")
-            ipduRef.text = "/PDU/PDU_" + frame
+        if arVersion[0] == "3":
+            ipduRefs = etree.SubElement(ipduGrp,'I-PDU-REFS')
+            for frame in txIPduGroups[pdugrp]:
+                ipduRef = etree.SubElement(ipduRefs,'I-PDU-REF')
+                ipduRef.set('DEST', "SIGNAL-I-PDU")
+                ipduRef.text = "/PDU/PDU_" + frame
+        else:
+            isignalipdus = etree.SubElement(ipduGrp,'I-SIGNAL-I-PDUS')
+            for frame in txIPduGroups[pdugrp]:
+                isignalipdurefconditional = etree.SubElement(isignalipdus,'I-SIGNAL-I-PDU-REF-CONDITIONAL')
+                ipduRef = etree.SubElement(isignalipdurefconditional,'I-SIGNAL-I-PDU-REF')
+                ipduRef.set('DEST', "I-SIGNAL-I-PDU")
+                ipduRef.text = "/PDU/PDU_" + frame
+            
+
 
     for pdugrp in rxIPduGroups:
         ipduGrp = etree.SubElement(elements,'I-PDU-GROUP')
         createSubElement(ipduGrp, 'SHORT-NAME', pdugrp)
         createSubElement(ipduGrp, 'COMMUNICATION-DIRECTION', "IN")
 
-        ipduRefs = etree.SubElement(ipduGrp,'I-PDU-REFS')
-        for frame in rxIPduGroups[pdugrp]:
-            ipduRef = etree.SubElement(ipduRefs,'I-PDU-REF')
-            ipduRef.set('DEST', "SIGNAL-I-PDU")
-            ipduRef.text = "/PDU/PDU_" + frame
-
+        if arVersion[0] == "3":
+            ipduRefs = etree.SubElement(ipduGrp,'I-PDU-REFS')
+            for frame in rxIPduGroups[pdugrp]:
+                ipduRef = etree.SubElement(ipduRefs,'I-PDU-REF')
+                ipduRef.set('DEST', "SIGNAL-I-PDU")
+                ipduRef.text = "/PDU/PDU_" + frame
+        else:
+            isignalipdus = etree.SubElement(ipduGrp,'I-SIGNAL-I-PDUS')
+            for frame in rxIPduGroups[pdugrp]:
+                isignalipdurefconditional = etree.SubElement(isignalipdus,'I-SIGNAL-I-PDU-REF-CONDITIONAL')
+                ipduRef = etree.SubElement(isignalipdurefconditional,'I-SIGNAL-I-PDU-REF')
+                ipduRef.set('DEST', "I-SIGNAL-I-PDU")
+                ipduRef.text = "/PDU/PDU_" + frame
+ 
     f = open(filename,"wb");
     f.write(etree.tostring(root, pretty_print=True, xml_declaration=True))
 
