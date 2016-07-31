@@ -1,10 +1,4 @@
-from __future__ import absolute_import
-from builtins import *
 #!/usr/bin/env python
-from lxml import etree
-from .canmatrix import *
-from .autosarhelper import *
-from .importdbc import *
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -29,10 +23,18 @@ from .importdbc import *
 #
 # this script axports arxml-files from a canmatrix-object
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
+# currently Support for Autosar 3.2 and 4.0-4.3 is planned
 #
 
-#TODO Well, ..., this is the first attempt to export a arxml-file; I did this without reading any spec;
 #TODO receivers of signals are missing
+
+from __future__ import absolute_import
+from builtins import *
+from lxml import etree
+from .canmatrix import *
+from .autosarhelper import *
+from .importdbc import *
+
 
 def createSubElement(elem, strElement, strName):
     sn = etree.SubElement(elem, strElement)
