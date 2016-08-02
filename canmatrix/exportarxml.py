@@ -141,8 +141,24 @@ def exportArxml(db, filename, **options):
                 isignalRef.set('DEST','I-SIGNAL')
                 isignalRef.text = "/ISignal/" + signal._name
     else:
-        pass
-#TODO
+        isignalTriggerings = etree.SubElement(physicalChannel, 'I-SIGNAL-TRIGGERINGS')
+        for frame in db._fl._list:
+            for signal in frame._signals:
+                isignalTriggering = etree.SubElement(isignalTriggerings, 'I-SIGNAL-TRIGGERING')
+                createSubElement(isignalTriggering, 'SHORT-NAME', signal._name)
+                ## missing: I-SIGNAL-PORT-REFS
+                isignalRef = etree.SubElement(isignalTriggering, 'I-SIGNAL-REF')
+                isignalRef.set('DEST','I-SIGNAL')
+                isignalRef.text = "/ISignal/" + signal._name
+        ipduTriggerings = etree.SubElement(physicalChannel, 'PDU-TRIGGERINGS')
+        for frame in db._fl._list:
+            ipduTriggering = etree.SubElement(ipduTriggerings, 'PDU-TRIGGERING')
+            createSubElement(ipduTriggering, 'SHORT-NAME', "IPDUTRIGG_" + frame._name)
+            ## missing: I-PDU-PORT-REFS
+            ipduRef = etree.SubElement(ipduTriggering, 'I-PDU-REF')
+            ipduRef.set('DEST','I-SIGNAL-I-PDU')
+            ipduRef.text = "/PDU/PDU_" + frame._name
+            ## missing: I-SIGNAL-TRIGGERINGS
 
 
     if arVersion[0] == "3":
@@ -176,6 +192,11 @@ def exportArxml(db, filename, **options):
         else:
             frameEle = etree.SubElement(elements,'CAN-FRAME')
         createSubElement(frameEle, 'SHORT-NAME', "FRAME_" + frame._name)
+        if frame._comment:
+            desc = etree.SubElement(frameEle, 'DESC')
+            l2 = etree.SubElement(desc, 'L-2')
+            l2.set("L","FOR-ALL")
+            l2.text = frame._comment
         createSubElement(frameEle, 'FRAME-LENGTH', "%d" % frame._Size)
         pdumappings = etree.SubElement(frameEle, 'PDU-TO-FRAME-MAPPINGS')
         pdumapping = etree.SubElement(pdumappings, 'PDU-TO-FRAME-MAPPING')
@@ -232,7 +253,7 @@ def exportArxml(db, filename, **options):
 
 
             createSubElement(signalToPduMapping, 'START-POSITION', str(signal.getStartbit(bitNumbering = 1)))
-            #TODO: TRANSFER-PROPERTY: PENDING???
+            #missing: TRANSFER-PROPERTY: PENDING/...
 
         for group in frame._SignalGroups:
             signalToPduMapping = etree.SubElement(signalToPduMappings,'I-SIGNAL-TO-I-PDU-MAPPING')
@@ -258,6 +279,7 @@ def exportArxml(db, filename, **options):
                createSubElement(signalEle, 'LENGTH', str(signal._signalsize))
             sysSigRef = etree.SubElement(signalEle, 'SYSTEM-SIGNAL-REF')
             sysSigRef.text = "/Signal/" + signal._name
+            #missing:  <NETWORK-REPRESENTATION-PROPS><SW-DATA-DEF-PROPS-VARIANTS><SW-DATA-DEF-PROPS-CONDITIONAL><COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/BLABLUB</COMPU-METHOD-REF>								<UNIT-REF DEST="UNIT">/DataType/Unit/U_specialCharUnitd_</UNIT-REF>							</SW-DATA-DEF-PROPS-CONDITIONAL></SW-DATA-DEF-PROPS-VARIANTS>					</NETWORK-REPRESENTATION-PROPS>
             sysSigRef.set('DEST','SYSTEM-SIGNAL')
         for group in frame._SignalGroups:
             signalEle = etree.SubElement(elements, 'I-SIGNAL')
@@ -267,7 +289,7 @@ def exportArxml(db, filename, **options):
             sysSigRef.set('DEST','SYSTEM-SIGNAL-GROUP')
 
     #
-    #AR-PACKAGE System-Signal
+    #AR-PACKAGE Signal
     #
     arPackage = etree.SubElement(toplevelPackages,'AR-PACKAGE')
     createSubElement(arPackage, 'SHORT-NAME', 'Signal')
@@ -276,6 +298,11 @@ def exportArxml(db, filename, **options):
         for signal in frame._signals:
             signalEle = etree.SubElement(elements, 'SYSTEM-SIGNAL')
             createSubElement(signalEle, 'SHORT-NAME', signal._name)
+            if signal._comment:
+                desc = etree.SubElement(signalEle, 'DESC')
+                l2 = etree.SubElement(desc, 'L-2')
+                l2.set("L","FOR-ALL")
+                l2.text = signal._comment
             if arVersion[0] == "3":
                 dataTypeRef = etree.SubElement(signalEle, 'DATA-TYPE-REF')
                 dataTypeRef.set('DEST','INTEGER-TYPE')
@@ -314,6 +341,7 @@ def exportArxml(db, filename, **options):
                 compuMethodRef.set('DEST','COMPU-METHOD')
                 compuMethodRef.text = "/DataType/Semantics/" + signal._name
     else:
+        # SW-BASE-TYPE missing
         pass
         #TODO
 
@@ -328,7 +356,7 @@ def exportArxml(db, filename, **options):
         for signal in frame._signals:
             compuMethod = etree.SubElement(elements,'COMPU-METHOD')
             createSubElement(compuMethod, 'SHORT-NAME', signal._name)
-            #UNIT-REF
+            #missing: UNIT-REF
             compuIntToPhys = etree.SubElement(compuMethod,'COMPU-INTERNAL-TO-PHYS')
             compuScales = etree.SubElement(compuIntToPhys,'COMPU-SCALES')
             for value in sorted(signal._values, key=lambda x: int(x)):
@@ -343,12 +371,15 @@ def exportArxml(db, filename, **options):
                 createSubElement(compuConst, 'VT', signal._values[value])
             else:
                 compuScale = etree.SubElement(compuScales,'COMPU-SCALE')
+#                createSubElement(compuScale, 'LOWER-LIMIT', str(#TODO))
+#                createSubElement(compuScale, 'UPPER-LIMIT', str(#TODO))              
                 compuRationslCoeff = etree.SubElement(compuScale,'COMPU-RATIONAL-COEFFS')
                 compuNumerator = etree.SubElement(compuRationslCoeff,'COMPU-NUMERATOR')
                 createSubElement(compuNumerator, 'V', "%g" % signal._offset)
                 createSubElement(compuNumerator, 'V', "%g" % signal._factor)
                 compuDenomiator = etree.SubElement(compuRationslCoeff,'COMPU-DENOMINATOR')
                 createSubElement(compuDenomiator, 'V', "1")
+    #missing AR-PACKAGE Unit
 
     txIPduGroups = {}
     rxIPduGroups = {}
@@ -362,6 +393,11 @@ def exportArxml(db, filename, **options):
     for ecu in db._BUs._list:
         ecuInstance = etree.SubElement(elements,'ECU-INSTANCE')
         createSubElement(ecuInstance, 'SHORT-NAME', ecu._name)
+        if ecu._comment:
+            desc = etree.SubElement(ecuInstance,'DESC')
+            l2 = etree.SubElement(desc,'L-2')
+            l2.set('L','FOR-ALL')
+            l2.text = ecu._comment
 
         if arVersion[0] == "3":
             assoIpduGroupRefs = etree.SubElement(ecuInstance,'ASSOCIATED-I-PDU-GROUP-REFS')
@@ -389,6 +425,7 @@ def exportArxml(db, filename, **options):
                     txIPduGroups[ecu._name + "_Tx"] = []
                 txIPduGroups[ecu._name + "_Tx"].append(frame._name)
 
+                #missing I-PDU-PORT
                 for signal in frame._signals:
                     if arVersion[0] == "3":
                        signalPort = etree.SubElement(ecuCommPortInstances,'SIGNAL-PORT')
@@ -406,6 +443,7 @@ def exportArxml(db, filename, **options):
                     rxIPduGroups[ecu._name + "_Rx"] = []
                 rxIPduGroups[ecu._name + "_Rx"].append(frame._name)
 
+                #missing I-PDU-PORT
                 for signal in frame._signals:
                     if ecu._name in signal._receiver:
                         if arVersion[0] == "3":
@@ -479,13 +517,16 @@ def exportArxml(db, filename, **options):
                 ipduRef.set('DEST', "SIGNAL-I-PDU")
                 ipduRef.text = "/PDU/PDU_" + frame
     else:
-        pass
-#        isignalipdus = etree.SubElement(ipduGrp,'I-SIGNAL-I-PDUS')
-#        for frame in rxIPduGroups[pdugrp]:
-#            isignalipdurefconditional = etree.SubElement(isignalipdus,'I-SIGNAL-I-PDU-REF-CONDITIONAL')
-#            ipduRef = etree.SubElement(isignalipdurefconditional,'I-SIGNAL-I-PDU-REF')
-#            ipduRef.set('DEST', "I-SIGNAL-I-PDU")
-#            ipduRef.text = "/PDU/PDU_" + frame
+        for pdugrp in rxIPduGroups:
+            ipduGrp = etree.SubElement(elements,'I-SIGNAL-I-PDU-GROUP')
+            createSubElement(ipduGrp, 'SHORT-NAME', pdugrp)
+            createSubElement(ipduGrp, 'COMMUNICATION-DIRECTION', "IN")
+            isignalipdus = etree.SubElement(ipduGrp,'I-SIGNAL-I-PDUS')
+            for frame in rxIPduGroups[pdugrp]:
+                isignalipdurefconditional = etree.SubElement(isignalipdus,'I-SIGNAL-I-PDU-REF-CONDITIONAL')
+                ipduRef = etree.SubElement(isignalipdurefconditional,'I-SIGNAL-I-PDU-REF')
+                ipduRef.set('DEST', "I-SIGNAL-I-PDU")
+                ipduRef.text = "/PDU/PDU_" + frame
  
     f = open(filename,"wb");
     f.write(etree.tostring(root, pretty_print=True, xml_declaration=True))

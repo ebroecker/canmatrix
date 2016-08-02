@@ -81,7 +81,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if length == None:
             length = arGetChild(syssignal,  "LENGTH", arDict, ns)
         name = arGetChild(syssignal,  "SHORT-NAME", arDict, ns)
-  
+
         Min = None
         Max = None
         factor = 1.0
@@ -90,9 +90,9 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         receiver = []
 
         signalDescription = getDesc(syssignal, arDict, ns)
-
         datatype = arGetChild(syssignal, "DATA-TYPE", arDict, ns)
-
+        if datatype == None:
+            print("no datatype reference")
         lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
         upper = arGetChild(datatype, "UPPER-LIMIT", arDict, ns)
         if lower is not None and upper is not None:
@@ -167,7 +167,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                                   max=Max,
                                   unit=Unit,
                                   receiver=receiver,
-                                  multiplex=multiplexId)     
+                                  multiplex=multiplexId,
+                                  comment=signalDescription)     
  
             if newSig._is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
@@ -201,7 +202,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     extEle = arGetChild(frameTriggering, "CAN-ADDRESSING-MODE", arDict, ns)
     idele = arGetChild(frameTriggering, "IDENTIFIER", arDict, ns)
     frameR = arGetChild(frameTriggering, "FRAME", arDict, ns)
-
+ 
     sn = arGetChild(frameTriggering, "SHORT-NAME", arDict, ns)
     idNum = int(idele.text)
 
@@ -215,6 +216,9 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         newBo = Frame(arGetName(frameR, ns), 
                       Id=idNum,
                       dlc=int(dlc.text))
+        comment = getDesc(frameR, arDict, ns) 
+        if comment != None:       
+            newBo.addComment(comment)    
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF" % (sn))        
@@ -274,7 +278,8 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                 pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
                 getSignals(pdusigmapping, newBo, arDict, ns, selectorId.text)
 
-    newBo.addComment(getDesc(pdu, arDict, ns))
+    if newBo._comment == None:
+        newBo.addComment(getDesc(pdu, arDict, ns))
 
     if extEle is not None:
         if extEle.text == 'EXTENDED':
@@ -348,7 +353,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     commconnector = arGetChild(connectors, "COMMUNICATION-CONNECTOR", arDict, ns)
     nmAddress = arGetChild(commconnector, "NM-ADDRESS", arDict, ns)
     assocRefs = arGetChild(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", arDict, ns)
-    assoc = arGetChildren(assocRefs, "ASSOCIATED-I-PDU-GROUP", arDict, ns)
+    assoc = arGetChildren(assocRefs, "ASSOCIATED-I-PDU-GROUP", arDict, ns)    
     inFrame = []
     outFrame = []
 
@@ -533,6 +538,11 @@ def importArxml(filename, **options):
         nodes = root.findall('.//' + ns +'ECU-INSTANCE')
         for node in nodes:
             bu = processEcu(node, db, arDict, multiplexTranslation, ns)
+            desc = arGetChild(node,  "DESC", arDict, ns)
+            l2 = arGetChild(desc,  "L-2", arDict, ns)
+            if l2 != None:
+                bu.addComment(l2.text)    
+
             db._BUs.add(bu)
 
         for bo in db._fl._list:
