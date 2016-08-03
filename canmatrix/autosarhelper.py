@@ -76,7 +76,10 @@ def arGetPath(ardict, path):
                 ptr = ptr.getChild(p)
             else:
                 return None
-    return ptr._ref
+    if ptr is not None:    
+        return ptr._ref
+    else:
+        return None
 
 
 def arGetChild(parent, tagname, arTranslationTable, namespace):
