@@ -27,6 +27,7 @@
 
 #TODO AR4 get sender of Frame
 
+
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
@@ -40,6 +41,7 @@ from lxml import etree
 from .canmatrix import *
 from .autosarhelper import *
 
+pduFrameMapping = {}
 signalRxs = {}
 
 def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
@@ -207,12 +209,13 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     idNum = int(idele.text)
 
 
-    if None != frameR:
+    if None != frameR: # AR4
         dlc = arGetChild(frameR, "FRAME-LENGTH", arDict, ns)
         pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
         pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
         pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
 #        newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+        pduFrameMapping[pdu] = arGetName(frameR, ns)
         newBo = Frame(arGetName(frameR, ns), 
                       Id=idNum,
                       dlc=int(dlc.text))
@@ -354,25 +357,23 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     if commconnector == None:
     	commconnector = arGetChild(connectors, "CAN-COMMUNICATION-CONNECTOR", arDict, ns)
     frames = arGetXchildren(commconnector,"ECU-COMM-PORT-INSTANCES/FRAME-PORT", arDict, ns)
-    for frame in frames:
-        print (arGetName(frame,  ns))
-        commDir = arGetChild(frame, "COMMUNICATION-DIRECTION", arDict, ns)
-        print (commDir.text) 
-        #TODO           
+#    for frame in frames:
+#        commDir = arGetChild(frame, "COMMUNICATION-DIRECTION", arDict, ns)
+#        print (arGetName(ecu, ns) + "/" + arGetName(frame,  ns) + " " + commDir.text) 
     nmAddress = arGetChild(commconnector, "NM-ADDRESS", arDict, ns)
     assocRefs = arGetChild(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", arDict, ns)
     if assocRefs != None:
         assoc = arGetChildren(assocRefs, "ASSOCIATED-I-PDU-GROUP", arDict, ns)
-    else:
+    else: #AR4
         assocRefs = arGetChild(ecu, "ASSOCIATED-COM-I-PDU-GROUP-REFS", arDict, ns)
         assoc = arGetChildren(assocRefs, "ASSOCIATED-COM-I-PDU-GROUP", arDict, ns)
+        
 
     inFrame = []
     outFrame = []
 
     for ref in assoc:
         direction = arGetChild(ref, "COMMUNICATION-DIRECTION", arDict, ns)
-
         groupRefs = arGetChild(ref, "CONTAINED-I-PDU-GROUPS-REFS", arDict, ns)
         if groupRefs != None:
             pdurefs = arGetChild(ref, "I-PDU-REFS", arDict, ns)
@@ -383,10 +384,17 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
                     inFrame.append(arGetName(pdu, ns))
                 else:
                     outFrame.append(arGetName(pdu, ns))
-        else:
+        else: #AR4
             isigpdus = arGetChild(ref,"I-SIGNAL-I-PDUS", arDict, ns)
-            isigcond = arGetChild(isigpdus, "I-SIGNAL-I-PDU-REF-CONDITIONAL", arDict, ns)
-            pdus = arGetChildren(isigcond, "I-SIGNAL-I-PDU-REF", arDict, ns)
+            isigconds = arGetChildren(isigpdus, "I-SIGNAL-I-PDU-REF-CONDITIONAL", arDict, ns)
+            for isigcond in isigconds:
+                pdus = arGetChildren(isigcond, "I-SIGNAL-I-PDU", arDict, ns)
+                for pdu in pdus:
+                    if pdu in pduFrameMapping:
+                        if direction.text == "IN":
+                            inFrame.append(pduFrameMapping[pdu])
+                        else:
+                            outFrame.append(pduFrameMapping[pdu])
             #<I-SIGNAL-TO-PDU-MAPPINGS><I-SIGNAL-TO-I-PDU-MAPPING><SHORT-NAME>SignalName
 
  
@@ -553,7 +561,6 @@ def importArxml(filename, **options):
     #                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
     #                                                       sig._receiver.append(ecuName)
                         #TODO
-
     # find ECUs:
         nodes = root.findall('.//' + ns +'ECU-INSTANCE')
         for node in nodes:
