@@ -1,16 +1,4 @@
 #!/usr/bin/env python
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
-import logging
-logger = logging.getLogger('root')
-
-from builtins import *
-import math
-from lxml import etree
-from .canmatrix import *
-from .autosarhelper import *
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -37,8 +25,20 @@ from .autosarhelper import *
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 #
 
+#TODO AR4 get sender of Frame
 
-#TODO Well, ..., this is the first attempt to import a arxml-file; I did this without reading any spec;
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+
+import logging
+logger = logging.getLogger('root')
+
+from builtins import *
+import math
+from lxml import etree
+from .canmatrix import *
+from .autosarhelper import *
 
 signalRxs = {}
 
@@ -351,25 +351,45 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     diagResponse = arGetChild(ecu, "RESPONSE-ADDRESSS", arDict, ns)
     #TODO: use diagAddress for frame-classification
     commconnector = arGetChild(connectors, "COMMUNICATION-CONNECTOR", arDict, ns)
+    if commconnector == None:
+    	commconnector = arGetChild(connectors, "CAN-COMMUNICATION-CONNECTOR", arDict, ns)
+    frames = arGetXchildren(commconnector,"ECU-COMM-PORT-INSTANCES/FRAME-PORT", arDict, ns)
+    for frame in frames:
+        print (arGetName(frame,  ns))
+        commDir = arGetChild(frame, "COMMUNICATION-DIRECTION", arDict, ns)
+        print (commDir.text) 
+        #TODO           
     nmAddress = arGetChild(commconnector, "NM-ADDRESS", arDict, ns)
     assocRefs = arGetChild(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", arDict, ns)
-    assoc = arGetChildren(assocRefs, "ASSOCIATED-I-PDU-GROUP", arDict, ns)    
+    if assocRefs != None:
+        assoc = arGetChildren(assocRefs, "ASSOCIATED-I-PDU-GROUP", arDict, ns)
+    else:
+        assocRefs = arGetChild(ecu, "ASSOCIATED-COM-I-PDU-GROUP-REFS", arDict, ns)
+        assoc = arGetChildren(assocRefs, "ASSOCIATED-COM-I-PDU-GROUP", arDict, ns)
+
     inFrame = []
     outFrame = []
 
     for ref in assoc:
         direction = arGetChild(ref, "COMMUNICATION-DIRECTION", arDict, ns)
+
         groupRefs = arGetChild(ref, "CONTAINED-I-PDU-GROUPS-REFS", arDict, ns)
-        pdurefs = arGetChild(ref, "I-PDU-REFS", arDict, ns)
+        if groupRefs != None:
+            pdurefs = arGetChild(ref, "I-PDU-REFS", arDict, ns)
+            #local defined pdus
+            pdus = arGetChildren(pdurefs, "I-PDU", arDict, ns)
+            for pdu in pdus:
+                if direction.text == "IN":
+                    inFrame.append(arGetName(pdu, ns))
+                else:
+                    outFrame.append(arGetName(pdu, ns))
+        else:
+            isigpdus = arGetChild(ref,"I-SIGNAL-I-PDUS", arDict, ns)
+            isigcond = arGetChild(isigpdus, "I-SIGNAL-I-PDU-REF-CONDITIONAL", arDict, ns)
+            pdus = arGetChildren(isigcond, "I-SIGNAL-I-PDU-REF", arDict, ns)
+            #<I-SIGNAL-TO-PDU-MAPPINGS><I-SIGNAL-TO-I-PDU-MAPPING><SHORT-NAME>SignalName
 
-        #local defined pdus
-        pdus = arGetChildren(pdurefs, "I-PDU", arDict, ns)
-        for pdu in pdus:
-            if direction.text == "IN":
-                inFrame.append(arGetName(pdu, ns))
-            else:
-                outFrame.append(arGetName(pdu, ns))
-
+ 
         #grouped pdus
         group = arGetChildren(groupRefs, "CONTAINED-I-PDU-GROUPS", arDict, ns)
         for t in group:
