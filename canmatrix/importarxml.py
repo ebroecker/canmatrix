@@ -93,7 +93,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
         signalDescription = getDesc(syssignal, arDict, ns)
         datatype = arGetChild(syssignal, "DATA-TYPE", arDict, ns)
-        if datatype == None:
+        if datatype == None: #AR4?
             print("no datatype reference")
         lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
         upper = arGetChild(datatype, "UPPER-LIMIT", arDict, ns)
@@ -214,14 +214,14 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
         pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
         pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
-#        newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+#        newFrame = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
         pduFrameMapping[pdu] = arGetName(frameR, ns)
-        newBo = Frame(arGetName(frameR, ns), 
+        newFrame = Frame(arGetName(frameR, ns), 
                       Id=idNum,
                       dlc=int(dlc.text))
         comment = getDesc(frameR, arDict, ns) 
         if comment != None:       
-            newBo.addComment(comment)    
+            newFrame.addComment(comment)    
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF" % (sn))        
@@ -229,8 +229,8 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         ipduTriggering = arGetChild(ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
         pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns)
         dlc = arGetChild(pdu, "LENGTH", arDict, ns)
-#        newBo = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
-        newBo = Frame(sn.text, 
+#        newFrame = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
+        newFrame = Frame(sn.text, 
                       Id=idNum,
                       dlc=int(dlc.text)/8)
         
@@ -255,13 +255,13 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                               multiplex="Multiplexor")     
 
         multiplexor._initValue = 0
-        newBo.addSignal(multiplexor)
+        newFrame.addSignal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", arDict, ns)
         ipdu = arGetChild(staticPart, "I-PDU", arDict, ns)
         if ipdu is not None:
             pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
             pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-            getSignals(pdusigmapping, newBo, arDict, ns, None)
+            getSignals(pdusigmapping, newFrame, arDict, ns, None)
             multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu,ns)
 
         dynamicPart = arGetChild(pdu, "DYNAMIC-PART", arDict, ns)
@@ -279,14 +279,14 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
             if ipdu is not None:
                 pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
                 pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                getSignals(pdusigmapping, newBo, arDict, ns, selectorId.text)
+                getSignals(pdusigmapping, newFrame, arDict, ns, selectorId.text)
 
-    if newBo._comment == None:
-        newBo.addComment(getDesc(pdu, arDict, ns))
+    if newFrame._comment == None:
+        newFrame.addComment(getDesc(pdu, arDict, ns))
 
     if extEle is not None:
         if extEle.text == 'EXTENDED':
-            newBo._extended = 1
+            newFrame._extended = 1
 
     timingSpec = arGetChild(pdu,"I-PDU-TIMING-SPECIFICATION", arDict, ns)
     cyclicTiming = arGetChild(timingSpec,"CYCLIC-TIMING", arDict, ns)
@@ -298,43 +298,43 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     startingTime = arGetChild(timingSpec,"STARTING-TIME", arDict, ns)
 
     if cyclicTiming is not None and eventTiming is not None:
-        newBo.addAttribute("GenMsgSendType", "5")        # CycleAndSpontan
+        newFrame.addAttribute("GenMsgSendType", "5")        # CycleAndSpontan
         if minimumDelay is not None:
-            newBo.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
         if repeats is not None:
-            newBo.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+            newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     elif cyclicTiming is not None:
-        newBo.addAttribute("GenMsgSendType", "0") # CycleX
+        newFrame.addAttribute("GenMsgSendType", "0") # CycleX
         if minimumDelay is not None:
-            newBo.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
         if repeats is not None:
-            newBo.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+            newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     else:
-        newBo.addAttribute("GenMsgSendType", "1") # Spontan
+        newFrame.addAttribute("GenMsgSendType", "1") # Spontan
         if minimumDelay is not None:
-            newBo.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
         if repeats is not None:
-            newBo.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+            newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
 
 
     if startingTime is not None:
         value = arGetChild(startingTime,"VALUE", arDict, ns)
-        newBo.addAttribute("GenMsgStartDelayTime", str(int(float(value.text)*1000)))
+        newFrame.addAttribute("GenMsgStartDelayTime", str(int(float(value.text)*1000)))
 
 
 
     value = arGetChild(repeatingTime,"VALUE", arDict, ns)
     if value is not None:
-        newBo.addAttribute("GenMsgCycleTime",str(int(float(value.text)*1000)))
+        newFrame.addAttribute("GenMsgCycleTime",str(int(float(value.text)*1000)))
 
 #    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
 #    if pdusigmappings is None or pdusigmappings.__len__() == 0:
-#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newBo._name))
+#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newFrame._name))
     pdusigmapping = arGetChildren(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
     if pdusigmapping is None or pdusigmapping.__len__() == 0:
-        logger.debug("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newBo._name))
-    getSignals(pdusigmapping, newBo, arDict, ns, None)
-    return newBo
+        logger.debug("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newFrame._name))
+    getSignals(pdusigmapping, newFrame, arDict, ns, None)
+    return newFrame
 
 def getDesc(element, arDict, ns):
     desc = arGetChild(element, "DESC", arDict, ns)
@@ -357,9 +357,6 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     if commconnector == None:
     	commconnector = arGetChild(connectors, "CAN-COMMUNICATION-CONNECTOR", arDict, ns)
     frames = arGetXchildren(commconnector,"ECU-COMM-PORT-INSTANCES/FRAME-PORT", arDict, ns)
-#    for frame in frames:
-#        commDir = arGetChild(frame, "COMMUNICATION-DIRECTION", arDict, ns)
-#        print (arGetName(ecu, ns) + "/" + arGetName(frame,  ns) + " " + commDir.text) 
     nmAddress = arGetChild(commconnector, "NM-ADDRESS", arDict, ns)
     assocRefs = arGetChild(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", arDict, ns)
     if assocRefs != None:
@@ -372,6 +369,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     inFrame = []
     outFrame = []
 
+    # get direction of frames (is current ECU sender/receiver/...?)     
     for ref in assoc:
         direction = arGetChild(ref, "COMMUNICATION-DIRECTION", arDict, ns)
         groupRefs = arGetChild(ref, "CONTAINED-I-PDU-GROUPS-REFS", arDict, ns)
@@ -395,8 +393,6 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
                             inFrame.append(pduFrameMapping[pdu])
                         else:
                             outFrame.append(pduFrameMapping[pdu])
-            #<I-SIGNAL-TO-PDU-MAPPINGS><I-SIGNAL-TO-I-PDU-MAPPING><SHORT-NAME>SignalName
-
  
         #grouped pdus
         group = arGetChildren(groupRefs, "CONTAINED-I-PDU-GROUPS", arDict, ns)
@@ -419,7 +415,6 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
                 frame.addTransmitter(arGetName(ecu, ns))
             else:
                 pass
-                #print "out not found: " + out
 
 #               for inf in inFrame:
 #                       if inf in multiplexTranslation:
@@ -509,7 +504,6 @@ def importArxml(filename, **options):
             if speed is not None:
                 logger.debug(" Speed: " + speed.text)
 
-#            physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
             physicalChannels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")
             if physicalChannels == None:
                 logger.error("Error - PHYSICAL-CHANNELS not found")
@@ -521,9 +515,6 @@ def importArxml(filename, **options):
                 physicalChannel = arGetChild(physicalChannels, "CAN-PHYSICAL-CHANNEL", arDict, ns)
             if physicalChannel == None:
                 logger.debug("Error - PHYSICAL-CHANNEL not found")
-#            frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
-#            if frametriggerings == None:
-#                logger.debug("Error - FRAME-TRIGGERINGS not found")
             canframetrig = arGetChildren(physicalChannel, "CAN-FRAME-TRIGGERING", arDict, ns)
             if canframetrig == None:
                 logger.error("Error - CAN-FRAME-TRIGGERING not found")
@@ -549,6 +540,7 @@ def importArxml(filename, **options):
                     continue
                 portRef =  arGetChildren(sigTrig, "I-SIGNAL-PORT", arDict, ns)
 
+ #TODO: check if signal direction is working in AR4 
                 for port in portRef:
                     comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
                     if comDir.text == "IN":
