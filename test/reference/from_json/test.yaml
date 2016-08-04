@@ -20,6 +20,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -36,6 +37,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -52,6 +54,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -68,6 +71,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -84,6 +88,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -100,6 +105,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -116,6 +122,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -132,6 +139,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -148,6 +156,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -164,6 +173,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -180,6 +190,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -207,6 +218,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -223,6 +235,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -250,6 +263,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -266,6 +280,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -293,6 +308,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -309,6 +325,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -336,6 +353,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -352,6 +370,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 4294967295.0
@@ -368,6 +387,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -395,6 +415,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 32767.0
@@ -411,6 +432,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -427,6 +449,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -443,6 +466,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -459,6 +483,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -475,6 +500,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -491,6 +517,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -507,6 +534,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -523,6 +551,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -539,6 +568,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -555,6 +585,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -571,6 +602,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -587,6 +619,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 255.0
@@ -603,6 +636,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 255.0
@@ -619,6 +653,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 15.0
@@ -635,6 +670,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -651,6 +687,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -667,6 +704,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -683,6 +721,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -699,6 +738,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -715,6 +755,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -731,6 +772,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -747,6 +789,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -763,6 +806,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -790,6 +834,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -806,6 +851,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -822,6 +868,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -838,6 +885,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -854,6 +902,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -870,6 +919,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -886,6 +936,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -902,6 +953,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -918,6 +970,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -934,6 +987,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -950,6 +1004,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -977,6 +1032,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -993,6 +1049,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -1020,6 +1077,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -1036,6 +1094,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -1063,6 +1122,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -1079,6 +1139,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -1106,6 +1167,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -1122,6 +1184,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -1149,6 +1212,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -1165,6 +1229,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 2147483647.0
@@ -1192,6 +1257,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 15.0
@@ -1208,6 +1274,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1224,6 +1291,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1240,6 +1308,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1256,6 +1325,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1272,6 +1342,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1288,6 +1359,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1304,6 +1376,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1320,6 +1393,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1336,6 +1410,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1352,6 +1427,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1368,6 +1444,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1384,6 +1461,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1400,6 +1478,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1416,6 +1495,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1432,6 +1512,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1448,6 +1529,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1464,6 +1546,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1480,6 +1563,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1496,6 +1580,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1523,6 +1608,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.01
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 327.67
@@ -1539,6 +1625,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.01
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 327.67
@@ -1555,6 +1642,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.01
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 327.67
@@ -1571,6 +1659,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.01
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 327.67
@@ -1598,6 +1687,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 3276.7000000000003
@@ -1614,6 +1704,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 3276.7000000000003
@@ -1630,6 +1721,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -1657,6 +1749,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 1.0
@@ -1673,6 +1766,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1689,6 +1783,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 1.0
@@ -1705,6 +1800,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1721,6 +1817,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1737,6 +1834,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1753,6 +1851,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 15.0
@@ -1769,6 +1868,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1785,6 +1885,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 15.0
@@ -1801,6 +1902,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1817,6 +1919,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1833,6 +1936,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1849,6 +1953,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1865,6 +1970,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 7.0
@@ -1881,6 +1987,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 7.0
@@ -1897,6 +2004,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1913,6 +2021,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1929,6 +2038,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1945,6 +2055,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -1972,6 +2083,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 3276.7000000000003
@@ -1988,6 +2100,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 32767.0
@@ -2004,6 +2117,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 3276.7000000000003
@@ -2031,6 +2145,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 32767.0
@@ -2047,6 +2162,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 32767.0
@@ -2063,6 +2179,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 32767.0
@@ -2090,6 +2207,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.01
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 327.67
@@ -2106,6 +2224,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2122,6 +2241,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2149,6 +2269,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.01
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 655.35
@@ -2165,6 +2286,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.01
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 655.35
@@ -2181,6 +2303,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 4294967295.0
@@ -2208,6 +2331,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -2224,6 +2348,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -2251,6 +2376,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 4294967295.0
@@ -2278,6 +2404,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 268435455.0
@@ -2305,6 +2432,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: true
       _max: 32767.0
@@ -2321,6 +2449,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2337,6 +2466,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2353,6 +2483,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2369,6 +2500,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2385,6 +2517,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2401,6 +2534,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -2417,6 +2551,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -2433,6 +2568,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -2449,6 +2585,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2465,6 +2602,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2481,6 +2619,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2497,6 +2636,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 255.0
@@ -2513,6 +2653,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 255.0
@@ -2529,6 +2670,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 15.0
@@ -2545,6 +2687,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 3.0
@@ -2561,6 +2704,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2577,6 +2721,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2593,6 +2738,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2609,6 +2755,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2625,6 +2772,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2641,6 +2789,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2657,6 +2806,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2673,6 +2823,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2700,6 +2851,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2716,6 +2868,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2732,6 +2885,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 65535.0
@@ -2759,6 +2913,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -2775,6 +2930,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5
@@ -2791,6 +2947,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 0.1
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 6553.5

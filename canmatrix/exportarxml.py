@@ -139,6 +139,13 @@ def exportArxml(db, filename, **options):
             for signal in frame._signals:
                 isignalTriggering = createSubElement(isignalTriggerings, 'I-SIGNAL-TRIGGERING')
                 createSubElement(isignalTriggering, 'SHORT-NAME', signal._name)
+                iSignalPortRefs = createSubElement(isignalTriggering, 'I-SIGNAL-PORT-REFS')
+                
+                for receiver in signal._receiver:
+                    iSignalPortRef = createSubElement(iSignalPortRefs, 'I-SIGNAL-PORT-REF', '/ECU/' + receiver +'/CN_' + receiver + '/' + signal._name)
+                    iSignalPortRef.set('DEST','SIGNAL-PORT')
+
+
                 isignalRef = createSubElement(isignalTriggering, 'SIGNAL-REF')
                 isignalRef.set('DEST','I-SIGNAL')
                 isignalRef.text = "/ISignal/" + signal._name
@@ -148,6 +155,14 @@ def exportArxml(db, filename, **options):
             for signal in frame._signals:
                 isignalTriggering = createSubElement(isignalTriggerings, 'I-SIGNAL-TRIGGERING')
                 createSubElement(isignalTriggering, 'SHORT-NAME', signal._name)
+
+                iSignalPortRefs = createSubElement(isignalTriggering, 'I-SIGNAL-PORT-REFS')
+                
+                for receiver in signal._receiver:
+                    iSignalPortRef = createSubElement(iSignalPortRefs, 'I-SIGNAL-PORT-REF', '/ECU/' + receiver +'/CN_' + receiver + '/' + signal._name)
+                    iSignalPortRef.set('DEST','I-SIGNAL-PORT')
+
+
                 ## missing: I-SIGNAL-PORT-REFS
                 isignalRef = createSubElement(isignalTriggering, 'I-SIGNAL-REF')
                 isignalRef.set('DEST','I-SIGNAL')
@@ -281,7 +296,9 @@ def exportArxml(db, filename, **options):
                createSubElement(signalEle, 'LENGTH', str(signal._signalsize))
             sysSigRef = createSubElement(signalEle, 'SYSTEM-SIGNAL-REF')
             sysSigRef.text = "/Signal/" + signal._name
-            #missing:  <NETWORK-REPRESENTATION-PROPS><SW-DATA-DEF-PROPS-VARIANTS><SW-DATA-DEF-PROPS-CONDITIONAL><COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/BLABLUB</COMPU-METHOD-REF>								<UNIT-REF DEST="UNIT">/DataType/Unit/U_specialCharUnitd_</UNIT-REF>							</SW-DATA-DEF-PROPS-CONDITIONAL></SW-DATA-DEF-PROPS-VARIANTS>					</NETWORK-REPRESENTATION-PROPS>
+            #missing:  <NETWORK-REPRESENTATION-PROPS><SW-DATA-DEF-PROPS-VARIANTS><SW-DATA-DEF-PROPS-CONDITIONAL><COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/BLABLUB</COMPU-METHOD-REF>
+            #<UNIT-REF DEST="UNIT">/DataType/Unit/U_specialCharUnit</UNIT-REF>
+            #</SW-DATA-DEF-PROPS-CONDITIONAL></SW-DATA-DEF-PROPS-VARIANTS></NETWORK-REPRESENTATION-PROPS>
             sysSigRef.set('DEST','SYSTEM-SIGNAL')
         for group in frame._SignalGroups:
             signalEle = createSubElement(elements, 'I-SIGNAL')

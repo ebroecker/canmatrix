@@ -209,7 +209,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     idNum = int(idele.text)
 
 
-    if None != frameR: # AR4
+    if None != frameR:
         dlc = arGetChild(frameR, "FRAME-LENGTH", arDict, ns)
         pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
         pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
@@ -375,14 +375,15 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
         direction = arGetChild(ref, "COMMUNICATION-DIRECTION", arDict, ns)
         groupRefs = arGetChild(ref, "CONTAINED-I-PDU-GROUPS-REFS", arDict, ns)
         pdurefs = arGetChild(ref, "I-PDU-REFS", arDict, ns)
-        if pdurefs != None: #AR3
-            #local defined pdus
+        if pdurefs != None: #AR3 
+           #local defined pdus
             pdus = arGetChildren(pdurefs, "I-PDU", arDict, ns)
             for pdu in pdus:
-                if direction.text == "IN":
-                    inFrame.append(arGetName(pdu, ns))
-                else:
-                    outFrame.append(arGetName(pdu, ns))
+               if pdu in pduFrameMapping:
+                    if direction.text == "IN":
+                        inFrame.append(pduFrameMapping[pdu])
+                    else:
+                        outFrame.append(pduFrameMapping[pdu])
         else: #AR4
             isigpdus = arGetChild(ref,"I-SIGNAL-I-PDUS", arDict, ns)
             isigconds = arGetChildren(isigpdus, "I-SIGNAL-I-PDU-REF-CONDITIONAL", arDict, ns)
@@ -533,9 +534,10 @@ def importArxml(filename, **options):
         else:
             isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERING", arDict, ns)
             for sigTrig in isignaltriggerings:
+                test = arGetChild(sigTrig, 'SIGNAL-REF', arDict, ns)
                 isignal = arGetChild(sigTrig, 'SIGNAL', arDict, ns)
                 if isignal == None:
-                    isignal = arGetChild(sigTrig, 'I-SIGNAL', arDict, ns)  
+                    isignal = arGetChild(sigTrig, 'I-SIGNAL', arDict, ns) 
                 if isignal == None:
                     logger.debug("no isignal for %s" % arGetName(sigTrig, ns))
                     continue

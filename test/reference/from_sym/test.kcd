@@ -1,12 +1,11 @@
 <NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:schemaLocation="Definition.xsd">
   <Document name="Some Document Name">some text</Document>
-  <Bus name="converted/from_sym/test.kcd">
+  <Bus name="converted/from_sym/test">
     <Message id="0xFFAB41" length="8" name="CommandModeControl" format="extended">
       <Producer/>
       <Notes>Operational commands are received by the module via control bits within this message.</Notes>
       <Signal name="Enable_command" offset="6" length="2" endianess="big">
         <Notes>Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -16,7 +15,6 @@
       </Signal>
       <Signal name="FaultClear_command" offset="4" length="2" endianess="big">
         <Notes>Clears the latched fault message.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Clear Faults" value="1"/>
@@ -26,7 +24,6 @@
       </Signal>
       <Signal name="InvertHwEnable_command" offset="62" length="2" endianess="big">
         <Notes>Inverts the logic of the Hardware Enable input.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="No invert" value="0"/>
           <Label name="Invert" value="1"/>
@@ -36,7 +33,6 @@
       </Signal>
       <Signal name="EnableUPSMode_command" offset="60" length="2" endianess="big">
         <Notes>Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -46,7 +42,6 @@
       </Signal>
       <Signal name="EnableSplitPhase_command" offset="58" length="2" endianess="big">
         <Notes>Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal - Three Phase Mode" value="0"/>
           <Label name="Enable Split Phase Mode" value="1"/>
@@ -56,7 +51,6 @@
       </Signal>
       <Signal name="ForceRelayMX1_command" offset="38" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -66,7 +60,6 @@
       </Signal>
       <Signal name="ForceRelayMX2_command" offset="36" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -76,7 +69,6 @@
       </Signal>
       <Signal name="ForceRelayK1_Precharge_command" offset="34" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -86,7 +78,6 @@
       </Signal>
       <Signal name="ForceRelayRelayK2_DCRun_comand" offset="32" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -96,7 +87,6 @@
       </Signal>
       <Signal name="PhaseRotation_command" offset="56" length="2" endianess="big">
         <Notes>Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -106,7 +96,6 @@
       </Signal>
       <Signal name="MasterFollowerMode_command" offset="22" length="2" endianess="big">
         <Notes>Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Master" value="0"/>
           <Label name="Follower" value="1"/>
@@ -120,13 +109,11 @@
       <Notes>Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.</Notes>
       <Signal name="RealPower command" offset="0" length="32" endianess="big">
         <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.</Notes>
-        <Value type="signed" min="-90000.0" max="90000.0" unit="W"/>
-        <LabelSet/>
+        <Value type="signed" min="-90000" max="90000" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_command" offset="32" length="32" endianess="big">
         <Notes>Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.</Notes>
-        <Value type="signed" min="-90000.0" max="90000.0" unit="VA"/>
-        <LabelSet/>
+        <Value type="signed" min="-90000" max="90000" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0xCFFAE41" length="8" name="CommandVF" format="extended">
@@ -134,13 +121,11 @@
       <Notes>Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.</Notes>
       <Signal name="Voltage_command" offset="0" length="16" endianess="big">
         <Notes>Desired output voltage while in grid forming mode.</Notes>
-        <Value slope="0.1" min="10.0" max="500.0" unit="Vrms"/>
-        <LabelSet/>
+        <Value slope="0.1" min="10" max="500" unit="Vrms"/>
       </Signal>
       <Signal name="Frequency_command" offset="16" length="16" endianess="big">
         <Notes>Desired output frequency while in grid forming mode.</Notes>
-        <Value slope="0.1" min="45.0" max="65.0" unit="Hz"/>
-        <LabelSet/>
+        <Value slope="0.1" min="45" max="65" unit="Hz"/>
       </Signal>
     </Message>
     <Message id="0xCFFCAF6" length="8" name="MasterMeasuredPower" format="extended">
@@ -148,13 +133,11 @@
       <Notes>Returns the actual measured power.</Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
         <Notes>Measured real power of master unit.</Notes>
-        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="W"/>
-        <LabelSet/>
+        <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="32" length="32" endianess="big">
         <Notes>Measured reactive power of master unit.</Notes>
-        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="VA"/>
-        <LabelSet/>
+        <Value type="signed" min="-2147483648" max="2147483647" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0xCFFAF41" length="8" name="CommandFactoryControl" format="extended">
@@ -162,7 +145,7 @@
       <Notes></Notes>
       <Signal name="WriteSerialNumber" offset="6" length="2" endianess="big">
         <Notes></Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -172,13 +155,11 @@
       </Signal>
       <Signal name="SerialNumber" offset="32" length="32" endianess="big">
         <Notes></Notes>
-        <Value max="4294967295.0"/>
-        <LabelSet/>
+        <Value max="4294967295"/>
       </Signal>
       <Signal name="FactoryAccess" offset="16" length="16" endianess="big">
         <Notes></Notes>
-        <Value max="65535.0"/>
-        <LabelSet/>
+        <Value max="65535"/>
       </Signal>
     </Message>
     <Message id="0xCFFAA41" length="8" name="CommandSetNVParam" format="extended">
@@ -201,82 +182,69 @@
         <MuxGroup count="0">
           <Signal name="Dummy" offset="16" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="65535.0"/>
-            <LabelSet/>
+            <Value max="65535"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="1">
           <Signal name="VUnder50pct" offset="16" length="16" endianess="big">
             <Notes>Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.</Notes>
-            <Value min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="V50to88pct" offset="32" length="16" endianess="big">
             <Notes>Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.</Notes>
-            <Value min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="V110to120pct" offset="48" length="16" endianess="big">
             <Notes>Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.</Notes>
-            <Value min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="1" max="30000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="2">
           <Signal name="VOver120" offset="16" length="16" endianess="big">
             <Notes>Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.</Notes>
-            <Value min="1.0" max="30000.0"/>
-            <LabelSet/>
+            <Value min="1" max="30000"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="3">
           <Signal name="FreqHi" offset="16" length="16" endianess="big">
             <Notes>Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.</Notes>
-            <Value slope="0.1" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" min="40" max="70" unit="Hz"/>
           </Signal>
           <Signal name="FreqLo" offset="32" length="16" endianess="big">
             <Notes>Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.</Notes>
-            <Value slope="0.1" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" min="40" max="70" unit="Hz"/>
           </Signal>
           <Signal name="FreqVeryLo" offset="48" length="16" endianess="big">
             <Notes>Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.</Notes>
-            <Value slope="0.1" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" min="40" max="70" unit="Hz"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="4">
           <Signal name="FreqVeryLo" offset="16" length="16" endianess="big">
             <Notes>Determines the time it will take for a fault trip to occur when line frequency remains below the value specified in FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.</Notes>
-            <Value min="160.0" max="160.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="160" max="160" unit="ms"/>
           </Signal>
           <Signal name="FreqLo" offset="32" length="16" endianess="big">
             <Notes>Determines the time it will take for a fault trip to occur when line frequency remains between the value specified in FreqLo and FreqVeryLo of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.</Notes>
-            <Value min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="FreqHi" offset="48" length="16" endianess="big">
             <Notes>Determines the time it will take for a fault trip to occur when line frequency remains above the value specified in FreqHi of the LFM_Limits Mux when the inverter is in GRID FOLLOWING mode.</Notes>
-            <Value min="160.0" max="160.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="160" max="160" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="5">
           <Signal name="NodeID" offset="16" length="8" endianess="big">
             <Notes>J1939 Source Address node for the module.</Notes>
-            <Value max="247.0"/>
-            <LabelSet/>
+            <Value max="247"/>
           </Signal>
           <Signal name="SA_Mask" offset="24" length="8" endianess="big">
             <Notes>Not presently used.</Notes>
-            <Value max="255.0"/>
-            <LabelSet/>
+            <Value max="255"/>
           </Signal>
           <Signal name="Baudrate" offset="32" length="4" endianess="big">
             <Notes>CAN baudrate</Notes>
-            <Value max="3.0"/>
+            <Value max="3"/>
             <LabelSet>
               <Label name="125K" value="0"/>
               <Label name="250K" value="1"/>
@@ -288,7 +256,6 @@
         <MuxGroup count="6">
           <Signal name="ThermalOverload" offset="22" length="2" endianess="big">
             <Notes>Configures action to take when thermal overload input is active.</Notes>
-            <Value/>
             <LabelSet>
               <Label name="Warning" value="0"/>
               <Label name="Fault" value="1"/>
@@ -300,47 +267,39 @@
         <MuxGroup count="7">
           <Signal name="MX1Open" offset="16" length="16" endianess="big">
             <Notes>Maximum time required for the MX1 contactor to open.</Notes>
-            <Value max="5000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="5000" unit="ms"/>
           </Signal>
           <Signal name="MX1Close" offset="32" length="16" endianess="big">
             <Notes>Maximum time required for the MX1 contactor to close.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="MX2Open" offset="48" length="16" endianess="big">
             <Notes>Maximum time required for the MX2 contactor to open.</Notes>
             <Value unit="ms"/>
-            <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="8">
           <Signal name="MX2Close" offset="16" length="16" endianess="big">
             <Notes>Maximum time required for the MX2 contactor to open.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="K1Open" offset="32" length="16" endianess="big">
             <Notes>Maximum time required for the K1 contactor to open.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="K1Close" offset="48" length="16" endianess="big">
             <Notes>Maximum time required for the K1 contactor to close.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="10">
           <Signal name="K2Open" offset="16" length="16" endianess="big">
             <Notes>Maximum time required for the K2 contactor to open.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="K2Close" offset="32" length="16" endianess="big">
             <Notes>Maximum time required for the K2 contactor to close.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
       </Multiplex>
@@ -350,7 +309,6 @@
       <Notes>Operational commands are received by the module via control bits within this message.</Notes>
       <Signal name="Enable_command" offset="6" length="2" endianess="big">
         <Notes>Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -360,7 +318,6 @@
       </Signal>
       <Signal name="FaultClear_command" offset="4" length="2" endianess="big">
         <Notes>Clears the latched fault message.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Clear Faults" value="1"/>
@@ -370,7 +327,6 @@
       </Signal>
       <Signal name="InvertHwEnable_command" offset="62" length="2" endianess="big">
         <Notes>Inverts the logic of the Hardware Enable input.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="No invert" value="0"/>
           <Label name="Invert" value="1"/>
@@ -380,7 +336,6 @@
       </Signal>
       <Signal name="EnableUPSMode_command" offset="60" length="2" endianess="big">
         <Notes>Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -390,7 +345,6 @@
       </Signal>
       <Signal name="EnableSplitPhase_command" offset="58" length="2" endianess="big">
         <Notes>Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal - Three Phase Mode" value="0"/>
           <Label name="Enable Split Phase Mode" value="1"/>
@@ -400,7 +354,6 @@
       </Signal>
       <Signal name="ForceRelayMX1_command" offset="38" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -410,7 +363,6 @@
       </Signal>
       <Signal name="ForceRelayMX2_command" offset="36" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -420,7 +372,6 @@
       </Signal>
       <Signal name="ForceRelayK1_Precharge_command" offset="34" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -430,7 +381,6 @@
       </Signal>
       <Signal name="ForceRelayRelayK2_DCRun_comand" offset="32" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -440,7 +390,6 @@
       </Signal>
       <Signal name="PhaseRotation_command" offset="56" length="2" endianess="big">
         <Notes>Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -450,7 +399,6 @@
       </Signal>
       <Signal name="MasterFollowerMode_command" offset="22" length="2" endianess="big">
         <Notes>Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Master" value="0"/>
           <Label name="Follower" value="1"/>
@@ -464,13 +412,11 @@
       <Notes>Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.</Notes>
       <Signal name="RealPower_command" offset="0" length="32" endianess="big">
         <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.</Notes>
-        <Value type="signed" min="-90000.0" max="90000.0" unit="W"/>
-        <LabelSet/>
+        <Value type="signed" min="-90000" max="90000" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_command" offset="32" length="32" endianess="big">
         <Notes>Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.</Notes>
-        <Value type="signed" min="-90000.0" max="90000.0" unit="VA"/>
-        <LabelSet/>
+        <Value type="signed" min="-90000" max="90000" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0xCFF9E41" length="8" name="CommandVFAPU2" format="extended">
@@ -478,13 +424,11 @@
       <Notes>Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.</Notes>
       <Signal name="Voltage_command" offset="0" length="16" endianess="big">
         <Notes>Desired output voltage while in grid forming mode.</Notes>
-        <Value slope="0.1" min="10.0" max="500.0" unit="Vrms"/>
-        <LabelSet/>
+        <Value slope="0.1" min="10" max="500" unit="Vrms"/>
       </Signal>
       <Signal name="Frequency_command" offset="16" length="16" endianess="big">
         <Notes>Desired output frequency while in grid forming mode.</Notes>
-        <Value slope="0.1" min="45.0" max="65.0" unit="Hz"/>
-        <LabelSet/>
+        <Value slope="0.1" min="45" max="65" unit="Hz"/>
       </Signal>
     </Message>
     <Message id="0xCFFCAF7" length="8" name="MasterMeasuredPowerAPU2" format="extended">
@@ -492,13 +436,11 @@
       <Notes>Returns the actual measured power.</Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
         <Notes>Measured real power of master unit.</Notes>
-        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="W"/>
-        <LabelSet/>
+        <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="32" length="32" endianess="big">
         <Notes>Measured reactive power of master unit.</Notes>
-        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="VA"/>
-        <LabelSet/>
+        <Value type="signed" min="-2147483648" max="2147483647" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0x1CFFACC0" length="8" name="justString" format="extended">
@@ -510,8 +452,7 @@
       <Notes></Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
         <Notes>Measured real power.</Notes>
-        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="W"/>
-        <LabelSet/>
+        <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
     </Message>
     <Message id="0xCFFCAF7" length="8" name="StatusMeasuredPower" format="extended" triggered="true" interval="100">
@@ -519,13 +460,11 @@
       <Notes>Returns the actual measured power.</Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
         <Notes>Measured real power.</Notes>
-        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="W"/>
-        <LabelSet/>
+        <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="32" length="32" endianess="big">
         <Notes>Measured reactive power.</Notes>
-        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="VA"/>
-        <LabelSet/>
+        <Value type="signed" min="-2147483648" max="2147483647" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0x18FFC4F7" length="8" name="StatusCommandedPower" format="extended" triggered="true" interval="100">
@@ -533,13 +472,11 @@
       <Notes>Echoes the commanded power (P&amp;Q) as received in CommandPQ.</Notes>
       <Signal name="RealPower_echo" offset="0" length="32" endianess="big">
         <Notes>Echoed real power command.</Notes>
-        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="W"/>
-        <LabelSet/>
+        <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_echo" offset="32" length="32" endianess="big">
         <Notes>Echoed reactive power command.</Notes>
-        <Value type="signed" min="-2147483648.0" max="2147483647.0" unit="VA"/>
-        <LabelSet/>
+        <Value type="signed" min="-2147483648" max="2147483647" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0xCFFC3F7" length="8" name="StatusBits" format="extended" triggered="true" interval="100">
@@ -547,7 +484,7 @@
       <Notes>Bits representing the status of the power module.</Notes>
       <Signal name="State_status" offset="4" length="4" endianess="big">
         <Notes>Active control mode.</Notes>
-        <Value max="7.0"/>
+        <Value max="7"/>
         <LabelSet>
           <Label name="Power On Reset, and a quoted comma" value="0"/>
           <Label name="Ready" value="1"/>
@@ -569,7 +506,7 @@
       </Signal>
       <Signal name="MX2Permissive_status" offset="20" length="2" endianess="big">
         <Notes>MX2 relay status</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
           <Label name="Closed" value="1"/>
@@ -579,7 +516,7 @@
       </Signal>
       <Signal name="PowerAvailAC_status" offset="12" length="2" endianess="big">
         <Notes>Indicates that AC power is connected and that voltage and frequency are within nominal ranges.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="None" value="0"/>
           <Label name="Available" value="1"/>
@@ -589,7 +526,7 @@
       </Signal>
       <Signal name="PowerAvailDC_status" offset="10" length="2" endianess="big">
         <Notes>Indicates that DC bus voltage is within operating range.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="None" value="0"/>
           <Label name="Available" value="1"/>
@@ -599,7 +536,7 @@
       </Signal>
       <Signal name="PowerCircuitEnabled_status" offset="8" length="2" endianess="big">
         <Notes>Indicates whether the switching devices are active.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disabled" value="0"/>
           <Label name="Enabled" value="1"/>
@@ -609,7 +546,7 @@
       </Signal>
       <Signal name="HardwareEnable_status" offset="14" length="2" endianess="big">
         <Notes>Status of the hardware enable.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Not Active" value="0"/>
           <Label name="Active" value="1"/>
@@ -619,7 +556,7 @@
       </Signal>
       <Signal name="Enable_echo" offset="2" length="2" endianess="big">
         <Notes>Echos the state of the Enable command withing the CommandModeControl message.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -629,7 +566,7 @@
       </Signal>
       <Signal name="FaultClr_echo" offset="0" length="2" endianess="big">
         <Notes>Echos the state of the FaultClear command withing the CommandModeControl message.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Clear Faults" value="1"/>
@@ -639,7 +576,7 @@
       </Signal>
       <Signal name="MessageValidModeControl_status" offset="30" length="2" endianess="big">
         <Notes>Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Invalid" value="0"/>
           <Label name="Valid" value="1"/>
@@ -649,7 +586,7 @@
       </Signal>
       <Signal name="MX1Permissive_status" offset="22" length="2" endianess="big">
         <Notes>MX1 relay status</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
           <Label name="Closed" value="1"/>
@@ -659,7 +596,7 @@
       </Signal>
       <Signal name="K2DCRunPermissive_status" offset="16" length="2" endianess="big">
         <Notes>K2 DC Run relay status.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
           <Label name="Closed" value="1"/>
@@ -669,7 +606,7 @@
       </Signal>
       <Signal name="K1PrechargePermissive_status" offset="18" length="2" endianess="big">
         <Notes>K1 precharge relay status.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
           <Label name="Closed" value="1"/>
@@ -679,7 +616,7 @@
       </Signal>
       <Signal name="MessageValidPowerCMD_status" offset="28" length="2" endianess="big">
         <Notes>Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Invalid" value="0"/>
           <Label name="Valid" value="1"/>
@@ -689,7 +626,7 @@
       </Signal>
       <Signal name="MessageValidVF_status" offset="26" length="2" endianess="big">
         <Notes>Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Invalid" value="0"/>
           <Label name="Valid" value="1"/>
@@ -699,7 +636,7 @@
       </Signal>
       <Signal name="CANbus_status" offset="24" length="2" endianess="big">
         <Notes>Operational status of the CAN bus driver.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Warning" value="1"/>
@@ -709,7 +646,7 @@
       </Signal>
       <Signal name="EnableUPSMode_echo" offset="38" length="2" endianess="big">
         <Notes>Echos the state of the EnableUPSMode command withing the CommandModeControl message.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -719,7 +656,7 @@
       </Signal>
       <Signal name="EnableSplitPhase_echo" offset="36" length="2" endianess="big">
         <Notes>Echos the state of the EnableSplitPhase command withing the CommandModeControl message.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal - Three Phase Mode" value="0"/>
           <Label name="Enable Split Phase Mode" value="1"/>
@@ -729,7 +666,6 @@
       </Signal>
       <Signal name="PhaseRotation_status" offset="34" length="2" endianess="big">
         <Notes>Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -739,7 +675,6 @@
       </Signal>
       <Signal name="LineVoltageDetected_status" offset="32" length="2" endianess="big">
         <Notes>Flag indicating if voltage is detected on L1, L2 or L3.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="No_Voltage" value="0"/>
           <Label name="Voltage_Detected" value="1"/>
@@ -749,7 +684,6 @@
       </Signal>
       <Signal name="PhaseRotation_echo" offset="46" length="2" endianess="big">
         <Notes>Echos the state of PhaseRotation_command withing the CommandModeControl message.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -764,22 +698,18 @@
       <Signal name="v5p0_Supply" offset="0" length="16" endianess="big">
         <Notes>Present voltage of the control board 5V power suppy.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
-        <LabelSet/>
       </Signal>
       <Signal name="v3p3_Supply" offset="16" length="16" endianess="big">
         <Notes>Present voltage of the control board 3.3V power supply.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
-        <LabelSet/>
       </Signal>
       <Signal name="v24_Supply" offset="32" length="16" endianess="big">
         <Notes>Present voltage of the control board 24V power supply.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
-        <LabelSet/>
       </Signal>
       <Signal name="v15_Supply" offset="48" length="16" endianess="big">
         <Notes>Present voltage of the control board 15V power supply.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
-        <LabelSet/>
       </Signal>
     </Message>
     <Message id="0x18FFCBF7" length="8" name="StatusTemps" format="extended" triggered="true" interval="100">
@@ -788,17 +718,14 @@
       <Signal name="TempInlet_measured" offset="0" length="16" endianess="big">
         <Notes>Coolant inlet temperature</Notes>
         <Value type="signed" slope="0.1" min="-3276.8" max="3276.7" unit="C"/>
-        <LabelSet/>
       </Signal>
       <Signal name="TempInternal_measured" offset="16" length="16" endianess="big">
         <Notes>Internal ambient temperature</Notes>
         <Value type="signed" slope="0.1" min="-3276.8" max="3276.7" unit="C"/>
-        <LabelSet/>
       </Signal>
       <Signal name="ConverterLosses" offset="32" length="16" endianess="big">
         <Notes>Power converter thermal loss</Notes>
         <Value unit="W"/>
-        <LabelSet/>
       </Signal>
     </Message>
     <Message id="0xCFFC8F7" length="8" name="StatusFaults" format="extended" triggered="true" interval="100">
@@ -806,7 +733,6 @@
       <Notes>Fault bits.</Notes>
       <Signal name="BridgeAVoltageOk_status" offset="60" endianess="big">
         <Notes>Indicates whether a hardware trip has been activated.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -816,7 +742,7 @@
       </Signal>
       <Signal name="OvercurrentAC_status" offset="4" length="2" endianess="big">
         <Notes>Set immediately upon the software detection of AC current exceeding the threshold value.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -826,7 +752,6 @@
       </Signal>
       <Signal name="BridgeBVoltageOk_status" offset="44" endianess="big">
         <Notes>Indicates whether a hardware trip has been activated.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -836,7 +761,7 @@
       </Signal>
       <Signal name="OvervoltageDC_status" offset="14" length="2" endianess="big">
         <Notes>Set immediately upon the software detection of DC voltage exceeding the threshold value.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -846,7 +771,7 @@
       </Signal>
       <Signal name="OvertempPowerDevice_status" offset="8" length="2" endianess="big">
         <Notes>Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -856,7 +781,7 @@
       </Signal>
       <Signal name="OvertempInternal_status" offset="10" length="2" endianess="big">
         <Notes>Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -866,7 +791,7 @@
       </Signal>
       <Signal name="LossValidControlMessage_status" offset="16" length="4" endianess="big">
         <Notes>Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.</Notes>
-        <Value max="15.0"/>
+        <Value max="15"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -876,7 +801,7 @@
       </Signal>
       <Signal name="UndervoltageDC_status" offset="12" length="2" endianess="big">
         <Notes>Indicates loss of DC source voltage.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -886,7 +811,7 @@
       </Signal>
       <Signal name="ControlHardwareFail_status" offset="20" length="4" endianess="big">
         <Notes>Set upon the failure of control hardware to return expected response.</Notes>
-        <Value max="15.0"/>
+        <Value max="15"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -896,7 +821,7 @@
       </Signal>
       <Signal name="OvercurrentDC_status" offset="0" length="2" endianess="big">
         <Notes>Set immediately upon the software detection of DC current exceeding the threshold value.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -906,7 +831,7 @@
       </Signal>
       <Signal name="GeneralFault_status" offset="6" length="2" endianess="big">
         <Notes>Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -916,7 +841,7 @@
       </Signal>
       <Signal name="LossOfAC_status" offset="2" length="2" endianess="big">
         <Notes>In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -926,7 +851,7 @@
       </Signal>
       <Signal name="EStopShutdown_status" offset="30" length="2" endianess="big">
         <Notes>Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.</Notes>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -936,7 +861,7 @@
       </Signal>
       <Signal name="BridgeAFault_status" offset="61" length="3" endianess="big">
         <Notes>Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.</Notes>
-        <Value max="7.0"/>
+        <Value max="7"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="FLT_A" value="1"/>
@@ -950,7 +875,7 @@
       </Signal>
       <Signal name="BridgeBFault_status" offset="45" length="3" endianess="big">
         <Notes>Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.</Notes>
-        <Value max="7.0"/>
+        <Value max="7"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="FLT_A" value="1"/>
@@ -964,7 +889,6 @@
       </Signal>
       <Signal name="IllegalTransition_status" offset="28" length="2" endianess="big">
         <Notes>Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -974,7 +898,6 @@
       </Signal>
       <Signal name="InvalidEEHeader_status" offset="26" length="2" endianess="big">
         <Notes>Indicates that reading of non-volatile parameters at power-up failed.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -984,7 +907,6 @@
       </Signal>
       <Signal name="InvalidEESection_status" offset="24" length="2" endianess="big">
         <Notes>Indicates that reading or writing of an non-volatile parameter section failed.</Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -994,7 +916,6 @@
       </Signal>
       <Signal name="ThermalOverload" offset="38" length="2" endianess="big">
         <Notes></Notes>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -1009,17 +930,14 @@
       <Signal name="VoltageAC_measured" offset="0" length="16" endianess="big">
         <Notes>Measured RMS AC voltage.</Notes>
         <Value type="signed" slope="0.1" min="-3276.8" max="3276.7" unit="V"/>
-        <LabelSet/>
       </Signal>
       <Signal name="CurrentAC_measured" offset="16" length="16" endianess="big">
         <Notes>Measured RMS AC current.</Notes>
-        <Value type="signed" min="-32768.0" max="32767.0" unit="A"/>
-        <LabelSet/>
+        <Value type="signed" min="-32768" max="32767" unit="A"/>
       </Signal>
       <Signal name="Frequency_measured" offset="32" length="16" endianess="big">
         <Notes>Measured frequency.</Notes>
         <Value type="signed" slope="0.1" min="-3276.8" max="3276.7" unit="Hz"/>
-        <LabelSet/>
       </Signal>
     </Message>
     <Message id="0x1CFFC7F7" length="8" name="StatusDCParameters" format="extended" triggered="true" interval="100">
@@ -1027,18 +945,15 @@
       <Notes>Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input voltage.</Notes>
       <Signal name="VoltageDCBus" offset="16" length="16" endianess="big">
         <Notes>Measured DC bus voltage.</Notes>
-        <Value type="signed" min="-32768.0" max="32767.0" unit="V"/>
-        <LabelSet/>
+        <Value type="signed" min="-32768" max="32767" unit="V"/>
       </Signal>
       <Signal name="CurrentDC_measured" offset="32" length="16" endianess="big">
         <Notes>Measured DC current.</Notes>
-        <Value type="signed" min="-32768.0" max="32767.0" unit="A"/>
-        <LabelSet/>
+        <Value type="signed" min="-32768" max="32767" unit="A"/>
       </Signal>
       <Signal name="VoltageDCInput_measured" offset="0" length="16" endianess="big">
         <Notes>Estimated DC input voltage.</Notes>
-        <Value type="signed" min="-32768.0" max="32767.0" unit="V"/>
-        <LabelSet/>
+        <Value type="signed" min="-32768" max="32767" unit="V"/>
       </Signal>
     </Message>
     <Message id="0x1CFFC6F7" length="8" name="StatusControlVolts2" format="extended" triggered="true" interval="100">
@@ -1047,17 +962,14 @@
       <Signal name="n15V_Supply" offset="0" length="16" endianess="big">
         <Notes>Present voltage of the control board -15V power supply.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
-        <LabelSet/>
       </Signal>
       <Signal name="DiodeTemperature" offset="32" length="16" endianess="big">
         <Notes>Hottest diode</Notes>
         <Value unit="C"/>
-        <LabelSet/>
       </Signal>
       <Signal name="IGBTTemperature" offset="48" length="16" endianess="big">
         <Notes>Hottest IGBT</Notes>
         <Value unit="C"/>
-        <LabelSet/>
       </Signal>
     </Message>
     <Message id="0x1CFFC1F7" length="8" name="softwareRev" format="extended">
@@ -1066,17 +978,14 @@
       <Signal name="InterfaceRev" offset="16" length="16" endianess="big">
         <Notes>Software revision of the CAN communication interface.</Notes>
         <Value slope="0.01" max="655.35"/>
-        <LabelSet/>
       </Signal>
       <Signal name="ControlSwRev" offset="0" length="16" endianess="big">
         <Notes>Software revision of the control firmware.</Notes>
         <Value slope="0.01" max="655.35"/>
-        <LabelSet/>
       </Signal>
       <Signal name="BuildTime" offset="32" length="32" endianess="big">
         <Notes>Build timestamp.</Notes>
-        <Value max="4294967295.0"/>
-        <LabelSet/>
+        <Value max="4294967295"/>
       </Signal>
     </Message>
     <Message id="0x18FFC9F7" length="8" name="StatusCommandVF" format="extended" triggered="true" interval="100">
@@ -1085,12 +994,10 @@
       <Signal name="Voltage_echo" offset="0" length="16" endianess="big">
         <Notes>Echoed voltage command</Notes>
         <Value slope="0.1" max="6553.5" unit="Vrms"/>
-        <LabelSet/>
       </Signal>
       <Signal name="Frequency_echo" offset="16" length="16" endianess="big">
         <Notes>Echoed frequency command.</Notes>
         <Value slope="0.1" max="6553.5" unit="Hz"/>
-        <LabelSet/>
       </Signal>
     </Message>
     <Message id="0x1CFFCCF7" length="8" name="serialNumber" format="extended">
@@ -1098,8 +1005,7 @@
       <Notes>Serial number of the power module.</Notes>
       <Signal name="SerialNumber" offset="0" length="32" endianess="big">
         <Notes>Serial number of the power module.</Notes>
-        <Value max="4294967295.0"/>
-        <LabelSet/>
+        <Value max="4294967295"/>
       </Signal>
     </Message>
     <Message id="0x1CFFCDF7" length="8" name="softwareRevHash" format="extended">
@@ -1107,8 +1013,7 @@
       <Notes>Unique software revision identification hashcode.</Notes>
       <Signal name="Hash" offset="0" length="28" endianess="big">
         <Notes>Unique revision identification hashcode.</Notes>
-        <Value max="268435455.0"/>
-        <LabelSet/>
+        <Value max="268435455"/>
       </Signal>
     </Message>
     <Message id="0x1CFFA9F7" length="8" name="StatusNVParam" format="extended">
@@ -1131,82 +1036,69 @@
         <MuxGroup count="0">
           <Signal name="Dummy" offset="16" length="16" endianess="big">
             <Notes></Notes>
-            <Value min="5.0" max="10.0"/>
-            <LabelSet/>
+            <Value min="5" max="10"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="1">
           <Signal name="VUnder50pct" offset="16" length="16" endianess="big">
             <Notes></Notes>
-            <Value min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="V50to88pct" offset="32" length="16" endianess="big">
             <Notes></Notes>
-            <Value min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="V110to120pct" offset="48" length="16" endianess="big">
             <Notes></Notes>
-            <Value min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="1" max="30000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="2">
           <Signal name="VOver120" offset="16" length="16" endianess="big">
             <Notes></Notes>
-            <Value min="1.0" max="30000.0"/>
-            <LabelSet/>
+            <Value min="1" max="30000"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="3">
           <Signal name="FreqHi" offset="16" length="16" endianess="big">
             <Notes></Notes>
-            <Value slope="0.1" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" min="40" max="70" unit="Hz"/>
           </Signal>
           <Signal name="FreqLo" offset="32" length="16" endianess="big">
             <Notes></Notes>
-            <Value slope="0.1" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" min="40" max="70" unit="Hz"/>
           </Signal>
           <Signal name="FreqVeryLo" offset="48" length="16" endianess="big">
             <Notes></Notes>
-            <Value slope="0.1" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" min="40" max="70" unit="Hz"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="4">
           <Signal name="FreqVeryLo" offset="16" length="16" endianess="big">
             <Notes></Notes>
-            <Value min="160.0" max="160.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="160" max="160" unit="ms"/>
           </Signal>
           <Signal name="FreqLo" offset="32" length="16" endianess="big">
             <Notes></Notes>
-            <Value min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="FreqHi" offset="48" length="16" endianess="big">
             <Notes></Notes>
-            <Value min="160.0" max="160.0" unit="ms"/>
-            <LabelSet/>
+            <Value min="160" max="160" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="5">
           <Signal name="StatusNodeID" offset="16" length="8" endianess="big">
             <Notes>J1939 Source Address node for the module</Notes>
-            <Value max="247.0"/>
-            <LabelSet/>
+            <Value max="247"/>
           </Signal>
           <Signal name="StatusSA_Mask" offset="24" length="8" endianess="big">
             <Notes>Mask used to configure from which master source addresses to accept commands.</Notes>
-            <Value max="255.0"/>
-            <LabelSet/>
+            <Value max="255"/>
           </Signal>
           <Signal name="StatusBaudrate" offset="32" length="4" endianess="big">
             <Notes></Notes>
-            <Value max="3.0"/>
+            <Value max="3"/>
             <LabelSet>
               <Label name="125K" value="0"/>
               <Label name="250K" value="1"/>
@@ -1218,7 +1110,6 @@
         <MuxGroup count="6">
           <Signal name="StatusThermalOverload" offset="22" length="2" endianess="big">
             <Notes>Configured action to take when thermal overload input is active.</Notes>
-            <Value/>
             <LabelSet>
               <Label name="Warning" value="0"/>
               <Label name="Fault" value="1"/>
@@ -1230,47 +1121,39 @@
         <MuxGroup count="7">
           <Signal name="StatusMX1Open" offset="16" length="16" endianess="big">
             <Notes>Maximum time required for the MX1 contactor to open.</Notes>
-            <Value max="5000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="5000" unit="ms"/>
           </Signal>
           <Signal name="StatusMX1Close" offset="32" length="16" endianess="big">
             <Notes>Maximum time required for the MX1 contactor to close.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusMX2Open" offset="48" length="16" endianess="big">
             <Notes>Maximum time required for the MX2 contactor to open.</Notes>
             <Value unit="ms"/>
-            <LabelSet/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="8">
           <Signal name="StatusMX2Close" offset="16" length="16" endianess="big">
             <Notes>Maximum time required for the MX2 contactor to open.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusK1Open" offset="32" length="16" endianess="big">
             <Notes>Maximum time required for the K1 contactor to open.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusK1Close" offset="48" length="16" endianess="big">
             <Notes>Maximum time required for the K1 contactor to close.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="9">
           <Signal name="StatusK2Open" offset="16" length="16" endianess="big">
             <Notes>Maximum time required for the K2 contactor to open.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusK2Close" offset="32" length="16" endianess="big">
             <Notes>Maximum time required for the K2 contactor to close.</Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
       </Multiplex>
@@ -1281,17 +1164,14 @@
       <Signal name="L1Current_measured" offset="0" length="16" endianess="big">
         <Notes>Measured L1 RMS line current.</Notes>
         <Value unit="A"/>
-        <LabelSet/>
       </Signal>
       <Signal name="L2Current_measured" offset="16" length="16" endianess="big">
         <Notes>Measured L2 RMS line current.</Notes>
         <Value unit="A"/>
-        <LabelSet/>
       </Signal>
       <Signal name="L3Current_measured" offset="32" length="16" endianess="big">
         <Notes>Measured L3 RMS line current.</Notes>
         <Value unit="A"/>
-        <LabelSet/>
       </Signal>
     </Message>
     <Message id="0x18FFD1F7" length="8" name="StatusLineVoltages" format="extended" triggered="true" interval="100">
@@ -1300,17 +1180,14 @@
       <Signal name="L1Voltage_measured" offset="0" length="16" endianess="big">
         <Notes>Measured L1 RMS line-neutral voltage</Notes>
         <Value slope="0.1" unit="Vrms"/>
-        <LabelSet/>
       </Signal>
       <Signal name="L2Voltage_measured" offset="16" length="16" endianess="big">
         <Notes>Measured L2 RMS line-neutral voltage</Notes>
         <Value slope="0.1" unit="Vrms"/>
-        <LabelSet/>
       </Signal>
       <Signal name="L3Voltage_measured" offset="32" length="16" endianess="big">
         <Notes>Measured L3 RMS line-neutral voltage</Notes>
         <Value slope="0.1" unit="Vrms"/>
-        <LabelSet/>
       </Signal>
     </Message>
   </Bus>

@@ -30,6 +30,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: "Multi  Line  Signal comment with a-umlaut: \xE4"
       _factor: 5.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 500.0
@@ -46,6 +47,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: true
       _is_signed: false
       _max: 6.0

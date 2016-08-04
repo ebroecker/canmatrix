@@ -1,11 +1,10 @@
 <NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:schemaLocation="Definition.xsd">
   <Document name="Some Document Name">some text</Document>
-  <Bus name="converted/from_xlsx/test.kcd">
+  <Bus name="converted/from_xlsx/test">
     <Message id="0xFF9B41" length="9" name="CommandModeControlAPU2">
       <Producer/>
       <Signal name="Enable_command" offset="1" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -14,8 +13,7 @@
         </LabelSet>
       </Signal>
       <Signal name="FaultClear_command" offset="3" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Clear Faults" value="1"/>
@@ -24,8 +22,7 @@
         </LabelSet>
       </Signal>
       <Signal name="MasterFollowerMode_command" offset="17" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Master" value="0"/>
           <Label name="Follower" value="1"/>
@@ -34,8 +31,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayMX1_command" offset="33" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -44,8 +40,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayMX2_command" offset="35" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -54,8 +49,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayK1_Precharge_command" offset="37" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -64,8 +58,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayRelayK2_DCRun_comand" offset="39" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -74,8 +67,7 @@
         </LabelSet>
       </Signal>
       <Signal name="InvertHwEnable_command" offset="57" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="No invert" value="0"/>
           <Label name="Invert" value="1"/>
@@ -84,8 +76,7 @@
         </LabelSet>
       </Signal>
       <Signal name="EnableUPSMode_command" offset="59" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -94,8 +85,7 @@
         </LabelSet>
       </Signal>
       <Signal name="EnableSplitPhase_command" offset="61" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal - Three Phase Mode" value="0"/>
           <Label name="Enable Split Phase Mode" value="1"/>
@@ -104,8 +94,7 @@
         </LabelSet>
       </Signal>
       <Signal name="PhaseRotation_command" offset="63" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -117,8 +106,7 @@
     <Message id="0xFFAB41" length="9" name="CommandModeControl">
       <Producer/>
       <Signal name="Enable_command" offset="1" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -127,8 +115,7 @@
         </LabelSet>
       </Signal>
       <Signal name="FaultClear_command" offset="3" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Clear Faults" value="1"/>
@@ -137,8 +124,7 @@
         </LabelSet>
       </Signal>
       <Signal name="MasterFollowerMode_command" offset="17" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Master" value="0"/>
           <Label name="Follower" value="1"/>
@@ -147,8 +133,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayMX1_command" offset="33" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -157,8 +142,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayMX2_command" offset="35" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -167,8 +151,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayK1_Precharge_command" offset="37" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -177,8 +160,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayRelayK2_DCRun_comand" offset="39" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -187,8 +169,7 @@
         </LabelSet>
       </Signal>
       <Signal name="InvertHwEnable_command" offset="57" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="No invert" value="0"/>
           <Label name="Invert" value="1"/>
@@ -197,8 +178,7 @@
         </LabelSet>
       </Signal>
       <Signal name="EnableUPSMode_command" offset="59" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -207,8 +187,7 @@
         </LabelSet>
       </Signal>
       <Signal name="EnableSplitPhase_command" offset="61" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal - Three Phase Mode" value="0"/>
           <Label name="Enable Split Phase Mode" value="1"/>
@@ -217,8 +196,7 @@
         </LabelSet>
       </Signal>
       <Signal name="PhaseRotation_command" offset="63" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -230,27 +208,19 @@
     <Message id="0xCFF9C41" length="9" name="CommandPowerAPU2">
       <Producer/>
       <Signal name="RealPower_command" offset="7" length="32" endianess="big">
-        <Notes/>
-        <Value intercept="-90000" min="-90000.0" max="90000.0" unit="W"/>
-        <LabelSet/>
+        <Value intercept="-90000" min="-90000" max="90000" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_command" offset="39" length="32" endianess="big">
-        <Notes/>
-        <Value intercept="-90000" min="-90000.0" max="90000.0" unit="VA"/>
-        <LabelSet/>
+        <Value intercept="-90000" min="-90000" max="90000" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0xCFF9E41" length="8" name="CommandVFAPU2">
       <Producer/>
       <Signal name="Voltage_command" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" intercept="10" min="10.0" max="500.0" unit="Vrms"/>
-        <LabelSet/>
+        <Value slope="0.1" intercept="10" min="10" max="500" unit="Vrms"/>
       </Signal>
       <Signal name="Frequency_command" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" intercept="45" min="45.0" max="65.0" unit="Hz"/>
-        <LabelSet/>
+        <Value slope="0.1" intercept="45" min="45" max="65" unit="Hz"/>
       </Signal>
     </Message>
     <Message id="0xCFFAA41" length="9" name="CommandSetNVParam">
@@ -272,77 +242,65 @@
         <MuxGroup count="0">
           <Signal name="Dummy" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="65535.0"/>
-            <LabelSet/>
+            <Value max="65535"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="1">
           <Signal name="VUnder50pct" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="V50to88pct" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="V110to120pct" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="2">
           <Signal name="VOver120" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="3">
           <Signal name="FreqHi" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value slope="0.1" intercept="40" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" intercept="40" min="40" max="70" unit="Hz"/>
           </Signal>
           <Signal name="FreqVeryLo" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value slope="0.1" intercept="40" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" intercept="40" min="40" max="70" unit="Hz"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="4">
           <Signal name="FreqVeryLo" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="160" min="160.0" max="160.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="160" min="160" max="160" unit="ms"/>
           </Signal>
           <Signal name="FreqLo" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="FreqHi" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="160" min="160.0" max="160.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="160" min="160" max="160" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="5">
           <Signal name="NodeID" offset="23" length="8" endianess="big">
             <Notes></Notes>
-            <Value max="247.0"/>
-            <LabelSet/>
+            <Value max="247"/>
           </Signal>
           <Signal name="SA_Mask" offset="31" length="8" endianess="big">
             <Notes></Notes>
-            <Value max="255.0"/>
-            <LabelSet/>
+            <Value max="255"/>
           </Signal>
           <Signal name="Baudrate" offset="39" length="4" endianess="big">
             <Notes></Notes>
-            <Value max="15.0"/>
+            <Value max="15"/>
             <LabelSet>
               <Label name="125K" value="0"/>
               <Label name="250K" value="1"/>
@@ -354,7 +312,7 @@
         <MuxGroup count="6">
           <Signal name="ThermalOverload" offset="17" length="2" endianess="big">
             <Notes></Notes>
-            <Value max="3.0"/>
+            <Value max="3"/>
             <LabelSet>
               <Label name="Warning" value="0"/>
               <Label name="Fault" value="1"/>
@@ -366,47 +324,39 @@
         <MuxGroup count="7">
           <Signal name="MX1Open" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="5000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="5000" unit="ms"/>
           </Signal>
           <Signal name="MX1Close" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="MX2Open" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="65535.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="65535" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="8">
           <Signal name="MX2Close" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="K1Open" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="K1Close" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="9">
           <Signal name="K2Open" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="K2Close" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
       </Multiplex>
@@ -414,34 +364,25 @@
     <Message id="0xCFFAC41" length="9" name="CommandPower">
       <Producer/>
       <Signal name="RealPower_command" offset="7" length="32" endianess="big">
-        <Notes/>
-        <Value intercept="-90000" min="-90000.0" max="90000.0" unit="W"/>
-        <LabelSet/>
+        <Value intercept="-90000" min="-90000" max="90000" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_command" offset="39" length="32" endianess="big">
-        <Notes/>
-        <Value intercept="-90000" min="-90000.0" max="90000.0" unit="VA"/>
-        <LabelSet/>
+        <Value intercept="-90000" min="-90000" max="90000" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0xCFFAE41" length="8" name="CommandVF">
       <Producer/>
       <Signal name="Voltage_command" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" intercept="10" min="10.0" max="500.0" unit="Vrms"/>
-        <LabelSet/>
+        <Value slope="0.1" intercept="10" min="10" max="500" unit="Vrms"/>
       </Signal>
       <Signal name="Frequency_command" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" intercept="45" min="45.0" max="65.0" unit="Hz"/>
-        <LabelSet/>
+        <Value slope="0.1" intercept="45" min="45" max="65" unit="Hz"/>
       </Signal>
     </Message>
     <Message id="0xCFFAF41" length="9" name="CommandFactoryControl">
       <Producer/>
       <Signal name="WriteSerialNumber" offset="1" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -450,39 +391,28 @@
         </LabelSet>
       </Signal>
       <Signal name="FactoryAccess" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0"/>
-        <LabelSet/>
+        <Value max="65535"/>
       </Signal>
       <Signal name="SerialNumber" offset="39" length="32" endianess="big">
-        <Notes/>
-        <Value max="4294967295.0"/>
-        <LabelSet/>
+        <Value max="4294967295"/>
       </Signal>
     </Message>
     <Message id="0xCFFC2F7" length="8" name="StatusACParameters">
       <Producer/>
       <Signal name="VoltageAC_measured" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" max="65535.0" unit="V"/>
-        <LabelSet/>
+        <Value slope="0.1" max="65535" unit="V"/>
       </Signal>
       <Signal name="CurrentAC_measured" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="A"/>
-        <LabelSet/>
+        <Value max="65535" unit="A"/>
       </Signal>
       <Signal name="Frequency_measured" offset="39" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" max="65535.0" unit="Hz"/>
-        <LabelSet/>
+        <Value slope="0.1" max="65535" unit="Hz"/>
       </Signal>
     </Message>
     <Message id="0xCFFC3F7" length="8" name="StatusBits">
       <Producer/>
       <Signal name="State_status" offset="3" length="4" endianess="big">
-        <Notes/>
-        <Value max="15.0"/>
+        <Value max="15"/>
         <LabelSet>
           <Label name="Power On Reset" value="0"/>
           <Label name="Ready" value="1"/>
@@ -503,8 +433,7 @@
         </LabelSet>
       </Signal>
       <Signal name="Enable_echo" offset="5" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -513,8 +442,7 @@
         </LabelSet>
       </Signal>
       <Signal name="FaultClr_echo" offset="7" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Clear Faults" value="1"/>
@@ -523,8 +451,7 @@
         </LabelSet>
       </Signal>
       <Signal name="HardwareEnable_status" offset="9" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Not Active" value="0"/>
           <Label name="Active" value="1"/>
@@ -533,8 +460,7 @@
         </LabelSet>
       </Signal>
       <Signal name="PowerAvailAC_status" offset="11" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="None" value="0"/>
           <Label name="Available" value="1"/>
@@ -543,8 +469,7 @@
         </LabelSet>
       </Signal>
       <Signal name="PowerAvailDC_status" offset="13" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="None" value="0"/>
           <Label name="Available" value="1"/>
@@ -553,8 +478,7 @@
         </LabelSet>
       </Signal>
       <Signal name="PowerCircuitEnabled_status" offset="15" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disabled" value="0"/>
           <Label name="Enabled" value="1"/>
@@ -563,8 +487,7 @@
         </LabelSet>
       </Signal>
       <Signal name="MX1Permissive_status" offset="17" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
           <Label name="Closed" value="1"/>
@@ -573,8 +496,7 @@
         </LabelSet>
       </Signal>
       <Signal name="MX2Permissive_status" offset="19" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
           <Label name="Closed" value="1"/>
@@ -583,8 +505,7 @@
         </LabelSet>
       </Signal>
       <Signal name="K1PrechargePermissive_status" offset="21" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
           <Label name="Closed" value="1"/>
@@ -593,8 +514,7 @@
         </LabelSet>
       </Signal>
       <Signal name="K2DCRunPermissive_status" offset="23" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
           <Label name="Closed" value="1"/>
@@ -603,8 +523,7 @@
         </LabelSet>
       </Signal>
       <Signal name="MessageValidModeControl_status" offset="25" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Invalid" value="0"/>
           <Label name="Valid" value="1"/>
@@ -613,8 +532,7 @@
         </LabelSet>
       </Signal>
       <Signal name="MessageValidPowerCMD_status" offset="27" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Invalid" value="0"/>
           <Label name="Valid" value="1"/>
@@ -623,8 +541,7 @@
         </LabelSet>
       </Signal>
       <Signal name="MessageValidVF_status" offset="29" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Invalid" value="0"/>
           <Label name="Valid" value="1"/>
@@ -633,8 +550,7 @@
         </LabelSet>
       </Signal>
       <Signal name="CANbus_status" offset="31" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Warning" value="1"/>
@@ -643,8 +559,7 @@
         </LabelSet>
       </Signal>
       <Signal name="EnableUPSMode_echo" offset="33" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -653,8 +568,7 @@
         </LabelSet>
       </Signal>
       <Signal name="EnableSplitPhase_echo" offset="35" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal - Three Phase Mode" value="0"/>
           <Label name="Enable Split Phase Mode" value="1"/>
@@ -663,8 +577,7 @@
         </LabelSet>
       </Signal>
       <Signal name="PhaseRotation_status" offset="37" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -673,8 +586,7 @@
         </LabelSet>
       </Signal>
       <Signal name="LineVoltageDetected_status" offset="39" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="No_Voltage" value="0"/>
           <Label name="Voltage_Detected" value="1"/>
@@ -683,8 +595,7 @@
         </LabelSet>
       </Signal>
       <Signal name="PhaseRotation_echo" offset="41" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -696,8 +607,7 @@
     <Message id="0xCFFC8F7" length="8" name="StatusFaults">
       <Producer/>
       <Signal name="GeneralFault_status" offset="1" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -706,8 +616,7 @@
         </LabelSet>
       </Signal>
       <Signal name="OvercurrentAC_status" offset="3" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -716,8 +625,7 @@
         </LabelSet>
       </Signal>
       <Signal name="LossOfAC_status" offset="5" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -726,8 +634,7 @@
         </LabelSet>
       </Signal>
       <Signal name="OvercurrentDC_status" offset="7" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -736,8 +643,7 @@
         </LabelSet>
       </Signal>
       <Signal name="OvervoltageDC_status" offset="9" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -746,8 +652,7 @@
         </LabelSet>
       </Signal>
       <Signal name="UndervoltageDC_status" offset="11" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -756,8 +661,7 @@
         </LabelSet>
       </Signal>
       <Signal name="OvertempInternal_status" offset="13" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -766,8 +670,7 @@
         </LabelSet>
       </Signal>
       <Signal name="OvertempPowerDevice_status" offset="15" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -776,8 +679,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ControlHardwareFail_status" offset="19" length="4" endianess="big">
-        <Notes/>
-        <Value max="15.0"/>
+        <Value max="15"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -786,8 +688,7 @@
         </LabelSet>
       </Signal>
       <Signal name="LossValidControlMessage_status" offset="23" length="4" endianess="big">
-        <Notes/>
-        <Value max="15.0"/>
+        <Value max="15"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -796,8 +697,7 @@
         </LabelSet>
       </Signal>
       <Signal name="EStopShutdown_status" offset="25" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -806,8 +706,7 @@
         </LabelSet>
       </Signal>
       <Signal name="IllegalTransition_status" offset="27" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -816,8 +715,7 @@
         </LabelSet>
       </Signal>
       <Signal name="InvalidEEHeader_status" offset="29" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -826,8 +724,7 @@
         </LabelSet>
       </Signal>
       <Signal name="InvalidEESection_status" offset="31" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -836,8 +733,7 @@
         </LabelSet>
       </Signal>
       <Signal name="ThermalOverload" offset="33" length="2" endianess="big">
-        <Notes/>
-        <Value max="3.0"/>
+        <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -846,8 +742,7 @@
         </LabelSet>
       </Signal>
       <Signal name="BridgeBFault_status" offset="42" length="3" endianess="big">
-        <Notes/>
-        <Value max="7.0"/>
+        <Value max="7"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="FLT_A" value="1"/>
@@ -860,8 +755,6 @@
         </LabelSet>
       </Signal>
       <Signal name="BridgeBVoltageOk_status" offset="43" endianess="big">
-        <Notes/>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -870,8 +763,7 @@
         </LabelSet>
       </Signal>
       <Signal name="BridgeAFault_status" offset="58" length="3" endianess="big">
-        <Notes/>
-        <Value max="7.0"/>
+        <Value max="7"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="FLT_A" value="1"/>
@@ -884,8 +776,6 @@
         </LabelSet>
       </Signal>
       <Signal name="BridgeAVoltageOk_status" offset="59" endianess="big">
-        <Notes/>
-        <Value/>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -897,107 +787,73 @@
     <Message id="0xCFFCAF6" length="9" name="MasterMeasuredPower">
       <Producer/>
       <Signal name="RealPower_measured" offset="7" length="32" endianess="big">
-        <Notes/>
-        <Value max="4294967295.0" unit="W"/>
-        <LabelSet/>
+        <Value max="4294967295" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="39" length="32" endianess="big">
-        <Notes/>
-        <Value max="4294967295.0" unit="VA"/>
-        <LabelSet/>
+        <Value max="4294967295" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0xCFFCAF7" length="9" name="StatusMeasuredPower">
       <Producer/>
       <Signal name="RealPower_measured" offset="7" length="32" endianess="big">
-        <Notes/>
-        <Value max="4294967295.0" unit="W"/>
-        <LabelSet/>
+        <Value max="4294967295" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="39" length="32" endianess="big">
-        <Notes/>
-        <Value max="4294967295.0" unit="VA"/>
-        <LabelSet/>
+        <Value max="4294967295" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0x18FFC4F7" length="9" name="StatusCommandedPower">
       <Producer/>
       <Signal name="RealPower_echo" offset="7" length="32" endianess="big">
-        <Notes/>
-        <Value max="4294967295.0" unit="W"/>
-        <LabelSet/>
+        <Value max="4294967295" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_echo" offset="39" length="32" endianess="big">
-        <Notes/>
-        <Value max="4294967295.0" unit="VA"/>
-        <LabelSet/>
+        <Value max="4294967295" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0x18FFC9F7" length="8" name="StatusCommandVF">
       <Producer/>
       <Signal name="Voltage_echo" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" max="65535.0" unit="Vrms"/>
-        <LabelSet/>
+        <Value slope="0.1" max="65535" unit="Vrms"/>
       </Signal>
       <Signal name="Frequency_echo" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" max="65535.0" unit="Hz"/>
-        <LabelSet/>
+        <Value slope="0.1" max="65535" unit="Hz"/>
       </Signal>
     </Message>
     <Message id="0x18FFCBF7" length="8" name="StatusTemps">
       <Producer/>
       <Signal name="TempInlet_measured" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" max="65535.0" unit="C"/>
-        <LabelSet/>
+        <Value slope="0.1" max="65535" unit="C"/>
       </Signal>
       <Signal name="TempInternal_measured" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" max="65535.0" unit="C"/>
-        <LabelSet/>
+        <Value slope="0.1" max="65535" unit="C"/>
       </Signal>
       <Signal name="ConverterLosses" offset="39" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="W"/>
-        <LabelSet/>
+        <Value max="65535" unit="W"/>
       </Signal>
     </Message>
     <Message id="0x18FFD0F7" length="8" name="StatusLineCurrents">
       <Producer/>
       <Signal name="L1Current_measured" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="A"/>
-        <LabelSet/>
+        <Value max="65535" unit="A"/>
       </Signal>
       <Signal name="L2Current_measured" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="A"/>
-        <LabelSet/>
+        <Value max="65535" unit="A"/>
       </Signal>
       <Signal name="L3Current_measured" offset="39" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="A"/>
-        <LabelSet/>
+        <Value max="65535" unit="A"/>
       </Signal>
     </Message>
     <Message id="0x18FFD1F7" length="8" name="StatusLineVoltages">
       <Producer/>
       <Signal name="L1Voltage_measured" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" max="65535.0" unit="Vrms"/>
-        <LabelSet/>
+        <Value slope="0.1" max="65535" unit="Vrms"/>
       </Signal>
       <Signal name="L2Voltage_measured" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" max="65535.0" unit="Vrms"/>
-        <LabelSet/>
+        <Value slope="0.1" max="65535" unit="Vrms"/>
       </Signal>
       <Signal name="L3Voltage_measured" offset="39" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.1" max="65535.0" unit="Vrms"/>
-        <LabelSet/>
+        <Value slope="0.1" max="65535" unit="Vrms"/>
       </Signal>
     </Message>
     <Message id="0x1CFFA9F7" length="9" name="StatusNVParam">
@@ -1019,77 +875,65 @@
         <MuxGroup count="0">
           <Signal name="Dummy" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="5" min="5.0" max="10.0"/>
-            <LabelSet/>
+            <Value intercept="5" min="5" max="10"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="1">
           <Signal name="VUnder50pct" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="V50to88pct" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="V110to120pct" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="2">
           <Signal name="VOver120" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="3">
           <Signal name="FreqHi" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value slope="0.1" intercept="40" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" intercept="40" min="40" max="70" unit="Hz"/>
           </Signal>
           <Signal name="FreqVeryLo" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value slope="0.1" intercept="40" min="40.0" max="70.0" unit="Hz"/>
-            <LabelSet/>
+            <Value slope="0.1" intercept="40" min="40" max="70" unit="Hz"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="4">
           <Signal name="FreqVeryLo" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="160" min="160.0" max="160.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="160" min="160" max="160" unit="ms"/>
           </Signal>
           <Signal name="FreqLo" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="1" min="1.0" max="30000.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="1" min="1" max="30000" unit="ms"/>
           </Signal>
           <Signal name="FreqHi" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value intercept="160" min="160.0" max="160.0" unit="ms"/>
-            <LabelSet/>
+            <Value intercept="160" min="160" max="160" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="5">
           <Signal name="StatusNodeID" offset="23" length="8" endianess="big">
             <Notes></Notes>
-            <Value max="247.0"/>
-            <LabelSet/>
+            <Value max="247"/>
           </Signal>
           <Signal name="StatusSA_Mask" offset="31" length="8" endianess="big">
             <Notes></Notes>
-            <Value max="255.0"/>
-            <LabelSet/>
+            <Value max="255"/>
           </Signal>
           <Signal name="StatusBaudrate" offset="39" length="4" endianess="big">
             <Notes></Notes>
-            <Value max="15.0"/>
+            <Value max="15"/>
             <LabelSet>
               <Label name="125K" value="0"/>
               <Label name="250K" value="1"/>
@@ -1101,7 +945,7 @@
         <MuxGroup count="6">
           <Signal name="StatusThermalOverload" offset="17" length="2" endianess="big">
             <Notes></Notes>
-            <Value max="3.0"/>
+            <Value max="3"/>
             <LabelSet>
               <Label name="Warning" value="0"/>
               <Label name="Fault" value="1"/>
@@ -1113,47 +957,39 @@
         <MuxGroup count="7">
           <Signal name="StatusMX1Open" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="5000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="5000" unit="ms"/>
           </Signal>
           <Signal name="StatusMX1Close" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusMX2Open" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="65535.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="65535" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="8">
           <Signal name="StatusMX2Close" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusK1Open" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusK1Close" offset="55" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="9">
           <Signal name="StatusK2Open" offset="23" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusK2Close" offset="39" length="16" endianess="big">
             <Notes></Notes>
-            <Value max="2000.0" unit="ms"/>
-            <LabelSet/>
+            <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
       </Multiplex>
@@ -1161,94 +997,64 @@
     <Message id="0x1CFFC1F7" length="9" name="softwareRev">
       <Producer/>
       <Signal name="ControlSwRev" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="0.01"/>
-        <LabelSet/>
+        <Value max="65535" unit="0.01"/>
       </Signal>
       <Signal name="InterfaceRev" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="0.01"/>
-        <LabelSet/>
+        <Value max="65535" unit="0.01"/>
       </Signal>
       <Signal name="BuildTime" offset="39" length="32" endianess="big">
-        <Notes/>
-        <Value max="4294967295.0"/>
-        <LabelSet/>
+        <Value max="4294967295"/>
       </Signal>
     </Message>
     <Message id="0x1CFFC5F7" length="9" name="StatusControlVoltage">
       <Producer/>
       <Signal name="v5p0_Supply" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.01" max="65535.0" unit="V"/>
-        <LabelSet/>
+        <Value slope="0.01" max="65535" unit="V"/>
       </Signal>
       <Signal name="v3p3_Supply" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.01" max="65535.0" unit="V"/>
-        <LabelSet/>
+        <Value slope="0.01" max="65535" unit="V"/>
       </Signal>
       <Signal name="v24_Supply" offset="39" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.01" max="65535.0" unit="V"/>
-        <LabelSet/>
+        <Value slope="0.01" max="65535" unit="V"/>
       </Signal>
       <Signal name="v15_Supply" offset="55" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.01" max="65535.0" unit="V"/>
-        <LabelSet/>
+        <Value slope="0.01" max="65535" unit="V"/>
       </Signal>
     </Message>
     <Message id="0x1CFFC6F7" length="9" name="StatusControlVolts2">
       <Producer/>
       <Signal name="n15V_Supply" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value slope="0.01" max="65535.0" unit="V"/>
-        <LabelSet/>
+        <Value slope="0.01" max="65535" unit="V"/>
       </Signal>
       <Signal name="DiodeTemperature" offset="39" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="C"/>
-        <LabelSet/>
+        <Value max="65535" unit="C"/>
       </Signal>
       <Signal name="IGBTTemperature" offset="55" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="C"/>
-        <LabelSet/>
+        <Value max="65535" unit="C"/>
       </Signal>
     </Message>
     <Message id="0x1CFFC7F7" length="8" name="StatusDCParameters">
       <Producer/>
       <Signal name="VoltageDCInput_measured" offset="7" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="V"/>
-        <LabelSet/>
+        <Value max="65535" unit="V"/>
       </Signal>
       <Signal name="VoltageDCBus" offset="23" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="V"/>
-        <LabelSet/>
+        <Value max="65535" unit="V"/>
       </Signal>
       <Signal name="CurrentDC_measured" offset="39" length="16" endianess="big">
-        <Notes/>
-        <Value max="65535.0" unit="A"/>
-        <LabelSet/>
+        <Value max="65535" unit="A"/>
       </Signal>
     </Message>
     <Message id="0x1CFFCCF7" length="8" name="serialNumber">
       <Producer/>
       <Signal name="SerialNumber" offset="7" length="32" endianess="big">
-        <Notes/>
-        <Value max="4294967295.0"/>
-        <LabelSet/>
+        <Value max="4294967295"/>
       </Signal>
     </Message>
     <Message id="0x1CFFCDF7" length="8" name="softwareRevHash">
       <Producer/>
       <Signal name="Hash" offset="7" length="28" endianess="big">
-        <Notes/>
-        <Value max="268435455.0"/>
-        <LabelSet/>
+        <Value max="268435455"/>
       </Signal>
     </Message>
   </Bus>
