@@ -116,7 +116,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_signed": false,
-                    "name": "RealPower_command",
+                    "name": "RealPower command",
                     "offset": 0.0,
                     "start_bit": 24
                 },
@@ -616,6 +616,28 @@
                     "name": "ReactivePower_measured",
                     "offset": 0.0,
                     "start_bit": 56
+                }
+            ]
+        },
+        {
+            "id": 486517952,
+            "is_extended_frame": true,
+            "name": "FRAME_justString",
+            "signals": []
+        },
+        {
+            "id": 486517696,
+            "is_extended_frame": true,
+            "name": "FRAME_stringAndOther",
+            "signals": [
+                {
+                    "bit_length": 32,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": false,
+                    "name": "RealPower_measured",
+                    "offset": 0.0,
+                    "start_bit": 24
                 }
             ]
         },

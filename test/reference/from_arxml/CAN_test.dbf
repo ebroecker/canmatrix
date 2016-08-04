@@ -5,7 +5,7 @@
 [PROTOCOL] CAN
 
 [BUSMASTER_VERSION] [1.7.2]
-[NUMBER_OF_MESSAGES] 26
+[NUMBER_OF_MESSAGES] 28
 [START_MSG] FRAME_CommandModeControl,16755521,8,11,1,X,Vector__XXX
 [START_SIGNALS] Enable_command,2,1,0,U,3.0,0.0,0,0.0,1.0,,,
 [VALUE_DESCRIPTION] "Disable",0
@@ -65,7 +65,7 @@
 [END_MSG]
 
 [START_MSG] FRAME_CommandPower,218082369,8,2,1,X,Vector__XXX
-[START_SIGNALS] RealPower_command,32,4,0,U,4294967295.0,0.0,0,0.0,1.0,,,
+[START_SIGNALS] RealPower command,32,4,0,U,4294967295.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] ReactivePower_command,32,8,0,U,4294967295.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
@@ -100,7 +100,7 @@
 [VALUE_DESCRIPTION] "Fault_Config",6
 [VALUE_DESCRIPTION] "ContactorDelays1",7
 [VALUE_DESCRIPTION] "ContactorDelays2",8
-[VALUE_DESCRIPTION] "ContactorDelays3",9
+[VALUE_DESCRIPTION] "ContactorDelays3",10
 [START_SIGNALS] Dummy,16,4,0,U,65535.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] VUnder50pct,16,4,0,U,65535.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] V50to88pct,16,6,0,U,65535.0,0.0,0,0.0,1.0,,,
@@ -207,6 +207,13 @@
 [START_SIGNALS] ReactivePower_measured,32,8,0,U,4294967295.0,0.0,0,0.0,1.0,,,
 [END_MSG]
 
+[START_MSG] FRAME_justString,486517952,8,0,1,X,Vector__XXX
+[END_MSG]
+
+[START_MSG] FRAME_stringAndOther,486517696,8,1,1,X,Vector__XXX
+[START_SIGNALS] RealPower_measured,32,4,0,U,4294967295.0,0.0,0,0.0,1.0,,,
+[END_MSG]
+
 [START_MSG] FRAME_StatusMeasuredPower,218090231,8,2,1,X,Vector__XXX
 [START_SIGNALS] RealPower_measured,32,4,0,U,4294967295.0,0.0,0,0.0,1.0,,,
 [START_SIGNALS] ReactivePower_measured,32,8,0,U,4294967295.0,0.0,0,0.0,1.0,,,
@@ -219,7 +226,7 @@
 
 [START_MSG] FRAME_StatusBits,218088439,8,20,1,X,Vector__XXX
 [START_SIGNALS] State_status,4,1,0,U,15.0,0.0,0,0.0,1.0,,,
-[VALUE_DESCRIPTION] "Power On Reset",0
+[VALUE_DESCRIPTION] "Power On Reset, and a quoted comma",0
 [VALUE_DESCRIPTION] "Ready",1
 [VALUE_DESCRIPTION] "Following",2
 [VALUE_DESCRIPTION] "Fault",3
@@ -549,36 +556,196 @@
 [START_DESC]
 
 [START_DESC_MSG]
-16755521 S "";
-218082369 S "";
-218082881 S "";
-218090230 S "";
+16755521 S "Operational commands are received by the module via control bits within this message.";
+218082369 S "Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.";
+218082881 S "Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.";
+218090230 S "Returns the actual measured power.";
 218083137 S "";
-218081857 S "";
-16751425 S "";
-218078273 S "";
-218078785 S "";
-218090231 S "";
-218090231 S "";
-419415287 S "";
-218088439 S "";
-486524407 S "";
-419417079 S "";
-218089719 S "";
-218088183 S "";
-486524919 S "";
-486524663 S "";
-486523383 S "";
-419416567 S "";
-486526199 S "";
-486526455 S "";
-486517239 S "";
-419418359 S "";
-419418615 S "";
+218081857 S "Provides access to configure non-volatile parameters.  Note that these parameters can only be set when the inverter's power stage is disabled (PowerCircuitEnabled_status in StatusBits message is 'Disabled.')";
+16751425 S "Operational commands are received by the module via control bits within this message.";
+218078273 S "Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.";
+218078785 S "Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.";
+218090231 S "Returns the actual measured power.";
+486517952 S "";
+486517696 S "";
+218090231 S "Returns the actual measured power.";
+419415287 S "Echoes the commanded power (P&Q) as received in CommandPQ.";
+218088439 S "Bits representing the status of the power module.";
+486524407 S "Lists present voltage of each power supply on the control board (24V, 15V, 5V, and 3.3V.)";
+419417079 S "Returns the inlet water temperature to the module as well as module internal ambient temperature.";
+218089719 S "Fault bits.";
+218088183 S "RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.";
+486524919 S "Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input voltage.";
+486524663 S "Present voltage of the -15V power supply on the control board.";
+486523383 S "Software revision.";
+419416567 S "Echoes the voltage and frequency commands from commandVF.";
+486526199 S "Serial number of the power module.";
+486526455 S "Unique software revision identification hashcode.";
+486517239 S "Echos back parameter values.";
+419418359 S "Measured RMS line currents.";
+419418615 S "Measured RMS line voltages.";
 [END_DESC_MSG]
 [START_DESC_NODE]
 [END_DESC_NODE]
 [START_DESC_SIG]
+16755521 S Enable_command "Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.";
+16755521 S FaultClear_command "Clears the latched fault message.";
+16755521 S InvertHwEnable_command "Inverts the logic of the Hardware Enable input.";
+16755521 S EnableUPSMode_command "Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.";
+16755521 S EnableSplitPhase_command "Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.";
+16755521 S ForceRelayMX1_command "If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.";
+16755521 S ForceRelayMX2_command "If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.";
+16755521 S ForceRelayK1_Precharge_command "If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.";
+16755521 S ForceRelayRelayK2_DCRun_comand "If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.";
+16755521 S PhaseRotation_command "Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.";
+16755521 S MasterFollowerMode_command "Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.";
+218082369 S RealPower command "Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.";
+218082369 S ReactivePower_command "Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.";
+218082881 S Voltage_command "Desired output voltage while in grid forming mode.";
+218082881 S Frequency_command "Desired output frequency while in grid forming mode.";
+218090230 S RealPower_measured "Measured real power of master unit.";
+218090230 S ReactivePower_measured "Measured reactive power of master unit.";
+218083137 S WriteSerialNumber "";
+218083137 S SerialNumber "";
+218083137 S FactoryAccess "";
+218081857 S CommandSetNVParam_MUX "";
+218081857 S Dummy "";
+218081857 S VUnder50pct "Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.";
+218081857 S V50to88pct "Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.";
+218081857 S V110to120pct "Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.";
+218081857 S VOver120 "Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.";
+218081857 S FreqHi "Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.";
+218081857 S FreqLo "Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.";
+218081857 S FreqVeryLo "Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.";
+218081857 S FreqVeryLo "Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.";
+218081857 S FreqLo "Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.";
+218081857 S FreqHi "Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.";
+218081857 S NodeID "J1939 Source Address node for the module.";
+218081857 S SA_Mask "Not presently used.";
+218081857 S Baudrate "CAN baudrate";
+218081857 S ThermalOverload "Configures action to take when thermal overload input is active.";
+218081857 S MX1Open "Maximum time required for the MX1 contactor to open.";
+218081857 S MX1Close "Maximum time required for the MX1 contactor to close.";
+218081857 S MX2Open "Maximum time required for the MX2 contactor to open.";
+218081857 S MX2Close "Maximum time required for the MX2 contactor to open.";
+218081857 S K1Open "Maximum time required for the K1 contactor to open.";
+218081857 S K1Close "Maximum time required for the K1 contactor to close.";
+218081857 S K2Open "Maximum time required for the K2 contactor to open.";
+218081857 S K2Close "Maximum time required for the K2 contactor to close.";
+16751425 S Enable_command "Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.";
+16751425 S FaultClear_command "Clears the latched fault message.";
+16751425 S InvertHwEnable_command "Inverts the logic of the Hardware Enable input.";
+16751425 S EnableUPSMode_command "Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.";
+16751425 S EnableSplitPhase_command "Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.";
+16751425 S ForceRelayMX1_command "If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.";
+16751425 S ForceRelayMX2_command "If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.";
+16751425 S ForceRelayK1_Precharge_command "If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.";
+16751425 S ForceRelayRelayK2_DCRun_comand "If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.";
+16751425 S PhaseRotation_command "Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.";
+16751425 S MasterFollowerMode_command "Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.";
+218078273 S RealPower_command "Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.";
+218078273 S ReactivePower_command "Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.";
+218078785 S Voltage_command "Desired output voltage while in grid forming mode.";
+218078785 S Frequency_command "Desired output frequency while in grid forming mode.";
+218090231 S RealPower_measured "Measured real power of master unit.";
+218090231 S ReactivePower_measured "Measured reactive power of master unit.";
+486517696 S RealPower_measured "Measured real power of master unit.";
+218090231 S RealPower_measured "Measured real power of master unit.";
+218090231 S ReactivePower_measured "Measured reactive power of master unit.";
+419415287 S RealPower_echo "Echoed real power command.";
+419415287 S ReactivePower_echo "Echoed reactive power command.";
+218088439 S State_status "Active control mode.";
+218088439 S MX2Permissive_status "MX2 relay status";
+218088439 S PowerAvailAC_status "Indicates that AC power is connected and that voltage and frequency are within nominal ranges.";
+218088439 S PowerAvailDC_status "Indicates that DC bus voltage is within operating range.";
+218088439 S PowerCircuitEnabled_status "Indicates whether the switching devices are active.";
+218088439 S HardwareEnable_status "Status of the hardware enable.";
+218088439 S Enable_echo "Echos the state of the Enable command withing the CommandModeControl message.";
+218088439 S FaultClr_echo "Echos the state of the FaultClear command withing the CommandModeControl message.";
+218088439 S MessageValidModeControl_status "Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.";
+218088439 S MX1Permissive_status "MX1 relay status";
+218088439 S K2DCRunPermissive_status "K2 DC Run relay status.";
+218088439 S K1PrechargePermissive_status "K1 precharge relay status.";
+218088439 S MessageValidPowerCMD_status "Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.";
+218088439 S MessageValidVF_status "Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.";
+218088439 S CANbus_status "Operational status of the CAN bus driver.";
+218088439 S EnableUPSMode_echo "Echos the state of the EnableUPSMode command withing the CommandModeControl message.";
+218088439 S EnableSplitPhase_echo "Echos the state of the EnableSplitPhase command withing the CommandModeControl message.";
+218088439 S PhaseRotation_status "Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.";
+218088439 S LineVoltageDetected_status "Flag indicating if voltage is detected on L1, L2 or L3.";
+218088439 S PhaseRotation_echo "Echos the state of PhaseRotation_command withing the CommandModeControl message.";
+486524407 S v5p0_Supply "Present voltage of the control board 5V power suppy.";
+486524407 S v3p3_Supply "Present voltage of the control board 3.3V power supply.";
+486524407 S v24_Supply "Present voltage of the control board 24V power supply.";
+486524407 S v15_Supply "Present voltage of the control board 15V power supply.";
+419417079 S TempInlet_measured "Coolant inlet temperature";
+419417079 S TempInternal_measured "Internal ambient temperature";
+419417079 S ConverterLosses "Power converter thermal loss";
+218089719 S BridgeAVoltageOk_status "Indicates whether a hardware trip has been activated.";
+218089719 S OvercurrentAC_status "Set immediately upon the software detection of AC current exceeding the threshold value.";
+218089719 S BridgeBVoltageOk_status "Indicates whether a hardware trip has been activated.";
+218089719 S OvervoltageDC_status "Set immediately upon the software detection of DC voltage exceeding the threshold value.";
+218089719 S OvertempPowerDevice_status "Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.";
+218089719 S OvertempInternal_status "Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.";
+218089719 S LossValidControlMessage_status "Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.";
+218089719 S UndervoltageDC_status "Indicates loss of DC source voltage.";
+218089719 S ControlHardwareFail_status "Set upon the failure of control hardware to return expected response.";
+218089719 S OvercurrentDC_status "Set immediately upon the software detection of DC current exceeding the threshold value.";
+218089719 S GeneralFault_status "Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.";
+218089719 S LossOfAC_status "In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.";
+218089719 S EStopShutdown_status "Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.";
+218089719 S BridgeAFault_status "Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.";
+218089719 S BridgeBFault_status "Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.";
+218089719 S IllegalTransition_status "Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.";
+218089719 S InvalidEEHeader_status "Indicates that reading of non-volatile parameters at power-up failed.";
+218089719 S InvalidEESection_status "Indicates that reading or writing of an non-volatile parameter section failed.";
+218089719 S ThermalOverload "Configures action to take when thermal overload input is active.";
+218088183 S VoltageAC_measured "Measured RMS AC voltage.";
+218088183 S CurrentAC_measured "Measured RMS AC current.";
+218088183 S Frequency_measured "Measured frequency.";
+486524919 S VoltageDCBus "Measured DC bus voltage.";
+486524919 S CurrentDC_measured "Measured DC current.";
+486524919 S VoltageDCInput_measured "Estimated DC input voltage.";
+486524663 S n15V_Supply "Present voltage of the control board -15V power supply.";
+486524663 S DiodeTemperature "Hottest diode";
+486524663 S IGBTTemperature "Hottest IGBT";
+486523383 S InterfaceRev "Software revision of the CAN communication interface.";
+486523383 S ControlSwRev "Software revision of the control firmware.";
+486523383 S BuildTime "Build timestamp.";
+419416567 S Voltage_echo "Echoed voltage command";
+419416567 S Frequency_echo "Echoed frequency command.";
+486526199 S SerialNumber "";
+486526455 S Hash "Unique revision identification hashcode.";
+486517239 S StatusNVParam_MUX "";
+486517239 S Dummy "";
+486517239 S VUnder50pct "Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.";
+486517239 S V50to88pct "Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.";
+486517239 S V110to120pct "Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.";
+486517239 S VOver120 "Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.";
+486517239 S FreqHi "Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.";
+486517239 S FreqLo "Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.";
+486517239 S FreqVeryLo "Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.";
+486517239 S FreqVeryLo "Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.";
+486517239 S FreqLo "Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.";
+486517239 S FreqHi "Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.";
+486517239 S StatusNodeID "J1939 Source Address node for the module";
+486517239 S StatusSA_Mask "Mask used to configure from which master source addresses to accept commands.";
+486517239 S StatusBaudrate "";
+486517239 S StatusThermalOverload "Configured action to take when thermal overload input is active.";
+486517239 S StatusMX1Open "Maximum time required for the MX1 contactor to open.";
+486517239 S StatusMX1Close "Maximum time required for the MX1 contactor to close.";
+486517239 S StatusMX2Open "Maximum time required for the MX2 contactor to open.";
+486517239 S StatusMX2Close "Maximum time required for the MX2 contactor to open.";
+486517239 S StatusK1Open "Maximum time required for the K1 contactor to open.";
+486517239 S StatusK1Close "Maximum time required for the K1 contactor to close.";
+486517239 S StatusK2Open "Maximum time required for the K2 contactor to open.";
+486517239 S StatusK2Close "Maximum time required for the K2 contactor to close.";
+419418359 S L1Current_measured "Measured L1 RMS line current.";
+419418359 S L2Current_measured "Measured L2 RMS line current.";
+419418359 S L3Current_measured "Measured L3 RMS line current.";
+419418615 S L1Voltage_measured "Measured L1 RMS line-neutral voltage";
+419418615 S L2Voltage_measured "Measured L2 RMS line-neutral voltage";
+419418615 S L3Voltage_measured "Measured L3 RMS line-neutral voltage";
 [END_DESC_SIG]
 [END_DESC]
 
@@ -615,6 +782,10 @@
 218078785,S,"GenMsgStartValue",""0000000000000000""
 218090231,S,"GenMsgSendType","1"
 218090231,S,"GenMsgStartValue",""0000000000000000""
+486517952,S,"GenMsgSendType","1"
+486517952,S,"GenMsgStartValue",""0000000000000000""
+486517696,S,"GenMsgSendType","1"
+486517696,S,"GenMsgStartValue",""0000000000000000""
 218090231,S,"GenMsgSendType","1"
 218090231,S,"GenMsgStartValue",""0000000000000000""
 419415287,S,"GenMsgSendType","1"

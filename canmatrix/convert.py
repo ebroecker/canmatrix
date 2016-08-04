@@ -128,7 +128,7 @@ def convert(infile, outfileName, **options):
         elif fileext == 'json':
             ex.exportJson(db, outfile, **options)
         elif fileext == 'arxml':
-            ex.exportArxml(db, outfile)
+            ex.exportArxml(db, outfile, **options)
         elif fileext == 'yaml':
             ex.exportYaml(db, outfile)
         elif fileext == 'csv':
@@ -171,6 +171,9 @@ def main():
     parser.add_option("", "--arxmlIgnoreClusterInfo", action="store_true",
                                       dest="arxmlIgnoreClusterInfo", default=False,
                                      help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault 0")
+    parser.add_option("", "--arxmlExportVersion",
+                                      dest="arVersion", default="3.2.3",
+                                     help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 3.2.3")
     parser.add_option("", "--dbcImportEncoding",
                                       dest="dbcImportEncoding", default="iso-8859-1",
                                       help="Import charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")

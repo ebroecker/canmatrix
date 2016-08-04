@@ -1,16 +1,4 @@
 #!/usr/bin/env python
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
-import logging
-logger = logging.getLogger('root')
-
-from builtins import *
-import math
-from lxml import etree
-from .canmatrix import *
-from .autosarhelper import *
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -37,9 +25,23 @@ from .autosarhelper import *
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 #
 
+#TODO AR4 get sender of Frame
 
-#TODO Well, ..., this is the first attempt to import a arxml-file; I did this without reading any spec;
 
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+
+import logging
+logger = logging.getLogger('root')
+
+from builtins import *
+import math
+from lxml import etree
+from .canmatrix import *
+from .autosarhelper import *
+
+pduFrameMapping = {}
 signalRxs = {}
 
 def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
@@ -81,7 +83,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if length == None:
             length = arGetChild(syssignal,  "LENGTH", arDict, ns)
         name = arGetChild(syssignal,  "SHORT-NAME", arDict, ns)
-  
+
         Min = None
         Max = None
         factor = 1.0
@@ -90,9 +92,9 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         receiver = []
 
         signalDescription = getDesc(syssignal, arDict, ns)
-
         datatype = arGetChild(syssignal, "DATA-TYPE", arDict, ns)
-
+        if datatype == None: #AR4?
+            print("no datatype reference")
         lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
         upper = arGetChild(datatype, "UPPER-LIMIT", arDict, ns)
         if lower is not None and upper is not None:
@@ -167,14 +169,15 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                                   max=Max,
                                   unit=Unit,
                                   receiver=receiver,
-                                  multiplex=multiplexId)     
+                                  multiplex=multiplexId,
+                                  comment=signalDescription)     
  
             if newSig._is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
                 newSig.setStartbit(int(startBit.text), bitNumbering = 1)
             
-            newSig._isigRef = isignal.text
-            signalRxs[isignal.text] = newSig
+            newSig._isigRef = syssignal
+            signalRxs[syssignal] = newSig
 
             basetype = arGetChild(datdefprops, "BASE-TYPE", arDict, ns)
             if basetype is not None:
@@ -201,7 +204,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     extEle = arGetChild(frameTriggering, "CAN-ADDRESSING-MODE", arDict, ns)
     idele = arGetChild(frameTriggering, "IDENTIFIER", arDict, ns)
     frameR = arGetChild(frameTriggering, "FRAME", arDict, ns)
-
+ 
     sn = arGetChild(frameTriggering, "SHORT-NAME", arDict, ns)
     idNum = int(idele.text)
 
@@ -211,10 +214,15 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
         pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
         pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
-#        newBo = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
-        newBo = Frame(arGetName(frameR, ns), 
+#        newFrame = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+        pduFrameMapping[pdu] = arGetName(frameR, ns)
+
+        newFrame = Frame(arGetName(frameR, ns), 
                       Id=idNum,
                       dlc=int(dlc.text))
+        comment = getDesc(frameR, arDict, ns) 
+        if comment != None:       
+            newFrame.addComment(comment)    
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF" % (sn))        
@@ -222,8 +230,8 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         ipduTriggering = arGetChild(ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
         pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns)
         dlc = arGetChild(pdu, "LENGTH", arDict, ns)
-#        newBo = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
-        newBo = Frame(sn.text, 
+#        newFrame = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
+        newFrame = Frame(sn.text, 
                       Id=idNum,
                       dlc=int(dlc.text)/8)
         
@@ -248,13 +256,13 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                               multiplex="Multiplexor")     
 
         multiplexor._initValue = 0
-        newBo.addSignal(multiplexor)
+        newFrame.addSignal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", arDict, ns)
         ipdu = arGetChild(staticPart, "I-PDU", arDict, ns)
         if ipdu is not None:
             pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
             pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-            getSignals(pdusigmapping, newBo, arDict, ns, None)
+            getSignals(pdusigmapping, newFrame, arDict, ns, None)
             multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu,ns)
 
         dynamicPart = arGetChild(pdu, "DYNAMIC-PART", arDict, ns)
@@ -272,13 +280,14 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
             if ipdu is not None:
                 pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
                 pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                getSignals(pdusigmapping, newBo, arDict, ns, selectorId.text)
+                getSignals(pdusigmapping, newFrame, arDict, ns, selectorId.text)
 
-    newBo.addComment(getDesc(pdu, arDict, ns))
+    if newFrame._comment == None:
+        newFrame.addComment(getDesc(pdu, arDict, ns))
 
     if extEle is not None:
         if extEle.text == 'EXTENDED':
-            newBo._extended = 1
+            newFrame._extended = 1
 
     timingSpec = arGetChild(pdu,"I-PDU-TIMING-SPECIFICATION", arDict, ns)
     cyclicTiming = arGetChild(timingSpec,"CYCLIC-TIMING", arDict, ns)
@@ -290,43 +299,43 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     startingTime = arGetChild(timingSpec,"STARTING-TIME", arDict, ns)
 
     if cyclicTiming is not None and eventTiming is not None:
-        newBo.addAttribute("GenMsgSendType", "5")        # CycleAndSpontan
+        newFrame.addAttribute("GenMsgSendType", "5")        # CycleAndSpontan
         if minimumDelay is not None:
-            newBo.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
         if repeats is not None:
-            newBo.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+            newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     elif cyclicTiming is not None:
-        newBo.addAttribute("GenMsgSendType", "0") # CycleX
+        newFrame.addAttribute("GenMsgSendType", "0") # CycleX
         if minimumDelay is not None:
-            newBo.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
         if repeats is not None:
-            newBo.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+            newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     else:
-        newBo.addAttribute("GenMsgSendType", "1") # Spontan
+        newFrame.addAttribute("GenMsgSendType", "1") # Spontan
         if minimumDelay is not None:
-            newBo.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text)*1000)))
         if repeats is not None:
-            newBo.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+            newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
 
 
     if startingTime is not None:
         value = arGetChild(startingTime,"VALUE", arDict, ns)
-        newBo.addAttribute("GenMsgStartDelayTime", str(int(float(value.text)*1000)))
+        newFrame.addAttribute("GenMsgStartDelayTime", str(int(float(value.text)*1000)))
 
 
 
     value = arGetChild(repeatingTime,"VALUE", arDict, ns)
     if value is not None:
-        newBo.addAttribute("GenMsgCycleTime",str(int(float(value.text)*1000)))
+        newFrame.addAttribute("GenMsgCycleTime",str(int(float(value.text)*1000)))
 
 #    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
 #    if pdusigmappings is None or pdusigmappings.__len__() == 0:
-#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newBo._name))
+#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newFrame._name))
     pdusigmapping = arGetChildren(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
     if pdusigmapping is None or pdusigmapping.__len__() == 0:
-        logger.debug("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newBo._name))
-    getSignals(pdusigmapping, newBo, arDict, ns, None)
-    return newBo
+        logger.debug("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newFrame._name))
+    getSignals(pdusigmapping, newFrame, arDict, ns, None)
+    return newFrame
 
 def getDesc(element, arDict, ns):
     desc = arGetChild(element, "DESC", arDict, ns)
@@ -346,25 +355,47 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     diagResponse = arGetChild(ecu, "RESPONSE-ADDRESSS", arDict, ns)
     #TODO: use diagAddress for frame-classification
     commconnector = arGetChild(connectors, "COMMUNICATION-CONNECTOR", arDict, ns)
+    if commconnector == None:
+    	commconnector = arGetChild(connectors, "CAN-COMMUNICATION-CONNECTOR", arDict, ns)
+    frames = arGetXchildren(commconnector,"ECU-COMM-PORT-INSTANCES/FRAME-PORT", arDict, ns)
     nmAddress = arGetChild(commconnector, "NM-ADDRESS", arDict, ns)
     assocRefs = arGetChild(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", arDict, ns)
-    assoc = arGetChildren(assocRefs, "ASSOCIATED-I-PDU-GROUP", arDict, ns)
+    if assocRefs != None:
+        assoc = arGetChildren(assocRefs, "ASSOCIATED-I-PDU-GROUP", arDict, ns)
+    else: #AR4
+        assocRefs = arGetChild(ecu, "ASSOCIATED-COM-I-PDU-GROUP-REFS", arDict, ns)
+        assoc = arGetChildren(assocRefs, "ASSOCIATED-COM-I-PDU-GROUP", arDict, ns)
+        
+
     inFrame = []
     outFrame = []
 
+    # get direction of frames (is current ECU sender/receiver/...?)     
     for ref in assoc:
         direction = arGetChild(ref, "COMMUNICATION-DIRECTION", arDict, ns)
         groupRefs = arGetChild(ref, "CONTAINED-I-PDU-GROUPS-REFS", arDict, ns)
         pdurefs = arGetChild(ref, "I-PDU-REFS", arDict, ns)
-
-        #local defined pdus
-        pdus = arGetChildren(pdurefs, "I-PDU", arDict, ns)
-        for pdu in pdus:
-            if direction.text == "IN":
-                inFrame.append(arGetName(pdu, ns))
-            else:
-                outFrame.append(arGetName(pdu, ns))
-
+        if pdurefs != None: #AR3 
+           #local defined pdus
+            pdus = arGetChildren(pdurefs, "I-PDU", arDict, ns)
+            for pdu in pdus:
+               if pdu in pduFrameMapping:
+                    if direction.text == "IN":
+                        inFrame.append(pduFrameMapping[pdu])
+                    else:
+                        outFrame.append(pduFrameMapping[pdu])
+        else: #AR4
+            isigpdus = arGetChild(ref,"I-SIGNAL-I-PDUS", arDict, ns)
+            isigconds = arGetChildren(isigpdus, "I-SIGNAL-I-PDU-REF-CONDITIONAL", arDict, ns)
+            for isigcond in isigconds:
+                pdus = arGetChildren(isigcond, "I-SIGNAL-I-PDU", arDict, ns)
+                for pdu in pdus:
+                    if pdu in pduFrameMapping:
+                        if direction.text == "IN":
+                            inFrame.append(pduFrameMapping[pdu])
+                        else:
+                            outFrame.append(pduFrameMapping[pdu])
+ 
         #grouped pdus
         group = arGetChildren(groupRefs, "CONTAINED-I-PDU-GROUPS", arDict, ns)
         for t in group:
@@ -386,7 +417,6 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
                 frame.addTransmitter(arGetName(ecu, ns))
             else:
                 pass
-                #print "out not found: " + out
 
 #               for inf in inFrame:
 #                       if inf in multiplexTranslation:
@@ -476,7 +506,6 @@ def importArxml(filename, **options):
             if speed is not None:
                 logger.debug(" Speed: " + speed.text)
 
-#            physicalChannels = arGetChild(cc, "PHYSICAL-CHANNELS", arDict, ns)
             physicalChannels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")
             if physicalChannels == None:
                 logger.error("Error - PHYSICAL-CHANNELS not found")
@@ -488,9 +517,6 @@ def importArxml(filename, **options):
                 physicalChannel = arGetChild(physicalChannels, "CAN-PHYSICAL-CHANNEL", arDict, ns)
             if physicalChannel == None:
                 logger.debug("Error - PHYSICAL-CHANNEL not found")
-#            frametriggerings = arGetChild(physicalChannel, "FRAME-TRIGGERINGSS", arDict, ns)
-#            if frametriggerings == None:
-#                logger.debug("Error - FRAME-TRIGGERINGS not found")
             canframetrig = arGetChildren(physicalChannel, "CAN-FRAME-TRIGGERING", arDict, ns)
             if canframetrig == None:
                 logger.error("Error - CAN-FRAME-TRIGGERING not found")
@@ -508,9 +534,10 @@ def importArxml(filename, **options):
         else:
             isignaltriggerings = arGetXchildren(physicalChannel, "I-SIGNAL-TRIGGERING", arDict, ns)
             for sigTrig in isignaltriggerings:
+                test = arGetChild(sigTrig, 'SIGNAL-REF', arDict, ns)
                 isignal = arGetChild(sigTrig, 'SIGNAL', arDict, ns)
                 if isignal == None:
-                    isignal = arGetChild(sigTrig, 'I-SIGNAL', arDict, ns)  
+                    isignal = arGetChild(sigTrig, 'I-SIGNAL', arDict, ns) 
                 if isignal == None:
                     logger.debug("no isignal for %s" % arGetName(sigTrig, ns))
                     continue
@@ -519,20 +546,26 @@ def importArxml(filename, **options):
                 for port in portRef:
                     comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
                     if comDir.text == "IN":
+                        sysSignal = arGetChild(isignal,"SYSTEM-SIGNAL", arDict, ns)
                         ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
-                        if isignal.text in signalRxs:
-                            if ecuName not in signalRxs[isignal.text]._receiver:
-                                signalRxs[isignal.text]._receiver.append(ecuName)
+                        #port points in ECU; probably more stable to go up from each ECU than to go down in XML...
+                        if sysSignal in signalRxs:
+                            if ecuName not in signalRxs[sysSignal]._receiver:
+                                signalRxs[sysSignal]._receiver.append(ecuName)
     #                               for fr in db._fl._list:
     #                                       for sig in fr._signals:
     #                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
     #                                                       sig._receiver.append(ecuName)
                         #TODO
-
     # find ECUs:
         nodes = root.findall('.//' + ns +'ECU-INSTANCE')
         for node in nodes:
             bu = processEcu(node, db, arDict, multiplexTranslation, ns)
+            desc = arGetChild(node,  "DESC", arDict, ns)
+            l2 = arGetChild(desc,  "L-2", arDict, ns)
+            if l2 != None:
+                bu.addComment(l2.text)    
+
             db._BUs.add(bu)
 
         for bo in db._fl._list:
