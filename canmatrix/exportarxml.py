@@ -24,9 +24,6 @@
 # this script axports arxml-files from a canmatrix-object
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 # currently Support for Autosar 3.2 and 4.0-4.3 is planned
-#
-
-#TODO receivers of signals are missing
 
 from __future__ import absolute_import
 from builtins import *
@@ -155,15 +152,11 @@ def exportArxml(db, filename, **options):
             for signal in frame._signals:
                 isignalTriggering = createSubElement(isignalTriggerings, 'I-SIGNAL-TRIGGERING')
                 createSubElement(isignalTriggering, 'SHORT-NAME', signal._name)
-
                 iSignalPortRefs = createSubElement(isignalTriggering, 'I-SIGNAL-PORT-REFS')
-                
                 for receiver in signal._receiver:
                     iSignalPortRef = createSubElement(iSignalPortRefs, 'I-SIGNAL-PORT-REF', '/ECU/' + receiver +'/CN_' + receiver + '/' + signal._name)
                     iSignalPortRef.set('DEST','I-SIGNAL-PORT')
 
-
-                ## missing: I-SIGNAL-PORT-REFS
                 isignalRef = createSubElement(isignalTriggering, 'I-SIGNAL-REF')
                 isignalRef.set('DEST','I-SIGNAL')
                 isignalRef.text = "/ISignal/" + signal._name
@@ -177,11 +170,6 @@ def exportArxml(db, filename, **options):
             ipduRef.text = "/PDU/PDU_" + frame._name
             ## missing: I-SIGNAL-TRIGGERINGS
 
-
-    if arVersion[0] == "3":
-        pass  
-    else:
-        pass
 #TODO
 #        ipduTriggerings = createSubElement(physicalChannel, 'PDU-TRIGGERINGS')
 #        for frame in db._fl._list:
