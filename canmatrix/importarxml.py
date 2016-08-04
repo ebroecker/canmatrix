@@ -176,8 +176,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 # startbit of motorola coded signals are MSB in arxml
                 newSig.setStartbit(int(startBit.text), bitNumbering = 1)
             
-            newSig._isigRef = isignal.text
-            signalRxs[isignal.text] = newSig
+            newSig._isigRef = syssignal
+            signalRxs[syssignal] = newSig
 
             basetype = arGetChild(datdefprops, "BASE-TYPE", arDict, ns)
             if basetype is not None:
@@ -216,6 +216,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         pdu = arGetChild(pdumapping, "PDU", arDict, ns) # SIGNAL-I-PDU
 #        newFrame = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
         pduFrameMapping[pdu] = arGetName(frameR, ns)
+
         newFrame = Frame(arGetName(frameR, ns), 
                       Id=idNum,
                       dlc=int(dlc.text))
@@ -373,8 +374,8 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     for ref in assoc:
         direction = arGetChild(ref, "COMMUNICATION-DIRECTION", arDict, ns)
         groupRefs = arGetChild(ref, "CONTAINED-I-PDU-GROUPS-REFS", arDict, ns)
-        if groupRefs != None:
-            pdurefs = arGetChild(ref, "I-PDU-REFS", arDict, ns)
+        pdurefs = arGetChild(ref, "I-PDU-REFS", arDict, ns)
+        if pdurefs != None: #AR3
             #local defined pdus
             pdus = arGetChildren(pdurefs, "I-PDU", arDict, ns)
             for pdu in pdus:
@@ -540,14 +541,15 @@ def importArxml(filename, **options):
                     continue
                 portRef =  arGetChildren(sigTrig, "I-SIGNAL-PORT", arDict, ns)
 
- #TODO: check if signal direction is working in AR4 
                 for port in portRef:
                     comDir = arGetChild(port, "COMMUNICATION-DIRECTION", arDict, ns)
                     if comDir.text == "IN":
+                        sysSignal = arGetChild(isignal,"SYSTEM-SIGNAL", arDict, ns)
                         ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
-                        if isignal.text in signalRxs:
-                            if ecuName not in signalRxs[isignal.text]._receiver:
-                                signalRxs[isignal.text]._receiver.append(ecuName)
+                        #port points in ECU; probably more stable to go up from each ECU than to go down in XML...
+                        if sysSignal in signalRxs:
+                            if ecuName not in signalRxs[sysSignal]._receiver:
+                                signalRxs[sysSignal]._receiver.append(ecuName)
     #                               for fr in db._fl._list:
     #                                       for sig in fr._signals:
     #                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
