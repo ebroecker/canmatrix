@@ -281,12 +281,19 @@ def exportArxml(db, filename, **options):
             signalEle = createSubElement(elements, 'I-SIGNAL')
             createSubElement(signalEle, 'SHORT-NAME', signal._name)
             if arVersion[0] == "4":
-               createSubElement(signalEle, 'LENGTH', str(signal._signalsize))
+                createSubElement(signalEle, 'LENGTH', str(signal._signalsize))
+               
+                networkRepresentProps = createSubElement(signalEle, 'NETWORK-REPRESENTATION-PROPS')
+                swDataDefPropsVariants = createSubElement(networkRepresentProps, 'SW-DATA-DEF-PROPS-VARIANTS')
+                swDataDefPropsConditional = createSubElement(swDataDefPropsVariants, 'SW-DATA-DEF-PROPS-CONDITIONAL')
+                compuMethodRef =  createSubElement(swDataDefPropsConditional, 'COMPU-METHOD-REF', '/DataType/Semantics/' + signal._name)
+                compuMethodRef.set('DEST','COMPU-METHOD')
+                unitRef =  createSubElement(swDataDefPropsConditional, 'UNIT-REF', '/DataType/Unit/' + signal._name)
+                unitRef.set('DEST','UNIT')
+ 
             sysSigRef = createSubElement(signalEle, 'SYSTEM-SIGNAL-REF')
             sysSigRef.text = "/Signal/" + signal._name
-            #missing:  <NETWORK-REPRESENTATION-PROPS><SW-DATA-DEF-PROPS-VARIANTS><SW-DATA-DEF-PROPS-CONDITIONAL><COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/BLABLUB</COMPU-METHOD-REF>
-            #<UNIT-REF DEST="UNIT">/DataType/Unit/U_specialCharUnit</UNIT-REF>
-            #</SW-DATA-DEF-PROPS-CONDITIONAL></SW-DATA-DEF-PROPS-VARIANTS></NETWORK-REPRESENTATION-PROPS>
+            
             sysSigRef.set('DEST','SYSTEM-SIGNAL')
         for group in frame._SignalGroups:
             signalEle = createSubElement(elements, 'I-SIGNAL')
@@ -386,8 +393,16 @@ def exportArxml(db, filename, **options):
                 createSubElement(compuNumerator, 'V', "%g" % signal._factor)
                 compuDenomiator = createSubElement(compuRationslCoeff,'COMPU-DENOMINATOR')
                 createSubElement(compuDenomiator, 'V', "1")
-    #missing AR-PACKAGE Unit
 
+    arPackage = createSubElement(subpackages,'AR-PACKAGE')
+    createSubElement(arPackage, 'SHORT-NAME', 'Unit')
+    elements = createSubElement(arPackage,'ELEMENTS')
+    for frame in db._fl._list:
+        for signal in frame._signals:
+            unit = createSubElement(elements,'UNIT')
+            createSubElement(unit, 'SHORT-NAME', signal._name)
+            createSubElement(unit, 'DISPLAY-NAME', signal._unit)
+        
     txIPduGroups = {}
     rxIPduGroups = {}
 

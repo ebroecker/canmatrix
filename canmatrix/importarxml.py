@@ -84,11 +84,17 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             length = arGetChild(syssignal,  "LENGTH", arDict, ns)
         name = arGetChild(syssignal,  "SHORT-NAME", arDict, ns)
 
+        unitElement = arGetChild(isignal, "UNIT", arDict, ns)
+        displayName = arGetChild(unitElement, "DISPLAY-NAME", arDict, ns)
+        if displayName != None:
+            Unit = displayName.text
+        else:
+            Unit = ""
+            
         Min = None
         Max = None
         factor = 1.0
         offset = 0
-        Unit = ""
         receiver = []
 
         signalDescription = getDesc(syssignal, arDict, ns)
@@ -105,12 +111,19 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
 
         compmethod = arGetChild(datdefprops, "COMPU-METHOD", arDict, ns)
+        if compmethod == None: #AR4
+            compmethod = arGetChild(isignal, "COMPU-METHOD", arDict, ns)
+            
         unit = arGetChild(compmethod, "UNIT", arDict, ns)
         if unit is not None:
-            longname = arGetChild(unit, "LONG-NAME", arDict, ns)
-            l4 = arGetChild(longname, "L-4", arDict, ns)
-            if l4 is not None:
-                Unit = l4.text
+            displayName = arGetChild(unit, "DISPLAY-NAME", arDict, ns)
+            if displayName != None:
+                Unit = displayName.text
+            else:
+                longname = arGetChild(unit, "LONG-NAME", arDict, ns)
+                l4 = arGetChild(longname, "L-4", arDict, ns)
+                if l4 is not None:
+                    Unit = l4.text
 
         compuscales = arGetXchildren(compmethod, "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE", arDict, ns)
         initvalue = arGetXchildren(syssignal, "INIT-VALUE/VALUE", arDict, ns)
