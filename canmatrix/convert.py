@@ -133,6 +133,8 @@ def convert(infile, outfileName, **options):
             ex.exportYaml(db, outfile)
         elif fileext == 'csv':
             ex.exportCsv(db, outfile)
+        elif fileext == 'xml':
+            ex.exportFibex(db, outfile)
         else:
             logger.error('File not recognized: ' + outfileName + "\n")
     logger.info("done")
