@@ -129,8 +129,13 @@ def importKcd(filename):
         db._BUs.add(BoardUnit(node.get('name')))
         nodelist[node.get('id')] = node.get('name')
 
-    bus = root.find('./' + namespace + 'Bus')
+    buses = root.findall('./' + namespace + 'Bus')
 
+    for bus in buses:
+        importKcdBus(db, namespace, nodelist, bus)
+    return db
+
+def importKcdBus(db, namespace, nodelist, bus):
     messages = bus.findall('./' + namespace + 'Message')
 
     for message in messages:
@@ -258,4 +263,3 @@ def importKcd(filename):
 
         newBo.updateReceiver()
         db._fl.addFrame(newBo)
-    return db
