@@ -45,13 +45,13 @@ def createSignal(signal, nodeList, typeEnums):
         if comment is None:
             comment = ''
         else:
-	    comment += '\n'
+            comment += '\n'
 
     for attrib,val in sorted(signal._attributes.items()):
         val = int(val)
-	if attrib in typeEnums and val < len(typeEnums[attrib]):
+        if attrib in typeEnums and val < len(typeEnums[attrib]):
             val = typeEnums[attrib][val]
-	comment += ( "\n" + attrib + ': ' + str(val))
+        comment += ( "\n" + attrib + ': ' + str(val))
 
     if comment is not None:
         notes = etree.Element('Notes')
@@ -101,7 +101,7 @@ def exportKcd(db, filename):
         define_type = defines[0]
         if define_type != 'ENUM':
             continue
-	defines = defines[1].strip('"')
+        defines = defines[1].strip('"')
         defines = defines.split('","')
         signalTypeEnums[typename] = defines
 
