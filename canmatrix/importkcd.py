@@ -116,146 +116,150 @@ def parseSignal(signal, mux, namespace, nodelist):
 
 
 def importKcd(filename):
+    dbs = {}
     tree = etree.parse(filename)
     root = tree.getroot()
     namespace = "{" + tree.xpath('namespace-uri(.)') + "}"
 
-    db = CanMatrix()
-    db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
 
     nodelist = {}
     nodes = root.findall('./' + namespace + 'Node')
-    for node in nodes:
-        db._BUs.add(BoardUnit(node.get('name')))
-        nodelist[node.get('id')] = node.get('name')
 
-    bus = root.find('./' + namespace + 'Bus')
+    
+    busses = root.findall('./' + namespace + 'Bus')
+    for bus in busses:
+        db = CanMatrix()
+        db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
+        for node in nodes:
+            db._BUs.add(BoardUnit(node.get('name')))
+            nodelist[node.get('id')] = node.get('name')
 
-    messages = bus.findall('./' + namespace + 'Message')
+        messages = bus.findall('./' + namespace + 'Message')
 
-    for message in messages:
-        dlc = None
-        #newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
-        newBo = Frame(message.get('name'), Id=int(message.get('id'), 16))
-
-
-        if 'triggered' in message.attrib:
-            newBo.addAttribute("GenMsgCycleTime", message.get('interval'))
-
-
-        if 'length' in message.attrib:
-            dlc = int(message.get('length'))
-            newBo._Size = dlc
-
-        if 'format' in message.attrib:
-            if message.get('format') == "extended":
-                newBo._extended = 1
-
-        multiplex = message.find('./' + namespace + 'Multiplex')
-
-        if multiplex is not None:
-            startbit = 0
-            if 'offset' in multiplex.attrib:
-                startbit = multiplex.get('offset')
-
-            signalsize = 1
-            if 'length' in multiplex.attrib:
-                signalsize = multiplex.get('length')
+        for message in messages:
+            dlc = None
+            #newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
+            newBo = Frame(message.get('name'), Id=int(message.get('id'), 16))
 
 
-            is_little_endian = True
+            if 'triggered' in message.attrib:
+                newBo.addAttribute("GenMsgCycleTime", message.get('interval'))
 
-            min = None
-            max = None
-            values = multiplex.find('./' + namespace + 'Value')
-            if values is not None:
-                if 'min' in values.attrib:
-                    min = values.get('min')
-                if 'max' in values.attrib:
-                    max = values.get('max')
 
-            unit = ""
-            offset = 0
-            factor = 1
-            is_signed = False
-            if 'type' in multiplex.attrib:
-                if multiplex.get('type') == 'signed':
-                    is_signed = True
+            if 'length' in message.attrib:
+                dlc = int(message.get('length'))
+                newBo._Size = dlc
 
-            receiver = ""
-            consumers = multiplex.findall('./' + namespace + 'Consumer')
-            for consumer in consumers:
-                noderefs = consumer.findall('./' + namespace + 'NodeRef')
+            if 'format' in message.attrib:
+                if message.get('format') == "extended":
+                    newBo._extended = 1
+
+            multiplex = message.find('./' + namespace + 'Multiplex')
+
+            if multiplex is not None:
+                startbit = 0
+                if 'offset' in multiplex.attrib:
+                    startbit = multiplex.get('offset')
+
+                signalsize = 1
+                if 'length' in multiplex.attrib:
+                    signalsize = multiplex.get('length')
+
+
+                is_little_endian = True
+
+                min = None
+                max = None
+                values = multiplex.find('./' + namespace + 'Value')
+                if values is not None:
+                    if 'min' in values.attrib:
+                        min = values.get('min')
+                    if 'max' in values.attrib:
+                        max = values.get('max')
+
+                unit = ""
+                offset = 0
+                factor = 1
+                is_signed = False
+                if 'type' in multiplex.attrib:
+                    if multiplex.get('type') == 'signed':
+                        is_signed = True
+
+                receiver = ""
+                consumers = multiplex.findall('./' + namespace + 'Consumer')
+                for consumer in consumers:
+                    noderefs = consumer.findall('./' + namespace + 'NodeRef')
+                    for noderef in noderefs:
+                        receiver += nodelist[noderef.get('id')] + ' '
+
+                newSig = Signal(multiplex.get('name'),
+                                  startBit = startbit,
+                                  signalSize = signalsize,
+                                  is_little_endian=is_little_endian,
+                                  is_signed = is_signed,
+                                  factor=factor,
+                                  offset=offset,
+                                  min=min,
+                                  max=max,
+                                  unit=unit,
+                                  receiver=receiver,
+                                  multiplex='Multiplexor')
+
+                if is_little_endian == False:
+                    #motorola/big_endian set/convert startbit
+                    newSig.setStartbit(startbit)
+                notes = multiplex.findall('./' + namespace + 'Notes')
+                comment = ""
+                for note in notes:
+                    comment += note.text
+                newSig.addComment(comment)
+
+
+                labelsets = multiplex.findall('./' + namespace + 'LabelSet')
+                for labelset in  labelsets:
+                    labels = labelset.findall('./' + namespace + 'Label')
+                    for label in labels:
+                        name = label.get('name')
+                        value = label.get('value')
+                        newSig.addValues(value, name)
+
+                newBo.addSignal(newSig)
+
+                muxgroups = multiplex.findall('./' + namespace + 'MuxGroup')
+                for muxgroup in muxgroups:
+                    mux = muxgroup.get('count')
+                    signales = muxgroup.findall('./' + namespace + 'Signal')
+                    for signal in signales:
+                        newSig = parseSignal(signal, mux, namespace, nodelist)
+                        newBo.addSignal(newSig)
+
+            signales = message.findall('./' + namespace + 'Signal')
+
+            producers = message.findall('./' + namespace + 'Producer')
+            for producer in producers:
+                noderefs = producer.findall('./' + namespace + 'NodeRef')
                 for noderef in noderefs:
-                    receiver += nodelist[noderef.get('id')] + ' '
+                    newBo.addTransmitter(nodelist[noderef.get('id')])
 
-            newSig = Signal(multiplex.get('name'),
-                              startBit = startbit,
-                              signalSize = signalsize,
-                              is_little_endian=is_little_endian,
-                              is_signed = is_signed,
-                              factor=factor,
-                              offset=offset,
-                              min=min,
-                              max=max,
-                              unit=unit,
-                              receiver=receiver,
-                              multiplex='Multiplexor')
+            for signal in signales:
+                newSig = parseSignal(signal, None, namespace, nodelist)
+                newBo.addSignal(newSig)
 
-            if is_little_endian == False:
-                #motorola/big_endian set/convert startbit
-                newSig.setStartbit(startbit)
-            notes = multiplex.findall('./' + namespace + 'Notes')
+
+            notes = message.findall('./' + namespace + 'Notes')
             comment = ""
             for note in notes:
-                comment += note.text
-            newSig.addComment(comment)
+                if note.text is not None:
+                    comment += note.text
+            newBo.addComment(comment)
+
+            if dlc is None:
+                newBo.calcDLC()
+            else:
+                newBo._Size = dlc
 
 
-            labelsets = multiplex.findall('./' + namespace + 'LabelSet')
-            for labelset in  labelsets:
-                labels = labelset.findall('./' + namespace + 'Label')
-                for label in labels:
-                    name = label.get('name')
-                    value = label.get('value')
-                    newSig.addValues(value, name)
-
-            newBo.addSignal(newSig)
-
-            muxgroups = multiplex.findall('./' + namespace + 'MuxGroup')
-            for muxgroup in muxgroups:
-                mux = muxgroup.get('count')
-                signales = muxgroup.findall('./' + namespace + 'Signal')
-                for signal in signales:
-                    newSig = parseSignal(signal, mux, namespace, nodelist)
-                    newBo.addSignal(newSig)
-
-        signales = message.findall('./' + namespace + 'Signal')
-
-        producers = message.findall('./' + namespace + 'Producer')
-        for producer in producers:
-            noderefs = producer.findall('./' + namespace + 'NodeRef')
-            for noderef in noderefs:
-                newBo.addTransmitter(nodelist[noderef.get('id')])
-
-        for signal in signales:
-            newSig = parseSignal(signal, None, namespace, nodelist)
-            newBo.addSignal(newSig)
-
-
-        notes = message.findall('./' + namespace + 'Notes')
-        comment = ""
-        for note in notes:
-            if note.text is not None:
-                comment += note.text
-        newBo.addComment(comment)
-
-        if dlc is None:
-            newBo.calcDLC()
-        else:
-            newBo._Size = dlc
-
-
-        newBo.updateReceiver()
-        db._fl.addFrame(newBo)
-    return db
+            newBo.updateReceiver()
+            db._fl.addFrame(newBo)
+        dbs[bus.get('name')] = db
+    return dbs

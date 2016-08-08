@@ -40,7 +40,7 @@ def importany(infile, **options):
     elif infile[-3:] == 'sym':
         dbs[key] = im.importSym(infile, **options)
     elif infile[-3:] == 'kcd':
-        dbs[key] = im.importKcd(infile)
+        dbs = im.importKcd(infile)
     elif infile[-3:] == 'xls':
         dbs[key] = im.importXls(infile, **options)
     elif infile[-4:] == 'xlsx' :
