@@ -49,10 +49,9 @@ def createSignal(signal, nodeList, typeEnums):
 
     for attrib,val in sorted(signal._attributes.items()):
         try:
-            val = float(val)
-            if attrib in typeEnums and val < len(typeEnums[attrib]):
-                val = typeEnums[attrib][val]
-            comment += ( "\n" + attrib + ': ' + str(val))
+            if attrib in typeEnums and int(val) < len(typeEnums[attrib]):
+                val = typeEnums[attrib][int(val)]
+            comment += ( "\n" + attrib + ': ' + val)
         except:
             pass
         
