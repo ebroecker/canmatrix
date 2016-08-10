@@ -19,7 +19,6 @@ db._BUs.add(BoardUnit("recBU"))
 myFrame = Frame("testFrame1",Id = 0x123, dlc=8, transmitter = "testBU" )
 
 mySignal = Signal("someTestSignal", 
-          startBit = 9, 
           signalSize = 11,
           is_little_endian=False, 
           is_signed = False, 
@@ -29,6 +28,7 @@ mySignal = Signal("someTestSignal",
           max=500,
           unit="specialCharUnit°$".decode("utf-8"),
           receiver=["recBU"])
+mySignal.setStartbit(9, bitNumbering = 1, startLittle = True)
 mySignal2 = Signal("Signal", 
           startBit = 20, 
           signalSize = 3,
