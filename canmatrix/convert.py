@@ -95,8 +95,8 @@ def convert(infile, outfileName, **options):
         logger.info("%d Frames found" % (db._fl._list.__len__()))
 
         if len(name) > 0:
-            path = os.path.split(outfileName)
-            outfile = os.path.join(path[0], name + "_" + path[1])
+            (path, ext) = os.path.splitext(outfileName)
+            outfile = path + "_" + name + ext
         else:
             outfile = outfileName
            
