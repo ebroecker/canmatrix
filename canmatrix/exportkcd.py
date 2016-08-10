@@ -48,11 +48,13 @@ def createSignal(signal, nodeList, typeEnums):
             comment += '\n'
 
     for attrib,val in sorted(signal._attributes.items()):
-        val = int(val)
-        if attrib in typeEnums and val < len(typeEnums[attrib]):
-            val = typeEnums[attrib][val]
-        comment += ( "\n" + attrib + ': ' + str(val))
-
+        try:
+            if attrib in typeEnums and int(val) < len(typeEnums[attrib]):
+                val = typeEnums[attrib][int(val)]
+            comment += ( "\n" + attrib + ': ' + val)
+        except:
+            pass
+        
     if comment is not None:
         notes = etree.Element('Notes')
         notes.text = comment
