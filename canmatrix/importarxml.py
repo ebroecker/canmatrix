@@ -111,11 +111,11 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if compmethod == None:
           logger.debug('No Compmethod found!! - try alternate scheme.')
           networkrep = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
-          datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)            
+          datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)
           datdefpropscond = arGetChild(datdefpropsvar, "SW-DATA-DEF-PROPS-CONDITIONAL", arDict ,ns)
           if datdefpropscond != None:
             try:
-              compmethod = arGetChild(datdefpropscond, "COMPU-METHOD", arDict, ns)            
+              compmethod = arGetChild(datdefpropscond, "COMPU-METHOD", arDict, ns)
             except:
               logger.debug('No valid compu method found for this - check ARXML file!!')
               compmethod = None
