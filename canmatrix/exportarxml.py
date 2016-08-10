@@ -24,9 +24,6 @@
 # this script axports arxml-files from a canmatrix-object
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 # currently Support for Autosar 3.2 and 4.0-4.3 is planned
-#
-
-#TODO receivers of signals are missing
 
 from __future__ import absolute_import
 from builtins import *
@@ -155,15 +152,11 @@ def exportArxml(db, filename, **options):
             for signal in frame._signals:
                 isignalTriggering = createSubElement(isignalTriggerings, 'I-SIGNAL-TRIGGERING')
                 createSubElement(isignalTriggering, 'SHORT-NAME', signal._name)
-
                 iSignalPortRefs = createSubElement(isignalTriggering, 'I-SIGNAL-PORT-REFS')
-                
                 for receiver in signal._receiver:
                     iSignalPortRef = createSubElement(iSignalPortRefs, 'I-SIGNAL-PORT-REF', '/ECU/' + receiver +'/CN_' + receiver + '/' + signal._name)
                     iSignalPortRef.set('DEST','I-SIGNAL-PORT')
 
-
-                ## missing: I-SIGNAL-PORT-REFS
                 isignalRef = createSubElement(isignalTriggering, 'I-SIGNAL-REF')
                 isignalRef.set('DEST','I-SIGNAL')
                 isignalRef.text = "/ISignal/" + signal._name
@@ -177,11 +170,6 @@ def exportArxml(db, filename, **options):
             ipduRef.text = "/PDU/PDU_" + frame._name
             ## missing: I-SIGNAL-TRIGGERINGS
 
-
-    if arVersion[0] == "3":
-        pass  
-    else:
-        pass
 #TODO
 #        ipduTriggerings = createSubElement(physicalChannel, 'PDU-TRIGGERINGS')
 #        for frame in db._fl._list:
@@ -293,12 +281,19 @@ def exportArxml(db, filename, **options):
             signalEle = createSubElement(elements, 'I-SIGNAL')
             createSubElement(signalEle, 'SHORT-NAME', signal._name)
             if arVersion[0] == "4":
-               createSubElement(signalEle, 'LENGTH', str(signal._signalsize))
+                createSubElement(signalEle, 'LENGTH', str(signal._signalsize))
+               
+                networkRepresentProps = createSubElement(signalEle, 'NETWORK-REPRESENTATION-PROPS')
+                swDataDefPropsVariants = createSubElement(networkRepresentProps, 'SW-DATA-DEF-PROPS-VARIANTS')
+                swDataDefPropsConditional = createSubElement(swDataDefPropsVariants, 'SW-DATA-DEF-PROPS-CONDITIONAL')
+                compuMethodRef =  createSubElement(swDataDefPropsConditional, 'COMPU-METHOD-REF', '/DataType/Semantics/' + signal._name)
+                compuMethodRef.set('DEST','COMPU-METHOD')
+                unitRef =  createSubElement(swDataDefPropsConditional, 'UNIT-REF', '/DataType/Unit/' + signal._name)
+                unitRef.set('DEST','UNIT')
+ 
             sysSigRef = createSubElement(signalEle, 'SYSTEM-SIGNAL-REF')
             sysSigRef.text = "/Signal/" + signal._name
-            #missing:  <NETWORK-REPRESENTATION-PROPS><SW-DATA-DEF-PROPS-VARIANTS><SW-DATA-DEF-PROPS-CONDITIONAL><COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/BLABLUB</COMPU-METHOD-REF>
-            #<UNIT-REF DEST="UNIT">/DataType/Unit/U_specialCharUnit</UNIT-REF>
-            #</SW-DATA-DEF-PROPS-CONDITIONAL></SW-DATA-DEF-PROPS-VARIANTS></NETWORK-REPRESENTATION-PROPS>
+            
             sysSigRef.set('DEST','SYSTEM-SIGNAL')
         for group in frame._SignalGroups:
             signalEle = createSubElement(elements, 'I-SIGNAL')
@@ -398,8 +393,16 @@ def exportArxml(db, filename, **options):
                 createSubElement(compuNumerator, 'V', "%g" % signal._factor)
                 compuDenomiator = createSubElement(compuRationslCoeff,'COMPU-DENOMINATOR')
                 createSubElement(compuDenomiator, 'V', "1")
-    #missing AR-PACKAGE Unit
 
+    arPackage = createSubElement(subpackages,'AR-PACKAGE')
+    createSubElement(arPackage, 'SHORT-NAME', 'Unit')
+    elements = createSubElement(arPackage,'ELEMENTS')
+    for frame in db._fl._list:
+        for signal in frame._signals:
+            unit = createSubElement(elements,'UNIT')
+            createSubElement(unit, 'SHORT-NAME', signal._name)
+            createSubElement(unit, 'DISPLAY-NAME', signal._unit)
+        
     txIPduGroups = {}
     rxIPduGroups = {}
 
