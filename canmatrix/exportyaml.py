@@ -45,14 +45,13 @@ except:
    # some error with representers ... continue anyway
 
 def exportYaml(db, filename, **options):
-
     newdb = copy.deepcopy(db)
 
-    for i,frame in enumerate(newdb._fl._list):
-        for j,signal in enumerate(frame._signals):
-            if signal._is_little_endian == False:
+    for i,frame in enumerate(newdb.frames):
+        for j,signal in enumerate(frame.signals):
+            if signal.is_little_endian == False:
                 signal._startbit = signal.getStartbit(bitNumbering = 1, startLittle = True)
-                newdb._fl._list[i]._signals[j]._startbit = signal._startbit
+#                newdb.frames[i].signals[j]._startbit = signal._startbit
 
     f = open(filename,"w")
     if representers:

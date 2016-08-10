@@ -56,13 +56,13 @@ def propagateChanges(res):
 
 def compareDb(db1, db2, ignore = None):
     result = compareResult()
-    for f1 in db1._fl._list:
+    for f1 in db1.frames:
         f2 = db2.frameById(f1._Id)
         if f2 is None:
             result.addChild(compareResult("deleted", "FRAME", f1))
         else:
             result.addChild(compareFrame(f1, f2, ignore))
-    for f2 in db2._fl._list:
+    for f2 in db2.frames:
         f1 = db1.frameById(f2._Id)
         if f1 is None:
             result.addChild(compareResult("added", "FRAME", f2))
@@ -73,14 +73,14 @@ def compareDb(db1, db2, ignore = None):
         result.addChild(compareAttributes(db1, db2, ignore))
 
 
-    for bu1 in db1._BUs._list:
-        bu2 = db2.boardUnitByName(bu1._name)
+    for bu1 in db1.boardUnits:
+        bu2 = db2.boardUnitByName(bu1.name)
         if bu2 is None:
             result.addChild(compareResult("deleted", "ecu", bu1))
         else:
             result.addChild(compareBu(bu1, bu2, ignore))
-    for bu2 in db2._BUs._list:
-        bu1 = db1.boardUnitByName(bu2._name)
+    for bu2 in db2.boardUnits:
+        bu1 = db1.boardUnitByName(bu2.name)
         if bu1 is None:
             result.addChild(compareResult("added", "ecu", bu2))
 
@@ -89,29 +89,29 @@ def compareDb(db1, db2, ignore = None):
     if ignore is not None and "DEFINE" in ignore and ignore["DEFINE"] == "*":
         pass
     else:
-        result.addChild(compareDefineList(db1._globalDefines, db2._globalDefines))
+        result.addChild(compareDefineList(db1.globalDefines, db2.globalDefines))
 
-        temp = compareDefineList(db1._buDefines, db2._buDefines)
+        temp = compareDefineList(db1.buDefines, db2.buDefines)
         temp._type = "ECU Defines"
         result.addChild(temp)
 
-        temp = compareDefineList(db1._frameDefines, db2._frameDefines)
+        temp = compareDefineList(db1.frameDefines, db2.frameDefines)
         temp._type = "Frame Defines"
         result.addChild(temp)
 
-        temp = compareDefineList(db1._signalDefines, db2._signalDefines)
+        temp = compareDefineList(db1.signalDefines, db2.signalDefines)
         temp._type = "Signal Defines"
         result.addChild(temp)
 
-    for vt1 in db1._valueTables:
-        if vt1 not in db2._valueTables:
+    for vt1 in db1.valueTables:
+        if vt1 not in db2.valueTables:
             result.addChild(compareResult("deleted", "valuetable " + vt1, db1._valueTables))
         else:
             result.addChild(compareValueTable(db1._valueTables[vt1], db2._valueTables[vt1]))
 
 
-    for vt2 in db2._valueTables:
-        if vt2 not in db1._valueTables:
+    for vt2 in db2.valueTables:
+        if vt2 not in db1.valueTables:
             result.addChild(compareResult("added", "valuetable " + vt2, db2._valueTables))
 
     propagateChanges(result)
@@ -133,20 +133,20 @@ def compareValueTable(vt1, vt2):
 def compareSignalGroup(sg1, sg2):
     result = compareResult("equal", "SignalGroup", sg1)
 
-    if sg1._name != sg2._name:
-        result.addChild(compareResult("changed", "SignalName", [sg1._name, sg2._name] ))
-    if sg1._Id != sg2._Id:
-        result.addChild(compareResult("changed", "SignalName", [str(sg1._Id), str(sg2._Id)] ))
+    if sg1.name != sg2.name:
+        result.addChild(compareResult("changed", "SignalName", [sg1.name, sg2.name] ))
+    if sg1.id != sg2.id:
+        result.addChild(compareResult("changed", "SignalName", [str(sg1.id), str(sg2.id)] ))
 
-    if sg1._members == None or sg2._members == None:
+    if sg1.signals == None or sg2.signals == None:
         logger.debug("Strange - sg wo members???")
         return result
-    for member in sg1._members:
-        if sg2.byName(member._name) is None:
-            result.addChild(compareResult("deleted", str(member._name), member))
-    for member in sg2._members:
-        if sg1.byName(member._name) is None:
-            result.addChild(compareResult("added", str(member._name), member))
+    for member in sg1.signals:
+        if sg2.byName(member.name) is None:
+            result.addChild(compareResult("deleted", str(member.name), member))
+    for member in sg2.signals:
+        if sg1.byName(member.name) is None:
+            result.addChild(compareResult("added", str(member.name), member))
     return result
 
 
@@ -158,11 +158,11 @@ def compareDefineList(d1list, d2list):
         else:
             d2 = d2list[definition]
             d1 = d1list[definition]
-            if d1._definition != d2._definition:
-                result.addChild(compareResult("changed", "Definition", d1._definition, [d1._definition, d2._definition] ))
+            if d1.definition != d2.definition:
+                result.addChild(compareResult("changed", "Definition", d1.definition, [d1.definition, d2.definition] ))
 
-            if d1._defaultValue != d2._defaultValue:
-                result.addChild(compareResult("changed", "DefaultValue", d1._definition, [d1._defaultValue, d2._defaultValue] ))
+            if d1.defaultValue != d2.defaultValue:
+                result.addChild(compareResult("changed", "DefaultValue", d1.definition, [d1.defaultValue, d2.defaultValue] ))
     for definition in d2list:
         if definition not in d1list:
             result.addChild(compareResult("added", "Define" + str(definition), d2list))
@@ -172,22 +172,22 @@ def compareAttributes(ele1, ele2, ignore = None):
     result = compareResult("equal", "ATTRIBUTES", ele1)
     if ignore is not None and "ATTRIBUTE" in ignore and (ignore["ATTRIBUTE"] == "*" or ignore["ATTRIBUTE"] == ele1):
         return result
-    for attribute in ele1._attributes:
-        if attribute not in ele2._attributes:
-            result.addChild(compareResult("deleted", str(attribute), ele1._attributes[attribute]))
-        elif ele1._attributes[attribute] != ele2._attributes[attribute]:
-            result.addChild(compareResult("changed", str(attribute), ele1._attributes[attribute],    [ ele1._attributes[attribute] , ele2._attributes[attribute]] ))
+    for attribute in ele1.attributes:
+        if attribute not in ele2.attributes:
+            result.addChild(compareResult("deleted", str(attribute), ele1.attributes[attribute]))
+        elif ele1.attributes[attribute] != ele2.attributes[attribute]:
+            result.addChild(compareResult("changed", str(attribute), ele1.attributes[attribute],    [ ele1.attributes[attribute] , ele2.attributes[attribute]] ))
 
-    for attribute in ele2._attributes:
-        if attribute not in ele1._attributes:
-            result.addChild(compareResult("added", str(attribute), ele2._attributes[attribute]))
+    for attribute in ele2.attributes:
+        if attribute not in ele1.attributes:
+            result.addChild(compareResult("added", str(attribute), ele2.attributes[attribute]))
     return result
 
 def compareBu(bu1, bu2, ignore=None):
     result = compareResult("equal", "ECU", bu1)
 
-    if bu1._comment != bu2._comment:
-        result.addChild(compareResult("changed", "ECU", bu1, [ bu1._comment,  bu2._comment]))
+    if bu1.comment != bu2.comment:
+        result.addChild(compareResult("changed", "ECU", bu1, [ bu1.comment,  bu2.comment]))
 
     if ignore is not None and "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
         pass
@@ -198,28 +198,28 @@ def compareBu(bu1, bu2, ignore=None):
 def compareFrame(f1, f2, ignore= None):
     result = compareResult("equal", "FRAME", f1)
 
-    for s1 in f1._signals:
-        s2 = f2.signalByName(s1._name)
+    for s1 in f1:
+        s2 = f2.signalByName(s1.name)
         if not s2:
             result.addChild(compareResult("deleted", "SIGNAL", s1))
         else:
             result.addChild(compareSignal(s1, s2, ignore))
 
-    if f1._name != f2._name:
-        result.addChild(compareResult("changed", "Name", f1, [f1._name, f2._name]))
-    if f1._Size != f2._Size:
-        result.addChild(compareResult("changed", "dlc", f1, ["dlc: %d" % f1._Size, "dlc: %d" % f2._Size]))
-    if f1._extended != f2._extended:
+    if f1.name != f2.name:
+        result.addChild(compareResult("changed", "Name", f1, [f1.name, f2.name]))
+    if f1.size != f2.size:
+        result.addChild(compareResult("changed", "dlc", f1, ["dlc: %d" % f1.size, "dlc: %d" % f2.size]))
+    if f1.extended != f2.extended:
         result.addChild(compareResult("changed", "FRAME", f1, ["extended-Flag: %d" % f1._extended, "extended-Flag: %d" % f2._extended]))
-    if f2._comment == None:
-        f2._comment = ""
-    if f1._comment == None:
-        f1._comment = ""
-    if f1._comment != f2._comment:
-        result.addChild(compareResult("changed", "FRAME", f1, ["comment: " +  f1._comment , "comment: " +  f2._comment]))
+    if f2.comment == None:
+        f2.comment = ""
+    if f1.comment == None:
+        f1.comment = ""
+    if f1.comment != f2.comment:
+        result.addChild(compareResult("changed", "FRAME", f1, ["comment: " +  f1.comment , "comment: " +  f2.comment]))
 
     for s2 in f2._signals:
-        s1 = f1.signalByName(s2._name)
+        s1 = f1.signalByName(s2.name)
         if not s1:
             result.addChild(compareResult("added", "SIGNAL", s2))
 
@@ -228,22 +228,22 @@ def compareFrame(f1, f2, ignore= None):
     else:
         result.addChild(compareAttributes(f1, f2, ignore))
 
-    for transmitter in f1._Transmitter:
-        if transmitter not in f2._Transmitter:
+    for transmitter in f1.transmitter:
+        if transmitter not in f2.transmitter:
             result.addChild(compareResult("removed", "Frame-Transmitter", f1))
-    for transmitter in f2._Transmitter:
-        if transmitter not in f1._Transmitter:
+    for transmitter in f2.transmitter:
+        if transmitter not in f1.transmitter:
             result.addChild(compareResult("added", "Frame-Transmitter", f2))
 
-    for sg1 in f1._SignalGroups:
-        sg2 = f2.signalGroupbyName(sg1._name)
+    for sg1 in f1.SignalGroups:
+        sg2 = f2.signalGroupbyName(sg1.name)
         if sg2 is None:
             result.addChild(compareResult("removed", "Signalgroup", sg1))
         else:
             result.addChild(compareSignalGroup(sg1,sg2))
 
     for sg2 in f2._SignalGroups:
-        if f1.signalGroupbyName(sg2._name) is None:
+        if f1.signalGroupbyName(sg2.name) is None:
             result.addChild(compareResult("added", "Signalgroup", sg1))
     return result
 
@@ -270,9 +270,9 @@ def compareSignal(s1,s2, ignore = None):
         result.addChild(compareResult("changed", "multiplex", s1, [str(s1._multiplex), str(s2._multiplex)]))
     if s1._unit != s2._unit:
         result.addChild(compareResult("changed", "unit", s1, [ s1._unit,  s2._unit]))
-    if s1._comment is not None and s2._comment is not None and s1._comment != s2._comment:
-        if s1._comment.replace("\n"," ") != s2._comment.replace("\n"," "):
-            result.addChild(compareResult("changed", "comment", s1, [ s1._comment,  s2._comment]))
+    if s1.comment is not None and s2.comment is not None and s1.comment != s2.comment:
+        if s1.comment.replace("\n"," ") != s2.comment.replace("\n"," "):
+            result.addChild(compareResult("changed", "comment", s1, [ s1.comment,  s2.comment]))
         else:
             result.addChild(compareResult("changed", "comment", s1, ["only whitespaces differ", ""]))
 
@@ -300,8 +300,8 @@ def dumpResult(res, depth = 0):
         for _ in range(0,depth):
             print(" ", end=' ')
         print(res._type + " " + res._result + " ", end=' ')
-        if  hasattr(res._ref, '_name'):
-            print(res._ref._name)
+        if  hasattr(res._ref, 'name'):
+            print(res._ref.name)
         else:
             print(" ")
         if  res._changes is not None and res._changes[0] is not None and res._changes[1] is not None:
@@ -356,5 +356,5 @@ def main():
     obj = compareDb(db1, db2, ignore)
     dumpResult(obj)
 
-if __name__ == '__main__':
+if _name__ == '__main__':
     sys.exit(main())

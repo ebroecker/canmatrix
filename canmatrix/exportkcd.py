@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-from builtins import *
 #!/usr/bin/env python
 
 
@@ -27,27 +25,29 @@ from builtins import *
 # this script exports kcd-files from a canmatrix-object
 # kcd-files are the can-matrix-definitions of the kayak (http://kayak.2codeornot2code.org/)
 
+from __future__ import absolute_import
+from builtins import *
 from lxml import etree
 from .canmatrix import *
 import os
 import re
 
 def createSignal(signal, nodeList, typeEnums):
-    sig = etree.Element('Signal', name=signal._name, offset=str(signal.getStartbit()))
-    if signal._signalsize > 1:
-        sig.set("length", str(signal._signalsize))
-    if signal._is_little_endian == 0:
+    sig = etree.Element('Signal', name=signal.name, offset=str(signal.getStartbit()))
+    if signal.signalsize > 1:
+        sig.set("length", str(signal.signalsize))
+    if signal.is_little_endian == 0:
         sig.set('endianess',"big")
 
-    comment = signal._comment
+    comment = signal.comment
 
-    if len(signal._attributes.items()) > 0:
+    if len(signal.attributes.items()) > 0:
         if comment is None:
             comment = ''
         else:
             comment += '\n'
 
-    for attrib,val in sorted(signal._attributes.items()):
+    for attrib,val in sorted(signal.attributes.items()):
         try:
             if attrib in typeEnums and int(val) < len(typeEnums[attrib]):
                 val = typeEnums[attrib][int(val)]
@@ -61,32 +61,32 @@ def createSignal(signal, nodeList, typeEnums):
         sig.append(notes)
 
     value = etree.Element('Value')
-    if signal._is_signed:
+    if signal.is_signed:
         value.set('type',"signed")
 
-    if float(signal._factor) != 1:
-        value.set('slope',str("%g" % signal._factor))
-    if float(signal._offset) != 0:
-        value.set('intercept',str("%g" % signal._offset))
-    if float(signal._min) != 0:
-        value.set('min',str("{:.16g}".format(signal._min)))
-    if float(signal._max) != 1 and float(signal._max) != 0:
-        value.set('max',str("{:.16g}".format(signal._max)))
-    if len(signal._unit) > 0:
-        value.set('unit',signal._unit)
+    if float(signal.factor) != 1:
+        value.set('slope',str("%g" % signal.factor))
+    if float(signal.offset) != 0:
+        value.set('intercept',str("%g" % signal.offset))
+    if float(signal.min) != 0:
+        value.set('min',str("{:.16g}".format(signal.min)))
+    if float(signal.max) != 1 and float(signal.max) != 0:
+        value.set('max',str("{:.16g}".format(signal.max)))
+    if len(signal.unit) > 0:
+        value.set('unit',signal.unit)
 
     if len(value.attrib) > 0:
         sig.append(value)
 
-    if len(signal._values) > 0:
+    if len(signal.values) > 0:
         labelset = etree.Element('LabelSet')
-        for valueVal,valName in sorted(signal._values.items(), key=lambda x: int(x[0])):
+        for valueVal,valName in sorted(signal.values.items(), key=lambda x: int(x[0])):
             label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
             labelset.append(label)
         sig.append(labelset)
 
     consumer = etree.Element('Consumer')
-    for receiver in signal._receiver:
+    for receiver in signal.receiver:
         if len(receiver) > 1 and receiver in nodeList:
             noderef = etree.Element('NodeRef', id=str(nodeList[receiver]))
             consumer.append(noderef)
@@ -98,8 +98,8 @@ def createSignal(signal, nodeList, typeEnums):
 def exportKcd(db, filename):
 
     signalTypeEnums = {}
-    for (typename,define) in list(db._signalDefines.items()):
-        defines = re.split(r"\s+", define._definition)
+    for (typename,define) in list(db.signalDefines.items()):
+        defines = re.split(r"\s+", define.definition)
         define_type = defines[0]
         if define_type != 'ENUM':
             continue
@@ -126,33 +126,33 @@ def exportKcd(db, filename):
     # Nodes:
     id = 1
     nodeList = {};
-    for bu in db._BUs._list:
-        node = etree.Element('Node', name=bu._name, id="%d" %id)
+    for bu in db.boardUnits:
+        node = etree.Element('Node', name=bu.name, id="%d" %id)
         root.append(node)
-        nodeList[bu._name] = id;
+        nodeList[bu.name] = id;
         id += 1
     # Bus
-    if 'Baudrate' in db._attributes:
-        bus = etree.Element('Bus', baudrate=db._attributes['Baudrate'])
+    if 'Baudrate' in db.attributes:
+        bus = etree.Element('Bus', baudrate=db.attributes['Baudrate'])
     else:
         bus = etree.Element('Bus')
 
     bus.set("name",os.path.splitext(filename)[0])
 
-    for frame in db._fl._list:
-        message = etree.Element('Message', id="0x%03X" % frame._Id, name=frame._name, length = str(int(frame._Size)))
+    for frame in db.frames:
+        message = etree.Element('Message', id="0x%03X" % frame.id, name=frame.name, length = str(int(frame.size)))
 
-        if frame._extended == 1:
+        if frame.extended == 1:
             message.set("format", "extended")
-        if "GenMsgCycleTime" in frame._attributes:
-            cycleTime = int(frame._attributes["GenMsgCycleTime"])
+        if "GenMsgCycleTime" in frame.attributes:
+            cycleTime = int(frame.attributes["GenMsgCycleTime"])
             if cycleTime > 0:
                 message.set("triggered", "true")
                 message.set("interval", "%d" % cycleTime)
 
         producer = etree.Element('Producer')
 
-        for transmitter in frame._Transmitter:
+        for transmitter in frame.transmitter:
             if len(transmitter) > 1 and transmitter in nodeList:
                 noderef = etree.Element('NodeRef', id=str(nodeList[transmitter]))
                 producer.append(noderef)
@@ -160,30 +160,30 @@ def exportKcd(db, filename):
             message.append(producer)
 
         comment = etree.Element('Notes')
-        if frame._comment is not None:
-            comment.text = frame._comment
+        if frame.comment is not None:
+            comment.text = frame.comment
             message.append(comment)
 
 
         # standard-signals:
-        for signal in frame._signals:
-            if signal._multiplex is None:
+        for signal in frame.signals:
+            if signal.multiplex is None:
                 sig = createSignal(signal, nodeList, signalTypeEnums)
                 message.append(sig)
 
         # check Multiplexor if present:
         multiplexor = None
-        for signal in frame._signals:
-            if signal._multiplex is not None and signal._multiplex == 'Multiplexor':
-                multiplexor = etree.Element('Multiplex', name=signal._name, offset=str(signal.getStartbit()), length=str(int(signal._signalsize)))
+        for signal in frame.signals:
+            if signal.multiplex is not None and signal.multiplex == 'Multiplexor':
+                multiplexor = etree.Element('Multiplex', name=signal.name, offset=str(signal.getStartbit()), length=str(int(signal.signalsize)))
                 value = etree.Element('Value')
-                if float(signal._min) != 0:
-                    value.set('min', "%g" % signal._min)
-                if float(signal._max) != 1:
-                    value.set('max', "%g" % signal._max)
+                if float(signal.min) != 0:
+                    value.set('min', "%g" % signal.min)
+                if float(signal.max) != 1:
+                    value.set('max', "%g" % signal.max)
                 multiplexor.append(value)
                 labelset = etree.Element('LabelSet')
-                for valueVal,valName in sorted(signal._values.items(), key=lambda x: int(x[0])):
+                for valueVal,valName in sorted(signal.values.items(), key=lambda x: int(x[0])):
                     label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
                     labelset.append(label)
                 multiplexor.append(labelset)
@@ -196,8 +196,8 @@ def exportKcd(db, filename):
             for i in range(0,1<<int(multiplexor.get('length'))):
                 empty = 0
                 muxgroup = etree.Element('MuxGroup', count=str(i))
-                for signal in frame._signals:
-                    if signal._multiplex is not None and signal._multiplex == i:
+                for signal in frame.signals:
+                    if signal.multiplex is not None and signal.multiplex == i:
                         sig = createSignal(signal, nodeList, signalTypeEnums)
                         muxgroup.append(sig)
                         empty = 1

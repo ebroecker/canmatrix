@@ -1,12 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
-import logging
-logger = logging.getLogger('root')
-
-from builtins import *
-import math
 #!/usr/bin/env python
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -34,6 +25,15 @@ import math
 #
 #TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL == BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
 
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+
+import logging
+logger = logging.getLogger('root')
+
+from builtins import *
+import math
 from .canmatrix import *
 import re
 import codecs
@@ -123,7 +123,7 @@ def importDbc(filename, **options):
                                 max=temp.group(9),
                                 unit=temp_raw.group(10).decode(dbcImportEncoding),
                                 receiver=receiver)     
-                if not tempSig._is_little_endian:
+                if not tempSig.is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc
                     tempSig.setStartbit(int(temp.group(2)), bitNumbering = 1)
                 db._fl.addSignalToLastFrame(tempSig)
@@ -151,7 +151,7 @@ def importDbc(filename, **options):
                                   unit=temp_raw.group(11).decode(dbcImportEncoding),
                                   receiver=receiver,
                                   multiplex=multiplex)     
-                if not tempSig._is_little_endian:
+                if not tempSig.is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc
                     tempSig.setMsbStartbit(int(temp.group(3)))                
                 
@@ -367,11 +367,11 @@ def importDbc(filename, **options):
 #               else:
 #                       print "Unrecocniced line: " + l + " (%d) " % i
 
-    for bo in db._fl._list:
+    for frame in db.frames:
         # receiver is only given in the signals, so do propagate the receiver to the frame:
-        bo.updateReceiver();        
+        frame.updateReceiver();        
         # extended-flag is implicite in canid, thus repair this:
-        if bo._Id > 0x80000000:
-            bo._Id -= 0x80000000
-            bo._extended = 1
+        if frame.id > 0x80000000:
+            frame.id -= 0x80000000
+            frame.extended = 1
     return db

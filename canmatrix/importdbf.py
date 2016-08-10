@@ -207,7 +207,7 @@ def importDbf(filename, **options):
                   #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug ("Extended")
-                    newBo._extended = 1
+                    newBo.extended = 1
 
             if line.startswith("[NODE]"):
                 temstr = line.strip()[6:].strip()
@@ -267,7 +267,7 @@ def importDbf(filename, **options):
                     value = temp.group(2)
                     newSig.addValues(value, name)
 
-        for frame in db._fl._list:
+        for frame in db.frames:
             # receiver is only given in the signals, so do propagate the receiver to the frame:
             frame.updateReceiver();        
     return db

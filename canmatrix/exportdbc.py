@@ -69,152 +69,152 @@ def exportDbc(db, filename, **options):
     f.write( "BU_: ".encode(dbcExportEncoding))
     id = 1
     nodeList = {};
-    for bu in db._BUs._list:
-        f.write((bu._name + " ").encode(dbcExportEncoding))
+    for bu in db.boardUnits:
+        f.write((bu.name + " ").encode(dbcExportEncoding))
     f.write("\n\n".encode(dbcExportEncoding))
 
     #ValueTables
-    for table in db._valueTables:
+    for table in db.valueTables:
         f.write(("VAL_TABLE_ " + table).encode(dbcExportEncoding))
-        for row in db._valueTables[table]:
-            f.write((' ' + row + ' "' + db._valueTables[table][row] + '"').encode(dbcExportEncoding))
+        for row in db.valueTables[table]:
+            f.write((' ' + row + ' "' + db.valueTables[table][row] + '"').encode(dbcExportEncoding))
         f.write(";\n".encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #Frames
-    for bo in db._fl._list:
-        if bo._Transmitter.__len__() == 0:
-            bo._Transmitter = ["Vector__XXX"]
+    for bo in db.frames:
+        if bo.transmitter.__len__() == 0:
+            bo.addTransmitter("Vector__XXX")
 
-        if bo._extended == 1:
-            bo._Id += 0x80000000
+        if bo.extended == 1:
+            bo.id += 0x80000000
 
-        f.write(("BO_ %d " % bo._Id + bo._name + ": %d " % bo._Size + bo._Transmitter[0] + "\n").encode(dbcExportEncoding))
-        for signal in bo._signals:
-            name = normalizeName(signal._name, whitespaceReplacement)
+        f.write(("BO_ %d " % bo.id + bo.name + ": %d " % bo.size + bo.transmitter[0] + "\n").encode(dbcExportEncoding))
+        for signal in bo.signals:
+            name = normalizeName(signal.name, whitespaceReplacement)
             f.write((" SG_ " + name).encode(dbcExportEncoding))
-            if signal._multiplex == 'Multiplexor':
+            if signal.multiplex == 'Multiplexor':
                 f.write(' M '.encode(dbcExportEncoding))
-            elif signal._multiplex is not None:
-                f.write((" m%d " % int(signal._multiplex)).encode(dbcExportEncoding))
+            elif signal.multiplex is not None:
+                f.write((" m%d " % int(signal.multiplex)).encode(dbcExportEncoding))
 
             startbit = signal.getStartbit(bitNumbering = 1)
 
-            if signal._is_signed:
+            if signal.is_signed:
                 sign = '-'
             else:
                 sign = '+'
-            f.write((" : %d|%d@%d%c" % (startbit, signal._signalsize,signal._is_little_endian, sign)).encode(dbcExportEncoding))
-            f.write((" (%g,%g)" % (signal._factor, signal._offset)).encode(dbcExportEncoding))
-            f.write((" [{}|{}]".format(signal._min, signal._max)).encode(dbcExportEncoding))
+            f.write((" : %d|%d@%d%c" % (startbit, signal.signalsize,signal.is_little_endian, sign)).encode(dbcExportEncoding))
+            f.write((" (%g,%g)" % (signal.factor, signal.offset)).encode(dbcExportEncoding))
+            f.write((" [{}|{}]".format(signal.min, signal.max)).encode(dbcExportEncoding))
             f.write(' "'.encode(dbcExportEncoding))
 
-            f.write(signal._unit.encode(dbcExportEncoding))
+            f.write(signal.unit.encode(dbcExportEncoding))
             f.write('" '.encode(dbcExportEncoding))
-            if signal._receiver.__len__() == 0:
-                signal._receiver = ['Vector__XXX']
-            f.write((','.join(signal._receiver) + "\n").encode(dbcExportEncoding))
+            if signal.receiver.__len__() == 0:
+                signal.addReceiver('Vector__XXX')
+            f.write((','.join(signal.receiver) + "\n").encode(dbcExportEncoding))
         f.write("\n".encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #second Sender:
-    for bo in db._fl._list:
-        if bo._Transmitter.__len__() > 1:
-            f.write(("BO_TX_BU_ %d : %s;\n" % (bo._Id,','.join(bo._Transmitter))).encode(dbcExportEncoding))
+    for bo in db.frames:
+        if bo.transmitter.__len__() > 1:
+            f.write(("BO_TX_BU_ %d : %s;\n" % (bo.id,','.join(bo.transmitter))).encode(dbcExportEncoding))
 
     #frame comments
-    for bo in db._fl._list:
-        if bo._comment is not None and bo._comment.__len__() > 0:
-            f.write(("CM_ BO_ " + "%d " % bo._Id + ' "').encode(dbcExportEncoding))
-            f.write(bo._comment.replace('"','\\"').encode(dbcExportCommentEncoding))
+    for bo in db.frames:
+        if bo.comment is not None and bo.comment.__len__() > 0:
+            f.write(("CM_ BO_ " + "%d " % bo.id + ' "').encode(dbcExportEncoding))
+            f.write(bo.comment.replace('"','\\"').encode(dbcExportCommentEncoding))
             f.write('";\n'.encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #signal comments
-    for bo in db._fl._list:
-        for signal in bo._signals:
-            if signal._comment is not None and signal._comment.__len__() > 0:
-                name = normalizeName(signal._name, whitespaceReplacement)
-                f.write(("CM_ SG_ " + "%d " % bo._Id + name  + ' "').encode(dbcExportEncoding))
-                f.write(signal._comment.replace('"','\\"').encode(dbcExportCommentEncoding))
+    for bo in db.frames:
+        for signal in bo.signals:
+            if signal.comment is not None and signal.comment.__len__() > 0:
+                name = normalizeName(signal.name, whitespaceReplacement)
+                f.write(("CM_ SG_ " + "%d " % bo.id + name  + ' "').encode(dbcExportEncoding))
+                f.write(signal.comment.replace('"','\\"').encode(dbcExportCommentEncoding))
                 f.write('";\n'.encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #boarUnit comments
-    for bu in db._BUs._list:
-        if bu._comment is not None and bu._comment.__len__() > 0:
-            f.write(("CM_ BU_ " + bu._name + ' "' + bu._comment.replace('"','\\"') + '";\n').encode(dbcExportCommentEncoding))
+    for bu in db.boardUnits:
+        if bu.comment is not None and bu.comment.__len__() > 0:
+            f.write(("CM_ BU_ " + bu.name + ' "' + bu.comment.replace('"','\\"') + '";\n').encode(dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     defaults = {}
-    for (type,define) in sorted(list(db._frameDefines.items())):
-        f.write(('BA_DEF_ BO_ "' + type + '" ').encode(dbcExportEncoding) + define._definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
-        if type not in defaults and define._defaultValue is not None:
-            defaults[type] = define._defaultValue
-    for (type,define) in sorted(list(db._signalDefines.items())):
-        f.write(('BA_DEF_ SG_ "' + type + '" ').encode(dbcExportEncoding) + define._definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
-        if type not in defaults and define._defaultValue is not None:
-            defaults[type] = define._defaultValue
-    for (type,define) in sorted(list(db._buDefines.items())):
-        f.write(('BA_DEF_ BU_ "' + type + '" ').encode(dbcExportEncoding) + define._definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
-        if type not in defaults and define._defaultValue is not None:
-            defaults[type] = define._defaultValue
-    for (type,define) in sorted(list(db._globalDefines.items())):
-        f.write(('BA_DEF_ "' + type + '" ').encode(dbcExportEncoding) + define._definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
-        if type not in defaults and define._defaultValue is not None:
-            defaults[type] = define._defaultValue
+    for (type,define) in sorted(list(db.frameDefines.items())):
+        f.write(('BA_DEF_ BO_ "' + type + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
+        if type not in defaults and define.defaultValue is not None:
+            defaults[type] = define.defaultValue
+    for (type,define) in sorted(list(db.signalDefines.items())):
+        f.write(('BA_DEF_ SG_ "' + type + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
+        if type not in defaults and define.defaultValue is not None:
+            defaults[type] = define.defaultValue
+    for (type,define) in sorted(list(db.buDefines.items())):
+        f.write(('BA_DEF_ BU_ "' + type + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
+        if type not in defaults and define.defaultValue is not None:
+            defaults[type] = define.defaultValue
+    for (type,define) in sorted(list(db.globalDefines.items())):
+        f.write(('BA_DEF_ "' + type + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
+        if type not in defaults and define.defaultValue is not None:
+            defaults[type] = define.defaultValue
 
     for define in sorted(defaults):
         f.write(('BA_DEF_DEF_ "' + define + '" ').encode(dbcExportEncoding) + defaults[define].encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
 
 
     #boardunit-attributes:
-    for bu in db._BUs._list:
-        for attrib,val in sorted(bu._attributes.items()):
+    for bu in db.boardUnits:
+        for attrib,val in sorted(bu.attributes.items()):
             if not val:
                 val = '""'
-            f.write(('BA_ "' + attrib + '" BU_ ' + bu._name + ' ' + str(val)  + ';\n').encode(dbcExportEncoding))
+            f.write(('BA_ "' + attrib + '" BU_ ' + bu.name + ' ' + str(val)  + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #global-attributes:
-    for attrib,val in sorted(db._attributes.items()):
+    for attrib,val in sorted(db.attributes.items()):
         if not val:
             val = '""'
         f.write(('BA_ "' + attrib + '" ' + val  + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #messages-attributes:
-    for bo in db._fl._list:
-        for attrib,val in sorted(bo._attributes.items()):
+    for bo in db.frames:
+        for attrib,val in sorted(bo.attributes.items()):
             if not val:
                 val = '""'
-            f.write(('BA_ "' + attrib + '" BO_ %d ' % bo._Id + val + ';\n').encode(dbcExportEncoding))
+            f.write(('BA_ "' + attrib + '" BO_ %d ' % bo.id + val + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #signal-attributes:
-    for bo in db._fl._list:
-        for signal in bo._signals:
-            for attrib,val in sorted(signal._attributes.items()):
-                name = normalizeName(signal._name, whitespaceReplacement)
+    for bo in db.frames:
+        for signal in bo.signals:
+            for attrib,val in sorted(signal.attributes.items()):
+                name = normalizeName(signal.name, whitespaceReplacement)
                 if not val:
                     val = '""'
-                f.write(('BA_ "' + attrib + '" SG_ %d ' % bo._Id + name + ' ' + val  + ';\n').encode(dbcExportEncoding))
+                f.write(('BA_ "' + attrib + '" SG_ %d ' % bo.id + name + ' ' + val  + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     #signal-values:
-    for bo in db._fl._list:
-        for signal in bo._signals:
-            if signal._values:
-                f.write(('VAL_ %d ' % bo._Id + signal._name).encode(dbcExportEncoding))
-                for attrib,val in sorted(signal._values.items(), key=lambda x: int(x[0])):
+    for bo in db.frames:
+        for signal in bo.signals:
+            if signal.values:
+                f.write(('VAL_ %d ' % bo.id + signal.name).encode(dbcExportEncoding))
+                for attrib,val in sorted(signal.values.items(), key=lambda x: int(x[0])):
                     f.write((' ' + str(attrib) + ' "' + val + '"').encode(dbcExportEncoding))
                 f.write(";\n".encode(dbcExportEncoding));
 
 
     #signal-groups:
-    for bo in db._fl._list:
-        for sigGroup in bo._SignalGroups:
-            f.write(("SIG_GROUP_ " + str(bo._Id) + " " + sigGroup._name + " " + str(sigGroup._Id)+ " :").encode(dbcExportEncoding))
-            for signal in sigGroup._members:
-                f.write((" " + signal._name).encode(dbcExportEncoding))
+    for bo in db.frames:
+        for sigGroup in bo.SignalGroups:
+            f.write(("SIG_GROUP_ " + str(bo.id) + " " + sigGroup.name + " " + str(sigGroup.id)+ " :").encode(dbcExportEncoding))
+            for signal in sigGroup.signals:
+                f.write((" " + signal.name).encode(dbcExportEncoding))
             f.write(";\n".encode(dbcExportEncoding))

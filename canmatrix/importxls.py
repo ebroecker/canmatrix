@@ -240,26 +240,26 @@ def importXls(filename, **options):
                 (factor, unit) = factor.strip().split(" ",1)
                 factor = factor.strip()
                 unit = unit.strip()
-                newSig._unit = unit
+                newSig.unit = unit
                 try:
-                    newSig._factor = float(factor)
+                    newSig.factor = float(factor)
                 except:
                     logger.warn("Some error occurred while decoding scale: Signal: %s; \"%s\"" % (signalName, sh.cell(rownum,index['function']).value))
             else:
                 unit = factor.strip()
-                newSig._unit = unit
-                newSig._factor = 1
+                newSig.unit = unit
+                newSig.factor = 1
 
 
         if ".." in test:
             (mini, maxi) = test.strip().split("..",2)
             unit = ""
             try:
-                newSig._offset = float(mini)
-                newSig._min = float(mini)
-                newSig._max = float(maxi)
+                newSig.offset = float(mini)
+                newSig.min = float(mini)
+                newSig.max = float(maxi)
             except:
-                newSig._offset = 0
+                newSig.offset = 0
 
 
         elif valueName.__len__() > 0:
@@ -267,12 +267,12 @@ def importXls(filename, **options):
                 value = int(float(value))
                 newSig.addValues(value, valueName)
             maxi = pow(2,signalLength)-1
-            newSig._max = float(maxi)
+            newSig.max = float(maxi)
         else:
-            newSig._offset = 0
+            newSig.offset = 0
 
 
-    for frame in db._fl._list:
+    for frame in db.frames:
         frame.updateReceiver()
         frame.calcDLC()
 

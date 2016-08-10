@@ -37,38 +37,38 @@ def createSignal(signal):
     global enums
     global enumDict
     output = ""
-    output += "Var=%s " % (signal._name)
-    if not signal._is_signed:
+    output += "Var=%s " % (signal.name)
+    if not signal.is_signed:
         output += "unsigned "
     else:
         output += "signed "
     startBit = signal.getStartbit()
-    if signal._is_little_endian == 0:
+    if signal.is_little_endian == 0:
         #Motorola
-        output += "%d,%d -m " % (startBit, signal._signalsize)
+        output += "%d,%d -m " % (startBit, signal.signalsize)
     else:
-        output += "%d,%d -i " % (startBit, signal._signalsize)
-    if len(signal._unit) > 0:
-        output += "/u:%s " % ( signal._unit[0:16])
-    if float(signal._factor) != 1:
-        output += "/f:%g " % (float(signal._factor))
-    if float(signal._offset) != 0:
-        output += "/o:%g " % (float(signal._offset))
-    output += "/min:{} /max:{} ".format(float(signal._min), float(signal._max))
+        output += "%d,%d -i " % (startBit, signal.signalsize)
+    if len(signal.unit) > 0:
+        output += "/u:%s " % ( signal.unit[0:16])
+    if float(signal.factor) != 1:
+        output += "/f:%g " % (float(signal.factor))
+    if float(signal.offset) != 0:
+        output += "/o:%g " % (float(signal.offset))
+    output += "/min:{} /max:{} ".format(float(signal.min), float(signal.max))
 
-    if "GenSigStartValue" in signal._attributes:
-        default = float(signal._attributes["GenSigStartValue"]) * float(signal._factor)
-        if default != 0 and default >= float(signal._min) and default <= float(signal._max):
+    if "GenSigStartValue" in signal.attributes:
+        default = float(signal.attributes["GenSigStartValue"]) * float(signal.factor)
+        if default != 0 and default >= float(signal.min) and default <= float(signal.max):
             output += "/d:%g " % (default)
 
-    if len(signal._values) > 0:
-        valTabName = signal._name
+    if len(signal.values) > 0:
+        valTabName = signal.name
         output += "/e:%s" % (valTabName)
         if valTabName not in enumDict:
-            enums += "enum " + valTabName + "(" + ', '.join('%s="%s"' % (key,val) for (key,val) in sorted(signal._values.items())) + ")\n"
+            enums += "enum " + valTabName + "(" + ', '.join('%s="%s"' % (key,val) for (key,val) in sorted(signal.values.items())) + ")\n"
             enumDict[valTabName] = 1
-    if signal._comment is not None and len(signal._comment) > 0:
-        output += " // " + signal._comment.replace('\n',' ').replace('\r',' ')
+    if signal.comment is not None and len(signal.comment) > 0:
+        output += " // " + signal.comment.replace('\n',' ').replace('\r',' ')
     output += "\n"
     return output
 
@@ -99,66 +99,66 @@ Title=\"canmatrix-Export\"
     output = "\n{SENDRECEIVE}\n"
 
     #trigger all frames
-    for frame in db._fl._list:
-        name = "[" + frame._name + "]\n"
+    for frame in db.frames:
+        name = "[" + frame.name + "]\n"
 
-        idType = "ID=%8Xh" % (frame._Id)
-        if frame._comment is not None:
-            idType += " // "+ frame._comment.replace('\n',' ').replace('\r',' ')
+        idType = "ID=%8Xh" % (frame.id)
+        if frame.comment is not None:
+            idType += " // "+ frame.comment.replace('\n',' ').replace('\r',' ')
         idType += "\n"
-        if frame._extended == 1:
+        if frame.extended == 1:
             idType += "Type=Extended\n"
         else:
             idType += "Type=Standard\n"
 
         #check if frame has multiplexed signals
         multiplex = 0
-        for signal in frame._signals:
-            if signal._multiplex != None:
+        for signal in frame.signals:
+            if signal.multiplex != None:
                 multiplex = 1
 
         #if multiplex-signal:
         if multiplex == 1:
             #search for multiplexor in frame:
-            for signal in frame._signals:
-                if signal._multiplex == 'Multiplexor':
+            for signal in frame.signals:
+                if signal.multiplex == 'Multiplexor':
                     muxSignal = signal
 
 
             # ticker all possible mux-groups as i (0 - 2^ (number of bits of multiplexor))
             first = 0
-            for i in range(0,1<<int(muxSignal._signalsize)):
+            for i in range(0,1<<int(muxSignal.signalsize)):
                 found = 0
                 muxOut = ""
                 #ticker all signals
-                for signal in frame._signals:
+                for signal in frame.signals:
                     # if signal is in mux-group i
-                    if signal._multiplex == i:
+                    if signal.multiplex == i:
                         muxOut = name
                         if first == 0:
                             muxOut += idType
                             first = 1
-                        muxOut += "DLC=%d\n" % (frame._Size)
+                        muxOut += "DLC=%d\n" % (frame.size)
 
 
-                        muxName = muxSignal._name + "%d" % i
+                        muxName = muxSignal.name + "%d" % i
 
                         muxOut += "Mux=" + muxName
                         startBit = muxSignal.getStartbit()
-                        if signal._is_little_endian == 0:
+                        if signal.is_little_endian == 0:
                             #Motorola
-                            muxOut += " %d,%d %d -m" % (startBit, muxSignal._signalsize, i)
+                            muxOut += " %d,%d %d -m" % (startBit, muxSignal.signalsize, i)
                         else:
-                            muxOut += " %d,%d %d" % (startBit, muxSignal._signalsize, i)
-                        if muxSignal._values is not None and i in muxSignal._values:
-                            muxOut += "// " + muxSignal._values[i].replace('\n','').replace('\r','')
+                            muxOut += " %d,%d %d" % (startBit, muxSignal.signalsize, i)
+                        if muxSignal.values is not None and i in muxSignal.values:
+                            muxOut += "// " + muxSignal.values[i].replace('\n','').replace('\r','')
                         muxOut += "\n"
                         found = 1
                         break
 
                 if found == 1:
-                    for signal in frame._signals:
-                        if signal._multiplex == i or signal._multiplex == None:
+                    for signal in frame.signals:
+                        if signal.multiplex == i or signal.multiplex == None:
                             muxOut += createSignal(signal)
                     output += muxOut + "\n"
 
@@ -167,10 +167,10 @@ Title=\"canmatrix-Export\"
             #no multiplex signals in frame, just 'normal' signals
             output += name
             output += idType
-            output += "DLC=%d\n" % (frame._Size)
-            if "GenMsgCycleTime" in frame._attributes:
-                output += "CycleTime=" + frame._attributes["GenMsgCycleTime"] + "\n"
-            for signal in frame._signals:
+            output += "DLC=%d\n" % (frame.size)
+            if "GenMsgCycleTime" in frame.attributes:
+                output += "CycleTime=" + frame.attributes["GenMsgCycleTime"] + "\n"
+            for signal in frame.signals:
                 output += createSignal(signal)
             output += "\n"
     #write outputfile

@@ -43,10 +43,10 @@ def importJson(filename, **options):
                               Id=frame["id"],
                               dlc=8)
     
-            if "is_extended_frame" in frame and frame["is_extended_frame"]:
-                newframe._extended = 1
+            if "isextended_frame" in frame and frame["isextended_frame"]:
+                newframe.extended = 1
             else:
-                newframe._extended = 0
+                newframe.extended = 0
 
 
             for signal in frame["signals"]:
@@ -66,7 +66,7 @@ def importJson(filename, **options):
                                 factor=signal["factor"], 
                                 offset=signal["offset"])     
 
-                if newsignal._is_little_endian == False:
+                if newsignal.is_little_endian == False:
 
                     newsignal.setStartbit(newsignal._startbit, bitNumbering = 1, startLittle = True)
                 newframe.addSignal(newsignal)

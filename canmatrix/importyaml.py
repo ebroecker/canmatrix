@@ -36,10 +36,10 @@ def importYaml(filename):
     db = yaml.load(f)
     f.close()
 
-    for i,frame in enumerate(db._fl._list):
-        for j,signal in enumerate(frame._signals):
-            if signal._is_little_endian == False:
+    for i,frame in enumerate(db.frames):
+        for j,signal in enumerate(frame.signals):
+            if signal.is_little_endian == False:
                 signal.setStartbit(signal._startbit, bitNumbering = 1, startLittle = True)
-                db._fl._list[i]._signals[j]._startbit = signal._startbit
+#                db.frames[i].signals[j]._startbit = signal._startbit
 
     return db

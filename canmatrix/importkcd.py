@@ -148,11 +148,11 @@ def importKcd(filename):
 
             if 'length' in message.attrib:
                 dlc = int(message.get('length'))
-                newBo._Size = dlc
+                newBo.size = dlc
 
             if 'format' in message.attrib:
                 if message.get('format') == "extended":
-                    newBo._extended = 1
+                    newBo.extended = 1
 
             multiplex = message.find('./' + namespace + 'Multiplex')
 
@@ -185,12 +185,12 @@ def importKcd(filename):
                     if multiplex.get('type') == 'signed':
                         is_signed = True
 
-                receiver = ""
+                receiver = []
                 consumers = multiplex.findall('./' + namespace + 'Consumer')
                 for consumer in consumers:
                     noderefs = consumer.findall('./' + namespace + 'NodeRef')
                     for noderef in noderefs:
-                        receiver += nodelist[noderef.get('id')] + ' '
+                        receiver.append(nodelist[noderef.get('id')])
 
                 newSig = Signal(multiplex.get('name'),
                                   startBit = startbit,
@@ -256,7 +256,7 @@ def importKcd(filename):
             if dlc is None:
                 newBo.calcDLC()
             else:
-                newBo._Size = dlc
+                newBo.size = dlc
 
 
             newBo.updateReceiver()

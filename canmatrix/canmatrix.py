@@ -1,8 +1,3 @@
-from __future__ import division
-
-import math
-
-
 #!/usr/bin/env python
 
 #Copyright (c) 2013, Eduard Broecker
@@ -27,6 +22,9 @@ import math
 
 #TODO: Definitions should be imported with disassembling not as complete string
 
+from __future__ import division
+import math
+
 class FrameList(object):
     """
     Keeps all Frames of a Canmatrix
@@ -39,13 +37,21 @@ class FrameList(object):
         Adds a Signal to the last addes Frame, this is mainly for importers
         """
         self._list[len(self._list)-1].addSignal(signal)
-    def addFrame(self, botschaft):
+        
+    def addFrame(self, frame):
         """
         Adds a Frame
         """
-        self._list.append(botschaft)
+        self._list.append(frame)
         return self._list[len(self._list)-1]
 
+    def removeFrame(self, frame):
+        """
+        Adds a Frame
+        """
+        self._list.remove(frame)
+
+        
     def byId(self, Id):
         """
         returns a Frame-Object by given Frame-ID
@@ -54,6 +60,7 @@ class FrameList(object):
             if test._Id == int(Id):
                 return test
         return None
+        
     def byName(self, Name):
         """
         returns a Frame-Object by given Frame-Name
@@ -63,6 +70,12 @@ class FrameList(object):
                 return test
         return None
 
+    def __iter__(self):
+        return iter(self._list)
+
+    def __len__(self):
+        return len(self._list)
+        
 class BoardUnit(object):
     """
     Contains one Boardunit/ECU
@@ -84,7 +97,25 @@ class BoardUnit(object):
     def __str__(self):
         return self._name
 
-class BoardUnitListe(object):
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+    #TODO - change all frames and signals [sender and receiver!]
+        self._name = value
+
+    @property
+    def attributes(self):
+        return self._attributes
+        
+    @property
+    def comment(self):
+        return self._comment       
+
+
+class BoardUnitList(object):
     """
     Contains all Boardunits/ECUs of a canmatrix in a list
     """
@@ -92,10 +123,17 @@ class BoardUnitListe(object):
         self._list = []
     def add(self,BU):
         """
-        add Boardunit/EDU to list
+        add Boardunit/ECU to list
         """
         if BU._name.strip() not in self._list:
             self._list.append(BU)
+
+    def remove(self,BU):
+        """
+        remove Boardunit/ECU to list
+        """
+        if BU._name.strip() not in self._list:
+            self._list.remove(BU)
 
     def byName(self, name):
         """
@@ -105,6 +143,11 @@ class BoardUnitListe(object):
             if test._name == name:
                 return test
         return None
+
+    def __iter__(self):
+        return iter(self._list)
+    def __len__(self):
+        return len(self._list)
 
 class Signal(object):
     """
@@ -203,12 +246,114 @@ class Signal(object):
         self._name = name
         self._attributes = {}
         self._values = {}
+        
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        self._name = value
 
+    @property
+    def attributes(self):
+        return self._attributes
+        
+    @property
+    def comment(self):
+        return self._comment       
+
+    @property
+    def multiplex(self):
+        return self._multiplex
+        
+    @property
+    def values(self):
+        return self._values
+    
+    @values.setter
+    def values(self, valueTable):
+        self._values = valueTable
+    
+
+    @property
+    def comment(self):
+        return self._comment
+
+    @property
+    def receiver(self):
+        return self._receiver
+ 
+    @property
+    def unit(self):
+        return self._unit
+ 
+    @unit.setter
+    def unit(self, unit):
+        self._unit = unit
+        
+    @property
+    def offset(self):
+        return self._offset
+
+    @offset.setter
+    def offset(self, value):
+        self._offset = value
+
+  
+    @property
+    def factor(self):
+        return self._factor
+
+    @factor.setter
+    def factor(self, factor):
+        self._factor = factor
+        
+    @property
+    def is_float(self):
+        return self._is_float
+
+    @property
+    def is_signed(self):
+        return self._is_signed
+
+    @property
+    def is_little_endian(self):
+        return self._is_little_endian
+
+    @property
+    def signalsize(self):
+        return self._signalsize
+            
+    @property
+    def min(self):
+        return self._min
+    
+    @min.setter
+    def min(self, value):
+        self._min = value
+            
+    @property
+    def max(self):
+        return self._max
+
+    @max.setter
+    def max(self, value):
+        self._max = value
+            
     def addComment(self, comment):
         """
         Set comment of Signal
         """
         self._comment = comment
+        
+    def addReceiver(self, receiver):
+        """
+        add receiver Boardunit/ECU-Name to Signal
+        """
+        if receiver not in self._receiver:
+            self._receiver.append(receiver)
+
     def addAttribute(self, attribute, value):
         """
         Add Attribute to Signal
@@ -303,8 +448,28 @@ class SignalGroup(object):
             if test._name == name:
                 return test
         return None
+
+    @property
+    def signals(self):
+        return self._members
+
+    @property
+    def id(self):
+        return self._Id
+
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        self._name = value
+
     def __str__(self):
         return self._name
+    
+    def __iter__(self):
+        return iter(self._members)
 
 class Frame(object):
     """
@@ -349,7 +514,67 @@ class Frame(object):
         self._attributes = {}
         self._receiver = []
         self._SignalGroups = []
+  
+    @property
+    def attributes(self):
+        return self._attributes
 
+    @property
+    def receiver(self):
+        return self._receiver
+
+    @property
+    def SignalGroups(self):
+        return self._SignalGroups
+        
+    @property
+    def signals(self):
+        return self._signals
+
+    @property
+    def transmitter(self):
+        return self._Transmitter
+
+    @property
+    def size(self):
+        return self._Size
+
+    @size.setter
+    def size(self, value):
+        self._Size = value
+
+    @property
+    def id(self):
+        return self._Id
+
+    @id.setter
+    def id(self, value):
+        self._Id = value
+
+    @property
+    def comment(self):
+        return self._comment
+
+    @property
+    def extended(self):
+        return self._extended
+    
+    @extended.setter
+    def extended(self, value):
+        self._extended = value
+
+    
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        self._name = value
+        
+    def __iter__(self):
+        return iter(self._signals)
+        
     def addSignalGroup(self, Name, Id, signalNames):
         newGroup = SignalGroup(Name, Id)
         self._SignalGroups.append(newGroup)
@@ -447,37 +672,41 @@ class Define(object):
     """
     def __init__(self, definition):
         definition = definition.strip()
-        self._definition = definition
-        self._type = None
+        self.definition = definition
+        self.type = None
 
         # for any known type:
         if definition[0:3] == 'INT':
             self._type = 'INT'
-            _min, _max = definition[4:].split(' ',2)
-            self._min = int(_min)
-            self._max = int(_max)
+            min, max = definition[4:].split(' ',2)
+            self.min = int(min)
+            self.max = int(max)
         elif definition[0:6] == 'STRING':
-            self._type = 'STRING'
-            self._min = None
-            self._max = None
+            self.type = 'STRING'
+            self.min = None
+            self.max = None
         elif definition[0:4] == 'ENUM':
-            self._type = 'ENUM'
-            self._values = definition[5:].split(',')
+            self.type = 'ENUM'
+            self.values = definition[5:].split(',')
         elif definition[0:3] == 'HEX':
-            self._type = 'HEX'
-            _min, _max = definition[4:].split(' ',2)
-            self._min = int(_min)
-            self._max = int(_max)
+            self.type = 'HEX'
+            min, max = definition[4:].split(' ',2)
+            self.min = int(min)
+            self.max = int(max)
         elif definition[0:5] == 'FLOAT':
-            self._type = 'FLOAT'
-            _min, _max = definition[6:].split(' ',2)
-            self._min = float(_min)
-            self._max = float(_max)
+            self.type = 'FLOAT'
+            min, max = definition[6:].split(' ',2)
+            self.min = float(min)
+            self.max = float(max)
 
         self._defaultValue = None
 
     def addDefault(self, default):
         self._defaultValue = default
+        
+    @property
+    def defaultValue(self):
+        return self._defaultValue
 
 class CanMatrix(object):
     """
@@ -491,16 +720,52 @@ class CanMatrix(object):
     _globalDefines (list of global attribute types)
     _valueTables (global defined values)
     """
+    
     def __init__(self):
         self._attributes = {}
-        self._BUs = BoardUnitListe()
+        self._BUs = BoardUnitList()
         self._fl = FrameList()
         self._signalDefines = {}
         self._frameDefines = {}
         self._globalDefines = {}
         self._buDefines = {}
         self._valueTables = {}
+    
+    @property
+    def attributes(self):
+        return self._attributes
 
+    @property
+    def boardUnits(self):
+        return self._BUs
+
+    @property
+    def frames(self):
+        return self._fl
+
+    @property
+    def signalDefines(self):
+        return self._signalDefines
+        
+    @property
+    def frameDefines(self):
+        return self._frameDefines
+        
+    @property
+    def globalDefines(self):
+        return self._globalDefines
+        
+    @property
+    def buDefines(self):
+        return self._buDefines
+        
+    @property
+    def valueTables(self):
+        return self._valueTables
+ 
+    def __iter__(self):
+        return iter(self._fl)
+        
     def addValueTable(self, name, valueTable):
         self._valueTables[name] = valueTable
 
@@ -586,24 +851,6 @@ class CanMatrix(object):
                     if sig.getStartbit() + int(sig._signalsize) > maxBit:
                         maxBit = sig.getStartbit() + int(sig._signalsize)
                 frame._Size = math.ceil(maxBit / 8)
-
-
-def loadPkl(filename):
-    """
-    helper for loading a python-object-dump of canmatrix
-    """
-    pkl_file = open(filename, 'rb')
-    db1 = pickle.load(pkl_file)
-    pkl_file.close()
-    return db1
-
-def savePkl(db, filename):
-    """
-    helper for saving a python-object-dump of canmatrix
-    """
-    output = open(filename, 'wb')
-    pickle.dump(db, output)
-    output.close()
 
 
 #

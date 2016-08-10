@@ -68,10 +68,10 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 GroupId = GroupId + 1
                 continue
         if isignal == None:
-            logger.debug('Frame %s, no isignal for %s found', Bo._name, arGetChild(signal,  "SHORT-NAME", arDict, ns).text)
+            logger.debug('Frame %s, no isignal for %s found', Bo.name, arGetChild(signal,  "SHORT-NAME", arDict, ns).text)
         syssignal = arGetChild(isignal, "SYSTEM-SIGNAL", arDict, ns)
         if syssignal == None:
-            logger.debug('Frame %s, signal %s has no systemsignal', isignal.tag, Bo._name)
+            logger.debug('Frame %s, signal %s has no systemsignal', isignal.tag, Bo.name)
 
         if "SYSTEM-SIGNAL-GROUP" in  syssignal.tag:
             syssignalarray = arGetXchildren(syssignal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL", arDict, ns)
@@ -185,7 +185,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                                   multiplex=multiplexId,
                                   comment=signalDescription)     
  
-            if newSig._is_little_endian == 0:
+            if newSig.is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
                 newSig.setStartbit(int(startBit.text), bitNumbering = 1)
             
@@ -295,12 +295,12 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                 pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
                 getSignals(pdusigmapping, newFrame, arDict, ns, selectorId.text)
 
-    if newFrame._comment == None:
+    if newFrame.comment == None:
         newFrame.addComment(getDesc(pdu, arDict, ns))
 
     if extEle is not None:
         if extEle.text == 'EXTENDED':
-            newFrame._extended = 1
+            newFrame.extended = 1
 
     timingSpec = arGetChild(pdu,"I-PDU-TIMING-SPECIFICATION", arDict, ns)
     cyclicTiming = arGetChild(timingSpec,"CYCLIC-TIMING", arDict, ns)
@@ -343,10 +343,10 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
 
 #    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
 #    if pdusigmappings is None or pdusigmappings.__len__() == 0:
-#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newFrame._name))
+#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newFrame.name))
     pdusigmapping = arGetChildren(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
     if pdusigmapping is None or pdusigmapping.__len__() == 0:
-        logger.debug("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newFrame._name))
+        logger.debug("DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" % (newFrame.name))
     getSignals(pdusigmapping, newFrame, arDict, ns, None)
     return newFrame
 
@@ -436,10 +436,10 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 #                               inf = multiplexTranslation[inf]
 #                       frame = db.frameByName(inf)
 #                       if frame is not None:
-#                               for signal in frame._signals:
-#                                       rec_name = arGetName(ecu, ns)
-#                                       if rec_name not in  signal._receiver:
-#                                               signal._receiver.append(rec_name)
+#                               for signal in frame.signals:
+#                                       recname = arGetName(ecu, ns)
+#                                       if recname not in  signal.receiver:
+#                                               signal.receiver.append(recname)
 #                       else:
 #                               print "in not found: " + inf
     bu = BoardUnit(arGetName(ecu, ns))
@@ -563,12 +563,12 @@ def importArxml(filename, **options):
                         ecuName = arGetName(port.getparent().getparent().getparent().getparent(), ns)
                         #port points in ECU; probably more stable to go up from each ECU than to go down in XML...
                         if sysSignal in signalRxs:
-                            if ecuName not in signalRxs[sysSignal]._receiver:
-                                signalRxs[sysSignal]._receiver.append(ecuName)
-    #                               for fr in db._fl._list:
-    #                                       for sig in fr._signals:
+                            if ecuName not in signalRxs[sysSignal].receiver:
+                                signalRxs[sysSignal].receiver.append(ecuName)
+    #                               for fr in db.frames:
+    #                                       for sig in fr.signals:
     #                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
-    #                                                       sig._receiver.append(ecuName)
+    #                                                       sig.receiver.append(ecuName)
                         #TODO
     # find ECUs:
         nodes = root.findall('.//' + ns +'ECU-INSTANCE')
@@ -581,13 +581,13 @@ def importArxml(filename, **options):
 
             db._BUs.add(bu)
 
-        for bo in db._fl._list:
+        for bo in db.frames:
             frame = [0, 0, 0, 0, 0, 0, 0, 0]
-            for sig in bo._signals:
+            for sig in bo.signals:
                 if sig._initValue != 0:
-                    putSignalValueInFrame(sig.getStartbit(bitNumbering = 1, startLittle = True), sig._signalsize, sig._is_little_endian, sig._initValue, frame)
+                    putSignalValueInFrame(sig.getStartbit(bitNumbering = 1, startLittle = True), sig.signalsize, sig.is_little_endian, sig._initValue, frame)
             hexStr = '"'
-            for i in range(bo._Size):
+            for i in range(bo.size):
                 hexStr += "%02X" % frame[i]
             hexStr += '"'
             bo.addAttribute("GenMsgStartValue", hexStr)

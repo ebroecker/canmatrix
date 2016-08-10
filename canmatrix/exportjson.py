@@ -49,53 +49,53 @@ def exportJson(db, filename, **options):
     exportArray = []
 
     if exportCanard:
-        for frame in db._fl._list:
+        for frame in db.frames:
             signals = {}
-            for signal in frame._signals:
-                signals[signal.getStartbit(bitNumbering = 1, startLittle = True)]= {"name" : signal._name, "bit_length" : signal._signalsize, "factor":signal._factor, "offset":signal._offset}
-            exportArray.append({"name" : frame._name, "id" :  hex(frame._Id), "signals": signals })
+            for signal in frame.signals:
+                signals[signal.getStartbit(bitNumbering = 1, startLittle = True)]= {"name" : signal.name, "bit_length" : signal.signalsize, "factor":signal.factor, "offset":signal.offset}
+            exportArray.append({"name" : frame.name, "id" :  hex(frame.id), "signals": signals })
 
     elif exportAll == False:
-        for frame in db._fl._list:
+        for frame in db.frames:
             signals = []
-            for signal in frame._signals:
+            for signal in frame.signals:
                 signals.append({
-                    "name" : signal._name,
+                    "name" : signal.name,
                     "start_bit" : signal.getStartbit(bitNumbering = 1, startLittle = True),
-                    "bit_length" : signal._signalsize,
-                    "factor":float(signal._factor),
-                    "offset":float(signal._offset),
-                    "is_big_endian":signal._is_little_endian == 0,
-                    "is_signed":signal._is_signed
+                    "bit_length" : signal.signalsize,
+                    "factor":float(signal.factor),
+                    "offset":float(signal.offset),
+                    "is_big_endian":signal.is_little_endian == 0,
+                    "is_signed":signal.is_signed
                 })
-            exportArray.append({"name" : frame._name, "id" : int(frame._Id), "is_extended_frame": frame._extended == 1,"signals": signals })
+            exportArray.append({"name" : frame.name, "id" : int(frame.id), "isextended_frame": frame.extended == 1,"signals": signals })
     else: # exportall
-        for frame in db._fl._list:
+        for frame in db.frames:
             frameattribs = {}
-            for attribute in frame._attributes:
-                frameattribs[attribute] = frame._attributes[attribute]
+            for attribute in frame.attributes:
+                frameattribs[attribute] = frame.attributes[attribute]
             signals = []
-            for signal in frame._signals:
+            for signal in frame.signals:
                 attribs = {}
-                for attribute in signal._attributes:
-                    attribs[attribute] = signal._attributes[attribute]
+                for attribute in signal.attributes:
+                    attribs[attribute] = signal.attributes[attribute]
                 signals.append({
-                    "name" : signal._name,
+                    "name" : signal.name,
                     "start_bit" : signal.getLsbStartbit(),
-                    "bit_length" : signal._signalsize,
-                    "factor":float(signal._factor),
-                    "offset":float(signal._offset),
-                    "is_big_endian":signal._is_little_endian == 0,
-                    "is_signed":signal._is_signed,
-                    "comment":signal._comment,
+                    "bit_length" : signal.signalsize,
+                    "factor":float(signal.factor),
+                    "offset":float(signal.offset),
+                    "is_big_endian":signal.is_little_endian == 0,
+                    "is_signed":signal.is_signed,
+                    "comment":signal.comment,
                     "attributes":attribs
                 })
             exportArray.append(
-                {"name" : frame._name, 
-                 "id" : int(frame._Id),
-                 "is_extended_frame": frame._extended == 1,
+                {"name" : frame.name, 
+                 "id" : int(frame.id),
+                 "isextended_frame": frame.extended == 1,
                  "signals": signals,
                  "attributes": frameattribs,
-                 "comment": frame._comment })
+                 "comment": frame.comment })
 
     json.dump({"messages" : exportArray}, f, sort_keys=True, indent=4, separators=(',', ': '))

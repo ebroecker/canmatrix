@@ -109,7 +109,7 @@ def importSym(filename, **options):
                     # TODO: CAMPid 939921818394902983238
                     if frame is not None:
                         if len(multiplexValTable) > 0:
-                            frame.signalByName(frame._name + "_MUX")._values = multiplexValTable
+                            frame.signalByName(frame.name + "_MUX").values = multiplexValTable
                         db._fl.addFrame(frame)
 
                     frame = Frame(frameName)
@@ -250,7 +250,7 @@ def importSym(filename, **options):
                         #motorola set/convert startbit
                         signal.setStartbit(startBit)
                     if valueTableName is not None:
-                        signal._values = valueTables[valueTableName]
+                        signal.values = valueTables[valueTableName]
   #                  signal.addComment(comment)
                     signal.addAttribute("GenSigStartValue", str(startValue))
                     frame.addSignal(signal)
@@ -262,13 +262,13 @@ def importSym(filename, **options):
                 if '//' in line:
                     comment = line.split('//')[1].strip()
                     line = line.split('//')[0]
-                frame._Id = int(line.split('=')[1].strip()[:-1], 16)
+                frame.id = int(line.split('=')[1].strip()[:-1], 16)
                 frame.addComment(comment)
             elif line.startswith('Type'):
                 if line.split('=')[1][:8] == "Extended":
-                    frame._extended = 1
+                    frame.extended = 1
             elif line.startswith('DLC'):
-                frame._Size = int(line.split('=')[1])
+                frame.size = int(line.split('=')[1])
 
             elif line.startswith('CycleTime'):
                 frame.addAttribute("GenMsgCycleTime", line.split('=')[1].strip())
@@ -279,7 +279,7 @@ def importSym(filename, **options):
     # TODO: CAMPid 939921818394902983238
     if frame is not None:
         if len(multiplexValTable) > 0:
-            frame.signalByName(frame._name + "_MUX")._values = multiplexValTable
+            frame.signalByName(frame.name + "_MUX").values = multiplexValTable
         db._fl.addFrame(frame)
 
     return db
