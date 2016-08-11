@@ -3,25 +3,29 @@
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that
 # the following conditions are met:
 #
-#    Redistributions of source code must retain the above copyright notice, this list of conditions and the
-#    following disclaimer.
-#    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
-#    following disclaimer in the documentation and/or other materials provided with the distribution.
+#    Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#    Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-# DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,   PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR  OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
 
-# TODO: Definitions should be imported with disassembling not as complete
-# string
+# TODO: Definitions should be disassembled
 
 from __future__ import division
 import math
@@ -39,7 +43,7 @@ class FrameList(object):
         """
         Adds a Signal to the last addes Frame, this is mainly for importers
         """
-        self._list[len(self._list) - 1].addSignal(signal)
+        self._list[len(self._list)-1].addSignal(signal)
 
     def addFrame(self, frame):
         """
@@ -83,7 +87,6 @@ class BoardUnit(object):
     """
     Contains one Boardunit/ECU
     """
-
     def __init__(self, name):
         self._name = name.strip()
         self._attributes = {}
@@ -172,10 +175,6 @@ class Signal(object):
             _attributes, _values, _unit, _comment
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
-# def __init__(self, name, startbit, signalsize, is_little_endian,
-# is_signed=False, factor=1, offset=0, min=0, max=0, unit="", receiver=[],
-# multiplex=None):
-
     def __init__(self, name, **kwargs):
 
         if 'startBit' in kwargs:
@@ -371,7 +370,6 @@ class Signal(object):
         """
         Add Attribute to Signal
         """
-
         if attribute not in self._attributes:
             self._attributes[attribute] = value.replace('"', '')
 
@@ -393,25 +391,28 @@ class Signal(object):
         """
         set startbit.
         bitNumbering is 1 for LSB0/LSBFirst, 0 for MSB0/MSBFirst.
-        If bit numbering is consistent with byte order (little=LSB0, big=MSB0) (KCD, SYM), start bit unmodified.
-        Otherwise reverse bit numbering. For DBC, ArXML (OSEK), both little endian and big endian use LSB0.
+        If bit numbering is consistent with byte order (little=LSB0, big=MSB0)
+        (KCD, SYM), start bit unmodified.
+        Otherwise reverse bit numbering. For DBC, ArXML (OSEK),
+        both little endian and big endian use LSB0.
         If bitNumbering is None, assume consistent with byte order.
-        If startLittle is set, given startBit is assumed start from lsb bit rather than the start of the signal data in the message data
+        If startLittle is set, given startBit is assumed start from lsb bit
+        rather than the start of the signal data in the message data
         """
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self._is_little_endian:
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-        # if given startbit is for the end of signal data (lsbit), convert to
-        # start of signal data (msbit)
-        if startLittle == True and self._is_little_endian == False:
+        # if given startbit is for the end of signal data (lsbit),
+        # convert to start of signal data (msbit)
+        if startLittle is True and self._is_little_endian is False:
             startBit = startBit + 1 - self._signalsize
         self._startbit = startBit
 
     def getStartbit(self, bitNumbering=None, startLittle=None):
         startBit = self._startbit
-        # convert from big endian start bit at start bit(msbit) to end
-        # bit(lsbit)
-        if startLittle == True and self._is_little_endian == False:
+        # convert from big endian start bit at
+        # start bit(msbit) to end bit(lsbit)
+        if startLittle is True and self._is_little_endian is False:
             startBit = startBit + self._signalsize - 1
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self._is_little_endian:
@@ -420,16 +421,13 @@ class Signal(object):
 
     def calculateRawRange(self):
         rawRange = 2 ** self._signalsize
-
         if self._is_signed:
             rawRange /= 2
-
         return (-rawRange if self._is_signed else 0,
                 rawRange - 1)
 
     def setMin(self, min=None):
         self._min = min
-
         if self._min is None:
             rawMin = self.calculateRawRange()[0]
             self._min = self._offset + (rawMin * self._factor)
@@ -500,10 +498,10 @@ class Frame(object):
     contains one Frame with following attributes
     _Id, _name, _Transmitter (list of boardunits/ECU-names), _Size (= DLC),
     _signals (list of signal-objects), _attributes (list of attributes),
-    _receiver (list of boardunits/ECU-names), _extended (Extended Frame = 1), _comment
+    _receiver (list of boardunits/ECU-names),
+    _extended (Extended Frame = 1),
+    _comment
     """
-#    def __init__(self,bid, name, size, transmitter):
-
     def __init__(self, name, **kwargs):
         self._name = name
         if 'Id' in kwargs:
@@ -914,12 +912,11 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
             frame[i] |= (((value >> len) << end) & mask)
             lastbit = startbit + len
     else:  # Motorola
-                  # TODO needs review, is probably wrong till we use LSB for
-                  # startbit
-        firstbyte = math.floor(startbit / 8)
+        # TODO needs review, is probably wrong till we use LSB for startbit
+        firstbyte = math.floor(startbit/8)
         bitsInfirstByte = startbit % 8 + 1
         restnBits = len - bitsInfirstByte
-        lastbyte = firstbyte + math.floor(restnBits / 8)
+        lastbyte = firstbyte + math.floor(restnBits/8)
         if restnBits % 8 > 0:
             lastbyte += 1
         restLen = len
@@ -958,3 +955,4 @@ class CanId(object):
     def __str__(self):
         return "DA:{da:#02X} PGN:{pgn:#04X} SA:{sa:#02X}".format(
             da=self.destination, pgn=self.pgn, sa=self.source)
+
