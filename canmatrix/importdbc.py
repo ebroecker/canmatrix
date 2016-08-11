@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-#Copyright (c) 2013, Eduard Broecker
-#All rights reserved.
+# Copyright (c) 2013, Eduard Broecker
+# All rights reserved.
 #
-#Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+# Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 # the following conditions are met:
 #
 #    Redistributions of source code must retain the above copyright notice, this list of conditions and the
@@ -10,20 +10,21 @@
 #    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
 #    following disclaimer in the documentation and/or other materials provided with the distribution.
 #
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-#WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-#PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-#DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-#CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-#DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+# DAMAGE.
 
 #
 # this script imports dbc-files to a canmatrix-object
 # dbc-files are the can-matrix-definitions of canoe
 #
-#TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL == BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
+# TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL ==
+# BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
 
 from __future__ import division
 from __future__ import print_function
@@ -41,17 +42,19 @@ import codecs
 
 def importDbc(filename, **options):
     if 'dbcImportEncoding' in options:
-        dbcImportEncoding=options["dbcImportEncoding"]
+        dbcImportEncoding = options["dbcImportEncoding"]
     else:
-        dbcImportEncoding='iso-8859-1'
+        dbcImportEncoding = 'iso-8859-1'
     if 'dbcImportCommentEncoding' in options:
-        dbcCommentEncoding=options["dbcImportCommentEncoding"]
+        dbcCommentEncoding = options["dbcImportCommentEncoding"]
     else:
-        dbcCommentEncoding=dbcImportEncoding
+        dbcCommentEncoding = dbcImportEncoding
 
     i = 0
+
     class FollowUps(object):
-        nothing, signalComment, frameComment, boardUnitComment, globalComment = list(range(5))
+        nothing, signalComment, frameComment, boardUnitComment, globalComment = list(
+            range(5))
     followUp = FollowUps.nothing
     comment = ""
     signal = None
@@ -60,46 +63,49 @@ def importDbc(filename, **options):
     db = CanMatrix()
     f = open(filename, 'rb')
     for line in f:
-        i = i+1
+        i = i + 1
         l = line.strip()
         if l.__len__() == 0:
             continue
         if followUp == FollowUps.signalComment:
             try:
-                comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
+                comment += "\n" + \
+                    l.decode(dbcCommentEncoding).replace('\\"', '"')
             except:
                 logger.error("Error decoding line: %d (%s)" % (i, line))
             if l.endswith(b'";'):
                 followUp = FollowUps.nothing
                 if signal is not None:
                     signal.addComment(comment[0:-2])
-            continue;
+            continue
         elif followUp == FollowUps.frameComment:
             try:
-                comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
+                comment += "\n" + \
+                    l.decode(dbcCommentEncoding).replace('\\"', '"')
             except:
                 logger.error("Error decoding line: %d (%s)" % (i, line))
             if l.endswith(b'";'):
                 followUp = FollowUps.nothing
                 if frame is not None:
                     frame.addComment(comment[0:-2])
-            continue;
+            continue
         elif followUp == FollowUps.boardUnitComment:
             try:
-                comment += "\n" + l.decode(dbcCommentEncoding).replace('\\"','"')
+                comment += "\n" + \
+                    l.decode(dbcCommentEncoding).replace('\\"', '"')
             except:
                 logger.error("Error decoding line: %d (%s)" % (i, line))
             if l.endswith(b'";'):
                 followUp = FollowUps.nothing
                 if boardUnit is not None:
                     boardUnit.addComment(comment[0:-2])
-            continue;
+            continue
         decoded = l.decode(dbcImportEncoding)
         if decoded.startswith("BO_ "):
             regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")
             temp = regexp.match(decoded)
 #            db._fl.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-            db._fl.addFrame(Frame(temp.group(2), 
+            db._fl.addFrame(Frame(temp.group(2),
                                   Id=temp.group(1),
                                   dlc=temp.group(3),
                                   transmitter=temp.group(4)))
@@ -112,20 +118,21 @@ def importDbc(filename, **options):
             if temp:
                 receiver = list(map(str.strip, temp.group(11).split(',')))
 
-                tempSig = Signal(temp.group(1), 
-                                startBit=temp.group(2), 
-                                signalSize=temp.group(3), 
-                                is_little_endian=(int(temp.group(4))==1),
-                                is_signed = (temp.group(5)=='-'), 
-                                factor=temp.group(6), 
-                                offset=temp.group(7),
-                                min=temp.group(8),
-                                max=temp.group(9),
-                                unit=temp_raw.group(10).decode(dbcImportEncoding),
-                                receiver=receiver)     
+                tempSig = Signal(temp.group(1),
+                                 startBit=temp.group(2),
+                                 signalSize=temp.group(3),
+                                 is_little_endian=(int(temp.group(4)) == 1),
+                                 is_signed=(temp.group(5) == '-'),
+                                 factor=temp.group(6),
+                                 offset=temp.group(7),
+                                 min=temp.group(8),
+                                 max=temp.group(9),
+                                 unit=temp_raw.group(10).decode(
+                                     dbcImportEncoding),
+                                 receiver=receiver)
                 if not tempSig.is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc
-                    tempSig.setStartbit(int(temp.group(2)), bitNumbering = 1)
+                    tempSig.setStartbit(int(temp.group(2)), bitNumbering=1)
                 db._fl.addSignalToLastFrame(tempSig)
             else:
                 pattern = "^SG\_ (\w+) (\w+) *: (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)"
@@ -139,24 +146,24 @@ def importDbc(filename, **options):
                     multiplex = 'Multiplexor'
                 else:
                     multiplex = int(multiplex[1:])
-                tempSig = Signal(temp.group(1), 
-                                  startBit = temp.group(3), 
-                                  signalSize = temp.group(4),
-                                  is_little_endian=(int(temp.group(5))==1), 
-                                  is_signed = (temp.group(6)=='-'), 
-                                  factor=temp.group(7), 
-                                  offset=temp.group(8),
-                                  min=temp.group(9),
-                                  max=temp.group(10),
-                                  unit=temp_raw.group(11).decode(dbcImportEncoding),
-                                  receiver=receiver,
-                                  multiplex=multiplex)     
+                tempSig = Signal(temp.group(1),
+                                 startBit=temp.group(3),
+                                 signalSize=temp.group(4),
+                                 is_little_endian=(int(temp.group(5)) == 1),
+                                 is_signed=(temp.group(6) == '-'),
+                                 factor=temp.group(7),
+                                 offset=temp.group(8),
+                                 min=temp.group(9),
+                                 max=temp.group(10),
+                                 unit=temp_raw.group(11).decode(
+                                     dbcImportEncoding),
+                                 receiver=receiver,
+                                 multiplex=multiplex)
                 if not tempSig.is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc
-                    tempSig.setMsbStartbit(int(temp.group(3)))                
-                
-                db._fl.addSignalToLastFrame(tempSig)
+                    tempSig.setMsbStartbit(int(temp.group(3)))
 
+                db._fl.addSignalToLastFrame(tempSig)
 
         elif decoded.startswith("BO_TX_BU_ "):
             regexp = re.compile("^BO_TX_BU_ ([0-9]+) *: *(.+);")
@@ -175,9 +182,12 @@ def importDbc(filename, **options):
                 signal = botschaft.signalByName(temp.group(2))
                 if signal:
                     try:
-                        signal.addComment(temp_raw.group(3).decode(dbcCommentEncoding).replace('\\"','"'))
+                        signal.addComment(temp_raw.group(3).decode(
+                            dbcCommentEncoding).replace('\\"', '"'))
                     except:
-                        logger.error("Error decoding line: %d (%s)" % (i, line))
+                        logger.error(
+                            "Error decoding line: %d (%s)" %
+                            (i, line))
             else:
                 pattern = "^CM\_ SG\_ *(\w+) *(\w+) *\"(.*)"
                 regexp = re.compile(pattern)
@@ -188,9 +198,12 @@ def importDbc(filename, **options):
                     botschaft = db.frameById(temp.group(1))
                     signal = botschaft.signalByName(temp.group(2))
                     try:
-                        comment = temp_raw.group(3).decode(dbcCommentEncoding).replace('\\"','"')
+                        comment = temp_raw.group(3).decode(
+                            dbcCommentEncoding).replace('\\"', '"')
                     except:
-                        logger.error("Error decoding line: %d (%s)" % (i, line))
+                        logger.error(
+                            "Error decoding line: %d (%s)" %
+                            (i, line))
                     followUp = FollowUps.signalComment
 
         elif decoded.startswith("CM_ BO_ "):
@@ -203,9 +216,12 @@ def importDbc(filename, **options):
                 frame = db.frameById(temp.group(1))
                 if frame:
                     try:
-                        frame.addComment(temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
+                        frame.addComment(temp_raw.group(2).decode(
+                            dbcCommentEncoding).replace('\\"', '"'))
                     except:
-                        logger.error("Error decoding line: %d (%s)" % (i, line))
+                        logger.error(
+                            "Error decoding line: %d (%s)" %
+                            (i, line))
             else:
                 pattern = "^CM\_ BO\_ *(\w+) *\"(.*)"
                 regexp = re.compile(pattern)
@@ -215,9 +231,12 @@ def importDbc(filename, **options):
                 if temp:
                     frame = db.frameById(temp.group(1))
                     try:
-                        comment = temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"')
+                        comment = temp_raw.group(2).decode(
+                            dbcCommentEncoding).replace('\\"', '"')
                     except:
-                        logger.error("Error decoding line: %d (%s)" % (i, line))
+                        logger.error(
+                            "Error decoding line: %d (%s)" %
+                            (i, line))
                     followUp = FollowUps.frameComment
         elif decoded.startswith("CM_ BU_ "):
             pattern = "^CM\_ BU\_ *(\w+) *\"(.*)\";"
@@ -229,9 +248,12 @@ def importDbc(filename, **options):
                 boardUnit = db.boardUnitByName(temp.group(1))
                 if boardUnit:
                     try:
-                        boardUnit.addComment(temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"'))
+                        boardUnit.addComment(temp_raw.group(2).decode(
+                            dbcCommentEncoding).replace('\\"', '"'))
                     except:
-                        logger.error("Error decoding line: %d (%s)" % (i, line))
+                        logger.error(
+                            "Error decoding line: %d (%s)" %
+                            (i, line))
             else:
                 pattern = "^CM\_ BU\_ *(\w+) *\"(.*)"
                 regexp = re.compile(pattern)
@@ -242,9 +264,12 @@ def importDbc(filename, **options):
                     boardUnit = db.boardUnitByName(temp.group(1))
                     if boardUnit:
                         try:
-                            comment = temp_raw.group(2).decode(dbcCommentEncoding).replace('\\"','"')
+                            comment = temp_raw.group(2).decode(
+                                dbcCommentEncoding).replace('\\"', '"')
                         except:
-                            logger.error("Error decoding line: %d (%s)" % (i, line))
+                            logger.error(
+                                "Error decoding line: %d (%s)" %
+                                (i, line))
                         followUp = FollowUps.boardUnitComment
         elif decoded.startswith("BU_:"):
             pattern = "^BU\_\:(.*)"
@@ -265,14 +290,14 @@ def importDbc(filename, **options):
                 signal = temp.group(2)
                 tempList = temp.group(3).split('"')
                 try:
-                    for i in range(math.floor(len(tempList)/2)):
+                    for i in range(math.floor(len(tempList) / 2)):
                         bo = db.frameById(botschaftId)
                         sg = bo.signalByName(signal)
-                        val = tempList[i*2+1]
+                        val = tempList[i * 2 + 1]
                         #[1:-1]
 
                         if sg:
-                            sg.addValues(tempList[i*2], val)
+                            sg.addValues(tempList[i * 2], val)
                 except:
                     logger.error("Error with Line: " + str(tempList))
 
@@ -284,9 +309,9 @@ def importDbc(filename, **options):
                 tempList = temp.group(2).split('"')
                 try:
                     valHash = {}
-                    for i in range(math.floor(len(tempList)/2)):
-                        val = tempList[i*2+1]
-                        valHash[tempList[i*2].strip()] = val.strip()
+                    for i in range(math.floor(len(tempList) / 2)):
+                        val = tempList[i * 2 + 1]
+                        valHash[tempList[i * 2].strip()] = val.strip()
                 except:
                     logger.error("Error with Line: " + str(tempList))
                 db.addValueTable(tableName, valHash)
@@ -300,7 +325,8 @@ def importDbc(filename, **options):
             temp = regexp.match(decoded)
             temp_raw = regexp_raw.match(l)
             if temp:
-                db.addSignalDefines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+                db.addSignalDefines(temp.group(1),
+                                    temp_raw.group(2).decode(dbcImportEncoding))
         elif decoded.startswith("BA_DEF_ BO_ "):
             pattern = "^BA\_DEF\_ BO\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
             regexp = re.compile(pattern)
@@ -308,7 +334,8 @@ def importDbc(filename, **options):
             temp = regexp.match(decoded)
             temp_raw = regexp_raw.match(l)
             if temp:
-                db.addFrameDefines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+                db.addFrameDefines(temp.group(1),
+                                   temp_raw.group(2).decode(dbcImportEncoding))
         elif decoded.startswith("BA_DEF_ BU_ "):
             pattern = "^BA\_DEF\_ BU\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
             regexp = re.compile(pattern)
@@ -316,7 +343,8 @@ def importDbc(filename, **options):
             temp = regexp.match(decoded)
             temp_raw = regexp_raw.match(l)
             if temp:
-                db.addBUDefines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+                db.addBUDefines(temp.group(1),
+                                temp_raw.group(2).decode(dbcImportEncoding))
         elif decoded.startswith("BA_DEF_ "):
             pattern = "^BA\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
             regexp = re.compile(pattern)
@@ -324,7 +352,8 @@ def importDbc(filename, **options):
             temp = regexp.match(decoded)
             temp_raw = regexp_raw.match(l)
             if temp:
-                db.addGlobalDefines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+                db.addGlobalDefines(temp.group(1),
+                                    temp_raw.group(2).decode(dbcImportEncoding))
 
         elif decoded.startswith("BA_ "):
             regexp = re.compile("^BA\_ +\"[A-Za-z0-9\-_]+\" +(.+)")
@@ -333,21 +362,26 @@ def importDbc(filename, **options):
             if tempba.group(1).strip().startswith("BO_ "):
                 regexp = re.compile("^BA\_ \"(.*)\" BO\_ (\w+) (.+);")
                 temp = regexp.match(decoded)
-                db.frameById(int(temp.group(2))).addAttribute(temp.group(1),temp.group(3))
+                db.frameById(int(temp.group(2))).addAttribute(
+                    temp.group(1), temp.group(3))
             elif tempba.group(1).strip().startswith("SG_ "):
                 regexp = re.compile("^BA\_ \"(.*)\" SG\_ (\w+) (\w+) (.+);")
                 temp = regexp.match(decoded)
-                db.frameById(int(temp.group(2))).signalByName(temp.group(3)).addAttribute(temp.group(1),temp.group(4))
+                db.frameById(int(temp.group(2))).signalByName(
+                    temp.group(3)).addAttribute(temp.group(1), temp.group(4))
             elif tempba.group(1).strip().startswith("BU_ "):
                 regexp = re.compile("^BA\_ \"(.*)\" BU\_ (\w+) (.+);")
                 temp = regexp.match(decoded)
-                db._BUs.byName(temp.group(2)).addAttribute(temp.group(1), temp.group(3))
+                db._BUs.byName(
+                    temp.group(2)).addAttribute(
+                    temp.group(1),
+                    temp.group(3))
             else:
-                regexp = re.compile("^BA\_ \"([A-Za-z0-9\-\_]+)\" +([\"A-Za-z0-9\-\_]+);")
+                regexp = re.compile(
+                    "^BA\_ \"([A-Za-z0-9\-\_]+)\" +([\"A-Za-z0-9\-\_]+);")
                 temp = regexp.match(decoded)
                 if temp:
-                    db.addAttribute(temp.group(1),temp.group(2))
-
+                    db.addAttribute(temp.group(1), temp.group(2))
 
         elif decoded.startswith("SIG_GROUP_ "):
             regexp = re.compile("^SIG\_GROUP\_ +(\w+) +(\w+) +(\w+) +\:(.*);")
@@ -363,13 +397,15 @@ def importDbc(filename, **options):
             temp = regexp.match(decoded)
             temp_raw = regexp_raw.match(l)
             if temp:
-                db.addDefineDefault(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+                db.addDefineDefault(temp.group(1),
+                                    temp_raw.group(2).decode(dbcImportEncoding))
 #               else:
 #                       print "Unrecocniced line: " + l + " (%d) " % i
 
     for frame in db.frames:
-        # receiver is only given in the signals, so do propagate the receiver to the frame:
-        frame.updateReceiver();        
+        # receiver is only given in the signals, so do propagate the receiver
+        # to the frame:
+        frame.updateReceiver()
         # extended-flag is implicite in canid, thus repair this:
         if frame.id > 0x80000000:
             frame.id -= 0x80000000

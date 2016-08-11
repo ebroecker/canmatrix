@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-#Copyright (c) 2013, Eduard Broecker
-#All rights reserved.
+# Copyright (c) 2013, Eduard Broecker
+# All rights reserved.
 #
-#Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+# Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 # the following conditions are met:
 #
 #    Redistributions of source code must retain the above copyright notice, this list of conditions and the
@@ -11,14 +11,14 @@
 #    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
 #    following disclaimer in the documentation and/or other materials provided with the distribution.
 #
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-#WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-#PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-#DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-#CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-#DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+# DAMAGE.
 
 #
 # this script imports excel-files to a canmatrix-object
@@ -38,6 +38,7 @@ from .canmatrix import *
 import xlrd
 import codecs
 
+
 def importXls(filename, **options):
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
@@ -48,23 +49,25 @@ def importXls(filename, **options):
     sh = wb.sheet_by_index(0)
     db = CanMatrix()
 
-    #Defines not imported...
+    # Defines not imported...
 #       db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
 #       db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
-    db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
-    db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535')
-    db.addFrameDefines("GenMsgCycleTimeActive",  'INT 0 65535')
-    db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535')
+    db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
+    db.addFrameDefines("GenMsgDelayTime", 'INT 0 65535')
+    db.addFrameDefines("GenMsgCycleTimeActive", 'INT 0 65535')
+    db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
 #       db.addFrameDefines("GenMsgStartValue",  'STRING')
-    db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
+    db.addFrameDefines(
+        "GenMsgSendType",
+        'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
 #       db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
     db.addSignalDefines("GenSigSNA", 'STRING')
 
     # eval search for correct collums:
     index = {}
     for i in range(sh.ncols):
-        value = sh.cell(0,i).value
-        if  value == "ID":
+        value = sh.cell(0, i).value
+        if value == "ID":
             index['ID'] = i
         elif "Frame Name" in value:
             index['frameName'] = i
@@ -103,29 +106,29 @@ def importXls(filename, **options):
         index['BUstart'] = index['signalSNA'] + 1
     index['BUend'] = index['Value']
 
-    #BoardUnits:
-    for x in range(index['BUstart'],index['BUend']):
-        db._BUs.add(BoardUnit(sh.cell(0,x).value))
+    # BoardUnits:
+    for x in range(index['BUstart'], index['BUend']):
+        db._BUs.add(BoardUnit(sh.cell(0, x).value))
 
-    #initialize:
+    # initialize:
     frameId = None
     signalName = ""
     newBo = None
 
-    for rownum in range(1,sh.nrows):
-        #ignore empty row
-        if sh.cell(rownum,index['ID']).value.__len__() == 0:
+    for rownum in range(1, sh.nrows):
+        # ignore empty row
+        if sh.cell(rownum, index['ID']).value.__len__() == 0:
             break
         # new frame detected
-        if sh.cell(rownum,index['ID']).value != frameId:
+        if sh.cell(rownum, index['ID']).value != frameId:
             sender = []
             # new Frame
-            frameId = sh.cell(rownum,index['ID']).value
-            frameName = sh.cell(rownum,index['frameName']).value
-            cycleTime = sh.cell(rownum,index['cycle']).value
-            launchType = sh.cell(rownum,index['launchType']).value
+            frameId = sh.cell(rownum, index['ID']).value
+            frameName = sh.cell(rownum, index['frameName']).value
+            cycleTime = sh.cell(rownum, index['cycle']).value
+            launchType = sh.cell(rownum, index['launchType']).value
             dlc = 8
-            launchParam = sh.cell(rownum,index['launchParam']).value
+            launchParam = sh.cell(rownum, index['launchParam']).value
             if type(launchParam).__name__ != "float":
                 launchParam = 0.0
             launchParam = str(int(launchParam))
@@ -134,7 +137,7 @@ def importXls(filename, **options):
             newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
             db._fl.addFrame(newBo)
 
-            #eval launctype
+            # eval launctype
             if launchType is not None:
                 if "Cyclic+Change" == launchType:
                     newBo.addAttribute("GenMsgSendType", "5")
@@ -157,71 +160,76 @@ def importXls(filename, **options):
                     newBo.addAttribute("GenMsgSendType", "1")
                     newBo.addAttribute("GenMsgDelayTime", launchParam)
 
-            #eval cycletime
+            # eval cycletime
             if type(cycleTime).__name__ != "float":
                 cycleTime = 0.0
             newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
 
-        #new signal detected
-        if sh.cell(rownum,index['signalName']).value != signalName:
+        # new signal detected
+        if sh.cell(rownum, index['signalName']).value != signalName:
             # new Signal
             receiver = []
-            startbyte = int(sh.cell(rownum,index['startbyte']).value)
-            startbit = int(sh.cell(rownum,index['startbit']).value)
-            signalName = sh.cell(rownum,index['signalName']).value
-            signalComment = sh.cell(rownum,index['signalComment']).value.strip()
-            signalLength = int(sh.cell(rownum,index['signalLength']).value)
-            signalDefault = sh.cell(rownum,index['signalDefault']).value
-            signalSNA = sh.cell(rownum,index['signalSNA']).value
+            startbyte = int(sh.cell(rownum, index['startbyte']).value)
+            startbit = int(sh.cell(rownum, index['startbit']).value)
+            signalName = sh.cell(rownum, index['signalName']).value
+            signalComment = sh.cell(
+                rownum, index['signalComment']).value.strip()
+            signalLength = int(sh.cell(rownum, index['signalLength']).value)
+            signalDefault = sh.cell(rownum, index['signalDefault']).value
+            signalSNA = sh.cell(rownum, index['signalSNA']).value
             multiplex = None
             if signalComment.startswith('Mode Signal:'):
                 multiplex = 'Multiplexor'
                 signalComment = signalComment[12:]
             elif signalComment.startswith('Mode '):
-                mux, signalComment = signalComment[4:].split(':',1)
+                mux, signalComment = signalComment[4:].split(':', 1)
                 multiplex = int(mux.strip())
 
             if "byteorder" in index:
-                signalByteorder = sh.cell(rownum,index['byteorder']).value
+                signalByteorder = sh.cell(rownum, index['byteorder']).value
 
                 if 'i' in signalByteorder:
                     is_little_endian = True
                 else:
                     is_little_endian = False
             else:
-                is_little_endian = True # Default Intel
+                is_little_endian = True  # Default Intel
 
             is_signed = False
 
             if signalName != "-":
-                for x in range(index['BUstart'],index['BUend']):
-                    if 's' in sh.cell(rownum,x).value:
-                        newBo.addTransmitter(sh.cell(0,x).value.strip())
-                    if 'r' in sh.cell(rownum,x).value:
-                        receiver.append(sh.cell(0,x).value.strip())
+                for x in range(index['BUstart'], index['BUend']):
+                    if 's' in sh.cell(rownum, x).value:
+                        newBo.addTransmitter(sh.cell(0, x).value.strip())
+                    if 'r' in sh.cell(rownum, x).value:
+                        receiver.append(sh.cell(0, x).value.strip())
 #                if signalLength > 8:
-                newSig = Signal(signalName, 
-                              startBit = (startbyte-1)*8+startbit, 
-                              signalSize = signalLength,
-                              is_little_endian = is_little_endian, 
-                              is_signed = is_signed, 
-                              receiver=receiver,
-                              multiplex=multiplex)     
+                newSig = Signal(signalName,
+                                startBit=(startbyte - 1) * 8 + startbit,
+                                signalSize=signalLength,
+                                is_little_endian=is_little_endian,
+                                is_signed=is_signed,
+                                receiver=receiver,
+                                multiplex=multiplex)
 #               else:
 #                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
                 if not is_little_endian:
-                    #motorola
+                    # motorola
                     if motorolaBitFormat == "msb":
-                        newSig.setStartbit((startbyte-1)*8+startbit, bitNumbering = 1)
+                        newSig.setStartbit(
+                            (startbyte - 1) * 8 + startbit, bitNumbering=1)
                     elif motorolaBitFormat == "msbreverse":
-                        newSig.setStartbit((startbyte-1)*8+startbit)
-                    else: # motorolaBitFormat == "lsb"
-                        newSig.setStartbit((startbyte-1)*8+startbit, bitNumbering = 1, startLittle = True)
+                        newSig.setStartbit((startbyte - 1) * 8 + startbit)
+                    else:  # motorolaBitFormat == "lsb"
+                        newSig.setStartbit(
+                            (startbyte - 1) * 8 + startbit,
+                            bitNumbering=1,
+                            startLittle=True)
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
-                function = sh.cell(rownum,index['function']).value
-        value = str(sh.cell(rownum,index['Value']).value)
-        valueName = sh.cell(rownum,index['ValueName']).value
+                function = sh.cell(rownum, index['function']).value
+        value = str(sh.cell(rownum, index['Value']).value)
+        valueName = sh.cell(rownum, index['ValueName']).value
 
         if valueName == 0:
             valueName = "0"
@@ -233,26 +241,29 @@ def importXls(filename, **options):
         factor = 0
         unit = ""
 
-        factor = sh.cell(rownum,index['function']).value
-        if type(factor).__name__ == "unicode" or type(factor).__name__ == "str" :
+        factor = sh.cell(rownum, index['function']).value
+        if type(factor).__name__ == "unicode" or type(
+                factor).__name__ == "str":
             factor = factor.strip()
             if " " in factor and factor[0].isdigit():
-                (factor, unit) = factor.strip().split(" ",1)
+                (factor, unit) = factor.strip().split(" ", 1)
                 factor = factor.strip()
                 unit = unit.strip()
                 newSig.unit = unit
                 try:
                     newSig.factor = float(factor)
                 except:
-                    logger.warn("Some error occurred while decoding scale: Signal: %s; \"%s\"" % (signalName, sh.cell(rownum,index['function']).value))
+                    logger.warn(
+                        "Some error occurred while decoding scale: Signal: %s; \"%s\"" %
+                        (signalName, sh.cell(
+                            rownum, index['function']).value))
             else:
                 unit = factor.strip()
                 newSig.unit = unit
                 newSig.factor = 1
 
-
         if ".." in test:
-            (mini, maxi) = test.strip().split("..",2)
+            (mini, maxi) = test.strip().split("..", 2)
             unit = ""
             try:
                 newSig.offset = float(mini)
@@ -261,16 +272,14 @@ def importXls(filename, **options):
             except:
                 newSig.offset = 0
 
-
         elif valueName.__len__() > 0:
             if value.strip().__len__() > 0:
                 value = int(float(value))
                 newSig.addValues(value, valueName)
-            maxi = pow(2,signalLength)-1
+            maxi = pow(2, signalLength) - 1
             newSig.max = float(maxi)
         else:
             newSig.offset = 0
-
 
     for frame in db.frames:
         frame.updateReceiver()

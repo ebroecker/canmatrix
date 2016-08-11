@@ -6,10 +6,10 @@ import logging
 logger = logging.getLogger('root')
 from .canmatrix import *
 
-#Copyright (c) 2013, Eduard Broecker
-#All rights reserved.
+# Copyright (c) 2013, Eduard Broecker
+# All rights reserved.
 #
-#Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+# Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 # the following conditions are met:
 #
 #    Redistributions of source code must retain the above copyright notice, this list of conditions and the
@@ -17,25 +17,28 @@ from .canmatrix import *
 #    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
 #    following disclaimer in the documentation and/or other materials provided with the distribution.
 #
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-#WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-#PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-#DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-#CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-#DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+# DAMAGE.
 
 #
 # this script supplys some helperfunctions to parse arxml-files
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 #
 
+
 class arTree(object):
-    def __init__(self,name="", ref=None):
+
+    def __init__(self, name="", ref=None):
         self._name = name
         self._ref = ref
         self._array = []
+
     def new(self, name, child):
         temp = arTree(name, child)
         self._array.append(temp)
@@ -45,6 +48,7 @@ class arTree(object):
         for tem in self._array:
             if tem._name == path:
                 return tem
+
 
 def arParseTree(tag, ardict, namespace):
     for child in tag:
@@ -57,6 +61,8 @@ def arParseTree(tag, ardict, namespace):
 #
 # some sort of X-Path in autosar-xml-files:
 #
+
+
 def arGetXchildren(root, path, arDict, ns):
     pathElements = path.split('/')
     ptr = root
@@ -68,6 +74,8 @@ def arGetXchildren(root, path, arDict, ns):
 #
 # get path in tranlation-dictionary
 #
+
+
 def arGetPath(ardict, path):
     ptr = ardict
     for p in path.split('/'):
@@ -76,14 +84,14 @@ def arGetPath(ardict, path):
                 ptr = ptr.getChild(p)
             else:
                 return None
-    if ptr is not None:    
+    if ptr is not None:
         return ptr._ref
     else:
         return None
 
 
 def arGetChild(parent, tagname, arTranslationTable, namespace):
-#    logger.debug("getChild: " + tagname)
+    #    logger.debug("getChild: " + tagname)
     if parent is None:
         return None
     ret = parent.find('.//' + namespace + tagname)
@@ -92,6 +100,7 @@ def arGetChild(parent, tagname, arTranslationTable, namespace):
         if ret is not None:
             ret = arGetPath(arTranslationTable, ret.text)
     return ret
+
 
 def arGetChildren(parent, tagname, arTranslationTable, namespace):
     if parent is None:
@@ -104,6 +113,7 @@ def arGetChildren(parent, tagname, arTranslationTable, namespace):
             rettemp.append(arGetPath(arTranslationTable, ret.text))
         ret = rettemp
     return ret
+
 
 def arGetName(parent, ns):
     name = parent.find('./' + ns + 'SHORT-NAME')

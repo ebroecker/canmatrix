@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-#Copyright (c) 2013, Eduard Broecker
-#All rights reserved.
+# Copyright (c) 2013, Eduard Broecker
+# All rights reserved.
 #
-#Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+# Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 # the following conditions are met:
 #
 #    Redistributions of source code must retain the above copyright notice, this list of conditions and the
@@ -11,14 +11,14 @@
 #    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
 #    following disclaimer in the documentation and/or other materials provided with the distribution.
 #
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-#WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-#PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-#DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-#CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-#DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+# DAMAGE.
 
 #
 # this script imports dbf-files in a canmatrix-object
@@ -35,19 +35,19 @@ from .canmatrix import *
 import re
 import codecs
 
-#TODO support for [START_PARAM_NODE_RX_SIG]
-#TODO support for [START_PARAM_NODE_TX_MSG]
+# TODO support for [START_PARAM_NODE_RX_SIG]
+# TODO support for [START_PARAM_NODE_TX_MSG]
 
 
 def decodeDefine(line):
-    (define, valueType, value) = line.split(',',2)
+    (define, valueType, value) = line.split(',', 2)
     valueType = valueType.strip()
     if valueType == "INT" or valueType == "HEX":
-        (Min, Max, default) = value.split(',',2)
+        (Min, Max, default) = value.split(',', 2)
         myDef = valueType + ' ' + Min.strip() + ' ' + Max.strip()
         default = default.strip()
     elif valueType == "ENUM":
-        (enums, default) = value.rsplit(',',1)
+        (enums, default) = value.rsplit(',', 1)
         myDef = valueType + "  " + enums[1:]
     elif valueType == "STRING":
         myDef = valueType
@@ -60,68 +60,84 @@ def decodeDefine(line):
 
 def importDbf(filename, **options):
     if 'dbfImportEncoding' in options:
-        dbfImportEncoding=options["dbfImportEncoding"]
+        dbfImportEncoding = options["dbfImportEncoding"]
     else:
-        dbfImportEncoding='iso-8859-1'
+        dbfImportEncoding = 'iso-8859-1'
 
     db = CanMatrix()
-    f = open(filename,"rb")
+    f = open(filename, "rb")
 
     mode = ''
     for line in f:
         line = line.decode(dbfImportEncoding).strip()
 
         if mode == 'SignalDescription':
-            if line.startswith("[END_DESC_SIG]") or line.startswith("[END_DESC]"):
+            if line.startswith(
+                    "[END_DESC_SIG]") or line.startswith("[END_DESC]"):
                 mode = ''
             else:
-                (boId, temS, SignalName, comment) = line.split(' ',3)
-                comment = comment.replace('"','').replace(';','')
-                db.frameById(int(boId)).signalByName(SignalName).addComment(comment)
+                (boId, temS, SignalName, comment) = line.split(' ', 3)
+                comment = comment.replace('"', '').replace(';', '')
+                db.frameById(int(boId)).signalByName(
+                    SignalName).addComment(comment)
 
         if mode == 'BUDescription':
-            if line.startswith("[END_DESC_NODE]") or line.startswith("[END_DESC]"):
+            if line.startswith(
+                    "[END_DESC_NODE]") or line.startswith("[END_DESC]"):
                 mode = ''
             else:
-                (BUName, comment) = line.split(' ',1)
-                comment = comment.replace('"','').replace(';','')
+                (BUName, comment) = line.split(' ', 1)
+                comment = comment.replace('"', '').replace(';', '')
                 db._BUs.byName(BUName).addComment(comment)
 
         if mode == 'FrameDescription':
-            if line.startswith("[END_DESC_MSG]") or line.startswith("[END_DESC]"):
+            if line.startswith(
+                    "[END_DESC_MSG]") or line.startswith("[END_DESC]"):
                 mode = ''
             else:
-                (boId, temS, comment) = line.split(' ',2)
-                comment = comment.replace('"','').replace(';','')
+                (boId, temS, comment) = line.split(' ', 2)
+                comment = comment.replace('"', '').replace(';', '')
                 db.frameById(int(boId)).addComment(comment)
 
         elif mode == 'ParamMsgVal':
             if line.startswith("[END_PARAM_MSG_VAL]"):
                 mode = ''
             else:
-                (boId, temS, attrib, value) = line.split(',',3)
-                db.frameById(int(boId)).addAttribute(attrib.replace('"',''), value.replace('"',''))
+                (boId, temS, attrib, value) = line.split(',', 3)
+                db.frameById(
+                    int(boId)).addAttribute(
+                    attrib.replace(
+                        '"',
+                        ''),
+                    value.replace(
+                        '"',
+                        ''))
 
         elif mode == 'ParamNodeVal':
             if line.startswith("[END_PARAM_NODE_VAL]"):
                 mode = ''
             else:
-                (bu, attrib, value) = line.split(',',2)
-                db._BUs.byName(bu).addAttribute(attrib.replace('"',''), value[1:-1])
+                (bu, attrib, value) = line.split(',', 2)
+                db._BUs.byName(bu).addAttribute(
+                    attrib.replace('"', ''), value[1:-1])
 
         elif mode == 'ParamNetVal':
             if line.startswith("[END_PARAM_NET_VAL]"):
                 mode = ''
             else:
-                (attrib, value) = line.split(',',1)
-                db.addAttribute(attrib.replace('"',''), value[1:-1])
+                (attrib, value) = line.split(',', 1)
+                db.addAttribute(attrib.replace('"', ''), value[1:-1])
 
         elif mode == 'ParamSigVal':
             if line.startswith("[END_PARAM_SIG_VAL]"):
                 mode = ''
             else:
-                (boId, temS, SignalName, attrib, value) = line.split(',',4)
-                db.frameById(int(boId)).signalByName(SignalName).addAttribute(attrib.replace('"',''), value[1:-1])
+                (boId, temS, SignalName, attrib, value) = line.split(',', 4)
+                db.frameById(
+                    int(boId)).signalByName(SignalName).addAttribute(
+                    attrib.replace(
+                        '"', ''), value[
+                        1:-1])
 
         elif mode == 'ParamSig':
             if line.startswith("[END_PARAM_SIG]"):
@@ -186,7 +202,6 @@ def importDbf(filename, **options):
             if line.startswith("[START_PARAM_NET]"):
                 mode = 'ParamNet'
 
-
             if line.startswith("[START_MSG]"):
                 temstr = line.strip()[11:].strip()
                 temparray = temstr.split(',')
@@ -200,13 +215,13 @@ def importDbf(filename, **options):
                 else:
                     transmitter = None
                 newBo = db._fl.addFrame(
-                    Frame(name, 
-                      Id=int(Id),
-                      dlc=size,
-                      transmitter=transmitter))
-                  #   Frame(int(Id), name, size, transmitter))
+                    Frame(name,
+                          Id=int(Id),
+                          dlc=size,
+                          transmitter=transmitter))
+                #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
-                    logger.debug ("Extended")
+                    logger.debug("Extended")
                     newBo.extended = 1
 
             if line.startswith("[NODE]"):
@@ -218,13 +233,12 @@ def importDbf(filename, **options):
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
                 temparray = temstr.split(',')
-                (name, size, startbyte, startbit, sign, Max, Min, byteorder, offset, factor, unit, multiplex) = temparray[0:12]
-                if len(temparray) > 12:                
+                (name, size, startbyte, startbit, sign, Max, Min, byteorder,
+                 offset, factor, unit, multiplex) = temparray[0:12]
+                if len(temparray) > 12:
                     receiver = temparray[12].split(',')
                 else:
                     receiver = []
-
-
 
                 if multiplex == 'M':
                     multiplex = 'Multiplexor'
@@ -237,25 +251,28 @@ def importDbf(filename, **options):
                     is_signed = False
                 else:
                     is_signed = True
-                startbit = int (startbit)
-                startbit += (int(startbyte)-1)*8
+                startbit = int(startbit)
+                startbit += (int(startbyte) - 1) * 8
 
-                newSig = newBo.addSignal(Signal(name, 
-                          startBit = startbit, 
-                          signalSize = size,
-                          is_little_endian=(int(byteorder)==1), 
-                          is_signed = is_signed, 
-                          factor=factor, 
-                          offset=offset,
-                          min=float(Min)*float(factor),
-                          max=float(Max)*float(factor),
-                          unit=unit,
-                          receiver=receiver,
-                          multiplex=multiplex))   
- 
+                newSig = newBo.addSignal(Signal(name,
+                                                startBit=startbit,
+                                                signalSize=size,
+                                                is_little_endian=(
+                                                    int(byteorder) == 1),
+                                                is_signed=is_signed,
+                                                factor=factor,
+                                                offset=offset,
+                                                min=float(Min) * float(factor),
+                                                max=float(Max) * float(factor),
+                                                unit=unit,
+                                                receiver=receiver,
+                                                multiplex=multiplex))
+
                 if int(byteorder) == 0:
-                    # this is dummy here, because internal lsb is default - for now
-                    newSig.setStartbit(startbit, bitNumbering = 1, startLittle = True)
+                    # this is dummy here, because internal lsb is default - for
+                    # now
+                    newSig.setStartbit(
+                        startbit, bitNumbering=1, startLittle=True)
 
             if line.startswith("[VALUE_DESCRIPTION]"):
                 temstr = line.strip()[19:].strip()
@@ -268,6 +285,7 @@ def importDbf(filename, **options):
                     newSig.addValues(value, name)
 
         for frame in db.frames:
-            # receiver is only given in the signals, so do propagate the receiver to the frame:
-            frame.updateReceiver();        
+            # receiver is only given in the signals, so do propagate the
+            # receiver to the frame:
+            frame.updateReceiver()
     return db

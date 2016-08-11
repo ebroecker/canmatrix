@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-#Copyright (c) 2013, Eduard Broecker
-#All rights reserved.
+# Copyright (c) 2013, Eduard Broecker
+# All rights reserved.
 #
-#Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+# Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 # the following conditions are met:
 #
 #    Redistributions of source code must retain the above copyright notice, this list of conditions and the
@@ -11,14 +11,14 @@
 #    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
 #    following disclaimer in the documentation and/or other materials provided with the distribution.
 #
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-#WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-#PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-#DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-#CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-#DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+# DAMAGE.
 
 #
 # this script imports excel-files (xlsx) to a canmatrix-object
@@ -34,56 +34,60 @@ import codecs
 import zipfile
 from xml.etree.ElementTree import iterparse
 
-def readXlsx( fileName, **args ):
-    #from: Hooshmand zandi http://stackoverflow.com/a/16544219
+
+def readXlsx(fileName, **args):
+    # from: Hooshmand zandi http://stackoverflow.com/a/16544219
     import zipfile
     from xml.etree.ElementTree import iterparse
 
     if "sheet" in args:
-        sheet=args["sheet"]
+        sheet = args["sheet"]
     else:
-        sheet=1
+        sheet = 1
     if "header" in args:
-        isHeader=args["header"]
+        isHeader = args["header"]
     else:
-        isHeader=False
+        isHeader = False
 
-    rows   = []
-    row    = {}
+    rows = []
+    row = {}
     header = {}
-    z      = zipfile.ZipFile( fileName )
+    z = zipfile.ZipFile(fileName)
 
     # Get shared strings
-    strings = [ el.text for e, el
-                        in  iterparse( z.open( 'xl/sharedStrings.xml' ) )
-                        if el.tag.endswith( '}t' )
-                        ]
+    strings = [el.text for e, el
+               in iterparse(z.open('xl/sharedStrings.xml'))
+               if el.tag.endswith('}t')
+               ]
     value = ''
 
     # Open specified worksheet
-    for e, el in iterparse( z.open( 'xl/worksheets/sheet%d.xml'%( sheet ) ) ):
+    for e, el in iterparse(z.open('xl/worksheets/sheet%d.xml' % (sheet))):
         # get value or index to shared strings
-        if el.tag.endswith( '}v' ):                                   # <v>84</v>
+        if el.tag.endswith('}v'):                                   # <v>84</v>
             value = el.text
-        if el.tag.endswith( '}c' ):                                   # <c r="A3" t="s"><v>84</v></c>
+        if el.tag.endswith(
+                '}c'):                                   # <c r="A3" t="s"><v>84</v></c>
             # If value is a shared string, use value as an index
 
-            if el.attrib.get( 't' ) == 's':
-                value = strings[int( value )]
+            if el.attrib.get('t') == 's':
+                value = strings[int(value)]
 
-            # split the row/col information so that the row leter(s) can be separate
+            # split the row/col information so that the row leter(s) can be
+            # separate
             letter = el.attrib['r']                                   # AZ22
             while letter[-1].isdigit():
                 letter = letter[:-1]
 
             # if it is the first row, then create a header hash for the names
             # that COULD be used
-            if rows ==[]:
-                header[letter]=value.strip()
+            if rows == []:
+                header[letter] = value.strip()
             else:
                 if value != '':
 
-                    # if there is a header row, use the first row's names as the row hash index
+                    # if there is a header row, use the first row's names as
+                    # the row hash index
                     if isHeader == True and letter in header:
                         row[header[letter]] = value
                     else:
@@ -96,11 +100,13 @@ def readXlsx( fileName, **args ):
     z.close()
     return [header, rows]
 
+
 def getIfPossible(row, value):
     if value in row:
         return row[value].strip()
     else:
         return None
+
 
 def importXlsx(filename, **options):
     if 'xlsMotorolaBitFormat' in options:
@@ -108,24 +114,26 @@ def importXlsx(filename, **options):
     else:
         motorolaBitFormat = "msbreverse"
 
-    sheet = readXlsx( filename, sheet = 1, header = True )
+    sheet = readXlsx(filename, sheet=1, header=True)
     db = CanMatrix()
     letterIndex = []
     for a in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
         letterIndex.append(a)
     for a in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
         for b in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-            letterIndex.append("%s%s" % (a,b))
+            letterIndex.append("%s%s" % (a, b))
 
-    #Defines not imported...
+    # Defines not imported...
 #       db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
 #       db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
-    db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
-    db.addFrameDefines("GenMsgDelayTime",  'INT 0 65535')
-    db.addFrameDefines("GenMsgCycleTimeActive",  'INT 0 65535')
-    db.addFrameDefines("GenMsgNrOfRepetitions",  'INT 0 65535')
+    db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
+    db.addFrameDefines("GenMsgDelayTime", 'INT 0 65535')
+    db.addFrameDefines("GenMsgCycleTimeActive", 'INT 0 65535')
+    db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
 #       db.addFrameDefines("GenMsgStartValue",  'STRING')
-    db.addFrameDefines("GenMsgSendType",  'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
+    db.addFrameDefines(
+        "GenMsgSendType",
+        'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
 #       db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
     db.addSignalDefines("GenSigSNA", 'STRING')
 
@@ -168,28 +176,28 @@ def importXlsx(filename, **options):
     if 'Byteorder' in list(sheet[0].values()):
         for key in sheet[0]:
             if sheet[0][key].strip() == 'Byteorder':
-                _BUstart = letterIndex.index(key)+1
+                _BUstart = letterIndex.index(key) + 1
                 break
     else:
         for key in sheet[0]:
             if sheet[0][key].strip() == 'Signal Not Available':
-                _BUstart = letterIndex.index(key)+1
+                _BUstart = letterIndex.index(key) + 1
 
     for key in sheet[0]:
         if sheet[0][key].strip() == 'Value':
             _BUend = letterIndex.index(key)
 
-    #BoardUnits:
-    for x in range(_BUstart,_BUend):
+    # BoardUnits:
+    for x in range(_BUstart, _BUend):
         db._BUs.add(BoardUnit(sheet[0][letterIndex[x]]))
 
-    #initialize:
+    # initialize:
     frameId = None
     signalName = ""
     newBo = None
 
     for row in sheet[1]:
-        #ignore empty row
+        # ignore empty row
         if not 'ID' in row:
             continue
         # new frame detected
@@ -198,10 +206,10 @@ def importXlsx(filename, **options):
             # new Frame
             frameId = row['ID']
             frameName = row['Frame Name']
-            cycleTime = getIfPossible(row,"Cycle Time [ms]")
-            launchType = getIfPossible(row,'Launch Type')
+            cycleTime = getIfPossible(row, "Cycle Time [ms]")
+            launchType = getIfPossible(row, 'Launch Type')
             dlc = 8
-            launchParam = getIfPossible(row,'Launch Parameter')
+            launchParam = getIfPossible(row, 'Launch Parameter')
             if type(launchParam).__name__ != "float":
                 launchParam = 0.0
             launchParam = str(int(launchParam))
@@ -211,7 +219,7 @@ def importXlsx(filename, **options):
 
             db._fl.addFrame(newBo)
 
-            #eval launchtype
+            # eval launchtype
             if launchType is not None:
                 if "Cyclic+Change" == launchType:
                     newBo.addAttribute("GenMsgSendType", "5")
@@ -239,40 +247,41 @@ def importXlsx(filename, **options):
                 cycleTime = 0.0
             newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
 
-        #new signal detected
+        # new signal detected
         if row['Signal Name'] != signalName:
             # new Signal
             receiver = []
             startbyte = int(row["Signal Byte No."])
             startbit = int(row['Signal Bit No.'])
             signalName = row['Signal Name']
-            signalComment = getIfPossible(row,'Signal Function')
+            signalComment = getIfPossible(row, 'Signal Function')
             signalLength = int(row['Signal Length [Bit]'])
-            signalDefault = getIfPossible(row,'Signal Default')
-            signalSNA = getIfPossible(row,'Signal Not Available')
+            signalDefault = getIfPossible(row, 'Signal Default')
+            signalSNA = getIfPossible(row, 'Signal Not Available')
             multiplex = None
-            if signalComment is not None and signalComment.startswith('Mode Signal:'):
+            if signalComment is not None and signalComment.startswith(
+                    'Mode Signal:'):
                 multiplex = 'Multiplexor'
                 signalComment = signalComment[12:]
             elif signalComment is not None and signalComment.startswith('Mode '):
-                mux, signalComment = signalComment[4:].split(':',1)
+                mux, signalComment = signalComment[4:].split(':', 1)
                 multiplex = int(mux.strip())
 
-            signalByteorder = getIfPossible(row,'Byteorder')
+            signalByteorder = getIfPossible(row, 'Byteorder')
             if signalByteorder is not None:
                 if 'i' in signalByteorder:
                     is_little_endian = True
                 else:
                     is_little_endian = False
             else:
-                is_little_endian = True # Default Intel
+                is_little_endian = True  # Default Intel
 
             is_signed = False
 
             if signalName != "-":
-                for x in range(_BUstart,_BUend):
+                for x in range(_BUstart, _BUend):
                     buName = sheet[0][letterIndex[x]].strip()
-                    buSenderReceiver = getIfPossible(row,buName)
+                    buSenderReceiver = getIfPossible(row, buName)
                     if buSenderReceiver is not None:
                         if 's' in buSenderReceiver:
                             newBo.addTransmitter(buName)
@@ -280,32 +289,36 @@ def importXlsx(filename, **options):
                             receiver.append(buName)
 #                if signalLength > 8:
 #                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
-                newSig = Signal(signalName, 
-                          startBit = (startbyte-1)*8+startbit, 
-                          signalSize = signalLength,
-                          is_little_endian = is_little_endian, 
-                          is_signed = is_signed, 
-                          receiver=receiver,
-                          multiplex=multiplex)     
+                newSig = Signal(signalName,
+                                startBit=(startbyte - 1) * 8 + startbit,
+                                signalSize=signalLength,
+                                is_little_endian=is_little_endian,
+                                is_signed=is_signed,
+                                receiver=receiver,
+                                multiplex=multiplex)
 
 #                else:
 #                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
                 if is_little_endian == False:
-                    #motorola
+                    # motorola
                     if motorolaBitFormat == "msb":
-                        newSig.setStartbit((startbyte-1)*8+startbit, bitNumbering = 1)
+                        newSig.setStartbit(
+                            (startbyte - 1) * 8 + startbit, bitNumbering=1)
                     elif motorolaBitFormat == "msbreverse":
-                        newSig.setStartbit((startbyte-1)*8+startbit)
-                    else: # motorolaBitFormat == "lsb"
-                        newSig.setStartbit((startbyte-1)*8+startbit, bitNumbering = 1, startLittle = True)
+                        newSig.setStartbit((startbyte - 1) * 8 + startbit)
+                    else:  # motorolaBitFormat == "lsb"
+                        newSig.setStartbit(
+                            (startbyte - 1) * 8 + startbit,
+                            bitNumbering=1,
+                            startLittle=True)
 
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
                 function = getIfPossible(row, 'Function / Increment Unit')
-        value = getIfPossible(row,'Value')
-        valueName = getIfPossible(row,'Name / Phys. Range')
+        value = getIfPossible(row, 'Value')
+        valueName = getIfPossible(row, 'Name / Phys. Range')
 
-        if valueName == 0 or valueName == None:
+        if valueName == 0 or valueName is None:
             valueName = "0"
         elif valueName == 1:
             valueName = "1"
@@ -315,11 +328,12 @@ def importXlsx(filename, **options):
         factor = 0
         unit = ""
 
-        factor = getIfPossible(row,'Function / Increment Unit')
-        if type(factor).__name__ == "unicode" or  type(factor).__name__ == "str":
+        factor = getIfPossible(row, 'Function / Increment Unit')
+        if type(factor).__name__ == "unicode" or type(
+                factor).__name__ == "str":
             factor = factor.strip()
             if " " in factor and factor[0].isdigit():
-                (factor, unit) = factor.strip().split(" ",1)
+                (factor, unit) = factor.strip().split(" ", 1)
                 factor = factor.strip()
                 unit = unit.strip()
                 newSig.unit = unit
@@ -329,9 +343,8 @@ def importXlsx(filename, **options):
                 newSig.unit = unit
                 newSig.factor = 1
 
-
         if ".." in test:
-            (mini, maxi) = test.strip().split("..",2)
+            (mini, maxi) = test.strip().split("..", 2)
             unit = ""
             try:
                 newSig.offset = float(mini)
@@ -342,12 +355,11 @@ def importXlsx(filename, **options):
                 newSig.min = None
                 newSig.max = None
 
-
         elif valueName.__len__() > 0:
             if value is not None and value.strip().__len__() > 0:
                 value = int(float(value))
                 newSig.addValues(value, valueName)
-            maxi = pow(2,signalLength)-1
+            maxi = pow(2, signalLength) - 1
             newSig.max = float(maxi)
         else:
             newSig.offset = 0

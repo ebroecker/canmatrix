@@ -48,14 +48,15 @@ def join_frame_by_signal_startbit(files):
 
     return targetDb
 
-def renameFrameWithID(sourceDb):
-   for frameSc in sourceDb._fl._list:
-       _, pgn, sa = CanId(frameSc._Id).tuples()
 
-       exten = "__{pgn:#04X}_{sa:#02X}_{sa:03d}d".format(pgn=pgn, sa=sa)
-       new_name = frameSc._name+exten
-       #print(new_name)
-       frameSc._name = new_name
+def renameFrameWithID(sourceDb):
+    for frameSc in sourceDb._fl._list:
+        _, pgn, sa = CanId(frameSc._Id).tuples()
+
+        exten = "__{pgn:#04X}_{sa:#02X}_{sa:03d}d".format(pgn=pgn, sa=sa)
+        new_name = frameSc._name + exten
+        # print(new_name)
+        frameSc._name = new_name
 
 
 def renameFrameWithSAEacronyme(sourceDb, targetDb):
@@ -67,9 +68,8 @@ def renameFrameWithSAEacronyme(sourceDb, targetDb):
         targetFr = targetDb.frameById(idx)
         sourceFr = sourceDb.frameById(idy)
 
-        new_name = sourceFr._name +  "__" + targetFr._name
+        new_name = sourceFr._name + "__" + targetFr._name
         targetFr._name = new_name
-
 
 
 def join_frame_for_manufacturer(db, files):
@@ -89,12 +89,13 @@ def join_frame_for_manufacturer(db, files):
             sourceFr = sourceDb.frameById(idy)
 
             _, pgn, sa = CanId(targetFr._Id).tuples()
-            if(sa<128):
-                print('less',targetFr._name)
+            if(sa < 128):
+                print('less', targetFr._name)
                 to_add = []
                 for sig_s in sourceFr._signals:
-                    new_name = "{name}_{pgn:#04x}_{sa:03}".format(name=sig_s._name, pgn=pgn, sa=sa)
-                    sig_s._name=new_name
+                    new_name = "{name}_{pgn:#04x}_{sa:03}".format(
+                        name=sig_s._name, pgn=pgn, sa=sa)
+                    sig_s._name = new_name
                     to_add.append(sig_s)
                 for s in to_add:
                     targetFr.addSignal(s)

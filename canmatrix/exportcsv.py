@@ -30,6 +30,7 @@ import csv
 if (sys.version_info > (3, 0)):
     import codecs
 
+
 class csvRow:
 
     def __init__(self):
@@ -51,7 +52,8 @@ class csvRow:
     def as_list(self):
         # Generate list of single cells in the row till highest index (dictionary key)
         # Empty cells (non-existent keys) are generated as empty string
-        return [str(self._rowdict[x]) for x in range(0, max(self._rowdict) + 1)]
+        return [str(self._rowdict[x])
+                for x in range(0, max(self._rowdict) + 1)]
 
     def toCSV(self, delimiter=','):
         text = delimiter.join(self.as_list)
@@ -62,16 +64,16 @@ class csvRow:
 
 
 def writeFramex(frame, row):
-    #frame-id
-    row[0] =  "%3Xh" % frame.id
-    #frame-Name
+    # frame-id
+    row[0] = "%3Xh" % frame.id
+    # frame-Name
     row[1] = frame.name
 
-    #determine cycle-time
+    # determine cycle-time
     if "GenMsgCycleTime" in frame.attributes:
-        row[2]  = int(frame.attributes["GenMsgCycleTime"])
+        row[2] = int(frame.attributes["GenMsgCycleTime"])
 
-    #determine send-type
+    # determine send-type
     if "GenMsgSendType" in frame.attributes:
         if frame.attributes["GenMsgSendType"] == "5":
             row[3] = "Cyclic+Change"
@@ -104,9 +106,10 @@ def writeFramex(frame, row):
 
 
 def writeBuMatrixx(buList, sig, frame, row, col):
-    #iterate over boardunits:
+    # iterate over boardunits:
     for bu in buList:
-        # write "s" "r" "r/s" if signal is sent, received or send and received by boardunit
+        # write "s" "r" "r/s" if signal is sent, received or send and received
+        # by boardunit
         if bu in sig.receiver and bu in frame.transmitter:
             row[col] = "r/s"
         elif bu in sig.receiver:
@@ -123,12 +126,13 @@ def writeValuex(label, value, row, rearCol):
     row[rearCol] = value
     row[rearCol + 1] = label
 
+
 def writeSignalx(db, sig, row, rearCol):
-    #startbyte
-    row[5] = int((sig.getStartbit())/8+1)
-    #startbit
-    row[6] = (sig.getStartbit())%8
-    #signalname
+    # startbyte
+    row[5] = int((sig.getStartbit()) / 8 + 1)
+    # startbit
+    row[6] = (sig.getStartbit()) % 8
+    # signalname
     row[7] = sig.name
 
     # eval comment:
@@ -143,18 +147,18 @@ def writeSignalx(db, sig, row, rearCol):
     elif sig.multiplex is not None:
         comment = "Mode " + str(sig.multiplex) + ":" + comment
 
-    #write comment and size of signal in sheet
+    # write comment and size of signal in sheet
     row[8] = comment
     row[9] = sig.signalsize
 
-    #startvalue of signal available
+    # startvalue of signal available
     if "GenSigStartValue" in sig.attributes:
         if db.signalDefines["GenSigStartValue"].definition == "STRING":
             row[10] = sig.attributes["GenSigStartValue"]
         elif db.signalDefines["GenSigStartValue"].definition == "INT" or db.signalDefines["GenSigStartValue"].definition == "HEX":
             row[10] = "%Xh" % int(sig.attributes["GenSigStartValue"])
 
-    #SNA-value of signal available
+    # SNA-value of signal available
     if "GenSigSNA" in sig.attributes:
         row[11] = sig.attributes["GenSigSNA"][1:-1]
 
@@ -174,7 +178,7 @@ def writeSignalx(db, sig, row, rearCol):
     if sig.unit.strip().__len__() > 0:
         # factor not 1.0 ?
         if float(sig.factor) != 1:
-            row[rearCol+2] = "%g" % float(sig.factor) + "  " + sig.unit
+            row[rearCol + 2] = "%g" % float(sig.factor) + "  " + sig.unit
         #factor == 1.0
         else:
             row[rearCol + 2] = sig.unit
@@ -184,13 +188,28 @@ def writeSignalx(db, sig, row, rearCol):
         if float(sig.factor) != 1:
             row[rearCol + 2] = float(sig.factor)
 
+
 def exportCsv(db, filename, delimiter=','):
-    head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.', 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder','is signed']
-    head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
+    head_top = [
+        'ID',
+        'Frame Name',
+        'Cycle Time [ms]',
+        'Launch Type',
+        'Launch Parameter',
+        'Signal Byte No.',
+        'Signal Bit No.',
+        'Signal Name',
+        'Signal Function',
+        'Signal Length [Bit]',
+        'Signal Default',
+        ' Signal Not Available',
+        'Byteorder',
+        'is signed']
+    head_tail = ['Value', 'Name / Phys. Range', 'Function / Increment Unit']
 
-    csvtable = list() # List holding all csv rows
+    csvtable = list()  # List holding all csv rows
 
-    col = 0 # Column counter
+    col = 0  # Column counter
 
     # -- headers start:
     headerrow = csvRow()
@@ -261,7 +280,7 @@ def exportCsv(db, filename, delimiter=','):
                 writeSignalx(db, sig, signalRow, col)
 
                 if sig.min is not None or sig.max is not None:
-                    signalRow[col+1] = str("{}..{}".format(sig.min, sig.max))
+                    signalRow[col + 1] = str("{}..{}".format(sig.min, sig.max))
 
                 # next row
                 row += 1
@@ -286,5 +305,6 @@ def exportCsv(db, filename, delimiter=','):
 
     else:
         # just print to stdout
-        finalTableString = "\n".join([row.toCSV(delimiter) for row in csvtable])
+        finalTableString = "\n".join(
+            [row.toCSV(delimiter) for row in csvtable])
         print(finalTableString)
