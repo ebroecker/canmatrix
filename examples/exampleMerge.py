@@ -7,7 +7,7 @@ sys.path.append('..')
 from canmatrix.copy import *
 import canmatrix.importany as im
 import canmatrix.exportall as ex
-#fuer Fileio:
+# fuer Fileio:
 import sys
 
 #
@@ -30,13 +30,13 @@ db3 = CanMatrix()
 # -----------------------------------------------------
 #
 
-#Copy Can-ID 1234 from second CAN-Matrix to target-Matrix
+# Copy Can-ID 1234 from second CAN-Matrix to target-Matrix
 copyFrame(1234, db2, db3)
 
-#Copy frame "Engine_123" from first CAN-Matrix to target-Matrix
+# Copy frame "Engine_123" from first CAN-Matrix to target-Matrix
 copyFrame("Engine_123", db1, db3)
 
-#Copy ECU (with all Frames) "Gateway" from first CAN-Matrix to target-Matrix
+# Copy ECU (with all Frames) "Gateway" from first CAN-Matrix to target-Matrix
 copyBUwithFrames("Gateway", db1, db3)
 
 #
