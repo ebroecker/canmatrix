@@ -1,29 +1,35 @@
 #!/usr/bin/env python
 
-#Copyright (c) 2013, Eduard Broecker
-#All rights reserved.
+# Copyright (c) 2013, Eduard Broecker
+# All rights reserved.
 #
-#Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that
 # the following conditions are met:
 #
-#    Redistributions of source code must retain the above copyright notice, this list of conditions and the
-#    following disclaimer.
-#    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
-#    following disclaimer in the documentation and/or other materials provided with the distribution.
+#    Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#    Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
 #
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-#WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-#PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-#DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-#CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-#DAMAGE.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,   PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR  OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
 
-#TODO: Definitions should be imported with disassembling not as complete string
+# TODO: Definitions should be disassembled
 
 from __future__ import division
 import math
+
 
 class FrameList(object):
     """
@@ -37,7 +43,7 @@ class FrameList(object):
         Adds a Signal to the last addes Frame, this is mainly for importers
         """
         self._list[len(self._list)-1].addSignal(signal)
-        
+
     def addFrame(self, frame):
         """
         Adds a Frame
@@ -51,7 +57,6 @@ class FrameList(object):
         """
         self._list.remove(frame)
 
-        
     def byId(self, Id):
         """
         returns a Frame-Object by given Frame-ID
@@ -60,7 +65,7 @@ class FrameList(object):
             if test._Id == int(Id):
                 return test
         return None
-        
+
     def byName(self, Name):
         """
         returns a Frame-Object by given Frame-Name
@@ -75,44 +80,48 @@ class FrameList(object):
 
     def __len__(self):
         return len(self._list)
-        
+
+
 class BoardUnit(object):
     """
     Contains one Boardunit/ECU
     """
-    def __init__(self,name):
+    def __init__(self, name):
         self._name = name.strip()
         self._attributes = {}
         self._comment = None
+
     def addAttribute(self, attribute, value):
         """
         adds some Attribute to current Boardunit/ECU
         """
-        self._attributes[attribute]=value
+        self._attributes[attribute] = value
+
     def addComment(self, comment):
         """
         Set comment of Signal
         """
         self._comment = comment
+
     def __str__(self):
         return self._name
 
     @property
     def name(self):
         return self._name
-    
+
     @name.setter
     def name(self, value):
-    #TODO - change all frames and signals [sender and receiver!]
+        # TODO - change all frames and signals [sender and receiver!]
         self._name = value
 
     @property
     def attributes(self):
         return self._attributes
-        
+
     @property
     def comment(self):
-        return self._comment       
+        return self._comment
 
 
 class BoardUnitList(object):
@@ -121,14 +130,15 @@ class BoardUnitList(object):
     """
     def __init__(self):
         self._list = []
-    def add(self,BU):
+
+    def add(self, BU):
         """
         add Boardunit/ECU to list
         """
         if BU._name.strip() not in self._list:
             self._list.append(BU)
 
-    def remove(self,BU):
+    def remove(self, BU):
         """
         remove Boardunit/ECU to list
         """
@@ -146,8 +156,10 @@ class BoardUnitList(object):
 
     def __iter__(self):
         return iter(self._list)
+
     def __len__(self):
         return len(self._list)
+
 
 class Signal(object):
     """
@@ -161,7 +173,6 @@ class Signal(object):
             _attributes, _values, _unit, _comment
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
-#    def __init__(self, name, startbit, signalsize, is_little_endian, is_signed=False, factor=1, offset=0, min=0, max=0, unit="", receiver=[], multiplex=None):
     def __init__(self, name, **kwargs):
 
         if 'startBit' in kwargs:
@@ -215,7 +226,8 @@ class Signal(object):
             self._comment = None
 
         if 'multiplex' in kwargs:
-            if kwargs["multiplex"] is not None and kwargs["multiplex"] != 'Multiplexor':
+            if kwargs["multiplex"] is not None\
+                    and kwargs["multiplex"] != 'Multiplexor':
                 multiplex = int(kwargs["multiplex"])
             else:
                 multiplex = kwargs["multiplex"]
@@ -246,11 +258,11 @@ class Signal(object):
         self._name = name
         self._attributes = {}
         self._values = {}
-        
+
     @property
     def name(self):
         return self._name
-    
+
     @name.setter
     def name(self, value):
         self._name = value
@@ -258,23 +270,22 @@ class Signal(object):
     @property
     def attributes(self):
         return self._attributes
-        
+
     @property
     def comment(self):
-        return self._comment       
+        return self._comment
 
     @property
     def multiplex(self):
         return self._multiplex
-        
+
     @property
     def values(self):
         return self._values
-    
+
     @values.setter
     def values(self, valueTable):
         self._values = valueTable
-    
 
     @property
     def comment(self):
@@ -283,15 +294,15 @@ class Signal(object):
     @property
     def receiver(self):
         return self._receiver
- 
+
     @property
     def unit(self):
         return self._unit
- 
+
     @unit.setter
     def unit(self, unit):
         self._unit = unit
-        
+
     @property
     def offset(self):
         return self._offset
@@ -300,7 +311,6 @@ class Signal(object):
     def offset(self, value):
         self._offset = value
 
-  
     @property
     def factor(self):
         return self._factor
@@ -308,7 +318,7 @@ class Signal(object):
     @factor.setter
     def factor(self, factor):
         self._factor = factor
-        
+
     @property
     def is_float(self):
         return self._is_float
@@ -324,15 +334,15 @@ class Signal(object):
     @property
     def signalsize(self):
         return self._signalsize
-            
+
     @property
     def min(self):
         return self._min
-    
+
     @min.setter
     def min(self, value):
         self._min = value
-            
+
     @property
     def max(self):
         return self._max
@@ -340,13 +350,13 @@ class Signal(object):
     @max.setter
     def max(self, value):
         self._max = value
-            
+
     def addComment(self, comment):
         """
         Set comment of Signal
         """
         self._comment = comment
-        
+
     def addReceiver(self, receiver):
         """
         add receiver Boardunit/ECU-Name to Signal
@@ -358,9 +368,9 @@ class Signal(object):
         """
         Add Attribute to Signal
         """
-
         if attribute not in self._attributes:
-            self._attributes[attribute]=value.replace('"','')
+            self._attributes[attribute] = value.replace('"', '')
+
     def delAttribute(self, attribute):
         """
         Remove Attribute to Signal
@@ -368,50 +378,54 @@ class Signal(object):
 
         if attribute in self._attributes:
             del self._attributes[attribute]
+
     def addValues(self, value, valueName):
         """
         Add Value/Description to Signal
         """
         self._values[int(value)] = valueName
-    def setStartbit(self, startBit, bitNumbering = None, startLittle = None):
+
+    def setStartbit(self, startBit, bitNumbering=None, startLittle=None):
         """
         set startbit.
         bitNumbering is 1 for LSB0/LSBFirst, 0 for MSB0/MSBFirst.
-        If bit numbering is consistent with byte order (little=LSB0, big=MSB0) (KCD, SYM), start bit unmodified.
-        Otherwise reverse bit numbering. For DBC, ArXML (OSEK), both little endian and big endian use LSB0.
+        If bit numbering is consistent with byte order (little=LSB0, big=MSB0)
+        (KCD, SYM), start bit unmodified.
+        Otherwise reverse bit numbering. For DBC, ArXML (OSEK),
+        both little endian and big endian use LSB0.
         If bitNumbering is None, assume consistent with byte order.
-        If startLittle is set, given startBit is assumed start from lsb bit rather than the start of the signal data in the message data
+        If startLittle is set, given startBit is assumed start from lsb bit
+        rather than the start of the signal data in the message data
         """
         # bit numbering not consistent with byte order. reverse
-        if bitNumbering != None and bitNumbering != self._is_little_endian:
+        if bitNumbering is not None and bitNumbering != self._is_little_endian:
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-        # if given startbit is for the end of signal data (lsbit), convert to start of signal data (msbit)
-        if startLittle == True and self._is_little_endian == False:
+        # if given startbit is for the end of signal data (lsbit),
+        # convert to start of signal data (msbit)
+        if startLittle is True and self._is_little_endian is False:
             startBit = startBit + 1 - self._signalsize
         self._startbit = startBit
 
-    def getStartbit(self, bitNumbering = None, startLittle = None):
+    def getStartbit(self, bitNumbering=None, startLittle=None):
         startBit = self._startbit
-        # convert from big endian start bit at start bit(msbit) to end bit(lsbit)
-        if startLittle == True and self._is_little_endian == False:
+        # convert from big endian start bit at
+        # start bit(msbit) to end bit(lsbit)
+        if startLittle is True and self._is_little_endian is False:
             startBit = startBit + self._signalsize - 1
         # bit numbering not consistent with byte order. reverse
-        if bitNumbering != None and bitNumbering != self._is_little_endian:
+        if bitNumbering is not None and bitNumbering != self._is_little_endian:
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
         return int(startBit)
 
     def calculateRawRange(self):
         rawRange = 2 ** self._signalsize
-
         if self._is_signed:
             rawRange /= 2
-
         return (-rawRange if self._is_signed else 0,
                 rawRange - 1)
 
     def setMin(self, min=None):
         self._min = min
-
         if self._min is None:
             rawMin = self.calculateRawRange()[0]
             self._min = self._offset + (rawMin * self._factor)
@@ -426,6 +440,7 @@ class Signal(object):
     def __str__(self):
         return self._name
 
+
 class SignalGroup(object):
     """
     contains Signals, which belong to signal-group
@@ -434,12 +449,15 @@ class SignalGroup(object):
         self._members = []
         self._name = name
         self._Id = Id
+
     def addSignal(self, signal):
         if signal not in self._members:
             self._members.append(signal)
+
     def delSignal(self, signal):
         if signal in self._members:
             self._members[signal].remove()
+
     def byName(self, name):
         """
         returns Signalobject-Object of list by Name
@@ -460,25 +478,27 @@ class SignalGroup(object):
     @property
     def name(self):
         return self._name
-    
+
     @name.setter
     def name(self, value):
         self._name = value
 
     def __str__(self):
         return self._name
-    
+
     def __iter__(self):
         return iter(self._members)
+
 
 class Frame(object):
     """
     contains one Frame with following attributes
     _Id, _name, _Transmitter (list of boardunits/ECU-names), _Size (= DLC),
     _signals (list of signal-objects), _attributes (list of attributes),
-    _receiver (list of boardunits/ECU-names), _extended (Extended Frame = 1), _comment
+    _receiver (list of boardunits/ECU-names),
+    _extended (Extended Frame = 1),
+    _comment
     """
-#    def __init__(self,bid, name, size, transmitter):
     def __init__(self, name, **kwargs):
         self._name = name
         if 'Id' in kwargs:
@@ -514,7 +534,7 @@ class Frame(object):
         self._attributes = {}
         self._receiver = []
         self._SignalGroups = []
-  
+
     @property
     def attributes(self):
         return self._attributes
@@ -526,7 +546,7 @@ class Frame(object):
     @property
     def SignalGroups(self):
         return self._SignalGroups
-        
+
     @property
     def signals(self):
         return self._signals
@@ -558,23 +578,22 @@ class Frame(object):
     @property
     def extended(self):
         return self._extended
-    
+
     @extended.setter
     def extended(self, value):
         self._extended = value
 
-    
     @property
     def name(self):
         return self._name
-    
+
     @name.setter
     def name(self, value):
         self._name = value
-        
+
     def __iter__(self):
         return iter(self._signals)
-        
+
     def addSignalGroup(self, Name, Id, signalNames):
         newGroup = SignalGroup(Name, Id)
         self._SignalGroups.append(newGroup)
@@ -616,7 +635,6 @@ class Frame(object):
         if receiver not in self._receiver:
             self._receiver.append(receiver)
 
-
     def signalByName(self, name):
         """
         returns signal-object by signalname
@@ -625,12 +643,13 @@ class Frame(object):
             if signal._name == name:
                 return signal
         return None
+
     def addAttribute(self, attribute, value):
         """
         add attribute to attribute-list of frame
         """
         if attribute not in self._attributes:
-            self._attributes[attribute]=str(value)
+            self._attributes[attribute] = str(value)
 
     def delAttribute(self, attribute):
         """
@@ -653,7 +672,7 @@ class Frame(object):
         for sig in self._signals:
             if sig.getStartbit() + int(sig._signalsize) > maxBit:
                 maxBit = sig.getStartbit() + int(sig._signalsize)
-        self._Size =  max(self._Size, int(math.ceil(maxBit / 8)))
+        self._Size = max(self._Size, int(math.ceil(maxBit / 8)))
 
     def updateReceiver(self):
         """
@@ -665,6 +684,7 @@ class Frame(object):
 
     def __str__(self):
         return self._name
+
 
 class Define(object):
     """
@@ -678,7 +698,7 @@ class Define(object):
         # for any known type:
         if definition[0:3] == 'INT':
             self._type = 'INT'
-            min, max = definition[4:].split(' ',2)
+            min, max = definition[4:].split(' ', 2)
             self.min = int(min)
             self.max = int(max)
         elif definition[0:6] == 'STRING':
@@ -690,12 +710,12 @@ class Define(object):
             self.values = definition[5:].split(',')
         elif definition[0:3] == 'HEX':
             self.type = 'HEX'
-            min, max = definition[4:].split(' ',2)
+            min, max = definition[4:].split(' ', 2)
             self.min = int(min)
             self.max = int(max)
         elif definition[0:5] == 'FLOAT':
             self.type = 'FLOAT'
-            min, max = definition[6:].split(' ',2)
+            min, max = definition[6:].split(' ', 2)
             self.min = float(min)
             self.max = float(max)
 
@@ -703,10 +723,11 @@ class Define(object):
 
     def addDefault(self, default):
         self._defaultValue = default
-        
+
     @property
     def defaultValue(self):
         return self._defaultValue
+
 
 class CanMatrix(object):
     """
@@ -720,7 +741,7 @@ class CanMatrix(object):
     _globalDefines (list of global attribute types)
     _valueTables (global defined values)
     """
-    
+
     def __init__(self):
         self._attributes = {}
         self._BUs = BoardUnitList()
@@ -730,7 +751,7 @@ class CanMatrix(object):
         self._globalDefines = {}
         self._buDefines = {}
         self._valueTables = {}
-    
+
     @property
     def attributes(self):
         return self._attributes
@@ -746,26 +767,26 @@ class CanMatrix(object):
     @property
     def signalDefines(self):
         return self._signalDefines
-        
+
     @property
     def frameDefines(self):
         return self._frameDefines
-        
+
     @property
     def globalDefines(self):
         return self._globalDefines
-        
+
     @property
     def buDefines(self):
         return self._buDefines
-        
+
     @property
     def valueTables(self):
         return self._valueTables
- 
+
     def __iter__(self):
         return iter(self._fl)
-        
+
     def addValueTable(self, name, valueTable):
         self._valueTables[name] = valueTable
 
@@ -774,35 +795,35 @@ class CanMatrix(object):
         add attribute to attribute-list of canmatrix
         """
         if attribute not in self._attributes:
-            self._attributes[attribute]=value
+            self._attributes[attribute] = value
 
     def addSignalDefines(self, type, definition):
         """
         add signal-attribute definition to canmatrix
         """
         if type not in self._signalDefines:
-            self._signalDefines[type]=Define(definition)
+            self._signalDefines[type] = Define(definition)
 
     def addFrameDefines(self, type, definition):
         """
         add frame-attribute definition to canmatrix
         """
         if type not in self._frameDefines:
-            self._frameDefines[type]=Define(definition)
+            self._frameDefines[type] = Define(definition)
 
     def addBUDefines(self, type, definition):
         """
         add Boardunit-attribute definition to canmatrix
         """
         if type not in self._buDefines:
-            self._buDefines[type]=Define(definition)
+            self._buDefines[type] = Define(definition)
 
     def addGlobalDefines(self, type, definition):
         """
         add global-attribute definition to canmatrix
         """
         if type not in self._globalDefines:
-            self._globalDefines[type]=Define(definition)
+            self._globalDefines[type] = Define(definition)
 
     def addDefineDefault(self, name, value):
         if name in self._signalDefines:
@@ -861,14 +882,14 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
     puts a signal-value to the right position in a frame
     """
 
-    if format == 1: # Intel
+    if format == 1:  # Intel
         lastbit = startbit + len
         firstbyte = math.floor(startbit/8)-1
         lastbyte = math.floor((lastbit-1)/8)
         # im lastbyte mit dem msb anfangen
         # im firstbyte mit dem lsb aufhoeren
         for i in range(lastbyte, firstbyte, -1):
-            if lastbit %8 != 0:
+            if lastbit % 8 != 0:
                 nbits = lastbit % 8
             else:
                 nbits = min(len, 8)
@@ -879,16 +900,16 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
 
             len -= nbits
             mask = (0xff >> 7-start) << end
-            mask &= 0xff;
-            frame[i] |= (((value >> len ) << end) & mask)
+            mask &= 0xff
+            frame[i] |= (((value >> len) << end) & mask)
             lastbit = startbit + len
-    else: # Motorola
-		  # TODO needs review, is probably wrong till we use LSB for startbit
+    else:  # Motorola
+        # TODO needs review, is probably wrong till we use LSB for startbit
         firstbyte = math.floor(startbit/8)
         bitsInfirstByte = startbit % 8 + 1
         restnBits = len - bitsInfirstByte
         lastbyte = firstbyte + math.floor(restnBits/8)
-        if restnBits %8 > 0:
+        if restnBits % 8 > 0:
             lastbyte += 1
         restLen = len
         nbits = bitsInfirstByte
@@ -924,4 +945,5 @@ class CanId(object):
         return self.destination, self.pgn, self.source
 
     def __str__(self):
-        return "DA:{da:#02X} PGN:{pgn:#04X} SA:{sa:#02X}".format(da=self.destination, pgn=self.pgn, sa=self.source)
+        return "DA:{da:#02X} PGN:{pgn:#04X} SA:{sa:#02X}"\
+                .format(da=self.destination, pgn=self.pgn, sa=self.source)
