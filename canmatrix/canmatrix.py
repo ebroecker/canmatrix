@@ -82,7 +82,6 @@ class FrameList(object):
     def __len__(self):
         return len(self._list)
 
-
 class BoardUnit(object):
     """
     Contains one Boardunit/ECU
@@ -113,7 +112,6 @@ class BoardUnit(object):
 
     @name.setter
     def name(self, value):
-        # TODO - change all frames and signals [sender and receiver!]
         self._name = value
 
     @property
@@ -880,6 +878,74 @@ class CanMatrix(object):
                     if sig.getStartbit() + int(sig._signalsize) > maxBit:
                         maxBit = sig.getStartbit() + int(sig._signalsize)
                 frame._Size = math.ceil(maxBit / 8)
+    
+    def renameEcu(self, old, newName):
+        if type(old).__name__ == 'instance':
+            pass
+        else:
+            old = self.boardUnitByName(old)
+            oldName = old.name
+        old.name = newName
+        for frame in self.frames:
+            if oldName in frame.transmitter:
+                frame.transmitter.remove(oldName)
+                frame.addTransmitter(newName)
+            for signal in frame.signals:
+                if oldName in signal.receiver:
+                    signal.receiver.remove(oldName)
+                    signal.addReceiver(newName)
+            frame.updateReceiver()
+
+    def delEcu(self, ecu):
+        if type(ecu).__name__ == 'instance':
+            pass
+        else:
+            ecu = self.boardUnitByName(ecu)
+        for frame in self.frames:
+            if oldName in frame.transmitter:
+                frame.transmitter.remove(ecu.name)
+            for signal in frame.signals:
+                if oldName in signal.receiver:
+                    signal.receiver.remove(ecu.name)
+            frame.updateReceiver()
+
+    def renameFrame(self, old, newName):
+        if type(old).__name__ == 'instance':
+            pass
+        else:
+            old = self.frameByName(old)
+            oldName = old.name
+        old.name = newName
+        for frame in self.frames:
+            if frame.name == oldName:
+                frame.name = newName
+
+    def delFrame(self, frame):
+        if type(frame).__name__ == 'instance':
+            pass
+        else:
+            frame = self.frameByName(frame)
+        self.frames.remove(frame)
+
+    def renameSignal(self, old, newName):
+        if type(old).__name__ == 'instance':
+            old.name = newName
+        else:
+            for frame in self.frames:
+                signal = frame.signalByName(old)
+                if signal is not None:
+                    signal.name = newName
+
+    def delSignal(self, signal):
+        if type(signal).__name__ == 'instance':            
+            for frame in self.frames:
+                if signal in frame.signals:
+                    frame.signals.remove(sig)
+        else:
+            for frame in self.frames:
+                sig = frame.signalByName(signal)
+                if sig is not None:
+                    frame.signals.remove(sig)
 
 
 #
