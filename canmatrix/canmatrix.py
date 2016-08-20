@@ -84,7 +84,7 @@ class BoardUnit(object):
     def __str__(self):
         return self._name
 
-class BoardUnitListe(object):
+class BoardUnitList(object):
     """
     Contains all Boardunits/ECUs of a canmatrix in a list
     """
@@ -493,7 +493,7 @@ class CanMatrix(object):
     """
     def __init__(self):
         self._attributes = {}
-        self._BUs = BoardUnitListe()
+        self._BUs = BoardUnitList()
         self._fl = FrameList()
         self._signalDefines = {}
         self._frameDefines = {}
