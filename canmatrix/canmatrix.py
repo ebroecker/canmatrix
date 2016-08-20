@@ -901,11 +901,12 @@ class CanMatrix(object):
             pass
         else:
             ecu = self.boardUnitByName(ecu)
+        self.boardUnits.remove(ecu)
         for frame in self.frames:
-            if oldName in frame.transmitter:
+            if ecu.name in frame.transmitter:
                 frame.transmitter.remove(ecu.name)
             for signal in frame.signals:
-                if oldName in signal.receiver:
+                if ecu.name in signal.receiver:
                     signal.receiver.remove(ecu.name)
             frame.updateReceiver()
 
@@ -914,7 +915,7 @@ class CanMatrix(object):
             pass
         else:
             old = self.frameByName(old)
-            oldName = old.name
+        oldName = old.name
         old.name = newName
         for frame in self.frames:
             if frame.name == oldName:
@@ -925,7 +926,7 @@ class CanMatrix(object):
             pass
         else:
             frame = self.frameByName(frame)
-        self.frames.remove(frame)
+        self.frames.removeFrame(frame)
 
     def renameSignal(self, old, newName):
         if type(old).__name__ == 'instance':
