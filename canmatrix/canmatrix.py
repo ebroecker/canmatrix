@@ -494,8 +494,12 @@ class SignalGroup(object):
 class Frame(object):
     """
     contains one Frame with following attributes
-    _Id, _name, _Transmitter (list of boardunits/ECU-names), _Size (= DLC),
-    _signals (list of signal-objects), _attributes (list of attributes),
+    _Id, 
+    _name, 
+    _Transmitter (list of boardunits/ECU-names),
+    _Size (= DLC),
+    _signals (list of signal-objects), 
+    _attributes (list of attributes),
     _receiver (list of boardunits/ECU-names),
     _extended (Extended Frame = 1),
     _comment
@@ -840,6 +844,44 @@ class CanMatrix(object):
             self._buDefines[name].addDefault(value)
         if name in self._globalDefines:
             self._globalDefines[name].addDefault(value)
+
+
+    def cleanupDefines(self):
+        toBeDeleted = []
+        for frameDef in self.frameDefines:
+            found = False
+            for frame in self.frames:
+                if frameDef in frame.attributes:
+                    found = True
+                    break
+            if found is False and found not in toBeDeleted:
+                toBeDeleted.append(frameDef)
+        for element in toBeDeleted:
+            del self.frameDefines[element]
+        toBeDeleted = []
+        for buDef in self.buDefines:
+            found = False
+            for ecu in self.boardUnits:
+                if buDef in ecu.attributes:
+                    found = True
+                    break
+            if found is False and found not in toBeDeleted:
+                toBeDeleted.append(buDef)
+        for element in toBeDeleted:
+            del self.buDefines[element]
+
+        toBeDeleted = []
+        for signalDef in self.signalDefines:
+            found = False
+            for frame in self.frames:
+                for signal in frame.signals:
+                    if signalDef in signal.attributes:
+                        found = True       
+                        break
+            if found is False and found not in toBeDeleted:
+                toBeDeleted.append(signalDef)
+        for element in toBeDeleted:
+            del self.signalDefines[element]
 
     def frameById(self, Id):
         return self._fl.byId(Id)
