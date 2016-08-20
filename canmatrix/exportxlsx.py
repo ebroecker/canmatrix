@@ -27,7 +27,10 @@ from __future__ import division
 from __future__ import absolute_import
 from builtins import *
 import math
-import xlsxwriter
+try:
+    import xlsxwriter
+except ImportError:
+    xlsxwriter = None
 import sys
 from .canmatrix import *
 import os.path
@@ -224,6 +227,9 @@ def writeBuMatrixx(buList, sig, frame, worksheet, row, col, firstframe):
     return col
 
 def exportXlsx(db, filename, **options):
+    if xlsxwriter is None:
+        raise ImportError("no xlsx-export-support, some dependencies missing... try pip install xlsxwriter")
+
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:

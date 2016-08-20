@@ -46,10 +46,15 @@ License :: OSI Approved :: BSD License
 Topic :: Scientific/Engineering
 """
 
+import sys
 from setuptools import setup, find_packages
 from canmatrix.version import version
 
 doclines = __doc__.split("\n")
+
+requirements = []
+if sys.version_info < (3, 0):
+    requirements.append("future")
 
 setup(
     name = "canmatrix",
@@ -63,6 +68,19 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
+    install_requires = requirements,
+    extras_require = {
+        "arxml": ["lxml"],
+        "kcd": ["lxml"],
+        "fibex": ["lxml"],
+        "xls": ["xlrd", "xlwt"],
+        "xlsx": ["xlsxwriter"],
+        "yaml": ["pyaml"],
+        "dbc": [],
+        "dbf": [],
+        "json": [],
+        "sym": []
+    },
 
     packages = find_packages(),
     entry_points={'console_scripts': ['cancompare = canmatrix.compare:main',

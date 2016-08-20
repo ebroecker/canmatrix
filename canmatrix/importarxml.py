@@ -37,7 +37,10 @@ logger = logging.getLogger('root')
 
 from builtins import *
 import math
-from lxml import etree
+try:
+    from lxml import etree
+except ImportError:
+    etree = None
 from .canmatrix import *
 from .autosarhelper import *
 
@@ -452,6 +455,9 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     return bu
 
 def importArxml(filename, **options):
+    if etree is None:
+        raise ImportError("no arxml-import-support, some dependencies missing... , try pip install lxml ")
+
     if 'arxmlIgnoreClusterInfo' in options:
         ignoreClusterInfo=options["arxmlIgnoreClusterInfo"]
     else:
