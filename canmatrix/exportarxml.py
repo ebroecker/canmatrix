@@ -27,7 +27,10 @@
 
 from __future__ import absolute_import
 from builtins import *
-from lxml import etree
+try:
+    from lxml import etree
+except ImportError:
+    etree = None
 from .canmatrix import *
 from .autosarhelper import *
 from .importdbc import *
@@ -41,6 +44,9 @@ def createSubElement(parent, elementName, strName = None):
 
 
 def exportArxml(db, filename, **options):
+    if etree is None:
+        raise ImportError("no arxml-export-support, some dependencies missing... try pip install lxml")
+
     if 'arVersion' in options:
         if options["arVersion"][0] == "3":
             arVersion="3.2.3"

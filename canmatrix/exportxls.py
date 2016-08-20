@@ -27,7 +27,10 @@ from __future__ import division
 from __future__ import absolute_import
 from builtins import *
 import math
-import xlwt
+try:
+    import xlwt
+except ImportError:
+    xlwt = None
 import sys
 from .canmatrix import *
 import os.path
@@ -226,6 +229,9 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
     return col
 
 def exportXls(db, filename, **options):
+    if xlwt is None:
+        raise ImportError("no xls-export-support, some dependencies missing... try pip install xlwt")
+
     head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.', 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 

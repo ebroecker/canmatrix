@@ -27,7 +27,10 @@ from builtins import *
 # this script exports kcd-files from a canmatrix-object
 # kcd-files are the can-matrix-definitions of the kayak (http://kayak.2codeornot2code.org/)
 
-from lxml import etree
+try:
+    from lxml import etree
+except ImportError:
+    etree = None
 from .canmatrix import *
 import os
 import re
@@ -96,6 +99,8 @@ def createSignal(signal, nodeList, typeEnums):
 
 
 def exportKcd(db, filename):
+    if etree is None:
+        raise ImportError("no kcd-export-support, some dependenies missing... try pip install lxml")
 
     signalTypeEnums = {}
     for (typename,define) in list(db._signalDefines.items()):

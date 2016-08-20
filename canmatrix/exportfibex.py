@@ -27,7 +27,10 @@
 
 from __future__ import absolute_import
 from builtins import *
-from lxml import etree
+try:
+    from lxml import etree
+except ImportError:
+    etree = None
 from .canmatrix import *
 import os.path
 
@@ -58,7 +61,10 @@ def createSubElementHo(parent, elementName, elementText = None):
         new.text = elementText
     return new
 
-def exportFibex(db, filename):   
+def exportFibex(db, filename):
+    if etree is None:
+        raise ImportError("no fibex-export-support, some dependencies missing ... try pip install lxml")
+
     nsmap = {"fx":fx, "ho":ho, "can":can, "xsi":xsi}
     root = etree.Element(ns_fx + "FIBEX", nsmap=nsmap)
     root.attrib['{{{pre}}}schemaLocation'.format(pre=xsi)] = 'http://www.asam.net/xml/fbx ..\\..\\xml_schema\\fibex.xsd http://www.asam.net/xml/fbx/can  ..\\..\\xml_schema\\fibex4can.xsd'
