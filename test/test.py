@@ -31,6 +31,7 @@ for f in os.listdir('../canmatrix'):
 export_types.sort()
 # TODO: support testing of xlsx
 export_types.remove('xlsx')
+export_types.remove('fibex')
 import_types.sort()
 
 test_file_base = 'test'
