@@ -79,6 +79,34 @@ def convert(infile, outfileName, **options):
                             cmcp.copyFrame(
                                 mergeOpt.split('=')[1], dbTempList[dbTemp], db)
 
+        if 'renameEcu' in options and options['renameEcu'] is not None:
+            renameTuples = options['renameEcu'].split(',')
+            for renameTuple in renameTuples:
+                old, new = renameTuple.split(':')                
+                db.renameEcu(old, new)
+        if 'deleteEcu' in options and options['deleteEcu'] is not None:
+            deleteEcuList = options['deleteEcu'].split(',')
+            for ecu in deleteEcuList:
+                db.delEcu(ecu)
+        if 'renameFrame' in options and options['renameFrame'] is not None:
+            renameTuples = options['renameFrame'].split(',')
+            for renameTuple in renameTuples:
+                old, new = renameTuple.split(':')                
+                db.renameFrame(old, new)
+        if 'deleteFrame' in options and options['deleteFrame'] is not None:
+            deleteFrameList = options['deleteFrame'].split(',')
+            for frame in deleteFrameList:
+                db.delFrame(frame)
+        if 'renameSignal' in options and options['renameSignal'] is not None:
+            renameTuples = options['renameSignal'].split(',')
+            for renameTuple in renameTuples:
+                old, new = renameTuple.split(':')                
+                db.renameSignal(old, new)
+        if 'deleteSignal' in options and options['deleteSignal'] is not None:
+            deleteSignalList = options['deleteSignal'].split(',')
+            for signal in deleteSignalList:
+                db.delSignal(signal)
+
         if 'deleteZeroSignals' in options and options['deleteZeroSignals']:
             db.deleteZeroSignals()
 
@@ -86,6 +114,10 @@ def convert(infile, outfileName, **options):
                 'deleteSignalAttributes']:
             unwantedAttributes = options['deleteSignalAttributes'].split(',')
             db.delSignalAttributes(unwantedAttributes)
+
+        if 'deleteObsoleteDefines' in options and options[
+                'deleteObsoleteDefines']:
+            db.deleteObsoleteDefines()
 
         if 'deleteFrameAttributes' in options and options[
                 'deleteFrameAttributes']:
@@ -184,15 +216,20 @@ def main():
     parser.add_option("", "--deleteFrameAttributes",
                       dest="deleteFrameAttributes", default=None,
                       help="delete attributes from all frames\nExample --deleteFrameAttributes GenMsgCycle,CycleTime")
-    parser.add_option("", "--recalcDLC",
+    parser.add_option("", "--deleteObsoleteDefines", action="store_true",
+                      dest="deleteObsoleteDefines", default=False,
+                      help="delete defines from all Boardunits, frames and Signals\nExample --deleteObsoleteDefines")
+    parser.add_option("", "--recalcDLC", 
                       dest="recalcDLC", default=False,
                       help="recalculate dlc; max: use maximum of stored and calculated dlc; force: force new calculated dlc")
+
     parser.add_option("", "--arxmlIgnoreClusterInfo", action="store_true",
                       dest="arxmlIgnoreClusterInfo", default=False,
                       help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault 0")
     parser.add_option("", "--arxmlExportVersion",
                       dest="arVersion", default="3.2.3",
                       help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 3.2.3")
+
     parser.add_option("", "--dbcImportEncoding",
                       dest="dbcImportEncoding", default="iso-8859-1",
                       help="Import charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")
@@ -205,18 +242,21 @@ def main():
     parser.add_option("", "--dbcExportCommentEncoding",
                       dest="dbcExportCommentEncoding", default="iso-8859-1",
                       help="Export charset of comments in dbc\ndefault iso-8859-1")
+
     parser.add_option("", "--dbfImportEncoding",
                       dest="dbfImportEncoding", default="iso-8859-1",
                       help="Import charset of dbf, maybe utf-8\ndefault iso-8859-1")
     parser.add_option("", "--dbfExportEncoding",
                       dest="dbfExportEncoding", default="iso-8859-1",
                       help="Export charset of dbf, maybe utf-8\ndefault iso-8859-1")
+
     parser.add_option("", "--symImportEncoding",
                       dest="symImportEncoding", default="iso-8859-1",
                       help="Import charset of sym format, maybe utf-8\ndefault iso-8859-1")
     parser.add_option("", "--symExportEncoding",
                       dest="symExportEncoding", default="iso-8859-1",
                       help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
+
     parser.add_option("", "--xlsMotorolaBitFormat",
                       dest="xlsMotorolaBitFormat", default="msbreverse",
                       help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")
@@ -226,16 +266,39 @@ def main():
     parser.add_option("", "--jsonExportAll",
                       dest="jsonAll", action="store_true", default=False,
                       help="Export more data to json format")
+
     parser.add_option("", "--ecus",
                       dest="ecus", default=None,
                       help="Copy only given ECUs (comma separated list) to target matrix")
+
     parser.add_option("", "--frames",
                       dest="frames", default=None,
-                      help="Copy only given Framess (comma separated list) to target matrix")
+                      help="Copy only given Frames (comma separated list) to target matrix")
 
     parser.add_option("", "--merge",
                       dest="merge", default=None,
                       help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
+
+    parser.add_option("", "--deleteEcu",
+                       dest="deleteEcu", default = None,
+                       help = "delete Ecu form databases. (comma separated list)\nSyntax: --deleteEcu=myEcu,mySecondEcu")
+    parser.add_option("", "--renameEcu",
+                       dest="renameEcu", default = None,
+                       help = "rename Ecu form databases. (comma separated list)\nSyntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu")
+
+    parser.add_option("", "--deleteFrame",
+                       dest="deleteFrame", default = None,
+                       help = "delete Frame form databases. (comma separated list)\nSyntax: --deleteFrame=myFrame1,mySecondFrame")
+    parser.add_option("", "--renameFrame",
+                       dest="renameFrame", default = None,
+                       help = "rename Frame form databases. (comma separated list)\nSyntax: --renameFrame=myOldFrame:myNewFrame,mySecondFrame:mySecondNewFrame")
+
+    parser.add_option("", "--deleteSignal",
+                       dest="deleteSignal", default = None,
+                       help = "delete Signal form databases. (comma separated list)\nSyntax: --deleteSignal=mySignal1,mySecondSignal")
+    parser.add_option("", "--renameSignal",
+                       dest="renameSignal", default = None,
+                       help = "rename Signal form databases. (comma separated list)\nSyntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal")
 
     (cmdlineOptions, args) = parser.parse_args()
     if len(args) < 2:

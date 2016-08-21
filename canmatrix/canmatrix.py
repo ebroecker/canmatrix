@@ -52,7 +52,7 @@ class FrameList(object):
         self._list.append(frame)
         return self._list[len(self._list) - 1]
 
-    def removeFrame(self, frame):
+    def remove(self, frame):
         """
         Adds a Frame
         """
@@ -846,7 +846,7 @@ class CanMatrix(object):
             self._globalDefines[name].addDefault(value)
 
 
-    def cleanupDefines(self):
+    def deleteObsoleteDefines(self):
         toBeDeleted = []
         for frameDef in self.frameDefines:
             found = False
@@ -898,15 +898,15 @@ class CanMatrix(object):
                 if 0 == signal.signalsize:
                     frame.signals.remove(signal)
 
-    def delSignalAttributes(self, unwantedAttribute):
+    def delSignalAttributes(self, unwantedAttributes):
         for frame in self.frames:
             for signal in frame.signals:
-                for attrib in unwantedAttribute:
+                for attrib in unwantedAttributes:
                     signal.delAttribute(attrib)
 
-    def delFrameAttributes(self, unwantedAttribute):
+    def delFrameAttributes(self, unwantedAttributes):
         for frame in self.frames:
-            for attrib in unwantedAttribute:
+            for attrib in unwantedAttributes:
                 frame.delAttribute(attrib)
 
     def recalcDLC(self, strategy):
@@ -968,7 +968,7 @@ class CanMatrix(object):
             pass
         else:
             frame = self.frameByName(frame)
-        self.frames.removeFrame(frame)
+        self.frames.remove(frame)
 
     def renameSignal(self, old, newName):
         if type(old).__name__ == 'instance':
