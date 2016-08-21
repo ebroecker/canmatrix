@@ -1,4 +1,4 @@
-"""Support and convert several CAN (Controller Area Network) database formats .arxml .dbc .dbf .kcd ...
+"""Support and convert several CAN (Controller Area Network) database formats .arxml .dbc .dbf .kcd .sym fibex xls(x) ...
 
 Canmatrix implements a "Python Can Matrix Object" which describes the can-communication 
 and the needed objects (Boardunits, Frames, Signals, Values, ...) Canmatrix also includes
@@ -37,6 +37,8 @@ There are also some extract and merge options for dealing with can databases.
             .yaml (dump of the python object)
         
             .sym
+ 
+            .xml (fibex)
 """
 
 classifiers = """\
