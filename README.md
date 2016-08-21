@@ -25,8 +25,9 @@ supported file formats for export:
  * .xls(x)
  * .json [Canard](https://github.com/ericevenchick/CANard) (open source!)
  * .arxml (very basic implementation)
- * yaml (dump of the python object)
- * sym
+ * .yaml (dump of the python object)
+ * .sym
+ * .xml fibex
 
 ***
 
