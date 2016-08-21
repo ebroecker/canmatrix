@@ -42,10 +42,7 @@ def createSubElement(parent, elementName, strName=None):
 
 def exportArxml(db, filename, **options):
     if 'arVersion' in options:
-        if options["arVersion"][0] == "3":
-            arVersion = "3.2.3"
-        else:
-            arVersion = "4.1.0"
+        arVersion = options["arVersion"]
     else:
         arVersion = "3.2.3"
 
@@ -60,10 +57,10 @@ def exportArxml(db, filename, **options):
         root = etree.Element(
             'AUTOSAR',
             nsmap={
-                None: "http://autosar.org/3.2.3",
+                None: 'http://autosar.org/' + arVersion,
                 'xsi': xsi})
         root.attrib['{{{pre}}}schemaLocation'.format(
-            pre=xsi)] = 'http://autosar.org/3.2.3 AUTOSAR_323.xsd'
+            pre=xsi)] = 'http://autosar.org/' + arVersion + ' AUTOSAR_' + arVersion.replace('.', '') + '.xsd'
         toplevelPackages = createSubElement(root, 'TOP-LEVEL-PACKAGES')
     else:
         xsi = 'http://www.w3.org/2001/XMLSchema-instance'
