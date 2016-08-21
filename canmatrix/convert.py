@@ -115,14 +115,14 @@ def convert(infile, outfileName, **options):
             unwantedAttributes = options['deleteSignalAttributes'].split(',')
             db.delSignalAttributes(unwantedAttributes)
 
-        if 'deleteObsoleteDefines' in options and options[
-                'deleteObsoleteDefines']:
-            db.deleteObsoleteDefines()
-
         if 'deleteFrameAttributes' in options and options[
                 'deleteFrameAttributes']:
             unwantedAttributes = options['deleteFrameAttributes'].split(',')
             db.delFrameAttributes(unwantedAttributes)
+
+        if 'deleteObsoleteDefines' in options and options[
+                'deleteObsoleteDefines']:
+            db.deleteObsoleteDefines()
 
         if 'recalcDLC' in options and options['recalcDLC']:
             db.recalcDLC(options['recalcDLC'])
