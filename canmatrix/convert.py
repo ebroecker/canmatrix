@@ -30,7 +30,7 @@ sys.path.append('..')
 import os
 
 def convert(infile, outfileName, **options):
-    import canmatrix.exportall as ex
+    import canmatrix.exportany as ex
     import canmatrix.importany as im
     import canmatrix.canmatrix as cm
     import canmatrix.copy as cmcp
@@ -99,44 +99,8 @@ def convert(infile, outfileName, **options):
             outfile = os.path.join(path[0], name + "_" + path[1])
         else:
             outfile = outfileName
-           
-        # Get output file extension   
-        fileext = '' 
-        if 'force_output' in options and options['force_output']:
-            # Provided by the command line
-            fileext = options['force_output']
-        else:
-            # Get extension from output filename
-            fileext = os.path.splitext(outfile)[1]
-       
-        # Strip leading '.' from extension, of exists
-        fileext = fileext[1:] if fileext.startswith('.') else fileext
-         
-                        
-        if fileext == 'dbc':
-            ex.exportDbc(db, outfile, **options)
-        elif fileext == 'dbf':
-            ex.exportDbf(db, outfile, **options)
-        elif fileext == 'sym':
-            ex.exportSym(db, outfile, **options)
-        elif fileext == 'kcd':
-            ex.exportKcd(db, outfile)
-        elif fileext == 'xlsx':
-            ex.exportXlsx(db, outfile, **options)
-        elif fileext == 'xls':
-            ex.exportXls(db, outfile, **options)
-        elif fileext == 'json':
-            ex.exportJson(db, outfile, **options)
-        elif fileext == 'arxml':
-            ex.exportArxml(db, outfile, **options)
-        elif fileext == 'yaml':
-            ex.exportYaml(db, outfile)
-        elif fileext == 'csv':
-            ex.exportCsv(db, outfile)
-        elif fileext == 'xml':
-            ex.exportFibex(db, outfile)
-        else:
-            logger.error('File not recognized: ' + outfileName + "\n")
+
+        ex.exportany(db, outfile, **options)
     logger.info("done")
 
 def main():
