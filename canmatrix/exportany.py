@@ -28,41 +28,50 @@ import canmatrix
 import canmatrix.exportall as ex
 
 
-def exportany(db, outfile, **options):
+def exportany(dbs, outfileName, **options):
 
-    # Get output file extension   
-    fileext = '' 
-    if 'force_output' in options and options['force_output']:
-        # Provided by the command line
-        fileext = options['force_output']
-    else:
-        # Get extension from output filename
-        fileext = os.path.splitext(outfile)[1]
+    for name in dbs:
+        if len(name) > 0:
+            (path, ext) = os.path.splitext(outfileName)
+            outfile = path + "_" + name + ext
+        else:
+            outfile = outfileName
 
-    # Strip leading '.' from extension, of exists
-    fileext = fileext[1:] if fileext.startswith('.') else fileext
+        db = dbs[name]
 
-    if fileext == 'dbc':
-        ex.exportDbc(db, outfile, **options)
-    elif fileext == 'dbf':
-        ex.exportDbf(db, outfile, **options)
-    elif fileext == 'sym':
-        ex.exportSym(db, outfile, **options)
-    elif fileext == 'kcd':
-        ex.exportKcd(db, outfile)
-    elif fileext == 'xlsx':
-        ex.exportXlsx(db, outfile, **options)
-    elif fileext == 'xls':
-        ex.exportXls(db, outfile, **options)
-    elif fileext == 'json':
-        ex.exportJson(db, outfile, **options)
-    elif fileext == 'arxml':
-        ex.exportArxml(db, outfile, **options)
-    elif fileext == 'yaml':
-        ex.exportYaml(db, outfile)
-    elif fileext == 'csv':
-        ex.exportCsv(db, outfile)
-    elif fileext == 'xml':
-        ex.exportFibex(db, outfile)
-    else:
-        logger.error('File not recognized: ' + outfile + "\n")
+        # Get output file extension   
+        fileext = '' 
+        if 'force_output' in options and options['force_output']:
+            # Provided by the command line
+            fileext = options['force_output']
+        else:
+            # Get extension from output filename
+            fileext = os.path.splitext(outfile)[1]
+
+        # Strip leading '.' from extension, of exists
+        fileext = fileext[1:] if fileext.startswith('.') else fileext
+
+        if fileext == 'dbc':
+            ex.exportDbc(db, outfile, **options)
+        elif fileext == 'dbf':
+            ex.exportDbf(db, outfile, **options)
+        elif fileext == 'sym':
+            ex.exportSym(db, outfile, **options)
+        elif fileext == 'kcd':
+            ex.exportKcd(db, outfile)
+        elif fileext == 'xlsx':
+            ex.exportXlsx(db, outfile, **options)
+        elif fileext == 'xls':
+            ex.exportXls(db, outfile, **options)
+        elif fileext == 'json':
+            ex.exportJson(db, outfile, **options)
+        elif fileext == 'arxml':
+            ex.exportArxml(db, outfile, **options)
+        elif fileext == 'yaml':
+            ex.exportYaml(db, outfile)
+        elif fileext == 'csv':
+            ex.exportCsv(db, outfile)
+        elif fileext == 'xml':
+            ex.exportFibex(db, outfile)
+        else:
+            logger.error('File not recognized: ' + outfile + "\n")

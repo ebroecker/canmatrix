@@ -290,20 +290,20 @@ def exportXlsx(db, filename, **options):
     global sty_header
     sty_header = workbook.add_format({'bold': True,
                                       'rotation': 90,
-#                                      'fontname': 'Verdana',
+                                      'font_name': 'Verdana',
                                       'font_size': 8,
                                       'align': 'center',
                                       'valign': 'center'})
     global sty_first_frame
-    sty_first_frame = workbook.add_format({# 'fontname': 'Verdana', 
+    sty_first_frame = workbook.add_format({ 'font_name': 'Verdana', 
                                             'font_size': 8,
                                            'font_color': 'black', 'top': 1})
     global sty_white
-    sty_white = workbook.add_format({# 'fontname': 'Verdana',
+    sty_white = workbook.add_format({'font_name': 'Verdana',
                                      'font_size': 8,
                                      'font_color': 'white'})
     global sty_norm
-    sty_norm = workbook.add_format({#'fontname': 'Verdana',
+    sty_norm = workbook.add_format({'font_name': 'Verdana',
                                     'font_size': 8,
                                     'font_color': 'black'})
 

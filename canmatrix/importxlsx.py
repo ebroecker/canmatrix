@@ -21,10 +21,14 @@
 # DAMAGE.
 
 #
+# !!! this module is depricated because importxls can also import xslx-files !!! 
+#
 # this script imports excel-files (xlsx) to a canmatrix-object
 # these Excelfiles should have following collums:
 # ID, Frame Name, Cycle Time [ms], Launch Type, Launch Parameter, Signal Byte No., Signal Bit No., Signal Name, Signal Function,  Signal Length [Bit], Signal Default, Signal Not Available, [LIST OF ECUS], Value,     Name / Phys. Range,     Function / Increment Unit
 #
+
+
 
 from __future__ import division
 from builtins import *

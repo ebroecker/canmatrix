@@ -43,6 +43,7 @@ def convert(infile, outfileName, **options):
 
     logger.info("Exporting " + outfileName + " ... ")
 
+    outdbs = {}
     for name in dbs:
         db = None
 
@@ -129,14 +130,10 @@ def convert(infile, outfileName, **options):
 
         logger.info(name)
         logger.info("%d Frames found" % (db._fl._list.__len__()))
+        
+        outdbs[name] = db
 
-        if len(name) > 0:
-            (path, ext) = os.path.splitext(outfileName)
-            outfile = path + "_" + name + ext
-        else:
-            outfile = outfileName
-
-        ex.exportany(db, outfile, **options)
+    ex.exportany(outdbs, outfileName, **options)
     logger.info("done")
 
 
