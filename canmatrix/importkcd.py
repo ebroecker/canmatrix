@@ -31,7 +31,10 @@
 from __future__ import division
 from __future__ import absolute_import
 import math
-from lxml import etree
+try:
+    from lxml import etree
+except ImportError:
+    etree = None
 from .canmatrix import *
 
 
@@ -115,6 +118,9 @@ def parseSignal(signal, mux, namespace, nodelist):
 
 
 def importKcd(filename):
+    if etree is None:
+        raise ImportError("no kcd-import-support, some dependencies missing... , try pip install lxml")
+
     dbs = {}
     tree = etree.parse(filename)
     root = tree.getroot()

@@ -24,37 +24,9 @@ from .importdbc import *
 from .importdbf import *
 from .importsym import *
 from .importjson import *
+from .importarxml import *
+from .importkcd import *
+from .importxls import *
+#from .importxlsx import *
+from .importyaml import *
 
-import logging
-logger = logging.getLogger('root')
-
-
-try:
-    from .importarxml import *
-except:
-    logger.warn(
-        "no arxml-import-support, some dependencies missing... , try pip install lxml ")
-
-try:
-    from .importkcd import *
-except:
-    logger.warn(
-        "no kcd-import-support, some dependencies missing... , try pip install lxml")
-
-try:
-    from .importxls import *
-except:
-    logger.warn(
-        "no xls-import-support, some dependencies missing... , try pip install xlrd xlwt")
-
-try:
-    from .importxlsx import *
-except:
-    logger.warn(
-        "no xlsx-import-support, some dependencies missing... , try pip install xlrd ")
-
-try:
-    from .importyaml import *
-except:
-    logger.warn(
-        "no yaml-import-support, some dependencies missing ... , try pip install yaml  ")

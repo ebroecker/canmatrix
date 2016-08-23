@@ -35,17 +35,23 @@ logger = logging.getLogger('root')
 from builtins import *
 import math
 from .canmatrix import *
-import xlrd
+try:
+    import xlrd
+except ImportError:
+    xlrd = None
 import codecs
 
 
 def importXls(filename, **options):
+    if xlrd is None:
+        raise ImportError("no xls-import-support, some dependencies missing... , try pip install xlrd")
+
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:
         motorolaBitFormat = "msbreverse"
 
-    wb = xlrd.open_workbook(filename, formatting_info=True)
+    wb = xlrd.open_workbook(filename)
     sh = wb.sheet_by_index(0)
     db = CanMatrix()
 

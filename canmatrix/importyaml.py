@@ -28,10 +28,16 @@
 
 from __future__ import absolute_import
 from .canmatrix import *
-import yaml
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 
 def importYaml(filename):
+    if yaml is None:
+        raise ImportError("no yaml-import-support, some dependencies missing ... , try pip install pyaml")
+
     f = open(filename, 'r')
     db = yaml.load(f)
     f.close()

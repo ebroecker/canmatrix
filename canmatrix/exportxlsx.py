@@ -27,10 +27,13 @@ from __future__ import division
 from __future__ import absolute_import
 from builtins import *
 import math
-import xlsxwriter
 import sys
 from .canmatrix import *
 import os.path
+try:
+    import xlsxwriter
+except ImportError:
+    xlsxwriter = None
 
 # Font Size : 8pt * 20 = 160
 #font = 'font: name Arial Narrow, height 160'
@@ -256,6 +259,9 @@ def writeBuMatrixx(buList, sig, frame, worksheet, row, col, firstframe):
 
 
 def exportXlsx(db, filename, **options):
+    if xlsxwriter is None:
+        raise ImportError("no xlsx-export-support, some dependencies missing... try pip install xlsxwriter")
+
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:
@@ -284,18 +290,21 @@ def exportXlsx(db, filename, **options):
     global sty_header
     sty_header = workbook.add_format({'bold': True,
                                       'rotation': 90,
-                                      'fontname': 'Verdana',
+#                                      'fontname': 'Verdana',
                                       'font_size': 8,
                                       'align': 'center',
                                       'valign': 'center'})
     global sty_first_frame
-    sty_first_frame = workbook.add_format({'fontname': 'Verdana', 'font_size': 8,
+    sty_first_frame = workbook.add_format({# 'fontname': 'Verdana', 
+                                            'font_size': 8,
                                            'font_color': 'black', 'top': 1})
     global sty_white
-    sty_white = workbook.add_format({'fontname': 'Verdana', 'font_size': 8,
+    sty_white = workbook.add_format({# 'fontname': 'Verdana',
+                                     'font_size': 8,
                                      'font_color': 'white'})
     global sty_norm
-    sty_norm = workbook.add_format({'fontname': 'Verdana', 'font_size': 8,
+    sty_norm = workbook.add_format({#'fontname': 'Verdana',
+                                    'font_size': 8,
                                     'font_color': 'black'})
 
 # BUMatrix-Styles

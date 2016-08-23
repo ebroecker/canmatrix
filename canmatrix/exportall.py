@@ -23,64 +23,15 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-import logging
-logger = logging.getLogger('root')
-
 from .exportdbc import *
 from .exportdbf import *
 from .exportsym import *
 from .exportjson import *
 from .exportcsv import *
-
-
-try:
-    from .exportarxml import *
-except:
-    logger.warn(
-        "no arxml-export-support, some dependencies missing... try pip install lxml")
-
-try:
-    from .exportkcd import *
-except:
-    logger.warn(
-        "no kcd-export-support, some dependenies missing...  try pip install lxml")
-
-try:
-    from .exportsym import *
-except:
-    logger.warn("no sym-export-support, some dependencies missing... ")
-
-try:
-    from .exportxls import *
-except:
-    logger.warn(
-        "no xls-export-support, some dependencies missing...  try pip install xlwt")
-
-try:
-    from .exportxlsx import *
-except:
-    logger.warn(
-        "no xlsx-export-support, some dependencies missing...  try pip install xlsxwriter")
-
-try:
-    from .exportyaml import *
-except:
-    logger.warn(
-        "no yaml-export-support, some dependencies missing ...  try pip install pyaml ")
-
-try:
-    from .exportxlsx import *
-except:
-    logger.warn("no xlsx-export-support, some dependencies missing... ")
-
-try:
-    from .exportyaml import *
-except:
-    logger.warn(
-        "no yaml-export-support, some dependencies missing ... try pip install pyaml ")
-
-try:
-    from .exportfibex import *
-except:
-    logger.warn(
-        "no fibex-export-support, some dependencies missing ... try pip install lxml ")
+from .exportarxml import *
+from .exportkcd import *
+from .exportsym import *
+from .exportxls import *
+from .exportxlsx import *
+from .exportyaml import *
+from .exportfibex import *

@@ -4,8 +4,11 @@ from __future__ import absolute_import
 
 from .canmatrix import *
 import codecs
-import yaml
-from yaml.representer import SafeRepresenter
+try:
+    import yaml
+    from yaml.representer import SafeRepresenter
+except ImportError:
+    yaml = None
 from builtins import *
 import copy
 # Copyright (c) 2013, Eduard Broecker
@@ -44,8 +47,9 @@ except:
     representers = False
     # some error with representers ... continue anyway
 
-
 def exportYaml(db, filename, **options):
+    if yaml is None:
+        raise ImportError("no yaml-export-support, some dependencies missing ... try pip install pyaml")
     newdb = copy.deepcopy(db)
 
     for i, frame in enumerate(newdb.frames):

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import absolute_import
 #!/usr/bin/env python
 
 # Copyright (c) 2013, Eduard Broecker
@@ -22,6 +21,7 @@ from __future__ import absolute_import
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
+from __future__ import absolute_import
 import logging
 logger = logging.getLogger('root')
 
@@ -42,10 +42,10 @@ def importany(infile, **options):
         dbs[key] = im.importSym(infile, **options)
     elif infile[-3:] == 'kcd':
         dbs = im.importKcd(infile)
-    elif infile[-3:] == 'xls':
+    elif infile[-3:] == 'xls' or infile[-4:] == 'xlsx':
         dbs[key] = im.importXls(infile, **options)
-    elif infile[-4:] == 'xlsx':
-        dbs[key] = im.importXlsx(infile, **options)
+#    elif infile[-4:] == 'xlsx':
+#        dbs[key] = im.importXlsx(infile, **options)
     elif infile[-5:] == 'arxml':
         dbs = im.importArxml(infile, **options)
     elif infile[-4:] == 'yaml':

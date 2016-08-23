@@ -32,6 +32,7 @@ export_types.sort()
 # TODO: support testing of xlsx
 export_types.remove('xlsx')
 export_types.remove('fibex')
+export_types.remove('any')
 
 import_types.sort()
 
