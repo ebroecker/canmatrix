@@ -109,19 +109,21 @@ def createSignal(signal, nodeList, typeEnums):
     return sig
 
 
-def exportKcd(db, filename):
+def exportKcd(dbs, filename):
     if etree is None:
         raise ImportError("no kcd-export-support, some dependenies missing... try pip install lxml")
 
     signalTypeEnums = {}
-    for (typename, define) in list(db.signalDefines.items()):
-        defines = re.split(r"\s+", define.definition)
-        define_type = defines[0]
-        if define_type != 'ENUM':
-            continue
-        defines = defines[1].strip('"')
-        defines = defines.split('","')
-        signalTypeEnums[typename] = defines
+    for name in dbs:
+        db = dbs[name]
+        for (typename, define) in list(db.signalDefines.items()):
+            defines = re.split(r"\s+", define.definition)
+            define_type = defines[0]
+            if define_type != 'ENUM':
+                continue
+            defines = defines[1].strip('"')
+            defines = defines.split('","')
+            signalTypeEnums[typename] = defines
 
     # create XML
     root = etree.Element('NetworkDefinition')
@@ -140,91 +142,102 @@ def exportKcd(db, filename):
     # Nodes:
     id = 1
     nodeList = {}
-    for bu in db.boardUnits:
-        node = etree.Element('Node', name=bu.name, id="%d" % id)
-        root.append(node)
-        nodeList[bu.name] = id
-        id += 1
-    # Bus
-    if 'Baudrate' in db.attributes:
-        bus = etree.Element('Bus', baudrate=db.attributes['Baudrate'])
-    else:
-        bus = etree.Element('Bus')
+    for name in dbs:
+        db = dbs[name]
+        for bu in db.boardUnits:
+            node = etree.Element('Node', name=bu.name, id="%d" % id)
+            root.append(node)
+            nodeList[bu.name] = id
+            id += 1
 
-    bus.set("name", os.path.splitext(filename)[0])
+    for name in dbs:
+        db = dbs[name]
+        # Bus
+        if 'Baudrate' in db.attributes:
+            bus = etree.Element('Bus', baudrate=db.attributes['Baudrate'])
+        else:
+            bus = etree.Element('Bus')
 
-    for frame in db.frames:
-        message = etree.Element('Message', id="0x%03X" %
-                                frame.id, name=frame.name, length=str(int(frame.size)))
+        if len(name) == 0:
+            (path, ext) = os.path.splitext(filename)
+            busName = path
+        else:
+            busName = name
 
-        if frame.extended == 1:
-            message.set("format", "extended")
-        if "GenMsgCycleTime" in frame.attributes:
-            cycleTime = int(frame.attributes["GenMsgCycleTime"])
-            if cycleTime > 0:
-                message.set("triggered", "true")
-                message.set("interval", "%d" % cycleTime)
+        bus.set("name", busName)
 
-        producer = etree.Element('Producer')
+        for frame in db.frames:
+            message = etree.Element('Message', id="0x%03X" %
+                                    frame.id, name=frame.name, length=str(int(frame.size)))
 
-        for transmitter in frame.transmitter:
-            if len(transmitter) > 1 and transmitter in nodeList:
-                noderef = etree.Element(
-                    'NodeRef', id=str(
-                        nodeList[transmitter]))
-                producer.append(noderef)
-        if producer.__len__() > 0:
-            message.append(producer)
+            if frame.extended == 1:
+                message.set("format", "extended")
+            if "GenMsgCycleTime" in frame.attributes:
+                cycleTime = int(frame.attributes["GenMsgCycleTime"])
+                if cycleTime > 0:
+                    message.set("triggered", "true")
+                    message.set("interval", "%d" % cycleTime)
 
-        comment = etree.Element('Notes')
-        if frame.comment is not None:
-            comment.text = frame.comment
-            message.append(comment)
+            producer = etree.Element('Producer')
 
-        # standard-signals:
-        for signal in frame.signals:
-            if signal.multiplex is None:
-                sig = createSignal(signal, nodeList, signalTypeEnums)
-                message.append(sig)
+            for transmitter in frame.transmitter:
+                if len(transmitter) > 1 and transmitter in nodeList:
+                    noderef = etree.Element(
+                        'NodeRef', id=str(
+                            nodeList[transmitter]))
+                    producer.append(noderef)
+            if producer.__len__() > 0:
+                message.append(producer)
 
-        # check Multiplexor if present:
-        multiplexor = None
-        for signal in frame.signals:
-            if signal.multiplex is not None and signal.multiplex == 'Multiplexor':
-                multiplexor = etree.Element('Multiplex', name=signal.name, offset=str(
-                    signal.getStartbit()), length=str(int(signal.signalsize)))
-                value = etree.Element('Value')
-                if float(signal.min) != 0:
-                    value.set('min', "%g" % signal.min)
-                if float(signal.max) != 1:
-                    value.set('max', "%g" % signal.max)
-                multiplexor.append(value)
-                labelset = etree.Element('LabelSet')
-                for valueVal, valName in sorted(
-                        signal.values.items(), key=lambda x: int(x[0])):
-                    label = etree.Element(
-                        'Label', name=valName.replace(
-                            '"', ''), value=str(valueVal))
-                    labelset.append(label)
-                multiplexor.append(labelset)
+            comment = etree.Element('Notes')
+            if frame.comment is not None:
+                comment.text = frame.comment
+                message.append(comment)
 
-        # multiplexor found
-        if multiplexor is not None:
-            # ticker all potential muxgroups
-            for i in range(0, 1 << int(multiplexor.get('length'))):
-                empty = 0
-                muxgroup = etree.Element('MuxGroup', count=str(i))
-                for signal in frame.signals:
-                    if signal.multiplex is not None and signal.multiplex == i:
-                        sig = createSignal(signal, nodeList, signalTypeEnums)
-                        muxgroup.append(sig)
-                        empty = 1
-                if empty == 1:
-                    multiplexor.append(muxgroup)
-            message.append(multiplexor)
+            # standard-signals:
+            for signal in frame.signals:
+                if signal.multiplex is None:
+                    sig = createSignal(signal, nodeList, signalTypeEnums)
+                    message.append(sig)
 
-        bus.append(message)
+            # check Multiplexor if present:
+            multiplexor = None
+            for signal in frame.signals:
+                if signal.multiplex is not None and signal.multiplex == 'Multiplexor':
+                    multiplexor = etree.Element('Multiplex', name=signal.name, offset=str(
+                        signal.getStartbit()), length=str(int(signal.signalsize)))
+                    value = etree.Element('Value')
+                    if float(signal.min) != 0:
+                        value.set('min', "%g" % signal.min)
+                    if float(signal.max) != 1:
+                        value.set('max', "%g" % signal.max)
+                    multiplexor.append(value)
+                    labelset = etree.Element('LabelSet')
+                    for valueVal, valName in sorted(
+                            signal.values.items(), key=lambda x: int(x[0])):
+                        label = etree.Element(
+                            'Label', name=valName.replace(
+                                '"', ''), value=str(valueVal))
+                        labelset.append(label)
+                    multiplexor.append(labelset)
 
-    root.append(bus)
+            # multiplexor found
+            if multiplexor is not None:
+                # ticker all potential muxgroups
+                for i in range(0, 1 << int(multiplexor.get('length'))):
+                    empty = 0
+                    muxgroup = etree.Element('MuxGroup', count=str(i))
+                    for signal in frame.signals:
+                        if signal.multiplex is not None and signal.multiplex == i:
+                            sig = createSignal(signal, nodeList, signalTypeEnums)
+                            muxgroup.append(sig)
+                            empty = 1
+                    if empty == 1:
+                        multiplexor.append(muxgroup)
+                message.append(multiplexor)
+
+            bus.append(message)
+
+        root.append(bus)
     f = open(filename, "wb")
     f.write(etree.tostring(root, pretty_print=True))
