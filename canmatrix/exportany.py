@@ -20,13 +20,14 @@
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
+from __future__ import absolute_import
 import os.path
 import logging
 logger = logging.getLogger('root')
 
 
 def exportany(db, outfile, **options):
-    import canmatrix.exportall as ex
+    from . import exportall as ex
 
     # Get output file extension   
     fileext = '' 
