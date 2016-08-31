@@ -1,4 +1,4 @@
 #!/bin/sh
-pip install .[arxml,kcd,fibex,xls,xlsx,yaml]
+pip install -e .[arxml,kcd,fibex,xls,xlsx,yaml]
 cd test
 python ./test.py
