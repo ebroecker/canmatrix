@@ -22,11 +22,11 @@
 
 import os.path
 import logging
+import exportall as ex
 logger = logging.getLogger('root')
 
 
 def exportany(db, outfile, **options):
-    import canmatrix.exportall as ex
 
     # Get output file extension   
     fileext = '' 
