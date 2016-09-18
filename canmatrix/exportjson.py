@@ -93,7 +93,7 @@ def exportJson(db, filename, **options):
                     attribs[attribute] = signal.attributes[attribute]
                 signals.append({
                     "name": signal.name,
-                    "start_bit": signal.getLsbStartbit(),
+                    "start_bit": signal.getStartbit(bitNumbering=1, startLittle=True),
                     "bit_length": signal.signalsize,
                     "factor": float(signal.factor),
                     "offset": float(signal.offset),

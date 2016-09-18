@@ -35,6 +35,7 @@ except ImportError:
     etree = None
 
 from .canmatrix import *
+from .cancluster import *
 import os
 import re
 
@@ -114,8 +115,9 @@ def exportKcd(dbs, filename):
         raise ImportError("no kcd-export-support, some dependenies missing... try pip install lxml")
 
     signalTypeEnums = {}
-    for name in dbs:
-        db = dbs[name]
+    canClust = canCluster(dbs)
+    for name in canClust:
+        db = canClust[name]
         for (typename, define) in list(db.signalDefines.items()):
             defines = re.split(r"\s+", define.definition)
             define_type = defines[0]
@@ -142,16 +144,16 @@ def exportKcd(dbs, filename):
     # Nodes:
     id = 1
     nodeList = {}
-    for name in dbs:
-        db = dbs[name]
-        for bu in db.boardUnits:
-            node = etree.Element('Node', name=bu.name, id="%d" % id)
-            root.append(node)
-            nodeList[bu.name] = id
-            id += 1
+#    for name in dbs:
+#        db = dbs[name]
+    for bu in canClust.boardUnits:
+        node = etree.Element('Node', name=bu.name, id="%d" % id)
+        root.append(node)
+        nodeList[bu.name] = id
+        id += 1
 
-    for name in dbs:
-        db = dbs[name]
+    for name in canClust:
+        db = canClust[name]
         # Bus
         if 'Baudrate' in db.attributes:
             bus = etree.Element('Bus', baudrate=db.attributes['Baudrate'])
