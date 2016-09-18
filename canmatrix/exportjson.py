@@ -45,7 +45,12 @@ def exportJson(db, filename, **options):
         mode = 'w'
     else:
         mode = 'wb'
-    f = open(filename, mode)
+
+    if type(filename).__name__ == "StringIO":
+        f = filename
+    else:
+        f = open(filename, mode)
+  
 
     exportArray = []
 
