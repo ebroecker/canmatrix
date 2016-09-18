@@ -1,4 +1,4 @@
 #!/bin/sh
-python setup.py install
+pip install -e .[arxml,kcd,fibex,xls,xlsx,yaml]
 cd test
-./test.py
+python ./test.py

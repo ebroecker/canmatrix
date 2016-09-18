@@ -162,6 +162,7 @@ def importSym(filename, **options):
                 max = None
                 min = None
                 longName = None
+                hexadecimalOutput = None
                 startValue = 0
                 offset = 0
                 valueTableName = None
@@ -180,8 +181,7 @@ def importSym(filename, **options):
                     if switch == "-m":
                         intel = 0
                     elif switch == "-h":
-                        #hexadecimal output - not supported
-                        pass
+                        hexadecimalOutput = '1'
                     elif switch.startswith('/'):
                         if switch[1:].split(':')[0] == 'u':
                             unit = switch[1:].split(':')[1]
@@ -256,6 +256,9 @@ def importSym(filename, **options):
                     frame.addSignal(signal)
                 if longName is not None:
                     signal.addAttribute("LongName", longName)
+                if hexadecimalOutput is not None:
+                    signal.addAttribute("HexadecimalOutput",
+                                        hexadecimalOutput)
                 #variable processing
             elif line.startswith('ID'):
                 comment = ""
