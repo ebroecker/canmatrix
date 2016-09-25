@@ -26,7 +26,7 @@ from struct import *
 import zipfile
 import sys
 sys.path.append('..')
-import canmatrix.importany as im
+import canmatrix.formats
 
 import os
 
@@ -214,7 +214,7 @@ def main():
     infile = sys.argv[1]
     outfile = os.path.splitext(sys.argv[2])[0]
 
-    db = next(iter(im.importany(infile).values()))
+    db = next(iter(canmatrix.formats.loadp(infile).values()))
     tickerBoardUnits(db, outfile)
 
 main()

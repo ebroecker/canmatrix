@@ -22,7 +22,7 @@
 
 import sys
 sys.path.append('..')
-import canmatrix.importany as im
+import canmatrix.formats
 
 
 def createStoreMacro(signal, prefix="", frame="frame"):
@@ -138,7 +138,7 @@ def main():
     infile = args[0]
     outfile = args[1]
 
-    dbs = im.importany(infile)
+    dbs = canmatrix.formats.loadp(infile)
     db = next(iter(dbs.values()))
 
     sourceCode = ""

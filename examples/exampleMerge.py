@@ -5,8 +5,7 @@ sys.path.append('..')
 
 # importany loads all import filter
 from canmatrix.copy import *
-import canmatrix.importany as im
-import canmatrix.exportall as ex
+import canmatrix.formats
 # fuer Fileio:
 import sys
 
@@ -15,9 +14,9 @@ import sys
 #
 
 # import of one CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db1 = next(iter(im.importany("first.dbc").values()))
+db1 = next(iter(canmatrix.formats.loadp("first.dbc").values()))
 # import of a second CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db2 = next(iter(im.importany("second.dbc").values()))
+db2 = next(iter(canmatrix.formats.loadp("second.dbc").values()))
 
 #
 # create target Matrix
@@ -49,4 +48,4 @@ copyBUwithFrames("Gateway", db1, db3)
 # export the new (target)-Matrix for example as .dbc:
 #
 
-ex.exportDbc(db3, "target.dbc")
+canmatrix.formats.dumpp(db3, "target.dbc")

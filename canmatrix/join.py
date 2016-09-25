@@ -1,4 +1,4 @@
-import canmatrix.importany as im
+import canmatrix.formats
 from canmatrix.canmatrix import CanId
 
 
@@ -21,12 +21,12 @@ def ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y):
 
 
 def join_frame_by_signal_startbit(files):
-    targetDb = next(iter(im.importany(files.pop(0)).values()))
+    targetDb = next(iter(canmatrix.formats.loadp(files.pop(0)).values()))
 
     pgn_x, id_x = list_pgn(db=targetDb)
 
     for f in files:
-        sourceDb = next(iter(im.importany(f).values()))
+        sourceDb = next(iter(canmatrix.formats.loadp(f).values()))
         pgn_y, id_y = list_pgn(db=sourceDb)
 
         same_pgn = ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y)
@@ -78,7 +78,7 @@ def join_frame_for_manufacturer(db, files):
     pgn_x, id_x = list_pgn(db=db)
 
     for f in files:
-        sourceDb = next(iter(im.importany(f).values()))
+        sourceDb = next(iter(canmatrix.formats.loadp(f).values()))
         pgn_y, id_y = list_pgn(db=sourceDb)
 
         same_pgn = ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y)

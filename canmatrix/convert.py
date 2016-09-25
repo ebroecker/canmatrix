@@ -65,7 +65,7 @@ def convert(infile, outfileName, **options):
             mergeFiles = options['merge'].split(',')
             for database in mergeFiles:
                 mergeString = database.split(':')
-                dbTempList = im.importany(mergeString[0])
+                dbTempList = canmatrix.formats.loadp(mergeString[0])
                 for dbTemp in dbTempList:
                     if mergeString.__len__() == 1:
                         print ("merge complete: " + mergeString[0])

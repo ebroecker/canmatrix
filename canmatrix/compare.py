@@ -495,14 +495,14 @@ def main():
 
     # import only after setting log level, to also disable warning messages in
     # silent mode.
-    import canmatrix.importany as im
+    import canmatrix.formats
 
     logger.info("Importing " + matrix1 + " ... ")
-    db1 = next(iter(im.importany(matrix1).values()))
+    db1 = next(iter(canmatrix.formats.loadp(matrix1).values()))
     logger.info("%d Frames found" % (db1._fl._list.__len__()))
 
     logger.info("Importing " + matrix2 + " ... ")
-    db2 = next(iter(im.importany(matrix2).values()))
+    db2 = next(iter(canmatrix.formats.loadp(matrix2).values()))
     logger.info("%d Frames found" % (db2._fl._list.__len__()))
 
     ignore = {}
