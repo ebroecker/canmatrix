@@ -212,6 +212,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 # startbit of motorola coded signals are MSB in arxml
                 newSig.setStartbit(int(startBit.text), bitNumbering=1)
 
+            newSig._isigRef = syssignal
             signalRxs[syssignal] = newSig
 
             basetype = arGetChild(datdefprops, "BASE-TYPE", arDict, ns)
@@ -639,7 +640,7 @@ def importArxml(filename, **options):
                 for port in portRef:
                     comDir = arGetChild(
                         port, "COMMUNICATION-DIRECTION", arDict, ns)
-                    if comDir is not None and comDir.text == "IN":
+                    if comDir.text == "IN":
                         sysSignal = arGetChild(
                             isignal, "SYSTEM-SIGNAL", arDict, ns)
                         ecuName = arGetName(
@@ -649,6 +650,11 @@ def importArxml(filename, **options):
                         if sysSignal in signalRxs:
                             if ecuName not in signalRxs[sysSignal].receiver:
                                 signalRxs[sysSignal].receiver.append(ecuName)
+    #                               for fr in db.frames:
+    #                                       for sig in fr.signals:
+    #                                               if hasattr(sig, "_isigRef")  and sig._isigRef == isignal.text:
+    #                                                       sig.receiver.append(ecuName)
+                        # TODO
     # find ECUs:
         nodes = root.findall('.//' + ns + 'ECU-INSTANCE')
         for node in nodes:
