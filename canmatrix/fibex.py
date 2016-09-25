@@ -59,8 +59,7 @@ def createSubElementFx(parent, elementName, elementText=None):
         new.text = elementText
     return new
 
-def extension():
-    return "xml"
+extensionm = "xml"
 
 def createSubElementHo(parent, elementName, elementText=None):
     new = etree.SubElement(parent, ns_ho + elementName)

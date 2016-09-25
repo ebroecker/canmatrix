@@ -39,7 +39,8 @@ import os
 import re
 import math
 
-
+clusterExporter = 1
+clusterImporter = 1
 
 def createSignal(signal, nodeList, typeEnums):
     sig = etree.Element(
@@ -167,7 +168,8 @@ def dump(dbs, f, **options):
 #        else:
 #            busName = name
 
-        bus.set("name", busName)
+        if len(name) > 0:
+            bus.set("name", name)
 
         for frame in db.frames:
             message = etree.Element('Message', id="0x%03X" %

@@ -4,8 +4,9 @@ import sys
 import logging
 logger = logging.getLogger('root')
 import canmatrix
+import os
 
-moduleList = ["arxml", "csv", "dbc", "dbf", "json", "kcd", "fibex", "sym", "xls", "xlsx", "yaml"]
+moduleList = ["arxml", "cmcsv", "dbc", "dbf", "cmjson", "kcd", "fibex", "sym", "xls", "xlsx", "yaml"]
 loadedFormats = []
 supportedFormats = {}
 extensionMapping = {}
@@ -15,7 +16,7 @@ for module in  moduleList:
         import_module("canmatrix." + module)
         loadedFormats.append(module)
     except ImportError:
-        pass
+        logger.error("Error importing canmatrix." + module)        
 
 for loadedModule in loadedFormats:    
     supportedFormats[loadedModule] = []    
@@ -26,9 +27,11 @@ for loadedModule in loadedFormats:
         supportedFormats[loadedModule].append("dump")
     if "clusterImporter" in dir(moduleInstance):
         supportedFormats[loadedModule].append("clusterImporter")
+    if "clusterExporter" in dir(moduleInstance):
+        supportedFormats[loadedModule].append("clusterExporter")
     if "extension" in dir(moduleInstance):
         supportedFormats[loadedModule].append("extension")
-        extensionMapping[loadedModule] = moduleInstance.extension()
+        extensionMapping[loadedModule] = moduleInstance.extension
     else:
         extensionMapping[loadedModule] = loadedModule
 
@@ -39,10 +42,11 @@ def loads(string, importType=None, key = "", flatImport = None, **options):
 def loadp(path, importType=None, key = "", flatImport = None, **options):
     fileObject = open(path, "rb")
     if not importType:
-        for extension,key in extensionMapping.items():
+        for key,extension in extensionMapping.items():
             if path.endswith(extension) and "load" in supportedFormats[key]:
-                    importType = extensionMapping[extension]
+                    importType = key
                     break
+    
     if importType:
         return load(fileObject, importType, **options)
     else:
@@ -73,9 +77,9 @@ def dump(canMatrixOrCluster, fileObject, exportType, **options):
 
 def dumpp(canCluster, path, exportType = None, **options):
     if not exportType:
-        for extension,key in extensionMapping.items():
+        for key,extension in extensionMapping.items():
             if path.endswith(extension) and "dump" in supportedFormats[key]:
-                    exportType = extensionMapping[extension]
+                    exportType = key
                     break
     if exportType:
         if "clusterExporter" in supportedFormats[exportType]:
@@ -88,7 +92,7 @@ def dumpp(canCluster, path, exportType = None, **options):
                     outfile = filepath + "_" + name + ext
                 else:
                     outfile = path
-                    db = canCluster[name]
+                db = canCluster[name]
                 fileObject = open(outfile, "wb")
                 dump(db, fileObject, exportType, **options)
                 fileObject.close()
