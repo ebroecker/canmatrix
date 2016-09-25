@@ -59,6 +59,8 @@ def createSubElementFx(parent, elementName, elementText=None):
         new.text = elementText
     return new
 
+def extension():
+    return "xml"
 
 def createSubElementHo(parent, elementName, elementText=None):
     new = etree.SubElement(parent, ns_ho + elementName)
@@ -66,7 +68,7 @@ def createSubElementHo(parent, elementName, elementText=None):
         new.text = elementText
     return new
 
-def exportFibex(db, filename):
+def dump(db, f):
     if etree is None:
         raise ImportError("no fibex-export-support, some dependencies missing ... try pip install lxml")
 
@@ -290,5 +292,4 @@ def exportFibex(db, filename):
     #
     #requirements = createSubElementFx(elements,  "REQUIREMENTS")
 
-    f = open(filename, "wb")
     f.write(etree.tostring(root, pretty_print=True))

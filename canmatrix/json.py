@@ -31,7 +31,7 @@ import json
 import sys
 
 
-def exportJson(db, filename, **options):
+def dump(db, f, **options):
     if 'jsonCanard' in options:
         exportCanard = options['jsonCanard']
     else:
@@ -45,13 +45,7 @@ def exportJson(db, filename, **options):
         mode = 'w'
     else:
         mode = 'wb'
-
-    if type(filename).__name__ == "StringIO":
-        f = filename
-    else:
-        f = open(filename, mode)
   
-
     exportArray = []
 
     if exportCanard:
@@ -117,3 +111,46 @@ def exportJson(db, filename, **options):
 
     json.dump({"messages": exportArray}, f, sort_keys=True,
               indent=4, separators=(',', ': '))
+
+def load(f, **options):
+    db = CanMatrix()
+
+    jsonData = json.load(f)
+
+    if "messages" in jsonData:
+        for frame in jsonData["messages"]:
+            #            newframe = Frame(frame["id"],frame["name"],8,None)
+            newframe = Frame(frame["name"],
+                             Id=frame["id"],
+                             dlc=8)
+
+            if "isextended_frame" in frame and frame["isextended_frame"]:
+                newframe.extended = 1
+            else:
+                newframe.extended = 0
+
+            for signal in frame["signals"]:
+                if signal["is_big_endian"]:
+                    is_little_endian = False
+                else:
+                    is_little_endian = True
+                if signal["is_signed"]:
+                    is_signed = True
+                else:
+                    is_signed = False
+                newsignal = Signal(signal["name"],
+                                   startBit=signal["start_bit"],
+                                   signalSize=signal["bit_length"],
+                                   is_little_endian=is_little_endian,
+                                   is_signed=is_signed,
+                                   factor=signal["factor"],
+                                   offset=signal["offset"])
+
+                if newsignal.is_little_endian == False:
+
+                    newsignal.setStartbit(
+                        newsignal._startbit, bitNumbering=1, startLittle=True)
+                newframe.addSignal(newsignal)
+            db._fl.addFrame(newframe)
+    f.close()
+    return db

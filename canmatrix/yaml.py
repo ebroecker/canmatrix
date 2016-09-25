@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -19,26 +18,62 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
-
 #
-# this script imports yaml-object-dumps of canmatrix-objects
+# this script exports yaml-files from a canmatrix-object
 # yaml-files are just object-dumps human readable.
 # This export is complete, no information lost
-#
+
+
 
 from __future__ import absolute_import
+from builtins import *
+
 from .canmatrix import *
+import copy
+import codecs
 try:
     import yaml
+    from yaml.representer import SafeRepresenter
 except ImportError:
     yaml = None
 
 
-def importYaml(filename):
+
+
+representers = False
+try:
+    yaml.add_representer(int, SafeRepresenter.represent_int)
+    yaml.add_representer(long, SafeRepresenter.represent_long)
+    yaml.add_representer(unicode, SafeRepresenter.represent_unicode)
+    yaml.add_representer(str, SafeRepresenter.represent_unicode)
+    yaml.add_representer(list, SafeRepresenter.represent_list)
+    representers = True
+except:
+    representers = False
+    # some error with representers ... continue anyway
+
+def dump(db, f, **options):
+    if yaml is None:
+        raise ImportError("no yaml-export-support, some dependencies missing ... try pip install pyaml")
+    newdb = copy.deepcopy(db)
+
+    for i, frame in enumerate(newdb.frames):
+        for j, signal in enumerate(frame.signals):
+            if signal.is_little_endian == False:
+                signal._startbit = signal.getStartbit(
+                    bitNumbering=1, startLittle=True)
+#                newdb.frames[i].signals[j]._startbit = signal._startbit
+
+#    f = open(filename, "w")
+    if representers:
+        f.write(unicode(yaml.dump(newdb)))
+    else:
+        f.write(yaml.dump(newdb))
+
+def load(f, **options):
     if yaml is None:
         raise ImportError("no yaml-import-support, some dependencies missing ... , try pip install pyaml")
 
-    f = open(filename, 'r')
     db = yaml.load(f)
     f.close()
 

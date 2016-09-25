@@ -189,7 +189,7 @@ def writeSignalx(db, sig, row, rearCol):
             row[rearCol + 2] = float(sig.factor)
 
 
-def exportCsv(db, filename, delimiter=','):
+def dump(db, filename, delimiter=','):
     head_top = [
         'ID',
         'Frame Name',

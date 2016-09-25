@@ -26,19 +26,18 @@ from __future__ import absolute_import
 from .log import setup_logger, set_log_level
 logger = setup_logger('root')
 import sys
-sys.path.append('..')
 import os
+sys.path.append('..')
+import canmatrix.formats
+import canmatrix.canmatrix as cm
+import canmatrix.copy as cmcp
 
 
 def convert(infile, outfileName, **options):
-    import canmatrix.exportany as ex
-    import canmatrix.importany as im
-    import canmatrix.canmatrix as cm
-    import canmatrix.copy as cmcp
     dbs = {}
 
     logger.info("Importing " + infile + " ... ")
-    dbs = im.importany(infile, **options)
+    dbs = canmatrix.formats.loadp(infile, **options)
     logger.info("done\n")
 
     logger.info("Exporting " + outfileName + " ... ")
@@ -133,7 +132,7 @@ def convert(infile, outfileName, **options):
         
         outdbs[name] = db
 
-    ex.exportany(outdbs, outfileName, **options)
+    canmatrix.formats.dumpp(outdbs, outfileName, **options)
     logger.info("done")
 
 
