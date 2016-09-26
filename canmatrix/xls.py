@@ -470,7 +470,7 @@ def load(file, **options):
     else:
         motorolaBitFormat = "msbreverse"
 
-    wb = xlrd.open_workbook(file)
+    wb = xlrd.open_workbook(file_contents=file.read())
     sh = wb.sheet_by_index(0)
     db = CanMatrix()
 

@@ -457,7 +457,7 @@ import codecs
 import zipfile
 from xml.etree.ElementTree import iterparse
 
-def load(file, **args):
+def readXlsx(file, **args):
     # from: Hooshmand zandi http://stackoverflow.com/a/16544219
     import zipfile
     from xml.etree.ElementTree import iterparse
@@ -530,7 +530,7 @@ def getIfPossible(row, value):
         return None
 
 
-def read(filename, **options):
+def load(filename, **options):
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:
