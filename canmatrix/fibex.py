@@ -44,6 +44,9 @@ ns_can = "{%s}" % can
 ns_xsi = "{%s}" % xsi
 
 
+extension = "xml"
+
+
 def createShortNameDesc(parent, shortname, desc):
     ShortName = etree.SubElement(parent, ns_ho + "SHORT-NAME")
     ShortName.text = shortname
@@ -57,7 +60,6 @@ def createSubElementFx(parent, elementName, elementText=None):
         new.text = elementText
     return new
 
-extensionm = "xml"
 
 def createSubElementHo(parent, elementName, elementText=None):
     new = etree.SubElement(parent, ns_ho + elementName)
@@ -65,7 +67,7 @@ def createSubElementHo(parent, elementName, elementText=None):
         new.text = elementText
     return new
 
-def dump(db, f):
+def dump(db, f, **options):
     nsmap = {"fx":fx, "ho":ho, "can":can, "xsi":xsi}
     root = etree.Element(ns_fx + "FIBEX", nsmap=nsmap)
     root.attrib[

@@ -31,7 +31,7 @@ if (sys.version_info > (3, 0)):
     import codecs
 
 
-extension = 'kcd'
+extension = 'csv'
 
 class csvRow:
 

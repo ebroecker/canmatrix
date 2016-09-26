@@ -148,7 +148,18 @@ def main():
     import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
     export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
 
-    """
+    followig formats are availible at this installation:
+    \n"""
+
+    for suppFormat,features in canmatrix.formats.supportedFormats.items():
+        usage += suppFormat + "\t"        
+        if 'load' in features:
+            usage += "import"
+        usage += "\t"
+        if 'dump' in features:
+            usage += "export"
+        usage += "\n"
+        
 
     parser = OptionParser(usage=usage)
     # parser.add_option("-d", "--debug",
