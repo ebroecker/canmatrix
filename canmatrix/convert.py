@@ -70,7 +70,7 @@ def convert(infile, outfileName, **options):
                     if mergeString.__len__() == 1:
                         print ("merge complete: " + mergeString[0])
                         for frame in dbTempList[dbTemp].frames:
-                            cmcp.copyFrame(frame._Id, dbTempList[dbTemp], db)
+                            cmcp.copyFrame(frame.id, dbTempList[dbTemp], db)
                     for mergeOpt in mergeString[1:]:
                         if mergeOpt.split('=')[0] == "ecu":
                             cmcp.copyBUwithFrames(
