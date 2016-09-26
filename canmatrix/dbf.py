@@ -306,7 +306,7 @@ def dump(db, f, **options):
 [BUSMASTER_VERSION] [1.7.2]
 [NUMBER_OF_MESSAGES] """
 
-    outstr += str(db.frames) + "\n"
+    outstr += str(len(db.frames)) + "\n"
 
     # Frames
     for frame in db.frames:

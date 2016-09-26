@@ -531,6 +531,16 @@ def getIfPossible(row, value):
 
 
 def load(filename, **options):
+    from sys import modules
+    
+    # use xlrd excel reader if available, because its more robust
+    try:
+        import canmatrix.xls
+        return canmatrix.xls.load(filename, **options)
+    except: 
+        pass
+    
+    # else use this hack to read xlsx
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:
