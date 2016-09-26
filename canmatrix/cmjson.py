@@ -110,13 +110,24 @@ def dump(db, f, **options):
                  "signals": signals,
                  "attributes": frameattribs,
                  "comment": frame.comment})
+    if (sys.version_info > (3, 0)):
+        import io
+        temp = io.TextIOWrapper(f, encoding='UTF-8')
+    else:
+        temp = f
 
-    json.dump({"messages": exportArray}, f, sort_keys=True,
+
+    json.dump({"messages": exportArray}, temp, sort_keys=True,
               indent=4, separators=(',', ': '))
 
 def load(f, **options):
     db = CanMatrix()
-    jsonData = json.load(f)
+    
+    if (sys.version_info > (3, 0)):
+        import io
+        jsonData = json.load(io.TextIOWrapper(f, encoding='UTF-8'))
+    else:
+        jsonData = json.load(f)
 
     if "messages" in jsonData:
         for frame in jsonData["messages"]:

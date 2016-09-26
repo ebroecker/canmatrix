@@ -291,21 +291,13 @@ def dump(db, thefile, delimiter=',', **options):
         # loop over signals ends here
     # loop over frames ends here
 
-#    if filename is not None:
-#        # save file
-#        if (sys.version_info > (3, 0)):
-#            with open(filename, 'w', encoding='utf8') as thefile:
-#                writer = csv.writer(thefile, delimiter=delimiter)
-#                for row in csvtable:
-#                    writer.writerow(row.as_list)
-#
-#        else:
-#            with open(filename, 'w') as thefile:
-#                writer = csv.writer(thefile, delimiter=delimiter)
-#                for row in csvtable:
-#                    writer.writerow(row.as_list)
+    if (sys.version_info > (3, 0)):
+        import io
+        temp = io.TextIOWrapper(thefile, encoding='UTF-8')
+    else:
+        temp = thefile
 
-    writer = csv.writer(thefile, delimiter=delimiter)
+    writer = csv.writer(temp, delimiter=delimiter)
     for row in csvtable:
         writer.writerow(row.as_list)
 #    else:
