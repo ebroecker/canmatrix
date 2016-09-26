@@ -132,7 +132,10 @@ def convert(infile, outfileName, **options):
         
         outdbs[name] = db
 
-    canmatrix.formats.dumpp(outdbs, outfileName, **options)
+    if 'force_output' in options and options['force_output'] is not None:
+        canmatrix.formats.dumpp(outdbs, outfileName, exportType=options['force_output'], **options)
+    else:    
+        canmatrix.formats.dumpp(outdbs, outfileName, **options)
     logger.info("done")
 
 
