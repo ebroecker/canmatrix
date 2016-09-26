@@ -111,6 +111,26 @@
                   <IDENTIFIER>218090231</IDENTIFIER>
                 </CAN-FRAME-TRIGGERING>
                 <CAN-FRAME-TRIGGERING>
+                  <SHORT-NAME>justString</SHORT-NAME>
+                  <FRAME-PORT-REFS/>
+                  <FRAME-REF DEST="FRAME">/Frame/FRAME_justString</FRAME-REF>
+                  <I-PDU-TRIGGERING-REFS>
+                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/IPDUTRIGG_justString</I-PDU-TRIGGERING-REF>
+                  </I-PDU-TRIGGERING-REFS>
+                  <CAN-ADDRESSING-MODE>EXTENDED</CAN-ADDRESSING-MODE>
+                  <IDENTIFIER>486517952</IDENTIFIER>
+                </CAN-FRAME-TRIGGERING>
+                <CAN-FRAME-TRIGGERING>
+                  <SHORT-NAME>stringAndOther</SHORT-NAME>
+                  <FRAME-PORT-REFS/>
+                  <FRAME-REF DEST="FRAME">/Frame/FRAME_stringAndOther</FRAME-REF>
+                  <I-PDU-TRIGGERING-REFS>
+                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/IPDUTRIGG_stringAndOther</I-PDU-TRIGGERING-REF>
+                  </I-PDU-TRIGGERING-REFS>
+                  <CAN-ADDRESSING-MODE>EXTENDED</CAN-ADDRESSING-MODE>
+                  <IDENTIFIER>486517696</IDENTIFIER>
+                </CAN-FRAME-TRIGGERING>
+                <CAN-FRAME-TRIGGERING>
                   <SHORT-NAME>StatusMeasuredPower</SHORT-NAME>
                   <FRAME-PORT-REFS/>
                   <FRAME-REF DEST="FRAME">/Frame/FRAME_StatusMeasuredPower</FRAME-REF>
@@ -311,6 +331,14 @@
                 <I-PDU-TRIGGERING>
                   <SHORT-NAME>IPDUTRIGG_MasterMeasuredPowerAPU2</SHORT-NAME>
                   <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_MasterMeasuredPowerAPU2</I-PDU-REF>
+                </I-PDU-TRIGGERING>
+                <I-PDU-TRIGGERING>
+                  <SHORT-NAME>IPDUTRIGG_justString</SHORT-NAME>
+                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_justString</I-PDU-REF>
+                </I-PDU-TRIGGERING>
+                <I-PDU-TRIGGERING>
+                  <SHORT-NAME>IPDUTRIGG_stringAndOther</SHORT-NAME>
+                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_stringAndOther</I-PDU-REF>
                 </I-PDU-TRIGGERING>
                 <I-PDU-TRIGGERING>
                   <SHORT-NAME>IPDUTRIGG_StatusMeasuredPower</SHORT-NAME>
@@ -682,6 +710,11 @@
                   <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
                   <I-SIGNAL-PORT-REFS/>
                   <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ReactivePower_measured</SIGNAL-REF>
+                </I-SIGNAL-TRIGGERING>
+                <I-SIGNAL-TRIGGERING>
+                  <SHORT-NAME>RealPower_measured</SHORT-NAME>
+                  <I-SIGNAL-PORT-REFS/>
+                  <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_measured</SIGNAL-REF>
                 </I-SIGNAL-TRIGGERING>
                 <I-SIGNAL-TRIGGERING>
                   <SHORT-NAME>RealPower_measured</SHORT-NAME>
@@ -1320,6 +1353,30 @@
           </PDU-TO-FRAME-MAPPINGS>
         </FRAME>
         <FRAME>
+          <SHORT-NAME>FRAME_justString</SHORT-NAME>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
+          <PDU-TO-FRAME-MAPPINGS>
+            <PDU-TO-FRAME-MAPPING>
+              <SHORT-NAME>justString</SHORT-NAME>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
+              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_justString</PDU-REF>
+              <START-POSITION>0</START-POSITION>
+            </PDU-TO-FRAME-MAPPING>
+          </PDU-TO-FRAME-MAPPINGS>
+        </FRAME>
+        <FRAME>
+          <SHORT-NAME>FRAME_stringAndOther</SHORT-NAME>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
+          <PDU-TO-FRAME-MAPPINGS>
+            <PDU-TO-FRAME-MAPPING>
+              <SHORT-NAME>stringAndOther</SHORT-NAME>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
+              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_stringAndOther</PDU-REF>
+              <START-POSITION>0</START-POSITION>
+            </PDU-TO-FRAME-MAPPING>
+          </PDU-TO-FRAME-MAPPINGS>
+        </FRAME>
+        <FRAME>
           <SHORT-NAME>FRAME_StatusMeasuredPower</SHORT-NAME>
           <DESC>
             <L-2 L="FOR-ALL">Returns the actual measured power.</L-2>
@@ -1572,67 +1629,67 @@
               <SHORT-NAME>Enable_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Enable_command</SIGNAL-REF>
-              <START-POSITION>1</START-POSITION>
+              <START-POSITION>0</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FaultClear_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FaultClear_command</SIGNAL-REF>
-              <START-POSITION>3</START-POSITION>
+              <START-POSITION>2</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>InvertHwEnable_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/InvertHwEnable_command</SIGNAL-REF>
-              <START-POSITION>57</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>EnableUPSMode_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/EnableUPSMode_command</SIGNAL-REF>
-              <START-POSITION>59</START-POSITION>
+              <START-POSITION>58</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>EnableSplitPhase_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/EnableSplitPhase_command</SIGNAL-REF>
-              <START-POSITION>61</START-POSITION>
+              <START-POSITION>60</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ForceRelayMX1_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ForceRelayMX1_command</SIGNAL-REF>
-              <START-POSITION>33</START-POSITION>
+              <START-POSITION>32</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ForceRelayMX2_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ForceRelayMX2_command</SIGNAL-REF>
-              <START-POSITION>35</START-POSITION>
+              <START-POSITION>34</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ForceRelayK1_Precharge_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ForceRelayK1_Precharge_command</SIGNAL-REF>
-              <START-POSITION>37</START-POSITION>
+              <START-POSITION>36</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ForceRelayRelayK2_DCRun_comand</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ForceRelayRelayK2_DCRun_comand</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>38</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>PhaseRotation_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/PhaseRotation_command</SIGNAL-REF>
-              <START-POSITION>63</START-POSITION>
+              <START-POSITION>62</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MasterFollowerMode_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MasterFollowerMode_command</SIGNAL-REF>
-              <START-POSITION>17</START-POSITION>
+              <START-POSITION>16</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1644,13 +1701,13 @@
               <SHORT-NAME>RealPower command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower command</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ReactivePower_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ReactivePower_command</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1662,13 +1719,13 @@
               <SHORT-NAME>Voltage_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Voltage_command</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Frequency_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Frequency_command</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1680,13 +1737,13 @@
               <SHORT-NAME>RealPower_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_measured</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ReactivePower_measured</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1698,19 +1755,19 @@
               <SHORT-NAME>WriteSerialNumber</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/WriteSerialNumber</SIGNAL-REF>
-              <START-POSITION>1</START-POSITION>
+              <START-POSITION>0</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>SerialNumber</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/SerialNumber</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FactoryAccess</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FactoryAccess</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1722,145 +1779,145 @@
               <SHORT-NAME>CommandSetNVParam_MUX</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/CommandSetNVParam_MUX</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Dummy</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Dummy</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>VUnder50pct</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/VUnder50pct</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>V50to88pct</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/V50to88pct</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>V110to120pct</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/V110to120pct</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>VOver120</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/VOver120</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqHi</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqHi</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqLo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqLo</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqVeryLo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqVeryLo</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqVeryLo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqVeryLo</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqLo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqLo</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqHi</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqHi</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>NodeID</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/NodeID</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>16</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>SA_Mask</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/SA_Mask</SIGNAL-REF>
-              <START-POSITION>31</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Baudrate</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Baudrate</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>36</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ThermalOverload</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ThermalOverload</SIGNAL-REF>
-              <START-POSITION>17</START-POSITION>
+              <START-POSITION>16</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MX1Open</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MX1Open</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MX1Close</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MX1Close</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MX2Open</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MX2Open</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MX2Close</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MX2Close</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>K1Open</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/K1Open</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>K1Close</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/K1Close</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>K2Open</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/K2Open</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>K2Close</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/K2Close</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1872,67 +1929,67 @@
               <SHORT-NAME>Enable_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Enable_command</SIGNAL-REF>
-              <START-POSITION>1</START-POSITION>
+              <START-POSITION>0</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FaultClear_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FaultClear_command</SIGNAL-REF>
-              <START-POSITION>3</START-POSITION>
+              <START-POSITION>2</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>InvertHwEnable_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/InvertHwEnable_command</SIGNAL-REF>
-              <START-POSITION>57</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>EnableUPSMode_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/EnableUPSMode_command</SIGNAL-REF>
-              <START-POSITION>59</START-POSITION>
+              <START-POSITION>58</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>EnableSplitPhase_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/EnableSplitPhase_command</SIGNAL-REF>
-              <START-POSITION>61</START-POSITION>
+              <START-POSITION>60</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ForceRelayMX1_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ForceRelayMX1_command</SIGNAL-REF>
-              <START-POSITION>33</START-POSITION>
+              <START-POSITION>32</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ForceRelayMX2_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ForceRelayMX2_command</SIGNAL-REF>
-              <START-POSITION>35</START-POSITION>
+              <START-POSITION>34</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ForceRelayK1_Precharge_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ForceRelayK1_Precharge_command</SIGNAL-REF>
-              <START-POSITION>37</START-POSITION>
+              <START-POSITION>36</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ForceRelayRelayK2_DCRun_comand</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ForceRelayRelayK2_DCRun_comand</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>38</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>PhaseRotation_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/PhaseRotation_command</SIGNAL-REF>
-              <START-POSITION>63</START-POSITION>
+              <START-POSITION>62</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MasterFollowerMode_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MasterFollowerMode_command</SIGNAL-REF>
-              <START-POSITION>17</START-POSITION>
+              <START-POSITION>16</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1944,13 +2001,13 @@
               <SHORT-NAME>RealPower_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_command</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ReactivePower_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ReactivePower_command</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1962,13 +2019,13 @@
               <SHORT-NAME>Voltage_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Voltage_command</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Frequency_command</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Frequency_command</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1980,13 +2037,30 @@
               <SHORT-NAME>RealPower_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_measured</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ReactivePower_measured</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>56</START-POSITION>
+            </I-SIGNAL-TO-I-PDU-MAPPING>
+          </SIGNAL-TO-PDU-MAPPINGS>
+        </SIGNAL-I-PDU>
+        <SIGNAL-I-PDU>
+          <SHORT-NAME>PDU_justString</SHORT-NAME>
+          <LENGTH>64</LENGTH>
+          <SIGNAL-TO-PDU-MAPPINGS/>
+        </SIGNAL-I-PDU>
+        <SIGNAL-I-PDU>
+          <SHORT-NAME>PDU_stringAndOther</SHORT-NAME>
+          <LENGTH>64</LENGTH>
+          <SIGNAL-TO-PDU-MAPPINGS>
+            <I-SIGNAL-TO-I-PDU-MAPPING>
+              <SHORT-NAME>RealPower_measured</SHORT-NAME>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
+              <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_measured</SIGNAL-REF>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -1998,13 +2072,13 @@
               <SHORT-NAME>RealPower_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_measured</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ReactivePower_measured</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2016,13 +2090,13 @@
               <SHORT-NAME>RealPower_echo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/RealPower_echo</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ReactivePower_echo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ReactivePower_echo</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2034,121 +2108,121 @@
               <SHORT-NAME>State_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/State_status</SIGNAL-REF>
-              <START-POSITION>3</START-POSITION>
+              <START-POSITION>0</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MX2Permissive_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MX2Permissive_status</SIGNAL-REF>
-              <START-POSITION>19</START-POSITION>
+              <START-POSITION>18</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>PowerAvailAC_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/PowerAvailAC_status</SIGNAL-REF>
-              <START-POSITION>11</START-POSITION>
+              <START-POSITION>10</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>PowerAvailDC_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/PowerAvailDC_status</SIGNAL-REF>
-              <START-POSITION>13</START-POSITION>
+              <START-POSITION>12</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>PowerCircuitEnabled_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/PowerCircuitEnabled_status</SIGNAL-REF>
-              <START-POSITION>15</START-POSITION>
+              <START-POSITION>14</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>HardwareEnable_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/HardwareEnable_status</SIGNAL-REF>
-              <START-POSITION>9</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Enable_echo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Enable_echo</SIGNAL-REF>
-              <START-POSITION>5</START-POSITION>
+              <START-POSITION>4</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FaultClr_echo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FaultClr_echo</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>6</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MessageValidModeControl_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MessageValidModeControl_status</SIGNAL-REF>
-              <START-POSITION>25</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MX1Permissive_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MX1Permissive_status</SIGNAL-REF>
-              <START-POSITION>17</START-POSITION>
+              <START-POSITION>16</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>K2DCRunPermissive_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/K2DCRunPermissive_status</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>22</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>K1PrechargePermissive_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/K1PrechargePermissive_status</SIGNAL-REF>
-              <START-POSITION>21</START-POSITION>
+              <START-POSITION>20</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MessageValidPowerCMD_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MessageValidPowerCMD_status</SIGNAL-REF>
-              <START-POSITION>27</START-POSITION>
+              <START-POSITION>26</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>MessageValidVF_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/MessageValidVF_status</SIGNAL-REF>
-              <START-POSITION>29</START-POSITION>
+              <START-POSITION>28</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>CANbus_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/CANbus_status</SIGNAL-REF>
-              <START-POSITION>31</START-POSITION>
+              <START-POSITION>30</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>EnableUPSMode_echo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/EnableUPSMode_echo</SIGNAL-REF>
-              <START-POSITION>33</START-POSITION>
+              <START-POSITION>32</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>EnableSplitPhase_echo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/EnableSplitPhase_echo</SIGNAL-REF>
-              <START-POSITION>35</START-POSITION>
+              <START-POSITION>34</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>PhaseRotation_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/PhaseRotation_status</SIGNAL-REF>
-              <START-POSITION>37</START-POSITION>
+              <START-POSITION>36</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>LineVoltageDetected_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/LineVoltageDetected_status</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>38</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>PhaseRotation_echo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/PhaseRotation_echo</SIGNAL-REF>
-              <START-POSITION>41</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2160,25 +2234,25 @@
               <SHORT-NAME>v5p0_Supply</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/v5p0_Supply</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>v3p3_Supply</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/v3p3_Supply</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>v24_Supply</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/v24_Supply</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>v15_Supply</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/v15_Supply</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2190,19 +2264,19 @@
               <SHORT-NAME>TempInlet_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/TempInlet_measured</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>TempInternal_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/TempInternal_measured</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ConverterLosses</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ConverterLosses</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2220,7 +2294,7 @@
               <SHORT-NAME>OvercurrentAC_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/OvercurrentAC_status</SIGNAL-REF>
-              <START-POSITION>3</START-POSITION>
+              <START-POSITION>2</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>BridgeBVoltageOk_status</SHORT-NAME>
@@ -2232,97 +2306,97 @@
               <SHORT-NAME>OvervoltageDC_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/OvervoltageDC_status</SIGNAL-REF>
-              <START-POSITION>9</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>OvertempPowerDevice_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/OvertempPowerDevice_status</SIGNAL-REF>
-              <START-POSITION>15</START-POSITION>
+              <START-POSITION>14</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>OvertempInternal_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/OvertempInternal_status</SIGNAL-REF>
-              <START-POSITION>13</START-POSITION>
+              <START-POSITION>12</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>LossValidControlMessage_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/LossValidControlMessage_status</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>20</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>UndervoltageDC_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/UndervoltageDC_status</SIGNAL-REF>
-              <START-POSITION>11</START-POSITION>
+              <START-POSITION>10</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ControlHardwareFail_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ControlHardwareFail_status</SIGNAL-REF>
-              <START-POSITION>19</START-POSITION>
+              <START-POSITION>16</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>OvercurrentDC_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/OvercurrentDC_status</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>6</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>GeneralFault_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/GeneralFault_status</SIGNAL-REF>
-              <START-POSITION>1</START-POSITION>
+              <START-POSITION>0</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>LossOfAC_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/LossOfAC_status</SIGNAL-REF>
-              <START-POSITION>5</START-POSITION>
+              <START-POSITION>4</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>EStopShutdown_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/EStopShutdown_status</SIGNAL-REF>
-              <START-POSITION>25</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>BridgeAFault_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/BridgeAFault_status</SIGNAL-REF>
-              <START-POSITION>58</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>BridgeBFault_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/BridgeBFault_status</SIGNAL-REF>
-              <START-POSITION>42</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>IllegalTransition_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/IllegalTransition_status</SIGNAL-REF>
-              <START-POSITION>27</START-POSITION>
+              <START-POSITION>26</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>InvalidEEHeader_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/InvalidEEHeader_status</SIGNAL-REF>
-              <START-POSITION>29</START-POSITION>
+              <START-POSITION>28</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>InvalidEESection_status</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/InvalidEESection_status</SIGNAL-REF>
-              <START-POSITION>31</START-POSITION>
+              <START-POSITION>30</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ThermalOverload</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ThermalOverload</SIGNAL-REF>
-              <START-POSITION>33</START-POSITION>
+              <START-POSITION>32</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2334,19 +2408,19 @@
               <SHORT-NAME>VoltageAC_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/VoltageAC_measured</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>CurrentAC_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/CurrentAC_measured</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Frequency_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Frequency_measured</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2358,19 +2432,19 @@
               <SHORT-NAME>VoltageDCBus</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/VoltageDCBus</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>CurrentDC_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/CurrentDC_measured</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>VoltageDCInput_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/VoltageDCInput_measured</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2382,19 +2456,19 @@
               <SHORT-NAME>n15V_Supply</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/n15V_Supply</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>DiodeTemperature</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/DiodeTemperature</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>IGBTTemperature</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/IGBTTemperature</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2406,19 +2480,19 @@
               <SHORT-NAME>InterfaceRev</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/InterfaceRev</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>ControlSwRev</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/ControlSwRev</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>BuildTime</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/BuildTime</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2430,13 +2504,13 @@
               <SHORT-NAME>Voltage_echo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Voltage_echo</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Frequency_echo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Frequency_echo</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2448,7 +2522,7 @@
               <SHORT-NAME>SerialNumber</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/SerialNumber</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2460,7 +2534,7 @@
               <SHORT-NAME>Hash</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Hash</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>28</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2472,145 +2546,145 @@
               <SHORT-NAME>StatusNVParam_MUX</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusNVParam_MUX</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Dummy</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Dummy</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>VUnder50pct</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/VUnder50pct</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>V50to88pct</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/V50to88pct</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>V110to120pct</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/V110to120pct</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>VOver120</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/VOver120</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqHi</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqHi</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqLo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqLo</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqVeryLo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqVeryLo</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqVeryLo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqVeryLo</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqLo</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqLo</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>FreqHi</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/FreqHi</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusNodeID</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusNodeID</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>16</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusSA_Mask</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusSA_Mask</SIGNAL-REF>
-              <START-POSITION>31</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusBaudrate</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusBaudrate</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>36</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusThermalOverload</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusThermalOverload</SIGNAL-REF>
-              <START-POSITION>17</START-POSITION>
+              <START-POSITION>16</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusMX1Open</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusMX1Open</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusMX1Close</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusMX1Close</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusMX2Open</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusMX2Open</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusMX2Close</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusMX2Close</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusK1Open</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusK1Open</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusK1Close</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusK1Close</SIGNAL-REF>
-              <START-POSITION>55</START-POSITION>
+              <START-POSITION>56</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusK2Open</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusK2Open</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>StatusK2Close</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/StatusK2Close</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2622,19 +2696,19 @@
               <SHORT-NAME>L1Current_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/L1Current_measured</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>L2Current_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/L2Current_measured</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>L3Current_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/L3Current_measured</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2646,19 +2720,19 @@
               <SHORT-NAME>L1Voltage_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/L1Voltage_measured</SIGNAL-REF>
-              <START-POSITION>7</START-POSITION>
+              <START-POSITION>8</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>L2Voltage_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/L2Voltage_measured</SIGNAL-REF>
-              <START-POSITION>23</START-POSITION>
+              <START-POSITION>24</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>L3Voltage_measured</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/L3Voltage_measured</SIGNAL-REF>
-              <START-POSITION>39</START-POSITION>
+              <START-POSITION>40</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
           </SIGNAL-TO-PDU-MAPPINGS>
         </SIGNAL-I-PDU>
@@ -2910,6 +2984,10 @@
         <I-SIGNAL>
           <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
           <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/ReactivePower_measured</SYSTEM-SIGNAL-REF>
+        </I-SIGNAL>
+        <I-SIGNAL>
+          <SHORT-NAME>RealPower_measured</SHORT-NAME>
+          <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/RealPower_measured</SYSTEM-SIGNAL-REF>
         </I-SIGNAL>
         <I-SIGNAL>
           <SHORT-NAME>RealPower_measured</SHORT-NAME>
@@ -3771,6 +3849,14 @@
             <L-2 L="FOR-ALL">Measured reactive power of master unit.</L-2>
           </DESC>
           <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/ReactivePower_measured</DATA-TYPE-REF>
+          <LENGTH>32</LENGTH>
+        </SYSTEM-SIGNAL>
+        <SYSTEM-SIGNAL>
+          <SHORT-NAME>RealPower_measured</SHORT-NAME>
+          <DESC>
+            <L-2 L="FOR-ALL">Measured real power.</L-2>
+          </DESC>
+          <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/RealPower_measured</DATA-TYPE-REF>
           <LENGTH>32</LENGTH>
         </SYSTEM-SIGNAL>
         <SYSTEM-SIGNAL>
@@ -4868,6 +4954,12 @@
           <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
           <SW-DATA-DEF-PROPS>
             <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/ReactivePower_measured</COMPU-METHOD-REF>
+          </SW-DATA-DEF-PROPS>
+        </INTEGER-TYPE>
+        <INTEGER-TYPE>
+          <SHORT-NAME>RealPower_measured</SHORT-NAME>
+          <SW-DATA-DEF-PROPS>
+            <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/RealPower_measured</COMPU-METHOD-REF>
           </SW-DATA-DEF-PROPS>
         </INTEGER-TYPE>
         <INTEGER-TYPE>
@@ -7633,6 +7725,24 @@
             </COMPU-METHOD>
             <COMPU-METHOD>
               <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <COMPU-RATIONAL-COEFFS>
+                      <COMPU-NUMERATOR>
+                        <V>0</V>
+                        <V>1</V>
+                      </COMPU-NUMERATOR>
+                      <COMPU-DENOMINATOR>
+                        <V>1</V>
+                      </COMPU-DENOMINATOR>
+                    </COMPU-RATIONAL-COEFFS>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+            <COMPU-METHOD>
+              <SHORT-NAME>RealPower_measured</SHORT-NAME>
               <COMPU-INTERNAL-TO-PHYS>
                 <COMPU-SCALES>
                   <COMPU-SCALE>
@@ -11317,6 +11427,643 @@
                 </COMPU-SCALES>
               </COMPU-INTERNAL-TO-PHYS>
             </COMPU-METHOD>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Unit</SHORT-NAME>
+          <ELEMENTS>
+            <UNIT>
+              <SHORT-NAME>Enable_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FaultClear_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>InvertHwEnable_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>EnableUPSMode_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>EnableSplitPhase_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ForceRelayMX1_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ForceRelayMX2_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ForceRelayK1_Precharge_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ForceRelayRelayK2_DCRun_comand</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>PhaseRotation_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MasterFollowerMode_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>RealPower command</SHORT-NAME>
+              <DISPLAY-NAME>W</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ReactivePower_command</SHORT-NAME>
+              <DISPLAY-NAME>VA</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Voltage_command</SHORT-NAME>
+              <DISPLAY-NAME>Vrms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Frequency_command</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>RealPower_measured</SHORT-NAME>
+              <DISPLAY-NAME>W</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
+              <DISPLAY-NAME>VA</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>WriteSerialNumber</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>SerialNumber</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FactoryAccess</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>CommandSetNVParam_MUX</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Dummy</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>VUnder50pct</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>V50to88pct</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>V110to120pct</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>VOver120</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqHi</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqLo</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqVeryLo</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqVeryLo</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqLo</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqHi</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>NodeID</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>SA_Mask</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Baudrate</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ThermalOverload</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MX1Open</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MX1Close</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MX2Open</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MX2Close</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>K1Open</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>K1Close</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>K2Open</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>K2Close</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Enable_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FaultClear_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>InvertHwEnable_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>EnableUPSMode_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>EnableSplitPhase_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ForceRelayMX1_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ForceRelayMX2_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ForceRelayK1_Precharge_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ForceRelayRelayK2_DCRun_comand</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>PhaseRotation_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MasterFollowerMode_command</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>RealPower_command</SHORT-NAME>
+              <DISPLAY-NAME>W</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ReactivePower_command</SHORT-NAME>
+              <DISPLAY-NAME>VA</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Voltage_command</SHORT-NAME>
+              <DISPLAY-NAME>Vrms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Frequency_command</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>RealPower_measured</SHORT-NAME>
+              <DISPLAY-NAME>W</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
+              <DISPLAY-NAME>VA</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>RealPower_measured</SHORT-NAME>
+              <DISPLAY-NAME>W</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>RealPower_measured</SHORT-NAME>
+              <DISPLAY-NAME>W</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ReactivePower_measured</SHORT-NAME>
+              <DISPLAY-NAME>VA</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>RealPower_echo</SHORT-NAME>
+              <DISPLAY-NAME>W</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ReactivePower_echo</SHORT-NAME>
+              <DISPLAY-NAME>VA</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>State_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MX2Permissive_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>PowerAvailAC_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>PowerAvailDC_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>PowerCircuitEnabled_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>HardwareEnable_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Enable_echo</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FaultClr_echo</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MessageValidModeControl_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MX1Permissive_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>K2DCRunPermissive_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>K1PrechargePermissive_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MessageValidPowerCMD_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>MessageValidVF_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>CANbus_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>EnableUPSMode_echo</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>EnableSplitPhase_echo</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>PhaseRotation_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>LineVoltageDetected_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>PhaseRotation_echo</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>v5p0_Supply</SHORT-NAME>
+              <DISPLAY-NAME>V</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>v3p3_Supply</SHORT-NAME>
+              <DISPLAY-NAME>V</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>v24_Supply</SHORT-NAME>
+              <DISPLAY-NAME>V</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>v15_Supply</SHORT-NAME>
+              <DISPLAY-NAME>V</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>TempInlet_measured</SHORT-NAME>
+              <DISPLAY-NAME>C</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>TempInternal_measured</SHORT-NAME>
+              <DISPLAY-NAME>C</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ConverterLosses</SHORT-NAME>
+              <DISPLAY-NAME>W</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>BridgeAVoltageOk_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>OvercurrentAC_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>BridgeBVoltageOk_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>OvervoltageDC_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>OvertempPowerDevice_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>OvertempInternal_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>LossValidControlMessage_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>UndervoltageDC_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ControlHardwareFail_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>OvercurrentDC_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>GeneralFault_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>LossOfAC_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>EStopShutdown_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>BridgeAFault_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>BridgeBFault_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>IllegalTransition_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>InvalidEEHeader_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>InvalidEESection_status</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ThermalOverload</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>VoltageAC_measured</SHORT-NAME>
+              <DISPLAY-NAME>V</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>CurrentAC_measured</SHORT-NAME>
+              <DISPLAY-NAME>A</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Frequency_measured</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>VoltageDCBus</SHORT-NAME>
+              <DISPLAY-NAME>V</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>CurrentDC_measured</SHORT-NAME>
+              <DISPLAY-NAME>A</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>VoltageDCInput_measured</SHORT-NAME>
+              <DISPLAY-NAME>V</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>n15V_Supply</SHORT-NAME>
+              <DISPLAY-NAME>V</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>DiodeTemperature</SHORT-NAME>
+              <DISPLAY-NAME>C</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>IGBTTemperature</SHORT-NAME>
+              <DISPLAY-NAME>C</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>InterfaceRev</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>ControlSwRev</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>BuildTime</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Voltage_echo</SHORT-NAME>
+              <DISPLAY-NAME>Vrms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Frequency_echo</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>SerialNumber</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Hash</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusNVParam_MUX</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Dummy</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>VUnder50pct</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>V50to88pct</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>V110to120pct</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>VOver120</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqHi</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqLo</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqVeryLo</SHORT-NAME>
+              <DISPLAY-NAME>Hz</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqVeryLo</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqLo</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>FreqHi</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusNodeID</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusSA_Mask</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusBaudrate</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusThermalOverload</SHORT-NAME>
+              <DISPLAY-NAME></DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusMX1Open</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusMX1Close</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusMX2Open</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusMX2Close</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusK1Open</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusK1Close</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusK2Open</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>StatusK2Close</SHORT-NAME>
+              <DISPLAY-NAME>ms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>L1Current_measured</SHORT-NAME>
+              <DISPLAY-NAME>A</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>L2Current_measured</SHORT-NAME>
+              <DISPLAY-NAME>A</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>L3Current_measured</SHORT-NAME>
+              <DISPLAY-NAME>A</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>L1Voltage_measured</SHORT-NAME>
+              <DISPLAY-NAME>Vrms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>L2Voltage_measured</SHORT-NAME>
+              <DISPLAY-NAME>Vrms</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>L3Voltage_measured</SHORT-NAME>
+              <DISPLAY-NAME>Vrms</DISPLAY-NAME>
+            </UNIT>
           </ELEMENTS>
         </AR-PACKAGE>
       </SUB-PACKAGES>

@@ -1,5 +1,5 @@
 !!python/object:canmatrix.canmatrix.CanMatrix
-_BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
+_BUs: !!python/object:canmatrix.canmatrix.BoardUnitList
   _list: []
 _attributes: {}
 _buDefines: {}
@@ -33,7 +33,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 0
+      _startbit: 1
       _unit: ''
       _values: &id002 {'0': Disable, '1': Enable, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -50,7 +50,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 2
+      _startbit: 3
       _unit: ''
       _values: &id003 {'0': Normal, '1': Clear Faults, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -67,7 +67,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 56
+      _startbit: 57
       _unit: ''
       _values: &id004 {'0': No invert, '1': Invert, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -87,7 +87,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 58
+      _startbit: 59
       _unit: ''
       _values: &id005 {'0': Disable, '1': Enable, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -105,7 +105,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 60
+      _startbit: 61
       _unit: ''
       _values: &id006 {'0': Normal - Three Phase Mode, '1': Enable Split Phase Mode,
         '2': Error, '3': N/A}
@@ -124,7 +124,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 32
+      _startbit: 33
       _unit: ''
       _values: &id001 {'0': Normal, '1': Force On, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -142,7 +142,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 34
+      _startbit: 35
       _unit: ''
       _values: *id001
     - !!python/object:canmatrix.canmatrix.Signal
@@ -160,7 +160,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 36
+      _startbit: 37
       _unit: ''
       _values: *id001
     - !!python/object:canmatrix.canmatrix.Signal
@@ -178,7 +178,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 38
+      _startbit: 39
       _unit: ''
       _values: *id001
     - !!python/object:canmatrix.canmatrix.Signal
@@ -196,7 +196,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 62
+      _startbit: 63
       _unit: ''
       _values: &id007 {'0': Negative, '1': Positive, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -216,7 +216,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 16
+      _startbit: 17
       _unit: ''
       _values: &id008 {'0': Master, '1': Follower, '2': Error, '3': N/A}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -246,7 +246,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 24
+      _startbit: 7
       _unit: W
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -264,7 +264,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 56
+      _startbit: 39
       _unit: VA
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -295,7 +295,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: Vrms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -312,7 +312,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: Hz
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -340,7 +340,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 24
+      _startbit: 7
       _unit: W
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -357,7 +357,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 56
+      _startbit: 39
       _unit: VA
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -385,7 +385,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 0
+      _startbit: 1
       _unit: ''
       _values: *id002
     - !!python/object:canmatrix.canmatrix.Signal
@@ -402,7 +402,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 56
+      _startbit: 39
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -419,7 +419,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ''
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -449,7 +449,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: ''
       _values: {'0': Param0, '1': LVM_ClearingTimes1, '10': ContactorDelays3, '2': LVM_ClearingTimes2,
         '3': LFM_Limits, '4': LFM_ClearingTimes, '5': J1939_Interface, '6': Fault_Config,
@@ -468,7 +468,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -487,7 +487,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -506,7 +506,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -525,7 +525,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -544,7 +544,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -563,7 +563,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: Hz
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -582,7 +582,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: Hz
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -601,7 +601,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: Hz
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -620,7 +620,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -639,7 +639,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -658,7 +658,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -675,7 +675,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 8
-      _startbit: 16
+      _startbit: 23
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -692,7 +692,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 8
-      _startbit: 24
+      _startbit: 31
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -709,7 +709,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 4
-      _startbit: 36
+      _startbit: 39
       _unit: ''
       _values: &id014 {'0': 125K, '1': 250K, '2': 500K, '3': 1M}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -726,7 +726,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 16
+      _startbit: 17
       _unit: ''
       _values: &id015 {'0': Warning, '1': Fault, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -743,7 +743,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -760,7 +760,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -777,7 +777,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -794,7 +794,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -811,7 +811,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -828,7 +828,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -845,7 +845,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -862,7 +862,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -893,7 +893,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 0
+      _startbit: 1
       _unit: ''
       _values: *id002
     - !!python/object:canmatrix.canmatrix.Signal
@@ -910,7 +910,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 2
+      _startbit: 3
       _unit: ''
       _values: *id003
     - !!python/object:canmatrix.canmatrix.Signal
@@ -927,7 +927,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 56
+      _startbit: 57
       _unit: ''
       _values: *id004
     - !!python/object:canmatrix.canmatrix.Signal
@@ -947,7 +947,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 58
+      _startbit: 59
       _unit: ''
       _values: *id005
     - !!python/object:canmatrix.canmatrix.Signal
@@ -965,7 +965,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 60
+      _startbit: 61
       _unit: ''
       _values: *id006
     - !!python/object:canmatrix.canmatrix.Signal
@@ -983,7 +983,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 32
+      _startbit: 33
       _unit: ''
       _values: *id001
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1001,7 +1001,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 34
+      _startbit: 35
       _unit: ''
       _values: *id001
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1019,7 +1019,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 36
+      _startbit: 37
       _unit: ''
       _values: *id001
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1037,7 +1037,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 38
+      _startbit: 39
       _unit: ''
       _values: *id001
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1055,7 +1055,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 62
+      _startbit: 63
       _unit: ''
       _values: *id007
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1075,7 +1075,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 16
+      _startbit: 17
       _unit: ''
       _values: *id008
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1105,7 +1105,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 24
+      _startbit: 7
       _unit: W
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1123,7 +1123,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 56
+      _startbit: 39
       _unit: VA
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1154,7 +1154,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: Vrms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1171,7 +1171,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: Hz
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1199,7 +1199,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 24
+      _startbit: 7
       _unit: W
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1216,7 +1216,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 56
+      _startbit: 39
       _unit: VA
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1255,7 +1255,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 24
+      _startbit: 7
       _unit: W
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1283,7 +1283,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 24
+      _startbit: 7
       _unit: W
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1300,7 +1300,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 56
+      _startbit: 39
       _unit: VA
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1328,7 +1328,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 24
+      _startbit: 7
       _unit: W
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1345,7 +1345,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 56
+      _startbit: 39
       _unit: VA
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1373,7 +1373,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 4
-      _startbit: 0
+      _startbit: 3
       _unit: ''
       _values: {'0': 'Power On Reset, and a quoted comma', '1': Ready, '10': N/A,
         '11': N/A, '12': N/A, '13': N/A, '14': N/A, '15': N/A, '2': Following, '3': Fault,
@@ -1392,7 +1392,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 18
+      _startbit: 19
       _unit: ''
       _values: &id010 {'0': Open, '1': Closed, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1410,7 +1410,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 10
+      _startbit: 11
       _unit: ''
       _values: &id009 {'0': None, '1': Available, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1427,7 +1427,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 12
+      _startbit: 13
       _unit: ''
       _values: *id009
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1444,7 +1444,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 14
+      _startbit: 15
       _unit: ''
       _values: {'0': Disabled, '1': Enabled, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1461,7 +1461,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 8
+      _startbit: 9
       _unit: ''
       _values: {'0': Not Active, '1': Active, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1479,7 +1479,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 4
+      _startbit: 5
       _unit: ''
       _values: *id002
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1497,7 +1497,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 6
+      _startbit: 7
       _unit: ''
       _values: *id003
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1516,7 +1516,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 24
+      _startbit: 25
       _unit: ''
       _values: &id011 {'0': Invalid, '1': Valid, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1533,7 +1533,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 16
+      _startbit: 17
       _unit: ''
       _values: *id010
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1550,7 +1550,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 22
+      _startbit: 23
       _unit: ''
       _values: *id010
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1567,7 +1567,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 20
+      _startbit: 21
       _unit: ''
       _values: *id010
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1586,7 +1586,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 26
+      _startbit: 27
       _unit: ''
       _values: *id011
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1605,7 +1605,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 28
+      _startbit: 29
       _unit: ''
       _values: *id011
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1622,7 +1622,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 30
+      _startbit: 31
       _unit: ''
       _values: {'0': Normal, '1': Warning, '3': ErrorPassive, '4': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1640,7 +1640,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 32
+      _startbit: 33
       _unit: ''
       _values: *id005
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1658,7 +1658,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 34
+      _startbit: 35
       _unit: ''
       _values: *id006
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1676,7 +1676,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 36
+      _startbit: 37
       _unit: ''
       _values: *id007
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1693,7 +1693,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 38
+      _startbit: 39
       _unit: ''
       _values: {'0': No_Voltage, '1': Voltage_Detected, '2': Error, '3': N/A}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1711,7 +1711,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 40
+      _startbit: 41
       _unit: ''
       _values: *id007
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1740,7 +1740,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: V
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1757,7 +1757,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: V
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1774,7 +1774,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: V
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1791,7 +1791,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: V
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1820,7 +1820,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: C
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1837,7 +1837,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: C
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1854,7 +1854,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: W
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -1900,7 +1900,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 2
+      _startbit: 3
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1935,7 +1935,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 8
+      _startbit: 9
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1953,7 +1953,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 14
+      _startbit: 15
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1971,7 +1971,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 12
+      _startbit: 13
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -1989,7 +1989,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 4
-      _startbit: 20
+      _startbit: 23
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2006,7 +2006,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 10
+      _startbit: 11
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2023,7 +2023,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 4
-      _startbit: 16
+      _startbit: 19
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2041,7 +2041,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 6
+      _startbit: 7
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2059,7 +2059,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 0
+      _startbit: 1
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2078,7 +2078,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 4
+      _startbit: 5
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2096,7 +2096,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 24
+      _startbit: 25
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2115,7 +2115,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 3
-      _startbit: 56
+      _startbit: 58
       _unit: ''
       _values: &id013 {'0': Normal, '1': FLT_A, '2': N/A, '3': FLT_C, '4': OverVoltage,
         '5': FLT_B, '6': Overcurrent, '7': 5V}
@@ -2135,7 +2135,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 3
-      _startbit: 40
+      _startbit: 42
       _unit: ''
       _values: *id013
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2154,7 +2154,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 26
+      _startbit: 27
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2171,7 +2171,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 28
+      _startbit: 29
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2189,7 +2189,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 30
+      _startbit: 31
       _unit: ''
       _values: *id012
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2206,7 +2206,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 32
+      _startbit: 33
       _unit: ''
       _values: *id012
   - !!python/object:canmatrix.canmatrix.Frame
@@ -2234,7 +2234,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: V
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2251,7 +2251,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: A
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2268,7 +2268,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: Hz
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -2297,7 +2297,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: V
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2314,7 +2314,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: A
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2331,7 +2331,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: V
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -2359,7 +2359,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: V
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2376,7 +2376,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: C
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2393,7 +2393,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: C
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -2421,7 +2421,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2438,7 +2438,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2455,7 +2455,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 56
+      _startbit: 39
       _unit: ''
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -2483,7 +2483,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: Vrms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2500,7 +2500,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: Hz
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -2528,7 +2528,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 32
-      _startbit: 24
+      _startbit: 7
       _unit: ''
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -2556,7 +2556,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 28
-      _startbit: 28
+      _startbit: 7
       _unit: ''
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -2584,7 +2584,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: ''
       _values: {'0': ActParam0, '1': ActLVM_ClearingTimes1, '2': ActLVM_ClearingTimes2,
         '3': ActLFM_Limits, '4': ActLFM_ClearingTimes, '5': StatusJ1939_Interface,
@@ -2604,7 +2604,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2621,7 +2621,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2638,7 +2638,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2655,7 +2655,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2672,7 +2672,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2689,7 +2689,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: Hz
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2706,7 +2706,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: Hz
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2723,7 +2723,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: Hz
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2740,7 +2740,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2757,7 +2757,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2774,7 +2774,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2791,7 +2791,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 8
-      _startbit: 16
+      _startbit: 23
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2809,7 +2809,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 8
-      _startbit: 24
+      _startbit: 31
       _unit: ''
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2826,7 +2826,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 4
-      _startbit: 36
+      _startbit: 39
       _unit: ''
       _values: *id014
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2843,7 +2843,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 2
-      _startbit: 16
+      _startbit: 17
       _unit: ''
       _values: *id015
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2860,7 +2860,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2877,7 +2877,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2894,7 +2894,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2911,7 +2911,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2928,7 +2928,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2945,7 +2945,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 56
+      _startbit: 55
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2962,7 +2962,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: ms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -2979,7 +2979,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: ms
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -3007,7 +3007,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: A
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -3024,7 +3024,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: A
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -3041,7 +3041,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: A
       _values: {}
   - !!python/object:canmatrix.canmatrix.Frame
@@ -3069,7 +3069,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 8
+      _startbit: 7
       _unit: Vrms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -3086,7 +3086,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 24
+      _startbit: 23
       _unit: Vrms
       _values: {}
     - !!python/object:canmatrix.canmatrix.Signal
@@ -3103,14 +3103,14 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _offset: 0.0
       _receiver: []
       _signalsize: 16
-      _startbit: 40
+      _startbit: 39
       _unit: Vrms
       _values: {}
 _frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
 _globalDefines: {}
 _signalDefines:
   GenSigStartValue: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: FLOAT -3.4E+038 3.4E+038, _max: 3.4e+38, _min: -3.4e+38, _type: FLOAT}
+    definition: FLOAT -3.4E+038 3.4E+038, max: 3.4e+38, min: -3.4e+38, type: FLOAT}
 _valueTables: {}

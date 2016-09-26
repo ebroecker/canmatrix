@@ -2,7 +2,7 @@
   <Document name="Some Document Name">some text</Document>
   <Node id="1" name="testBU"/>
   <Node id="2" name="recBU"/>
-  <Bus name="converted/from_dbf/test">
+  <Bus>
     <Message id="0x123" length="8" name="testFrame1" triggered="true" interval="100">
       <Producer>
         <NodeRef id="1"/>

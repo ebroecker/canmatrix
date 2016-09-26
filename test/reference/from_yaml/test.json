@@ -2,7 +2,7 @@
     "messages": [
         {
             "id": 16755521,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "CommandModeControl",
             "signals": [
                 {
@@ -108,7 +108,7 @@
         },
         {
             "id": 218082369,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "CommandPower",
             "signals": [
                 {
@@ -133,7 +133,7 @@
         },
         {
             "id": 218082881,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "CommandVF",
             "signals": [
                 {
@@ -158,7 +158,7 @@
         },
         {
             "id": 218090230,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "MasterMeasuredPower",
             "signals": [
                 {
@@ -183,7 +183,7 @@
         },
         {
             "id": 218083137,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "CommandFactoryControl",
             "signals": [
                 {
@@ -217,7 +217,7 @@
         },
         {
             "id": 218081857,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "CommandSetNVParam",
             "signals": [
                 {
@@ -440,7 +440,7 @@
         },
         {
             "id": 16751425,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "CommandModeControlAPU2",
             "signals": [
                 {
@@ -546,7 +546,7 @@
         },
         {
             "id": 218078273,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "CommandPowerAPU2",
             "signals": [
                 {
@@ -571,7 +571,7 @@
         },
         {
             "id": 218078785,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "CommandVFAPU2",
             "signals": [
                 {
@@ -596,7 +596,7 @@
         },
         {
             "id": 218090231,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "MasterMeasuredPowerAPU2",
             "signals": [
                 {
@@ -620,8 +620,30 @@
             ]
         },
         {
+            "id": 486517952,
+            "isextended_frame": true,
+            "name": "justString",
+            "signals": []
+        },
+        {
+            "id": 486517696,
+            "isextended_frame": true,
+            "name": "stringAndOther",
+            "signals": [
+                {
+                    "bit_length": 32,
+                    "factor": 1.0,
+                    "is_big_endian": true,
+                    "is_signed": true,
+                    "name": "RealPower_measured",
+                    "offset": 0.0,
+                    "start_bit": 24
+                }
+            ]
+        },
+        {
             "id": 218090231,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusMeasuredPower",
             "signals": [
                 {
@@ -646,7 +668,7 @@
         },
         {
             "id": 419415287,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusCommandedPower",
             "signals": [
                 {
@@ -671,7 +693,7 @@
         },
         {
             "id": 218088439,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusBits",
             "signals": [
                 {
@@ -858,7 +880,7 @@
         },
         {
             "id": 486524407,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusControlVoltage",
             "signals": [
                 {
@@ -901,7 +923,7 @@
         },
         {
             "id": 419417079,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusTemps",
             "signals": [
                 {
@@ -935,7 +957,7 @@
         },
         {
             "id": 218089719,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusFaults",
             "signals": [
                 {
@@ -1113,7 +1135,7 @@
         },
         {
             "id": 218088183,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusACParameters",
             "signals": [
                 {
@@ -1147,7 +1169,7 @@
         },
         {
             "id": 486524919,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusDCParameters",
             "signals": [
                 {
@@ -1181,7 +1203,7 @@
         },
         {
             "id": 486524663,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusControlVolts2",
             "signals": [
                 {
@@ -1215,7 +1237,7 @@
         },
         {
             "id": 486523383,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "softwareRev",
             "signals": [
                 {
@@ -1249,7 +1271,7 @@
         },
         {
             "id": 419416567,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusCommandVF",
             "signals": [
                 {
@@ -1274,7 +1296,7 @@
         },
         {
             "id": 486526199,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "serialNumber",
             "signals": [
                 {
@@ -1290,7 +1312,7 @@
         },
         {
             "id": 486526455,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "softwareRevHash",
             "signals": [
                 {
@@ -1306,7 +1328,7 @@
         },
         {
             "id": 486517239,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusNVParam",
             "signals": [
                 {
@@ -1529,7 +1551,7 @@
         },
         {
             "id": 419418359,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusLineCurrents",
             "signals": [
                 {
@@ -1563,7 +1585,7 @@
         },
         {
             "id": 419418615,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "StatusLineVoltages",
             "signals": [
                 {

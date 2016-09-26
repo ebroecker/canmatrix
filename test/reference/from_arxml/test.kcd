@@ -1,8 +1,7 @@
 <NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:schemaLocation="Definition.xsd">
   <Document name="Some Document Name">some text</Document>
-  <Bus name="converted/from_arxml/CAN_test">
+  <Bus name="CAN">
     <Message id="0xFFAB41" length="8" name="FRAME_CommandModeControl" format="extended">
-      <Producer/>
       <Notes>Operational commands are received by the module via control bits within this message.</Notes>
       <Signal name="Enable_command" offset="6" length="2" endianess="big">
         <Notes>Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.</Notes>
@@ -116,7 +115,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFAC41" length="8" name="FRAME_CommandPower" format="extended">
-      <Producer/>
       <Notes>Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.</Notes>
       <Signal name="RealPower command" offset="0" length="32" endianess="big">
         <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.</Notes>
@@ -128,7 +126,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFAE41" length="8" name="FRAME_CommandVF" format="extended">
-      <Producer/>
       <Notes>Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.</Notes>
       <Signal name="Voltage_command" offset="0" length="16" endianess="big">
         <Notes>Desired output voltage while in grid forming mode.</Notes>
@@ -140,7 +137,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFCAF6" length="8" name="FRAME_MasterMeasuredPower" format="extended">
-      <Producer/>
       <Notes>Returns the actual measured power.</Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
         <Notes>Measured real power of master unit.</Notes>
@@ -152,7 +148,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFAF41" length="8" name="FRAME_CommandFactoryControl" format="extended">
-      <Producer/>
       <Notes></Notes>
       <Signal name="WriteSerialNumber" offset="6" length="2" endianess="big">
         <Notes></Notes>
@@ -174,7 +169,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFAA41" length="8" name="FRAME_CommandSetNVParam" format="extended">
-      <Producer/>
       <Notes>Provides access to configure non-volatile parameters.  Note that these parameters can only be set when the inverter's power stage is disabled (PowerCircuitEnabled_status in StatusBits message is 'Disabled.')</Notes>
       <Signal name="CommandSetNVParam_MUX" offset="0" length="16" endianess="big">
         <Notes></Notes>
@@ -298,7 +292,6 @@
       </Signal>
     </Message>
     <Message id="0xFF9B41" length="8" name="FRAME_CommandModeControlAPU2" format="extended">
-      <Producer/>
       <Notes>Operational commands are received by the module via control bits within this message.</Notes>
       <Signal name="Enable_command" offset="6" length="2" endianess="big">
         <Notes>Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.</Notes>
@@ -412,7 +405,6 @@
       </Signal>
     </Message>
     <Message id="0xCFF9C41" length="8" name="FRAME_CommandPowerAPU2" format="extended">
-      <Producer/>
       <Notes>Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.</Notes>
       <Signal name="RealPower_command" offset="0" length="32" endianess="big">
         <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.</Notes>
@@ -424,7 +416,6 @@
       </Signal>
     </Message>
     <Message id="0xCFF9E41" length="8" name="FRAME_CommandVFAPU2" format="extended">
-      <Producer/>
       <Notes>Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.</Notes>
       <Signal name="Voltage_command" offset="0" length="16" endianess="big">
         <Notes>Desired output voltage while in grid forming mode.</Notes>
@@ -436,7 +427,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFCAF7" length="8" name="FRAME_MasterMeasuredPowerAPU2" format="extended">
-      <Producer/>
       <Notes>Returns the actual measured power.</Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
         <Notes>Measured real power of master unit.</Notes>
@@ -448,11 +438,9 @@
       </Signal>
     </Message>
     <Message id="0x1CFFACC0" length="8" name="FRAME_justString" format="extended">
-      <Producer/>
       <Notes></Notes>
     </Message>
     <Message id="0x1CFFABC0" length="8" name="FRAME_stringAndOther" format="extended">
-      <Producer/>
       <Notes></Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
         <Notes>Measured real power of master unit.</Notes>
@@ -460,7 +448,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFCAF7" length="8" name="FRAME_StatusMeasuredPower" format="extended">
-      <Producer/>
       <Notes>Returns the actual measured power.</Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
         <Notes>Measured real power of master unit.</Notes>
@@ -472,7 +459,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFC4F7" length="8" name="FRAME_StatusCommandedPower" format="extended">
-      <Producer/>
       <Notes>Echoes the commanded power (P&amp;Q) as received in CommandPQ.</Notes>
       <Signal name="RealPower_echo" offset="0" length="32" endianess="big">
         <Notes>Echoed real power command.</Notes>
@@ -484,7 +470,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFC3F7" length="8" name="FRAME_StatusBits" format="extended">
-      <Producer/>
       <Notes>Bits representing the status of the power module.</Notes>
       <Signal name="State_status" offset="4" length="4" endianess="big">
         <Notes>Active control mode.</Notes>
@@ -700,7 +685,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFC5F7" length="8" name="FRAME_StatusControlVoltage" format="extended">
-      <Producer/>
       <Notes>Lists present voltage of each power supply on the control board (24V, 15V, 5V, and 3.3V.)</Notes>
       <Signal name="v5p0_Supply" offset="0" length="16" endianess="big">
         <Notes>Present voltage of the control board 5V power suppy.</Notes>
@@ -720,7 +704,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFCBF7" length="8" name="FRAME_StatusTemps" format="extended">
-      <Producer/>
       <Notes>Returns the inlet water temperature to the module as well as module internal ambient temperature.</Notes>
       <Signal name="TempInlet_measured" offset="0" length="16" endianess="big">
         <Notes>Coolant inlet temperature</Notes>
@@ -736,7 +719,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFC8F7" length="8" name="FRAME_StatusFaults" format="extended">
-      <Producer/>
       <Notes>Fault bits.</Notes>
       <Signal name="BridgeAVoltageOk_status" offset="60" endianess="big">
         <Notes>Indicates whether a hardware trip has been activated.</Notes>
@@ -936,7 +918,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFC2F7" length="8" name="FRAME_StatusACParameters" format="extended">
-      <Producer/>
       <Notes>RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.</Notes>
       <Signal name="VoltageAC_measured" offset="0" length="16" endianess="big">
         <Notes>Measured RMS AC voltage.</Notes>
@@ -952,7 +933,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFC7F7" length="8" name="FRAME_StatusDCParameters" format="extended">
-      <Producer/>
       <Notes>Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input voltage.</Notes>
       <Signal name="VoltageDCBus" offset="16" length="16" endianess="big">
         <Notes>Measured DC bus voltage.</Notes>
@@ -968,7 +948,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFC6F7" length="8" name="FRAME_StatusControlVolts2" format="extended">
-      <Producer/>
       <Notes>Present voltage of the -15V power supply on the control board.</Notes>
       <Signal name="n15V_Supply" offset="0" length="16" endianess="big">
         <Notes>Present voltage of the control board -15V power supply.</Notes>
@@ -984,7 +963,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFC1F7" length="8" name="FRAME_softwareRev" format="extended">
-      <Producer/>
       <Notes>Software revision.</Notes>
       <Signal name="InterfaceRev" offset="16" length="16" endianess="big">
         <Notes>Software revision of the CAN communication interface.</Notes>
@@ -1000,7 +978,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFC9F7" length="8" name="FRAME_StatusCommandVF" format="extended">
-      <Producer/>
       <Notes>Echoes the voltage and frequency commands from commandVF.</Notes>
       <Signal name="Voltage_echo" offset="0" length="16" endianess="big">
         <Notes>Echoed voltage command</Notes>
@@ -1012,7 +989,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFCCF7" length="8" name="FRAME_serialNumber" format="extended">
-      <Producer/>
       <Notes>Serial number of the power module.</Notes>
       <Signal name="SerialNumber" offset="0" length="32" endianess="big">
         <Notes></Notes>
@@ -1020,7 +996,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFCDF7" length="8" name="FRAME_softwareRevHash" format="extended">
-      <Producer/>
       <Notes>Unique software revision identification hashcode.</Notes>
       <Signal name="Hash" offset="0" length="28" endianess="big">
         <Notes>Unique revision identification hashcode.</Notes>
@@ -1028,7 +1003,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFA9F7" length="8" name="FRAME_StatusNVParam" format="extended">
-      <Producer/>
       <Notes>Echos back parameter values.</Notes>
       <Signal name="StatusNVParam_MUX" offset="0" length="16" endianess="big">
         <Notes></Notes>
@@ -1152,7 +1126,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFD0F7" length="8" name="FRAME_StatusLineCurrents" format="extended">
-      <Producer/>
       <Notes>Measured RMS line currents.</Notes>
       <Signal name="L1Current_measured" offset="0" length="16" endianess="big">
         <Notes>Measured L1 RMS line current.</Notes>
@@ -1168,7 +1141,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFD1F7" length="8" name="FRAME_StatusLineVoltages" format="extended">
-      <Producer/>
       <Notes>Measured RMS line voltages.</Notes>
       <Signal name="L1Voltage_measured" offset="0" length="16" endianess="big">
         <Notes>Measured L1 RMS line-neutral voltage</Notes>

@@ -2,7 +2,7 @@
     "messages": [
         {
             "id": 291,
-            "is_extended_frame": false,
+            "isextended_frame": false,
             "name": "testFrame1",
             "signals": [
                 {
@@ -12,7 +12,7 @@
                     "is_signed": false,
                     "name": "someTestSignal",
                     "offset": 1.0,
-                    "start_bit": 20
+                    "start_bit": 9
                 },
                 {
                     "bit_length": 3,
@@ -27,7 +27,7 @@
         },
         {
             "id": 18,
-            "is_extended_frame": true,
+            "isextended_frame": true,
             "name": "extendedFrame",
             "signals": []
         }

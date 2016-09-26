@@ -79,7 +79,7 @@ def dump(canMatrixOrCluster, fileObject, exportType, **options):
 def dumpp(canCluster, path, exportType = None, **options):
     if not exportType:
         for key,extension in extensionMapping.items():
-            if path.endswith(extension) and "dump" in supportedFormats[key]:
+            if path.endswith("." + extension) and "dump" in supportedFormats[key]:
                     exportType = key
                     break
     if exportType:

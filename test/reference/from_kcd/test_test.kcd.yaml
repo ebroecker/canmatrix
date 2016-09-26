@@ -1,5 +1,5 @@
 !!python/object:canmatrix.canmatrix.CanMatrix
-_BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
+_BUs: !!python/object:canmatrix.canmatrix.BoardUnitList
   _list: []
 _attributes: {}
 _buDefines: {}
@@ -447,7 +447,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _multiplex: Multiplexor
       _name: CommandSetNVParam_MUX
       _offset: 0.0
-      _receiver: ''
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: ''
@@ -2546,7 +2546,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _multiplex: Multiplexor
       _name: StatusNVParam_MUX
       _offset: 0.0
-      _receiver: ''
+      _receiver: []
       _signalsize: 16
       _startbit: 8
       _unit: ''
@@ -3071,7 +3071,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _values: {}
 _frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
 _globalDefines: {}
 _signalDefines: {}
 _valueTables: {}

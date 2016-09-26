@@ -1,15 +1,15 @@
 !!python/object:canmatrix.canmatrix.CanMatrix
-_BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
+_BUs: !!python/object:canmatrix.canmatrix.BoardUnitList
   _list: []
 _attributes: {}
 _buDefines:
   NWM-Knoten: !!python/object:canmatrix.canmatrix.Define
     _defaultValue: null
-    _definition: ENUM  "nein","ja"
-    _type: ENUM
-    _values: [' "nein"', '"ja"']
+    definition: ENUM  "nein","ja"
+    type: ENUM
+    values: [' "nein"', '"ja"']
   NWM-Stationsadresse: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: HEX 0 63, _max: 63, _min: 0, _type: HEX}
+    definition: HEX 0 63, max: 63, min: 0, type: HEX}
 _fl: !!python/object:canmatrix.canmatrix.FrameList
   _list:
   - !!python/object:canmatrix.canmatrix.Frame
@@ -34,7 +34,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id004 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -53,7 +52,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id005 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -72,7 +70,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id006 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -94,7 +91,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id007 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -114,7 +110,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id008 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -135,7 +130,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id009 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -155,7 +149,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id010 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -175,7 +168,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id011 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -195,7 +187,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id012 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -215,7 +206,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id013 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -237,7 +227,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id014 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -269,7 +258,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -289,7 +277,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id015 !!python/object:lxml.etree._Element {}
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -322,7 +309,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id016 !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -341,7 +327,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id017 !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -371,7 +356,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id018 !!python/object:lxml.etree._Element {}
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -390,7 +374,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id019 !!python/object:lxml.etree._Element {}
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -420,7 +403,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -439,7 +421,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id021 !!python/object:lxml.etree._Element {}
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -458,7 +439,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -490,7 +470,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -511,7 +490,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id022 !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -532,7 +510,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id023 !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -553,7 +530,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id024 !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -574,7 +550,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id025 !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -595,7 +570,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id026 !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -616,7 +590,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id003 !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -637,7 +610,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id002 !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -658,7 +630,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id001 !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -679,7 +650,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id001
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -700,7 +670,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id002
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -721,7 +690,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id003
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -740,7 +708,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 255.0
       _min: 0.0
       _multiplex: null
@@ -759,7 +726,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 255.0
       _min: 0.0
       _multiplex: null
@@ -778,7 +744,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 15.0
       _min: 0.0
       _multiplex: null
@@ -797,7 +762,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: &id020 !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -816,7 +780,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -835,7 +798,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -854,7 +816,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -873,7 +834,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -892,7 +852,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -911,7 +870,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -930,7 +888,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -949,7 +906,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -982,7 +938,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id004
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1001,7 +956,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id005
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1020,7 +974,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id006
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1042,7 +995,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id007
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1062,7 +1014,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id008
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1083,7 +1034,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id009
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1103,7 +1053,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id010
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1123,7 +1072,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id011
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1143,7 +1091,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id012
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1163,7 +1110,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id013
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1185,7 +1131,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id014
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1217,7 +1162,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -1237,7 +1181,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id015
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -1270,7 +1213,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id016
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -1289,7 +1231,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id017
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -1319,7 +1260,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id018
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -1338,7 +1278,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id019
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -1379,7 +1318,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id018
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -1409,7 +1347,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id018
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -1428,7 +1365,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id019
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -1458,7 +1394,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -1477,7 +1412,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -1507,7 +1441,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 15.0
       _min: 0.0
       _multiplex: null
@@ -1528,7 +1461,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1548,7 +1480,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1567,7 +1498,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1586,7 +1516,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1605,7 +1534,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1625,7 +1553,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1645,7 +1572,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1666,7 +1592,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1685,7 +1610,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1704,7 +1628,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1723,7 +1646,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1744,7 +1666,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1765,7 +1686,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1784,7 +1704,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1804,7 +1723,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1824,7 +1742,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1845,7 +1762,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1864,7 +1780,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1884,7 +1799,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -1915,7 +1829,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 655.35
       _min: 0.0
       _multiplex: null
@@ -1934,7 +1847,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 655.35
       _min: 0.0
       _multiplex: null
@@ -1953,7 +1865,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 655.35
       _min: 0.0
       _multiplex: null
@@ -1972,7 +1883,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 655.35
       _min: 0.0
       _multiplex: null
@@ -2003,7 +1913,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -2022,7 +1931,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -2041,7 +1949,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2071,7 +1978,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 1.0
       _min: 0.0
       _multiplex: null
@@ -2091,7 +1997,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2110,7 +2015,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 1.0
       _min: 0.0
       _multiplex: null
@@ -2130,7 +2034,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2150,7 +2053,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2170,7 +2072,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2190,7 +2091,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 15.0
       _min: 0.0
       _multiplex: null
@@ -2209,7 +2109,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2228,7 +2127,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 15.0
       _min: 0.0
       _multiplex: null
@@ -2248,7 +2146,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2268,7 +2165,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2289,7 +2185,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2309,7 +2204,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2330,7 +2224,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 7.0
       _min: 0.0
       _multiplex: null
@@ -2352,7 +2245,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 7.0
       _min: 0.0
       _multiplex: null
@@ -2374,7 +2266,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2393,7 +2284,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2413,7 +2303,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2432,7 +2321,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id020
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -2462,7 +2350,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -2481,7 +2368,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2500,7 +2386,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -2531,7 +2416,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2550,7 +2434,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2569,7 +2452,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2599,7 +2481,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 655.35
       _min: 0.0
       _multiplex: null
@@ -2618,7 +2499,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2637,7 +2517,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2667,7 +2546,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 655.35
       _min: 0.0
       _multiplex: null
@@ -2686,7 +2564,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 655.35
       _min: 0.0
       _multiplex: null
@@ -2705,7 +2582,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -2735,7 +2611,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -2754,7 +2629,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -2784,7 +2658,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id021
       _max: 4294967295.0
       _min: 0.0
       _multiplex: null
@@ -2814,7 +2687,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 268435455.0
       _min: 0.0
       _multiplex: null
@@ -2844,7 +2716,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2865,7 +2736,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id022
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2886,7 +2756,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id023
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2907,7 +2776,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id024
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2928,7 +2796,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id025
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2949,7 +2816,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id026
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -2970,7 +2836,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id003
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -2991,7 +2856,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id002
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -3012,7 +2876,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id001
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -3033,7 +2896,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id001
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -3054,7 +2916,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id002
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -3075,7 +2936,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: *id003
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -3094,7 +2954,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 255.0
       _min: 0.0
       _multiplex: null
@@ -3114,7 +2973,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 255.0
       _min: 0.0
       _multiplex: null
@@ -3133,7 +2991,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 15.0
       _min: 0.0
       _multiplex: null
@@ -3152,7 +3009,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 3.0
       _min: 0.0
       _multiplex: null
@@ -3171,7 +3027,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3190,7 +3045,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3209,7 +3063,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3228,7 +3081,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3247,7 +3099,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3266,7 +3117,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3285,7 +3135,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3304,7 +3153,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3334,7 +3182,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3353,7 +3200,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3372,7 +3218,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 65535.0
       _min: 0.0
       _multiplex: null
@@ -3402,7 +3247,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -3421,7 +3265,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -3440,7 +3283,6 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _is_float: false
       _is_little_endian: false
       _is_signed: false
-      _isigRef: !!python/object:lxml.etree._Element {}
       _max: 6553.5
       _min: 0.0
       _multiplex: null
@@ -3453,23 +3295,23 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _values: {}
 _frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
   GenMsgDelayTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
   GenMsgNrOfRepetitions: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
   GenMsgSendType: !!python/object:canmatrix.canmatrix.Define
     _defaultValue: null
-    _definition: ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"
-    _type: ENUM
-    _values: [' "cyclicX"', '"spontanX"', '"cyclicIfActiveX"', '"spontanWithDelay"',
+    definition: ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"
+    type: ENUM
+    values: [' "cyclicX"', '"spontanX"', '"cyclicIfActiveX"', '"spontanWithDelay"',
       '"cyclicAndSpontanX"', '"cyclicAndSpontanWithDelay"', '"spontanWithRepitition"',
       '"cyclicIfActiveAndSpontanWD"', '"cyclicIfActiveFast"', '"cyclicWithRepeatOnDemand"',
       '"none"']
   GenMsgStartValue: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: STRING, _max: null, _min: null, _type: STRING}
+    definition: STRING, max: null, min: null, type: STRING}
 _globalDefines: {}
 _signalDefines:
   GenSigStartValue: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: HEX 0 4294967295, _max: 4294967295, _min: 0, _type: HEX}
+    definition: HEX 0 4294967295, max: 4294967295, min: 0, type: HEX}
 _valueTables: {}

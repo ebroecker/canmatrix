@@ -1,8 +1,7 @@
 <NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:schemaLocation="Definition.xsd">
   <Document name="Some Document Name">some text</Document>
-  <Bus name="converted/from_xls/test">
+  <Bus>
     <Message id="0xFF9B41" length="9" name="CommandModeControlAPU2">
-      <Producer/>
       <Signal name="Enable_command" offset="1" length="2" endianess="big">
         <Notes></Notes>
         <Value max="3"/>
@@ -115,7 +114,6 @@
       </Signal>
     </Message>
     <Message id="0xFFAB41" length="9" name="CommandModeControl">
-      <Producer/>
       <Signal name="Enable_command" offset="1" length="2" endianess="big">
         <Notes></Notes>
         <Value max="3"/>
@@ -228,7 +226,6 @@
       </Signal>
     </Message>
     <Message id="0xCFF9C41" length="9" name="CommandPowerAPU2">
-      <Producer/>
       <Signal name="RealPower_command" offset="7" length="32" endianess="big">
         <Notes></Notes>
         <Value intercept="-90000" min="-90000" max="90000" unit="W"/>
@@ -239,7 +236,6 @@
       </Signal>
     </Message>
     <Message id="0xCFF9E41" length="8" name="CommandVFAPU2">
-      <Producer/>
       <Signal name="Voltage_command" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value slope="0.1" intercept="10" min="10" max="500" unit="Vrms"/>
@@ -250,7 +246,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFAA41" length="9" name="CommandSetNVParam">
-      <Producer/>
       <Multiplex length="16" name="CommandSetNVParam_MUX" offset="7">
         <Value max="65535"/>
         <LabelSet>
@@ -388,7 +383,6 @@
       </Multiplex>
     </Message>
     <Message id="0xCFFAC41" length="9" name="CommandPower">
-      <Producer/>
       <Signal name="RealPower_command" offset="7" length="32" endianess="big">
         <Notes></Notes>
         <Value intercept="-90000" min="-90000" max="90000" unit="W"/>
@@ -399,7 +393,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFAE41" length="8" name="CommandVF">
-      <Producer/>
       <Signal name="Voltage_command" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value slope="0.1" intercept="10" min="10" max="500" unit="Vrms"/>
@@ -410,7 +403,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFAF41" length="9" name="CommandFactoryControl">
-      <Producer/>
       <Signal name="WriteSerialNumber" offset="1" length="2" endianess="big">
         <Notes></Notes>
         <Value max="3"/>
@@ -431,7 +423,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFC2F7" length="8" name="StatusACParameters" triggered="true" interval="100">
-      <Producer/>
       <Signal name="VoltageAC_measured" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value slope="0.1" max="65535" unit="V"/>
@@ -446,7 +437,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFC3F7" length="8" name="StatusBits" triggered="true" interval="100">
-      <Producer/>
       <Signal name="State_status" offset="3" length="4" endianess="big">
         <Notes></Notes>
         <Value max="15"/>
@@ -661,7 +651,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFC8F7" length="8" name="StatusFaults" triggered="true" interval="100">
-      <Producer/>
       <Signal name="GeneralFault_status" offset="1" length="2" endianess="big">
         <Notes></Notes>
         <Value max="3"/>
@@ -860,7 +849,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFCAF6" length="9" name="MasterMeasuredPower">
-      <Producer/>
       <Signal name="RealPower_measured" offset="7" length="32" endianess="big">
         <Notes></Notes>
         <Value max="4294967295" unit="W"/>
@@ -871,7 +859,6 @@
       </Signal>
     </Message>
     <Message id="0xCFFCAF7" length="9" name="StatusMeasuredPower" triggered="true" interval="100">
-      <Producer/>
       <Signal name="RealPower_measured" offset="7" length="32" endianess="big">
         <Notes></Notes>
         <Value max="4294967295" unit="W"/>
@@ -882,7 +869,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFC4F7" length="9" name="StatusCommandedPower" triggered="true" interval="100">
-      <Producer/>
       <Signal name="RealPower_echo" offset="7" length="32" endianess="big">
         <Notes></Notes>
         <Value max="4294967295" unit="W"/>
@@ -893,7 +879,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFC9F7" length="8" name="StatusCommandVF" triggered="true" interval="100">
-      <Producer/>
       <Signal name="Voltage_echo" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value slope="0.1" max="65535" unit="Vrms"/>
@@ -904,7 +889,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFCBF7" length="8" name="StatusTemps" triggered="true" interval="100">
-      <Producer/>
       <Signal name="TempInlet_measured" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value slope="0.1" max="65535" unit="C"/>
@@ -919,7 +903,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFD0F7" length="8" name="StatusLineCurrents" triggered="true" interval="100">
-      <Producer/>
       <Signal name="L1Current_measured" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value max="65535" unit="A"/>
@@ -934,7 +917,6 @@
       </Signal>
     </Message>
     <Message id="0x18FFD1F7" length="8" name="StatusLineVoltages" triggered="true" interval="100">
-      <Producer/>
       <Signal name="L1Voltage_measured" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value slope="0.1" max="65535" unit="Vrms"/>
@@ -949,7 +931,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFA9F7" length="9" name="StatusNVParam">
-      <Producer/>
       <Multiplex length="16" name="StatusNVParam_MUX" offset="7">
         <Value max="65535"/>
         <LabelSet>
@@ -1087,7 +1068,6 @@
       </Multiplex>
     </Message>
     <Message id="0x1CFFC1F7" length="9" name="softwareRev">
-      <Producer/>
       <Signal name="ControlSwRev" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value max="65535"/>
@@ -1102,7 +1082,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFC5F7" length="9" name="StatusControlVoltage" triggered="true" interval="100">
-      <Producer/>
       <Signal name="v5p0_Supply" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value slope="0.01" max="65535" unit="V"/>
@@ -1121,7 +1100,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFC6F7" length="9" name="StatusControlVolts2" triggered="true" interval="100">
-      <Producer/>
       <Signal name="n15V_Supply" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value slope="0.01" max="65535" unit="V"/>
@@ -1136,7 +1114,6 @@
       </Signal>
     </Message>
     <Message id="0x1CFFC7F7" length="8" name="StatusDCParameters" triggered="true" interval="100">
-      <Producer/>
       <Signal name="VoltageDCInput_measured" offset="7" length="16" endianess="big">
         <Notes></Notes>
         <Value max="65535" unit="V"/>
@@ -1151,14 +1128,12 @@
       </Signal>
     </Message>
     <Message id="0x1CFFCCF7" length="8" name="serialNumber">
-      <Producer/>
       <Signal name="SerialNumber" offset="7" length="32" endianess="big">
         <Notes></Notes>
         <Value max="4294967295"/>
       </Signal>
     </Message>
     <Message id="0x1CFFCDF7" length="8" name="softwareRevHash">
-      <Producer/>
       <Signal name="Hash" offset="7" length="28" endianess="big">
         <Notes></Notes>
         <Value max="268435455"/>

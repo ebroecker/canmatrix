@@ -246,6 +246,19 @@
             </COMPU-METHOD>
           </ELEMENTS>
         </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Unit</SHORT-NAME>
+          <ELEMENTS>
+            <UNIT>
+              <SHORT-NAME>someTestSignal</SHORT-NAME>
+              <DISPLAY-NAME>specialCharUnit&#176;$</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Signal</SHORT-NAME>
+              <DISPLAY-NAME>someUnit</DISPLAY-NAME>
+            </UNIT>
+          </ELEMENTS>
+        </AR-PACKAGE>
       </SUB-PACKAGES>
     </AR-PACKAGE>
     <AR-PACKAGE>
