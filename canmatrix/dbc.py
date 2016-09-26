@@ -258,7 +258,9 @@ def dump(db, f, **options):
     # boardunit-attributes:
     for bu in db.boardUnits:
         for attrib, val in sorted(bu.attributes.items()):
-            if not val:
+            if db.buDefines[attrib].type == "STRING":
+                val = '"' + val + '"'
+            elif not val:
                 val = '""'
             f.write(
                 ('BA_ "' +
@@ -272,7 +274,9 @@ def dump(db, f, **options):
 
     # global-attributes:
     for attrib, val in sorted(db.attributes.items()):
-        if not val:
+        if db.globalDefines[attrib].type == "STRING":
+            val = '"' + val + '"'
+        elif not val:
             val = '""'
         f.write(('BA_ "' + attrib + '" ' + val +
                  ';\n').encode(dbcExportEncoding))
@@ -281,7 +285,9 @@ def dump(db, f, **options):
     # messages-attributes:
     for bo in db.frames:
         for attrib, val in sorted(bo.attributes.items()):
-            if not val:
+            if db.frameDefines[attrib].type == "STRING":
+                val = '"' + val + '"'
+            elif not val:
                 val = '""'
             f.write(('BA_ "' + attrib + '" BO_ %d ' %
                      bo.id + val + ';\n').encode(dbcExportEncoding))
@@ -292,7 +298,9 @@ def dump(db, f, **options):
         for signal in bo.signals:
             for attrib, val in sorted(signal.attributes.items()):
                 name = normalizeName(signal.name, whitespaceReplacement)
-                if not val:
+                if db.signalDefines[attrib].type == "STRING":
+                    val = '"' + val + '"'
+                elif not val:
                     val = '""'
                 f.write(
                     ('BA_ "' +
