@@ -32,20 +32,13 @@ import math
 import sys
 import os.path
 import codecs
-
-try:
-    import xlwt
-except ImportError:
-    xlwt = None
-
+import xlwt
 import logging
 logger = logging.getLogger('root')
 
 from .canmatrix import *
-try:
-    import xlrd
-except ImportError:
-    xlrd = None
+import xlrd
+
 
 # Font Size : 8pt * 20 = 160
 #font = 'font: name Arial Narrow, height 160'
@@ -298,9 +291,6 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
 
 
 def dump(db, file, **options):
-    if xlwt is None:
-        raise ImportError("no xls-export-support, some dependencies missing... try pip install xlwt")
-
     head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.', 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 
@@ -462,9 +452,6 @@ def dump(db, file, **options):
     workbook.save(file)
 
 def load(file, **options):
-    if xlrd is None:
-        raise ImportError("no xls-import-support, some dependencies missing... , try pip install xlrd")
-
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:

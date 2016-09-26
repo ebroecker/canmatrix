@@ -31,13 +31,12 @@ from builtins import *
 from .canmatrix import *
 import copy
 import codecs
+import yaml
+
 try:
-    import yaml
     from yaml.representer import SafeRepresenter
 except ImportError:
     yaml = None
-
-
 
 
 representers = False
@@ -53,8 +52,6 @@ except:
     # some error with representers ... continue anyway
 
 def dump(db, f, **options):
-    if yaml is None:
-        raise ImportError("no yaml-export-support, some dependencies missing ... try pip install pyaml")
     newdb = copy.deepcopy(db)
 
     for i, frame in enumerate(newdb.frames):
@@ -68,12 +65,9 @@ def dump(db, f, **options):
     if representers:
         f.write(unicode(yaml.dump(newdb)))
     else:
-        f.write(yaml.dump(newdb))
+        f.write(yaml.dump(newdb).encode('utf8'))
 
 def load(f, **options):
-    if yaml is None:
-        raise ImportError("no yaml-import-support, some dependencies missing ... , try pip install pyaml")
-
     db = yaml.load(f)
     f.close()
 

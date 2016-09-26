@@ -38,8 +38,9 @@ for canFormat,features in canmatrix.formats.supportedFormats.items():
 
 export_types.sort()
 # TODO: support testing of xlsx
-export_types.remove('xlsx')
-export_types.remove('fibex')
+# export_types.remove('xlsx')
+if "fibex" in export_types:
+    export_types.remove('fibex')
 
 import_types.sort()
 

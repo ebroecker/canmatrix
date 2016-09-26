@@ -29,10 +29,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from builtins import *
-try:
-    from lxml import etree
-except ImportError:
-    etree = None
+from lxml import etree
 from .canmatrix import *
 from .cancluster import *
 import os
@@ -113,9 +110,6 @@ def createSignal(signal, nodeList, typeEnums):
 
 
 def dump(dbs, f, **options):
-    if etree is None:
-        raise ImportError("no kcd-export-support, some dependenies missing... try pip install lxml")
-
     signalTypeEnums = {}
     canClust = canCluster(dbs)
     for name in canClust:
@@ -326,9 +320,6 @@ def parseSignal(signal, mux, namespace, nodelist):
 
 
 def load(f, **options):
-    if etree is None:
-        raise ImportError("no kcd-import-support, some dependencies missing... , try pip install lxml")
-
     dbs = {}
     tree = etree.parse(f)
     root = tree.getroot()

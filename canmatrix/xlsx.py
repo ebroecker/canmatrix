@@ -24,8 +24,6 @@
 # xls-files are the can-matrix-definitions displayed in Excel
 
 
-
-
 from __future__ import division
 from __future__ import absolute_import
 from builtins import *
@@ -33,10 +31,7 @@ import math
 import sys
 from .canmatrix import *
 import os.path
-try:
-    import xlsxwriter
-except ImportError:
-    xlsxwriter = None
+import xlsxwriter
 
 # Font Size : 8pt * 20 = 160
 #font = 'font: name Arial Narrow, height 160'
@@ -262,9 +257,6 @@ def writeBuMatrixx(buList, sig, frame, worksheet, row, col, firstframe):
 
 
 def dump(db, filename, **options):
-    if xlsxwriter is None:
-        raise ImportError("no xlsx-export-support, some dependencies missing... try pip install xlsxwriter")
-
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:

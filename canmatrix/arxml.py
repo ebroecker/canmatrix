@@ -36,10 +36,8 @@ import math
 import os
 
 from builtins import *
-try:
-    from lxml import etree
-except ImportError:
-    etree = None
+from lxml import etree
+
 from .canmatrix import *
 from .autosarhelper import *
 
@@ -54,9 +52,6 @@ def createSubElement(parent, elementName, strName=None):
 
 
 def dump(dbs, f, **options):
-    if etree is None:
-        raise ImportError("no arxml-export-support, some dependencies missing... try pip install lxml")
-
     if 'arVersion' in options:
         arVersion = options["arVersion"]
     else:
@@ -1269,8 +1264,6 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 def load(file, **options):
     pduFrameMapping = {}
     signalRxs = {}
-    if etree is None:
-        raise ImportError("no arxml-import-support, some dependencies missing... , try pip install lxml ")
 
     if 'arxmlIgnoreClusterInfo' in options:
         ignoreClusterInfo = options["arxmlIgnoreClusterInfo"]

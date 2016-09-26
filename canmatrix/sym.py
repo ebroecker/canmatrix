@@ -234,7 +234,10 @@ def load(f, **options):
             if line.startswith('enum'):
                 while not line[5:].strip().endswith(')'):
                     line = line.split('//')[0]
-                    line += ' ' + f.next().decode(symImportEncoding).strip()
+                    if sys.version_info > (3, 0):   ## is there a clean way to to it?
+                        line += ' ' + f.readline().decode(symImportEncoding).strip()  
+                    else:
+                        line += ' ' + f.next().decode(symImportEncoding).strip()                          
                 line = line.split('//')[0]
                 tempArray = line[5:].replace(')', '').split('(')
                 valtabName = tempArray[0]
