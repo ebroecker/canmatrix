@@ -21,7 +21,7 @@
 
 import sys
 sys.path.append('..')
-import canmatrix.importany as im
+import canmatrix.formats
 from createCMacros import *
 
 
@@ -81,7 +81,7 @@ def main():
     infile = sys.argv[1]
     ecu = sys.argv[2]
 
-    dbs = im.importany(infile)
+    dbs = canmatrix.formats.loadp(infile)
     db = next(iter(dbs.values()))
 
     receiveArray = []
