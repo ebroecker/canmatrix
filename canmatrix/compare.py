@@ -294,9 +294,9 @@ def compareFrame(f1, f2, ignore=None):
                     f1._extended, "extended-Flag: %d" %
                     f2._extended]))
     if f2.comment is None:
-        f2.comment = ""
+        f2.addComment("")
     if f1.comment is None:
-        f1.comment = ""
+        f1.addComment("")
     if f1.comment != f2.comment:
         result.addChild(
             compareResult(
@@ -511,5 +511,5 @@ def main():
     obj = compareDb(db1, db2, ignore)
     dumpResult(obj)
 
-if _name__ == '__main__':
+if __name__ == '__main__':
     sys.exit(main())
