@@ -11,7 +11,7 @@
 [START_SIGNALS] Signal,3,3,4,U,7.0,0.0,1,0.0,1.0,,,
 [END_MSG]
 
-[START_MSG] extendedFrame,18,8,0,1,X,Vector__XXX
+[START_MSG] extendedFrame,18,8,0,1,S,Vector__XXX
 [END_MSG]
 
 [NODE] 

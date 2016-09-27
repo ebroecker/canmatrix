@@ -9,6 +9,6 @@
         <Value max="7"/>
       </Signal>
     </Message>
-    <Message id="0x012" length="8" name="extendedFrame" format="extended"/>
+    <Message id="0x012" length="8" name="extendedFrame"/>
   </Bus>
 </NetworkDefinition>

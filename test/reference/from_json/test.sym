@@ -12,6 +12,6 @@ Var=Signal unsigned 20,3 -i /min:0.0 /max:7.0
 
 [extendedFrame]
 ID=      12h
-Type=Extended
+Type=Standard
 DLC=8
 

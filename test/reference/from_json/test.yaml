@@ -57,7 +57,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {}
     _comment: null
-    _extended: 1
+    _extended: 0
     _name: extendedFrame
     _receiver: []
     _signals: []

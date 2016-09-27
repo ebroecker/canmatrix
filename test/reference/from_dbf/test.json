@@ -2,7 +2,7 @@
     "messages": [
         {
             "id": 291,
-            "isextended_frame": false,
+            "is_extended_frame": false,
             "name": "testFrame1",
             "signals": [
                 {
@@ -27,7 +27,7 @@
         },
         {
             "id": 18,
-            "isextended_frame": true,
+            "is_extended_frame": true,
             "name": "extendedFrame",
             "signals": []
         }
