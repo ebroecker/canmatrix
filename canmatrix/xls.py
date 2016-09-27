@@ -193,6 +193,8 @@ def writeSignal(db, sig, worksheet, row, mystyle, rearCol, motorolaBitFormat):
         elif db.signalDefines["GenSigStartValue"].definition == "INT" or db.signalDefines["GenSigStartValue"].definition == "HEX":
             worksheet.write(row, 10, label="%Xh" %
                             int(sig.attributes["GenSigStartValue"]), style=mystyle)
+        else:
+            worksheet.write(row, 10, label=" ", style=mystyle)
     else:
         worksheet.write(row, 10, label=" ", style=mystyle)
 

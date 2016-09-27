@@ -164,6 +164,8 @@ def writeSignalx(db, sig, worksheet, row, rearCol, mystyle, motorolaBitFormat):
         elif db.signalDefines["GenSigStartValue"].definition == "INT" or db.signalDefines["GenSigStartValue"].definition == "HEX":
             worksheet.write(row, 10, "%Xh" %
                             int(sig.attributes["GenSigStartValue"]), mystyle)
+        else:
+            worksheet.write(row, 10, " ", mystyle)
     else:
         worksheet.write(row, 10, " ", mystyle)
 
