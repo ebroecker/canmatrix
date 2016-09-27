@@ -404,6 +404,9 @@ class Signal(object):
         # convert to start of signal data (msbit)
         if startLittle is True and self._is_little_endian is False:
             startBit = startBit + 1 - self._signalsize
+        if startBit < 0:
+            print("wrong startbit found Signal: %s Startbit: %d" % (self.name, startBit))
+            raise Exception("startbit lower zero")
         self._startbit = startBit
 
     def getStartbit(self, bitNumbering=None, startLittle=None):

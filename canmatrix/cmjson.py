@@ -80,7 +80,7 @@ def dump(db, f, **options):
                 })
             exportArray.append({"name": frame.name,
                                 "id": int(frame.id),
-                                "isextended_frame": frame.extended == 1,
+                                "is_extended_frame": frame.extended == 1,
                                 "signals": signals})
     else:  # exportall
         for frame in db.frames:
@@ -106,7 +106,7 @@ def dump(db, f, **options):
             exportArray.append(
                 {"name": frame.name,
                  "id": int(frame.id),
-                 "isextended_frame": frame.extended == 1,
+                 "is_extended_frame": frame.extended == 1,
                  "signals": signals,
                  "attributes": frameattribs,
                  "comment": frame.comment})
@@ -136,7 +136,7 @@ def load(f, **options):
                              Id=frame["id"],
                              dlc=8)
 
-            if "isextended_frame" in frame and frame["isextended_frame"]:
+            if "is_extended_frame" in frame and frame["is_extended_frame"]:
                 newframe.extended = 1
             else:
                 newframe.extended = 0
