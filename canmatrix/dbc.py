@@ -457,8 +457,8 @@ def load(f, **options):
                                  multiplex=multiplex)
                 if not tempSig.is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc
-                    tempSig.setStartbit(int(temp.group(3)), bitNumbering = 1)
-  
+                    tempSig.setStartbit(int(temp.group(3)), bitNumbering=1)
+
                 db._fl.addSignalToLastFrame(tempSig)
 
         elif decoded.startswith("BO_TX_BU_ "):

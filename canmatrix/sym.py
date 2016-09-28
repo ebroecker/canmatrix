@@ -191,6 +191,7 @@ Title=\"canmatrix-Export\"
     f.write(enums.encode(symEncoding))
     f.write(output.encode(symEncoding))
 
+
 def load(f, **options):
     if 'symImportEncoding' in options:
         symImportEncoding = options["symImportEncoding"]
@@ -234,10 +235,10 @@ def load(f, **options):
             if line.startswith('enum'):
                 while not line[5:].strip().endswith(')'):
                     line = line.split('//')[0]
-                    if sys.version_info > (3, 0):   ## is there a clean way to to it?
-                        line += ' ' + f.readline().decode(symImportEncoding).strip()  
+                    if sys.version_info > (3, 0):  # is there a clean way to to it?
+                        line += ' ' + f.readline().decode(symImportEncoding).strip()
                     else:
-                        line += ' ' + f.next().decode(symImportEncoding).strip()                          
+                        line += ' ' + f.next().decode(symImportEncoding).strip()
                 line = line.split('//')[0]
                 tempArray = line[5:].replace(')', '').split('(')
                 valtabName = tempArray[0]

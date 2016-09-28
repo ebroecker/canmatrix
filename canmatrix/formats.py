@@ -6,20 +6,21 @@ logger = logging.getLogger('root')
 import canmatrix
 import os
 
-moduleList = ["arxml", "cmcsv", "dbc", "dbf", "cmjson", "kcd", "fibex", "sym", "xls", "xlsx", "yaml"]
+moduleList = ["arxml", "cmcsv", "dbc", "dbf", "cmjson",
+              "kcd", "fibex", "sym", "xls", "xlsx", "yaml"]
 loadedFormats = []
 supportedFormats = {}
 extensionMapping = {}
 
-for module in  moduleList:
+for module in moduleList:
     try:
         import_module("canmatrix." + module)
         loadedFormats.append(module)
     except ImportError:
-        logger.error("Error importing canmatrix." + module)        
+        logger.error("Error importing canmatrix." + module)
 
-for loadedModule in loadedFormats:    
-    supportedFormats[loadedModule] = []    
+for loadedModule in loadedFormats:
+    supportedFormats[loadedModule] = []
     moduleInstance = sys.modules["canmatrix." + loadedModule]
     if "load" in dir(moduleInstance):
         supportedFormats[loadedModule].append("load")
@@ -35,31 +36,34 @@ for loadedModule in loadedFormats:
     else:
         extensionMapping[loadedModule] = loadedModule
 
-def loads(string, importType=None, key = "", flatImport = None, **options):
+
+def loads(string, importType=None, key="", flatImport=None, **options):
     fileObject = StringIO.StringIO[string]
     return load(fileObject, importType, key, flatImport, **options)
 
-def loadp(path, importType=None, key = "", flatImport = None, **options):
+
+def loadp(path, importType=None, key="", flatImport=None, **options):
     fileObject = open(path, "rb")
     if not importType:
-        for key,extension in extensionMapping.items():
+        for key, extension in extensionMapping.items():
             if path.endswith(extension) and "load" in supportedFormats[key]:
-                    importType = key
-                    break
-    
+                importType = key
+                break
+
     if importType:
         return load(fileObject, importType, **options)
     else:
         return None
 
-def load(fileObject, importType, key = "", flatImport = None, **options):
+
+def load(fileObject, importType, key="", flatImport=None, **options):
     dbs = {}
     moduleInstance = sys.modules["canmatrix." + importType]
     if "clusterImporter" in supportedFormats[importType]:
         dbs = moduleInstance.load(fileObject, **options)
     else:
         dbs[key] = moduleInstance.load(fileObject, **options)
-    
+
     if flatImport:
         for key in dbs:
             return dbs[key]
@@ -71,17 +75,17 @@ def dump(canMatrixOrCluster, fileObject, exportType, **options):
     moduleInstance = sys.modules["canmatrix." + exportType]
     if (sys.version_info > (3, 0) and type(canmatrix.canmatrix.CanMatrix()) == type(canMatrixOrCluster)) or \
        (sys.version_info < (3, 0) and type(canmatrix.CanMatrix()) == type(canMatrixOrCluster)):
-        moduleInstance.dump(canMatrixOrCluster, fileObject, **options)    
+        moduleInstance.dump(canMatrixOrCluster, fileObject, **options)
     elif "clusterExporter" in supportedFormats[exportType]:
         moduleInstance.dump(canMatrixOrCluster, fileObject, **options)
 
 
-def dumpp(canCluster, path, exportType = None, **options):
+def dumpp(canCluster, path, exportType=None, **options):
     if not exportType:
-        for key,extension in extensionMapping.items():
+        for key, extension in extensionMapping.items():
             if path.endswith("." + extension) and "dump" in supportedFormats[key]:
-                    exportType = key
-                    break
+                exportType = key
+                break
     if exportType:
         if "clusterExporter" in supportedFormats[exportType]:
             fileObject = open(path, "wb")
@@ -98,8 +102,4 @@ def dumpp(canCluster, path, exportType = None, **options):
                 dump(db, fileObject, exportType, **options)
                 fileObject.close()
 
-    
     return None
-
-
-

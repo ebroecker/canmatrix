@@ -24,7 +24,6 @@
 # This export is complete, no information lost
 
 
-
 from __future__ import absolute_import
 from builtins import *
 
@@ -51,6 +50,7 @@ except:
     representers = False
     # some error with representers ... continue anyway
 
+
 def dump(db, f, **options):
     newdb = copy.deepcopy(db)
 
@@ -66,6 +66,7 @@ def dump(db, f, **options):
         f.write(unicode(yaml.dump(newdb)))
     else:
         f.write(yaml.dump(newdb).encode('utf8'))
+
 
 def load(f, **options):
     db = yaml.load(f)

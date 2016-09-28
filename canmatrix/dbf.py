@@ -291,6 +291,7 @@ def load(f, **options):
             frame.updateReceiver()
     return db
 
+
 def dump(db, f, **options):
     if 'dbfExportEncoding' in options:
         dbfExportEncoding = options["dbfExportEncoding"]

@@ -82,7 +82,7 @@ def convert(infile, outfileName, **options):
         if 'renameEcu' in options and options['renameEcu'] is not None:
             renameTuples = options['renameEcu'].split(',')
             for renameTuple in renameTuples:
-                old, new = renameTuple.split(':')                
+                old, new = renameTuple.split(':')
                 db.renameEcu(old, new)
         if 'deleteEcu' in options and options['deleteEcu'] is not None:
             deleteEcuList = options['deleteEcu'].split(',')
@@ -91,7 +91,7 @@ def convert(infile, outfileName, **options):
         if 'renameFrame' in options and options['renameFrame'] is not None:
             renameTuples = options['renameFrame'].split(',')
             for renameTuple in renameTuples:
-                old, new = renameTuple.split(':')                
+                old, new = renameTuple.split(':')
                 db.renameFrame(old, new)
         if 'deleteFrame' in options and options['deleteFrame'] is not None:
             deleteFrameList = options['deleteFrame'].split(',')
@@ -100,7 +100,7 @@ def convert(infile, outfileName, **options):
         if 'renameSignal' in options and options['renameSignal'] is not None:
             renameTuples = options['renameSignal'].split(',')
             for renameTuple in renameTuples:
-                old, new = renameTuple.split(':')                
+                old, new = renameTuple.split(':')
                 db.renameSignal(old, new)
         if 'deleteSignal' in options and options['deleteSignal'] is not None:
             deleteSignalList = options['deleteSignal'].split(',')
@@ -129,12 +129,13 @@ def convert(infile, outfileName, **options):
 
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))
-        
+
         outdbs[name] = db
 
     if 'force_output' in options and options['force_output'] is not None:
-        canmatrix.formats.dumpp(outdbs, outfileName, exportType=options['force_output'], **options)
-    else:    
+        canmatrix.formats.dumpp(outdbs, outfileName, exportType=options[
+                                'force_output'], **options)
+    else:
         canmatrix.formats.dumpp(outdbs, outfileName, **options)
     logger.info("done")
 
@@ -151,15 +152,14 @@ def main():
     followig formats are availible at this installation:
     \n"""
 
-    for suppFormat,features in canmatrix.formats.supportedFormats.items():
-        usage += suppFormat + "\t"        
+    for suppFormat, features in canmatrix.formats.supportedFormats.items():
+        usage += suppFormat + "\t"
         if 'load' in features:
             usage += "import"
         usage += "\t"
         if 'dump' in features:
             usage += "export"
         usage += "\n"
-        
 
     parser = OptionParser(usage=usage)
     # parser.add_option("-d", "--debug",
@@ -194,7 +194,7 @@ def main():
     parser.add_option("", "--deleteObsoleteDefines", action="store_true",
                       dest="deleteObsoleteDefines", default=False,
                       help="delete defines from all Boardunits, frames and Signals\nExample --deleteObsoleteDefines")
-    parser.add_option("", "--recalcDLC", 
+    parser.add_option("", "--recalcDLC",
                       dest="recalcDLC", default=False,
                       help="recalculate dlc; max: use maximum of stored and calculated dlc; force: force new calculated dlc")
 
@@ -255,25 +255,25 @@ def main():
                       help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
 
     parser.add_option("", "--deleteEcu",
-                       dest="deleteEcu", default = None,
-                       help = "delete Ecu form databases. (comma separated list)\nSyntax: --deleteEcu=myEcu,mySecondEcu")
+                      dest="deleteEcu", default=None,
+                      help="delete Ecu form databases. (comma separated list)\nSyntax: --deleteEcu=myEcu,mySecondEcu")
     parser.add_option("", "--renameEcu",
-                       dest="renameEcu", default = None,
-                       help = "rename Ecu form databases. (comma separated list)\nSyntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu")
+                      dest="renameEcu", default=None,
+                      help="rename Ecu form databases. (comma separated list)\nSyntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu")
 
     parser.add_option("", "--deleteFrame",
-                       dest="deleteFrame", default = None,
-                       help = "delete Frame form databases. (comma separated list)\nSyntax: --deleteFrame=myFrame1,mySecondFrame")
+                      dest="deleteFrame", default=None,
+                      help="delete Frame form databases. (comma separated list)\nSyntax: --deleteFrame=myFrame1,mySecondFrame")
     parser.add_option("", "--renameFrame",
-                       dest="renameFrame", default = None,
-                       help = "rename Frame form databases. (comma separated list)\nSyntax: --renameFrame=myOldFrame:myNewFrame,mySecondFrame:mySecondNewFrame")
+                      dest="renameFrame", default=None,
+                      help="rename Frame form databases. (comma separated list)\nSyntax: --renameFrame=myOldFrame:myNewFrame,mySecondFrame:mySecondNewFrame")
 
     parser.add_option("", "--deleteSignal",
-                       dest="deleteSignal", default = None,
-                       help = "delete Signal form databases. (comma separated list)\nSyntax: --deleteSignal=mySignal1,mySecondSignal")
+                      dest="deleteSignal", default=None,
+                      help="delete Signal form databases. (comma separated list)\nSyntax: --deleteSignal=mySignal1,mySecondSignal")
     parser.add_option("", "--renameSignal",
-                       dest="renameSignal", default = None,
-                       help = "rename Signal form databases. (comma separated list)\nSyntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal")
+                      dest="renameSignal", default=None,
+                      help="rename Signal form databases. (comma separated list)\nSyntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal")
 
     (cmdlineOptions, args) = parser.parse_args()
     if len(args) < 2:

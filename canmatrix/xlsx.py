@@ -293,8 +293,8 @@ def dump(db, filename, **options):
                                       'align': 'center',
                                       'valign': 'center'})
     global sty_first_frame
-    sty_first_frame = workbook.add_format({ 'font_name': 'Verdana', 
-                                            'font_size': 8,
+    sty_first_frame = workbook.add_format({'font_name': 'Verdana',
+                                           'font_size': 8,
                                            'font_color': 'black', 'top': 1})
     global sty_white
     sty_white = workbook.add_format({'font_name': 'Verdana',
@@ -446,10 +446,11 @@ def dump(db, filename, **options):
     # save file
     workbook.close()
 
-    
+
 import codecs
 import zipfile
 from xml.etree.ElementTree import iterparse
+
 
 def readXlsx(file, **args):
     # from: Hooshmand zandi http://stackoverflow.com/a/16544219
@@ -526,14 +527,14 @@ def getIfPossible(row, value):
 
 def load(filename, **options):
     from sys import modules
-    
+
     # use xlrd excel reader if available, because its more robust
     try:
         import canmatrix.xls
         return canmatrix.xls.load(filename, **options)
-    except: 
+    except:
         pass
-    
+
     # else use this hack to read xlsx
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]

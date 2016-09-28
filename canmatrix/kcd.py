@@ -39,6 +39,7 @@ import math
 clusterExporter = 1
 clusterImporter = 1
 
+
 def createSignal(signal, nodeList, typeEnums):
     sig = etree.Element(
         'Signal',
@@ -228,7 +229,8 @@ def dump(dbs, f, **options):
                     muxgroup = etree.Element('MuxGroup', count=str(i))
                     for signal in frame.signals:
                         if signal.multiplex is not None and signal.multiplex == i:
-                            sig = createSignal(signal, nodeList, signalTypeEnums)
+                            sig = createSignal(
+                                signal, nodeList, signalTypeEnums)
                             muxgroup.append(sig)
                             empty = 1
                     if empty == 1:
@@ -239,6 +241,7 @@ def dump(dbs, f, **options):
 
         root.append(bus)
     f.write(etree.tostring(root, pretty_print=True))
+
 
 def parseSignal(signal, mux, namespace, nodelist):
     startbit = 0

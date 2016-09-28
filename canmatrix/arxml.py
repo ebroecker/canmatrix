@@ -44,6 +44,7 @@ from .autosarhelper import *
 clusterExporter = 1
 clusterImporter = 1
 
+
 def createSubElement(parent, elementName, strName=None):
     sn = etree.SubElement(parent, elementName)
     if strName is not None:
@@ -56,7 +57,7 @@ def dump(dbs, f, **options):
         arVersion = options["arVersion"]
     else:
         arVersion = "3.2.3"
-    
+
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
@@ -108,7 +109,8 @@ def dump(dbs, f, **options):
         createSubElement(cancluster, 'SHORT-NAME', busName)
         if arVersion[0] == "3":
          #       createSubElement(cancluster, 'SPEED', '50000')
-            physicalChannels = createSubElement(cancluster, 'PHYSICAL-CHANNELS')
+            physicalChannels = createSubElement(
+                cancluster, 'PHYSICAL-CHANNELS')
             physicalChannel = createSubElement(
                 physicalChannels, 'PHYSICAL-CHANNEL')
             createSubElement(physicalChannel, 'SHORT-NAME', 'CAN')
@@ -130,14 +132,17 @@ def dump(dbs, f, **options):
             canFrameTriggering = createSubElement(
                 frameTriggering, 'CAN-FRAME-TRIGGERING')
             createSubElement(canFrameTriggering, 'SHORT-NAME', frame.name)
-            framePortRefs = createSubElement(canFrameTriggering, 'FRAME-PORT-REFS')
+            framePortRefs = createSubElement(
+                canFrameTriggering, 'FRAME-PORT-REFS')
             for transmitter in frame.transmitter:
-                framePortRef = createSubElement(framePortRefs, 'FRAME-PORT-REF')
+                framePortRef = createSubElement(
+                    framePortRefs, 'FRAME-PORT-REF')
                 framePortRef.set('DEST', 'FRAME-PORT')
                 framePortRef.text = "/ECU/" + transmitter + \
                     "/CN_" + transmitter + "/" + frame.name
             for rec in frame.receiver:
-                framePortRef = createSubElement(framePortRefs, 'FRAME-PORT-REF')
+                framePortRef = createSubElement(
+                    framePortRefs, 'FRAME-PORT-REF')
                 framePortRef.set('DEST', 'FRAME-PORT')
                 framePortRef.text = "/ECU/" + rec + "/CN_" + rec + "/" + frame.name
             frameRef = createSubElement(canFrameTriggering, 'FRAME-REF')
@@ -194,7 +199,8 @@ def dump(dbs, f, **options):
                 for signal in frame.signals:
                     isignalTriggering = createSubElement(
                         isignalTriggerings, 'I-SIGNAL-TRIGGERING')
-                    createSubElement(isignalTriggering, 'SHORT-NAME', signal.name)
+                    createSubElement(isignalTriggering,
+                                     'SHORT-NAME', signal.name)
                     iSignalPortRefs = createSubElement(
                         isignalTriggering, 'I-SIGNAL-PORT-REFS')
 
@@ -210,7 +216,8 @@ def dump(dbs, f, **options):
                             signal.name)
                         iSignalPortRef.set('DEST', 'SIGNAL-PORT')
 
-                    isignalRef = createSubElement(isignalTriggering, 'SIGNAL-REF')
+                    isignalRef = createSubElement(
+                        isignalTriggering, 'SIGNAL-REF')
                     isignalRef.set('DEST', 'I-SIGNAL')
                     isignalRef.text = "/ISignal/" + signal.name
         else:
@@ -220,7 +227,8 @@ def dump(dbs, f, **options):
                 for signal in frame.signals:
                     isignalTriggering = createSubElement(
                         isignalTriggerings, 'I-SIGNAL-TRIGGERING')
-                    createSubElement(isignalTriggering, 'SHORT-NAME', signal.name)
+                    createSubElement(isignalTriggering,
+                                     'SHORT-NAME', signal.name)
                     iSignalPortRefs = createSubElement(
                         isignalTriggering, 'I-SIGNAL-PORT-REFS')
                     for receiver in signal.receiver:
@@ -239,7 +247,8 @@ def dump(dbs, f, **options):
                         isignalTriggering, 'I-SIGNAL-REF')
                     isignalRef.set('DEST', 'I-SIGNAL')
                     isignalRef.text = "/ISignal/" + signal.name
-            ipduTriggerings = createSubElement(physicalChannel, 'PDU-TRIGGERINGS')
+            ipduTriggerings = createSubElement(
+                physicalChannel, 'PDU-TRIGGERINGS')
             for frame in db.frames:
                 ipduTriggering = createSubElement(
                     ipduTriggerings, 'PDU-TRIGGERING')
@@ -315,7 +324,8 @@ def dump(dbs, f, **options):
             if arVersion[0] == "3":
                 signalIpdu = createSubElement(elements, 'SIGNAL-I-PDU')
                 createSubElement(signalIpdu, 'SHORT-NAME', "PDU_" + frame.name)
-                createSubElement(signalIpdu, 'LENGTH', "%d" % int(frame.size * 8))
+                createSubElement(signalIpdu, 'LENGTH', "%d" %
+                                 int(frame.size * 8))
             else:
                 signalIpdu = createSubElement(elements, 'I-SIGNAL-I-PDU')
                 createSubElement(signalIpdu, 'SHORT-NAME', "PDU_" + frame.name)
@@ -345,7 +355,8 @@ def dump(dbs, f, **options):
                             signalToPduMapping,
                             'PACKING-BYTE-ORDER',
                             'MOST-SIGNIFICANT-BYTE-FIRST')
-                    signalRef = createSubElement(signalToPduMapping, 'SIGNAL-REF')
+                    signalRef = createSubElement(
+                        signalToPduMapping, 'SIGNAL-REF')
                 else:
                     signalRef = createSubElement(
                         signalToPduMapping, 'I-SIGNAL-REF')
@@ -388,7 +399,8 @@ def dump(dbs, f, **options):
                 signalEle = createSubElement(elements, 'I-SIGNAL')
                 createSubElement(signalEle, 'SHORT-NAME', signal.name)
                 if arVersion[0] == "4":
-                    createSubElement(signalEle, 'LENGTH', str(signal.signalsize))
+                    createSubElement(signalEle, 'LENGTH',
+                                     str(signal.signalsize))
 
                     networkRepresentProps = createSubElement(
                         signalEle, 'NETWORK-REPRESENTATION-PROPS')
@@ -439,13 +451,15 @@ def dump(dbs, f, **options):
                     dataTypeRef = createSubElement(signalEle, 'DATA-TYPE-REF')
                     dataTypeRef.set('DEST', 'INTEGER-TYPE')
                     dataTypeRef.text = "/DataType/" + signal.name
-                    createSubElement(signalEle, 'LENGTH', str(signal.signalsize))
+                    createSubElement(signalEle, 'LENGTH',
+                                     str(signal.signalsize))
             for group in frame.SignalGroups:
                 groupEle = createSubElement(elements, 'SYSTEM-SIGNAL-GROUP')
                 createSubElement(signalEle, 'SHORT-NAME', group.name)
                 if arVersion[0] == "3":
                     dataTypeRef.set('DEST', 'INTEGER-TYPE')
-                sysSignalRefs = createSubElement(groupEle, 'SYSTEM-SIGNAL-REFS')
+                sysSignalRefs = createSubElement(
+                    groupEle, 'SYSTEM-SIGNAL-REFS')
                 for member in group.signals:
                     memberEle = createSubElement(
                         sysSignalRefs, 'SYSTEM-SIGNAL-REF')
@@ -470,7 +484,8 @@ def dump(dbs, f, **options):
                 for signal in frame.signals:
                     intType = createSubElement(elements, 'INTEGER-TYPE')
                     createSubElement(intType, 'SHORT-NAME', signal.name)
-                    swDataDefProps = createSubElement(intType, 'SW-DATA-DEF-PROPS')
+                    swDataDefProps = createSubElement(
+                        intType, 'SW-DATA-DEF-PROPS')
                     compuMethodRef = createSubElement(
                         swDataDefProps, 'COMPU-METHOD-REF')
                     compuMethodRef.set('DEST', 'COMPU-METHOD')
@@ -577,7 +592,8 @@ def dump(dbs, f, **options):
                     frameport = createSubElement(
                         ecuCommPortInstances, 'FRAME-PORT')
                     createSubElement(frameport, 'SHORT-NAME', frame.name)
-                    createSubElement(frameport, 'COMMUNICATION-DIRECTION', 'OUT')
+                    createSubElement(
+                        frameport, 'COMMUNICATION-DIRECTION', 'OUT')
                     sendTemp = 1
                     if ecu.name + "_Tx" not in txIPduGroups:
                         txIPduGroups[ecu.name + "_Tx"] = []
@@ -599,7 +615,8 @@ def dump(dbs, f, **options):
                     frameport = createSubElement(
                         ecuCommPortInstances, 'FRAME-PORT')
                     createSubElement(frameport, 'SHORT-NAME', frame.name)
-                    createSubElement(frameport, 'COMMUNICATION-DIRECTION', 'IN')
+                    createSubElement(
+                        frameport, 'COMMUNICATION-DIRECTION', 'IN')
                     recTemp = 1
                     if ecu.name + "_Tx" not in rxIPduGroups:
                         rxIPduGroups[ecu.name + "_Rx"] = []
@@ -615,7 +632,8 @@ def dump(dbs, f, **options):
                                 signalPort = createSubElement(
                                     ecuCommPortInstances, 'I-SIGNAL-PORT')
 
-                            createSubElement(signalPort, 'SHORT-NAME', signal.name)
+                            createSubElement(
+                                signalPort, 'SHORT-NAME', signal.name)
                             createSubElement(
                                 signalPort, 'COMMUNICATION-DIRECTION', 'IN')
 
@@ -701,8 +719,9 @@ def dump(dbs, f, **options):
     f.write(etree.tostring(root, pretty_print=True, xml_declaration=True))
 
 ###################################
-##  read ARXML 
+# read ARXML
 ###################################
+
 
 class arTree(object):
 
@@ -797,6 +816,7 @@ def arGetName(parent, ns):
 
 pduFrameMapping = {}
 signalRxs = {}
+
 
 def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
     members = []
@@ -1422,10 +1442,9 @@ def load(file, **options):
                         sig.is_little_endian,
                         sig._initValue,
                         frame)
-            hexStr = '"'
+            hexStr = ""
             for i in range(bo.size):
                 hexStr += "%02X" % frame[i]
-            hexStr += '"'
             bo.addAttribute("GenMsgStartValue", hexStr)
 
         result[busname] = db

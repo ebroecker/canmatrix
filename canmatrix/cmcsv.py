@@ -33,6 +33,7 @@ if (sys.version_info > (3, 0)):
 
 extension = 'csv'
 
+
 class csvRow:
 
     def __init__(self):

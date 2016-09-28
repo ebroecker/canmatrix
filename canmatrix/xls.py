@@ -45,18 +45,24 @@ import xlrd
 font = 'font: name Verdana, height 160'
 
 if xlwt is not None:
-    sty_header    = xlwt.easyxf(font + ', bold on; align: rota 90, vertical center, horizontal center','pattern: pattern solid, fore-colour rose')
-    sty_norm    = xlwt.easyxf(font + ', colour black')
-    sty_first_frame    = xlwt.easyxf(font + ', colour black; borders: top thin')
-    sty_white    = xlwt.easyxf(font + ', colour white')
+    sty_header = xlwt.easyxf(font + ', bold on; align: rota 90, vertical center, horizontal center',
+                             'pattern: pattern solid, fore-colour rose')
+    sty_norm = xlwt.easyxf(font + ', colour black')
+    sty_first_frame = xlwt.easyxf(font + ', colour black; borders: top thin')
+    sty_white = xlwt.easyxf(font + ', colour white')
 
     # BUMatrix-Styles
     sty_green = xlwt.easyxf('pattern: pattern solid, fore-colour light_green')
-    sty_green_first_frame = xlwt.easyxf('pattern: pattern solid, fore-colour light_green; borders: top thin')
+    sty_green_first_frame = xlwt.easyxf(
+        'pattern: pattern solid, fore-colour light_green; borders: top thin')
     sty_sender = xlwt.easyxf('pattern: pattern 0x04, fore-colour gray25')
-    sty_sender_first_frame = xlwt.easyxf('pattern: pattern 0x04, fore-colour gray25; borders: top thin')
-    sty_sender_green = xlwt.easyxf('pattern: pattern 0x04, fore-colour gray25, back-colour light_green')
-    sty_sender_green_first_frame = xlwt.easyxf('pattern: pattern 0x04, fore-colour gray25, back-colour light_green; borders: top thin')
+    sty_sender_first_frame = xlwt.easyxf(
+        'pattern: pattern 0x04, fore-colour gray25; borders: top thin')
+    sty_sender_green = xlwt.easyxf(
+        'pattern: pattern 0x04, fore-colour gray25, back-colour light_green')
+    sty_sender_green_first_frame = xlwt.easyxf(
+        'pattern: pattern 0x04, fore-colour gray25, back-colour light_green; borders: top thin')
+
 
 def writeFrame(frame, worksheet, row, mystyle):
     # frame-id
@@ -293,7 +299,8 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
 
 
 def dump(db, file, **options):
-    head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.', 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
+    head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.',
+                'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 
     if 'xlsMotorolaBitFormat' in options:
@@ -452,6 +459,7 @@ def dump(db, file, **options):
     worksheet.set_remove_splits(True)
     # save file
     workbook.save(file)
+
 
 def load(file, **options):
     if 'xlsMotorolaBitFormat' in options:

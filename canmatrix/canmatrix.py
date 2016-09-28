@@ -43,7 +43,7 @@ class FrameList(object):
         """
         Adds a Signal to the last addes Frame, this is mainly for importers
         """
-        self._list[len(self._list)-1].addSignal(signal)
+        self._list[len(self._list) - 1].addSignal(signal)
 
     def addFrame(self, frame):
         """
@@ -82,10 +82,12 @@ class FrameList(object):
     def __len__(self):
         return len(self._list)
 
+
 class BoardUnit(object):
     """
     Contains one Boardunit/ECU
     """
+
     def __init__(self, name):
         self._name = name.strip()
         self._attributes = {}
@@ -173,6 +175,7 @@ class Signal(object):
             _attributes, _values, _unit, _comment
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
+
     def __init__(self, name, **kwargs):
 
         if 'startBit' in kwargs:
@@ -405,7 +408,8 @@ class Signal(object):
         if startLittle is True and self._is_little_endian is False:
             startBit = startBit + 1 - self._signalsize
         if startBit < 0:
-            print("wrong startbit found Signal: %s Startbit: %d" % (self.name, startBit))
+            print("wrong startbit found Signal: %s Startbit: %d" %
+                  (self.name, startBit))
             raise Exception("startbit lower zero")
         self._startbit = startBit
 
@@ -507,6 +511,7 @@ class Frame(object):
     _extended (Extended Frame = 1),
     _comment
     """
+
     def __init__(self, name, **kwargs):
         self._name = name
         if 'Id' in kwargs:
@@ -848,7 +853,6 @@ class CanMatrix(object):
         if name in self._globalDefines:
             self._globalDefines[name].addDefault(value)
 
-
     def deleteObsoleteDefines(self):
         toBeDeleted = []
         for frameDef in self.frameDefines:
@@ -879,7 +883,7 @@ class CanMatrix(object):
             for frame in self.frames:
                 for signal in frame.signals:
                     if signalDef in signal.attributes:
-                        found = True       
+                        found = True
                         break
             if found is False and found not in toBeDeleted:
                 toBeDeleted.append(signalDef)
@@ -923,7 +927,7 @@ class CanMatrix(object):
                     if sig.getStartbit() + int(sig._signalsize) > maxBit:
                         maxBit = sig.getStartbit() + int(sig._signalsize)
                 frame._Size = math.ceil(maxBit / 8)
-    
+
     def renameEcu(self, old, newName):
         if type(old).__name__ == 'instance':
             pass
@@ -983,7 +987,7 @@ class CanMatrix(object):
                     signal.name = newName
 
     def delSignal(self, signal):
-        if type(signal).__name__ == 'instance':            
+        if type(signal).__name__ == 'instance':
             for frame in self.frames:
                 if signal in frame.signals:
                     frame.signals.remove(sig)
@@ -1025,10 +1029,10 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
             lastbit = startbit + len
     else:  # Motorola
         # TODO needs review, is probably wrong till we use LSB for startbit
-        firstbyte = math.floor(startbit/8)
+        firstbyte = math.floor(startbit / 8)
         bitsInfirstByte = startbit % 8 + 1
         restnBits = len - bitsInfirstByte
-        lastbyte = firstbyte + math.floor(restnBits/8)
+        lastbyte = firstbyte + math.floor(restnBits / 8)
         if restnBits % 8 > 0:
             lastbyte += 1
         restLen = len
@@ -1067,4 +1071,3 @@ class CanId(object):
     def __str__(self):
         return "DA:{da:#02X} PGN:{pgn:#04X} SA:{sa:#02X}".format(
             da=self.destination, pgn=self.pgn, sa=self.source)
-

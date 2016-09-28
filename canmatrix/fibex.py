@@ -67,8 +67,9 @@ def createSubElementHo(parent, elementName, elementText=None):
         new.text = elementText
     return new
 
+
 def dump(db, f, **options):
-    nsmap = {"fx":fx, "ho":ho, "can":can, "xsi":xsi}
+    nsmap = {"fx": fx, "ho": ho, "can": can, "xsi": xsi}
     root = etree.Element(ns_fx + "FIBEX", nsmap=nsmap)
     root.attrib[
         '{{{pre}}}schemaLocation'.format(

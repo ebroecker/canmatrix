@@ -22,13 +22,13 @@ set_log_level(logger, -1)
 export_types = []
 import_types = []
 
-for canFormat,features in canmatrix.formats.supportedFormats.items():
+for canFormat, features in canmatrix.formats.supportedFormats.items():
     if "dump" in features:
         export_types.append(canmatrix.formats.extensionMapping[canFormat])
     if "load" in features:
         import_types.append(canmatrix.formats.extensionMapping[canFormat])
 
-#for f in os.listdir('../canmatrix'):
+# for f in os.listdir('../canmatrix'):
 #    m = re.match('^export(.*).py$', f)
 #    if m is not None and m.group(1) != 'all':
 #        export_types.append(m.group(1))
@@ -73,7 +73,8 @@ for i in import_types:
             try:
                 os.makedirs(directory)
             except OSError:
-                # TODO: be more specific: OSError: [Errno 17] File exists: 'converted/from_arxml'
+                # TODO: be more specific: OSError: [Errno 17] File exists:
+                # 'converted/from_arxml'
                 pass
             out_file = os.path.join(directory, out_file)
             canmatrix.convert.convert(in_file, out_file)
