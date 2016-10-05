@@ -1,4 +1,4 @@
-<fx:FIBEX xmlns:fx="http://www.asam.net/xml/fbx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:can="http://www.asam.net/xml/fbx/can" xmlns:ho="http://www.asam.net/xml" xsi:schemaLocation="http://www.asam.net/xml/fbx ..\..\xml_schema\fibex.xsd http://www.asam.net/xml/fbx/can  ..\..\xml_schema\fibex4can.xsd">
+<fx:FIBEX xmlns:can="http://www.asam.net/xml/fbx/can" xmlns:fx="http://www.asam.net/xml/fbx" xmlns:ho="http://www.asam.net/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.asam.net/xml/fbx ..\..\xml_schema\fibex.xsd http://www.asam.net/xml/fbx/can  ..\..\xml_schema\fibex4can.xsd">
   <fx:PROJECT ID="canmatrixExport">
     <ho:SHORT-NAME>CAN</ho:SHORT-NAME>
     <ho:DESC>Canmatrix Export</ho:DESC>
