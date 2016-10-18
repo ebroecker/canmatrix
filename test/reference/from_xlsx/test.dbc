@@ -185,8 +185,8 @@ BO_ 486517239 StatusNVParam: 9 Vector__XXX
  SG_ V110to120pct m1  : 48|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
 
 BO_ 486523383 softwareRev: 9 Vector__XXX
- SG_ ControlSwRev : 0|16@0+ (1,0) [0.0|65535.0] "0.01" Vector__XXX
- SG_ InterfaceRev : 16|16@0+ (1,0) [0.0|65535.0] "0.01" Vector__XXX
+ SG_ ControlSwRev : 0|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
+ SG_ InterfaceRev : 16|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
  SG_ BuildTime : 32|32@0+ (1,0) [0.0|4294967295.0] "" Vector__XXX
 
 BO_ 486524407 StatusControlVoltage: 9 Vector__XXX
@@ -231,21 +231,21 @@ BA_ "GenMsgCycleTime" BO_ 218081857 0;
 BA_ "GenMsgCycleTime" BO_ 218082369 0;
 BA_ "GenMsgCycleTime" BO_ 218082881 0;
 BA_ "GenMsgCycleTime" BO_ 218083137 0;
-BA_ "GenMsgCycleTime" BO_ 218088183 0;
-BA_ "GenMsgCycleTime" BO_ 218088439 0;
-BA_ "GenMsgCycleTime" BO_ 218089719 0;
+BA_ "GenMsgCycleTime" BO_ 218088183 100;
+BA_ "GenMsgCycleTime" BO_ 218088439 100;
+BA_ "GenMsgCycleTime" BO_ 218089719 100;
 BA_ "GenMsgCycleTime" BO_ 218090230 0;
-BA_ "GenMsgCycleTime" BO_ 218090231 0;
-BA_ "GenMsgCycleTime" BO_ 419415287 0;
-BA_ "GenMsgCycleTime" BO_ 419416567 0;
-BA_ "GenMsgCycleTime" BO_ 419417079 0;
-BA_ "GenMsgCycleTime" BO_ 419418359 0;
-BA_ "GenMsgCycleTime" BO_ 419418615 0;
+BA_ "GenMsgCycleTime" BO_ 218090231 100;
+BA_ "GenMsgCycleTime" BO_ 419415287 100;
+BA_ "GenMsgCycleTime" BO_ 419416567 100;
+BA_ "GenMsgCycleTime" BO_ 419417079 100;
+BA_ "GenMsgCycleTime" BO_ 419418359 100;
+BA_ "GenMsgCycleTime" BO_ 419418615 100;
 BA_ "GenMsgCycleTime" BO_ 486517239 0;
 BA_ "GenMsgCycleTime" BO_ 486523383 0;
-BA_ "GenMsgCycleTime" BO_ 486524407 0;
-BA_ "GenMsgCycleTime" BO_ 486524663 0;
-BA_ "GenMsgCycleTime" BO_ 486524919 0;
+BA_ "GenMsgCycleTime" BO_ 486524407 100;
+BA_ "GenMsgCycleTime" BO_ 486524663 100;
+BA_ "GenMsgCycleTime" BO_ 486524919 100;
 BA_ "GenMsgCycleTime" BO_ 486526199 0;
 BA_ "GenMsgCycleTime" BO_ 486526455 0;
 

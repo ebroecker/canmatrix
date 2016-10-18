@@ -3108,9 +3108,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _values: {}
 _frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
 _globalDefines: {}
 _signalDefines:
   GenSigStartValue: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: FLOAT -3.4E+038 3.4E+038, _max: 3.4e+38, _min: -3.4e+38, _type: FLOAT}
+    definition: FLOAT -3.4E+038 3.4E+038, max: 3.4e+38, min: -3.4e+38, type: FLOAT}
 _valueTables: {}

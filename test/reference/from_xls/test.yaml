@@ -1,5 +1,5 @@
 !!python/object:canmatrix.canmatrix.CanMatrix
-_BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
+_BUs: !!python/object:canmatrix.canmatrix.BoardUnitList
   _list: []
 _attributes: {}
 _buDefines: {}
@@ -2894,23 +2894,23 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _values: {}
 _frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
   GenMsgCycleTimeActive: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
   GenMsgDelayTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
   GenMsgNrOfRepetitions: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
   GenMsgSendType: !!python/object:canmatrix.canmatrix.Define
     _defaultValue: null
-    _definition: ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"
-    _type: ENUM
-    _values: [' "cyclicX"', '"spontanX"', '"cyclicIfActiveX"', '"spontanWithDelay"',
+    definition: ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"
+    type: ENUM
+    values: [' "cyclicX"', '"spontanX"', '"cyclicIfActiveX"', '"spontanWithDelay"',
       '"cyclicAndSpontanX"', '"cyclicAndSpontanWithDelay"', '"spontanWithRepitition"',
       '"cyclicIfActiveAndSpontanWD"', '"cyclicIfActiveFast"', '"cyclicWithRepeatOnDemand"',
       '"none"']
 _globalDefines: {}
 _signalDefines:
-  GenSigSNA: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null, _definition: STRING,
-    _max: null, _min: null, _type: STRING}
+  GenSigSNA: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null, definition: STRING,
+    max: null, min: null, type: STRING}
 _valueTables: {}

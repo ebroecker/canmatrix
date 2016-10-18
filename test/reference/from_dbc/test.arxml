@@ -112,7 +112,7 @@ Frame comment</L-2>
               <SHORT-NAME>someTestSignal</SHORT-NAME>
               <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
               <SIGNAL-REF DEST="I-SIGNAL">/ISignal/someTestSignal</SIGNAL-REF>
-              <START-POSITION>14</START-POSITION>
+              <START-POSITION>3</START-POSITION>
             </I-SIGNAL-TO-I-PDU-MAPPING>
             <I-SIGNAL-TO-I-PDU-MAPPING>
               <SHORT-NAME>Signal</SHORT-NAME>
@@ -248,6 +248,19 @@ Signal comment with a-umlaut: &#228;</L-2>
                 </COMPU-SCALES>
               </COMPU-INTERNAL-TO-PHYS>
             </COMPU-METHOD>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Unit</SHORT-NAME>
+          <ELEMENTS>
+            <UNIT>
+              <SHORT-NAME>someTestSignal</SHORT-NAME>
+              <DISPLAY-NAME>specialCharUnit&#176;$</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Signal</SHORT-NAME>
+              <DISPLAY-NAME>someUnit</DISPLAY-NAME>
+            </UNIT>
           </ELEMENTS>
         </AR-PACKAGE>
       </SUB-PACKAGES>

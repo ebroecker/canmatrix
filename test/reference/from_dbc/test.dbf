@@ -7,7 +7,7 @@
 [BUSMASTER_VERSION] [1.7.2]
 [NUMBER_OF_MESSAGES] 2
 [START_MSG] testFrame1,291,8,2,1,S,testBU
-[START_SIGNALS] someTestSignal,11,3,4,U,100.0,0.0,0,1.0,5.0,specialCharUnit°$,,recBU
+[START_SIGNALS] someTestSignal,11,2,1,U,100.0,0.0,0,1.0,5.0,specialCharUnit°$,,recBU
 [START_SIGNALS] Signal,3,3,4,U,6.0,0.0,1,0.0,1.0,someUnit,,recBU
 [VALUE_DESCRIPTION] "one",1
 [VALUE_DESCRIPTION] "two",2

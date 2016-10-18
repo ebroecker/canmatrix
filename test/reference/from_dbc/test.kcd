@@ -2,7 +2,7 @@
   <Document name="Some Document Name">some text</Document>
   <Node id="1" name="testBU"/>
   <Node id="2" name="recBU"/>
-  <Bus name="converted/from_dbc/test">
+  <Bus>
     <Message id="0x123" length="8" name="testFrame1" triggered="true" interval="100">
       <Producer>
         <NodeRef id="1"/>
@@ -10,7 +10,7 @@
       <Notes>Multi
 Line
 Frame comment</Notes>
-      <Signal name="someTestSignal" offset="9" length="11" endianess="big">
+      <Signal name="someTestSignal" offset="4" length="11" endianess="big">
         <Notes>Multi
 Line
 Signal comment with a-umlaut: &#228;</Notes>

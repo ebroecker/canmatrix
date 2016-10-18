@@ -160,6 +160,52 @@ Than the calculated DLC will be stored.
 this will recalculate DLC for each frame in ```source.dbc```. 
 In ```target.dlc``` the calculated DLC will be stored independently from ```source.dbc```.
 
+**delete unneeded/obsolete defines:**
+
+```canconvert.py --deleteObsoleteDefines source.dbc target.dbc```
+
+this will remove all defines which no attribute exist for in ```source.dbc``` and store the result in ```target.dlc```.
+
+**delete ECU:**
+
+```canconvert.py --deleteECU=myEcu,myEcu2 source.dbc target.dbc```
+
+this will remove ECUs ```myEcu``` and ```myEcu2``` in ```source.dbc``` and store the result in ```target.dlc```.
+
+**rename ECU:**
+
+```canconvert.py --renameECU=myEcu:myNewEcu,myEcu2:myNewEcu2 source.dbc target.dbc```
+
+this will load ```source.dbc``` and rename ECU ```myEcu``` in ```myNewEcu```  and ```myEcu2``` in ```myNewEcu2```.
+The result is stored in ```target.dlc```.
+
+**delete Frame:**
+
+```canconvert.py --deleteFrame=myFrame,myFrame2 source.dbc target.dbc```
+
+this will remove frames ```myFrame``` and ```myFrame2``` in ```source.dbc``` and store the result in ```target.dlc```.
+
+**rename Frame:**
+
+```canconvert.py --renameFrame=myFrame:myNewFrame,myFrame2:myNewFrame2 source.dbc target.dbc```
+
+this will load ```source.dbc``` and rename frames ```myFrame``` in ```myNewFrame```  and ```myFrame2``` in ```myNewFrame2```.
+The result is stored in ```target.dlc```.
+
+
+**delete Signal:**
+
+```canconvert.py --deleteSignal=mySignal,mySignal2 source.dbc target.dbc```
+
+this will remove signales ```mySignal``` and ```mySignal2``` in ```source.dbc``` and store the result in ```target.dlc```.
+
+**rename Signal:**
+
+```canconvert.py --renameSignal=mySignal:myNewSignal,mySignal2:myNewSignal2 source.dbc target.dbc```
+
+this will load ```source.dbc``` and rename signals ```mySignal``` in ```myNewSignal```  and ```mySignal2``` in ```myNewSignal2```.
+The result is stored in ```target.dlc```.
+
 
 ####Extract and Merge:
 
@@ -250,6 +296,32 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
   
   			merge additional can databases. Syntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2
 
+  --deleteEcu=DELETEECU
+
+                        delete Ecu form databases. (comma separated list) Syntax: --deleteEcu=myEcu,mySecondEcu
+
+  --renameEcu=RENAMEECU
+
+                        rename Ecu form databases. (comma separated list) Syntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu
+
+  --deleteFrame=DELETEFRAME
+
+                        delete Frame form databases. (comma separated list) Syntax: --deleteFrame=myFrame1,mySecondFrame
+
+  --renameFrame=RENAMEFRAME
+
+                        rename Frame form databases. (comma separated list) Syntax: --renameFrame=myOldFrame:myNewFrame,mySecondFrame:mySecondNewFrame
+
+  --deleteSignal=DELETESIGNAL
+
+                        delete Signal form databases. (comma separated list) Syntax: --deleteSignal=mySignal1,mySecondSignal
+
+  --renameSignal=RENAMESIGNAL
+
+                        rename Signal form databases. (comma separated list) Syntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal
+
+
+
 * dbc: 
   
   --dbcImportEncoding
@@ -325,6 +397,7 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
 |sym   |    |+	   |		 |         |         |         |+       |+        |+      |+      |          |+           |             |
 |xls(x)|+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |          |+           |             |
 |csv |+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |*          |+           |             |
+|xml |+   | 	   |+		 |         |         |         |        |+        |+      |+      |           |            |             |
 
 
 
