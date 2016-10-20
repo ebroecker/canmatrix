@@ -898,16 +898,42 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if compmethod is None:  # AR4
             compmethod = arGetChild(isignal, "COMPU-METHOD", arDict, ns)
 
+        #####################################################################################################
+        # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
+        # keyword definition. 06Jun16
+        #####################################################################################################
+        if compmethod == None:
+          logger.debug('No Compmethod found!! - try alternate scheme.')
+          networkrep = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
+          datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)            
+          datdefpropscond = arGetChild(datdefpropsvar, "SW-DATA-DEF-PROPS-CONDITIONAL", arDict ,ns)
+          if datdefpropscond != None:
+            try:
+              compmethod = arGetChild(datdefpropscond, "COMPU-METHOD", arDict, ns)            
+            except:
+              logger.debug('No valid compu method found for this - check ARXML file!!')
+              compmethod = None
+        #####################################################################################################
+        #####################################################################################################
+             
         unit = arGetChild(compmethod, "UNIT", arDict, ns)
         if unit is not None:
-            displayName = arGetChild(unit, "DISPLAY-NAME", arDict, ns)
-            if displayName is not None:
-                Unit = displayName.text
-            else:
-                longname = arGetChild(unit, "LONG-NAME", arDict, ns)
-                l4 = arGetChild(longname, "L-4", arDict, ns)
-                if l4 is not None:
-                    Unit = l4.text
+            longname = arGetChild(unit, "LONG-NAME", arDict, ns)
+        #####################################################################################################
+        # Modification to support obtaining the Signals Unit by DISPLAY-NAME. 07June16
+        #####################################################################################################
+            try:
+              displayname = arGetChild(unit, "DISPLAY-NAME", arDict, ns)
+            except:
+              logger.debug('No Unit Display name found!! - using long name')
+            if displayname is not None:
+              Unit = displayname.text
+            else:  
+        #####################################################################################################
+        #####################################################################################################              
+              l4 = arGetChild(longname, "L-4", arDict, ns)
+              if l4 is not None:
+                Unit = l4.text
 
         compuscales = arGetXchildren(
             compmethod,
@@ -928,10 +954,15 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 desc = getDesc(compuscale, arDict, ns)
             else:
                 desc = sl.text
-
-            if ll is not None and desc is not None and int(
-                    ul.text) == int(ll.text):
-                values[ll.text] = desc
+        #####################################################################################################
+        # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
+        # keyword definition. 06Jun16
+        #####################################################################################################
+            if ll is not None and desc is not None and int(float(ul.text)) == int(float(ll.text)):
+        #####################################################################################################
+        #####################################################################################################
+        
+              values[ll.text] = desc
 
             scaleDesc = getDesc(compuscale, arDict, ns)
             rational = arGetChild(
