@@ -178,85 +178,55 @@ class Signal(object):
 
     def __init__(self, name, **kwargs):
 
-        if 'startBit' in kwargs:
-            self._startbit = int(kwargs["startBit"])
-        else:
-            self._startbit = 0
-
-        if 'signalSize' in kwargs:
-            self._signalsize = int(kwargs["signalSize"])
-        else:
-            self._signalsize = 0
-
-        if 'is_little_endian' in kwargs:
-            self._is_little_endian = kwargs["is_little_endian"]
-        else:
-            self._is_little_endian = True
-
-        if 'is_signed' in kwargs:
-            self._is_signed = kwargs["is_signed"]
-        else:
-            self._is_signed = True
-
-        if 'is_float' in kwargs:
-            self._is_float = kwargs["is_float"]
-        else:
-            self._is_float = False
-
-        if 'factor' in kwargs:
-            self._factor = float(kwargs["factor"])
-        else:
-            self._factor = float(1)
-
-        if 'offset' in kwargs:
-            self._offset = float(kwargs["offset"])
-        else:
-            self._offset = float(0)
-
-        if 'unit' in kwargs:
-            self._unit = kwargs["unit"]
-        else:
-            self._unit = ""
-
-        if 'receiver' in kwargs:
-            self._receiver = kwargs["receiver"]
-        else:
-            self._receiver = []
-
-        if 'comment' in kwargs:
-            self._comment = kwargs["comment"]
-        else:
-            self._comment = None
-
-        if 'multiplex' in kwargs:
-            if kwargs["multiplex"] is not None and kwargs[
-                    "multiplex"] != 'Multiplexor':
-                multiplex = int(kwargs["multiplex"])
+        def multiplex(value):
+            if value is not None and value != 'Multiplexor':
+                multiplex = int(value)
             else:
-                multiplex = kwargs["multiplex"]
-            self._multiplex = multiplex
-        else:
-            self._multiplex = None
+                multiplex = value
+            return multiplex
+                        
 
-        if 'min' in kwargs:
-            min = kwargs["min"]
-        else:
-            min = None
+        args = [
+            ('startBit', '_startbit', int, 0),
+            ('signalSize', '_signalsize', int, 0),
+            ('is_little_endian', '_is_little_endian', bool, True),
+            ('is_signed', '_is_signed', bool, True),
+            ('factor', '_factor', float, 1),
+            ('offset', '_offset', float, 0),
+            ('min', '_min', float, None),
+            ('max', '_max', float, None),
+            ('unit', '_unit', str, ""),
+            ('receiver', '_receiver', None, []),
+            ('comment', '_comment', str, None),
+            ('multiplex', '_multiplex', multiplex, None),
+            ('is_float', '_is_float', bool, False)
+        ]
 
-        if min is None:
+        for arg_name, destination, function, default in args:
+            try:
+                value = kwargs[arg_name]
+            except KeyError:
+                value = default
+            else:
+                kwargs.pop(arg_name)
+            if function is not None and value is not None:
+                value = function(value)
+            setattr(self, destination, value)
+            
+        if len(kwargs) > 0:
+            raise TypeError('{}() got unexpected argument{} {}'.format(
+                self.__class__.__name__,
+                's' if len(kwargs) > 1 else '',
+                ', '.join(kwargs.keys())
+            ))
+
+
+        # be shure to calc min/max after parsing all arguments 
+        if self._min is None:
             self.setMin()
-        else:
-            self._min = float(min)
 
-        if 'max' in kwargs:
-            max = kwargs["max"]
-        else:
-            max = None
-
-        if max is None:
+        if self._max is None:
             self.setMax()
-        else:
-            self._max = float(max)
 
         self._name = name
         self._attributes = {}
@@ -436,6 +406,7 @@ class Signal(object):
         if self._min is None:
             rawMin = self.calculateRawRange()[0]
             self._min = self._offset + (rawMin * self._factor)
+        return self._min
 
     def setMax(self, max=None):
         self._max = max
@@ -443,7 +414,8 @@ class Signal(object):
         if self._max is None:
             rawMax = self.calculateRawRange()[1]
             self._max = self._offset + (rawMax * self._factor)
-
+        return self._max
+            
     def __str__(self):
         return self._name
 
@@ -514,35 +486,33 @@ class Frame(object):
 
     def __init__(self, name, **kwargs):
         self._name = name
-        if 'Id' in kwargs:
-            self._Id = int(kwargs["Id"])
-        else:
-            self._Id = 0
+            
+        args = [
+            ('Id', '_Id', int, 0),
+            ('dlc', '_Size', int, 0),
+            ('transmitter', '_Transmitter', None, []),
+            ('extended', '_extended', bool, True),
+            ('comment', '_comment', str, None),
+            ('signals', '_signals', None, [])]
 
-        if 'dlc' in kwargs:
-            self._Size = int(kwargs["dlc"])
-        else:
-            self._Size = 0
+        for arg_name, destination, function, default in args:
+            try:
+                value = kwargs[arg_name]
+            except KeyError:
+                value = default
+            else:
+                kwargs.pop(arg_name)
+            if function is not None and value is not None:
+                value = function(value)
+            setattr(self, destination, value)
+            
+        if len(kwargs) > 0:
+            raise TypeError('{}() got unexpected argument{} {}'.format(
+                self.__class__.__name__,
+                's' if len(kwargs) > 1 else '',
+                ', '.join(kwargs.keys())
+            ))
 
-        if 'transmitter' in kwargs:
-            self._Transmitter = [kwargs["transmitter"]]
-        else:
-            self._Transmitter = []
-
-        if 'extended' in kwargs:
-            self._extended = kwargs["extended"]
-        else:
-            self._extended = 0
-
-        if 'comment' in kwargs:
-            self._comment = kwargs["comment"]
-        else:
-            self._comment = None
-
-        if 'signals' in kwargs:
-            self._signals = kwargs["signals"]
-        else:
-            self._signals = []
 
         self._attributes = {}
         self._receiver = []
