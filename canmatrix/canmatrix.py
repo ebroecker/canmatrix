@@ -195,9 +195,9 @@ class Signal(object):
             ('offset', '_offset', float, 0),
             ('min', '_min', float, None),
             ('max', '_max', float, None),
-            ('unit', '_unit', str, ""),
+            ('unit', '_unit', None, ""),
             ('receiver', '_receiver', None, []),
-            ('comment', '_comment', str, None),
+            ('comment', '_comment', None, None),
             ('multiplex', '_multiplex', multiplex, None),
             ('is_float', '_is_float', bool, False)
         ]
