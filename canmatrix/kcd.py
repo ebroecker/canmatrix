@@ -73,7 +73,12 @@ def createSignal(signal, nodeList, typeEnums):
         sig.append(notes)
 
     value = etree.Element('Value')
-    if signal.is_signed:
+    if signal.is_float:
+        if signal.signalsize > 32:
+            value.set('type', "double")
+        else:
+            value.set('type', "single")
+    elif signal.is_signed:
         value.set('type', "signed")
 
     if float(signal.factor) != 1:
@@ -263,15 +268,19 @@ def parseSignal(signal, mux, namespace, nodelist):
     min = None
     max = None
     is_signed = False
+    is_float = False
 
     values = signal.find('./' + namespace + 'Value')
     if values is not None:
         if 'type' in values.attrib:
             valuetype = values.get('type')
-            if valuetype == "unsigned":
+            if valuetype == "single" or valuetype == "double":
+                is_float = True
+            elif valuetype == "unsigned":
                 is_signed = False
             else:
                 is_signed = True
+                
         if 'slope' in values.attrib:
             factor = values.get('slope')
         if 'intercept' in values.attrib:
@@ -301,6 +310,7 @@ def parseSignal(signal, mux, namespace, nodelist):
                     max=max,
                     unit=unit,
                     receiver=receiver,
+                    is_float = is_float,
                     multiplex=mux)
     newSig.setStartbit(int(startbit))
 
@@ -332,6 +342,8 @@ def load(f, **options):
     nodes = root.findall('./' + namespace + 'Node')
 
     busses = root.findall('./' + namespace + 'Bus')
+    
+    counter = 0
     for bus in busses:
         db = CanMatrix()
         db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
@@ -460,5 +472,9 @@ def load(f, **options):
 
             newBo.updateReceiver()
             db._fl.addFrame(newBo)
-        dbs[bus.get('name')] = db
+        name = bus.get('name')
+        if not name:
+            name = "CAN%d" % counter
+            counter += 1
+        dbs[name] = db
     return dbs
