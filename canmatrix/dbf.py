@@ -212,7 +212,7 @@ def load(f, **options):
                 else:
                     extended = None
                 if len(temparray) > 6:
-                    transmitter = temparray[6]
+                    transmitter = temparray[6].split()
                 else:
                     transmitter = None
                 newBo = db._fl.addFrame(

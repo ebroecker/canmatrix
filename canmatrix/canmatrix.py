@@ -295,6 +295,10 @@ class Signal(object):
     @property
     def is_float(self):
         return self._is_float
+    
+    @is_float.setter
+    def is_float(self, value):
+        self._is_float = value
 
     @property
     def is_signed(self):
@@ -491,7 +495,7 @@ class Frame(object):
             ('Id', '_Id', int, 0),
             ('dlc', '_Size', int, 0),
             ('transmitter', '_Transmitter', None, []),
-            ('extended', '_extended', bool, True),
+            ('extended', '_extended', bool, False),
             ('comment', '_comment', str, None),
             ('signals', '_signals', None, [])]
 

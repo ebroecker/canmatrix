@@ -99,7 +99,7 @@ def dump(db, f, **options):
 
         if bo.extended == 1:
             bo.id += 0x80000000
-
+        
         f.write(
             ("BO_ %d " %
              bo.id +
@@ -283,19 +283,19 @@ def dump(db, f, **options):
     f.write("\n".encode(dbcExportEncoding))
 
     # messages-attributes:
-    for bo in db.frames:
-        for attrib, val in sorted(bo.attributes.items()):
+    for frame in db.frames:
+        for attrib, val in sorted(frame.attributes.items()):
             if db.frameDefines[attrib].type == "STRING":
                 val = '"' + val + '"'
             elif not val:
                 val = '""'
             f.write(('BA_ "' + attrib + '" BO_ %d ' %
-                     bo.id + val + ';\n').encode(dbcExportEncoding))
+                     frame.id + val + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-attributes:
-    for bo in db.frames:
-        for signal in bo.signals:
+    for frame in db.frames:
+        for signal in frame.signals:
             for attrib, val in sorted(signal.attributes.items()):
                 name = normalizeName(signal.name, whitespaceReplacement)
                 if db.signalDefines[attrib].type == "STRING":
@@ -306,11 +306,17 @@ def dump(db, f, **options):
                     ('BA_ "' +
                      attrib +
                      '" SG_ %d ' %
-                     bo.id +
+                     frame.id +
                      name +
                      ' ' +
                      val +
                      ';\n').encode(dbcExportEncoding))
+            if signal.is_float:
+                if int(signal.signalsize) > 32:
+                    f.write('SIG_VALTYPE_ %d %s : 2;\n' % (frame.id, signal.name))
+                else:
+                    f.write('SIG_VALTYPE_ %d %s : 1;\n' % (frame.id, signal.name))
+ 
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-values:
@@ -404,7 +410,7 @@ def load(f, **options):
             db._fl.addFrame(Frame(temp.group(2),
                                   Id=temp.group(1),
                                   dlc=temp.group(3),
-                                  transmitter=temp.group(4)))
+                                  transmitter=temp.group(4).split()))
         elif decoded.startswith("SG_ "):
             pattern = "^SG\_ (\w+) : (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)"
             regexp = re.compile(pattern)
@@ -686,6 +692,16 @@ def load(f, **options):
             if frame is not None:
                 signalArray = temp.group(4).split(' ')
                 frame.addSignalGroup(temp.group(2), temp.group(3), signalArray)
+                
+        elif decoded.startswith("SIG_VALTYPE_ "):
+            regexp = re.compile("^SIG\_VALTYPE\_ +(\w+) +(\w+) +\:(.*);")
+            temp = regexp.match(decoded)
+            frame = db.frameById(temp.group(1))
+            if frame:
+                signal = frame.signalByName(temp.group(2))
+                signal.is_float = True
+#                SIG_VALTYPE_ 0 float : 1;
+                
         elif decoded.startswith("BA_DEF_DEF_ "):
             pattern = "^BA\_DEF\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+)\;"
             regexp = re.compile(pattern)
