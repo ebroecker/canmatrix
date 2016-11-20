@@ -98,7 +98,9 @@ def load(f, **options):
             else:
                 (boId, temS, comment) = line.split(' ', 2)
                 comment = comment.replace('"', '').replace(';', '')
-                db.frameById(int(boId)).addComment(comment)
+                frame = db.frameById(int(boId))
+                if frame:
+                    frame.addComment(comment)
 
         elif mode == 'ParamMsgVal':
             if line.startswith("[END_PARAM_MSG_VAL]"):
@@ -248,8 +250,13 @@ def load(f, **options):
                 else:
                     multiplex = None
 
+                is_float = False
+                is_signed = False
+                
                 if sign == "U":
                     is_signed = False
+                elif sign == "F" or sign == "D":
+                    is_float = True
                 else:
                     is_signed = True
                 startbit = int(startbit)
@@ -267,6 +274,7 @@ def load(f, **options):
                                                 max=float(Max) * float(factor),
                                                 unit=unit,
                                                 receiver=receiver,
+                                                is_float=is_float,
                                                 multiplex=multiplex))
 
                 if int(byteorder) == 0:
@@ -340,6 +348,13 @@ def dump(db, f, **options):
 
             if not signal.is_signed:
                 sign = 'U'
+            
+            if signal.is_float:
+                if signal.signalsize > 32:
+                    sign = 'D'
+                else:
+                    sign = 'F'
+                    
             outstr += "[START_SIGNALS] " + signal.name + ",%d,%d,%d,%c," % (signal.signalsize,
                                                                             whichbyte,
                                                                             int(signal.getStartbit(bitNumbering=1,
