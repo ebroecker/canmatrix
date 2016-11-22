@@ -51,6 +51,29 @@ def createSubElement(parent, elementName, strName=None):
         sn.text = str(strName)
     return sn
 
+def getBaseTypeOfSignal(signal):
+    if signal.is_float:
+        if signal.signalsize > 32:
+            createType = "double"
+            size = 64
+        else:
+            createType = "single"
+            size = 32
+    else:
+        if signal.signalsize > 32:
+            createType = "uint64"
+            size = 64                            
+        elif signal.signalsize > 16:
+            createType= "uint32"
+            size = 32
+        elif signal.signalsize > 8:
+            createType = "uint16"
+            size = 16
+        else:
+            createType = "uint8"
+            size = 8
+    return createType, size
+
 
 def dump(dbs, f, **options):
     if 'arVersion' in options:
@@ -408,6 +431,11 @@ def dump(dbs, f, **options):
                         networkRepresentProps, 'SW-DATA-DEF-PROPS-VARIANTS')
                     swDataDefPropsConditional = createSubElement(
                         swDataDefPropsVariants, 'SW-DATA-DEF-PROPS-CONDITIONAL')
+                    
+                    baseTypeRef = createSubElement(swDataDefPropsConditional, 'BASE-TYPE-REF')
+                    baseTypeRef.set('DEST', 'SW-BASE-TYPE')
+                    createType, size = getBaseTypeOfSignal(signal)
+                    baseTypeRef.text = "/DataType/" + createType
                     compuMethodRef = createSubElement(
                         swDataDefPropsConditional,
                         'COMPU-METHOD-REF',
@@ -449,7 +477,10 @@ def dump(dbs, f, **options):
                     l2.text = signal.comment
                 if arVersion[0] == "3":
                     dataTypeRef = createSubElement(signalEle, 'DATA-TYPE-REF')
-                    dataTypeRef.set('DEST', 'INTEGER-TYPE')
+                    if signal.is_float:
+                        dataTypeRef.set('DEST', 'REAL-TYPE')
+                    else:
+                        dataTypeRef.set('DEST', 'INTEGER-TYPE')
                     dataTypeRef.text = "/DataType/" + signal.name
                     createSubElement(signalEle, 'LENGTH',
                                      str(signal.signalsize))
@@ -482,18 +513,41 @@ def dump(dbs, f, **options):
             db = dbs[name]
             for frame in db.frames:
                 for signal in frame.signals:
-                    intType = createSubElement(elements, 'INTEGER-TYPE')
-                    createSubElement(intType, 'SHORT-NAME', signal.name)
+                    if signal.is_float:
+                        typeEle = createSubElement(elements, 'REAL-TYPE')
+                    else:
+                        typeEle = createSubElement(elements, 'INTEGER-TYPE')
+                    createSubElement(typeEle, 'SHORT-NAME', signal.name)
                     swDataDefProps = createSubElement(
-                        intType, 'SW-DATA-DEF-PROPS')
+                        typeEle, 'SW-DATA-DEF-PROPS')
+                    if signal.is_float:
+                        encoding = createSubElement(typeEle, 'ENCODING')                        
+                        if signal.signalsize > 32:
+                            encoding.text = "DOUBLE"
+                        else:
+                            encoding.text = "SINGLE"
                     compuMethodRef = createSubElement(
                         swDataDefProps, 'COMPU-METHOD-REF')
                     compuMethodRef.set('DEST', 'COMPU-METHOD')
                     compuMethodRef.text = "/DataType/Semantics/" + signal.name
     else:
-        # SW-BASE-TYPE missing
-        pass
-        # TODO
+        createdTypes = []
+        for name in dbs:
+            db = dbs[name]
+            for frame in db.frames:
+                for signal in frame.signals:
+                    createType, size = getBaseTypeOfSignal(signal)
+                    if createType not in createdTypes:
+                        createdTypes.append(createType)
+                        swBaseType = createSubElement(elements, 'SW-BASE-TYPE')
+                        sname = createSubElement(swBaseType, 'SHORT-NAME')
+                        sname.text = createType
+                        cat = createSubElement(swBaseType, 'CATEGORY')
+                        cat.text = "FIXED_LENGTH"
+                        baseTypeSize = createSubElement(swBaseType, 'BASE-TYPE-SIZE')
+                        baseTypeSize.text = str(size)
+                        if signal.is_float:
+
 
     if arVersion[0] == "3":
         subpackages = createSubElement(arPackage, 'SUB-PACKAGES')
