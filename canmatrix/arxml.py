@@ -61,16 +61,28 @@ def getBaseTypeOfSignal(signal):
             size = 32
     else:
         if signal.signalsize > 32:
-            createType = "uint64"
+            if signal.is_signed:
+                createType = "sint64"
+            else:
+                createType = "uint64"
             size = 64                            
         elif signal.signalsize > 16:
-            createType= "uint32"
-            size = 32
+            if signal.is_signed:
+                createType = "sint32"
+            else:
+                createType = "uint32"
+            size = 32                            
         elif signal.signalsize > 8:
-            createType = "uint16"
+            if signal.is_signed:
+                createType = "sint16"
+            else:
+                createType = "uint16"
             size = 16
         else:
-            createType = "uint8"
+            if signal.is_signed:
+                createType = "sint8"
+            else:
+                createType = "uint8"
             size = 8
     return createType, size
 
@@ -547,7 +559,8 @@ def dump(dbs, f, **options):
                         baseTypeSize = createSubElement(swBaseType, 'BASE-TYPE-SIZE')
                         baseTypeSize.text = str(size)
                         if signal.is_float:
-
+                            enc = createSubElement(swBaseType, 'BASE-TYPE-ENCODING')
+                            enc.text = "IEEE754"
 
     if arVersion[0] == "3":
         subpackages = createSubElement(arPackage, 'SUB-PACKAGES')
@@ -939,9 +952,16 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         signalDescription = getDesc(syssignal, arDict, ns)
         datatype = arGetChild(syssignal, "DATA-TYPE", arDict, ns)
         if datatype is None:  # AR4?
-            print("no datatype reference")
+            # print("no datatype reference")
+            pass
         lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
         upper = arGetChild(datatype, "UPPER-LIMIT", arDict, ns)
+        encoding = arGetChild(datatype, "ENCODING", arDict, ns)
+        if encoding is not None and (encoding.text == "SINGLE" or encoding.text == "DOUBLE"):
+            is_float = True
+        else:
+            is_float = False
+        
         if lower is not None and upper is not None:
             Min = int(lower.text)
             Max = int(upper.text)
@@ -951,22 +971,25 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         compmethod = arGetChild(datdefprops, "COMPU-METHOD", arDict, ns)
         if compmethod is None:  # AR4
             compmethod = arGetChild(isignal, "COMPU-METHOD", arDict, ns)
-
+            baseType = arGetChild(isignal, "BASE-TYPE", arDict, ns)
+            encoding = arGetChild(baseType, "BASE-TYPE-ENCODING", arDict, ns)
+            if encoding is not None and encoding.text == "IEEE754":
+                is_float = True
         #####################################################################################################
         # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
         # keyword definition. 06Jun16
         #####################################################################################################
         if compmethod == None:
-          logger.debug('No Compmethod found!! - try alternate scheme.')
-          networkrep = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
-          datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)            
-          datdefpropscond = arGetChild(datdefpropsvar, "SW-DATA-DEF-PROPS-CONDITIONAL", arDict ,ns)
-          if datdefpropscond != None:
-            try:
-              compmethod = arGetChild(datdefpropscond, "COMPU-METHOD", arDict, ns)            
-            except:
-              logger.debug('No valid compu method found for this - check ARXML file!!')
-              compmethod = None
+            logger.debug('No Compmethod found!! - try alternate scheme.')
+            networkrep = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
+            datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)            
+            datdefpropscond = arGetChild(datdefpropsvar, "SW-DATA-DEF-PROPS-CONDITIONAL", arDict ,ns)
+            if datdefpropscond != None:
+                try:
+                    compmethod = arGetChild(datdefpropscond, "COMPU-METHOD", arDict, ns)            
+                except:
+                    logger.debug('No valid compu method found for this - check ARXML file!!')
+                    compmethod = None
         #####################################################################################################
         #####################################################################################################
              
@@ -1061,7 +1084,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                             unit=Unit,
                             receiver=receiver,
                             multiplex=multiplexId,
-                            comment=signalDescription)
+                            comment=signalDescription,
+                            is_float=is_float)
 
             if newSig.is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
@@ -1075,6 +1099,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 if temp is not None and "boolean" == temp.text:
                     newSig.addValues(1, "TRUE")
                     newSig.addValues(0, "FALSE")
+
 
             if initvalue is not None and initvalue.text is not None:
                 if initvalue.text == "false":

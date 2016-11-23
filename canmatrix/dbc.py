@@ -138,6 +138,8 @@ def dump(db, f, **options):
                     signal.max)).encode(dbcExportEncoding))
             f.write(' "'.encode(dbcExportEncoding))
 
+            if signal.unit is None:
+                signal.unit = ""
             f.write(signal.unit.encode(dbcExportEncoding))
             f.write('" '.encode(dbcExportEncoding))
             if signal.receiver.__len__() == 0:
