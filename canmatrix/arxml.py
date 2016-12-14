@@ -1559,6 +1559,6 @@ def load(file, **options):
                     hexStr += "%02X" % frame[i]
                 bo.addAttribute("GenMsgStartValue", hexStr)
             else:
-                logger.debug("frame %s seems to have more than 8 databytes" % frame.name)
+                logger.debug("frame %s seems to have more than 8 databytes" % bo.name)
         result[busname] = db
     return result
