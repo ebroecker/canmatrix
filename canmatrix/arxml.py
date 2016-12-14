@@ -1542,21 +1542,23 @@ def load(file, **options):
             db._BUs.add(bu)
 
         for bo in db.frames:
-            frame = [0, 0, 0, 0, 0, 0, 0, 0]
-            for sig in bo.signals:
-                if sig._initValue != 0:
-                    putSignalValueInFrame(
-                        sig.getStartbit(
-                            bitNumbering=1,
-                            startLittle=True),
-                        sig.signalsize,
-                        sig.is_little_endian,
-                        sig._initValue,
-                        frame)
-            hexStr = ""
-            for i in range(bo.size):
-                hexStr += "%02X" % frame[i]
-            bo.addAttribute("GenMsgStartValue", hexStr)
-
+            if bo.size < 8:
+                frame = [0, 0, 0, 0, 0, 0, 0, 0]
+                for sig in bo.signals:
+                    if sig._initValue != 0:
+                        putSignalValueInFrame(
+                            sig.getStartbit(
+                                bitNumbering=1,
+                                startLittle=True),
+                            sig.signalsize,
+                            sig.is_little_endian,
+                            sig._initValue,
+                            frame)
+                hexStr = ""
+                for i in range(bo.size):
+                    hexStr += "%02X" % frame[i]
+                bo.addAttribute("GenMsgStartValue", hexStr)
+            else:
+                logger.debug("frame %s seems to have more than 8 databytes" % frame.name)
         result[busname] = db
     return result
