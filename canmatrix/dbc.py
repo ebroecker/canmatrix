@@ -315,9 +315,9 @@ def dump(db, f, **options):
                      ';\n').encode(dbcExportEncoding))
             if signal.is_float:
                 if int(signal.signalsize) > 32:
-                    f.write('SIG_VALTYPE_ %d %s : 2;\n' % (frame.id, signal.name))
+                    f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.id, signal.name)).encode(dbcExportEncoding))
                 else:
-                    f.write('SIG_VALTYPE_ %d %s : 1;\n' % (frame.id, signal.name))
+                    f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.id, signal.name)).encode(dbcExportEncoding))
  
     f.write("\n".encode(dbcExportEncoding))
 
