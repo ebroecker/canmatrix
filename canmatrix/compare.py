@@ -26,7 +26,7 @@ from __future__ import absolute_import
 
 from .log import setup_logger, set_log_level
 logger = setup_logger('root')
-
+import types
 import sys
 
 
@@ -330,7 +330,7 @@ def compareFrame(f1, f2, ignore=None):
 
     for sg2 in f2._SignalGroups:
         if f1.signalGroupbyName(sg2.name) is None:
-            result.addChild(compareResult("added", "Signalgroup", sg1))
+            result.addChild(compareResult("added", "Signalgroup", sg2))
     return result
 
 
@@ -447,10 +447,14 @@ def dumpResult(res, depth=0):
                 0] is not None and res._changes[1] is not None:
             for _ in range(0, depth):
                 print(" ", end=' ')
+            if type(res._changes[0]) == types.UnicodeType:
+                res._changes[0] = res._changes[0].encode('ascii', 'ignore')
+            if type(res._changes[1]) == types.UnicodeType:
+                res._changes[1] = res._changes[1].encode('ascii', 'ignore')
             print("old: " +
-                  str(res._changes[0]).encode('ascii', 'replace') +
+                  str(res._changes[0]) +
                   " new: " +
-                  str(res._changes[1]).encode('ascii', 'replace'))
+                  str(res._changes[1]))
     for child in res._children:
         dumpResult(child, depth + 1)
 
