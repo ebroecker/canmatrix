@@ -144,15 +144,15 @@ def load(f, **options):
                 newframe.extended = 0
 
             for signal in frame["signals"]:
-                if signal["is_big_endian"]:
+                if "is_big_endian" in signal and signal["is_big_endian"]:
                     is_little_endian = False
                 else:
                     is_little_endian = True
-                if signal["is_float"]:
+                if "is_float" in signal and signal["is_float"]:
                     is_float = True
                 else:
                     is_float = False                    
-                if signal["is_signed"]:
+                if "is_signed" in signal and signal["is_signed"]:
                     is_signed = True
                 else:
                     is_signed = False
