@@ -76,7 +76,8 @@ def dump(db, f, **options):
                     "factor": float(signal.factor),
                     "offset": float(signal.offset),
                     "is_big_endian": signal.is_little_endian == 0,
-                    "is_signed": signal.is_signed
+                    "is_signed": signal.is_signed,
+                    "is_float": signal.is_float
                 })
             exportArray.append({"name": frame.name,
                                 "id": int(frame.id),
@@ -100,6 +101,7 @@ def dump(db, f, **options):
                     "offset": float(signal.offset),
                     "is_big_endian": signal.is_little_endian == 0,
                     "is_signed": signal.is_signed,
+                    "is_float": signal.is_float,
                     "comment": signal.comment,
                     "attributes": attribs
                 })
@@ -146,6 +148,10 @@ def load(f, **options):
                     is_little_endian = False
                 else:
                     is_little_endian = True
+                if signal["is_float"]:
+                    is_float = True
+                else:
+                    is_float = False                    
                 if signal["is_signed"]:
                     is_signed = True
                 else:
