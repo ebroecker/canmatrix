@@ -288,7 +288,7 @@ def dump(db, f, **options):
     for frame in db.frames:
         for attrib, val in sorted(frame.attributes.items()):
             if db.frameDefines[attrib].type == "STRING":
-                val = '"' + val + '"'
+               val = '"' + val + '"'
             elif not val:
                 val = '""'
             f.write(('BA_ "' + attrib + '" BO_ %d ' %
@@ -715,7 +715,7 @@ def load(f, **options):
                                     temp_raw.group(2).decode(dbcImportEncoding))
 #               else:
 #                       print "Unrecocniced line: " + l + " (%d) " % i
-
+# Backtracking
     for frame in db.frames:
         # receiver is only given in the signals, so do propagate the receiver
         # to the frame:
@@ -724,4 +724,20 @@ def load(f, **options):
         if frame.id > 0x80000000:
             frame.id -= 0x80000000
             frame.extended = 1
+    for define in db.buDefines:
+        if db.buDefines[define].type == "STRING":
+            for ecu in db.boardUnits:
+                if define in ecu.attributes:
+                    ecu.attributes[define] = ecu.attributes[define][1:-1]
+    for define in db.frameDefines:
+        if db.frameDefines[define].type == "STRING":
+            for frame in db.frames:
+                if define in frame.attributes:
+                    frame.attributes[define] = frame.attributes[define][1:-1]
+    for define in db.signalDefines:
+        if db.signalDefines[define].type == "STRING":
+            for frame in db.frames:
+                for signal in frame.signals:
+                    if define in signal.attributes:
+                        signal.attributes[define] = signal.attributes[define][1:-1]
     return db
