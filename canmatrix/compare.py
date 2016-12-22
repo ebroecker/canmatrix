@@ -148,7 +148,7 @@ def compareValueTable(vt1, vt2):
             result.addChild(compareResult("changed", "Value " +
                                           str(value) +
                                           " " +
-                                          str(vt1[value]), [vt1[value], vt2[value]]))
+                                          str(vt1[value].encode('ascii', 'ignore')), [vt1[value], vt2[value]]))
     for value in vt2:
         if value not in vt1:
             result.addChild(
