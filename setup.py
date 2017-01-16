@@ -54,10 +54,6 @@ from canmatrix.version import version
 
 doclines = __doc__.split("\n")
 
-requirements = []
-if sys.version_info < (3, 0):
-    requirements.append("future")
-
 setup(
     name = "canmatrix",
     version = version,
@@ -70,7 +66,7 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-    install_requires = requirements,
+    install_requires = ["future"],
     extras_require = {
         "arxml": ["lxml"],
         "kcd": ["lxml"],
