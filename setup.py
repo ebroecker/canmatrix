@@ -77,7 +77,7 @@ setup(
         "fibex": ["lxml"],
         "xls": ["xlrd", "xlwt"],
         "xlsx": ["xlsxwriter"],
-        "yaml": ["pyaml"],
+        "yaml": ["pyyaml"],
         "dbc": [],
         "dbf": [],
         "json": [],
