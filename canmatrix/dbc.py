@@ -585,6 +585,8 @@ def load(f, **options):
                 botschaftId = temp.group(1)
                 signal = temp.group(2)
                 tempList = temp.group(3).split('"')
+                if not botschaftId.isdigit():
+                  continue
                 try:
                     for i in range(math.floor(len(tempList) / 2)):
                         bo = db.frameById(botschaftId)
