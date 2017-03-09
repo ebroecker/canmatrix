@@ -945,10 +945,15 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 desc = getDesc(compuscale, arDict, ns)
             else:
                 desc = sl.text
-
-            if ll is not None and desc is not None and int(
-                    ul.text) == int(ll.text):
-                values[ll.text] = desc
+        #####################################################################################################
+        # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
+        # keyword definition. 06Jun16
+        #####################################################################################################
+            if ll is not None and desc is not None and int(float(ul.text)) == int(float(ll.text)):
+        #####################################################################################################
+        #####################################################################################################
+        
+              values[ll.text] = desc
 
             scaleDesc = getDesc(compuscale, arDict, ns)
             rational = arGetChild(
