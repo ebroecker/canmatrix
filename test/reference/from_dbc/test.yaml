@@ -1,5 +1,5 @@
 !!python/object:canmatrix.canmatrix.CanMatrix
-_BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
+_BUs: !!python/object:canmatrix.canmatrix.BoardUnitList
   _list:
   - !!python/object:canmatrix.canmatrix.BoardUnit
     _attributes: {NetworkNode: '273'}
@@ -11,8 +11,8 @@ _BUs: !!python/object:canmatrix.canmatrix.BoardUnitListe
     _name: recBU
 _attributes: {}
 _buDefines:
-  NetworkNode: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null, _definition: INT
-      0 65535, _max: 65535, _min: 0, _type: INT}
+  NetworkNode: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null, _type: INT,
+    definition: INT 0 65535, max: 65535, min: 0, type: null}
 _fl: !!python/object:canmatrix.canmatrix.FrameList
   _list:
   - !!python/object:canmatrix.canmatrix.Frame
@@ -34,6 +34,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: "Multi\nLine\nSignal comment with a-umlaut: \xE4"
       _factor: 5.0
+      _is_float: false
       _is_little_endian: false
       _is_signed: false
       _max: 500.0
@@ -50,6 +51,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _attributes: {}
       _comment: null
       _factor: 1.0
+      _is_float: false
       _is_little_endian: true
       _is_signed: false
       _max: 6.0
@@ -75,7 +77,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _signals: []
 _frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _definition: INT 0 65535, _max: 65535, _min: 0, _type: INT}
+    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
 _globalDefines: {}
 _signalDefines: {}
 _valueTables: {}

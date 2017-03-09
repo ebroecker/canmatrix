@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ebroecker/canmatrix.svg?branch=master)](https://travis-ci.org/ebroecker/canmatrix)
+
 ##**Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats.##
 
 ###About
@@ -23,13 +25,14 @@ supported file formats for export:
  * .xls(x)
  * .json [Canard](https://github.com/ericevenchick/CANard) (open source!)
  * .arxml (very basic implementation)
- * yaml (dump of the python object)
- * sym
+ * .yaml (dump of the python object)
+ * .sym
+ * .xml fibex
 
 ***
 
 ###Install instructions
-Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install"
+Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install" and "pip install -r requirements.txt"
 
 This installs the *canmatrix* package into your python installation.
 
@@ -128,7 +131,19 @@ Similar charset conversions are possible or even mandatory for following formats
 
 ```canconvert.py --deleteZeroSignals source.dbc target.dbc```
 
-will delete signals signals with 0 bit length from matrix
+will delete signals with 0 bit length from matrix
+
+**delete unwanted attributes from signals:**
+
+```convert.py --deleteSignalAttributes GenMsgCycleTime,MyAttrib source.dbc target.dbc```
+
+will delete the attributes ```GenMsgCycleTime``` and ```MyAttrib``` from all signals in ```source.dbc``` and save the result in ```target.dbc```
+
+**delete unwanted attributes from frames:**
+
+```convert.py --deleteFrameAttributes GenMsgCycleTime,MyAttrib source.dbc target.dbc```
+
+will delete the attributes ```GenMsgCycleTime``` and ```MyAttrib``` from all frames in ```source.dbc``` and save the result in ```target.dbc```
 
 **recalculate DLC:**
 
@@ -144,6 +159,52 @@ Than the calculated DLC will be stored.
 
 this will recalculate DLC for each frame in ```source.dbc```. 
 In ```target.dlc``` the calculated DLC will be stored independently from ```source.dbc```.
+
+**delete unneeded/obsolete defines:**
+
+```canconvert.py --deleteObsoleteDefines source.dbc target.dbc```
+
+this will remove all defines which no attribute exist for in ```source.dbc``` and store the result in ```target.dlc```.
+
+**delete ECU:**
+
+```canconvert.py --deleteECU=myEcu,myEcu2 source.dbc target.dbc```
+
+this will remove ECUs ```myEcu``` and ```myEcu2``` in ```source.dbc``` and store the result in ```target.dlc```.
+
+**rename ECU:**
+
+```canconvert.py --renameECU=myEcu:myNewEcu,myEcu2:myNewEcu2 source.dbc target.dbc```
+
+this will load ```source.dbc``` and rename ECU ```myEcu``` in ```myNewEcu```  and ```myEcu2``` in ```myNewEcu2```.
+The result is stored in ```target.dlc```.
+
+**delete Frame:**
+
+```canconvert.py --deleteFrame=myFrame,myFrame2 source.dbc target.dbc```
+
+this will remove frames ```myFrame``` and ```myFrame2``` in ```source.dbc``` and store the result in ```target.dlc```.
+
+**rename Frame:**
+
+```canconvert.py --renameFrame=myFrame:myNewFrame,myFrame2:myNewFrame2 source.dbc target.dbc```
+
+this will load ```source.dbc``` and rename frames ```myFrame``` in ```myNewFrame```  and ```myFrame2``` in ```myNewFrame2```.
+The result is stored in ```target.dlc```.
+
+
+**delete Signal:**
+
+```canconvert.py --deleteSignal=mySignal,mySignal2 source.dbc target.dbc```
+
+this will remove signales ```mySignal``` and ```mySignal2``` in ```source.dbc``` and store the result in ```target.dlc```.
+
+**rename Signal:**
+
+```canconvert.py --renameSignal=mySignal:myNewSignal,mySignal2:myNewSignal2 source.dbc target.dbc```
+
+this will load ```source.dbc``` and rename signals ```mySignal``` in ```myNewSignal```  and ```mySignal2``` in ```myNewSignal2```.
+The result is stored in ```target.dlc```.
 
 
 ####Extract and Merge:
@@ -235,6 +296,32 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
   
   			merge additional can databases. Syntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2
 
+  --deleteEcu=DELETEECU
+
+                        delete Ecu form databases. (comma separated list) Syntax: --deleteEcu=myEcu,mySecondEcu
+
+  --renameEcu=RENAMEECU
+
+                        rename Ecu form databases. (comma separated list) Syntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu
+
+  --deleteFrame=DELETEFRAME
+
+                        delete Frame form databases. (comma separated list) Syntax: --deleteFrame=myFrame1,mySecondFrame
+
+  --renameFrame=RENAMEFRAME
+
+                        rename Frame form databases. (comma separated list) Syntax: --renameFrame=myOldFrame:myNewFrame,mySecondFrame:mySecondNewFrame
+
+  --deleteSignal=DELETESIGNAL
+
+                        delete Signal form databases. (comma separated list) Syntax: --deleteSignal=mySignal1,mySecondSignal
+
+  --renameSignal=RENAMESIGNAL
+
+                        rename Signal form databases. (comma separated list) Syntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal
+
+
+
 * dbc: 
   
   --dbcImportEncoding
@@ -310,6 +397,7 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
 |sym   |    |+	   |		 |         |         |         |+       |+        |+      |+      |          |+           |             |
 |xls(x)|+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |          |+           |             |
 |csv |+   |+	   |+		 |+        |+        |         |        |+        |+      |+      |*          |+           |             |
+|xml |+   | 	   |+		 |         |         |         |        |+        |+      |+      |           |            |             |
 
 
 

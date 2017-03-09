@@ -15,11 +15,11 @@ BO_ 16751425 CommandModeControlAPU2: 9 Vector__XXX
  SG_ ForceRelayMX1_command : 38|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ ForceRelayMX2_command : 36|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ ForceRelayK1_Precharge_command : 34|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ ForceRelayRelayK2_DCRun_comand : 48|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ ForceRelayRelayK2_DCRun_comand : 32|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ InvertHwEnable_command : 62|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ EnableUPSMode_command : 60|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ EnableSplitPhase_command : 58|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ PhaseRotation_command : 72|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ PhaseRotation_command : 56|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
 
 BO_ 16755521 CommandModeControl: 9 Vector__XXX
  SG_ Enable_command : 6|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
@@ -28,100 +28,100 @@ BO_ 16755521 CommandModeControl: 9 Vector__XXX
  SG_ ForceRelayMX1_command : 38|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ ForceRelayMX2_command : 36|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ ForceRelayK1_Precharge_command : 34|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ ForceRelayRelayK2_DCRun_comand : 48|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ ForceRelayRelayK2_DCRun_comand : 32|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ InvertHwEnable_command : 62|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ EnableUPSMode_command : 60|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ EnableSplitPhase_command : 58|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ PhaseRotation_command : 72|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ PhaseRotation_command : 56|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
 
 BO_ 218078273 CommandPowerAPU2: 9 Vector__XXX
- SG_ RealPower_command : 16|32@0+ (1,-90000) [-90000.0|90000.0] "W" Vector__XXX
- SG_ ReactivePower_command : 48|32@0+ (1,-90000) [-90000.0|90000.0] "VA" Vector__XXX
+ SG_ RealPower_command : 0|32@0+ (1,-90000) [-90000.0|90000.0] "W" Vector__XXX
+ SG_ ReactivePower_command : 32|32@0+ (1,-90000) [-90000.0|90000.0] "VA" Vector__XXX
 
 BO_ 218078785 CommandVFAPU2: 8 Vector__XXX
- SG_ Voltage_command : 16|16@0+ (0.1,10) [10.0|500.0] "Vrms" Vector__XXX
- SG_ Frequency_command : 32|16@0+ (0.1,45) [45.0|65.0] "Hz" Vector__XXX
+ SG_ Voltage_command : 0|16@0+ (0.1,10) [10.0|500.0] "Vrms" Vector__XXX
+ SG_ Frequency_command : 16|16@0+ (0.1,45) [45.0|65.0] "Hz" Vector__XXX
 
 BO_ 218081857 CommandSetNVParam: 9 Vector__XXX
- SG_ CommandSetNVParam_MUX M  : 16|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
+ SG_ CommandSetNVParam_MUX M  : 0|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
  SG_ ThermalOverload m6  : 22|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ Dummy m0  : 32|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
- SG_ FreqHi m3  : 32|16@0+ (0.1,40) [40.0|70.0] "Hz" Vector__XXX
- SG_ FreqVeryLo m4  : 32|16@0+ (1,160) [160.0|160.0] "ms" Vector__XXX
- SG_ K2Open m9  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ MX1Open m7  : 32|16@0+ (1,0) [0.0|5000.0] "ms" Vector__XXX
- SG_ MX2Close m8  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ NodeID m5  : 32|8@0+ (1,0) [0.0|247.0] "" Vector__XXX
- SG_ VOver120 m2  : 32|16@0+ (1,1) [1.0|30000.0] "" Vector__XXX
- SG_ VUnder50pct m1  : 32|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
- SG_ SA_Mask m5  : 40|8@0+ (1,0) [0.0|255.0] "" Vector__XXX
- SG_ Baudrate m5  : 48|4@0+ (1,0) [0.0|15.0] "" Vector__XXX
- SG_ FreqLo m4  : 48|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
- SG_ K1Open m8  : 48|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ K2Close m9  : 48|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ MX1Close m7  : 48|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ V50to88pct m1  : 48|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
- SG_ FreqHi m4  : 64|16@0+ (1,160) [160.0|160.0] "ms" Vector__XXX
- SG_ FreqVeryLo m3  : 64|16@0+ (0.1,40) [40.0|70.0] "Hz" Vector__XXX
- SG_ K1Close m8  : 64|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ MX2Open m7  : 64|16@0+ (1,0) [0.0|65535.0] "ms" Vector__XXX
- SG_ V110to120pct m1  : 64|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
+ SG_ Dummy m0  : 16|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
+ SG_ FreqHi m3  : 16|16@0+ (0.1,40) [40.0|70.0] "Hz" Vector__XXX
+ SG_ FreqVeryLo m4  : 16|16@0+ (1,160) [160.0|160.0] "ms" Vector__XXX
+ SG_ K2Open m9  : 16|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ MX1Open m7  : 16|16@0+ (1,0) [0.0|5000.0] "ms" Vector__XXX
+ SG_ MX2Close m8  : 16|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ NodeID m5  : 16|8@0+ (1,0) [0.0|247.0] "" Vector__XXX
+ SG_ VOver120 m2  : 16|16@0+ (1,1) [1.0|30000.0] "" Vector__XXX
+ SG_ VUnder50pct m1  : 16|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
+ SG_ SA_Mask m5  : 24|8@0+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ Baudrate m5  : 32|4@0+ (1,0) [0.0|15.0] "" Vector__XXX
+ SG_ FreqLo m4  : 32|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
+ SG_ K1Open m8  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ K2Close m9  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ MX1Close m7  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ V50to88pct m1  : 32|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
+ SG_ FreqHi m4  : 48|16@0+ (1,160) [160.0|160.0] "ms" Vector__XXX
+ SG_ FreqVeryLo m3  : 48|16@0+ (0.1,40) [40.0|70.0] "Hz" Vector__XXX
+ SG_ K1Close m8  : 48|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ MX2Open m7  : 48|16@0+ (1,0) [0.0|65535.0] "ms" Vector__XXX
+ SG_ V110to120pct m1  : 48|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
 
 BO_ 218082369 CommandPower: 9 Vector__XXX
- SG_ RealPower_command : 16|32@0+ (1,-90000) [-90000.0|90000.0] "W" Vector__XXX
- SG_ ReactivePower_command : 48|32@0+ (1,-90000) [-90000.0|90000.0] "VA" Vector__XXX
+ SG_ RealPower_command : 0|32@0+ (1,-90000) [-90000.0|90000.0] "W" Vector__XXX
+ SG_ ReactivePower_command : 32|32@0+ (1,-90000) [-90000.0|90000.0] "VA" Vector__XXX
 
 BO_ 218082881 CommandVF: 8 Vector__XXX
- SG_ Voltage_command : 16|16@0+ (0.1,10) [10.0|500.0] "Vrms" Vector__XXX
- SG_ Frequency_command : 32|16@0+ (0.1,45) [45.0|65.0] "Hz" Vector__XXX
+ SG_ Voltage_command : 0|16@0+ (0.1,10) [10.0|500.0] "Vrms" Vector__XXX
+ SG_ Frequency_command : 16|16@0+ (0.1,45) [45.0|65.0] "Hz" Vector__XXX
 
 BO_ 218083137 CommandFactoryControl: 9 Vector__XXX
  SG_ WriteSerialNumber : 6|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ FactoryAccess : 32|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
- SG_ SerialNumber : 48|32@0+ (1,0) [0.0|4294967295.0] "" Vector__XXX
+ SG_ FactoryAccess : 16|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
+ SG_ SerialNumber : 32|32@0+ (1,0) [0.0|4294967295.0] "" Vector__XXX
 
 BO_ 218088183 StatusACParameters: 8 Vector__XXX
- SG_ VoltageAC_measured : 16|16@0+ (0.1,0) [0.0|65535.0] "V" Vector__XXX
- SG_ CurrentAC_measured : 32|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
- SG_ Frequency_measured : 48|16@0+ (0.1,0) [0.0|65535.0] "Hz" Vector__XXX
+ SG_ VoltageAC_measured : 0|16@0+ (0.1,0) [0.0|65535.0] "V" Vector__XXX
+ SG_ CurrentAC_measured : 16|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
+ SG_ Frequency_measured : 32|16@0+ (0.1,0) [0.0|65535.0] "Hz" Vector__XXX
 
 BO_ 218088439 StatusBits: 8 Vector__XXX
  SG_ State_status : 4|4@0+ (1,0) [0.0|15.0] "" Vector__XXX
  SG_ Enable_echo : 2|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ FaultClr_echo : 16|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ FaultClr_echo : 0|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ HardwareEnable_status : 14|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ PowerAvailAC_status : 12|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ PowerAvailDC_status : 10|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ PowerCircuitEnabled_status : 24|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ PowerCircuitEnabled_status : 8|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ MX1Permissive_status : 22|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ MX2Permissive_status : 20|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ K1PrechargePermissive_status : 18|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ K2DCRunPermissive_status : 32|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ K2DCRunPermissive_status : 16|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ MessageValidModeControl_status : 30|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ MessageValidPowerCMD_status : 28|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ MessageValidVF_status : 26|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ CANbus_status : 40|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ CANbus_status : 24|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ EnableUPSMode_echo : 38|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ EnableSplitPhase_echo : 36|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ PhaseRotation_status : 34|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ LineVoltageDetected_status : 48|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ LineVoltageDetected_status : 32|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ PhaseRotation_echo : 46|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
 
 BO_ 218089719 StatusFaults: 8 Vector__XXX
  SG_ GeneralFault_status : 6|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ OvercurrentAC_status : 4|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ LossOfAC_status : 2|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ OvercurrentDC_status : 16|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ OvercurrentDC_status : 0|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ OvervoltageDC_status : 14|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ UndervoltageDC_status : 12|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ OvertempInternal_status : 10|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ OvertempPowerDevice_status : 24|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ OvertempPowerDevice_status : 8|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ ControlHardwareFail_status : 20|4@0+ (1,0) [0.0|15.0] "" Vector__XXX
- SG_ LossValidControlMessage_status : 32|4@0+ (1,0) [0.0|15.0] "" Vector__XXX
+ SG_ LossValidControlMessage_status : 16|4@0+ (1,0) [0.0|15.0] "" Vector__XXX
  SG_ EStopShutdown_status : 30|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ IllegalTransition_status : 28|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ InvalidEEHeader_status : 26|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ InvalidEESection_status : 40|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
+ SG_ InvalidEESection_status : 24|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ ThermalOverload : 38|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
  SG_ BridgeBFault_status : 45|3@0+ (1,0) [0.0|7.0] "" Vector__XXX
  SG_ BridgeBVoltageOk_status : 44|1@0+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -129,87 +129,87 @@ BO_ 218089719 StatusFaults: 8 Vector__XXX
  SG_ BridgeAVoltageOk_status : 60|1@0+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 218090230 MasterMeasuredPower: 9 Vector__XXX
- SG_ RealPower_measured : 16|32@0+ (1,0) [0.0|4294967295.0] "W" Vector__XXX
- SG_ ReactivePower_measured : 48|32@0+ (1,0) [0.0|4294967295.0] "VA" Vector__XXX
+ SG_ RealPower_measured : 0|32@0+ (1,0) [0.0|4294967295.0] "W" Vector__XXX
+ SG_ ReactivePower_measured : 32|32@0+ (1,0) [0.0|4294967295.0] "VA" Vector__XXX
 
 BO_ 218090231 StatusMeasuredPower: 9 Vector__XXX
- SG_ RealPower_measured : 16|32@0+ (1,0) [0.0|4294967295.0] "W" Vector__XXX
- SG_ ReactivePower_measured : 48|32@0+ (1,0) [0.0|4294967295.0] "VA" Vector__XXX
+ SG_ RealPower_measured : 0|32@0+ (1,0) [0.0|4294967295.0] "W" Vector__XXX
+ SG_ ReactivePower_measured : 32|32@0+ (1,0) [0.0|4294967295.0] "VA" Vector__XXX
 
 BO_ 419415287 StatusCommandedPower: 9 Vector__XXX
- SG_ RealPower_echo : 16|32@0+ (1,0) [0.0|4294967295.0] "W" Vector__XXX
- SG_ ReactivePower_echo : 48|32@0+ (1,0) [0.0|4294967295.0] "VA" Vector__XXX
+ SG_ RealPower_echo : 0|32@0+ (1,0) [0.0|4294967295.0] "W" Vector__XXX
+ SG_ ReactivePower_echo : 32|32@0+ (1,0) [0.0|4294967295.0] "VA" Vector__XXX
 
 BO_ 419416567 StatusCommandVF: 8 Vector__XXX
- SG_ Voltage_echo : 16|16@0+ (0.1,0) [0.0|65535.0] "Vrms" Vector__XXX
- SG_ Frequency_echo : 32|16@0+ (0.1,0) [0.0|65535.0] "Hz" Vector__XXX
+ SG_ Voltage_echo : 0|16@0+ (0.1,0) [0.0|65535.0] "Vrms" Vector__XXX
+ SG_ Frequency_echo : 16|16@0+ (0.1,0) [0.0|65535.0] "Hz" Vector__XXX
 
 BO_ 419417079 StatusTemps: 8 Vector__XXX
- SG_ TempInlet_measured : 16|16@0+ (0.1,0) [0.0|65535.0] "C" Vector__XXX
- SG_ TempInternal_measured : 32|16@0+ (0.1,0) [0.0|65535.0] "C" Vector__XXX
- SG_ ConverterLosses : 48|16@0+ (1,0) [0.0|65535.0] "W" Vector__XXX
+ SG_ TempInlet_measured : 0|16@0+ (0.1,0) [0.0|65535.0] "C" Vector__XXX
+ SG_ TempInternal_measured : 16|16@0+ (0.1,0) [0.0|65535.0] "C" Vector__XXX
+ SG_ ConverterLosses : 32|16@0+ (1,0) [0.0|65535.0] "W" Vector__XXX
 
 BO_ 419418359 StatusLineCurrents: 8 Vector__XXX
- SG_ L1Current_measured : 16|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
- SG_ L2Current_measured : 32|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
- SG_ L3Current_measured : 48|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
+ SG_ L1Current_measured : 0|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
+ SG_ L2Current_measured : 16|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
+ SG_ L3Current_measured : 32|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
 
 BO_ 419418615 StatusLineVoltages: 8 Vector__XXX
- SG_ L1Voltage_measured : 16|16@0+ (0.1,0) [0.0|65535.0] "Vrms" Vector__XXX
- SG_ L2Voltage_measured : 32|16@0+ (0.1,0) [0.0|65535.0] "Vrms" Vector__XXX
- SG_ L3Voltage_measured : 48|16@0+ (0.1,0) [0.0|65535.0] "Vrms" Vector__XXX
+ SG_ L1Voltage_measured : 0|16@0+ (0.1,0) [0.0|65535.0] "Vrms" Vector__XXX
+ SG_ L2Voltage_measured : 16|16@0+ (0.1,0) [0.0|65535.0] "Vrms" Vector__XXX
+ SG_ L3Voltage_measured : 32|16@0+ (0.1,0) [0.0|65535.0] "Vrms" Vector__XXX
 
 BO_ 486517239 StatusNVParam: 9 Vector__XXX
- SG_ StatusNVParam_MUX M  : 16|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
+ SG_ StatusNVParam_MUX M  : 0|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
  SG_ StatusThermalOverload m6  : 22|2@0+ (1,0) [0.0|3.0] "" Vector__XXX
- SG_ Dummy m0  : 32|16@0+ (1,5) [5.0|10.0] "" Vector__XXX
- SG_ FreqHi m3  : 32|16@0+ (0.1,40) [40.0|70.0] "Hz" Vector__XXX
- SG_ FreqVeryLo m4  : 32|16@0+ (1,160) [160.0|160.0] "ms" Vector__XXX
- SG_ StatusK2Open m9  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ StatusMX1Open m7  : 32|16@0+ (1,0) [0.0|5000.0] "ms" Vector__XXX
- SG_ StatusMX2Close m8  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ StatusNodeID m5  : 32|8@0+ (1,0) [0.0|247.0] "" Vector__XXX
- SG_ VOver120 m2  : 32|16@0+ (1,1) [1.0|30000.0] "" Vector__XXX
- SG_ VUnder50pct m1  : 32|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
- SG_ StatusSA_Mask m5  : 40|8@0+ (1,0) [0.0|255.0] "" Vector__XXX
- SG_ FreqLo m4  : 48|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
- SG_ StatusBaudrate m5  : 48|4@0+ (1,0) [0.0|15.0] "" Vector__XXX
- SG_ StatusK1Open m8  : 48|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ StatusK2Close m9  : 48|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ StatusMX1Close m7  : 48|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ V50to88pct m1  : 48|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
- SG_ FreqHi m4  : 64|16@0+ (1,160) [160.0|160.0] "ms" Vector__XXX
- SG_ FreqVeryLo m3  : 64|16@0+ (0.1,40) [40.0|70.0] "Hz" Vector__XXX
- SG_ StatusK1Close m8  : 64|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
- SG_ StatusMX2Open m7  : 64|16@0+ (1,0) [0.0|65535.0] "ms" Vector__XXX
- SG_ V110to120pct m1  : 64|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
+ SG_ Dummy m0  : 16|16@0+ (1,5) [5.0|10.0] "" Vector__XXX
+ SG_ FreqHi m3  : 16|16@0+ (0.1,40) [40.0|70.0] "Hz" Vector__XXX
+ SG_ FreqVeryLo m4  : 16|16@0+ (1,160) [160.0|160.0] "ms" Vector__XXX
+ SG_ StatusK2Open m9  : 16|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ StatusMX1Open m7  : 16|16@0+ (1,0) [0.0|5000.0] "ms" Vector__XXX
+ SG_ StatusMX2Close m8  : 16|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ StatusNodeID m5  : 16|8@0+ (1,0) [0.0|247.0] "" Vector__XXX
+ SG_ VOver120 m2  : 16|16@0+ (1,1) [1.0|30000.0] "" Vector__XXX
+ SG_ VUnder50pct m1  : 16|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
+ SG_ StatusSA_Mask m5  : 24|8@0+ (1,0) [0.0|255.0] "" Vector__XXX
+ SG_ FreqLo m4  : 32|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
+ SG_ StatusBaudrate m5  : 32|4@0+ (1,0) [0.0|15.0] "" Vector__XXX
+ SG_ StatusK1Open m8  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ StatusK2Close m9  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ StatusMX1Close m7  : 32|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ V50to88pct m1  : 32|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
+ SG_ FreqHi m4  : 48|16@0+ (1,160) [160.0|160.0] "ms" Vector__XXX
+ SG_ FreqVeryLo m3  : 48|16@0+ (0.1,40) [40.0|70.0] "Hz" Vector__XXX
+ SG_ StatusK1Close m8  : 48|16@0+ (1,0) [0.0|2000.0] "ms" Vector__XXX
+ SG_ StatusMX2Open m7  : 48|16@0+ (1,0) [0.0|65535.0] "ms" Vector__XXX
+ SG_ V110to120pct m1  : 48|16@0+ (1,1) [1.0|30000.0] "ms" Vector__XXX
 
 BO_ 486523383 softwareRev: 9 Vector__XXX
- SG_ ControlSwRev : 16|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
- SG_ InterfaceRev : 32|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
- SG_ BuildTime : 48|32@0+ (1,0) [0.0|4294967295.0] "" Vector__XXX
+ SG_ ControlSwRev : 0|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
+ SG_ InterfaceRev : 16|16@0+ (1,0) [0.0|65535.0] "" Vector__XXX
+ SG_ BuildTime : 32|32@0+ (1,0) [0.0|4294967295.0] "" Vector__XXX
 
 BO_ 486524407 StatusControlVoltage: 9 Vector__XXX
- SG_ v5p0_Supply : 16|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
- SG_ v3p3_Supply : 32|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
- SG_ v24_Supply : 48|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
- SG_ v15_Supply : 64|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
+ SG_ v5p0_Supply : 0|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
+ SG_ v3p3_Supply : 16|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
+ SG_ v24_Supply : 32|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
+ SG_ v15_Supply : 48|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
 
 BO_ 486524663 StatusControlVolts2: 9 Vector__XXX
- SG_ n15V_Supply : 16|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
- SG_ DiodeTemperature : 48|16@0+ (1,0) [0.0|65535.0] "C" Vector__XXX
- SG_ IGBTTemperature : 64|16@0+ (1,0) [0.0|65535.0] "C" Vector__XXX
+ SG_ n15V_Supply : 0|16@0+ (0.01,0) [0.0|65535.0] "V" Vector__XXX
+ SG_ DiodeTemperature : 32|16@0+ (1,0) [0.0|65535.0] "C" Vector__XXX
+ SG_ IGBTTemperature : 48|16@0+ (1,0) [0.0|65535.0] "C" Vector__XXX
 
 BO_ 486524919 StatusDCParameters: 8 Vector__XXX
- SG_ VoltageDCInput_measured : 16|16@0+ (1,0) [0.0|65535.0] "V" Vector__XXX
- SG_ VoltageDCBus : 32|16@0+ (1,0) [0.0|65535.0] "V" Vector__XXX
- SG_ CurrentDC_measured : 48|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
+ SG_ VoltageDCInput_measured : 0|16@0+ (1,0) [0.0|65535.0] "V" Vector__XXX
+ SG_ VoltageDCBus : 16|16@0+ (1,0) [0.0|65535.0] "V" Vector__XXX
+ SG_ CurrentDC_measured : 32|16@0+ (1,0) [0.0|65535.0] "A" Vector__XXX
 
 BO_ 486526199 serialNumber: 8 Vector__XXX
- SG_ SerialNumber : 16|32@0+ (1,0) [0.0|4294967295.0] "" Vector__XXX
+ SG_ SerialNumber : 0|32@0+ (1,0) [0.0|4294967295.0] "" Vector__XXX
 
 BO_ 486526455 softwareRevHash: 8 Vector__XXX
- SG_ Hash : 16|28@0+ (1,0) [0.0|268435455.0] "" Vector__XXX
+ SG_ Hash : 0|28@0+ (1,0) [0.0|268435455.0] "" Vector__XXX
 
 
 
