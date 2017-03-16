@@ -660,6 +660,64 @@ class Frame(object):
             if sig.getStartbit() + int(sig._signalsize) > maxBit:
                 maxBit = sig.getStartbit() + int(sig._signalsize)
         self._Size = max(self._Size, int(math.ceil(maxBit / 8)))
+        
+    def findNotUsedBits(self):
+        """
+        find unused bits in frame
+        return dict with position and length-tuples
+        """
+        bitfield = []
+        bitfieldLe = []
+        bitfieldBe = []
+        
+        for i in range(0,64):
+            bitfieldBe.append(0)
+            bitfieldLe.append(0)
+            bitfield.append(0)
+        i = 0
+
+        for sig in self._signals:
+            i += 1
+            for bit in range(sig.getStartbit(),  sig.getStartbit() + int(sig._signalsize)):
+                if sig._is_little_endian:
+                    bitfieldLe[bit] = i
+                else:
+                    bitfieldBe[bit] = i
+
+        for i in range(0,8):
+            for j in range(0,8):
+                bitfield[i*8+j] = bitfieldLe[i*8+(7-j)]
+
+        for i in range(0,8):
+            for j in range(0,8):
+                if bitfield[i*8+j] == 0:
+                    bitfield[i*8+j] = bitfieldBe[i*8+j]
+        
+
+        return bitfield
+    
+    def createDummySignals(self):
+        bitfield = self.findNotUsedBits()
+#        for i in range(0,8):
+#            print (bitfield[(i)*8:(i+1)*8])
+        startBit = -1
+        sigCount = 0
+        for i in range(0,64):
+            if bitfield[i] == 0 and startBit == -1:
+                startBit = i
+            if (i == 63 or bitfield[i] != 0) and startBit != -1:
+                if i == 63:
+                    i = 64
+                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),signalSize=i-startBit, startBit=startBit, is_little_endian = False))
+                startBit = -1
+                sigCount +=1
+                
+#        bitfield = self.findNotUsedBits()
+#        for i in range(0,8):
+#            print (bitfield[(i)*8:(i+1)*8])
+                
+            
+                
 
     def updateReceiver(self):
         """
