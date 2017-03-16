@@ -150,7 +150,7 @@ def main():
     import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
     export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
 
-    followig formats are availible at this installation:
+    following formats are available at this installation:
     \n"""
 
     for suppFormat, features in canmatrix.formats.supportedFormats.items():
