@@ -383,7 +383,9 @@ def load(f, **options):
                         if intel == 0:
                             # motorola set/convert startbit
                             signal.setStartbit(startBit)
+                        signal.comments = {}
                         frame.addSignal(signal)
+                    signal.comments[int(multiplexor)] = comment
 
                 else:
                  #                   signal = Signal(sigName, startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", multiplexor)
