@@ -33,6 +33,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 9
       _unit: ''
       _values: {}
+      enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
@@ -50,6 +51,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 20
       _unit: ''
       _values: {}
+      enumeration: null
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 18
     _SignalGroups: []

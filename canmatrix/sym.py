@@ -408,6 +408,7 @@ def load(f, **options):
                         signal.setStartbit(startBit)
                     if valueTableName is not None:
                         signal.values = db.valueTables[valueTableName]
+                        signal.enumeration = valueTableName
   #                  signal.addComment(comment)
                     signal.addAttribute("GenSigStartValue", str(startValue))
                     frame.addSignal(signal)

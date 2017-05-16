@@ -47,6 +47,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 9
       _unit: "specialCharUnit\xB0$"
       _values: {}
+      enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
@@ -64,6 +65,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 20
       _unit: someUnit
       _values: {1: one, 2: two, 3: three}
+      enumeration: null
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 18
     _SignalGroups: []

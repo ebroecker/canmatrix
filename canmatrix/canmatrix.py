@@ -203,7 +203,8 @@ class Signal(object):
             ('receiver', '_receiver', None, []),
             ('comment', '_comment', None, None),
             ('multiplex', '_multiplex', multiplex, None),
-            ('is_float', '_is_float', bool, False)
+            ('is_float', '_is_float', bool, False),
+            ('enumeration', 'enumeration', str, None),
         ]
 
         for arg_name, destination, function, default in args:
