@@ -163,6 +163,10 @@ class BoardUnitList(object):
         return len(self._list)
 
 
+def normalizeValueTable(table):
+    return {int(k): v for k, v in table.items()}
+
+
 class Signal(object):
     """
     contains on Signal of canmatrix-object
@@ -258,7 +262,7 @@ class Signal(object):
 
     @values.setter
     def values(self, valueTable):
-        self._values = valueTable
+        self._values = normalizeValueTable(valueTable)
 
     @property
     def comment(self):
@@ -838,7 +842,7 @@ class CanMatrix(object):
         return iter(self._fl)
 
     def addValueTable(self, name, valueTable):
-        self._valueTables[name] = valueTable
+        self._valueTables[name] = normalizeValueTable(valueTable)
 
     def addAttribute(self, attribute, value):
         """

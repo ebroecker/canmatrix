@@ -85,7 +85,7 @@ def dump(db, f, **options):
         for row in db.valueTables[table]:
             f.write(
                 (' ' +
-                 row +
+                 str(row) +
                  ' "' +
                  db.valueTables[table][row] +
                  '"').encode(dbcExportEncoding))

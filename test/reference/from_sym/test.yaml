@@ -35,7 +35,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 0
       _unit: ''
-      _values: &id002 {'0': Disable, '1': Enable, '2': Error, '3': N/A}
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Clears the latched fault message.
@@ -52,7 +52,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 2
       _unit: ''
-      _values: &id003 {'0': Normal, '1': Clear Faults, '2': Error, '3': N/A}
+      _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Inverts the logic of the Hardware Enable input.
@@ -69,7 +69,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 56
       _unit: ''
-      _values: &id004 {'0': No invert, '1': Invert, '2': Error, '3': N/A}
+      _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Enables uninterruptible operation when transitioning from GRID FOLLOWING
@@ -89,7 +89,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 58
       _unit: ''
-      _values: &id005 {'0': Disable, '1': Enable, '2': Error, '3': N/A}
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Dictates to the module whether it is connected to a three-phase (four
@@ -107,8 +107,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 60
       _unit: ''
-      _values: &id006 {'0': Normal - Three Phase Mode, '1': Enable Split Phase Mode,
-        '2': Error, '3': N/A}
+      _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
+        3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
@@ -126,7 +126,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 32
       _unit: ''
-      _values: &id001 {'0': Normal, '1': Force On, '2': Error, '3': N/A}
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
@@ -144,7 +144,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 34
       _unit: ''
-      _values: *id001
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
@@ -162,7 +162,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 36
       _unit: ''
-      _values: *id001
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
@@ -180,7 +180,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 38
       _unit: ''
-      _values: *id001
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Specifies phase rotation direction.  Only active while transitioning
@@ -198,7 +198,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 62
       _unit: ''
-      _values: &id007 {'0': Negative, '1': Positive, '2': Error, '3': N/A}
+      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Specifies what power command the inverter will follow in GRID FOLLOWING
@@ -218,7 +218,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 16
       _unit: ''
-      _values: &id008 {'0': Master, '1': Follower, '2': Error, '3': N/A}
+      _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218082369
     _SignalGroups: []
@@ -387,7 +387,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 0
       _unit: ''
-      _values: *id002
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: ''
@@ -451,9 +451,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 16
       _startbit: 8
       _unit: ''
-      _values: {'0': Param0, '1': LVM_ClearingTimes1, '10': ContactorDelays3, '2': LVM_ClearingTimes2,
-        '3': LFM_Limits, '4': LFM_ClearingTimes, '5': J1939_Interface, '6': Fault_Config,
-        '7': ContactorDelays1, '8': ContactorDelays2}
+      _values: {0: Param0, 1: LVM_ClearingTimes1, 2: LVM_ClearingTimes2, 3: LFM_Limits,
+        4: LFM_ClearingTimes, 5: J1939_Interface, 6: Fault_Config, 7: ContactorDelays1,
+        8: ContactorDelays2, 10: ContactorDelays3}
       comments: {0: '', 1: Line Voltage Monitor fault times., 2: Line Voltage Monitor
           fault times., 3: Line Frequency Monitor limits., 4: Line Frequency Monitor
           Trip times, 5: J1939 interface parameters, 6: 'Allows configuration of various
@@ -719,7 +719,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 4
       _startbit: 36
       _unit: ''
-      _values: &id014 {'0': 125K, '1': 250K, '2': 500K, '3': 1M}
+      _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Configures action to take when thermal overload input is active.
@@ -736,7 +736,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 16
       _unit: ''
-      _values: &id015 {'0': Warning, '1': Fault, '2': Error, '3': N/A}
+      _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _comment: Maximum time required for the MX1 contactor to open.
@@ -903,7 +903,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 0
       _unit: ''
-      _values: *id002
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Clears the latched fault message.
@@ -920,7 +920,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 2
       _unit: ''
-      _values: *id003
+      _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Inverts the logic of the Hardware Enable input.
@@ -937,7 +937,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 56
       _unit: ''
-      _values: *id004
+      _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Enables uninterruptible operation when transitioning from GRID FOLLOWING
@@ -957,7 +957,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 58
       _unit: ''
-      _values: *id005
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Dictates to the module whether it is connected to a three-phase (four
@@ -975,7 +975,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 60
       _unit: ''
-      _values: *id006
+      _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
+        3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
@@ -993,7 +994,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 32
       _unit: ''
-      _values: *id001
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
@@ -1011,7 +1012,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 34
       _unit: ''
-      _values: *id001
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
@@ -1029,7 +1030,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 36
       _unit: ''
-      _values: *id001
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: If set to 'Force On,' will force the relay closed, overriding firmware
@@ -1047,7 +1048,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 38
       _unit: ''
-      _values: *id001
+      _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Specifies phase rotation direction.  Only active while transitioning
@@ -1065,7 +1066,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 62
       _unit: ''
-      _values: *id007
+      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Specifies what power command the inverter will follow in GRID FOLLOWING
@@ -1085,7 +1086,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 16
       _unit: ''
-      _values: *id008
+      _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218078273
     _SignalGroups: []
@@ -1383,9 +1384,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 4
       _startbit: 0
       _unit: ''
-      _values: &id019 {'0': 'Power On Reset, and a quoted comma', '1': Ready, '10': N/A,
-        '11': N/A, '12': N/A, '13': N/A, '14': N/A, '15': N/A, '2': Following, '3': Fault,
-        '4': Forming, '5': N/A, '6': N/A, '7': N/A, '8': N/A, '9': N/A}
+      _values: {0: 'Power On Reset, and a quoted comma', 1: Ready, 2: Following, 3: Fault,
+        4: Forming, 5: N/A, 6: N/A, 7: N/A, 8: N/A, 9: N/A, 10: N/A, 11: N/A, 12: N/A,
+        13: N/A, 14: N/A, 15: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: MX2 relay status
@@ -1402,7 +1403,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 18
       _unit: ''
-      _values: &id010 {'0': Open, '1': Closed, '2': Error, '3': N/A}
+      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates that AC power is connected and that voltage and frequency
@@ -1420,7 +1421,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 10
       _unit: ''
-      _values: &id009 {'0': None, '1': Available, '2': Error, '3': N/A}
+      _values: {0: None, 1: Available, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates that DC bus voltage is within operating range.
@@ -1437,7 +1438,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 12
       _unit: ''
-      _values: *id009
+      _values: {0: None, 1: Available, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates whether the switching devices are active.
@@ -1454,7 +1455,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 14
       _unit: ''
-      _values: &id017 {'0': Disabled, '1': Enabled, '2': Error, '3': N/A}
+      _values: {0: Disabled, 1: Enabled, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Status of the hardware enable.
@@ -1471,7 +1472,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 8
       _unit: ''
-      _values: &id020 {'0': Not Active, '1': Active, '2': Error, '3': N/A}
+      _values: {0: Not Active, 1: Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of the Enable command withing the CommandModeControl
@@ -1489,7 +1490,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 4
       _unit: ''
-      _values: *id002
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of the FaultClear command withing the CommandModeControl
@@ -1507,7 +1508,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 6
       _unit: ''
-      _values: *id003
+      _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates the validity of the CommandModeControl message.  Message
@@ -1526,7 +1527,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 24
       _unit: ''
-      _values: &id011 {'0': Invalid, '1': Valid, '2': Error, '3': N/A}
+      _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: MX1 relay status
@@ -1543,7 +1544,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 16
       _unit: ''
-      _values: *id010
+      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: K2 DC Run relay status.
@@ -1560,7 +1561,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 22
       _unit: ''
-      _values: *id010
+      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: K1 precharge relay status.
@@ -1577,7 +1578,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 20
       _unit: ''
-      _values: *id010
+      _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates the validity of the CommandPQ message.  Message must be
@@ -1596,7 +1597,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 26
       _unit: ''
-      _values: *id011
+      _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates the validity of the CommandVF message.  Message must be
@@ -1615,7 +1616,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 28
       _unit: ''
-      _values: *id011
+      _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Operational status of the CAN bus driver.
@@ -1632,7 +1633,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 30
       _unit: ''
-      _values: &id016 {'0': Normal, '1': Warning, '3': ErrorPassive, '4': N/A}
+      _values: {0: Normal, 1: Warning, 3: ErrorPassive, 4: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of the EnableUPSMode command withing the CommandModeControl
@@ -1650,7 +1651,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 32
       _unit: ''
-      _values: *id005
+      _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of the EnableSplitPhase command withing the CommandModeControl
@@ -1668,7 +1669,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 34
       _unit: ''
-      _values: *id006
+      _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
+        3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation
@@ -1686,7 +1688,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 36
       _unit: ''
-      _values: *id007
+      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Flag indicating if voltage is detected on L1, L2 or L3.
@@ -1703,7 +1705,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 38
       _unit: ''
-      _values: &id018 {'0': No_Voltage, '1': Voltage_Detected, '2': Error, '3': N/A}
+      _values: {0: No_Voltage, 1: Voltage_Detected, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Echos the state of PhaseRotation_command withing the CommandModeControl
@@ -1721,7 +1723,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 40
       _unit: ''
-      _values: *id007
+      _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 486524407
     _SignalGroups: []
@@ -1892,7 +1894,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 1
       _startbit: 59
       _unit: ''
-      _values: &id012 {'0': Normal, '1': Fault Active, '2': Error, '3': N/A}
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of AC current exceeding
@@ -1910,7 +1912,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 2
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates whether a hardware trip has been activated.
@@ -1927,7 +1929,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 1
       _startbit: 43
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of DC voltage exceeding
@@ -1945,7 +1947,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 8
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of an IGBT temperature
@@ -1963,7 +1965,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 14
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of an internal inverter
@@ -1981,7 +1983,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 12
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set whenever a control message required for operation contains out
@@ -1999,7 +2001,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 4
       _startbit: 20
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates loss of DC source voltage.
@@ -2016,7 +2018,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 10
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set upon the failure of control hardware to return expected response.
@@ -2033,7 +2035,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 4
       _startbit: 16
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set immediately upon the software detection of DC current exceeding
@@ -2051,7 +2053,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 6
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Will be set any time a fault shutdown has occurred.  It is always
@@ -2069,7 +2071,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 0
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: In grid following mode, this fault will be triggered if AC voltage
@@ -2088,7 +2090,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 4
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Set when an enable request has been sent whithout the WakeUpSignal
@@ -2106,7 +2108,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 24
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Each bridge has hardware protection features as a backup to software
@@ -2125,8 +2127,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 3
       _startbit: 56
       _unit: ''
-      _values: &id013 {'0': Normal, '1': FLT_A, '2': N/A, '3': FLT_C, '4': OverVoltage,
-        '5': FLT_B, '6': Overcurrent, '7': 5V}
+      _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
+        7: 5V}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Each bridge has hardware protection features as a backup to software
@@ -2145,7 +2147,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 3
       _startbit: 40
       _unit: ''
-      _values: *id013
+      _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
+        7: 5V}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates that an illegal state transition was requested.  For example,
@@ -2164,7 +2167,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 26
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates that reading of non-volatile parameters at power-up failed.
@@ -2181,7 +2184,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 28
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Indicates that reading or writing of an non-volatile parameter section
@@ -2199,7 +2202,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 30
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: ''
@@ -2216,7 +2219,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 32
       _unit: ''
-      _values: *id012
+      _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
   - !!python/object:canmatrix.canmatrix.Frame
     _Id: 218088183
     _SignalGroups: []
@@ -2594,10 +2597,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 16
       _startbit: 8
       _unit: ''
-      _values: {'0': ActParam0, '1': ActLVM_ClearingTimes1, '2': ActLVM_ClearingTimes2,
-        '3': ActLFM_Limits, '4': ActLFM_ClearingTimes, '5': StatusJ1939_Interface,
-        '6': StatusFault_Config, '7': StatusContactorDelays1, '8': StatusContactorDelays2,
-        '9': StatusContactorDelays3}
+      _values: {0: ActParam0, 1: ActLVM_ClearingTimes1, 2: ActLVM_ClearingTimes2,
+        3: ActLFM_Limits, 4: ActLFM_ClearingTimes, 5: StatusJ1939_Interface, 6: StatusFault_Config,
+        7: StatusContactorDelays1, 8: StatusContactorDelays2, 9: StatusContactorDelays3}
       comments: {0: '', 1: '', 2: '', 3: '', 4: '', 5: J1939 interface parameters,
         6: 'configuration of various fault conditions to either trip the drive, or
           provide a warning status via CAN', 7: Sets the time the controller assumes
@@ -2842,7 +2844,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 4
       _startbit: 36
       _unit: ''
-      _values: *id014
+      _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '0.0'}
       _comment: Configured action to take when thermal overload input is active.
@@ -2859,7 +2861,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _signalsize: 2
       _startbit: 16
       _unit: ''
-      _values: *id015
+      _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {GenSigStartValue: '100.0'}
       _comment: Maximum time required for the MX1 contactor to open.
@@ -3130,23 +3132,27 @@ _signalDefines:
   HexadecimalOutput: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
     definition: BOOL False True, type: null}
 _valueTables:
-  Baudrate: *id014
-  BridgeFlt: *id013
-  CANStatus: *id016
-  Enable: *id002
-  EnableSplitPhase: *id006
-  EnableUPSMode: *id005
-  Fault: *id012
-  FaultClear: *id003
-  FaultConfig: *id015
-  IGBTsEnabled: *id017
-  InvertHwEnable: *id004
-  LineVoltagePresent: *id018
-  MasterFollower: *id008
-  MessageValid: *id011
-  PhaseRotation: *id007
-  PowerAvail: *id009
-  Relay: *id010
-  RelayCommand: *id001
-  State: *id019
-  WakeUpSignal: *id020
+  Baudrate: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
+  BridgeFlt: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
+    7: 5V}
+  CANStatus: {0: Normal, 1: Warning, 3: ErrorPassive, 4: N/A}
+  Enable: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+  EnableSplitPhase: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
+    3: N/A}
+  EnableUPSMode: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+  Fault: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+  FaultClear: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
+  FaultConfig: {0: Warning, 1: Fault, 2: Error, 3: N/A}
+  IGBTsEnabled: {0: Disabled, 1: Enabled, 2: Error, 3: N/A}
+  InvertHwEnable: {0: No invert, 1: Invert, 2: Error, 3: N/A}
+  LineVoltagePresent: {0: No_Voltage, 1: Voltage_Detected, 2: Error, 3: N/A}
+  MasterFollower: {0: Master, 1: Follower, 2: Error, 3: N/A}
+  MessageValid: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
+  PhaseRotation: {0: Negative, 1: Positive, 2: Error, 3: N/A}
+  PowerAvail: {0: None, 1: Available, 2: Error, 3: N/A}
+  Relay: {0: Open, 1: Closed, 2: Error, 3: N/A}
+  RelayCommand: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+  State: {0: 'Power On Reset, and a quoted comma', 1: Ready, 2: Following, 3: Fault,
+    4: Forming, 5: N/A, 6: N/A, 7: N/A, 8: N/A, 9: N/A, 10: N/A, 11: N/A, 12: N/A,
+    13: N/A, 14: N/A, 15: N/A}
+  WakeUpSignal: {0: Not Active, 1: Active, 2: Error, 3: N/A}
