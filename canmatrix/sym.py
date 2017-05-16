@@ -201,7 +201,6 @@ def load(f, **options):
     class Mode(object):
         glob, enums, send, sendReceive = list(range(4))
     mode = Mode.glob
-    valueTables = {}
 
     frameName = ""
     frame = None
@@ -248,7 +247,7 @@ def load(f, **options):
                 for entry in tempArray:
                     tempValTable[entry.split('=')[0].strip()] = entry.split('=')[
                         1].replace('"', '').strip()
-                valueTables[valtabName] = tempValTable
+                db.addValueTable(valtabName, tempValTable)
 
         elif mode == Mode.send or mode == Mode.sendReceive:
             if line.startswith('['):
@@ -407,7 +406,7 @@ def load(f, **options):
                         # motorola set/convert startbit
                         signal.setStartbit(startBit)
                     if valueTableName is not None:
-                        signal.values = valueTables[valueTableName]
+                        signal.values = db.valueTables[valueTableName]
   #                  signal.addComment(comment)
                     signal.addAttribute("GenSigStartValue", str(startValue))
                     frame.addSignal(signal)
