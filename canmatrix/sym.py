@@ -319,6 +319,7 @@ def load(f, **options):
                 startValue = 0
                 offset = 0
                 valueTableName = None
+                hexadecimal_output = False
 
                 if tmpMux == "Mux":
                     multiplexor = tempArray[2]
@@ -334,8 +335,7 @@ def load(f, **options):
                     if switch == "-m":
                         intel = 0
                     elif switch == "-h":
-                        # hexadecimal output - not supported
-                        pass
+                        hexadecimal_output = True
                     elif switch.startswith('/'):
                         if switch[1:].split(':')[0] == 'u':
                             unit = switch[1:].split(':')[1]
@@ -412,6 +412,8 @@ def load(f, **options):
                     frame.addSignal(signal)
                 if longName is not None:
                     signal.addAttribute("LongName", longName)
+                if hexadecimal_output:
+                    signal.addAttribute("HexadecimalOutput", str(True))
                 # variable processing
             elif line.startswith('ID'):
                 comment = ""
