@@ -903,6 +903,7 @@
 419416567,S,Frequency_echo,"GenSigStartValue","0.0"
 486526199,S,SerialNumber,"GenSigStartValue","0.0"
 486526455,S,Hash,"GenSigStartValue","0.0"
+486526455,S,Hash,"HexadecimalOutput","True"
 486517239,S,Dummy,"GenSigStartValue","0.0"
 486517239,S,VUnder50pct,"GenSigStartValue","160.0"
 486517239,S,V50to88pct,"GenSigStartValue","2000.0"

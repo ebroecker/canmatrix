@@ -208,6 +208,7 @@ def load(f, **options):
     db = CanMatrix()
     db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
     db.addSignalDefines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
+    db.addSignalDefines("HexadecimalOutput", 'BOOL False True')
 
     for line in f:
         line = line.decode(symImportEncoding).strip()

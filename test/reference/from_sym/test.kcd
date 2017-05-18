@@ -1241,7 +1241,8 @@ GenSigStartValue: 0.0</Notes>
       <Signal name="Hash" offset="0" length="28" endianess="big">
         <Notes>Unique revision identification hashcode.
 
-GenSigStartValue: 0.0</Notes>
+GenSigStartValue: 0.0
+HexadecimalOutput: True</Notes>
         <Value max="268435455"/>
       </Signal>
     </Message>

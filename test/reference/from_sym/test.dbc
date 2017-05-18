@@ -412,6 +412,7 @@ CM_ SG_ 2566902263 L3Voltage_measured "Measured L3 RMS line-neutral voltage";
 
 BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
 BA_DEF_ SG_ "GenSigStartValue" FLOAT -3.4E+038 3.4E+038;
+BA_DEF_ SG_ "HexadecimalOutput" BOOL False True;
 
 
 BA_ "GenMsgCycleTime" BO_ 2365573879 100;
@@ -554,6 +555,7 @@ BA_ "GenSigStartValue" SG_ 2566900215 Voltage_echo 0.0;
 BA_ "GenSigStartValue" SG_ 2566900215 Frequency_echo 0.0;
 BA_ "GenSigStartValue" SG_ 2634009847 SerialNumber 0.0;
 BA_ "GenSigStartValue" SG_ 2634010103 Hash 0.0;
+BA_ "HexadecimalOutput" SG_ 2634010103 Hash True;
 BA_ "GenSigStartValue" SG_ 2634000887 Dummy 0.0;
 BA_ "GenSigStartValue" SG_ 2634000887 VUnder50pct 160.0;
 BA_ "GenSigStartValue" SG_ 2634000887 V50to88pct 2000.0;
