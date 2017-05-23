@@ -7,26 +7,26 @@ BS_:
 
 BU_: 
 
-VAL_TABLE_ Relay 1 "Closed" 0 "Open" 3 "N/A" 2 "Error";
-VAL_TABLE_ PowerAvail 1 "Available" 0 "None" 3 "N/A" 2 "Error";
-VAL_TABLE_ MasterFollower 1 "Follower" 0 "Master" 3 "N/A" 2 "Error";
-VAL_TABLE_ State 6 "N/A" 14 "N/A" 12 "N/A" 2 "Following" 7 "N/A" 13 "N/A" 3 "Fault" 8 "N/A" 5 "N/A" 15 "N/A" 11 "N/A" 1 "Ready" 10 "N/A" 9 "N/A" 4 "Forming" 0 "Power On Reset, and a quoted comma";
-VAL_TABLE_ EnableUPSMode 1 "Enable" 0 "Disable" 3 "N/A" 2 "Error";
-VAL_TABLE_ Baudrate 1 "250K" 0 "125K" 3 "1M" 2 "500K";
-VAL_TABLE_ Fault 1 "Fault Active" 0 "Normal" 3 "N/A" 2 "Error";
-VAL_TABLE_ WakeUpSignal 1 "Active" 0 "Not Active" 3 "N/A" 2 "Error";
-VAL_TABLE_ MessageValid 1 "Valid" 0 "Invalid" 3 "N/A" 2 "Error";
-VAL_TABLE_ InvertHwEnable 1 "Invert" 0 "No invert" 3 "N/A" 2 "Error";
-VAL_TABLE_ RelayCommand 1 "Force On" 0 "Normal" 3 "N/A" 2 "Error";
-VAL_TABLE_ BridgeFlt 5 "FLT_B" 6 "Overcurrent" 2 "N/A" 1 "FLT_A" 7 "5V" 4 "OverVoltage" 0 "Normal" 3 "FLT_C";
-VAL_TABLE_ Enable 1 "Enable" 0 "Disable" 3 "N/A" 2 "Error";
-VAL_TABLE_ LineVoltagePresent 1 "Voltage_Detected" 0 "No_Voltage" 3 "N/A" 2 "Error";
-VAL_TABLE_ IGBTsEnabled 1 "Enabled" 0 "Disabled" 3 "N/A" 2 "Error";
-VAL_TABLE_ CANStatus 1 "Warning" 4 "N/A" 0 "Normal" 3 "ErrorPassive";
 VAL_TABLE_ EnableSplitPhase 1 "Enable Split Phase Mode" 0 "Normal - Three Phase Mode" 3 "N/A" 2 "Error";
-VAL_TABLE_ FaultClear 1 "Clear Faults" 0 "Normal" 3 "N/A" 2 "Error";
-VAL_TABLE_ PhaseRotation 1 "Positive" 0 "Negative" 3 "N/A" 2 "Error";
+VAL_TABLE_ EnableUPSMode 1 "Enable" 0 "Disable" 3 "N/A" 2 "Error";
+VAL_TABLE_ BridgeFlt 1 "FLT_A" 0 "Normal" 3 "FLT_C" 2 "N/A" 5 "FLT_B" 4 "OverVoltage" 7 "5V" 6 "Overcurrent";
+VAL_TABLE_ Enable 1 "Enable" 0 "Disable" 3 "N/A" 2 "Error";
+VAL_TABLE_ IGBTsEnabled 1 "Enabled" 0 "Disabled" 3 "N/A" 2 "Error";
+VAL_TABLE_ Relay 1 "Closed" 0 "Open" 3 "N/A" 2 "Error";
+VAL_TABLE_ WakeUpSignal 1 "Active" 0 "Not Active" 3 "N/A" 2 "Error";
+VAL_TABLE_ InvertHwEnable 1 "Invert" 0 "No invert" 3 "N/A" 2 "Error";
+VAL_TABLE_ Fault 1 "Fault Active" 0 "Normal" 3 "N/A" 2 "Error";
+VAL_TABLE_ MessageValid 1 "Valid" 0 "Invalid" 3 "N/A" 2 "Error";
+VAL_TABLE_ RelayCommand 1 "Force On" 0 "Normal" 3 "N/A" 2 "Error";
 VAL_TABLE_ FaultConfig 1 "Fault" 0 "Warning" 3 "N/A" 2 "Error";
+VAL_TABLE_ State 11 "N/A" 10 "N/A" 13 "N/A" 12 "N/A" 15 "N/A" 14 "N/A" 1 "Ready" 0 "Power On Reset, and a quoted comma" 3 "Fault" 2 "Following" 5 "N/A" 4 "Forming" 7 "N/A" 6 "N/A" 9 "N/A" 8 "N/A";
+VAL_TABLE_ LineVoltagePresent 1 "Voltage_Detected" 0 "No_Voltage" 3 "N/A" 2 "Error";
+VAL_TABLE_ PhaseRotation 1 "Positive" 0 "Negative" 3 "N/A" 2 "Error";
+VAL_TABLE_ MasterFollower 1 "Follower" 0 "Master" 3 "N/A" 2 "Error";
+VAL_TABLE_ FaultClear 1 "Clear Faults" 0 "Normal" 3 "N/A" 2 "Error";
+VAL_TABLE_ Baudrate 1 "250K" 0 "125K" 3 "1M" 2 "500K";
+VAL_TABLE_ CANStatus 1 "Warning" 0 "Normal" 3 "ErrorPassive" 4 "N/A";
+VAL_TABLE_ PowerAvail 1 "Available" 0 "None" 3 "N/A" 2 "Error";
 
 BO_ 2164239169 CommandModeControl: 8 Vector__XXX
  SG_ Enable_command : 1|2@0+ (1,0) [0.0|1.0] "" Vector__XXX
@@ -151,8 +151,8 @@ BO_ 2634008055 StatusControlVoltage: 8 Vector__XXX
  SG_ v15_Supply : 55|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
 BO_ 2566900727 StatusTemps: 8 Vector__XXX
- SG_ TempInlet_measured : 7|16@0- (0.1,0) [-3276.8|3276.7000000000003] "C" Vector__XXX
- SG_ TempInternal_measured : 23|16@0- (0.1,0) [-3276.8|3276.7000000000003] "C" Vector__XXX
+ SG_ TempInlet_measured : 7|16@0- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ TempInternal_measured : 23|16@0- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
  SG_ ConverterLosses : 39|16@0+ (1,0) [0.0|1.0] "W" Vector__XXX
 
 BO_ 2365573367 StatusFaults: 8 Vector__XXX
@@ -177,9 +177,9 @@ BO_ 2365573367 StatusFaults: 8 Vector__XXX
  SG_ ThermalOverload : 33|2@0+ (1,0) [0.0|1.0] "" Vector__XXX
 
 BO_ 2365571831 StatusACParameters: 8 Vector__XXX
- SG_ VoltageAC_measured : 7|16@0- (0.1,0) [-3276.8|3276.7000000000003] "V" Vector__XXX
+ SG_ VoltageAC_measured : 7|16@0- (0.1,0) [-3276.8|3276.7] "V" Vector__XXX
  SG_ CurrentAC_measured : 23|16@0- (1,0) [-32768.0|32767.0] "A" Vector__XXX
- SG_ Frequency_measured : 39|16@0- (0.1,0) [-3276.8|3276.7000000000003] "Hz" Vector__XXX
+ SG_ Frequency_measured : 39|16@0- (0.1,0) [-3276.8|3276.7] "Hz" Vector__XXX
 
 BO_ 2634008567 StatusDCParameters: 8 Vector__XXX
  SG_ VoltageDCBus : 23|16@0- (1,0) [-32768.0|32767.0] "V" Vector__XXX

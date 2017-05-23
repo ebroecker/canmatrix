@@ -22,7 +22,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: [testBU]
     _attributes: {GenMsgCycleTime: '100'}
     _comment: ' Multi  Line  Frame comment'
-    _extended: 0
+    _extended: false
     _name: testFrame1
     _receiver: [recBU]
     _signals:

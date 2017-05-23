@@ -272,8 +272,8 @@ ID=18FFCBF7h // Returns the inlet water temperature to the module as well as mod
 Type=Extended
 DLC=8
 CycleTime=100
-Var=TempInlet_measured signed 15,16 -m /u:C /f:0.1 /min:-3276.8 /max:3276.7000000000003  // Coolant inlet temperature
-Var=TempInternal_measured signed 31,16 -m /u:C /f:0.1 /min:-3276.8 /max:3276.7000000000003  // Internal ambient temperature
+Var=TempInlet_measured signed 15,16 -m /u:C /f:0.1 /min:-3276.8 /max:3276.7  // Coolant inlet temperature
+Var=TempInternal_measured signed 31,16 -m /u:C /f:0.1 /min:-3276.8 /max:3276.7  // Internal ambient temperature
 Var=ConverterLosses unsigned 47,16 -m /u:W /min:0.0 /max:1.0  // Power converter thermal loss
 
 [StatusFaults]
@@ -306,9 +306,9 @@ ID= CFFC2F7h // RMS AC Voltage, current, and frequency measured by line A, B and
 Type=Extended
 DLC=8
 CycleTime=100
-Var=VoltageAC_measured signed 15,16 -m /u:V /f:0.1 /min:-3276.8 /max:3276.7000000000003  // Measured RMS AC voltage.
+Var=VoltageAC_measured signed 15,16 -m /u:V /f:0.1 /min:-3276.8 /max:3276.7  // Measured RMS AC voltage.
 Var=CurrentAC_measured signed 31,16 -m /u:A /min:-32768.0 /max:32767.0  // Measured RMS AC current.
-Var=Frequency_measured signed 47,16 -m /u:Hz /f:0.1 /min:-3276.8 /max:3276.7000000000003  // Measured frequency.
+Var=Frequency_measured signed 47,16 -m /u:Hz /f:0.1 /min:-3276.8 /max:3276.7  // Measured frequency.
 
 [StatusDCParameters]
 ID=1CFFC7F7h // Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input voltage.

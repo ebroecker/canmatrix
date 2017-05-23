@@ -12,7 +12,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: CommandModeControlAPU2
     _receiver: []
     _signals:
@@ -211,7 +211,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: CommandModeControl
     _receiver: []
     _signals:
@@ -410,7 +410,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: CommandPowerAPU2
     _receiver: []
     _signals:
@@ -455,7 +455,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: CommandVFAPU2
     _receiver: []
     _signals:
@@ -500,7 +500,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: CommandSetNVParam
     _receiver: []
     _signals:
@@ -904,7 +904,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: CommandPower
     _receiver: []
     _signals:
@@ -949,7 +949,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: CommandVF
     _receiver: []
     _signals:
@@ -994,7 +994,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: CommandFactoryControl
     _receiver: []
     _signals:
@@ -1056,7 +1056,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusACParameters
     _receiver: []
     _signals:
@@ -1118,7 +1118,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusBits
     _receiver: []
     _signals:
@@ -1472,7 +1472,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusFaults
     _receiver: []
     _signals:
@@ -1808,7 +1808,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: MasterMeasuredPower
     _receiver: []
     _signals:
@@ -1853,7 +1853,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusMeasuredPower
     _receiver: []
     _signals:
@@ -1898,7 +1898,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusCommandedPower
     _receiver: []
     _signals:
@@ -1943,7 +1943,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusCommandVF
     _receiver: []
     _signals:
@@ -1988,7 +1988,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusTemps
     _receiver: []
     _signals:
@@ -2050,7 +2050,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusLineCurrents
     _receiver: []
     _signals:
@@ -2112,7 +2112,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusLineVoltages
     _receiver: []
     _signals:
@@ -2174,7 +2174,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusNVParam
     _receiver: []
     _signals:
@@ -2578,7 +2578,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: softwareRev
     _receiver: []
     _signals:
@@ -2640,7 +2640,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusControlVoltage
     _receiver: []
     _signals:
@@ -2719,7 +2719,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusControlVolts2
     _receiver: []
     _signals:
@@ -2781,7 +2781,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '100'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: StatusDCParameters
     _receiver: []
     _signals:
@@ -2843,7 +2843,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: serialNumber
     _receiver: []
     _signals:
@@ -2871,7 +2871,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _Transmitter: []
     _attributes: {GenMsgCycleTime: '0'}
     _comment: null
-    _extended: 0
+    _extended: false
     _name: softwareRevHash
     _receiver: []
     _signals:
