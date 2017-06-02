@@ -167,7 +167,7 @@ def dump(db, f, **options):
             f.write(
                 bo.comment.replace(
                     '"',
-                    '\\"').encode(dbcExportCommentEncoding))
+                    '\\"').encode(dbcExportCommentEncoding, 'ignore'))
             f.write('";\n'.encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
@@ -181,11 +181,12 @@ def dump(db, f, **options):
                      "%d " %
                      bo.id +
                      name +
-                     ' "').encode(dbcExportEncoding))
-                f.write(
-                    signal.comment.replace(
-                        '"', '\\"').encode(dbcExportCommentEncoding))
-                f.write('";\n'.encode(dbcExportEncoding))
+                     ' "').encode(dbcExportEncoding, 'ignore'))
+                    f.write(
+                        signal.comment.replace(
+                            '"', '\\"').encode(dbcExportCommentEncoding, 'ignore'))
+                    f.write('";\n'.encode(dbcExportEncoding, 'ignore'))
+
     f.write("\n".encode(dbcExportEncoding))
 
     # boarUnit comments
@@ -198,7 +199,7 @@ def dump(db, f, **options):
                  bu.comment.replace(
                      '"',
                      '\\"') +
-                    '";\n').encode(dbcExportCommentEncoding))
+                    '";\n').encode(dbcExportCommentEncoding,'ignore'))
     f.write("\n".encode(dbcExportEncoding))
 
     defaults = {}
