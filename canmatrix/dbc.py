@@ -182,10 +182,10 @@ def dump(db, f, **options):
                      bo.id +
                      name +
                      ' "').encode(dbcExportEncoding, 'ignore'))
-                    f.write(
+                f.write(
                         signal.comment.replace(
                             '"', '\\"').encode(dbcExportCommentEncoding, 'ignore'))
-                    f.write('";\n'.encode(dbcExportEncoding, 'ignore'))
+                f.write('";\n'.encode(dbcExportEncoding, 'ignore'))
 
     f.write("\n".encode(dbcExportEncoding))
 
