@@ -207,6 +207,8 @@ def load(f, **options):
 
     db = CanMatrix()
     db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
+    db.addFrameDefines("Receivable", 'BOOL False True')
+    db.addFrameDefines("Sendable", 'BOOL False True')
     db.addSignalDefines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
     db.addSignalDefines("HexadecimalOutput", 'BOOL False True')
 
