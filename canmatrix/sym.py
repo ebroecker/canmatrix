@@ -199,7 +199,7 @@ def load(f, **options):
         symImportEncoding = 'iso-8859-1'
 
     class Mode(object):
-        glob, enums, send, sendReceive = list(range(4))
+        glob, enums, send, sendReceive, receive = list(range(5))
     mode = Mode.glob
 
     frameName = ""
@@ -226,6 +226,9 @@ def load(f, **options):
         if line[0:13] == "{SENDRECEIVE}":
             mode = Mode.sendReceive
             continue
+        if line[0:9] == "{RECEIVE}":
+            mode = Mode.receive
+            continue
 
         if mode == Mode.glob:
             # just ignore headers...
@@ -250,7 +253,7 @@ def load(f, **options):
                         1].replace('"', '').strip()
                 db.addValueTable(valtabName, tempValTable)
 
-        elif mode == Mode.send or mode == Mode.sendReceive:
+        elif mode in {Mode.send, Mode.sendReceive, Mode.receive}:
             if line.startswith('['):
                 multiplexor = None
                 # found new frame:
@@ -264,6 +267,16 @@ def load(f, **options):
                         db._fl.addFrame(frame)
 
                     frame = Frame(frameName)
+
+                    frame.addAttribute(
+                        'Receivable',
+                        mode in {Mode.receive, Mode.sendReceive}
+                    )
+                    frame.addAttribute(
+                        'Sendable',
+                        mode in {Mode.send, Mode.sendReceive}
+                    )
+
                     multiplexValTable = {}
 
             # key value:
