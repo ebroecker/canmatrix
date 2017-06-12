@@ -725,6 +725,10 @@ def load(f, **options):
         if frame.id > 0x80000000:
             frame.id -= 0x80000000
             frame.extended = 1
+    for define in db.globalDefines:
+        if db.globalDefines[define].type == "STRING":
+            if db.attributes.has_key(define):
+                db.attributes[define] = db.attributes[define][1:-1]
     for define in db.buDefines:
         if db.buDefines[define].type == "STRING":
             for ecu in db.boardUnits:
