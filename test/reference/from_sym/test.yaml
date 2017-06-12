@@ -10,7 +10,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: Operational commands are received by the module via control bits within
       this message.
     _extended: 1
@@ -235,7 +235,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
     _extended: 1
@@ -285,7 +285,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: Sets the desired voltage and frequency for the module to produce while
       in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
       modes, this message is used to set the nominal voltage levels for detection
@@ -335,7 +335,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: Returns the actual measured power.
     _extended: 1
     _name: MasterMeasuredPower
@@ -382,7 +382,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: ''
     _extended: 1
     _name: CommandFactoryControl
@@ -447,7 +447,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: Provides access to configure non-volatile parameters.  Note that these
       parameters can only be set when the inverter's power stage is disabled (PowerCircuitEnabled_status
       in StatusBits message is 'Disabled.')
@@ -922,7 +922,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: Operational commands are received by the module via control bits within
       this message.
     _extended: 1
@@ -1147,7 +1147,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
     _extended: 1
@@ -1197,7 +1197,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: Sets the desired voltage and frequency for the module to produce while
       in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
       modes, this message is used to set the nominal voltage levels for detection
@@ -1247,7 +1247,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'False', Sendable: 'True'}
     _comment: Returns the actual measured power.
     _extended: 1
     _name: MasterMeasuredPowerAPU2
@@ -1294,7 +1294,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'True', Sendable: 'True'}
     _comment: ''
     _extended: 1
     _name: justString
@@ -1305,7 +1305,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'True', Sendable: 'True'}
     _comment: ''
     _extended: 1
     _name: stringAndOther
@@ -1334,7 +1334,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Returns the actual measured power.
     _extended: 1
     _name: StatusMeasuredPower
@@ -1381,7 +1381,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Echoes the commanded power (P&Q) as received in CommandPQ.
     _extended: 1
     _name: StatusCommandedPower
@@ -1428,7 +1428,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Bits representing the status of the power module.
     _extended: 1
     _name: StatusBits
@@ -1815,7 +1815,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Lists present voltage of each power supply on the control board (24V,
       15V, 5V, and 3.3V.)
     _extended: 1
@@ -1899,7 +1899,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Returns the inlet water temperature to the module as well as module
       internal ambient temperature.
     _extended: 1
@@ -1965,7 +1965,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Fault bits.
     _extended: 1
     _name: StatusFaults
@@ -2337,7 +2337,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.
     _extended: 1
     _name: StatusACParameters
@@ -2402,7 +2402,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input
       voltage.
     _extended: 1
@@ -2468,7 +2468,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Present voltage of the -15V power supply on the control board.
     _extended: 1
     _name: StatusControlVolts2
@@ -2533,7 +2533,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'True', Sendable: 'True'}
     _comment: Software revision.
     _extended: 1
     _name: softwareRev
@@ -2598,7 +2598,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Echoes the voltage and frequency commands from commandVF.
     _extended: 1
     _name: StatusCommandVF
@@ -2645,7 +2645,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'True', Sendable: 'True'}
     _comment: Serial number of the power module.
     _extended: 1
     _name: serialNumber
@@ -2674,7 +2674,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'True', Sendable: 'True'}
     _comment: Unique software revision identification hashcode.
     _extended: 1
     _name: softwareRevHash
@@ -2703,7 +2703,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {}
+    _attributes: {Receivable: 'True', Sendable: 'True'}
     _comment: Echos back parameter values.
     _extended: 1
     _name: StatusNVParam
@@ -3155,7 +3155,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Measured RMS line currents.
     _extended: 1
     _name: StatusLineCurrents
@@ -3220,7 +3220,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgCycleTime: '100'}
+    _attributes: {GenMsgCycleTime: '100', Receivable: 'True', Sendable: 'True'}
     _comment: Measured RMS line voltages.
     _extended: 1
     _name: StatusLineVoltages
@@ -3283,6 +3283,10 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
 _frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
     _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
+  Receivable: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null, definition: BOOL
+      False True, type: null}
+  Sendable: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null, definition: BOOL
+      False True, type: null}
 _globalDefines: {}
 _signalDefines:
   GenSigStartValue: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
