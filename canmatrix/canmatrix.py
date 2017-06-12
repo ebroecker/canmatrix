@@ -351,7 +351,7 @@ class Signal(object):
         Add Attribute to Signal
         """
         if attribute not in self._attributes:
-            self._attributes[attribute] = value.replace('"', '')
+            self._attributes[attribute] = value
 
     def delAttribute(self, attribute):
         """
