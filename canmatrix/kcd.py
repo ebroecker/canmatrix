@@ -102,7 +102,7 @@ def createSignal(signal, nodeList, typeEnums):
 
     consumer = etree.Element('Consumer')
     for receiver in signal.receiver:
-        if len(receiver) > 1 and receiver in nodeList:
+        if receiver in nodeList and len(receiver) > 1:
             noderef = etree.Element('NodeRef', id=str(nodeList[receiver]))
             consumer.append(noderef)
         if consumer.__len__() > 0:
@@ -181,7 +181,7 @@ def dump(dbs, f, **options):
             producer = etree.Element('Producer')
 
             for transmitter in frame.transmitter:
-                if len(transmitter) > 1 and transmitter in nodeList:
+                if transmitter in nodeList and len(transmitter) > 1:
                     noderef = etree.Element(
                         'NodeRef', id=str(
                             nodeList[transmitter]))
