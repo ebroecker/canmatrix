@@ -654,7 +654,7 @@ def load(f, **options):
                                     temp_raw.group(2).decode(dbcImportEncoding))
 
         elif decoded.startswith("BA_ "):
-            regexp = re.compile("^BA\_ +\"[A-Za-z0-9\-_]+\" +(.+)")
+            regexp = re.compile("^BA\_ +\"[A-Za-z0-9[-_ .]+\" +(.+)")
             tempba = regexp.match(decoded)
 
             if tempba.group(1).strip().startswith("BO_ "):
