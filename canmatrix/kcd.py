@@ -157,11 +157,9 @@ def dump(dbs, f, **options):
         else:
             bus = etree.Element('Bus')
 
-#        if len(name) == 0:
-#            (path, ext) = os.path.splitext(filename)
-#            busName = path
-#        else:
-#            busName = name
+        if len(name) == 0:
+            (path, ext) = os.path.splitext(f.name)
+            name = path
 
         if len(name) > 0:
             bus.set("name", name)
