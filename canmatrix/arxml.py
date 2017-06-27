@@ -1341,6 +1341,7 @@ def load(file, **options):
         db.addFrameDefines("GenMsgDelayTime", 'INT 0 65535')
         db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
         db.addFrameDefines("GenMsgStartValue", 'STRING')
+        db.addFrameDefines("GenMsgStartDelayTime", 'INT 0 65535')
         db.addFrameDefines(
             "GenMsgSendType",
             'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')

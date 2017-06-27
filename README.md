@@ -1,8 +1,8 @@
 [![Build Status](https://travis-ci.org/ebroecker/canmatrix.svg?branch=master)](https://travis-ci.org/ebroecker/canmatrix)
 
-##**Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats.##
+## **Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats.##
 
-###About
+### About
 
 *Canmatrix* implements a "Python Can Matrix Object" which describes the can-communication and the needed objects (Boardunits, Frames, Signals, Values, ...)
 *Canmatrix* also includes two **Tools** (canconvert and cancompare) for converting and comparing **CAN** databases.
@@ -31,7 +31,7 @@ supported file formats for export:
 
 ***
 
-###Install instructions
+### Install instructions
 Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install" and "pip install -r requirements.txt"
 
 This installs the *canmatrix* package into your python installation.
@@ -56,7 +56,7 @@ If you are using a Windows system, these scripts are usually installed at the lo
 
 ***
 
-###Dependencies
+### Dependencies
 
 
 *Canmatrix* depends on:
@@ -67,15 +67,15 @@ If you are using a Windows system, these scripts are usually installed at the lo
  * lxml ([PyPI](https://pypi.python.org/pypi/lxml))
 
 ***
-###Examples
+### Examples
 
 There are some example python scripts in the example-folder
 
 
 ***
-###Usage
+### Usage
 
-####General
+#### General
 
 ```canconvert.py -h```
 ```canconvert.py --help```
@@ -91,7 +91,7 @@ There are some example python scripts in the example-folder
     			enforce output format, ignoring output file extension (e.g., -f csv)
 
 				
-####Conversion of file formats
+#### Conversion of file formats
 
 **convert dbc file to xlsx:**
 
@@ -125,7 +125,7 @@ This converts ```source.dbc``` where units are coded in ```iso-8859-1``` and com
 Similar charset conversions are possible or even mandatory for following formats: dbc, dbf and sym.
 
 
-####possible Modifications:
+#### possible Modifications:
 
 **delete zero sized signals:**
 
@@ -207,7 +207,7 @@ this will load ```source.dbc``` and rename signals ```mySignal``` in ```myNewSig
 The result is stored in ```target.dlc```.
 
 
-####Extract and Merge:
+#### Extract and Merge:
 
 **extract one ecu out of matrix**
 
@@ -253,7 +253,7 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
 
 ***
 
-###Commandline 
+### Commandline 
 * all formats support im-/export of signals and frames
 
   -h, --help            
