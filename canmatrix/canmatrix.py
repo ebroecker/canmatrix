@@ -515,7 +515,9 @@ class Frame(object):
             ('transmitter', '_Transmitter', None, []),
             ('extended', '_extended', bool, False),
             ('comment', '_comment', str, None),
-            ('signals', '_signals', None, [])]
+            ('signals', '_signals', None, []),
+            ('mux_names', '_mux_names', None, {})
+        ]
 
         for arg_name, destination, function, default in args:
             try:
@@ -587,6 +589,14 @@ class Frame(object):
     @extended.setter
     def extended(self, value):
         self._extended = value
+
+    @property
+    def mux_names(self):
+        return self._mux_names
+
+    @mux_names.setter
+    def mux_names(self, value):
+        self._mux_names = value
 
     @property
     def name(self):
