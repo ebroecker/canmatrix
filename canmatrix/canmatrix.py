@@ -416,18 +416,28 @@ class Signal(object):
     def setMin(self, min=None):
         self._min = min
         if self._min is None:
-            rawMin = self.calculateRawRange()[0]
-            self._min = self._offset + (rawMin * self._factor)
+            self._min = self.calcMin()
+
         return self._min
+
+    def calcMin(self):
+        rawMin = self.calculateRawRange()[0]
+
+        return self._offset + (rawMin * self._factor)
 
     def setMax(self, max=None):
         self._max = max
 
         if self._max is None:
-            rawMax = self.calculateRawRange()[1]
-            self._max = self._offset + (rawMax * self._factor)
+            self._max = self.calcMax()
+
         return self._max
             
+    def calcMax(self):
+        rawMax = self.calculateRawRange()[1]
+
+        return self._offset + (rawMax * self._factor)
+
     def __str__(self):
         return self._name
 
