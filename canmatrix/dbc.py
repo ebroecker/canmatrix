@@ -26,6 +26,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+import collections
 import logging
 logger = logging.getLogger('root')
 
@@ -49,6 +50,18 @@ def normalizeName(name, whitespaceReplacement):
     return name
 
 
+def format_float(f):
+    s = str(f).upper()
+    if s.endswith('.0'):
+        s = s[:-2]
+
+    if 'E' in s:
+        s = s.split('E')
+        s = '%sE%s%s' % (s[0], s[1][0], s[1][1:].rjust(3, '0'))
+
+    return s.upper()
+
+
 def dump(db, f, **options):
     if 'dbcExportEncoding' in options:
         dbcExportEncoding = options["dbcExportEncoding"]
@@ -65,6 +78,10 @@ def dump(db, f, **options):
             print("Warning: Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
     else:
         whitespaceReplacement = '_'
+    if 'writeValTable' in options:
+        writeValTable = options["writeValTable"]
+    else:
+        writeValTable = True
 
     f.write("VERSION \"created by canmatrix\"\n\n".encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
@@ -79,21 +96,45 @@ def dump(db, f, **options):
         f.write((bu.name + " ").encode(dbcExportEncoding))
     f.write("\n\n".encode(dbcExportEncoding))
 
-    # ValueTables
-    for table in db.valueTables:
-        f.write(("VAL_TABLE_ " + table).encode(dbcExportEncoding))
-        for row in db.valueTables[table]:
-            f.write(
-                (' ' +
-                 str(row) +
-                 ' "' +
-                 db.valueTables[table][row] +
-                 '"').encode(dbcExportEncoding))
-        f.write(";\n".encode(dbcExportEncoding))
-    f.write("\n".encode(dbcExportEncoding))
+    if writeValTable:
+        # ValueTables
+        for table in db.valueTables:
+            f.write(("VAL_TABLE_ " + table).encode(dbcExportEncoding))
+            for row in db.valueTables[table]:
+                f.write(
+                    (' ' +
+                     str(row) +
+                     ' "' +
+                     db.valueTables[table][row] +
+                     '"').encode(dbcExportEncoding))
+            f.write(";\n".encode(dbcExportEncoding))
+        f.write("\n".encode(dbcExportEncoding))
+
+    output_names = collections.defaultdict(dict)
+
+    for frame in db.frames:
+        normalized_names = collections.OrderedDict((
+            (s, normalizeName(s.name, whitespaceReplacement))
+            for s in frame.signals
+        ))
+
+        duplicate_signal_totals = collections.Counter(normalized_names.values())
+        duplicate_signal_counter = collections.Counter()
+
+        numbered_names = collections.OrderedDict()
+
+        for signal in frame.signals:
+            name = normalized_names[signal]
+            duplicate_signal_counter[name] += 1
+            if duplicate_signal_totals[name] > 1:
+                # TODO: pad to 01 in case of 10+ instances, for example?
+                name += str(duplicate_signal_counter[name] - 1)
+
+            output_names[frame][signal] = name
 
     # Frames
     for bo in db.frames:
+        multiplex_written = False
         if bo.transmitter.__len__() == 0:
             bo.addTransmitter("Vector__XXX")
 
@@ -108,11 +149,18 @@ def dump(db, f, **options):
              bo.size +
              bo.transmitter[0] +
              "\n").encode(dbcExportEncoding))
+        duplicate_signal_totals = collections.Counter(
+            normalizeName(s.name, whitespaceReplacement) for s in bo.signals
+        )
+        duplicate_signal_counter = collections.Counter()
         for signal in bo.signals:
-            name = normalizeName(signal.name, whitespaceReplacement)
-            f.write((" SG_ " + name).encode(dbcExportEncoding))
+            if signal.multiplex == 'Multiplexor' and multiplex_written:
+                continue
+
+            f.write((" SG_ " + output_names[bo][signal]).encode(dbcExportEncoding))
             if signal.multiplex == 'Multiplexor':
                 f.write(' M '.encode(dbcExportEncoding))
+                multiplex_written = True
             elif signal.multiplex is not None:
                 f.write((" m%d " %
                          int(signal.multiplex)).encode(dbcExportEncoding))
@@ -130,12 +178,12 @@ def dump(db, f, **options):
                   signal.is_little_endian,
                   sign)).encode(dbcExportEncoding))
             f.write(
-                (" (%g,%g)" %
-                 (signal.factor, signal.offset)).encode(dbcExportEncoding))
+                (" (%s,%s)" %
+                 (format_float(signal.factor), format_float(signal.offset))).encode(dbcExportEncoding))
             f.write(
                 (" [{}|{}]".format(
-                    signal.min,
-                    signal.max)).encode(dbcExportEncoding))
+                    format_float(signal.min),
+                    format_float(signal.max))).encode(dbcExportEncoding))
             f.write(' "'.encode(dbcExportEncoding))
 
             if signal.unit is None:
@@ -175,7 +223,7 @@ def dump(db, f, **options):
     for bo in db.frames:
         for signal in bo.signals:
             if signal.comment is not None and signal.comment.__len__() > 0:
-                name = normalizeName(signal.name, whitespaceReplacement)
+                name = output_names[bo][signal]
                 f.write(
                     ("CM_ SG_ " +
                      "%d " %
@@ -300,11 +348,13 @@ def dump(db, f, **options):
     for frame in db.frames:
         for signal in frame.signals:
             for attrib, val in sorted(signal.attributes.items()):
-                name = normalizeName(signal.name, whitespaceReplacement)
+                name = output_names[frame][signal]
                 if db.signalDefines[attrib].type == "STRING":
                     val = '"' + val + '"'
                 elif not val:
                     val = '""'
+                elif isinstance(val, float):
+                    val = format_float(val)
                 f.write(
                     ('BA_ "' +
                      attrib +
@@ -316,20 +366,26 @@ def dump(db, f, **options):
                      ';\n').encode(dbcExportEncoding))
             if signal.is_float:
                 if int(signal.signalsize) > 32:
-                    f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.id, signal.name)).encode(dbcExportEncoding))
+                    f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.id, output_names[bo][signal])).encode(dbcExportEncoding))
                 else:
-                    f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.id, signal.name)).encode(dbcExportEncoding))
+                    f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.id, output_names[bo][signal])).encode(dbcExportEncoding))
  
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-values:
     for bo in db.frames:
+        multiplex_written = False
         for signal in bo.signals:
+            if signal.multiplex == 'Multiplexor' and multiplex_written:
+                continue
+
+            multiplex_written = True
+
             if signal.values:
                 f.write(
                     ('VAL_ %d ' %
                      bo.id +
-                     signal.name).encode(dbcExportEncoding))
+                     output_names[bo][signal]).encode(dbcExportEncoding))
                 for attrib, val in sorted(
                         signal.values.items(), key=lambda x: int(x[0])):
                     f.write(
@@ -342,7 +398,7 @@ def dump(db, f, **options):
             f.write(("SIG_GROUP_ " + str(bo.id) + " " + sigGroup.name +
                      " " + str(sigGroup.id) + " :").encode(dbcExportEncoding))
             for signal in sigGroup.signals:
-                f.write((" " + signal.name).encode(dbcExportEncoding))
+                f.write((" " + output_names[bo][signal]).encode(dbcExportEncoding))
             f.write(";\n".encode(dbcExportEncoding))
 
 

@@ -208,6 +208,7 @@ class Signal(object):
             ('multiplex', '_multiplex', multiplex, None),
             ('is_float', '_is_float', bool, False),
             ('enumeration', 'enumeration', str, None),
+            ('comments', 'comments', None, {}),
             ('attributes', '_attributes', None, {}),
             ('values', '_values', None, {}),
         ]

@@ -5,7 +5,7 @@ _attributes: {}
 _buDefines: {}
 _fl: !!python/object:canmatrix.canmatrix.FrameList
   _list:
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 16755521
     _SignalGroups: []
     _Size: 8
@@ -37,6 +37,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 0
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -55,6 +56,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 2
       _unit: ''
       _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -73,6 +75,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ''
       _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -94,6 +97,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 58
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -114,6 +118,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _unit: ''
       _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
         3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -133,6 +138,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 32
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -152,6 +158,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 34
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -171,6 +178,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 36
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -190,6 +198,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 38
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -209,6 +218,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 62
       _unit: ''
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -230,8 +240,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 16
       _unit: ''
       _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218082369
     _SignalGroups: []
     _Size: 8
@@ -262,6 +273,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: W
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -281,8 +293,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: VA
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218082881
     _SignalGroups: []
     _Size: 8
@@ -314,6 +327,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: Vrms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -332,8 +346,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218090230
     _SignalGroups: []
     _Size: 8
@@ -362,6 +377,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: W
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -380,8 +396,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: VA
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218083137
     _SignalGroups: []
     _Size: 8
@@ -410,6 +427,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 0
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -428,6 +446,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -446,8 +465,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218081857
     _SignalGroups: []
     _Size: 8
@@ -480,6 +500,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _values: {0: Param0, 1: LVM_ClearingTimes1, 2: LVM_ClearingTimes2, 3: LFM_Limits,
         4: LFM_ClearingTimes, 5: J1939_Interface, 6: Fault_Config, 7: ContactorDelays1,
         8: ContactorDelays2, 10: ContactorDelays3}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -498,6 +519,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -518,6 +540,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -538,6 +561,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -558,6 +582,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -578,6 +603,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -598,6 +624,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -618,6 +645,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -638,6 +666,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -658,6 +687,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -678,6 +708,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -698,6 +729,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -716,6 +748,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 16
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -734,6 +767,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -752,6 +786,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 36
       _unit: ''
       _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -770,6 +805,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 16
       _unit: ''
       _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -788,6 +824,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -806,6 +843,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -824,6 +862,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -842,6 +881,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -860,6 +900,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -878,6 +919,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -896,6 +938,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -914,8 +957,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 16751425
     _SignalGroups: []
     _Size: 8
@@ -947,6 +991,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 0
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -965,6 +1010,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 2
       _unit: ''
       _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -983,6 +1029,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ''
       _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1004,6 +1051,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 58
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1024,6 +1072,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _unit: ''
       _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
         3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1043,6 +1092,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 32
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1062,6 +1112,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 34
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1081,6 +1132,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 36
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1100,6 +1152,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 38
       _unit: ''
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1119,6 +1172,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 62
       _unit: ''
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1140,8 +1194,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 16
       _unit: ''
       _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218078273
     _SignalGroups: []
     _Size: 8
@@ -1172,6 +1227,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: W
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1191,8 +1247,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: VA
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218078785
     _SignalGroups: []
     _Size: 8
@@ -1224,6 +1281,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: Vrms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1242,8 +1300,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218090231
     _SignalGroups: []
     _Size: 8
@@ -1272,6 +1331,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: W
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1290,8 +1350,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: VA
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218090231
     _SignalGroups: []
     _Size: 8
@@ -1320,6 +1381,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: W
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1338,8 +1400,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: VA
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 419415287
     _SignalGroups: []
     _Size: 8
@@ -1368,6 +1431,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: W
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1386,8 +1450,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: VA
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218088439
     _SignalGroups: []
     _Size: 8
@@ -1418,6 +1483,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _values: {0: 'Power On Reset, and a quoted comma', 1: Ready, 2: Following, 3: Fault,
         4: Forming, 5: N/A, 6: N/A, 7: N/A, 8: N/A, 9: N/A, 10: N/A, 11: N/A, 12: N/A,
         13: N/A, 14: N/A, 15: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1436,6 +1502,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 18
       _unit: ''
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1455,6 +1522,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 10
       _unit: ''
       _values: {0: None, 1: Available, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1473,6 +1541,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 12
       _unit: ''
       _values: {0: None, 1: Available, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1491,6 +1560,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 14
       _unit: ''
       _values: {0: Disabled, 1: Enabled, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1509,6 +1579,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: ''
       _values: {0: Not Active, 1: Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1528,6 +1599,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 4
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1547,6 +1619,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 6
       _unit: ''
       _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1567,6 +1640,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1585,6 +1659,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 16
       _unit: ''
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1603,6 +1678,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 22
       _unit: ''
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1621,6 +1697,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 20
       _unit: ''
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1641,6 +1718,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 26
       _unit: ''
       _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1661,6 +1739,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 28
       _unit: ''
       _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1679,6 +1758,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 30
       _unit: ''
       _values: {0: Normal, 1: Warning, 3: ErrorPassive, 4: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1698,6 +1778,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 32
       _unit: ''
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1718,6 +1799,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _unit: ''
       _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
         3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1737,6 +1819,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 36
       _unit: ''
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1755,6 +1838,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 38
       _unit: ''
       _values: {0: No_Voltage, 1: Voltage_Detected, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1774,8 +1858,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ''
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 486524407
     _SignalGroups: []
     _Size: 8
@@ -1805,6 +1890,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: V
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1823,6 +1909,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: V
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1841,6 +1928,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: V
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1859,8 +1947,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: V
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 419417079
     _SignalGroups: []
     _Size: 8
@@ -1890,6 +1979,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: C
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1908,6 +1998,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: C
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1926,8 +2017,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: W
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218089719
     _SignalGroups: []
     _Size: 8
@@ -1956,6 +2048,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 59
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1975,6 +2068,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 2
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -1993,6 +2087,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 43
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2012,6 +2107,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2031,6 +2127,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 14
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2050,6 +2147,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 12
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2069,6 +2167,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 20
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2087,6 +2186,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 10
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2105,6 +2205,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 16
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2124,6 +2225,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 6
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2143,6 +2245,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 0
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2163,6 +2266,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 4
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2182,6 +2286,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2203,6 +2308,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _unit: ''
       _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
         7: 5V}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2224,6 +2330,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _unit: ''
       _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
         7: 5V}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2244,6 +2351,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 26
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2262,6 +2370,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 28
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2281,6 +2390,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 30
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2299,8 +2409,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 32
       _unit: ''
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 218088183
     _SignalGroups: []
     _Size: 8
@@ -2329,6 +2440,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: V
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2347,6 +2459,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: A
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2365,8 +2478,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 486524919
     _SignalGroups: []
     _Size: 8
@@ -2396,6 +2510,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: V
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2414,6 +2529,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: A
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2432,8 +2548,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: V
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 486524663
     _SignalGroups: []
     _Size: 8
@@ -2462,6 +2579,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: V
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2480,6 +2598,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: C
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2498,8 +2617,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: C
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 486523383
     _SignalGroups: []
     _Size: 8
@@ -2528,6 +2648,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2546,6 +2667,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2564,8 +2686,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 419416567
     _SignalGroups: []
     _Size: 8
@@ -2594,6 +2717,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: Vrms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2612,8 +2736,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 486526199
     _SignalGroups: []
     _Size: 8
@@ -2642,8 +2767,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 486526455
     _SignalGroups: []
     _Size: 8
@@ -2672,8 +2798,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 28
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 486517239
     _SignalGroups: []
     _Size: 8
@@ -2704,6 +2831,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _values: {0: ActParam0, 1: ActLVM_ClearingTimes1, 2: ActLVM_ClearingTimes2,
         3: ActLFM_Limits, 4: ActLFM_ClearingTimes, 5: StatusJ1939_Interface, 6: StatusFault_Config,
         7: StatusContactorDelays1, 8: StatusContactorDelays2, 9: StatusContactorDelays3}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2722,6 +2850,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2740,6 +2869,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2758,6 +2888,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2776,6 +2907,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2794,6 +2926,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2812,6 +2945,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2830,6 +2964,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2848,6 +2983,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: Hz
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2866,6 +3002,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2884,6 +3021,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2902,6 +3040,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2920,6 +3059,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 16
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2939,6 +3079,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ''
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2957,6 +3098,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 36
       _unit: ''
       _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2975,6 +3117,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 16
       _unit: ''
       _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -2993,6 +3136,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3011,6 +3155,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3029,6 +3174,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3047,6 +3193,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3065,6 +3212,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3083,6 +3231,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 56
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3101,6 +3250,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3119,8 +3269,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: ms
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 419418359
     _SignalGroups: []
     _Size: 8
@@ -3149,6 +3300,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: A
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3167,6 +3319,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: A
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3185,8 +3338,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: A
       _values: {}
+      comments: {}
       enumeration: null
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 419418615
     _SignalGroups: []
     _Size: 8
@@ -3215,6 +3369,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 8
       _unit: Vrms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3233,6 +3388,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 24
       _unit: Vrms
       _values: {}
+      comments: {}
       enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
@@ -3251,6 +3407,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       _unit: Vrms
       _values: {}
+      comments: {}
       enumeration: null
 _frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
