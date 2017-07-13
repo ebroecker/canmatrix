@@ -30,6 +30,9 @@
 from __future__ import division
 import math
 
+import logging
+logger = logging.getLogger('root')
+
 
 class FrameList(object):
     """
@@ -1045,8 +1048,8 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
 
     if format == 1:  # Intel
         lastbit = startbit + len
-        firstbyte = math.floor(startbit / 8) - 1
-        lastbyte = math.floor((lastbit - 1) / 8)
+        firstbyte = int(math.floor(startbit / 8) - 1)
+        lastbyte = int(math.floor((lastbit - 1) / 8))
         # im lastbyte mit dem msb anfangen
         # im firstbyte mit dem lsb aufhoeren
         for i in range(lastbyte, firstbyte, -1):
@@ -1066,22 +1069,23 @@ def putSignalValueInFrame(startbit, len, format, value, frame):
             lastbit = startbit + len
     else:  # Motorola
         # TODO needs review, is probably wrong till we use LSB for startbit
-        firstbyte = math.floor(startbit / 8)
+        firstbyte = int(math.floor(startbit / 8))
         bitsInfirstByte = startbit % 8 + 1
         restnBits = len - bitsInfirstByte
-        lastbyte = firstbyte + math.floor(restnBits / 8)
+        lastbyte = firstbyte + int(math.floor(restnBits / 8))
         if restnBits % 8 > 0:
             lastbyte += 1
         restLen = len
         nbits = bitsInfirstByte
-        for i in range(firstbyte, lastbyte + 1):
-            end = 0
-            if restLen < 8:
-                end = 8 - restLen
-            mask = (0xff >> (8 - nbits)) << end
-            restLen -= nbits
-            frame[i] |= ((value >> restLen) << end) & mask
-            nbits = min(restLen, 8)
+ # seems to be broken
+ #       for i in range(firstbyte, lastbyte + 1):
+ #           end = 0
+ #           if restLen < 8:
+ #               end = 8 - restLen
+ #           mask = (0xff >> (8 - nbits)) << end
+ #           restLen -= nbits
+ #           frame[i] |= ((value >> restLen) << end) & mask
+ #           nbits = min(restLen, 8)
 
 
 class CanId(object):
