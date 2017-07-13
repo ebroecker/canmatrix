@@ -208,6 +208,8 @@ class Signal(object):
             ('multiplex', '_multiplex', multiplex, None),
             ('is_float', '_is_float', bool, False),
             ('enumeration', 'enumeration', str, None),
+            ('attributes', '_attributes', None, {}),
+            ('values', '_values', None, {}),
         ]
 
         for arg_name, destination, function, default in args:
@@ -237,8 +239,6 @@ class Signal(object):
             self.setMax()
 
         self._name = name
-        self._attributes = {}
-        self._values = {}
 
     @property
     def name(self):
@@ -516,7 +516,10 @@ class Frame(object):
             ('extended', '_extended', bool, False),
             ('comment', '_comment', str, None),
             ('signals', '_signals', None, []),
-            ('mux_names', '_mux_names', None, {})
+            ('mux_names', '_mux_names', None, {}),
+            ('attributes', '_attributes', None, {}),
+            ('receiver', '_receiver', None, []),
+            ('SignalGroups', '_SignalGroups', None, []),
         ]
 
         for arg_name, destination, function, default in args:
@@ -537,11 +540,6 @@ class Frame(object):
                 ', '.join(kwargs.keys())
             ))
 
-
-        self._attributes = {}
-        self._receiver = []
-        self._SignalGroups = []
-
     @property
     def attributes(self):
         return self._attributes
@@ -561,6 +559,10 @@ class Frame(object):
     @property
     def transmitter(self):
         return self._Transmitter
+
+    @transmitter.setter
+    def transmitter(self, value):
+        self._Transmitter = value
 
     @property
     def size(self):
