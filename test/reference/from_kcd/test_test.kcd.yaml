@@ -14,6 +14,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _comment: Operational commands are received by the module via control bits within
       this message.
     _extended: 1
+    _mux_names: {}
     _name: CommandModeControl
     _receiver: []
     _signals:
@@ -239,6 +240,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
     _extended: 1
+    _mux_names: {}
     _name: CommandPower
     _receiver: []
     _signals:
@@ -291,6 +293,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       modes, this message is used to set the nominal voltage levels for detection
       of acceptable AC line voltage.
     _extended: 1
+    _mux_names: {}
     _name: CommandVF
     _receiver: []
     _signals:
@@ -338,6 +341,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: Returns the actual measured power.
     _extended: 1
+    _mux_names: {}
     _name: MasterMeasuredPower
     _receiver: []
     _signals:
@@ -385,6 +389,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: ''
     _extended: 1
+    _mux_names: {}
     _name: CommandFactoryControl
     _receiver: []
     _signals:
@@ -452,6 +457,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       parameters can only be set when the inverter's power stage is disabled (PowerCircuitEnabled_status
       in StatusBits message is 'Disabled.')
     _extended: 1
+    _mux_names: {}
     _name: CommandSetNVParam
     _receiver: []
     _signals:
@@ -918,6 +924,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _comment: Operational commands are received by the module via control bits within
       this message.
     _extended: 1
+    _mux_names: {}
     _name: CommandModeControlAPU2
     _receiver: []
     _signals:
@@ -1143,6 +1150,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
     _extended: 1
+    _mux_names: {}
     _name: CommandPowerAPU2
     _receiver: []
     _signals:
@@ -1195,6 +1203,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       modes, this message is used to set the nominal voltage levels for detection
       of acceptable AC line voltage.
     _extended: 1
+    _mux_names: {}
     _name: CommandVFAPU2
     _receiver: []
     _signals:
@@ -1242,6 +1251,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: Returns the actual measured power.
     _extended: 1
+    _mux_names: {}
     _name: MasterMeasuredPowerAPU2
     _receiver: []
     _signals:
@@ -1289,6 +1299,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Returns the actual measured power.
     _extended: 1
+    _mux_names: {}
     _name: StatusMeasuredPower
     _receiver: []
     _signals:
@@ -1336,6 +1347,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Echoes the commanded power (P&Q) as received in CommandPQ.
     _extended: 1
+    _mux_names: {}
     _name: StatusCommandedPower
     _receiver: []
     _signals:
@@ -1383,6 +1395,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Bits representing the status of the power module.
     _extended: 1
+    _mux_names: {}
     _name: StatusBits
     _receiver: []
     _signals:
@@ -1771,6 +1784,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _comment: Lists present voltage of each power supply on the control board (24V,
       15V, 5V, and 3.3V.)
     _extended: 1
+    _mux_names: {}
     _name: StatusControlVoltage
     _receiver: []
     _signals:
@@ -1855,6 +1869,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _comment: Returns the inlet water temperature to the module as well as module
       internal ambient temperature.
     _extended: 1
+    _mux_names: {}
     _name: StatusTemps
     _receiver: []
     _signals:
@@ -1920,6 +1935,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Fault bits.
     _extended: 1
+    _mux_names: {}
     _name: StatusFaults
     _receiver: []
     _signals:
@@ -2292,6 +2308,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.
     _extended: 1
+    _mux_names: {}
     _name: StatusACParameters
     _receiver: []
     _signals:
@@ -2358,6 +2375,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _comment: Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input
       voltage.
     _extended: 1
+    _mux_names: {}
     _name: StatusDCParameters
     _receiver: []
     _signals:
@@ -2423,6 +2441,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Present voltage of the -15V power supply on the control board.
     _extended: 1
+    _mux_names: {}
     _name: StatusControlVolts2
     _receiver: []
     _signals:
@@ -2488,6 +2507,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: Software revision.
     _extended: 1
+    _mux_names: {}
     _name: softwareRev
     _receiver: []
     _signals:
@@ -2553,6 +2573,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Echoes the voltage and frequency commands from commandVF.
     _extended: 1
+    _mux_names: {}
     _name: StatusCommandVF
     _receiver: []
     _signals:
@@ -2600,6 +2621,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: Serial number of the power module.
     _extended: 1
+    _mux_names: {}
     _name: serialNumber
     _receiver: []
     _signals:
@@ -2629,6 +2651,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: Unique software revision identification hashcode.
     _extended: 1
+    _mux_names: {}
     _name: softwareRevHash
     _receiver: []
     _signals:
@@ -2658,6 +2681,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: Echos back parameter values.
     _extended: 1
+    _mux_names: {}
     _name: StatusNVParam
     _receiver: []
     _signals:
@@ -3104,6 +3128,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured RMS line currents.
     _extended: 1
+    _mux_names: {}
     _name: StatusLineCurrents
     _receiver: []
     _signals:
@@ -3169,6 +3194,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: Measured RMS line voltages.
     _extended: 1
+    _mux_names: {}
     _name: StatusLineVoltages
     _receiver: []
     _signals:

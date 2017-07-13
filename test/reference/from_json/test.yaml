@@ -13,6 +13,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: null
     _extended: 0
+    _mux_names: {}
     _name: testFrame1
     _receiver: []
     _signals:
@@ -60,6 +61,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: null
     _extended: 0
+    _mux_names: {}
     _name: extendedFrame
     _receiver: []
     _signals: []

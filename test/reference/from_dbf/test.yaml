@@ -23,6 +23,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {GenMsgCycleTime: '100'}
     _comment: ' Multi  Line  Frame comment'
     _extended: false
+    _mux_names: {}
     _name: testFrame1
     _receiver: [recBU]
     _signals:
@@ -70,6 +71,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: null
     _extended: 1
+    _mux_names: {}
     _name: extendedFrame
     _receiver: []
     _signals: []
