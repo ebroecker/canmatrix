@@ -17,7 +17,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Operational commands are received by the module via control bits within
       this message.
     _extended: 1
@@ -265,7 +265,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
     _extended: 1
@@ -320,7 +320,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Sets the desired voltage and frequency for the module to produce while
       in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
       modes, this message is used to set the nominal voltage levels for detection
@@ -375,7 +375,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Returns the actual measured power.
     _extended: 1
     _mux_names: {}
@@ -427,7 +427,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: ''
     _extended: 1
     _mux_names: {}
@@ -499,7 +499,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Provides access to configure non-volatile parameters.  Note that these
       parameters can only be set when the inverter's power stage is disabled (PowerCircuitEnabled_status
       in StatusBits message is 'Disabled.')
@@ -1015,7 +1015,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Operational commands are received by the module via control bits within
       this message.
     _extended: 1
@@ -1263,7 +1263,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Sets the desired real (P) and reactive (Q) power levels for the module
       to follow while in the GRID FOLLOWING mode.
     _extended: 1
@@ -1318,7 +1318,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Sets the desired voltage and frequency for the module to produce while
       in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING
       modes, this message is used to set the nominal voltage levels for detection
@@ -1373,7 +1373,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Returns the actual measured power.
     _extended: 1
     _mux_names: {}
@@ -1425,7 +1425,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: ''
     _extended: 1
     _mux_names: {}
@@ -1437,7 +1437,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: ''
     _extended: 1
     _mux_names: {}
@@ -1469,7 +1469,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Returns the actual measured power.
     _extended: 1
     _mux_names: {}
@@ -1521,7 +1521,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Echoes the commanded power (P&Q) as received in CommandPQ.
     _extended: 1
     _mux_names: {}
@@ -1573,7 +1573,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Bits representing the status of the power module.
     _extended: 1
     _mux_names: {}
@@ -2001,7 +2001,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Lists present voltage of each power supply on the control board (24V,
       15V, 5V, and 3.3V.)
     _extended: 1
@@ -2094,7 +2094,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Returns the inlet water temperature to the module as well as module
       internal ambient temperature.
     _extended: 1
@@ -2167,7 +2167,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Fault bits.
     _extended: 1
     _mux_names: {}
@@ -2578,7 +2578,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.
     _extended: 1
     _mux_names: {}
@@ -2650,7 +2650,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input
       voltage.
     _extended: 1
@@ -2723,7 +2723,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Present voltage of the -15V power supply on the control board.
     _extended: 1
     _mux_names: {}
@@ -2795,7 +2795,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Software revision.
     _extended: 1
     _mux_names: {}
@@ -2867,7 +2867,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Echoes the voltage and frequency commands from commandVF.
     _extended: 1
     _mux_names: {}
@@ -2919,7 +2919,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Serial number of the power module.
     _extended: 1
     _mux_names: {}
@@ -2951,7 +2951,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Unique software revision identification hashcode.
     _extended: 1
     _mux_names: {}
@@ -2983,7 +2983,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Echos back parameter values.
     _extended: 1
     _mux_names: {}
@@ -3498,7 +3498,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Measured RMS line currents.
     _extended: 1
     _mux_names: {}
@@ -3570,7 +3570,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _SignalGroups: []
     _Size: 8
     _Transmitter: []
-    _attributes: {GenMsgSendType: '1'}
+    _attributes: {GenMsgSendType: '1', GenMsgStartValue: '0000000000000000'}
     _comment: Measured RMS line voltages.
     _extended: 1
     _mux_names: {}
