@@ -1017,9 +1017,11 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE",
             arDict,
             ns)
+
         initvalue = arGetXchildren(syssignal, "INIT-VALUE/VALUE", arDict, ns)
-        if initvalue is None:
-            intivalue = arGetXchildren(isignal, "INIT-VALUE/NUMERICAL-VALUE-SPECIFICATION/VALUE", arDict, ns) ##AR4.2
+
+        if initvalue is None or initvalue.__len__() == 0:
+            initvalue = arGetXchildren(isignal, "INIT-VALUE/NUMERICAL-VALUE-SPECIFICATION/VALUE", arDict, ns) ##AR4.2
         if initvalue is not None and initvalue.__len__() >= 1:
             initvalue = initvalue[0]
         else:
@@ -1272,7 +1274,8 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     if pdusigmapping is not None and pdusigmapping.__len__() > 0:
         getSignals(pdusigmapping, newFrame, arDict, ns, None)
 
-    elif pdusigmapping is None: ## AR4.2
+# Seen some pdusigmapping being [] and not None with some arxml 4.2
+    else: ##AR 4.2
         pdutrigs = arGetChildren(frameTriggering, "PDU-TRIGGERINGS", arDict, ns)
         if pdutrigs is not None:
             for pdutrig in pdutrigs:
@@ -1287,10 +1290,6 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                 "DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found" %
                 (newFrame.name))
             
-    else:
-        logger.debug(
-            "DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" %
-            (newFrame.name))
     return newFrame
 
 
