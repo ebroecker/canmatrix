@@ -1064,51 +1064,45 @@ class CanMatrix(object):
 #
 #
 #
-def putSignalValueInFrame(startbit, len, format, value, frame):
+def computeSignalValueInFrame(startbit, ln, fmt, value):
     """
-    puts a signal-value to the right position in a frame
+    compute the signal value in the frame
     """
+    import pprint
 
-    if format == 1:  # Intel
-        lastbit = startbit + len
-        firstbyte = int(math.floor(startbit / 8) - 1)
-        lastbyte = int(math.floor((lastbit - 1) / 8))
-        # im lastbyte mit dem msb anfangen
-        # im firstbyte mit dem lsb aufhoeren
-        for i in range(lastbyte, firstbyte, -1):
-            if lastbit % 8 != 0:
-                nbits = lastbit % 8
-            else:
-                nbits = min(len, 8)
-            nbits = min(len, nbits)
+    frame = 0
+    if fmt == 1:  # Intel
+    # using "sawtooth bit counting policy" here
+        pos = ((7 - (startbit % 8)) + 8*(int(startbit/8)))
+        while ln > 0:
+            # How many bits can we stuff in current byte?
+            #  (Should be 8 for anything but the first loop)
+            availbitsInByte = 1 + (pos % 8)
+            # extract relevant bits from value
+            valueInByte = value & ((1<<availbitsInByte)-1)
+            # stuff relevant bits into frame at the "corresponding inverted bit"
+            posInFrame = ((7 - (pos % 8)) + 8*(int(pos/8)))
+            frame |= valueInByte << posInFrame
+            # move to the next byte
+            pos += 0xf
+            # discard used bytes
+            value = value >> availbitsInByte
+            # reduce length by how many bits we consumed
+            ln -= availbitsInByte
 
-            start = lastbit - 1 - int(math.floor((lastbit - 1) / 8)) * 8
-            end = lastbit - nbits - int(math.floor((lastbit - nbits) / 8)) * 8
-
-            len -= nbits
-            mask = (0xff >> 7 - start) << end
-            mask &= 0xff
-            frame[i] |= (((value >> len) << end) & mask)
-            lastbit = startbit + len
     else:  # Motorola
-        # TODO needs review, is probably wrong till we use LSB for startbit
-        firstbyte = int(math.floor(startbit / 8))
-        bitsInfirstByte = startbit % 8 + 1
-        restnBits = len - bitsInfirstByte
-        lastbyte = firstbyte + int(math.floor(restnBits / 8))
-        if restnBits % 8 > 0:
-            lastbyte += 1
-        restLen = len
-        nbits = bitsInfirstByte
- # seems to be broken
- #       for i in range(firstbyte, lastbyte + 1):
- #           end = 0
- #           if restLen < 8:
- #               end = 8 - restLen
- #           mask = (0xff >> (8 - nbits)) << end
- #           restLen -= nbits
- #           frame[i] |= ((value >> restLen) << end) & mask
- #           nbits = min(restLen, 8)
+        # Work this out in "sequential bit counting policy"
+        # Compute the LSB position in "sequential"
+        lsbpos = ((7 - (startbit % 8)) + 8*(int(startbit/8)))
+        # deduce the MSB position
+        msbpos = 1 + lsbpos - ln
+        # "reverse" the value
+        cvalue = int(format(value, 'b')[::-1],2)
+        # shift the value to the proper position in the frame
+        frame = cvalue << msbpos
+
+    # Return frame, to be accumulated by caller
+    return frame
 
 
 class CanId(object):
