@@ -1567,23 +1567,18 @@ def load(file, **options):
             db._BUs.add(bu)
 
         for bo in db.frames:
-            frame = []
-            for i in range(0, bo.size):
-                frame.append(0)
+            frame = 0
             for sig in bo.signals:
                 if sig._initValue != 0:
                     stbit = sig.getStartbit(bitNumbering=1, startLittle=True)
-                    putSignalValueInFrame(
+                    frame |= computeSignalValueInFrame(
                         sig.getStartbit(
                             bitNumbering=1,
                             startLittle=True),
                         sig.signalsize,
                         sig.is_little_endian,
-                        sig._initValue,
-                        frame)
-            hexStr = ""
-            for i in range(bo.size):
-                hexStr += "%02X" % frame[i]
-            bo.addAttribute("GenMsgStartValue", hexStr)
+                        sig._initValue)
+            fmt = "%0" + "%d" % bo.size + "X"
+            bo.addAttribute("GenMsgStartValue", fmt % frame)
         result[busname] = db
     return result
