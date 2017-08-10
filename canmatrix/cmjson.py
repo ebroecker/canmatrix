@@ -93,7 +93,7 @@ def dump(db, f, **options):
                 attribs = {}
                 for attribute in signal.attributes:
                     attribs[attribute] = signal.attributes[attribute]
-                signals.append({
+                signalDict = {
                     "name": signal.name,
                     "start_bit": signal.getStartbit(bitNumbering=1, startLittle=True),
                     "bit_length": signal.signalsize,
@@ -103,8 +103,12 @@ def dump(db, f, **options):
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
                     "comment": signal.comment,
-                    "attributes": attribs
-                })
+                    "attributes": attribs,
+                }
+                if signal.multiplex is not None:
+                    signalDict["multiplex"] = signal.multiplex
+                signals.append(signalDict)
+
             exportArray.append(
                 {"name": frame.name,
                  "id": int(frame.id),
