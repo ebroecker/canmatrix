@@ -650,17 +650,18 @@ def load(f, **options):
                 botschaftId = temp.group(1)
                 signal = temp.group(2)
                 tempList = temp.group(3).split('"')
-                try:
-                    for i in range(math.floor(len(tempList) / 2)):
+                if botschaftId.isnumeric(): # value for Frame
+                    try:
                         bo = db.frameById(botschaftId)
                         sg = bo.signalByName(signal)
-                        val = tempList[i * 2 + 1]
-                        #[1:-1]
-
-                        if sg:
-                            sg.addValues(tempList[i * 2], val)
-                except:
-                    logger.error("Error with Line: " + str(tempList))
+                        for i in range(math.floor(len(tempList) / 2)):
+                            val = tempList[i * 2 + 1]
+                            if sg:
+                                sg.addValues(tempList[i * 2], val)
+                    except:
+                        logger.error("Error with Line: " + str(tempList))
+                else:
+                    logger.info("Warning: enviroment variables currently not supported")
 
         elif decoded.startswith("VAL_TABLE_ "):
             regexp = re.compile("^VAL\_TABLE\_ (\w+) (.*);")
