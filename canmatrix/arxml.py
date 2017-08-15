@@ -894,6 +894,8 @@ def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
 
 def getSignals(signalarray, Bo, arDict, ns, multiplexId):
     GroupId = 1
+    if signalarray is None:  # Empty signalarray - nothing to do
+        return
     for signal in signalarray:
         values = {}
         motorolla = arGetChild(signal, "PACKING-BYTE-ORDER", arDict, ns)
