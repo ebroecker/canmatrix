@@ -1058,7 +1058,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 nenner = arGetChildren(denominator, "V", arDict, ns)
 
                 factor = float(zaehler[1].text) / float(nenner[0].text)
-                offset = float(zaehler[0].text)
+                offset = float(zaehler[0].text) / float(nenner[0].text)
             else:
                 const = arGetChild(compuscale, "COMPU-CONST", arDict, ns)
                 # value hinzufuegen
