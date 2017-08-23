@@ -108,6 +108,10 @@ def dump(db, f, **options):
                 if signal.multiplex is not None:
                     signalDict["multiplex"] = signal.multiplex
                 signals.append(signalDict)
+                if signal.unit is not None:
+                    signalDict["unit"] = signal.unit
+                signals.append(signalDict)
+
 
             exportArray.append(
                 {"name": frame.name,
@@ -167,6 +171,11 @@ def load(f, **options):
                                    is_signed=is_signed,
                                    factor=signal["factor"],
                                    offset=signal["offset"])
+                if "unit" in signal and signal["unit"]:
+                    newsignal.unit = signal["unit"]
+
+                if "multiplex" in signal and signal["multiplex"]:
+                    newsignal.unit = signal["multiplex"]
 
                 if newsignal.is_little_endian == False:
 
