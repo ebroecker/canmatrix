@@ -954,19 +954,30 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         signalDescription = getDesc(syssignal, arDict, ns)
         datatype = arGetChild(syssignal, "DATA-TYPE", arDict, ns)
         if datatype is None:  # AR4?
-            # print("no datatype reference")
-            pass
-        lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
-        upper = arGetChild(datatype, "UPPER-LIMIT", arDict, ns)
-        encoding = arGetChild(datatype, "ENCODING", arDict, ns)
+            dataConstr = arGetChild(isignal,"DATA-CONSTR", arDict, ns)
+            compuMethod = arGetChild(isignal,"COMPU-METHOD", arDict, ns)
+            baseType  = arGetChild(isignal,"BASE-TYPE", arDict, ns)
+
+            lower = arGetChild(dataConstr, "LOWER-LIMIT", arDict, ns)
+            upper = arGetChild(dataConstr, "UPPER-LIMIT", arDict, ns)
+#            if lower is None: # data-constr has no limits defined - use limit from compu-method
+#                lower = arGetChild(compuMethod, "LOWER-LIMIT", arDict, ns)
+#            if upper is None: # data-constr has no limits defined - use limit from compu-method
+#                upper = arGetChild(compuMethod, "UPPER-LIMIT", arDict, ns)
+            encoding = None # TODO - find encoding in AR4
+        else:
+            lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
+            upper = arGetChild(datatype, "UPPER-LIMIT", arDict, ns)
+            encoding = arGetChild(datatype, "ENCODING", arDict, ns)
+
         if encoding is not None and (encoding.text == "SINGLE" or encoding.text == "DOUBLE"):
             is_float = True
         else:
             is_float = False
         
         if lower is not None and upper is not None:
-            Min = int(lower.text)
-            Max = int(upper.text)
+            Min = float(lower.text)
+            Max = float(upper.text)
 
         datdefprops = arGetChild(datatype, "SW-DATA-DEF-PROPS", arDict, ns)
 
@@ -1044,8 +1055,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             if ll is not None and desc is not None and int(float(ul.text)) == int(float(ll.text)):
         #####################################################################################################
         #####################################################################################################
-        
-              values[ll.text] = desc
+                values[ll.text] = desc
 
             scaleDesc = getDesc(compuscale, arDict, ns)
             rational = arGetChild(
@@ -1059,6 +1069,12 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
                 factor = float(zaehler[1].text) / float(nenner[0].text)
                 offset = float(zaehler[0].text) / float(nenner[0].text)
+                if Min is not None:
+                    Min *= factor
+                    Min += offset
+                if Max is not None:
+                    Max *= factor
+                    Max += offset
             else:
                 const = arGetChild(compuscale, "COMPU-CONST", arDict, ns)
                 # value hinzufuegen
