@@ -906,6 +906,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if isignal is None:
             isignal = arGetChild(signal, "I-SIGNAL-GROUP", arDict, ns)
             if isignal is not None:
+                logger.debug("getSignals: found I-SIGNAL-GROUP ")
+
                 isignalarray = arGetXchildren(isignal, "I-SIGNAL", arDict, ns)
                 getSysSignals(isignal, isignalarray, Bo, GroupId, ns)
                 GroupId = GroupId + 1
@@ -1144,6 +1146,8 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     frameR = arGetChild(frameTriggering, "FRAME", arDict, ns)
 
     sn = arGetChild(frameTriggering, "SHORT-NAME", arDict, ns)
+    logger.debug("processing Frame: %s", sn.text)
+
     idNum = int(idele.text)
 
     if None != frameR:
@@ -1549,13 +1553,12 @@ def load(file, **options):
             isignaltriggerings = arGetXchildren(
                 physicalChannel, "I-SIGNAL-TRIGGERING", arDict, ns)
             for sigTrig in isignaltriggerings:
-                test = arGetChild(sigTrig, 'SIGNAL-REF', arDict, ns)
                 isignal = arGetChild(sigTrig, 'SIGNAL', arDict, ns)
                 if isignal is None:
                     isignal = arGetChild(sigTrig, 'I-SIGNAL', arDict, ns)
                 if isignal is None:
                     sigTrig_text = arGetName(sigTrig, ns) if sigTrig is not None else "None"
-                    logger.debug("no isignal for %s" % sigTrig_text)
+                    logger.debug("load: no isignal for %s" % sigTrig_text)
                     
                     continue
                 portRef = arGetChildren(sigTrig, "I-SIGNAL-PORT", arDict, ns)
