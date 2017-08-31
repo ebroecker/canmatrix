@@ -1157,6 +1157,9 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
             pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
         pdu = arGetChild(pdumapping, "PDU", arDict, ns)  # SIGNAL-I-PDU
 #        newFrame = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+        if 'SECURED-I-PDU' in pdu.tag:
+            logger.info("found secured pdu - no signal extraction possible: %s", arGetName(pdu,ns))
+
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
         newFrame = Frame(arGetName(frameR, ns),
@@ -1307,7 +1310,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                 ipdus = arGetChild(trigs, "I-PDU", arDict, ns)
                 signaltopdumaps = arGetChild(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
                 if signaltopdumaps is None:
-                    logger.debug("DEBUG: AR4 PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!" % (arGetName(ipdus, ns)))
+                    logger.debug("DEBUG: AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!" % (arGetName(ipdus, ns)))
 #                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
                 getSignals(signaltopdumaps, newFrame, arDict, ns, None)
         else:
