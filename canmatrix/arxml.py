@@ -1293,10 +1293,11 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
 #    if pdusigmappings is None or pdusigmappings.__len__() == 0:
 #        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newFrame.name))
     pdusigmapping = arGetChildren(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+
     if pdusigmapping is not None and pdusigmapping.__len__() > 0:
         getSignals(pdusigmapping, newFrame, arDict, ns, None)
 
-# Seen some pdusigmapping being [] and not None with some arxml 4.2
+    # Seen some pdusigmapping being [] and not None with some arxml 4.2
     else: ##AR 4.2
         pdutrigs = arGetChildren(frameTriggering, "PDU-TRIGGERINGS", arDict, ns)
         if pdutrigs is not None:
@@ -1305,7 +1306,9 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                 trigs = arGetChild(trigrefcond, "PDU-TRIGGERING", arDict, ns)
                 ipdus = arGetChild(trigs, "I-PDU", arDict, ns)
                 signaltopdumaps = arGetChild(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
-                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+                if signaltopdumaps is None:
+                    logger.debug("DEBUG: AR4 PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!" % (arGetName(ipdus, ns)))
+#                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
                 getSignals(signaltopdumaps, newFrame, arDict, ns, None)
         else:
             logger.debug(
