@@ -28,9 +28,14 @@
 # TODO: Definitions should be disassembled
 
 from __future__ import division
-import math
 
 import logging
+import math
+from collections import namedtuple
+
+import bitstruct
+from six import string_types
+
 logger = logging.getLogger('root')
 
 
@@ -439,6 +444,56 @@ class Signal(object):
 
         return self._offset + (rawMax * self._factor)
 
+    def bitstruct_format(self):
+        """Get the bit struct format for this signal
+
+        :return: str
+        """
+        endian = '<' if self._is_little_endian else '>'
+        bit_type = 's' if self._is_signed else 'u'
+        return endian + bit_type + str(self._signalsize)
+
+    def encode(self, value=None):
+        """Return the physical value
+
+        :param value: value or value choice to encode
+        :return:
+        """
+        if value is None:
+            return int(self._attributes.get('GenSigStartValue', 0))
+
+        if isinstance(value, string_types):
+            for value_key, value_string in self.values.items():
+                if value_string == value:
+                    value = value_key
+                    break
+            else:
+                raise ValueError(
+                    "{} is invalid value choice for {}".format(value, self)
+                )
+        if self._min > value > self._max:
+            raise ValueError()
+        physical_value = int((int(value) - self.offset) / self.factor)
+        return physical_value
+
+    def decode(self, value):
+        """Decode the given raw value
+
+        :param value: raw value
+        :return: (value, value str)
+        """
+        value = value * self.factor + self.offset
+        value_str = None
+
+        value = float(value) if self.is_float else int(value)
+
+        if self.values and value in self.values:
+            value_str = self.values.get(value)
+        elif self.unit and self.unit not in ['SED', 'Mixed']:
+            value_str = str(value) + ' ' + self.unit
+
+        return value, value_str
+
     def __str__(self):
         return self._name
 
@@ -758,6 +813,62 @@ class Frame(object):
             for receiver in sig._receiver:
                 self.addReceiver(receiver)
 
+    def bitstruct_format(self):
+        """Returns the Bitstruct format string of this frame
+
+        :return: Bitstruct format string.
+        """
+        fmt = []
+        frame_size = self._Size * 8
+        end = frame_size
+
+        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        for signal in signals:
+            start = frame_size - signal.getStartbit() - signal.signalsize
+            padding = end - (start + signal.signalsize)
+            if padding > 0:
+                fmt.append('p' + str(padding))
+            fmt.append(signal.bitstruct_format())
+            end = start
+        if end != 0:
+            fmt.append('p' + str(end))
+        # assert bitstruct.calcsize(''.join(fmt)) == frame_size
+        return ''.join(fmt)
+
+    def encode(self, data=None):
+        """Return a byte string containing the values from data packed
+        according to the frame format.
+
+        :param data: data dictionary
+        :return: A byte string of the packed values.
+        """
+        data = {} if data is None else data
+
+        fmt = self.bitstruct_format()
+        signal_value = []
+        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        for signal in signals:
+            signal_value.append(
+                signal.encode(data.get(signal.name))
+            )
+        return bitstruct.pack(fmt, *signal_value)
+
+    def decode(self, data):
+        """Returns a new subclass of tuple with named fields.
+
+        :param data:
+        :return: new subclass of tuple with named fields
+        """
+        fmt = self.bitstruct_format()
+        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        signals_values = []
+        for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
+            signals_values.append(signal.decode(value))
+
+        named_tuple = namedtuple(
+            self.name, [signal.name for signal in signals])
+        return named_tuple(*signals_values)
+
     def __str__(self):
         return self._name
 
@@ -1060,6 +1171,25 @@ class CanMatrix(object):
                 if sig is not None:
                     frame.signals.remove(sig)
 
+    def encode(self, frame_id, data):
+        """Return a byte string containing the values from data packed
+        according to the frame format.
+
+        :param frame_id: frame id
+        :param data: data dictionary
+        :return:
+        """
+        return self.frameById(frame_id).encode(data)
+
+    def decode(self, frame_id, data):
+        """
+
+        :param frame_id: frame id
+        :param data:
+        :return: A byte string of the packed values.
+        """
+        return self.frameById(frame_id).decode(data)
+
 
 #
 #
@@ -1068,7 +1198,6 @@ def computeSignalValueInFrame(startbit, ln, fmt, value):
     """
     compute the signal value in the frame
     """
-    import pprint
 
     frame = 0
     if fmt == 1:  # Intel

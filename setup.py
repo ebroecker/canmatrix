@@ -48,7 +48,6 @@ License :: OSI Approved :: BSD License
 Topic :: Scientific/Engineering
 """
 
-import sys
 from setuptools import setup, find_packages
 from canmatrix.version import version
 
@@ -66,7 +65,7 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-    install_requires = ["future"],
+    install_requires = ["future", "six", "bitstruct"],
     extras_require = {
         "arxml": ["lxml"],
         "kcd": ["lxml"],
