@@ -31,7 +31,7 @@ from __future__ import division
 
 import logging
 import math
-from collections import namedtuple
+from collections import OrderedDict
 
 import bitstruct
 from six import string_types
@@ -173,6 +173,31 @@ class BoardUnitList(object):
 
 def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
+
+
+class SignalValue:
+    """Proxy class to hold a Signal and value
+
+    Not using class "SignalValue(object):" on purpose to proxy magic methods
+    (__eq__, __lt__, etc.) and other methods from value or signal
+    """
+    def __init__(self, signal, value):
+        self._signal = signal
+        self._value = value
+
+    def __getattr__(self, item):
+        if hasattr(self._value, item):
+            return getattr(self._value, item)
+        return getattr(self._signal, item)
+
+    def __str__(self):
+        return self._get_value_string() or str(self._value)
+
+    def _get_value_string(self):
+        if self._signal.values and self._value in self._signal.values:
+            return self._signal.values.get(self._value)
+        elif self._signal.unit and self._signal.unit not in ['SED', 'Mixed']:
+            return str(self._value) + ' ' + self._signal.unit
 
 
 class Signal(object):
@@ -480,19 +505,11 @@ class Signal(object):
         """Decode the given raw value
 
         :param value: raw value
-        :return: (value, value str)
+        :return: SignalValue
         """
         value = value * self.factor + self.offset
-        value_str = None
-
         value = float(value) if self.is_float else int(value)
-
-        if self.values and value in self.values:
-            value_str = self.values.get(value)
-        elif self.unit and self.unit not in ['SED', 'Mixed']:
-            value_str = str(value) + ' ' + self.unit
-
-        return value, value_str
+        return SignalValue(self, value)
 
     def __str__(self):
         return self._name
@@ -854,20 +871,18 @@ class Frame(object):
         return bitstruct.pack(fmt, *signal_value)
 
     def decode(self, data):
-        """Returns a new subclass of tuple with named fields.
+        """Return OrderedDictionary with Signal Name: Signal Value
 
-        :param data:
-        :return: new subclass of tuple with named fields
+        :param data: Iterable or bytes.
+            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :return: OrderedDictionary
         """
         fmt = self.bitstruct_format()
         signals = sorted(self.signals, key=lambda s: s.getStartbit())
-        signals_values = []
+        signals_values = OrderedDict()
         for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
-            signals_values.append(signal.decode(value))
-
-        named_tuple = namedtuple(
-            self.name, [signal.name for signal in signals])
-        return named_tuple(*signals_values)
+            signals_values[signal.name] = signal.decode(value)
+        return signals_values
 
     def __str__(self):
         return self._name
@@ -1177,16 +1192,17 @@ class CanMatrix(object):
 
         :param frame_id: frame id
         :param data: data dictionary
-        :return:
+        :return: A byte string of the packed values.
         """
         return self.frameById(frame_id).encode(data)
 
     def decode(self, frame_id, data):
-        """
+        """Return OrderedDictionary with Signal Name: Signal Value
 
         :param frame_id: frame id
-        :param data:
-        :return: A byte string of the packed values.
+        :param data: Iterable or bytes.
+            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :return: OrderedDictionary
         """
         return self.frameById(frame_id).decode(data)
 
