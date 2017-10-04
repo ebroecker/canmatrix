@@ -133,8 +133,6 @@ class TestCanmatrixCodec(unittest.TestCase):
             'someTestSignal': 101,
         }
         data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
-        print(data_bytes)
-
         decoded = bus.decode(test_frame1, data_bytes)
 
         for k, v in data.items():
