@@ -137,7 +137,23 @@ class TestCanmatrixCodec(unittest.TestCase):
             for k, v in data.items():
                 assert decoded[k] == v
 
-    def test_encode_decode_signal_value_choice(self):
+    def test_encode_decode_signal_value_choice_unicode(self):
+        db_path = os.path.join(
+            os.path.dirname(__file__), "..", "test", "test.dbc")
+        for bus in formats.loadp(db_path).values():
+            test_frame1 = 0x123
+
+            data = {
+                'Signal': u'two'
+            }
+            data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
+
+            decoded = bus.decode(test_frame1, data_bytes)
+
+            for k, v in data.items():
+                assert str(decoded[k]) == v
+
+    def test_encode_decode_signal_value_choice_str(self):
         db_path = os.path.join(
             os.path.dirname(__file__), "..", "test", "test.dbc")
         for bus in formats.loadp(db_path).values():
