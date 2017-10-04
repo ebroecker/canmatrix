@@ -66,6 +66,8 @@ setup(
     license = "BSD",
     platforms = ["any"],
     install_requires = ["future", "six", "bitstruct"],
+    test_suite='tests',
+    tests_require=['pytest'],
     extras_require = {
         "arxml": ["lxml"],
         "kcd": ["lxml"],
