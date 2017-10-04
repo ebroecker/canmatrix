@@ -5,7 +5,6 @@
 import unittest
 
 import os
-import pytest
 import six
 from canmatrix import formats
 
@@ -156,7 +155,3 @@ class TestCanmatrixCodec(unittest.TestCase):
 
         for k, v in data.items():
             assert str(decoded[k]) == v
-
-
-if __name__ == '__main__':
-    pytest.main([__file__])
