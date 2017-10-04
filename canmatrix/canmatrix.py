@@ -175,29 +175,32 @@ def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
 
 
-class SignalValue:
-    """Proxy class to hold a Signal and value
-
-    Not using class "SignalValue(object):" on purpose to proxy magic methods
-    (__eq__, __lt__, etc.) and other methods from value or signal
+class SignalValue(object):
+    """Proxy class to hold a Signal and value.
+    Allows to have correct string representation of the signal value
     """
     def __init__(self, signal, value):
         self._signal = signal
-        self._value = value
-
-    def __getattr__(self, item):
-        if hasattr(self._value, item):
-            return getattr(self._value, item)
-        return getattr(self._signal, item)
+        self.value = value
 
     def __str__(self):
-        return self._get_value_string() or str(self._value)
+        return self._get_value_string() or str(self.value)
 
     def _get_value_string(self):
-        if self._signal.values and self._value in self._signal.values:
-            return self._signal.values.get(self._value)
+        if self._signal.values and self.value in self._signal.values:
+            return self._signal.values.get(self.value)
         elif self._signal.unit and self._signal.unit not in ['SED', 'Mixed']:
-            return str(self._value) + ' ' + self._signal.unit
+            return str(self.value) + ' ' + self._signal.unit
+
+
+class SignalValueInt(SignalValue, int):
+    def __new__(cls, signal, value):
+        return int.__new__(cls, value)
+
+
+class SignalValueFloat(SignalValue, float):
+    def __new__(cls, signal, value):
+        return float.__new__(cls, value)
 
 
 class Signal(object):
@@ -508,8 +511,9 @@ class Signal(object):
         :return: SignalValue
         """
         value = value * self.factor + self.offset
-        value = float(value) if self.is_float else int(value)
-        return SignalValue(self, value)
+        if self.is_float:
+            return SignalValueFloat(self, value)
+        return SignalValueInt(self, value)
 
     def __str__(self):
         return self._name
