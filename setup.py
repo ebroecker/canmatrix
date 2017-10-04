@@ -65,7 +65,7 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-    install_requires = ["future", "six", "bitstruct"],
+    install_requires = ["future", "bitstruct"],
     test_suite='tests',
     extras_require = {
         "arxml": ["lxml"],

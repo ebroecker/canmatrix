@@ -5,7 +5,6 @@
 import unittest
 
 import os
-import six
 from canmatrix import formats
 
 from canmatrix.canmatrix import Signal
@@ -82,14 +81,14 @@ class TestCanmatrixCodec(unittest.TestCase):
     def test_encode_canmatrix(self):
         db_path = os.path.join(
             os.path.dirname(__file__), "..", "test", "test.dbc")
-        bus = six.next(six.itervalues(formats.loadp(db_path)))
-        test_frame1 = 0x123
-        data = {
-            'Signal': 2,
-            'someTestSignal': 101,
-        }
-        data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
-        assert data_bytes == (0, 0x28, 0x04, 0, 0, 0, 0, 0)
+        for bus in formats.loadp(db_path).values():
+            test_frame1 = 0x123
+            data = {
+                'Signal': 2,
+                'someTestSignal': 101,
+            }
+            data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
+            assert data_bytes == (0, 0x28, 0x04, 0, 0, 0, 0, 0)
 
     def test_decode_signal(self):
         s1 = Signal('signal', signalSize=8)
@@ -125,31 +124,31 @@ class TestCanmatrixCodec(unittest.TestCase):
     def test_encode_decode_signal_value(self):
         db_path = os.path.join(
             os.path.dirname(__file__), "..", "test", "test.dbc")
-        bus = six.next(six.itervalues(formats.loadp(db_path)))
-        test_frame1 = 0x123
+        for bus in formats.loadp(db_path).values():
+            test_frame1 = 0x123
 
-        data = {
-            'Signal': 2,
-            'someTestSignal': 101,
-        }
-        data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
-        decoded = bus.decode(test_frame1, data_bytes)
+            data = {
+                'Signal': 2,
+                'someTestSignal': 101,
+            }
+            data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
+            decoded = bus.decode(test_frame1, data_bytes)
 
-        for k, v in data.items():
-            assert decoded[k] == v
+            for k, v in data.items():
+                assert decoded[k] == v
 
     def test_encode_decode_signal_value_choice(self):
         db_path = os.path.join(
             os.path.dirname(__file__), "..", "test", "test.dbc")
-        bus = six.next(six.itervalues(formats.loadp(db_path)))
-        test_frame1 = 0x123
+        for bus in formats.loadp(db_path).values():
+            test_frame1 = 0x123
 
-        data = {
-            'Signal': u'two'
-        }
-        data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
+            data = {
+                'Signal': 'two'
+            }
+            data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
 
-        decoded = bus.decode(test_frame1, data_bytes)
+            decoded = bus.decode(test_frame1, data_bytes)
 
-        for k, v in data.items():
-            assert str(decoded[k]) == v
+            for k, v in data.items():
+                assert str(decoded[k]) == v

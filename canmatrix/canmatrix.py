@@ -34,7 +34,7 @@ import math
 from collections import OrderedDict
 
 import bitstruct
-from six import string_types
+from past.builtins import basestring
 
 logger = logging.getLogger('root')
 
@@ -490,7 +490,7 @@ class Signal(object):
         if value is None:
             return int(self._attributes.get('GenSigStartValue', 0))
 
-        if isinstance(value, string_types):
+        if isinstance(value, basestring):
             for value_key, value_string in self.values.items():
                 if value_string == value:
                     value = value_key
