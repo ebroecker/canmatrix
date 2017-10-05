@@ -78,6 +78,19 @@ class TestCanmatrixCodec(unittest.TestCase):
         s8.addAttribute('GenSigStartValue', '5')
         self.assertEqual(s8.encode(), 5)
 
+        s9 = Signal('signal', signalSize=16, is_signed=False, factor=0.001)
+        self.assertEqual(s9.encode(), 0)
+        self.assertEqual(s9.encode(s9.max), 65534)
+        self.assertEqual(s9.encode(s9.min), 0)
+        self.assertEqual(s9.encode(50.123), 50123)
+
+        s10 = Signal('signal', signalSize=8, is_signed=False, factor=0.00005)
+        self.assertEqual(s10.encode(), 0)
+        self.assertEqual(s10.encode(s10.max), 255)
+        self.assertEqual(s10.encode(s10.min), 0)
+        self.assertEqual(s10.encode(0.005), 100)
+        self.assertEqual(s10.encode(0.003), 60)
+
     def test_encode_canmatrix(self):
         db_path = os.path.join(
             os.path.dirname(__file__), "..", "test", "test.dbc")
@@ -93,8 +106,8 @@ class TestCanmatrixCodec(unittest.TestCase):
     def test_decode_signal(self):
         s1 = Signal('signal', signalSize=8)
         self.assertEqual(s1.decode(1), 1)
-        self.assertEqual(s1.decode(127), int(s1.max))
-        self.assertEqual(s1.decode(-128), int(s1.min))
+        self.assertEqual(s1.decode(127), s1.max)
+        self.assertEqual(s1.decode(-128), s1.min)
 
         s2 = Signal('signal', signalSize=10, is_signed=False)
         self.assertEqual(s2.decode(10), 10)
@@ -103,23 +116,35 @@ class TestCanmatrixCodec(unittest.TestCase):
 
         s3 = Signal('signal', signalSize=8, factor=2)
         self.assertEqual(s3.decode(5), 10)
-        self.assertEqual(s3.decode(127), int(s3.max))
-        self.assertEqual(s3.decode(-128), int(s3.min))
+        self.assertEqual(s3.decode(127), s3.max)
+        self.assertEqual(s3.decode(-128), s3.min)
 
         s4 = Signal('signal', signalSize=8, is_signed=False, factor=5)
         self.assertEqual(s4.decode(2), 10)
-        self.assertEqual(s4.decode(255), int(s4.max))
-        self.assertEqual(s4.decode(0), int(s4.min))
+        self.assertEqual(s4.decode(255), s4.max)
+        self.assertEqual(s4.decode(0), s4.min)
 
         s5 = Signal('signal', signalSize=8, offset=2)
         self.assertEqual(s5.decode(8), 10)
-        self.assertEqual(s5.decode(127), int(s5.max))
-        self.assertEqual(s5.decode(-128), int(s5.min))
+        self.assertEqual(s5.decode(127), s5.max)
+        self.assertEqual(s5.decode(-128), s5.min)
 
         s6 = Signal('signal', signalSize=8, is_signed=False, offset=5)
         self.assertEqual(s6.decode(5), 10)
-        self.assertEqual(s6.decode(255), int(s6.max))
-        self.assertEqual(s6.decode(0), int(s6.min))
+        self.assertEqual(s6.decode(255), s6.max)
+        self.assertEqual(s6.decode(0), s6.min)
+
+        s7 = Signal('signal', signalSize=16, is_signed=False, factor=0.001)
+        self.assertEqual(s7.decode(65535), s7.max)
+        self.assertEqual(s7.decode(0), s7.min)
+        self.assertEqual(s7.decode(50123), 50.123)
+
+        s8 = Signal('signal', signalSize=8, is_signed=False, factor=0.00005)
+        self.assertEqual(s8.decode(255), s8.max)
+        self.assertEqual(s8.decode(0), s8.min)
+        self.assertEqual(s8.decode(1), 5e-05)
+        self.assertEqual(s8.decode(2), 0.0001)
+        self.assertAlmostEqual(s8.decode(3), 0.00015)
 
     def test_encode_decode_signal_value(self):
         db_path = os.path.join(

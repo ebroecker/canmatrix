@@ -175,10 +175,13 @@ def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
 
 
-class SignalValue(object):
+class SignalValue(float):
     """Proxy class to hold a Signal and value.
     Allows to have correct string representation of the signal value
     """
+    def __new__(cls, signal, value):
+        return float.__new__(cls, value)
+
     def __init__(self, signal, value):
         self._signal = signal
         self.value = value
@@ -191,16 +194,6 @@ class SignalValue(object):
             return self._signal.values.get(self.value)
         elif self._signal.unit and self._signal.unit not in ['SED', 'Mixed']:
             return str(self.value) + ' ' + self._signal.unit
-
-
-class SignalValueInt(SignalValue, int):
-    def __new__(cls, signal, value):
-        return int.__new__(cls, value)
-
-
-class SignalValueFloat(SignalValue, float):
-    def __new__(cls, signal, value):
-        return float.__new__(cls, value)
 
 
 class Signal(object):
@@ -478,7 +471,10 @@ class Signal(object):
         :return: str
         """
         endian = '<' if self._is_little_endian else '>'
-        bit_type = 's' if self._is_signed else 'u'
+        if self.is_float:
+            bit_type = 'f'
+        else:
+            bit_type = 's' if self._is_signed else 'u'
         return endian + bit_type + str(self._signalsize)
 
     def encode(self, value=None):
@@ -499,9 +495,14 @@ class Signal(object):
                 raise ValueError(
                     "{} is invalid value choice for {}".format(value, self)
                 )
-        if self._min > value > self._max:
-            raise ValueError()
-        physical_value = int((int(value) - self.offset) / self.factor)
+        if not (self._min <= value <= self._max):
+            raise ValueError(
+                "Value {} is not valid for {}. Min={} and Max={}".format(
+                    value, self, self._min, self._max)
+            )
+        physical_value = (value - self.offset) / self.factor
+        if not self.is_float:
+            physical_value = int(physical_value)
         return physical_value
 
     def decode(self, value):
@@ -511,9 +512,7 @@ class Signal(object):
         :return: SignalValue
         """
         value = value * self.factor + self.offset
-        if self.is_float:
-            return SignalValueFloat(self, value)
-        return SignalValueInt(self, value)
+        return SignalValue(self, value)
 
     def __str__(self):
         return self._name
