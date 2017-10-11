@@ -1,4 +1,4 @@
-version = "0.6-pre"
+version = "0.6.1-pre"
 major = 0
-minor = 5
-patchlevlel = 0
+minor = 6
+patchlevlel = 1
