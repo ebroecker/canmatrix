@@ -328,7 +328,7 @@ def load(f, **options):
                         if len(frame.mux_names) > 0:
                             frame.signalByName(
                                 frame.name + "_MUX").values = frame.mux_names
-                        db._fl.addFrame(frame)
+                        db.frames.addFrame(frame)
 
                     frame = Frame(frameName)
 
@@ -520,6 +520,6 @@ def load(f, **options):
     if frame is not None:
         if len(frame.mux_names) > 0:
             frame.signalByName(frame.name + "_MUX").values = frame.mux_names
-        db._fl.addFrame(frame)
+        db.frames.addFrame(frame)
 
     return db

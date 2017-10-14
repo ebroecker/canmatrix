@@ -143,7 +143,7 @@ def load(f, **options):
         for frame in jsonData["messages"]:
             #            newframe = Frame(frame["id"],frame["name"],8,None)
             newframe = Frame(frame["name"],
-                             Id=frame["id"],
+                             id=frame["id"],
                              dlc=8)
 
             if "is_extended_frame" in frame and frame["is_extended_frame"]:
@@ -180,8 +180,8 @@ def load(f, **options):
                 if newsignal.is_little_endian == False:
 
                     newsignal.setStartbit(
-                        newsignal._startbit, bitNumbering=1, startLittle=True)
+                        newsignal.startbit, bitNumbering=1, startLittle=True)
                 newframe.addSignal(newsignal)
-            db._fl.addFrame(newframe)
+            db.frames.addFrame(newframe)
     f.close()
     return db

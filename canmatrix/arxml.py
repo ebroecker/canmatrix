@@ -412,7 +412,7 @@ def dump(dbs, f, **options):
                                  str(signal.getStartbit(bitNumbering=1)))
                 # missing: TRANSFER-PROPERTY: PENDING/...
 
-            for group in frame.SignalGroups:
+            for group in frame.signalGroups:
                 signalToPduMapping = createSubElement(
                     signalToPduMappings, 'I-SIGNAL-TO-I-PDU-MAPPING')
                 createSubElement(signalToPduMapping, 'SHORT-NAME', group.name)
@@ -463,7 +463,7 @@ def dump(dbs, f, **options):
                 sysSigRef.text = "/Signal/" + signal.name
 
                 sysSigRef.set('DEST', 'SYSTEM-SIGNAL')
-            for group in frame.SignalGroups:
+            for group in frame.signalGroups:
                 signalEle = createSubElement(elements, 'I-SIGNAL')
                 createSubElement(signalEle, 'SHORT-NAME', group.name)
                 sysSigRef = createSubElement(signalEle, 'SYSTEM-SIGNAL-REF')
@@ -496,7 +496,7 @@ def dump(dbs, f, **options):
                     dataTypeRef.text = "/DataType/" + signal.name
                     createSubElement(signalEle, 'LENGTH',
                                      str(signal.signalsize))
-            for group in frame.SignalGroups:
+            for group in frame.signalGroups:
                 groupEle = createSubElement(elements, 'SYSTEM-SIGNAL-GROUP')
                 createSubElement(signalEle, 'SHORT-NAME', group.name)
                 if arVersion[0] == "3":
@@ -793,18 +793,18 @@ def dump(dbs, f, **options):
 class arTree(object):
 
     def __init__(self, name="", ref=None):
-        self._name = name
-        self._ref = ref
-        self._array = []
+        self.name = name
+        self.ref = ref
+        self.array = []
 
     def new(self, name, child):
         temp = arTree(name, child)
-        self._array.append(temp)
+        self.array.append(temp)
         return temp
 
     def getChild(self, path):
-        for tem in self._array:
-            if tem._name == path:
+        for tem in self.array:
+            if tem.name == path:
                 return tem
 
 
@@ -843,7 +843,7 @@ def arGetPath(ardict, path):
             else:
                 return None
     if ptr is not None:
-        return ptr._ref
+        return ptr.ref
     else:
         return None
 
@@ -1130,10 +1130,10 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                     initvalue.text = "0"
                 elif initvalue.text == "true":
                     initvalue.text = "1"
-                newSig._initValue = int(initvalue.text)
-                newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
+                newSig.initValue = int(initvalue.text)
+                newSig.addAttribute("GenSigStartValue", str(newSig.initValue))
             else:
-                newSig._initValue = 0
+                newSig.initValue = 0
 
             for key, value in list(values.items()):
                 newSig.addValues(key, value)
@@ -1163,7 +1163,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
         newFrame = Frame(arGetName(frameR, ns),
-                         Id=idNum,
+                         id=idNum,
                          dlc=int(dlc.text))
         comment = getDesc(frameR, arDict, ns)
         if comment is not None:
@@ -1205,7 +1205,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                              is_little_endian=is_little_endian,
                              multiplex="Multiplexor")
 
-        multiplexor._initValue = 0
+        multiplexor.initValue = 0
         newFrame.addSignal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", arDict, ns)
         ipdu = arGetChild(staticPart, "I-PDU", arDict, ns)
@@ -1545,7 +1545,7 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            db._fl.addFrame(
+            db.frames.addFrame(
                 getFrame(
                     frameTrig,
                     arDict,
@@ -1591,12 +1591,12 @@ def load(file, **options):
             if l2 is not None:
                 bu.addComment(l2.text)
 
-            db._BUs.add(bu)
+            db.boardUnits.add(bu)
 
         for bo in db.frames:
             frame = 0
             for sig in bo.signals:
-                if sig._initValue != 0:
+                if sig.initValue != 0:
                     stbit = sig.getStartbit(bitNumbering=1, startLittle=True)
                     frame |= computeSignalValueInFrame(
                         sig.getStartbit(
@@ -1604,7 +1604,7 @@ def load(file, **options):
                             startLittle=True),
                         sig.signalsize,
                         sig.is_little_endian,
-                        sig._initValue)
+                        sig.initValue)
             fmt = "%0" + "%d" % bo.size + "X"
             bo.addAttribute("GenMsgStartValue", fmt % frame)
         result[busname] = db

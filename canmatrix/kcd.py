@@ -346,7 +346,7 @@ def load(f, **options):
         db = CanMatrix()
         db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
         for node in nodes:
-            db._BUs.add(BoardUnit(node.get('name')))
+            db.boardUnits.add(BoardUnit(node.get('name')))
             nodelist[node.get('id')] = node.get('name')
 
         messages = bus.findall('./' + namespace + 'Message')
@@ -354,7 +354,7 @@ def load(f, **options):
         for message in messages:
             dlc = None
             #newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
-            newBo = Frame(message.get('name'), Id=int(message.get('id'), 16))
+            newBo = Frame(message.get('name'), id=int(message.get('id'), 16))
 
             if 'triggered' in message.attrib:
                 newBo.addAttribute("GenMsgCycleTime", message.get('interval'))
@@ -469,7 +469,7 @@ def load(f, **options):
                 newBo.size = dlc
 
             newBo.updateReceiver()
-            db._fl.addFrame(newBo)
+            db.frames.addFrame(newBo)
         name = bus.get('name')
         if not name:
             name = "CAN%d" % counter

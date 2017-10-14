@@ -394,7 +394,7 @@ def dump(db, f, **options):
 
     # signal-groups:
     for bo in db.frames:
-        for sigGroup in bo.SignalGroups:
+        for sigGroup in bo.signalGroups:
             f.write(("SIG_GROUP_ " + str(bo.id) + " " + sigGroup.name +
                      " " + str(sigGroup.id) + " :").encode(dbcExportEncoding))
             for signal in sigGroup.signals:
@@ -466,8 +466,8 @@ def load(f, **options):
             regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")
             temp = regexp.match(decoded)
 #            db._fl.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-            db._fl.addFrame(Frame(temp.group(2),
-                                  Id=temp.group(1),
+            db.frames.addFrame(Frame(temp.group(2),
+                                  id=temp.group(1),
                                   dlc=temp.group(3),
                                   transmitter=temp.group(4).split()))
         elif decoded.startswith("SG_ "):
@@ -494,7 +494,7 @@ def load(f, **options):
                 if not tempSig.is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc
                     tempSig.setStartbit(int(temp.group(2)), bitNumbering=1)
-                db._fl.addSignalToLastFrame(tempSig)
+                db.frames.addSignalToLastFrame(tempSig)
             else:
                 pattern = "^SG\_ (\w+) (\w+) *: (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)"
                 regexp = re.compile(pattern)
@@ -641,7 +641,7 @@ def load(f, **options):
                 myTempListe = temp.group(1).split(' ')
                 for ele in myTempListe:
                     if len(ele.strip()) > 1:
-                        db._BUs.add(BoardUnit(ele))
+                        db.boardUnits.add(BoardUnit(ele))
 
         elif decoded.startswith("VAL_ "):
             regexp = re.compile("^VAL\_ (\w+) (\w+) (.*);")
@@ -734,7 +734,7 @@ def load(f, **options):
             elif tempba.group(1).strip().startswith("BU_ "):
                 regexp = re.compile("^BA\_ \"(.*)\" BU\_ (\w+) (.+);")
                 temp = regexp.match(decoded)
-                db._BUs.byName(
+                db.boardUnits.byName(
                     temp.group(2)).addAttribute(
                     temp.group(1),
                     temp.group(3))
