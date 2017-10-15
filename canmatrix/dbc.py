@@ -524,7 +524,7 @@ def load(f, **options):
                     # startbit of motorola coded signals are MSB in dbc
                     tempSig.setStartbit(int(temp.group(3)), bitNumbering=1)
 
-                db._fl.addSignalToLastFrame(tempSig)
+                db.frames.addSignalToLastFrame(tempSig)
 
         elif decoded.startswith("BO_TX_BU_ "):
             regexp = re.compile("^BO_TX_BU_ ([0-9]+) *: *(.+);")
