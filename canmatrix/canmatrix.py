@@ -528,7 +528,7 @@ class Frame(object):
 
         for sig in self.signals:
             i += 1
-            for bit in range(sig.getStartbit(),  sig.getStartbit() + int(sig._signalsize)):
+            for bit in range(sig.getStartbit(),  sig.getStartbit() + int(sig.signalsize)):
                 if sig.is_little_endian:
                     bitfieldLe[bit] = i
                 else:
