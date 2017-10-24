@@ -1085,8 +1085,12 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                         "unknown Compu-Method: " +
                         compmethod.get('UUID'))
         is_little_endian = False
-        if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
-            is_little_endian = True
+        if motorolla is not None:
+            if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
+                is_little_endian = True
+        else:
+            logger.debug('no name byte order for signal' + name.text)
+
         is_signed = False  # unsigned
         if name is None:
             logger.debug('no name for signal given')
