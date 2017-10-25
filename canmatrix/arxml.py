@@ -995,7 +995,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         # keyword definition. 06Jun16
         #####################################################################################################
         if compmethod == None:
-            logger.debug('No Compmethod found!! - try alternate scheme.')
+            logger.debug('No Compmethod found!! - try alternate scheme 1.')
             networkrep = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
             datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)            
             datdefpropscond = arGetChild(datdefpropsvar, "SW-DATA-DEF-PROPS-CONDITIONAL", arDict ,ns)
@@ -1006,8 +1006,12 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                     logger.debug('No valid compu method found for this - check ARXML file!!')
                     compmethod = None
         #####################################################################################################
+        #
         #####################################################################################################
-             
+        if compmethod == None:
+            logger.debug('No Compmethod found!! - try alternate scheme 2.')
+            compmethod = arGetChild(syssignal, "PHYSICAL-PROPS/SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL/COMPU-METHOD", arDict, ns)
+
         unit = arGetChild(compmethod, "UNIT", arDict, ns)
         if unit is not None:
             longname = arGetChild(unit, "LONG-NAME", arDict, ns)
