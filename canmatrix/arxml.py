@@ -1006,12 +1006,11 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                     logger.debug('No valid compu method found for this - check ARXML file!!')
                     compmethod = None
         #####################################################################################################
-        #
+        # no found compu-method fuzzy search in systemsignal:
         #####################################################################################################
         if compmethod == None:
-            logger.debug('No Compmethod found!! - try alternate scheme 2.')
-            compmethod = arGetChild(syssignal, "PHYSICAL-PROPS/SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL/COMPU-METHOD", arDict, ns)
-
+            logger.debug('No Compmethod found!! - fuzzy search in syssignal.')
+            compmethod = arGetChild(syssignal, "COMPU-METHOD", arDict, ns)
         unit = arGetChild(compmethod, "UNIT", arDict, ns)
         if unit is not None:
             longname = arGetChild(unit, "LONG-NAME", arDict, ns)
@@ -1024,7 +1023,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
               logger.debug('No Unit Display name found!! - using long name')
             if displayname is not None:
               Unit = displayname.text
-            else:  
+            else:
         #####################################################################################################
         #####################################################################################################              
               l4 = arGetChild(longname, "L-4", arDict, ns)
