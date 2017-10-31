@@ -813,7 +813,7 @@ class Define(object):
 class CanMatrix(object):
     """
     The Can-Matrix-Object
-    _attributes (global canmatrix-attributes),
+    attributes (global canmatrix-attributes),
     _BUs (list of boardunits/ECUs),
     _fl (list of Frames)
     _signalDefines (list of signal-attribute types)
@@ -824,18 +824,15 @@ class CanMatrix(object):
     """
 
     def __init__(self):
-        self._attributes = {}
+        self.attributes = {}
         self._BUs = BoardUnitList()
         self._fl = FrameList()
-        self._signalDefines = {}
-        self._frameDefines = {}
-        self._globalDefines = {}
-        self._buDefines = {}
-        self._valueTables = {}
+        self.signalDefines = {}
+        self.frameDefines = {}
+        self.globalDefines = {}
+        self.buDefines = {}
+        self.valueTables = {}
 
-    @property
-    def attributes(self):
-        return self._attributes
 
     @property
     def boardUnits(self):
@@ -845,76 +842,57 @@ class CanMatrix(object):
     def frames(self):
         return self._fl
 
-    @property
-    def signalDefines(self):
-        return self._signalDefines
-
-    @property
-    def frameDefines(self):
-        return self._frameDefines
-
-    @property
-    def globalDefines(self):
-        return self._globalDefines
-
-    @property
-    def buDefines(self):
-        return self._buDefines
-
-    @property
-    def valueTables(self):
-        return self._valueTables
 
     def __iter__(self):
         return iter(self._fl)
 
     def addValueTable(self, name, valueTable):
-        self._valueTables[name] = normalizeValueTable(valueTable)
+        self.valueTables[name] = normalizeValueTable(valueTable)
 
     def addAttribute(self, attribute, value):
         """
         add attribute to attribute-list of canmatrix
         """
-        if attribute not in self._attributes:
-            self._attributes[attribute] = value
+        if attribute not in self.attributes:
+            self.attributes[attribute] = value
 
     def addSignalDefines(self, type, definition):
         """
         add signal-attribute definition to canmatrix
         """
-        if type not in self._signalDefines:
-            self._signalDefines[type] = Define(definition)
+        if type not in self.signalDefines:
+            self.signalDefines[type] = Define(definition)
 
     def addFrameDefines(self, type, definition):
         """
         add frame-attribute definition to canmatrix
         """
-        if type not in self._frameDefines:
-            self._frameDefines[type] = Define(definition)
+        if type not in self.frameDefines:
+            self.frameDefines[type] = Define(definition)
 
     def addBUDefines(self, type, definition):
         """
         add Boardunit-attribute definition to canmatrix
         """
-        if type not in self._buDefines:
-            self._buDefines[type] = Define(definition)
+        if type not in self.buDefines:
+            self.buDefines[type] = Define(definition)
 
     def addGlobalDefines(self, type, definition):
         """
         add global-attribute definition to canmatrix
         """
-        if type not in self._globalDefines:
-            self._globalDefines[type] = Define(definition)
+        if type not in self.globalDefines:
+            self.globalDefines[type] = Define(definition)
 
     def addDefineDefault(self, name, value):
-        if name in self._signalDefines:
-            self._signalDefines[name].addDefault(value)
-        if name in self._frameDefines:
-            self._frameDefines[name].addDefault(value)
-        if name in self._buDefines:
-            self._buDefines[name].addDefault(value)
-        if name in self._globalDefines:
-            self._globalDefines[name].addDefault(value)
+        if name in self.signalDefines:
+            self.signalDefines[name].addDefault(value)
+        if name in self.frameDefines:
+            self.frameDefines[name].addDefault(value)
+        if name in self.buDefines:
+            self.buDefines[name].addDefault(value)
+        if name in self.globalDefines:
+            self.globalDefines[name].addDefault(value)
 
     def deleteObsoleteDefines(self):
         toBeDeleted = []
@@ -1034,14 +1012,14 @@ class CanMatrix(object):
                 frame.name = newName
 
     def delFrame(self, frame):
-        if type(frame).__name__ == 'instance':
+        if type(frame).__name__ == 'instance' or type(frame).__name__ == 'Frame':
             pass
         else:
             frame = self.frameByName(frame)
         self.frames.remove(frame)
 
     def renameSignal(self, old, newName):
-        if type(old).__name__ == 'instance':
+        if type(old).__name__ == 'instance' or type(old).__name__ == 'Signal':
             old.name = newName
         else:
             for frame in self.frames:
@@ -1050,10 +1028,10 @@ class CanMatrix(object):
                     signal.name = newName
 
     def delSignal(self, signal):
-        if type(signal).__name__ == 'instance':
+        if type(signal).__name__ == 'instance' or type(signal).__name__ == 'Signal':
             for frame in self.frames:
                 if signal in frame.signals:
-                    frame.signals.remove(sig)
+                    frame.signals.remove(signal)
         else:
             for frame in self.frames:
                 sig = frame.signalByName(signal)

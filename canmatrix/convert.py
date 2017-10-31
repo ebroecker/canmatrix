@@ -98,6 +98,11 @@ def convert(infile, outfileName, **options):
             deleteFrameList = options['deleteFrame'].split(',')
             for frame in deleteFrameList:
                 db.delFrame(frame)
+        if 'skipLongDlc' in options and options['skipLongDlc'] is not None:
+            for frame in db.frames:
+                if frame.size > int(options['skipLongDlc']):
+                    db.delFrame(frame)
+
         if 'renameSignal' in options and options['renameSignal'] is not None:
             renameTuples = options['renameSignal'].split(',')
             for renameTuple in renameTuples:
@@ -198,6 +203,10 @@ def main():
     parser.add_option("", "--recalcDLC",
                       dest="recalcDLC", default=False,
                       help="recalculate dlc; max: use maximum of stored and calculated dlc; force: force new calculated dlc")
+    parser.add_option("", "--skipLongDlc",
+                      dest="skipLongDlc", default=None,
+                      help="skip all Frames with dlc bigger than given option\n")
+
 
     parser.add_option("", "--arxmlIgnoreClusterInfo", action="store_true",
                       dest="arxmlIgnoreClusterInfo", default=False,

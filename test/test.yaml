@@ -1,8 +1,8 @@
 !!python/object:canmatrix.canmatrix.CanMatrix
 _BUs: !!python/object:canmatrix.canmatrix.BoardUnitList
   _list: []
-_attributes: {}
-_buDefines: {}
+attributes: {}
+buDefines: {}
 _fl: !!python/object:canmatrix.canmatrix.FrameList
   _list:
   - !!Frame
@@ -3106,11 +3106,11 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 40
       unit: Vrms
       values: {}
-_frameDefines:
+frameDefines:
   GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
     type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
-_globalDefines: {}
-_signalDefines:
+globalDefines: {}
+signalDefines:
   GenSigStartValue: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
     definition: FLOAT -3.4E+038 3.4E+038, max: 3.4e+38, min: -3.4e+38, type: FLOAT}
-_valueTables: {}
+valueTables: {}
