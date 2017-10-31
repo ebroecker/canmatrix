@@ -77,10 +77,10 @@ def createSignal(signal):
     if float(signal.offset) != 0:
         output += "/o:%s " % (format_float(signal.offset))
 
-    if signal.calcMin() != signal.min:
+    if signal.min is not None:
         output += "/min:{} ".format(format_float(signal.min))
 
-    if signal.calcMax() != signal.max:
+    if signal.max is not None:
         output += "/max:{} ".format(format_float(signal.max))
 
     displayDecimalPlaces = signal.attributes.get('DisplayDecimalPlaces')
@@ -103,8 +103,9 @@ def createSignal(signal):
     if "GenSigStartValue" in signal.attributes:
         default = float(signal.attributes[
                         "GenSigStartValue"]) * float(signal.factor)
-        if default >= float(
-                signal.min) and default <= float(signal.max):
+        min_ok = signal.min is None or default >= float(signal.min)
+        max_ok = signal.max is None or default <= float(signal.max)
+        if min_ok and max_ok:
             output += "/d:%g " % (default)
 
     long_name = signal.attributes.get('LongName')
@@ -257,6 +258,9 @@ def load(f, **options):
         symImportEncoding = options["symImportEncoding"]
     else:
         symImportEncoding = 'iso-8859-1'
+
+    calc_min_for_none = options.get('calc_min_for_none')
+    calc_max_for_none = options.get('calc_max_for_none')
 
     class Mode(object):
         glob, enums, send, sendReceive, receive = list(range(5))
@@ -440,6 +444,12 @@ def load(f, **options):
                 if tmpMux == "Mux":
                     signal = frame.signalByName(frameName + "_MUX")
                     if signal is None:
+                        extras = {}
+                        if calc_min_for_none is not None:
+                            extras['calc_min_for_none'] = calc_min_for_none
+                        if calc_max_for_none is not None:
+                            extras['calc_max_for_none'] = calc_max_for_none
+
                         signal = Signal(frameName + "_MUX",
                                         startBit=startBit,
                                         signalSize=signalLength,
@@ -452,7 +462,8 @@ def load(f, **options):
                                         max=max,
                                         unit=unit,
                                         multiplex='Multiplexor',
-                                        comment=comment)
+                                        comment=comment,
+                                        **extras)
 #                        signal.addComment(comment)
                         if intel == 0:
                             # motorola set/convert startbit
@@ -462,6 +473,12 @@ def load(f, **options):
 
                 else:
                  #                   signal = Signal(sigName, startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", multiplexor)
+                    extras = {}
+                    if calc_min_for_none is not None:
+                        extras['calc_min_for_none'] = calc_min_for_none
+                    if calc_max_for_none is not None:
+                        extras['calc_max_for_none'] = calc_max_for_none
+
                     signal = Signal(sigName,
                                     startBit=startBit,
                                     signalSize=signalLength,
@@ -474,7 +491,8 @@ def load(f, **options):
                                     max=max,
                                     unit=unit,
                                     multiplex=multiplexor,
-                                    comment=comment)
+                                     comment=comment,
+                                     **extras)
 #
                     if intel == 0:
                         # motorola set/convert startbit

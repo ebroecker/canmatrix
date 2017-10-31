@@ -211,6 +211,8 @@ class Signal(object):
             ('comments', 'comments', None, {}),
             ('attributes', '_attributes', None, {}),
             ('values', '_values', None, {}),
+            ('calc_min_for_none', 'calc_min_for_none', bool, True),
+            ('calc_max_for_none', 'calc_max_for_none', bool, True),
         ]
 
         for arg_name, destination, function, default in args:
@@ -232,12 +234,9 @@ class Signal(object):
             ))
 
 
-        # be shure to calc min/max after parsing all arguments 
-        if self._min is None:
-            self.setMin()
-
-        if self._max is None:
-            self.setMax()
+        # in case missing min/max calculation is enabled, be sure it happens
+        self.setMin(self._min)
+        self.setMax(self._max)
 
         self._name = name
 
@@ -416,7 +415,7 @@ class Signal(object):
 
     def setMin(self, min=None):
         self._min = min
-        if self._min is None:
+        if self.calc_min_for_none and self._min is None:
             self._min = self.calcMin()
 
         return self._min
@@ -429,7 +428,7 @@ class Signal(object):
     def setMax(self, max=None):
         self._max = max
 
-        if self._max is None:
+        if self.calc_max_for_none and self._max is None:
             self._max = self.calcMax()
 
         return self._max
