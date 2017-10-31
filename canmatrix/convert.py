@@ -99,16 +99,22 @@ def convert(infile, outfileName, **options):
             for frame in deleteFrameList:
                 db.delFrame(frame)
         if 'skipLongDlc' in options and options['skipLongDlc'] is not None:
+            deleteFrameList = []
             for frame in db.frames:
                 if frame.size > int(options['skipLongDlc']):
-                    db.delFrame(frame)
+                    deleteFrameList.append(frame)
+            for frame in deleteFrameList:
+                db.delFrame(frame)
 
         if 'cutLongFrames' in options and options['cutLongFrames'] is not None:
             for frame in db.frames:
                 if frame.size > int(options['cutLongFrames']):
+                    deleteSignalList = []
                     for sig in frame.signals:
                         if sig.getStartbit() + int(sig._signalsize) > int(options['cutLongFrames'])*8:
-                            frame.signals.remove(sig)
+                            deleteSignalList.append(sig)
+                    for sig in deleteSignalList:
+                        frame.signals.remove(sig)
                     frame.size = 0
                     frame.calcDLC()
 
