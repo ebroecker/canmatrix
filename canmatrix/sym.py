@@ -351,7 +351,7 @@ def load(f, **options):
                     indexOffset = 0
                 comment = ""
                 if '//' in line:
-                    split = line.split('//', maxsplit=1)
+                    split = line.split('//', 1)
                     comment = split[1].strip()
                     line = split[0].strip()
                 line = line.replace('  ', ' "" ')
@@ -499,7 +499,7 @@ def load(f, **options):
             elif line.startswith('ID'):
                 comment = ""
                 if '//' in line:
-                    split = line.split('//', maxsplit=1)
+                    split = line.split('//', 1)
                     comment = split[1].strip()
                     line = split[0].strip()
                 frame.id = int(line.split('=')[1].strip()[:-1], 16)
