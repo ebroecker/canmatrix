@@ -103,6 +103,15 @@ def convert(infile, outfileName, **options):
                 if frame.size > int(options['skipLongDlc']):
                     db.delFrame(frame)
 
+        if 'cutLongFrames' in options and options['cutLongFrames'] is not None:
+            for frame in db.frames:
+                if frame.size > int(options['cutLongFrames']):
+                    for sig in frame.signals:
+                        if sig.getStartbit() + int(sig._signalsize) > int(options['cutLongFrames'])*8:
+                            frame.signals.remove(sig)
+                    frame.size = 0
+                    frame.calcDLC()
+
         if 'renameSignal' in options and options['renameSignal'] is not None:
             renameTuples = options['renameSignal'].split(',')
             for renameTuple in renameTuples:
@@ -205,7 +214,11 @@ def main():
                       help="recalculate dlc; max: use maximum of stored and calculated dlc; force: force new calculated dlc")
     parser.add_option("", "--skipLongDlc",
                       dest="skipLongDlc", default=None,
-                      help="skip all Frames with dlc bigger than given option\n")
+                      help="skip all Frames with dlc bigger than given threshold\n")
+    parser.add_option("", "--cutLongFrames",
+                      dest="cutLongFrames", default=None,
+                      help="cut all signals out of Frames with dlc bigger than given threshold\n")
+
 
 
     parser.add_option("", "--arxmlIgnoreClusterInfo", action="store_true",
