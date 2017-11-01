@@ -354,7 +354,10 @@ def dump(db, f, **options):
                     sign = 'D'
                 else:
                     sign = 'F'
-                    
+
+            if signal.factor == 0:
+                signal.factor = 1
+                
             outstr += "[START_SIGNALS] " + signal.name + ",%d,%d,%d,%c," % (signal.signalsize,
                                                                             whichbyte,
                                                                             int(signal.getStartbit(bitNumbering=1,
