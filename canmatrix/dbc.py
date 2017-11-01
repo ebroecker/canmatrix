@@ -506,7 +506,11 @@ def load(f, **options):
                 if multiplex == 'M':
                     multiplex = 'Multiplexor'
                 else:
-                    multiplex = int(multiplex[1:])
+                    try:
+                        multiplex = int(multiplex[1:])
+                    except:
+                        raise Exception('error decoding line',line)
+
                 tempSig = Signal(temp.group(1),
                                  startBit=temp.group(3),
                                  signalSize=temp.group(4),
