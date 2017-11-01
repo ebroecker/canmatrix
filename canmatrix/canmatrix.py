@@ -28,9 +28,14 @@
 # TODO: Definitions should be disassembled
 
 from __future__ import division
-import math
 
 import logging
+import math
+from collections import OrderedDict
+
+import bitstruct
+from past.builtins import basestring
+
 logger = logging.getLogger('root')
 
 
@@ -168,6 +173,27 @@ class BoardUnitList(object):
 
 def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
+
+
+class SignalValue(float):
+    """Proxy class to hold a Signal and value.
+    Allows to have correct string representation of the signal value
+    """
+    def __new__(cls, signal, value):
+        return float.__new__(cls, value)
+
+    def __init__(self, signal, value):
+        self._signal = signal
+        self.value = value
+
+    def __str__(self):
+        return self._get_value_string() or str(self.value)
+
+    def _get_value_string(self):
+        if self._signal.values and self.value in self._signal.values:
+            return self._signal.values.get(self.value)
+        elif self._signal.unit and self._signal.unit not in ['SED', 'Mixed']:
+            return str(self.value) + ' ' + self._signal.unit
 
 
 class Signal(object):
@@ -437,6 +463,55 @@ class Signal(object):
         rawMax = self.calculateRawRange()[1]
 
         return self._offset + (rawMax * self._factor)
+
+    def bitstruct_format(self):
+        """Get the bit struct format for this signal
+
+        :return: str
+        """
+        endian = '<' if self._is_little_endian else '>'
+        if self.is_float:
+            bit_type = 'f'
+        else:
+            bit_type = 's' if self._is_signed else 'u'
+        return endian + bit_type + str(self._signalsize)
+
+    def encode(self, value=None):
+        """Return the physical value
+
+        :param value: value or value choice to encode
+        :return:
+        """
+        if value is None:
+            return int(self._attributes.get('GenSigStartValue', 0))
+
+        if isinstance(value, basestring):
+            for value_key, value_string in self.values.items():
+                if value_string == value:
+                    value = value_key
+                    break
+            else:
+                raise ValueError(
+                    "{} is invalid value choice for {}".format(value, self)
+                )
+        if not (self._min <= value <= self._max):
+            raise ValueError(
+                "Value {} is not valid for {}. Min={} and Max={}".format(
+                    value, self, self._min, self._max)
+            )
+        physical_value = (value - self.offset) / self.factor
+        if not self.is_float:
+            physical_value = int(physical_value)
+        return physical_value
+
+    def decode(self, value):
+        """Decode the given raw value
+
+        :param value: raw value
+        :return: SignalValue
+        """
+        value = value * self.factor + self.offset
+        return SignalValue(self, value)
 
     def __str__(self):
         return self._name
@@ -757,6 +832,60 @@ class Frame(object):
             for receiver in sig._receiver:
                 self.addReceiver(receiver)
 
+    def bitstruct_format(self):
+        """Returns the Bitstruct format string of this frame
+
+        :return: Bitstruct format string.
+        """
+        fmt = []
+        frame_size = self._Size * 8
+        end = frame_size
+
+        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        for signal in signals:
+            start = frame_size - signal.getStartbit() - signal.signalsize
+            padding = end - (start + signal.signalsize)
+            if padding > 0:
+                fmt.append('p' + str(padding))
+            fmt.append(signal.bitstruct_format())
+            end = start
+        if end != 0:
+            fmt.append('p' + str(end))
+        # assert bitstruct.calcsize(''.join(fmt)) == frame_size
+        return ''.join(fmt)
+
+    def encode(self, data=None):
+        """Return a byte string containing the values from data packed
+        according to the frame format.
+
+        :param data: data dictionary
+        :return: A byte string of the packed values.
+        """
+        data = {} if data is None else data
+
+        fmt = self.bitstruct_format()
+        signal_value = []
+        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        for signal in signals:
+            signal_value.append(
+                signal.encode(data.get(signal.name))
+            )
+        return bitstruct.pack(fmt, *signal_value)
+
+    def decode(self, data):
+        """Return OrderedDictionary with Signal Name: Signal Value
+
+        :param data: Iterable or bytes.
+            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :return: OrderedDictionary
+        """
+        fmt = self.bitstruct_format()
+        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        signals_values = OrderedDict()
+        for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
+            signals_values[signal.name] = signal.decode(value)
+        return signals_values
+
     def __str__(self):
         return self._name
 
@@ -1037,6 +1166,26 @@ class CanMatrix(object):
                 if sig is not None:
                     frame.signals.remove(sig)
 
+    def encode(self, frame_id, data):
+        """Return a byte string containing the values from data packed
+        according to the frame format.
+
+        :param frame_id: frame id
+        :param data: data dictionary
+        :return: A byte string of the packed values.
+        """
+        return self.frameById(frame_id).encode(data)
+
+    def decode(self, frame_id, data):
+        """Return OrderedDictionary with Signal Name: Signal Value
+
+        :param frame_id: frame id
+        :param data: Iterable or bytes.
+            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :return: OrderedDictionary
+        """
+        return self.frameById(frame_id).decode(data)
+
 
 #
 #
@@ -1045,7 +1194,6 @@ def computeSignalValueInFrame(startbit, ln, fmt, value):
     """
     compute the signal value in the frame
     """
-    import pprint
 
     frame = 0
     if fmt == 1:  # Intel
