@@ -30,8 +30,16 @@
 from __future__ import division
 import math
 
+from collections import OrderedDict
+
 import logging
 logger = logging.getLogger('root')
+try:
+    import bitstruct
+except:
+    bitstruct = None
+    logger.error("bitstruct could not be imported // No signal de/encoding possible // try pip install bitstruct")
+from past.builtins import basestring
 
 
 class FrameList(object):
@@ -438,6 +446,57 @@ class Signal(object):
 
         return self._offset + (rawMax * self._factor)
 
+    def bitstruct_format(self):
+        """Get the bit struct format for this signal
+
+        :return: str        """
+        endian = '<' if self._is_little_endian else '>'
+        if self.is_float:
+            bit_type = 'f'
+        else:
+            bit_type = 's' if self._is_signed else 'u'
+
+        return endian + bit_type + str(self._signalsize)
+
+    def phys2raw(self, value=None):
+        """Return the physical value (= as is on CAN)
+
+        :param value: (scaled) value or value choice to encode
+        :return:
+        """
+        if value is None:
+            return int(self._attributes.get('GenSigStartValue', 0))
+
+        if isinstance(value, basestring):
+            for value_key, value_string in self.values.items():
+                if value_string == value:
+                    value = value_key
+                    break
+            else:
+                raise ValueError(
+                        "{} is invalid value choice for {}".format(value, self)
+                )
+
+        if not (self._min <= value <= self._max):
+            logger.info(
+                "Value {} is not valid for {}. Min={} and Max={}".format(
+                    value, self, self._min, self._max)
+                )
+        raw_value = (value - self.offset) / self.factor
+
+        if not self.is_float:
+            raw_value = int(raw_value)
+        return raw_value
+
+    def raw2phys(self, value):
+        """Decode the given raw value (= as is on CAN)
+        :param value: raw value
+        :return: physical value (scaled)
+        """
+
+        value = value * self.factor + self.offset
+        return value
+
     def __str__(self):
         return self._name
 
@@ -757,6 +816,72 @@ class Frame(object):
             for receiver in sig._receiver:
                 self.addReceiver(receiver)
 
+    def bitstruct_format(self):
+        """Returns the Bitstruct format string of this frame
+
+        :return: Bitstruct format string.
+        """
+        fmt = []
+        frame_size = self._Size * 8
+        end = frame_size
+
+        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        for signal in signals:
+            start = frame_size - signal.getStartbit() - signal.signalsize
+            padding = end - (start + signal.signalsize)
+            if padding > 0:
+                fmt.append('p' + str(padding))
+            fmt.append(signal.bitstruct_format())
+            end = start
+        if end != 0:
+            fmt.append('p' + str(end))
+        # assert bitstruct.calcsize(''.join(fmt)) == frame_size
+        return ''.join(fmt)
+
+    def encode(self, data=None):
+        """Return a byte string containing the values from data packed
+        according to the frame format.
+
+        :param data: data dictionary
+        :return: A byte string of the packed values.
+        """
+        if bitstruct is None:
+            logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
+            return None
+
+        data = {} if data is None else data
+
+        fmt = self.bitstruct_format()
+        signal_value = []
+        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+
+        for signal in signals:
+            signal_value.append(
+                signal.phys2raw(data.get(signal.name))
+            )
+
+        return bitstruct.pack(fmt, *signal_value)
+
+    def decode(self, data):
+        """Return OrderedDictionary with Signal Name: Signal Value
+
+        :param data: Iterable or bytes.
+            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :return: OrderedDictionary
+        """
+        if bitstruct is None:
+            logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
+            return None
+
+        fmt = self.bitstruct_format()
+        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        signals_values = OrderedDict()
+
+        for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
+            signals_values[signal.name] = signal.raw2phys(value)
+        return signals_values
+
+
     def __str__(self):
         return self._name
 
@@ -1037,6 +1162,26 @@ class CanMatrix(object):
                 if sig is not None:
                     frame.signals.remove(sig)
 
+    def encode(self, frame_id, data):
+        """Return a byte string containing the values from data packed
+        according to the frame format.
+
+        :param frame_id: frame id
+        :param data: data dictionary
+        :return: A byte string of the packed values.
+        """
+
+        return self.frameById(frame_id).encode(data)
+
+    def decode(self, frame_id, data):
+        """Return OrderedDictionary with Signal Name: Signal Value
+
+        :param frame_id: frame id
+        :param data: Iterable or bytes.
+            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :return: OrderedDictionary
+        """
+        return self.frameById(frame_id).decode(data)
 
 #
 #
@@ -1045,7 +1190,6 @@ def computeSignalValueInFrame(startbit, ln, fmt, value):
     """
     compute the signal value in the frame
     """
-    import pprint
 
     frame = 0
     if fmt == 1:  # Intel
