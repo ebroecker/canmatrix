@@ -426,37 +426,38 @@ def dump(db, f, **options):
     # db-parameter
     outstr += "[START_PARAM_NET]\n"
     for (type, define) in list(db.globalDefines.items()):
-        if define.defaultValue is not None:
-            outstr += '"' + type + '",' + \
-                define.definition.replace(
-                    ' ', ',') + ',' + define.defaultValue + '\n'
+        defaultVal = define.defaultValue
+        if defaultVal is None:
+            defaultVal = "0"
+        outstr += '"' + type + '",' + define.definition.replace(' ', ',') + ',' + defaultVal + '\n'
     outstr += "[END_PARAM_NET]\n"
 
     # bu-parameter
     outstr += "[START_PARAM_NODE]\n"
     for (type, define) in list(db.buDefines.items()):
-        if define.defaultValue is not None:
-            outstr += '"' + type + '",' + \
-                define.definition.replace(
-                    ' ', ',') + ',' + define.defaultValue + '\n'
+        defaultVal = define.defaultValue
+        if defaultVal is None:
+            defaultVal = "0"
+        outstr += '"' + type + '",' + define.definition.replace(' ', ',') + ',' + defaultVal + '\n'
     outstr += "[END_PARAM_NODE]\n"
 
     # frame-parameter
     outstr += "[START_PARAM_MSG]\n"
     for (type, define) in list(db.frameDefines.items()):
-        if define.defaultValue is not None:
-            outstr += '"' + type + '",' + \
-                define.definition.replace(
-                    ' ', ',') + ',' + define.defaultValue + '\n'
+        defaultVal = define.defaultValue
+        if defaultVal is None:
+            defaultVal = "0"
+        outstr += '"' + type + '",' + define.definition.replace(' ', ',') + ',' + defaultVal + '\n'
+
     outstr += "[END_PARAM_MSG]\n"
 
     # signal-parameter
     outstr += "[START_PARAM_SIG]\n"
     for (type, define) in list(db.signalDefines.items()):
-        if define.defaultValue is not None:
-            outstr += '"' + type + '",' + \
-                define.definition.replace(
-                    ' ', ',') + ',' + define.defaultValue + '\n'
+        defaultVal = define.defaultValue
+        if defaultVal is None:
+            defaultVal = "0"
+        outstr += '"' + type + '",' + define.definition.replace(' ', ',') + ',' + defaultVal + '\n'
     outstr += "[END_PARAM_SIG]\n"
 
     outstr += "[START_PARAM_VAL]\n"
