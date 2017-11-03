@@ -412,7 +412,7 @@ def dump(dbs, f, **options):
                                  str(signal.getStartbit(bitNumbering=1)))
                 # missing: TRANSFER-PROPERTY: PENDING/...
 
-            for group in frame.SignalGroups:
+            for group in frame.signalGroups:
                 signalToPduMapping = createSubElement(
                     signalToPduMappings, 'I-SIGNAL-TO-I-PDU-MAPPING')
                 createSubElement(signalToPduMapping, 'SHORT-NAME', group.name)
@@ -463,7 +463,7 @@ def dump(dbs, f, **options):
                 sysSigRef.text = "/Signal/" + signal.name
 
                 sysSigRef.set('DEST', 'SYSTEM-SIGNAL')
-            for group in frame.SignalGroups:
+            for group in frame.signalGroups:
                 signalEle = createSubElement(elements, 'I-SIGNAL')
                 createSubElement(signalEle, 'SHORT-NAME', group.name)
                 sysSigRef = createSubElement(signalEle, 'SYSTEM-SIGNAL-REF')
@@ -496,7 +496,7 @@ def dump(dbs, f, **options):
                     dataTypeRef.text = "/DataType/" + signal.name
                     createSubElement(signalEle, 'LENGTH',
                                      str(signal.signalsize))
-            for group in frame.SignalGroups:
+            for group in frame.signalGroups:
                 groupEle = createSubElement(elements, 'SYSTEM-SIGNAL-GROUP')
                 createSubElement(signalEle, 'SHORT-NAME', group.name)
                 if arVersion[0] == "3":
@@ -1552,7 +1552,7 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            db._fl.addFrame(
+            db.frames.addFrame(
                 getFrame(
                     frameTrig,
                     arDict,

@@ -557,7 +557,7 @@ def load(file, **options):
 
 #            newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
             newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
-            db._fl.addFrame(newBo)
+            db.frames.addFrame(newBo)
 
             # eval launctype
             if launchType is not None:

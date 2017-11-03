@@ -152,7 +152,7 @@ def dump(db, f, **options):
             signalInstance.set("ID", "PDUINST_" + signal.name)
             # startBit: TODO - find out correct BYTEORDER ...
             createSubElementFx(signalInstance, "BIT-POSITION",
-                               str(signal._startbit))
+                               str(signal.startbit))
             if signal.is_little_endian:
                 createSubElementFx(
                     signalInstance,

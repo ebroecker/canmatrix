@@ -157,7 +157,7 @@ class TestCanmatrixCodec(unittest.TestCase):
                 'someTestSignal': 101,
             }
             data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
-            decoded = bus.decode(test_frame1, data_bytes)
+            decoded = bus.decode(test_frame1, data_bytes, False)
 
             for k, v in data.items():
                 assert decoded[k] == v
@@ -173,7 +173,7 @@ class TestCanmatrixCodec(unittest.TestCase):
             }
             data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
 
-            decoded = bus.decode(test_frame1, data_bytes)
+            decoded = bus.decode(test_frame1, data_bytes, True)
 
             for k, v in data.items():
                 assert str(decoded[k]) == v
@@ -189,7 +189,7 @@ class TestCanmatrixCodec(unittest.TestCase):
             }
             data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
 
-            decoded = bus.decode(test_frame1, data_bytes)
+            decoded = bus.decode(test_frame1, data_bytes, True)
 
             for k, v in data.items():
                 assert str(decoded[k]) == v

@@ -180,8 +180,8 @@ def load(f, **options):
                 if newsignal.is_little_endian == False:
 
                     newsignal.setStartbit(
-                        newsignal._startbit, bitNumbering=1, startLittle=True)
+                        newsignal.startbit, bitNumbering=1, startLittle=True)
                 newframe.addSignal(newsignal)
-            db._fl.addFrame(newframe)
+            db.frames.addFrame(newframe)
     f.close()
     return db

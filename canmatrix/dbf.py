@@ -89,7 +89,7 @@ def load(f, **options):
             else:
                 (BUName, comment) = line.split(' ', 1)
                 comment = comment.replace('"', '').replace(';', '')
-                db._BUs.byName(BUName).addComment(comment)
+                db.boardUnits.byName(BUName).addComment(comment)
 
         if mode == 'FrameDescription':
             if line.startswith(
@@ -121,7 +121,7 @@ def load(f, **options):
                 mode = ''
             else:
                 (bu, attrib, value) = line.split(',', 2)
-                db._BUs.byName(bu).addAttribute(
+                db.boardUnits.byName(bu).addAttribute(
                     attrib.replace('"', ''), value[1:-1])
 
         elif mode == 'ParamNetVal':
@@ -217,7 +217,7 @@ def load(f, **options):
                     transmitter = temparray[6].split()
                 else:
                     transmitter = None
-                newBo = db._fl.addFrame(
+                newBo = db.frames.addFrame(
                     Frame(name,
                           Id=int(Id),
                           dlc=size,
@@ -231,7 +231,7 @@ def load(f, **options):
                 temstr = line.strip()[6:].strip()
                 boList = temstr.split(',')
                 for bo in boList:
-                    db._BUs.add(BoardUnit(bo))
+                    db.boardUnits.add(BoardUnit(bo))
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
@@ -357,7 +357,7 @@ def dump(db, f, **options):
 
             if signal.factor == 0:
                 signal.factor = 1
-                
+
             outstr += "[START_SIGNALS] " + signal.name + ",%d,%d,%d,%c," % (signal.signalsize,
                                                                             whichbyte,
                                                                             int(signal.getStartbit(bitNumbering=1,

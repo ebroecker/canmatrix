@@ -469,7 +469,7 @@ def load(f, **options):
                 newBo.size = dlc
 
             newBo.updateReceiver()
-            db._fl.addFrame(newBo)
+            db.frames.addFrame(newBo)
         name = bus.get('name')
         if not name:
             name = "CAN%d" % counter
