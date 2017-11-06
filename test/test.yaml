@@ -24,7 +24,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -47,7 +47,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 0
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -68,7 +68,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 2
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -89,7 +89,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -113,7 +113,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 58
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
         3: N/A}
       attributes: {}
@@ -136,7 +136,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 60
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -158,7 +158,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 32
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -180,7 +180,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 34
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       attributes: {DisplayDecimalPlaces: '0'}
       calc_max_for_none: true
@@ -202,7 +202,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 36
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -224,7 +224,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 38
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -246,7 +246,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 62
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -283,7 +283,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -305,7 +305,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: W
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -342,7 +342,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {GenSigStartValue: '2400.0'}
       calc_max_for_none: true
@@ -363,7 +363,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: Vrms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {GenSigStartValue: '500.0'}
       calc_max_for_none: true
@@ -396,7 +396,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -417,7 +417,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: W
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -450,7 +450,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -471,7 +471,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 0
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -492,7 +492,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -529,7 +529,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: Multiplexor
+      multiplex: Multiplexor
       _values: {0: Param0, 1: LVM_ClearingTimes1, 2: LVM_ClearingTimes2, 3: LFM_Limits,
         4: LFM_ClearingTimes, 5: J1939_Interface, 6: Fault_Config, 7: ContactorDelays1,
         8: ContactorDelays2, 10: ContactorDelays3}
@@ -559,7 +559,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 0
+      multiplex: 0
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -580,7 +580,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 1
+      multiplex: 1
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -603,7 +603,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 1
+      multiplex: 1
       _values: {}
       attributes: {GenSigStartValue: '2000.0'}
       calc_max_for_none: true
@@ -626,7 +626,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 1
+      multiplex: 1
       _values: {}
       attributes: {GenSigStartValue: '1000.0'}
       calc_max_for_none: true
@@ -649,7 +649,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 2
+      multiplex: 2
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -672,7 +672,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 3
+      multiplex: 3
       _values: {}
       attributes: {GenSigStartValue: '605.0'}
       calc_max_for_none: true
@@ -695,7 +695,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: Hz
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 3
+      multiplex: 3
       _values: {}
       attributes: {GenSigStartValue: '598.0'}
       calc_max_for_none: true
@@ -718,7 +718,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: Hz
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 3
+      multiplex: 3
       _values: {}
       attributes: {GenSigStartValue: '570.0'}
       calc_max_for_none: true
@@ -741,7 +741,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: Hz
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 4
+      multiplex: 4
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -764,7 +764,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 4
+      multiplex: 4
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -787,7 +787,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 4
+      multiplex: 4
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -810,7 +810,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 5
+      multiplex: 5
       _values: {}
       attributes: {GenSigStartValue: '247.0'}
       calc_max_for_none: true
@@ -831,7 +831,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 16
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 5
+      multiplex: 5
       _values: {}
       attributes: {GenSigStartValue: '65.0'}
       calc_max_for_none: true
@@ -852,7 +852,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 5
+      multiplex: 5
       _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
       attributes: {GenSigStartValue: '2.0'}
       calc_max_for_none: true
@@ -873,7 +873,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 36
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 6
+      multiplex: 6
       _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -894,7 +894,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 16
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 7
+      multiplex: 7
       _values: {}
       attributes: {GenSigStartValue: '100.0'}
       calc_max_for_none: true
@@ -915,7 +915,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 7
+      multiplex: 7
       _values: {}
       attributes: {GenSigStartValue: '100.0'}
       calc_max_for_none: true
@@ -936,7 +936,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 7
+      multiplex: 7
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -957,7 +957,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 8
+      multiplex: 8
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -978,7 +978,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 8
+      multiplex: 8
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -999,7 +999,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 8
+      multiplex: 8
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1020,7 +1020,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 10
+      multiplex: 10
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1041,7 +1041,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 10
+      multiplex: 10
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1075,7 +1075,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1098,7 +1098,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 0
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1119,7 +1119,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 2
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: No invert, 1: Invert, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1140,7 +1140,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1164,7 +1164,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 58
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
         3: N/A}
       attributes: {}
@@ -1187,7 +1187,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 60
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1209,7 +1209,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 32
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1231,7 +1231,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 34
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       attributes: {DisplayDecimalPlaces: '0'}
       calc_max_for_none: true
@@ -1253,7 +1253,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 36
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Force On, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1275,7 +1275,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 38
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1297,7 +1297,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 62
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Master, 1: Follower, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1334,7 +1334,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1356,7 +1356,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: W
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1393,7 +1393,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {GenSigStartValue: '2400.0'}
       calc_max_for_none: true
@@ -1414,7 +1414,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: Vrms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {GenSigStartValue: '500.0'}
       calc_max_for_none: true
@@ -1447,7 +1447,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1468,7 +1468,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: W
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1513,7 +1513,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1546,7 +1546,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1567,7 +1567,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: W
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1600,7 +1600,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1621,7 +1621,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: W
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -1654,7 +1654,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: 'Power On Reset, and a quoted comma', 1: Ready, 2: Following, 3: Fault,
         4: Forming, 5: N/A, 6: N/A, 7: N/A, 8: N/A, 9: N/A, 10: N/A, 11: N/A, 12: N/A,
         13: N/A, 14: N/A, 15: N/A}
@@ -1677,7 +1677,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 0
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1698,7 +1698,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 18
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: None, 1: Available, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1720,7 +1720,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 10
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: None, 1: Available, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1741,7 +1741,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 12
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Disabled, 1: Enabled, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1762,7 +1762,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 14
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Not Active, 1: Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1783,7 +1783,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1805,7 +1805,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 4
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Clear Faults, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1827,7 +1827,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 6
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1850,7 +1850,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1871,7 +1871,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 16
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1892,7 +1892,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 22
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Open, 1: Closed, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1913,7 +1913,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 20
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1936,7 +1936,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 26
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Invalid, 1: Valid, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1959,7 +1959,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 28
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Warning, 3: ErrorPassive, 4: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -1980,7 +1980,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 30
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Disable, 1: Enable, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2002,7 +2002,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 32
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal - Three Phase Mode, 1: Enable Split Phase Mode, 2: Error,
         3: N/A}
       attributes: {}
@@ -2025,7 +2025,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 34
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2047,7 +2047,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 36
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: No_Voltage, 1: Voltage_Detected, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2068,7 +2068,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 38
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Negative, 1: Positive, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2103,7 +2103,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2124,7 +2124,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: V
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2145,7 +2145,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: V
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2166,7 +2166,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: V
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2200,7 +2200,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2221,7 +2221,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: C
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2242,7 +2242,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: C
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2275,7 +2275,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2296,7 +2296,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 59
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2318,7 +2318,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 2
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2339,7 +2339,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 43
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2361,7 +2361,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2383,7 +2383,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 14
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2405,7 +2405,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 12
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2427,7 +2427,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 20
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2448,7 +2448,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 10
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2469,7 +2469,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 16
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2491,7 +2491,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 6
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2513,7 +2513,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 0
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2536,7 +2536,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 4
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2558,7 +2558,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
         7: 5V}
       attributes: {}
@@ -2582,7 +2582,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: FLT_A, 2: N/A, 3: FLT_C, 4: OverVoltage, 5: FLT_B, 6: Overcurrent,
         7: 5V}
       attributes: {}
@@ -2606,7 +2606,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2629,7 +2629,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 26
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2650,7 +2650,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 28
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2672,7 +2672,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 30
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {0: Normal, 1: Fault Active, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -2705,7 +2705,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2726,7 +2726,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: V
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2747,7 +2747,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: A
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2781,7 +2781,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2802,7 +2802,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: V
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2823,7 +2823,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: A
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2856,7 +2856,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2877,7 +2877,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: V
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2898,7 +2898,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: C
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -2931,7 +2931,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {DisplayDecimalPlaces: '2'}
       calc_max_for_none: true
@@ -2952,7 +2952,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {DisplayDecimalPlaces: '2'}
       calc_max_for_none: true
@@ -2973,7 +2973,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3006,7 +3006,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3027,7 +3027,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: Vrms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3060,7 +3060,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3093,7 +3093,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {HexadecimalOutput: 'True'}
       calc_max_for_none: true
@@ -3128,7 +3128,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: Multiplexor
+      multiplex: Multiplexor
       _values: {0: ActParam0, 1: ActLVM_ClearingTimes1, 2: ActLVM_ClearingTimes2,
         3: ActLFM_Limits, 4: ActLFM_ClearingTimes, 5: StatusJ1939_Interface, 6: StatusFault_Config,
         7: StatusContactorDelays1, 8: StatusContactorDelays2, 9: StatusContactorDelays3}
@@ -3156,7 +3156,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 0
+      multiplex: 0
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3177,7 +3177,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 1
+      multiplex: 1
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -3198,7 +3198,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 1
+      multiplex: 1
       _values: {}
       attributes: {GenSigStartValue: '2000.0'}
       calc_max_for_none: true
@@ -3219,7 +3219,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 1
+      multiplex: 1
       _values: {}
       attributes: {GenSigStartValue: '1000.0'}
       calc_max_for_none: true
@@ -3240,7 +3240,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 2
+      multiplex: 2
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -3261,7 +3261,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 3
+      multiplex: 3
       _values: {}
       attributes: {GenSigStartValue: '605.0'}
       calc_max_for_none: true
@@ -3282,7 +3282,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: Hz
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 3
+      multiplex: 3
       _values: {}
       attributes: {GenSigStartValue: '598.0'}
       calc_max_for_none: true
@@ -3303,7 +3303,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: Hz
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 3
+      multiplex: 3
       _values: {}
       attributes: {GenSigStartValue: '570.0'}
       calc_max_for_none: true
@@ -3324,7 +3324,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: Hz
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 4
+      multiplex: 4
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -3345,7 +3345,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 4
+      multiplex: 4
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -3366,7 +3366,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 4
+      multiplex: 4
       _values: {}
       attributes: {GenSigStartValue: '160.0'}
       calc_max_for_none: true
@@ -3387,7 +3387,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 5
+      multiplex: 5
       _values: {}
       attributes: {GenSigStartValue: '247.0'}
       calc_max_for_none: true
@@ -3408,7 +3408,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 16
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 5
+      multiplex: 5
       _values: {}
       attributes: {GenSigStartValue: '65.0'}
       calc_max_for_none: true
@@ -3430,7 +3430,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 5
+      multiplex: 5
       _values: {0: 125K, 1: 250K, 2: 500K, 3: 1M}
       attributes: {GenSigStartValue: '2.0'}
       calc_max_for_none: true
@@ -3451,7 +3451,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 36
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 6
+      multiplex: 6
       _values: {0: Warning, 1: Fault, 2: Error, 3: N/A}
       attributes: {}
       calc_max_for_none: true
@@ -3472,7 +3472,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 16
       unit: ''
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 7
+      multiplex: 7
       _values: {}
       attributes: {GenSigStartValue: '100.0'}
       calc_max_for_none: true
@@ -3493,7 +3493,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 7
+      multiplex: 7
       _values: {}
       attributes: {GenSigStartValue: '100.0'}
       calc_max_for_none: true
@@ -3514,7 +3514,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 7
+      multiplex: 7
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3535,7 +3535,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 8
+      multiplex: 8
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3556,7 +3556,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 8
+      multiplex: 8
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3577,7 +3577,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 40
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 8
+      multiplex: 8
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3598,7 +3598,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 56
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 9
+      multiplex: 9
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3619,7 +3619,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: ms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: 9
+      multiplex: 9
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3652,7 +3652,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3673,7 +3673,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: A
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3694,7 +3694,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: A
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3727,7 +3727,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
     signalGroups: []
     signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3748,7 +3748,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 8
       unit: Vrms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
@@ -3769,7 +3769,7 @@ frames: !!python/object:canmatrix.canmatrix.FrameList
       startbit: 24
       unit: Vrms
     - !!python/object:canmatrix.canmatrix.Signal
-      _multiplex: null
+      multiplex: null
       _values: {}
       attributes: {}
       calc_max_for_none: true
