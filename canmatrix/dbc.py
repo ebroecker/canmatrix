@@ -154,7 +154,7 @@ def dump(db, f, **options):
         )
         duplicate_signal_counter = collections.Counter()
         for signal in bo.signals:
-            if signal.multiplex == 'Multiplexor' and multiplex_written:
+            if signal.multiplex == 'Multiplexor' and multiplex_written and not frame.is_complex_multiplexed:
                 continue
 
             f.write((" SG_ " + output_names[bo][signal]).encode(dbcExportEncoding))
@@ -401,6 +401,11 @@ def dump(db, f, **options):
                 f.write((" " + output_names[bo][signal]).encode(dbcExportEncoding))
             f.write(";\n".encode(dbcExportEncoding))
 
+    for frame in db.frames:
+        if frame.is_complex_multiplexed:
+            for signal in frame.signals:
+                if signal.muxerForSignal is not None:
+                    f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
 
 def load(f, **options):
     if 'dbcImportEncoding' in options:
@@ -466,10 +471,8 @@ def load(f, **options):
             regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")
             temp = regexp.match(decoded)
 #            db._fl.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-            db.frames.addFrame(Frame(temp.group(2),
-                                  Id=temp.group(1),
-                                  dlc=temp.group(3),
-                                  transmitter=temp.group(4).split()))
+            frame = Frame(temp.group(2), Id=temp.group(1), dlc=temp.group(3), transmitter=temp.group(4).split())
+            db.frames.addFrame(frame)
         elif decoded.startswith("SG_ "):
             pattern = "^SG\_ (\w+) : (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)"
             regexp = re.compile(pattern)
@@ -503,9 +506,16 @@ def load(f, **options):
                 temp_raw = regexp_raw.match(l)
                 receiver = list(map(str.strip, temp.group(12).split(',')))
                 multiplex = temp.group(2)
+
+                is_complex_multiplexed = False
+
                 if multiplex == 'M':
                     multiplex = 'Multiplexor'
-                else:
+                elif multiplex.endswith('M'):
+                    is_complex_multiplexed = True
+                    multiplex = multiplex[:-1]
+
+                if multiplex != 'Multiplexor':
                     try:
                         multiplex = int(multiplex[1:])
                     except:
@@ -524,11 +534,19 @@ def load(f, **options):
                                      dbcImportEncoding),
                                  receiver=receiver,
                                  multiplex=multiplex)
+
+                if is_complex_multiplexed:
+                    tempSig.is_multiplexer = True
+
                 if not tempSig.is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc
                     tempSig.setStartbit(int(temp.group(3)), bitNumbering=1)
 
-                db._fl.addSignalToLastFrame(tempSig)
+                frame = db.frames.addSignalToLastFrame(tempSig)
+
+                if is_complex_multiplexed:
+                    frame.is_complex_multiplexed = True
+
 
         elif decoded.startswith("BO_TX_BU_ "):
             regexp = re.compile("^BO_TX_BU_ ([0-9]+) *: *(.+);")
@@ -775,8 +793,27 @@ def load(f, **options):
             if temp:
                 db.addDefineDefault(temp.group(1),
                                     temp_raw.group(2).decode(dbcImportEncoding))
-#               else:
-#                       print "Unrecocniced line: " + l + " (%d) " % i
+        elif decoded.startswith("SG_MUL_VAL_ "):
+            pattern = "^SG\_MUL\_VAL\_ +([0-9]+) +([A-Za-z0-9\-_]+) +([A-Za-z0-9\-_]+) +([0-9]+)\-([0-9]+) *;"
+            regexp = re.compile(pattern)
+            regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+            temp = regexp.match(decoded)
+            temp_raw = regexp_raw.match(l)
+            if temp:
+                frameId = temp.group(1)
+                signalName = temp.group(2)
+                muxerForSignal = temp.group(3)
+                muxValMin = int(temp.group(4))
+                muxValMax = int(temp.group(4))
+                frame  = db.frameById(frameId)
+                if frame is not None:
+                    signal = frame.signalByName(signalName)
+                    frame.is_complex_multiplexed = True
+                    signal.muxerForSignal = muxerForSignal
+                    signal.muxValMin = muxValMin
+                    signal.muxValMax = muxValMax
+        #        else:
+#            print("Unrecocniced line: " + l + " (%d) " % i)
 # Backtracking
     for frame in db.frames:
         # receiver is only given in the signals, so do propagate the receiver

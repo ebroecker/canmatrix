@@ -54,7 +54,9 @@ class FrameList(object):
         """
         Adds a Signal to the last addes Frame, this is mainly for importers
         """
-        self._list[len(self._list) - 1].addSignal(signal)
+        lastFrame = self._list[len(self._list) - 1]
+        lastFrame.addSignal(signal)
+        return lastFrame
 
     def addFrame(self, frame):
         """
@@ -180,10 +182,11 @@ class Signal(object):
         def multiplex(value):
             if value is not None and value != 'Multiplexor':
                 multiplex = int(value)
+                self.mux_val = int(value)
             else:
+                self.is_multiplexer = True
                 multiplex = value
             return multiplex
-                        
 
         args = [
             ('startBit', 'startbit', int, 0),
@@ -197,7 +200,9 @@ class Signal(object):
             ('unit', 'unit', None, ""),
             ('receiver', 'receiver', None, []),
             ('comment', 'comment', None, None),
-            ('multiplex', '_multiplex', multiplex, None),
+            ('multiplex', 'multiplex', multiplex, None),
+            ('is_multiplexer', 'is_multiplexer', None, False),
+            ('mux_value', 'mux_value', None, None),
             ('is_float', 'is_float', bool, False),
             ('enumeration', 'enumeration', str, None),
             ('comments', 'comments', None, {}),
@@ -205,6 +210,9 @@ class Signal(object):
             ('values', '_values', None, {}),
             ('calc_min_for_none', 'calc_min_for_none', bool, True),
             ('calc_max_for_none', 'calc_max_for_none', bool, True),
+            ('muxValMax', 'muxValMax', int, 0),
+            ('muxValMin','muxValMin', int, 0),
+            ('muxerForSignal','muxerForSignal', str, None)
         ]
 
         for arg_name, destination, function, default in args:
@@ -231,11 +239,6 @@ class Signal(object):
         self.setMax(self.max)
 
         self.name = name
-
-
-    @property
-    def multiplex(self):
-        return self._multiplex
 
     @property
     def values(self):
@@ -468,6 +471,7 @@ class Frame(object):
             ('dlc', 'size', int, 0),
             ('transmitter', 'transmitter', None, []),
             ('extended', 'extended', bool, False),
+            ('is_complex_multiplexed', 'is_complex_multiplexed', bool, False),
             ('comment', 'comment', str, None),
             ('signals', 'signals', None, []),
             ('mux_names', 'mux_names', None, {}),
@@ -690,7 +694,7 @@ class Frame(object):
         fmt = self.bitstruct_format()
         signal_value = []
         signals = sorted(self.signals, key=lambda s: s.getStartbit())
-
+        # TODO - Mux support
         for signal in signals:
             signal_value.append(
                 signal.phys2raw(data.get(signal.name))
@@ -712,7 +716,7 @@ class Frame(object):
         fmt = self.bitstruct_format()
         signals = sorted(self.signals, key=lambda s: s.getStartbit())
         signals_values = OrderedDict()
-
+        # TODO - Mux support
         for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
             signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
         return signals_values
