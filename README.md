@@ -32,6 +32,8 @@ supported file formats for export:
 ***
 
 ### Install instructions
+[Chinese Translation / 安装中文方法解释及注意事项](https://github.com/ebroecker/canmatrix/wiki/%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E6%96%B9%E6%B3%95%E8%A7%A3%E9%87%8A%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
+
 Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install" and "pip install -r requirements.txt"
 
 This installs the *canmatrix* package into your python installation.
