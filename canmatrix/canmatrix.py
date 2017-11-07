@@ -188,15 +188,17 @@ class Signal(object):
                 multiplex = value
             return multiplex
 
+        float_factory = kwargs.pop('float_factory', float)
+
         args = [
             ('startBit', 'startbit', int, 0),
             ('signalSize', 'signalsize', int, 0),
             ('is_little_endian', 'is_little_endian', bool, True),
             ('is_signed', 'is_signed', bool, True),
-            ('factor', 'factor', float, 1),
-            ('offset', 'offset', float, 0),
-            ('min', 'min', float, None),
-            ('max', 'max', float, None),
+            ('factor', 'factor', float_factory, 1),
+            ('offset', 'offset', float_factory, 0),
+            ('min', 'min', float_factory, None),
+            ('max', 'max', float_factory, None),
             ('unit', 'unit', None, ""),
             ('receiver', 'receiver', None, []),
             ('comment', 'comment', None, None),

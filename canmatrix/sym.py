@@ -261,6 +261,7 @@ def load(f, **options):
 
     calc_min_for_none = options.get('calc_min_for_none')
     calc_max_for_none = options.get('calc_max_for_none')
+    float_factory = options.get('float_factory')
 
     class Mode(object):
         glob, enums, send, sendReceive, receive = list(range(5))
@@ -449,6 +450,8 @@ def load(f, **options):
                             extras['calc_min_for_none'] = calc_min_for_none
                         if calc_max_for_none is not None:
                             extras['calc_max_for_none'] = calc_max_for_none
+                        if float_factory is not None:
+                            extras['float_factory'] = float_factory
 
                         signal = Signal(frameName + "_MUX",
                                         startBit=startBit,
@@ -478,6 +481,8 @@ def load(f, **options):
                         extras['calc_min_for_none'] = calc_min_for_none
                     if calc_max_for_none is not None:
                         extras['calc_max_for_none'] = calc_max_for_none
+                    if float_factory is not None:
+                        extras['float_factory'] = float_factory
 
                     signal = Signal(sigName,
                                     startBit=startBit,
