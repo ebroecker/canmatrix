@@ -164,6 +164,9 @@ def dump(dbs, f, **options):
             frameTriggering = createSubElement(
                 physicalChannel, 'FRAME-TRIGGERINGS')
         for frame in db.frames:
+            if frame.is_complex_multiplexed:
+                logger.error("export complex multiplexers is not supported - ignoring frame " + frame.name)
+                continue
             canFrameTriggering = createSubElement(
                 frameTriggering, 'CAN-FRAME-TRIGGERING')
             createSubElement(canFrameTriggering, 'SHORT-NAME', frame.name)
@@ -218,6 +221,9 @@ def dump(dbs, f, **options):
             ipduTriggerings = createSubElement(
                 physicalChannel, 'I-PDU-TRIGGERINGS')
             for frame in db.frames:
+                if frame.is_complex_multiplexed:
+                    continue
+
                 ipduTriggering = createSubElement(
                     ipduTriggerings, 'I-PDU-TRIGGERING')
                 createSubElement(
@@ -231,6 +237,9 @@ def dump(dbs, f, **options):
             isignalTriggerings = createSubElement(
                 physicalChannel, 'I-SIGNAL-TRIGGERINGS')
             for frame in db.frames:
+                if frame.is_complex_multiplexed:
+                    continue
+
                 for signal in frame.signals:
                     isignalTriggering = createSubElement(
                         isignalTriggerings, 'I-SIGNAL-TRIGGERING')
@@ -259,6 +268,9 @@ def dump(dbs, f, **options):
             isignalTriggerings = createSubElement(
                 physicalChannel, 'I-SIGNAL-TRIGGERINGS')
             for frame in db.frames:
+                if frame.is_complex_multiplexed:
+                    continue
+
                 for signal in frame.signals:
                     isignalTriggering = createSubElement(
                         isignalTriggerings, 'I-SIGNAL-TRIGGERING')
@@ -285,6 +297,9 @@ def dump(dbs, f, **options):
             ipduTriggerings = createSubElement(
                 physicalChannel, 'PDU-TRIGGERINGS')
             for frame in db.frames:
+                if frame.is_complex_multiplexed:
+                    continue
+
                 ipduTriggering = createSubElement(
                     ipduTriggerings, 'PDU-TRIGGERING')
                 createSubElement(
@@ -321,6 +336,9 @@ def dump(dbs, f, **options):
         db = dbs[name]
         # TODO: reused frames will be paced multiple times in file
         for frame in db.frames:
+            if frame.is_complex_multiplexed:
+                continue
+
             if arVersion[0] == "3":
                 frameEle = createSubElement(elements, 'FRAME')
             else:
@@ -356,6 +374,9 @@ def dump(dbs, f, **options):
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
+            if frame.is_complex_multiplexed:
+                continue
+
             if arVersion[0] == "3":
                 signalIpdu = createSubElement(elements, 'SIGNAL-I-PDU')
                 createSubElement(signalIpdu, 'SHORT-NAME', "PDU_" + frame.name)
@@ -430,6 +451,9 @@ def dump(dbs, f, **options):
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
+            if frame.is_complex_multiplexed:
+                continue
+
             for signal in frame.signals:
                 signalEle = createSubElement(elements, 'I-SIGNAL')
                 createSubElement(signalEle, 'SHORT-NAME', signal.name)
@@ -479,6 +503,9 @@ def dump(dbs, f, **options):
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
+            if frame.is_complex_multiplexed:
+                continue
+
             for signal in frame.signals:
                 signalEle = createSubElement(elements, 'SYSTEM-SIGNAL')
                 createSubElement(signalEle, 'SHORT-NAME', signal.name)
@@ -524,6 +551,9 @@ def dump(dbs, f, **options):
         for name in dbs:
             db = dbs[name]
             for frame in db.frames:
+                if frame.is_complex_multiplexed:
+                    continue
+
                 for signal in frame.signals:
                     if signal.is_float:
                         typeEle = createSubElement(elements, 'REAL-TYPE')
@@ -547,6 +577,9 @@ def dump(dbs, f, **options):
         for name in dbs:
             db = dbs[name]
             for frame in db.frames:
+                if frame.is_complex_multiplexed:
+                    continue
+
                 for signal in frame.signals:
                     createType, size = getBaseTypeOfSignal(signal)
                     if createType not in createdTypes:
@@ -572,6 +605,9 @@ def dump(dbs, f, **options):
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
+            if frame.is_complex_multiplexed:
+                continue
+
             for signal in frame.signals:
                 compuMethod = createSubElement(elements, 'COMPU-METHOD')
                 createSubElement(compuMethod, 'SHORT-NAME', signal.name)
@@ -609,6 +645,9 @@ def dump(dbs, f, **options):
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
+            if frame.is_complex_multiplexed:
+                continue
+
             for signal in frame.signals:
                 unit = createSubElement(elements, 'UNIT')
                 createSubElement(unit, 'SHORT-NAME', signal.name)
@@ -655,6 +694,9 @@ def dump(dbs, f, **options):
             sendTemp = None
 
             for frame in db.frames:
+                if frame.is_complex_multiplexed:
+                    continue
+
                 if ecu.name in frame.transmitter:
                     frameport = createSubElement(
                         ecuCommPortInstances, 'FRAME-PORT')

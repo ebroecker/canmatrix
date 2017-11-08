@@ -319,6 +319,10 @@ def dump(db, f, **options):
 
     # Frames
     for frame in db.frames:
+        if frame.is_complex_multiplexed:
+            logger.error("export complex multiplexers is not supported - ignoring frame " + frame.name)
+            continue
+
         # Name unMsgId m_ucLength m_ucNumOfSignals m_cDataFormat m_cFrameFormat? m_txNode
         # m_cDataFormat If 1 dataformat Intel, 0- Motorola -- immer 1 original Converter macht das nach anzahl entsprechender Signale
         # cFrameFormat Standard 'S' Extended 'X'
@@ -417,6 +421,9 @@ def dump(db, f, **options):
     # signal descriptions
     outstr += "[START_DESC_SIG]\n"
     for frame in db.frames:
+        if frame.is_complex_multiplexed:
+            continue
+
         for signal in frame.signals:
             if signal.comment is not None:
                 comment = signal.comment.replace("\n", " ")
@@ -474,6 +481,9 @@ def dump(db, f, **options):
     # messages-attributes:
     outstr += "[START_PARAM_MSG_VAL]\n"
     for frame in db.frames:
+        if frame.is_complex_multiplexed:
+            continue
+
         for attrib, val in sorted(list(frame.attributes.items())):
             outstr += str(frame.id) + ',S,"' + attrib + '","' + val + '"\n'
     outstr += "[END_PARAM_MSG_VAL]\n"
@@ -481,6 +491,9 @@ def dump(db, f, **options):
     # signal-attributes:
     outstr += "[START_PARAM_SIG_VAL]\n"
     for frame in db.frames:
+        if frame.is_complex_multiplexed:
+            continue
+
         for signal in frame.signals:
             for attrib, val in sorted(list(signal.attributes.items())):
                 outstr += str(frame.id) + ',S,' + signal.name + \
