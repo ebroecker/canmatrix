@@ -157,13 +157,15 @@ def dump(db, f, **options):
             if signal.multiplex == 'Multiplexor' and multiplex_written and not frame.is_complex_multiplexed:
                 continue
 
-            f.write((" SG_ " + output_names[bo][signal]).encode(dbcExportEncoding))
+            f.write((" SG_ " + output_names[bo][signal]).encode(dbcExportEncoding) + " ")
+            if signal.mux_val is not None:
+                f.write(("m%d" %
+                         int(signal.mux_val)).encode(dbcExportEncoding))
             if signal.multiplex == 'Multiplexor':
-                f.write(' M '.encode(dbcExportEncoding))
+                f.write('M'.encode(dbcExportEncoding))
                 multiplex_written = True
-            elif signal.multiplex is not None:
-                f.write((" m%d " %
-                         int(signal.multiplex)).encode(dbcExportEncoding))
+
+
 
             startbit = signal.getStartbit(bitNumbering=1)
 
@@ -537,6 +539,7 @@ def load(f, **options):
 
                 if is_complex_multiplexed:
                     tempSig.is_multiplexer = True
+                    tempSig.multiplex = 'Multiplexor'
 
                 if not tempSig.is_little_endian:
                     # startbit of motorola coded signals are MSB in dbc

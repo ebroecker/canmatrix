@@ -178,7 +178,7 @@ class Signal(object):
     """
 
     def __init__(self, name, **kwargs):
-
+        self.mux_val = None
         def multiplex(value):
             if value is not None and value != 'Multiplexor':
                 multiplex = int(value)
