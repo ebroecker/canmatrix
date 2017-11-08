@@ -157,7 +157,7 @@ def dump(db, f, **options):
             if signal.multiplex == 'Multiplexor' and multiplex_written and not frame.is_complex_multiplexed:
                 continue
 
-            f.write((" SG_ " + output_names[bo][signal]).encode(dbcExportEncoding) + " ")
+            f.write((" SG_ " + output_names[bo][signal] + " ").encode(dbcExportEncoding))
             if signal.mux_val is not None:
                 f.write(("m%d" %
                          int(signal.mux_val)).encode(dbcExportEncoding))
