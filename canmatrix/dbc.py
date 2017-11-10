@@ -154,7 +154,7 @@ def dump(db, f, **options):
         )
         duplicate_signal_counter = collections.Counter()
         for signal in bo.signals:
-            if signal.multiplex == 'Multiplexor' and multiplex_written and not frame.is_complex_multiplexed:
+            if signal.multiplex == 'Multiplexor' and multiplex_written and not bo.is_complex_multiplexed:
                 continue
 
             f.write((" SG_ " + output_names[bo][signal] + " ").encode(dbcExportEncoding))
