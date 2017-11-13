@@ -754,8 +754,9 @@ def load(f, **options):
             elif tempba.group(1).strip().startswith("SG_ "):
                 regexp = re.compile("^BA\_ \"(.*)\" SG\_ (\w+) (\w+) (.+);")
                 temp = regexp.match(decoded)
-                db.frameById(int(temp.group(2))).signalByName(
-                    temp.group(3)).addAttribute(temp.group(1), temp.group(4))
+                if temp!=None:
+                    db.frameById(int(temp.group(2))).signalByName(
+                        temp.group(3)).addAttribute(temp.group(1), temp.group(4))
             elif tempba.group(1).strip().startswith("BU_ "):
                 regexp = re.compile("^BA\_ \"(.*)\" BU\_ (\w+) (.+);")
                 temp = regexp.match(decoded)
