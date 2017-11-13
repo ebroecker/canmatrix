@@ -1640,7 +1640,7 @@ def load(file, **options):
             if l2 is not None:
                 bu.addComment(l2.text)
 
-            db._BUs.add(bu)
+            db.boardUnits.add(bu)
 
         for bo in db.frames:
             frame = 0
