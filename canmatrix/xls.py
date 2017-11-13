@@ -45,7 +45,7 @@ import xlrd
 font = 'font: name Verdana, height 160'
 
 if xlwt is not None:
-    sty_header = xlwt.easyxf(font + ', bold on; align: rota 90, vertical center, horizontal center',
+    sty_header = xlwt.easyxf(font + ', bold on; align: vertical center, horizontal center',
                              'pattern: pattern solid, fore-colour rose')
     sty_norm = xlwt.easyxf(font + ', colour black')
     sty_first_frame = xlwt.easyxf(font + ', colour black; borders: top thin')
@@ -345,6 +345,7 @@ def dump(db, file, **options):
     worksheet.col(head_start + 1).width = 5555
 
     frameHash = {}
+    logger.debug("DEBUG: Length of db.frames is %d" % len(db.frames))
     for frame in db.frames:
         frameHash[int(frame.id)] = frame
 
@@ -365,6 +366,11 @@ def dump(db, file, **options):
         sigstyle = sty_first_frame
 
         # iterate over signals
+        if len(frame.signals)==0:
+            #logger.debug("DEBUG: No signals found for frame %s" % frame.name)
+            writeFrame(frame, worksheet, row, framestyle)
+            row += 1
+            continue
         for sig_idx in sorted(sigHash.keys()):
             sig = sigHash[sig_idx]
 
