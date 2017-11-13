@@ -5,6 +5,10 @@ import logging
 logger = logging.getLogger('root')
 import canmatrix
 import os
+if sys.version_info > (3, 0):
+    import io
+else:
+    import StringIO
 
 moduleList = ["arxml", "cmcsv", "dbc", "dbf", "cmjson",
               "kcd", "fibex", "sym", "xls", "xlsx", "yaml"]
@@ -37,8 +41,13 @@ for loadedModule in loadedFormats:
         extensionMapping[loadedModule] = loadedModule
 
 
-def loads(string, importType=None, key="", flatImport=None, **options):
-    fileObject = StringIO.StringIO[string]
+def loads(string, importType=None, key="", flatImport=None, encoding="utf-8",**options):
+    if sys.version_info > (3, 0):
+        if type(string) == str:
+            string = bytes(string, encoding)
+        fileObject = io.BytesIO(string)
+    else:
+        fileObject = StringIO.StringIO(string)
     return load(fileObject, importType, key, flatImport, **options)
 
 
