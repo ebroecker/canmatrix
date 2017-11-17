@@ -4,17 +4,16 @@ import codecs
 import sys
 sys.path.append('..')
 
-import canmatrix.exportall as ex
+import canmatrix.formats
 from canmatrix.canmatrix import *
-
 #
 # create target Matrix
 #
 
 db = CanMatrix()
 
-db._BUs.add(BoardUnit("testBU"))
-db._BUs.add(BoardUnit("recBU"))
+db.boardUnits.add(BoardUnit("testBU"))
+db.boardUnits.add(BoardUnit("recBU"))
 
 myFrame = Frame("testFrame1", Id=0x123, dlc=8, transmitter="testBU")
 
@@ -55,8 +54,8 @@ myFrame.addSignal(mySignal2)
 myFrame2 = Frame("extendedFrame", Id=0x12,  dlc=8, transmitter="testBU")
 myFrame2._extended = 1
 
-db._fl.addFrame(myFrame)
-db._fl.addFrame(myFrame2)
+db.frames.addFrame(myFrame)
+db.frames.addFrame(myFrame2)
 
 db.boardUnitByName("testBU").addComment("sender ECU")
 db.boardUnitByName("testBU").addAttribute("NetworkNode", 0x111)
@@ -73,5 +72,5 @@ db.addBUDefines("NetworkNode", 'INT 0 65535')
 # export the new (target)-Matrix for example as .dbc:
 #
 
-ex.exportDbc(db, "test.dbc", dbcExportEncoding='iso-8859-1',
+canmatrix.formats.dumpp({"myMatrix": db}, "test.dbc", dbcExportEncoding='iso-8859-1',
              dbcExportCommentEncoding='iso-8859-1')
