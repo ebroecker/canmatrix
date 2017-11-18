@@ -56,7 +56,7 @@ def loadp(path, importType=None, key="", flatImport=None, **options):
         if not importType:
             for supportedImportType, extension in extensionMapping.items():
                 if path.endswith(extension) and "load" in supportedFormats[supportedImportType]:
-                    importType = key
+                    importType = supportedImportType
                     break
 
         if importType:
