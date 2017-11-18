@@ -54,13 +54,13 @@ def loads(string, importType=None, key="", flatImport=None, encoding="utf-8",**o
 def loadp(path, importType=None, key="", flatImport=None, **options):
     with open(path, "rb") as fileObject:
         if not importType:
-            for key, extension in extensionMapping.items():
-                if path.endswith(extension) and "load" in supportedFormats[key]:
-                    importType = key
+            for supportedImportType, extension in extensionMapping.items():
+                if path.endswith(extension) and "load" in supportedFormats[supportedImportType]:
+                    importType = supportedImportType
                     break
 
         if importType:
-            return load(fileObject, importType, **options)
+            return load(fileObject, importType, key, flatImport, **options)
         else:
             logger.error("This file format is not supported for reading")
             return None
