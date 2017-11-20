@@ -15,6 +15,11 @@ import re
 import shutil
 import subprocess
 
+if sys.version_info > (3, 2):
+    if shutil.which("diff") is None:
+        print ("ERROR: this test needs the tool 'diff' in your path to work")
+        sys.exit()
+
 from canmatrix.log import setup_logger, set_log_level
 logger = setup_logger('root')
 set_log_level(logger, -1)

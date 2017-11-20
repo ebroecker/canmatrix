@@ -17,6 +17,13 @@ db.boardUnits.add(BoardUnit("recBU"))
 
 myFrame = Frame("testFrame1", Id=0x123, dlc=8, transmitter="testBU")
 
+if sys.version_info > (3, 0):
+    unit = u"specialCharUnit°$"
+    comment = u"Multi \n Line \n Signal comment with a-umlaut: ä"
+else:
+    unit = "specialCharUnit°$".decode("utf-8")
+    comment = "Multi \n Line \n Signal comment with a-umlaut: ä".decode("utf-8")
+
 mySignal = Signal("someTestSignal",
                   signalSize=11,
                   is_little_endian=False,
@@ -25,7 +32,7 @@ mySignal = Signal("someTestSignal",
                   offset=1.0,
                   min=0,
                   max=500,
-                  unit="specialCharUnit°$".decode("utf-8"),
+                  unit=u"specialCharUnit°$", #.decode("utf-8"),
                   receiver=["recBU"])
 mySignal.setStartbit(9, bitNumbering=1, startLittle=True)
 mySignal2 = Signal("Signal",
@@ -44,8 +51,7 @@ mySignal2.addValues(1, "one")
 mySignal2.addValues(2, "two")
 mySignal2.addValues(3, "three")
 
-mySignal.addComment(
-    "Multi \n Line \n Signal comment with a-umlaut: ä".decode("utf-8"))
+mySignal.addComment(comment )
 myFrame.addComment("Multi \n Line \n Frame comment")
 
 myFrame.addSignal(mySignal)
