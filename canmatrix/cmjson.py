@@ -47,7 +47,7 @@ def dump(db, f, **options):
         mode = 'w'
     else:
         mode = 'wb'
-  
+
     exportArray = []
 
     if exportCanard:
@@ -107,7 +107,6 @@ def dump(db, f, **options):
                 }
                 if signal.multiplex is not None:
                     signalDict["multiplex"] = signal.multiplex
-                signals.append(signalDict)
                 if signal.unit is not None:
                     signalDict["unit"] = signal.unit
                 signals.append(signalDict)
@@ -132,7 +131,7 @@ def dump(db, f, **options):
 
 def load(f, **options):
     db = CanMatrix()
-    
+
     if (sys.version_info > (3, 0)):
         import io
         jsonData = json.load(io.TextIOWrapper(f, encoding='UTF-8'))
@@ -159,7 +158,7 @@ def load(f, **options):
                 if "is_float" in signal and signal["is_float"]:
                     is_float = True
                 else:
-                    is_float = False                    
+                    is_float = False
                 if "is_signed" in signal and signal["is_signed"]:
                     is_signed = True
                 else:
