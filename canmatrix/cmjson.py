@@ -38,6 +38,13 @@ def dump(db, f, **options):
         exportCanard = options['jsonCanard']
     else:
         exportCanard = False
+
+    if 'jsonMotorolaBitFormat' in options:
+        motorolaBitFormat = options['jsonMotorolaBitFormat']
+    else:
+        motorolaBitFormat = "lsb"
+
+
     if 'jsonAll' in options:
         exportAll = options['jsonAll']
     else:
@@ -69,9 +76,19 @@ def dump(db, f, **options):
         for frame in db.frames:
             signals = []
             for signal in frame.signals:
+                if not signal.is_little_endian:
+                    if motorolaBitFormat == "msb":
+                        startBit = signal.getStartbit(bitNumbering=1)
+                    elif motorolaBitFormat == "msbreverse":
+                        startBit = signal.getStartbit()
+                    else:  # motorolaBitFormat == "lsb"
+                        startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
+                else:
+                    startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
+
                 signals.append({
                     "name": signal.name,
-                    "start_bit": signal.getStartbit(bitNumbering=1, startLittle=True),
+                    "start_bit": startBit,
                     "bit_length": signal.signalsize,
                     "factor": float(signal.factor),
                     "offset": float(signal.offset),
@@ -93,9 +110,19 @@ def dump(db, f, **options):
                 attribs = {}
                 for attribute in signal.attributes:
                     attribs[attribute] = signal.attributes[attribute]
+                if not signal.is_little_endian:
+                    if motorolaBitFormat == "msb":
+                        startBit = signal.getStartbit(bitNumbering=1)
+                    elif motorolaBitFormat == "msbreverse":
+                        startBit = signal.getStartbit()
+                    else:  # motorolaBitFormat == "lsb"
+                        startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
+                else:  # motorolaBitFormat == "lsb"
+                    startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
+
                 signalDict = {
                     "name": signal.name,
-                    "start_bit": signal.getStartbit(bitNumbering=1, startLittle=True),
+                    "start_bit": startBit,
                     "bit_length": signal.signalsize,
                     "factor": float(signal.factor),
                     "offset": float(signal.offset),

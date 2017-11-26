@@ -270,6 +270,9 @@ def main():
     parser.add_option("", "--jsonExportAll",
                       dest="jsonAll", action="store_true", default=False,
                       help="Export more data to json format")
+    parser.add_option("", "--jsonMotorolaBitFormat",
+                      dest="jsonMotorolaBitFormat", default="lsb",
+                      help="Json format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
 
     parser.add_option("", "--ecus",
                       dest="ecus", default=None,
