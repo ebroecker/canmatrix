@@ -384,6 +384,10 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
  
                         Export Canard compatible json format
 	
+ --jsonMotorolaBitFormat
+  
+                        Json format for startbit of motorola coded signals. Valid values: msb, lsb, msbreverse default lsb. [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
+
 * kdc
 * csv
 
