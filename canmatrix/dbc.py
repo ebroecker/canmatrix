@@ -161,8 +161,11 @@ def dump(db, f, **options):
             if signal.mux_val is not None:
                 f.write(("m%d" %
                          int(signal.mux_val)).encode(dbcExportEncoding))
+                if signal.multiplex != 'Multiplexor':
+                    f.write(' '.encode(dbcExportEncoding))
+
             if signal.multiplex == 'Multiplexor':
-                f.write('M'.encode(dbcExportEncoding))
+                f.write('M '.encode(dbcExportEncoding))
                 multiplex_written = True
 
 
@@ -174,7 +177,7 @@ def dump(db, f, **options):
             else:
                 sign = '+'
             f.write(
-                (" : %d|%d@%d%c" %
+                (": %d|%d@%d%c" %
                  (startbit,
                   signal.signalsize,
                   signal.is_little_endian,
