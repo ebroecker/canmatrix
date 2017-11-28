@@ -130,7 +130,7 @@ def writeValuex(label, value, row, rearCol):
     row[rearCol + 1] = label
 
 
-def writeSignalx(db, sig, row, rearCol):
+def writeSignalx(db, sig, row, rearCol, additionalSignalCollums):
     # startbyte
     row[5] = int((sig.getStartbit()) / 8 + 1)
     # startbit
@@ -190,6 +190,13 @@ def writeSignalx(db, sig, row, rearCol):
         # factor not 1.0 ?
         if float(sig.factor) != 1:
             row[rearCol + 2] = float(sig.factor)
+    colNr = rearCol + 3
+    for col in additionalSignalCollums:
+        try:
+            row[colNr] = eval("sig." + col)
+        except:
+            row[colNr] = ""
+        colNr += 1
 
 
 def dump(db, thefile, delimiter=',', **options):
@@ -210,6 +217,11 @@ def dump(db, thefile, delimiter=',', **options):
         'is signed']
     head_tail = ['Value', 'Name / Phys. Range', 'Function / Increment Unit']
 
+    if "additionalAttributes" in options:
+        additionalSignalCollums = options["additionalAttributes"].split(",")
+        print (additionalSignalCollums)
+    else:
+        additionalSignalCollums = []#["attributes['DisplayDecimalPlaces']"]
     csvtable = list()  # List holding all csv rows
 
     col = 0  # Column counter
@@ -271,7 +283,7 @@ def dump(db, thefile, delimiter=',', **options):
                     col = writeBuMatrixx(buList, sig, frame, signalRow, col)
                     # write Value
                     writeValuex(val, sig.values[val], signalRow, col)
-                    writeSignalx(db, sig, signalRow, col)
+                    writeSignalx(db, sig, signalRow, col, additionalSignalCollums)
 
                     # no min/max here, because min/max has same col as values.
                     # next row
@@ -284,7 +296,7 @@ def dump(db, thefile, delimiter=',', **options):
                 writeFramex(frame, signalRow)
                 col = head_top.__len__()
                 col = writeBuMatrixx(buList, sig, frame, signalRow, col)
-                writeSignalx(db, sig, signalRow, col)
+                writeSignalx(db, sig, signalRow, col, additionalSignalCollums)
 
                 if sig.min is not None or sig.max is not None:
                     signalRow[col + 1] = str("{}..{}".format(sig.min, sig.max))

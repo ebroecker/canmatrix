@@ -368,6 +368,12 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
   
                         Excel format for startbit of motorola coded signals. Valid values: msb, lsb, msbreverse default msbreverse. [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
 
+* csv:
+
+  --csvAdditionalSignalAttributes
+                        append additional signal-collums to csv, example:
+                        is_signed,attributes["GenSigStartValue"]
+  
 
  
 * arxml:

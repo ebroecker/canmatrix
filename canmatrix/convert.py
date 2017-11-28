@@ -274,6 +274,10 @@ def main():
                       dest="jsonMotorolaBitFormat", default="lsb",
                       help="Json format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
 
+    parser.add_option("", "--csvAdditionalSignalAttributes",
+                      dest="additionalAttributes", default="",
+                      help="append collums to csv, example: is_signed,attributes[\"GenSigStartValue\"] ")
+
     parser.add_option("", "--ecus",
                       dest="ecus", default=None,
                       help="Copy only given ECUs (comma separated list) to target matrix")
