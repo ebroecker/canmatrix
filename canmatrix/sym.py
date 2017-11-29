@@ -312,7 +312,7 @@ def load(f, **options):
                     else:
                         line += ' ' + f.next().decode(symImportEncoding).strip()
                 line = line.split('//')[0]
-                tempArray = line[5:].replace(')', '').split('(')
+                tempArray = line[5:].strip().rstrip(')').split('(', maxsplit=1)
                 valtabName = tempArray[0]
                 split = shlex.split(tempArray[1])
                 tempArray = [s.rstrip(',') for s in split]
