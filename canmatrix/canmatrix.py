@@ -202,8 +202,8 @@ class Signal(object):
             ('unit', 'unit', None, ""),
             ('receiver', 'receiver', None, []),
             ('comment', 'comment', None, None),
-            ('multiplex', 'multiplex', multiplex, None),
             ('is_multiplexer', 'is_multiplexer', None, False),
+            ('multiplex', 'multiplex', multiplex, None),
             ('mux_value', 'mux_value', None, None),
             ('is_float', 'is_float', bool, False),
             ('enumeration', 'enumeration', str, None),
@@ -508,6 +508,13 @@ class Frame(object):
     def id(self, value):
         self._Id = value
 
+    @property
+    def is_multiplexed(self):
+        for sig in self.signals:
+            if sig.is_multiplexer:
+                return True
+        return False
+
 
     def __iter__(self):
         return iter(self.signals)
@@ -658,7 +665,7 @@ class Frame(object):
             for receiver in sig.receiver:
                 self.addReceiver(receiver)
 
-    def bitstruct_format(self):
+    def bitstruct_format(self, signalsToDecode = None):
         """Returns the Bitstruct format string of this frame
 
         :return: Bitstruct format string.
@@ -666,8 +673,11 @@ class Frame(object):
         fmt = []
         frame_size = self.size * 8
         end = frame_size
+        if signalsToDecode is None:
+            signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        else:
+            signals = sorted(signalsToDecode, key=lambda s: s.getStartbit())
 
-        signals = sorted(self.signals, key=lambda s: s.getStartbit())
         for signal in signals:
             start = frame_size - signal.getStartbit() - signal.signalsize
             padding = end - (start + signal.signalsize)
@@ -693,10 +703,27 @@ class Frame(object):
 
         data = {} if data is None else data
 
-        fmt = self.bitstruct_format()
+        if self.is_complex_multiplexed:
+            # TODO
+            pass
+        elif self.is_multiplexed:
+            # search for mulitplexer-signal
+            muxSignal = None
+            for signal in self.signals:
+                if signal.is_multiplexer:
+                    muxSignal = signal
+                    muxVal = data.get(signal.name)
+            # create list of signals which belong to muxgroup
+            encodeSignals = [muxSignal]
+            for signal in self.signals:
+                if signal.mux_val == muxVal or signal.mux_val is None:
+                    encodeSignals.append(signal)
+            fmt = self.bitstruct_format(encodeSignals)
+            signals = sorted(encodeSignals, key=lambda s: s.getStartbit())
+        else:
+            fmt = self.bitstruct_format()
+            signals = sorted(self.signals, key=lambda s: s.getStartbit())
         signal_value = []
-        signals = sorted(self.signals, key=lambda s: s.getStartbit())
-        # TODO - Mux support
         for signal in signals:
             signal_value.append(
                 signal.phys2raw(data.get(signal.name))
@@ -715,12 +742,35 @@ class Frame(object):
             logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
             return None
 
-        fmt = self.bitstruct_format()
-        signals = sorted(self.signals, key=lambda s: s.getStartbit())
+        if self.is_complex_multiplexed:
+            # TODO
+            pass
+        elif self.is_multiplexed:
+            # find multiplexer and decode only its value:
+            for signal in self.signals:
+                if signal.is_multiplexer:
+                    fmt = self.bitstruct_format([signal])
+                    signals = sorted(self.signals, key=lambda s: s.getStartbit())
+                    signals_values = OrderedDict()
+                    for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
+                        signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
+                muxVal = int(signals_values.values()[0])
+            # find all signals with the identified multiplexer-value
+            muxedSignals = []
+            for signal in self.signals:
+                if signal.mux_val == muxVal or signal.mux_val is None:
+                    muxedSignals.append(signal)
+            fmt = self.bitstruct_format(muxedSignals)
+            signals = sorted(muxedSignals, key=lambda s: s.getStartbit())
+        else:
+            fmt = self.bitstruct_format()
+            signals = sorted(self.signals, key=lambda s: s.getStartbit())
+
+        #decode
         signals_values = OrderedDict()
-        # TODO - Mux support
         for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
             signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
+
         return signals_values
 
 
