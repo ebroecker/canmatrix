@@ -58,7 +58,7 @@ myFrame.addSignal(mySignal)
 myFrame.addSignal(mySignal2)
 
 myFrame2 = Frame("extendedFrame", Id=0x12,  dlc=8, transmitter="testBU")
-myFrame2._extended = 1
+myFrame2.extended = 1
 
 db.frames.addFrame(myFrame)
 db.frames.addFrame(myFrame2)

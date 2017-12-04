@@ -39,7 +39,7 @@ try:
 except:
     bitstruct = None
     logger.info("bitstruct could not be imported // No signal de/encoding possible // try pip install bitstruct")
-from past.builtins import basestring
+#from past.builtins import basestring
 
 
 class FrameList(object):
