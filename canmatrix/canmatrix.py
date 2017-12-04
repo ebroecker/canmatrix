@@ -474,6 +474,7 @@ class Frame(object):
             ('transmitter', 'transmitter', None, []),
             ('extended', 'extended', bool, False),
             ('is_complex_multiplexed', 'is_complex_multiplexed', bool, False),
+            ('is_fd', 'is_fd', bool, False),
             ('comment', 'comment', str, None),
             ('signals', 'signals', None, []),
             ('mux_names', 'mux_names', None, {}),
@@ -847,6 +848,14 @@ class CanMatrix(object):
 
     def __iter__(self):
         return iter(self.frames)
+
+    @property
+    def contains_fd(self):
+        for frame in self.frames:
+            if frame.is_fd:
+                return True
+        return False
+
 
     def addValueTable(self, name, valueTable):
         self.valueTables[name] = normalizeValueTable(valueTable)

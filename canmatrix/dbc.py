@@ -83,6 +83,23 @@ def dump(db, f, **options):
     else:
         writeValTable = True
 
+    if db.contains_fd:
+        db.addGlobalDefines("BusType","STRING")
+        db.addAttribute("BusType", "CAN FD")
+        db.addFrameDefines("VFrameFormat",'ENUM "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD"')
+        for frame in db.frames:
+            if frame.is_fd:
+                if frame.extended:
+                    frame.addAttribute("VFrameFormat", 15)
+                else:
+                    frame.addAttribute("VFrameFormat", 14)
+            else:
+                if frame.extended:
+                    frame.addAttribute("VFrameFormat", 1)
+                else:
+                    frame.addAttribute("VFrameFormat", 0)
+
+
     f.write("VERSION \"created by canmatrix\"\n\n".encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
@@ -830,6 +847,10 @@ def load(f, **options):
         if frame.id > 0x80000000:
             frame.id -= 0x80000000
             frame.extended = 1
+
+        if "VFrameFormat" in frame.attributes:
+            if (frame.attributes["VFrameFormat"] > 13):
+                frame.is_fd = True
     for define in db.globalDefines:
         if db.globalDefines[define].type == "STRING":
             if define in db.attributes:
@@ -850,4 +871,5 @@ def load(f, **options):
                 for signal in frame.signals:
                     if define in signal.attributes:
                         signal.attributes[define] = signal.attributes[define][1:-1]
+
     return db
