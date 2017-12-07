@@ -77,7 +77,8 @@ setup(
         "dbc": [],
         "dbf": [],
         "json": [],
-        "sym": []
+        "sym": [],
+        "codec": ["bitstruct"]
     },
 
     packages = find_packages(),
