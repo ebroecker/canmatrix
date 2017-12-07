@@ -11,13 +11,16 @@ import canmatrix
 
 db = canmatrix.CanMatrix()
 
-myFrame1 = canmatrix.Frame("canFdStandard1",Id=1,  dlc=24, is_fd = True)
-myFrame2 = canmatrix.Frame("CanFdExtended2",Id=2,  dlc=16, extended = True, is_fd = True)
-myFrame3 = canmatrix.Frame("CanExtended3", Id=3, dlc=8, extended = True)
+db.boardUnits.add(canmatrix.BoardUnit("testBU"))
+db.boardUnits.add(canmatrix.BoardUnit("recBU"))
+
+myFrame1 = canmatrix.Frame("canFdStandard1",Id=1,  dlc=24, is_fd = True, transmitter=["testBU"])
+myFrame2 = canmatrix.Frame("CanFdExtended2",Id=2,  dlc=16, extended = True, is_fd = True, transmitter=["testBU"])
+myFrame3 = canmatrix.Frame("CanExtended3", Id=3, dlc=8, extended = True, transmitter=["testBU"])
 myFrame4 = canmatrix.Frame("CanStandard4", Id=4,  dlc=8)
 
-mySignal1 = canmatrix.Signal("signal1", signalSize=64, startBit=0, is_little_endian=True, min=0, max=0, is_signed=True)
-mySignal2 = canmatrix.Signal("signal2", signalSize=64, startBit=64, is_little_endian=True, min=0, max=0, is_signed=True)
+mySignal1 = canmatrix.Signal("signal1", signalSize=64, startBit=0, is_little_endian=True, min=0, max=0, is_signed=True, receiver=["recBU"])
+mySignal2 = canmatrix.Signal("signal2", signalSize=64, startBit=64, is_little_endian=True, min=0, max=0, is_signed=True, receiver=["recBU"])
 mySignal3 = canmatrix.Signal("signal3", signalSize=64, startBit=128, is_little_endian=True, min=0, max=0, is_signed=True)
 
 myFrame1.addSignal(mySignal3)
