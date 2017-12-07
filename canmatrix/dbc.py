@@ -849,7 +849,7 @@ def load(f, **options):
             frame.extended = 1
 
         if "VFrameFormat" in frame.attributes:
-            if (frame.attributes["VFrameFormat"] > 13):
+            if (int(frame.attributes["VFrameFormat"]) > 13):
                 frame.is_fd = True
     for define in db.globalDefines:
         if db.globalDefines[define].type == "STRING":
