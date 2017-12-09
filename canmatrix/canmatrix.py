@@ -1049,6 +1049,11 @@ class CanMatrix(object):
                 if sig is not None:
                     frame.signals.remove(sig)
 
+    def setFdType(self):
+        for frame in self.frames:
+            if frame.size > 8:
+                frame.is_fd = True
+
     def encode(self, frame_id, data):
         """Return a byte string containing the values from data packed
         according to the frame format.

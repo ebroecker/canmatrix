@@ -52,7 +52,10 @@ sty_sender_green_first_frame = 0
 
 def writeFramex(frame, worksheet, row, mystyle):
     # frame-id
-    worksheet.write(row, 0, "%3Xh" % frame.id, mystyle)
+    if frame.extended:
+        worksheet.write(row, 0, "%3Xxh" % frame.id, mystyle)
+    else:
+        worksheet.write(row, 0, "%3Xh" % frame.id, mystyle)
     # frame-Name
     worksheet.write(row, 1, frame.name, mystyle)
 
@@ -245,9 +248,9 @@ def writeBuMatrixx(buList, sig, frame, worksheet, row, col, firstframe):
             locStyleSender = sender_green
         # write "s" "r" "r/s" if signal is sent, recieved or send and recived
         # by boardunit
-        if bu in sig.receiver and bu in frame.transmitter:
+        if sig is not None and bu in sig.receiver and bu in frame.transmitter:
             worksheet.write(row, col, "r/s", locStyleSender)
-        elif bu in sig.receiver:
+        elif sig is not None and bu in sig.receiver:
             worksheet.write(row, col, "r", locStyle)
         elif bu in frame.transmitter:
             worksheet.write(row, col, "s", locStyleSender)
@@ -377,6 +380,13 @@ def dump(db, filename, **options):
 
         # set style for first line with border
         sigstyle = sty_first_frame
+
+        if len(sigHash) == 0:
+            writeFramex(frame, worksheet, row, framestyle)
+            col = head_top.__len__()
+            col = writeBuMatrixx(
+                buList, None, frame, worksheet, row, col, framestyle)
+            row += 1
 
         # iterate over signals
         for sig_idx in sorted(sigHash.keys()):
@@ -645,8 +655,10 @@ def load(filename, **options):
                 launchParam = 0.0
             launchParam = str(int(launchParam))
 
-#            newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
-            newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
+            if frameId.endswith("xh"):
+                newBo = Frame(frameName, Id=int(frameId[:-2], 16), dlc=dlc, extended=True)
+            else:
+                newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
 
             db.frames.addFrame(newBo)
 
@@ -679,7 +691,7 @@ def load(filename, **options):
             newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
 
         # new signal detected
-        if row['Signal Name'] != signalName:
+        if 'Signal Name' in row and row['Signal Name'] != signalName:
             # new Signal
             receiver = []
             startbyte = int(row["Signal Byte No."])
@@ -802,4 +814,5 @@ def load(filename, **options):
         frame.updateReceiver()
         frame.calcDLC()
 
+    db.setFdType()
     return db

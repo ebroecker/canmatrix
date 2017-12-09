@@ -66,7 +66,10 @@ if xlwt is not None:
 
 def writeFrame(frame, worksheet, row, mystyle):
     # frame-id
-    worksheet.write(row, 0, label="%3Xh" % frame.id, style=mystyle)
+    if frame.extended:
+        worksheet.write(row, 0, label="%3Xxh" % frame.id, style=mystyle)
+    else:
+        worksheet.write(row, 0, label="%3Xh" % frame.id, style=mystyle)
     # frame-Name
     worksheet.write(row, 1, label=frame.name, style=mystyle)
 
@@ -539,7 +542,7 @@ def load(file, **options):
 
     # BoardUnits:
     for x in range(index['BUstart'], index['BUend']):
-        db._BUs.add(BoardUnit(sh.cell(0, x).value))
+        db.boardUnits.add(BoardUnit(sh.cell(0, x).value))
 
     # initialize:
     frameId = None
@@ -564,8 +567,10 @@ def load(file, **options):
                 launchParam = 0.0
             launchParam = str(int(launchParam))
 
-#            newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
-            newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
+            if frameId.endswith("xh"):
+                newBo = Frame(frameName, Id=int(frameId[:-2], 16), dlc=dlc, extended = True)
+            else:
+                newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
             db.frames.addFrame(newBo)
 
             # eval launctype
@@ -597,7 +602,7 @@ def load(file, **options):
             newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
 
         # new signal detected
-        if sh.cell(rownum, index['signalName']).value != signalName:
+        if sh.cell(rownum, index['signalName']).value != signalName and len(sh.cell(rownum, index['signalName']).value)>0:
             # new Signal
             receiver = []
             startbyte = int(sh.cell(rownum, index['startbyte']).value)
@@ -715,5 +720,5 @@ def load(file, **options):
     for frame in db.frames:
         frame.updateReceiver()
         frame.calcDLC()
-
+    db.setFdType()
     return db
