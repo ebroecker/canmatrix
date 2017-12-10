@@ -208,6 +208,18 @@ this will remove signales ```mySignal``` and ```mySignal2``` in ```source.dbc```
 this will load ```source.dbc``` and rename signals ```mySignal``` in ```myNewSignal```  and ```mySignal2``` in ```myNewSignal2```.
 The result is stored in ```target.dlc```.
 
+**canFD:**
+
+```canconvert.py --setFrameFd=myFrame,myFrame2 source.dbc target.dbc```
+
+this will set frame-type of  ```myFrame``` and ```myFrame2``` in ```source.dbc``` to CANFD and store the result in ```target.dlc```
+                        list) Syntax: --setFrameFd=myFrame1,mySecondFrame
+
+```canconvert.py --unsetFrameFd=myFrame,myFrame2 source.dbc target.dbc```
+
+this will set frame-type of  ```myFrame``` and ```myFrame2``` in ```source.dbc``` to normal (not FD) and store the result in ```target.dlc```
+                        list) Syntax: --unsetFrameFd=myFrame1,mySecondFrame
+
 
 #### Extract and Merge:
 

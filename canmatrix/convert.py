@@ -98,6 +98,19 @@ def convert(infile, outfileName, **options):
             deleteFrameList = options['deleteFrame'].split(',')
             for frame in deleteFrameList:
                 db.delFrame(frame)
+        if 'setFrameFd' in options and options['setFrameFd'] is not None:
+            fdFrameList = options['setFrameFd'].split(',')
+            for frame in fdFrameList:
+                framePtr = db.frameByName(frame)
+                if framePtr is not None:
+                    framePtr.is_fd = True
+        if 'unsetFrameFd' in options and options['unsetFrameFd'] is not None:
+            fdFrameList = options['unsetFrameFd'].split(',')
+            for frame in fdFrameList:
+                framePtr = db.frameByName(frame)
+                if framePtr is not None:
+                    framePtr.is_fd = False
+
         if 'skipLongDlc' in options and options['skipLongDlc'] is not None:
             deleteFrameList = []
             for frame in db.frames:
@@ -310,6 +323,12 @@ def main():
     parser.add_option("", "--renameSignal",
                       dest="renameSignal", default=None,
                       help="rename Signal form databases. (comma separated list)\nSyntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal")
+    parser.add_option("", "--setFrameFd",
+                      dest="setFrameFd", default=None,
+                      help="set Frame from database to canfd. (comma separated list)\nSyntax: --setFrameFd=myFrame1,mySecondFrame")
+    parser.add_option("", "--unsetFrameFd",
+                      dest="unsetFrameFd", default=None,
+                      help="set Frame from database to normal (not FD). (comma separated list)\nSyntax: --unsetFrameFd=myFrame1,mySecondFrame")
 
     (cmdlineOptions, args) = parser.parse_args()
     if len(args) < 2:

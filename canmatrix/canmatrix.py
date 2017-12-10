@@ -267,8 +267,7 @@ class Signal(object):
         """
         Add Attribute to Signal
         """
-        if attribute not in self.attributes:
-            self.attributes[attribute] = value
+        self.attributes[attribute] = value
 
     def delAttribute(self, attribute):
         """
@@ -572,10 +571,9 @@ class Frame(object):
 
     def addAttribute(self, attribute, value):
         """
-        add attribute to attribute-list of frame
+        add attribute to attribute-list of frame; If Attribute already exits, modify value
         """
-        if attribute not in self.attributes:
-            self.attributes[attribute] = str(value)
+        self.attributes[attribute] = str(value)
 
     def delAttribute(self, attribute):
         """
@@ -864,8 +862,7 @@ class CanMatrix(object):
         """
         add attribute to attribute-list of canmatrix
         """
-        if attribute not in self.attributes:
-            self.attributes[attribute] = value
+        self.attributes[attribute] = value
 
     def addSignalDefines(self, type, definition):
         """
