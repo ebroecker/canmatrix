@@ -87,3 +87,79 @@ def getFrameInfo(frame):
         retArray.append("")
     return retArray
 
+
+def getSignal(db, sig, motorolaBitFormat):
+    frontArray = []
+    backArray = []
+    if motorolaBitFormat == "msb":
+        startBit = sig.getStartbit(bitNumbering=1)
+    elif motorolaBitFormat == "msbreverse":
+        startBit = sig.getStartbit()
+    else:  # motorolaBitFormat == "lsb"
+        startBit = sig.getStartbit(bitNumbering=1, startLittle=True)
+
+    # startbyte
+    frontArray.append(math.floor(startBit / 8) + 1)
+    # startbit
+    frontArray.append((startBit) % 8)
+    # signalname
+    frontArray.append(sig.name)
+
+    # eval comment:
+    if sig.comment is None:
+        comment = ""
+    else:
+        comment = sig.comment
+
+    # eval multiplex-info
+    if sig.multiplex == 'Multiplexor':
+        comment = "Mode Signal: " + comment
+    elif sig.multiplex is not None:
+        comment = "Mode " + str(sig.multiplex) + ":" + comment
+
+    # write comment and size of signal in sheet
+    frontArray.append(comment)
+    frontArray.append(sig.signalsize)
+
+    # startvalue of signal available
+    if "GenSigStartValue" in sig.attributes:
+        if db.signalDefines["GenSigStartValue"].definition == "STRING":
+            frontArray.append(sig.attributes["GenSigStartValue"])
+        elif db.signalDefines["GenSigStartValue"].definition == "INT" or db.signalDefines["GenSigStartValue"].definition == "HEX":
+            frontArray.append("%Xh" %  int(sig.attributes["GenSigStartValue"]))
+        else:
+            frontArray.append(" ")
+    else:
+        frontArray.append(" ")
+
+    # SNA-value of signal available
+    if "GenSigSNA" in sig.attributes:
+        sna = sig.attributes["GenSigSNA"][1:-1]
+        frontArray.append(sna)
+    # no SNA-value of signal available / just for correct style:
+    else:
+        frontArray.append(" ")
+
+    # eval byteorder (little_endian: intel == True / motorola == 0)
+    if sig.is_little_endian:
+        frontArray.append("i")
+    else:
+        frontArray.append("m")
+
+    # is a unit defined for signal?
+    if sig.unit.strip().__len__() > 0:
+        # factor not 1.0 ?
+        if float(sig.factor) != 1:
+            backArray.append("%g" % float(sig.factor) + "  " + sig.unit)
+        #factor == 1.0
+        else:
+            backArray.append(sig.unit)
+    # no unit defined
+    else:
+        # factor not 1.0 ?
+        if float(sig.factor) != 1:
+            backArray.append("%g" % float(sig.factor))
+        #factor == 1.0
+        else:
+            backArray.append("")
+    return frontArray,backArray
