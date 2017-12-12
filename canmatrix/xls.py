@@ -28,13 +28,15 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 from builtins import *
-import math
 import sys
 import os.path
 import codecs
 import xlwt
 import logging
+from canmatrix.xls_common import *
+
 logger = logging.getLogger('root')
+
 
 from .canmatrix import *
 import xlrd
@@ -64,202 +66,6 @@ if xlwt is not None:
         'pattern: pattern 0x04, fore-colour gray25, back-colour light_green; borders: top thin')
 
 
-def writeFrame(frame, worksheet, row, mystyle):
-    # frame-id
-    if frame.extended:
-        worksheet.write(row, 0, label="%3Xxh" % frame.id, style=mystyle)
-    else:
-        worksheet.write(row, 0, label="%3Xh" % frame.id, style=mystyle)
-    # frame-Name
-    worksheet.write(row, 1, label=frame.name, style=mystyle)
-
-    # determin cycle-time
-    if "GenMsgCycleTime" in frame.attributes:
-        worksheet.write(
-            row,
-            2,
-            label=int(
-                frame.attributes["GenMsgCycleTime"]),
-            style=mystyle)
-    else:
-        worksheet.write(row, 2, label="", style=mystyle)
-
-    # determin send-type
-    if "GenMsgSendType" in frame.attributes:
-        if frame.attributes["GenMsgSendType"] == "5":
-            worksheet.write(row, 3, label="Cyclic+Change", style=mystyle)
-            if "GenMsgDelayTime" in frame.attributes:
-                worksheet.write(
-                    row,
-                    4,
-                    label=int(
-                        frame.attributes["GenMsgDelayTime"]),
-                    style=mystyle)
-            else:
-                worksheet.write(row, 4, label="", style=mystyle)
-        elif frame.attributes["GenMsgSendType"] == "0":
-            worksheet.write(row, 3, label="Cyclic", style=mystyle)
-            worksheet.write(row, 4, label="", style=mystyle)
-        elif frame.attributes["GenMsgSendType"] == "2":
-            worksheet.write(row, 3, label="BAF", style=mystyle)
-            if "GenMsgNrOfRepetitions" in frame.attributes:
-                worksheet.write(
-                    row,
-                    4,
-                    label=int(
-                        frame.attributes["GenMsgNrOfRepetitions"]),
-                    style=mystyle)
-            else:
-                worksheet.write(row, 4, label="", style=mystyle)
-        elif frame.attributes["GenMsgSendType"] == "8":
-            worksheet.write(row, 3, label="DualCycle", style=mystyle)
-            if "GenMsgCycleTimeActive" in frame.attributes:
-                worksheet.write(
-                    row,
-                    4,
-                    label=int(
-                        frame.attributes["GenMsgCycleTimeActive"]),
-                    style=mystyle)
-            else:
-                worksheet.write(row, 4, label="", style=mystyle)
-        elif frame.attributes["GenMsgSendType"] == "10":
-            worksheet.write(row, 3, label="None", style=mystyle)
-            if "GenMsgDelayTime" in frame.attributes:
-                worksheet.write(
-                    row,
-                    4,
-                    label=int(
-                        frame.attributes["GenMsgDelayTime"]),
-                    style=mystyle)
-            else:
-                worksheet.write(row, 4, label="", style=mystyle)
-        elif frame.attributes["GenMsgSendType"] == "9":
-            worksheet.write(row, 3, label="OnChange", style=mystyle)
-            if "GenMsgNrOfRepetitions" in frame.attributes:
-                worksheet.write(
-                    row,
-                    4,
-                    label=int(
-                        frame.attributes["GenMsgNrOfRepetitions"]),
-                    style=mystyle)
-            else:
-                worksheet.write(row, 4, label="", style=mystyle)
-        elif frame.attributes["GenMsgSendType"] == "1":
-            worksheet.write(row, 3, label="Spontaneous", style=mystyle)
-            if "GenMsgDelayTime" in frame.attributes:
-                worksheet.write(
-                    row,
-                    4,
-                    label=int(
-                        frame.attributes["GenMsgDelayTime"]),
-                    style=mystyle)
-            else:
-                worksheet.write(row, 4, label="", style=mystyle)
-        else:
-            worksheet.write(row, 3, label="", style=mystyle)
-            worksheet.write(row, 4, label="", style=mystyle)
-    else:
-        worksheet.write(row, 3, label="", style=mystyle)
-        worksheet.write(row, 4, label="", style=mystyle)
-
-
-def writeSignal(db, sig, worksheet, row, mystyle, rearCol, motorolaBitFormat):
-    if motorolaBitFormat == "msb":
-        startBit = sig.getStartbit(bitNumbering=1)
-    elif motorolaBitFormat == "msbreverse":
-        startBit = sig.getStartbit()
-    else:  # motorolaBitFormat == "lsb"
-        startBit = sig.getStartbit(bitNumbering=1, startLittle=True)
-
-    # startbyte
-    worksheet.write(row, 5, label=math.floor(startBit / 8) + 1, style=mystyle)
-    # startbit
-    worksheet.write(row, 6, label=(startBit) % 8, style=mystyle)
-    # signalname
-    worksheet.write(row, 7, label=sig.name, style=mystyle)
-
-    # eval comment:
-    if sig.comment is None:
-        comment = ""
-    else:
-        comment = sig.comment
-
-    # eval multiplex-info
-    if sig.multiplex == 'Multiplexor':
-        comment = "Mode Signal: " + comment
-    elif sig.multiplex is not None:
-        comment = "Mode " + str(sig.multiplex) + ":" + comment
-
-    # write comment and size of signal in sheet
-    worksheet.write(row, 8, label=comment, style=mystyle)
-    worksheet.write(row, 9, label=sig.signalsize, style=mystyle)
-
-    # startvalue of signal available
-    if "GenSigStartValue" in sig.attributes:
-        if db.signalDefines["GenSigStartValue"].definition == "STRING":
-            worksheet.write(row, 10, label=sig.attributes[
-                            "GenSigStartValue"], style=mystyle)
-        elif db.signalDefines["GenSigStartValue"].definition == "INT" or db.signalDefines["GenSigStartValue"].definition == "HEX":
-            worksheet.write(row, 10, label="%Xh" %
-                            int(sig.attributes["GenSigStartValue"]), style=mystyle)
-        else:
-            worksheet.write(row, 10, label=" ", style=mystyle)
-    else:
-        worksheet.write(row, 10, label=" ", style=mystyle)
-
-    # SNA-value of signal available
-    if "GenSigSNA" in sig.attributes:
-        sna = sig.attributes["GenSigSNA"][1:-1]
-        worksheet.write(row, 11, label=sna, style=mystyle)
-    # no SNA-value of signal available / just for correct style:
-    else:
-        worksheet.write(row, 11, label=" ", style=mystyle)
-
-    # eval byteorder (little_endian: intel == True / motorola == 0)
-    if sig.is_little_endian:
-        worksheet.write(row, 12, label="i", style=mystyle)
-    else:
-        worksheet.write(row, 12, label="m", style=mystyle)
-
-    # is a unit defined for signal?
-    if sig.unit.strip().__len__() > 0:
-        # factor not 1.0 ?
-        if float(sig.factor) != 1:
-            worksheet.write(
-                row,
-                rearCol +
-                2,
-                label="%g" %
-                float(
-                    sig.factor) +
-                "  " +
-                sig.unit,
-                style=mystyle)
-        #factor == 1.0
-        else:
-            worksheet.write(row, rearCol + 2, label=sig.unit, style=mystyle)
-    # no unit defined
-    else:
-        # factor not 1.0 ?
-        if float(sig.factor) != 1:
-            worksheet.write(
-                row,
-                rearCol +
-                2,
-                label="%g" %
-                float(
-                    sig.factor),
-                style=mystyle)
-        #factor == 1.0
-        else:
-            worksheet.write(row, rearCol + 2, label="", style=mystyle)
-
-
-def writeValue(label, value, worksheet, row, rearCol, mystyle):
-    # write value and lable in sheet
-    worksheet.write(row, rearCol, label=label, style=mystyle)
-    worksheet.write(row, rearCol + 1, label=value, style=mystyle)
-
 
 def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
     # first-frame - style with borders:
@@ -288,9 +94,9 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
 
         # write "s" "r" "r/s" if signal is sent, recieved or send and recived
         # by boardunit
-        if bu in sig.receiver and bu in frame.transmitter:
+        if sig and bu in sig.receiver and bu in frame.transmitter:
             worksheet.write(row, col, label="r/s", style=locStyleSender)
-        elif bu in sig.receiver:
+        elif sig and bu in sig.receiver:
             worksheet.write(row, col, label="r", style=locStyle)
         elif bu in frame.transmitter:
             worksheet.write(row, col, label="s", style=locStyleSender)
@@ -300,11 +106,26 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
     # loop over boardunits ends here
     return col
 
+def writeExcelLine(worksheet, row, col, rowArray, style):
+    for item in rowArray:
+        worksheet.write(row, col, label=item, style=style)
+        col += 1
+    return col
 
 def dump(db, file, **options):
     head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.',
                 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
+
+    if "additionalAttributes" in options:
+        additionalSignalCollums = options["additionalAttributes"].split(",")
+    else:
+        additionalSignalCollums = []#["attributes['DisplayDecimalPlaces']"]
+
+    if "additionalFrameAttributes" in options:
+        additionalFrameCollums = options["additionalFrameAttributes"].split(",")
+    else:
+        additionalFrameCollums = []#["attributes['DisplayDecimalPlaces']"]
 
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
@@ -315,29 +136,38 @@ def dump(db, file, **options):
 #    wsname = os.path.basename(filename).replace('.xls', '')
 #    worksheet = workbook.add_sheet('K-Matrix ' + wsname[0:22])
     worksheet = workbook.add_sheet('K-Matrix ')
-    col = 0
 
-    # write first row (header) cols before frameardunits:
-    for head in head_top:
-        worksheet.write(0, col, label=head, style=sty_header)
-        worksheet.col(col).width = 1111
-        col += 1
+    rowArray = []
+    col = 0
 
     # write frameardunits in first row:
     buList = []
     for bu in db.boardUnits:
-        worksheet.write(0, col, label=bu.name, style=sty_header)
-        worksheet.col(col).width = 1111
         buList.append(bu.name)
-        col += 1
 
-    head_start = col
+    rowArray += head_top
+    head_start = len(rowArray)
 
-    # write first row (header) cols after frameardunits:
-    for head in head_tail:
-        worksheet.write(0, col, label=head, style=sty_header)
+    rowArray += buList
+    for col in range(0,len(rowArray)):
+        worksheet.col(col).width = 1111
+    tail_start = len(rowArray)
+    rowArray += head_tail
+
+    additionalFrame_start = len(rowArray)
+
+    for col in range(tail_start, len(rowArray)):
         worksheet.col(col).width = 3333
+
+    for additionalCol in additionalFrameCollums:
+        rowArray.append("frame." + additionalCol)
         col += 1
+
+    for additionalCol in additionalSignalCollums:
+        rowArray.append("signal." + additionalCol)
+        col += 1
+
+    writeExcelLine(worksheet, 0, 0, rowArray,sty_header)
 
     # set width of selected Cols
     worksheet.col(1).width = 5555
@@ -360,6 +190,7 @@ def dump(db, file, **options):
 
     # iterate over the frames
     for idx in sorted(frameHash.keys()):
+
         frame = frameHash[idx]
         framestyle = sty_first_frame
 
@@ -371,12 +202,34 @@ def dump(db, file, **options):
         # set style for first line with border
         sigstyle = sty_first_frame
 
+        additionalFrameInfo = []
+        for frameInfo in additionalFrameCollums:
+            try:
+                temp = eval("frame." + frameInfo)
+            except:
+                temp = ""
+            additionalFrameInfo.append(temp)
+
         # iterate over signals
-        if len(frame.signals)==0:
-            #logger.debug("DEBUG: No signals found for frame %s" % frame.name)
-            writeFrame(frame, worksheet, row, framestyle)
+        rowArray = []
+        if len(sigHash) == 0:
+            rowArray += getFrameInfo(frame)
+            for item in range(5, head_start):
+                rowArray.append("")
+            tempCol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
+            tempCol = writeBuMatrix(buList, None, frame, worksheet, row, tempCol , framestyle)
+
+            rowArray = []
+            for col in range(tempCol, additionalFrame_start):
+                rowArray.append("")
+            rowArray += additionalFrameInfo
+            for i in additionalSignalCollums:
+                rowArray.append("")
+            writeExcelLine(worksheet, row, tempCol, rowArray, framestyle)
             row += 1
             continue
+
+        # iterate over signals
         for sig_idx in sorted(sigHash.keys()):
             sig = sigHash[sig_idx]
 
@@ -389,29 +242,27 @@ def dump(db, file, **options):
                 valstyle = sigstyle
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
-                    writeFrame(frame, worksheet, row, framestyle)
+                    rowArray = getFrameInfo(frame)
+                    frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                     if framestyle != sty_first_frame:
                         worksheet.row(row).level = 1
 
-                    col = head_top.__len__()
-                    col = writeBuMatrix(
-                        buList, sig, frame, worksheet, row, col, framestyle)
+                    col = head_start
+                    col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)
+
                     # write Value
-                    writeValue(
-                        val,
-                        sig.values[val],
-                        worksheet,
-                        row,
-                        col,
-                        valstyle)
-                    writeSignal(
-                        db,
-                        sig,
-                        worksheet,
-                        row,
-                        sigstyle,
-                        col,
-                        motorolaBitFormat)
+                    (frontRow, backRow) = getSignal(db, sig, motorolaBitFormat)
+                    writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
+                    backRow += additionalFrameInfo
+                    for item in additionalSignalCollums:
+                        try:
+                            temp = eval("sig." + item)
+                        except:
+                            temp = ""
+                        backRow.append(temp)
+
+                    writeExcelLine(worksheet, row, col + 2, backRow, sigstyle)
+                    writeExcelLine(worksheet, row, col, [val, sig.values[val]], valstyle)
 
                     # no min/max here, because min/max has same col as values...
                     # next row
@@ -423,37 +274,38 @@ def dump(db, file, **options):
                 # loop over values ends here
             # no valuetable available
             else:
-                writeFrame(frame, worksheet, row, framestyle)
+                rowArray = getFrameInfo(frame)
+                frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                 if framestyle != sty_first_frame:
                     worksheet.row(row).level = 1
 
-                col = head_top.__len__()
+                col = head_start
                 col = writeBuMatrix(
                     buList, sig, frame, worksheet, row, col, framestyle)
-                writeSignal(
-                    db,
-                    sig,
-                    worksheet,
-                    row,
-                    sigstyle,
-                    col,
-                    motorolaBitFormat)
+                (frontRow,backRow)  = getSignal(db,sig,motorolaBitFormat)
+                writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
 
                 if float(sig.min) != 0 or float(sig.max) != 1.0:
-                    worksheet.write(
-                        row,
-                        col +
-                        1,
-                        label=str(
-                            "%g..%g" %
-                            (sig.min,
-                             sig.max)),
-                        style=sigstyle)
+                    backRow.insert(0,str("%g..%g" %(sig.min,sig.max)))
                 else:
-                    worksheet.write(row, col + 1, label="", style=sigstyle)
+                    backRow.insert(0, "")
 
-                # just for border
-                worksheet.write(row, col, label="", style=sigstyle)
+                for item in additionalSignalCollums:
+                    try:
+                        temp = eval("sig." + col)
+                    except:
+                        temp = ""
+                backRow.append("")
+                backRow += additionalFrameInfo
+                for item in additionalSignalCollums:
+                    try:
+                        temp = eval("sig." + item)
+                    except:
+                        temp = ""
+                    backRow.append(temp)
+
+                writeExcelLine(worksheet, row, col, backRow, sigstyle)
+
                 # next row
                 row += 1
                 # set style to normal - without border

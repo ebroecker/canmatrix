@@ -287,9 +287,13 @@ def main():
                       dest="jsonMotorolaBitFormat", default="lsb",
                       help="Json format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
 
-    parser.add_option("", "--csvAdditionalSignalAttributes",
+    parser.add_option("", "--additionalFrameAttributes",
+                      dest="additionalFrameAttributes", default="",
+                      help="append collums to csv/xls(x), example: is_fd")
+
+    parser.add_option("", "--additionalSignalAttributes",
                       dest="additionalAttributes", default="",
-                      help="append collums to csv, example: is_signed,attributes[\"GenSigStartValue\"] ")
+                      help="append collums to csv/xls(x), example: is_signed,attributes[\"GenSigStartValue\"] ")
 
     parser.add_option("", "--ecus",
                       dest="ecus", default=None,

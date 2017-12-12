@@ -32,6 +32,9 @@ import sys
 from .canmatrix import *
 import os.path
 import xlsxwriter
+from canmatrix.xls_common import *
+
+
 
 # Font Size : 8pt * 20 = 160
 #font = 'font: name Arial Narrow, height 160'
@@ -261,6 +264,14 @@ def writeBuMatrixx(buList, sig, frame, worksheet, row, col, firstframe):
     return col
 
 
+
+def writeExcelLine(worksheet, row, col, rowArray, style):
+    for item in rowArray:
+        worksheet.write(row, col, item, style)
+        col += 1
+    return col
+
+
 def dump(db, filename, **options):
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
@@ -279,9 +290,20 @@ def dump(db, filename, **options):
         'Signal Function',
         'Signal Length [Bit]',
         'Signal Default',
-        ' Signal Not Available',
+        'Signal Not Available',
         'Byteorder']
     head_tail = ['Value', 'Name / Phys. Range', 'Function / Increment Unit']
+
+    if "additionalAttributes" in options:
+        additionalSignalCollums = options["additionalAttributes"].split(",")
+    else:
+        additionalSignalCollums = []#["attributes['DisplayDecimalPlaces']"]
+
+    if "additionalFrameAttributes" in options:
+        additionalFrameCollums = options["additionalFrameAttributes"].split(",")
+    else:
+        additionalFrameCollums = []#["attributes['DisplayDecimalPlaces']"]
+
 
     workbook = xlsxwriter.Workbook(filename)
 #    wsname = os.path.basename(filename).replace('.xlsx', '')
@@ -326,27 +348,25 @@ def dump(db, filename, **options):
     sty_sender_green_first_frame = workbook.add_format(
         {'pattern': 0x04, 'fg_color': '#C0C0C0', 'bg_color': '#CCFFCC', 'top': 1})
 
-    # write first row (header) cols before frameardunits:
-    for head in head_top:
-        worksheet.write(0, col, head, sty_header)
-        worksheet.set_column(col, col, 3.57)
-        col += 1
+    rowArray = head_top
+    head_start = len(rowArray)
 
     # write frameardunits in first row:
     buList = []
     for bu in db.boardUnits:
-        worksheet.write(0, col, bu.name, sty_header)
-        worksheet.set_column(col, col, 3.57)
         buList.append(bu.name)
-        col += 1
 
-    head_start = col
+    rowArray += buList
+
+    for col in range(0,len(rowArray)):
+        worksheet.set_column(col, col, 3.57)
 
     # write first row (header) cols after frameardunits:
-    for head in head_tail:
-        worksheet.write(0, col, head, sty_header)
+    for col in range(head_start, head_start+len(head_tail)):
         worksheet.set_column(col, col, 6)
-        col += 1
+    rowArray += head_tail
+
+    additionalFrame_start = len(rowArray)
 
     # set width of selected Cols
     worksheet.set_column(0, 0, 3.57)
@@ -357,12 +377,20 @@ def dump(db, filename, **options):
     worksheet.set_column(head_start + 1, head_start + 1, 21)
     worksheet.set_column(head_start + 2, head_start + 2, 12)
 
+    for additionalCol in additionalFrameCollums:
+        rowArray.append("frame." + additionalCol)
+
+    for additionalCol in additionalSignalCollums:
+        rowArray.append("signal." + additionalCol)
+
+    writeExcelLine(worksheet,0,0,rowArray,sty_header)
+
     frameHash = {}
+    logger.debug("DEBUG: Length of db.frames is %d" % len(db.frames))
     for frame in db.frames:
         if frame.is_complex_multiplexed:
             logger.error("export complex multiplexers is not supported - ignoring frame " + frame.name)
             continue
-
         frameHash[int(frame.id)] = frame
 
     # set row to first Frame (row = 0 is header)
@@ -370,6 +398,7 @@ def dump(db, filename, **options):
 
     # iterate over the frames
     for idx in sorted(frameHash.keys()):
+
         frame = frameHash[idx]
         framestyle = sty_first_frame
 
@@ -381,12 +410,32 @@ def dump(db, filename, **options):
         # set style for first line with border
         sigstyle = sty_first_frame
 
+        additionalFrameInfo = []
+        for frameInfo in additionalFrameCollums:
+            try:
+                temp = eval("frame." + frameInfo)
+            except:
+                temp = ""
+            additionalFrameInfo.append(temp)
+
+        # iterate over signals
+        rowArray = []
         if len(sigHash) == 0:
-            writeFramex(frame, worksheet, row, framestyle)
-            col = head_top.__len__()
-            col = writeBuMatrixx(
-                buList, None, frame, worksheet, row, col, framestyle)
+            rowArray += getFrameInfo(frame)
+            for item in range(5, head_start):
+                rowArray.append("")
+            tempCol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
+            tempCol = writeBuMatrixx(buList, None, frame, worksheet, row, tempCol , framestyle)
+
+            rowArray = []
+            for col in range(tempCol, additionalFrame_start):
+                rowArray.append("")
+            rowArray += additionalFrameInfo
+            for i in additionalSignalCollums:
+                rowArray.append("")
+            writeExcelLine(worksheet, row, tempCol, rowArray, framestyle)
             row += 1
+            continue
 
         # iterate over signals
         for sig_idx in sorted(sigHash.keys()):
@@ -395,27 +444,33 @@ def dump(db, filename, **options):
             # if not first Signal in Frame, set style
             if sigstyle != sty_first_frame:
                 sigstyle = sty_norm
+
             # valuetable available?
             if sig.values.__len__() > 0:
                 valstyle = sigstyle
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
-                    writeFramex(frame, worksheet, row, framestyle)
+                    rowArray = getFrameInfo(frame)
+                    frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                     if framestyle != sty_first_frame:
                         worksheet.set_row(row, None, None, {'level': 1})
-                    col = head_top.__len__()
-                    col = writeBuMatrixx(
-                        buList, sig, frame, worksheet, row, col, framestyle)
+
+                    col = head_start
+                    col = writeBuMatrixx(buList, sig, frame, worksheet, row, col, framestyle)
+
                     # write Value
-                    writeValuex(
-                        val,
-                        sig.values[val],
-                        worksheet,
-                        row,
-                        col,
-                        valstyle)
-                    writeSignalx(db, sig, worksheet, row, col,
-                                 sigstyle, motorolaBitFormat)
+                    (frontRow, backRow) = getSignal(db, sig, motorolaBitFormat)
+                    writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
+                    backRow += additionalFrameInfo
+                    for item in additionalSignalCollums:
+                        try:
+                            temp = eval("sig." + item)
+                        except:
+                            temp = ""
+                        backRow.append(temp)
+
+                    writeExcelLine(worksheet, row, col + 2, backRow, sigstyle)
+                    writeExcelLine(worksheet, row, col, [val, sig.values[val]], valstyle)
 
                     # no min/max here, because min/max has same col as values...
                     # next row
@@ -427,23 +482,38 @@ def dump(db, filename, **options):
                 # loop over values ends here
             # no valuetable available
             else:
-                writeFramex(frame, worksheet, row, framestyle)
+                rowArray = getFrameInfo(frame)
+                frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                 if framestyle != sty_first_frame:
                     worksheet.set_row(row, None, None, {'level': 1})
-                col = head_top.__len__()
+
+                col = head_start
                 col = writeBuMatrixx(
                     buList, sig, frame, worksheet, row, col, framestyle)
-                writeSignalx(db, sig, worksheet, row, col,
-                             sigstyle, motorolaBitFormat)
+                (frontRow,backRow)  = getSignal(db,sig,motorolaBitFormat)
+                writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
 
                 if float(sig.min) != 0 or float(sig.max) != 1.0:
-                    worksheet.write(row, col + 1, str("%g..%g" %
-                                                      (sig.min, sig.max)), sigstyle)
+                    backRow.insert(0,str("%g..%g" %(sig.min,sig.max)))
                 else:
-                    worksheet.write(row, col + 1, "", sigstyle)
+                    backRow.insert(0, "")
 
-                # just for border
-                worksheet.write(row, col, "", sigstyle)
+                for item in additionalSignalCollums:
+                    try:
+                        temp = eval("sig." + col)
+                    except:
+                        temp = ""
+                backRow.append("")
+                backRow += additionalFrameInfo
+                for item in additionalSignalCollums:
+                    try:
+                        temp = eval("sig." + item)
+                    except:
+                        temp = ""
+                    backRow.append(temp)
+
+                writeExcelLine(worksheet, row, col, backRow, sigstyle)
+
                 # next row
                 row += 1
                 # set style to normal - without border

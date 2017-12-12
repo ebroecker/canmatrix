@@ -219,7 +219,6 @@ def dump(db, thefile, delimiter=',', **options):
 
     if "additionalAttributes" in options:
         additionalSignalCollums = options["additionalAttributes"].split(",")
-        print (additionalSignalCollums)
     else:
         additionalSignalCollums = []#["attributes['DisplayDecimalPlaces']"]
     csvtable = list()  # List holding all csv rows
