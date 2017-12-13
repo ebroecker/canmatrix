@@ -963,6 +963,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                     "SHORT-NAME",
                     arDict,
                     ns).text)
+        baseType = arGetChild(isignal,"BASE-TYPE",arDict, ns)
+
         syssignal = arGetChild(isignal, "SYSTEM-SIGNAL", arDict, ns)
         if syssignal is None:
             logger.debug(
@@ -1032,6 +1034,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             encoding = arGetChild(baseType, "BASE-TYPE-ENCODING", arDict, ns)
             if encoding is not None and encoding.text == "IEEE754":
                 is_float = True
+
+
         #####################################################################################################
         # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
         # keyword definition. 06Jun16
@@ -1054,6 +1058,18 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             logger.debug('No Compmethod found!! - fuzzy search in syssignal.')
             compmethod = arGetChild(syssignal, "COMPU-METHOD", arDict, ns)
         unit = arGetChild(compmethod, "UNIT", arDict, ns)
+
+        if baseType is None:
+            baseType = arGetChild(datdefprops, "BASE-TYPE", arDict, ns)
+        if baseType is not None:
+            typeName = arGetName(baseType, ns)
+            if typeName[0] == 'u':
+                is_signed = False  # unsigned
+            else:
+                is_signed = True  # signed
+        else:
+            is_signed = True  # signed
+
         if unit is not None:
             longname = arGetChild(unit, "LONG-NAME", arDict, ns)
         #####################################################################################################
@@ -1136,7 +1152,6 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         else:
             logger.debug('no name byte order for signal' + name.text)
 
-        is_signed = False  # unsigned
         if name is None:
             logger.debug('no name for signal given')
         if startBit is None:
@@ -1166,9 +1181,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
             signalRxs[syssignal] = newSig
 
-            basetype = arGetChild(datdefprops, "BASE-TYPE", arDict, ns)
-            if basetype is not None:
-                temp = arGetChild(basetype, "SHORT-NAME", arDict, ns)
+            if baseType is not None:
+                temp = arGetChild(baseType, "SHORT-NAME", arDict, ns)
                 if temp is not None and "boolean" == temp.text:
                     newSig.addValues(1, "TRUE")
                     newSig.addValues(0, "FALSE")
@@ -1620,6 +1634,7 @@ def load(file, **options):
                     logger.debug("load: no isignal for %s" % sigTrig_text)
                     
                     continue
+
                 portRef = arGetChildren(sigTrig, "I-SIGNAL-PORT", arDict, ns)
 
                 for port in portRef:
