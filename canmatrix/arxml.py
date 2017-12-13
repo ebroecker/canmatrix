@@ -1357,7 +1357,11 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                 trigrefcond = arGetChild(pdutrig, "PDU-TRIGGERING-REF-CONDITIONAL", arDict, ns)
                 trigs = arGetChild(trigrefcond, "PDU-TRIGGERING", arDict, ns)
                 ipdus = arGetChild(trigs, "I-PDU", arDict, ns)
+
                 signaltopdumaps = arGetChild(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
+                if signaltopdumaps is None:
+                    signaltopdumaps = arGetChild(ipdus, "I-SIGNAL-TO-I-PDU-MAPPINGS", arDict, ns)
+
                 if signaltopdumaps is None:
                     logger.debug("DEBUG: AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!" % (arGetName(ipdus, ns)))
 #                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
