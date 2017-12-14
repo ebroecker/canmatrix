@@ -935,6 +935,7 @@ def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
 
 
 def getSignals(signalarray, Bo, arDict, ns, multiplexId):
+    global signalRxs
     GroupId = 1
     if signalarray is None:  # Empty signalarray - nothing to do
         return
@@ -1143,8 +1144,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 # value hinzufuegen
                 if const is None:
                     logger.warn(
-                        "unknown Compu-Method: " +
-                        compmethod.get('UUID'))
+                        "unknown Compu-Method: at sourceline %d " % compmethod.sourceline)
         is_little_endian = False
         if motorolla is not None:
             if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
@@ -1300,12 +1300,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                     ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
                 pdusigmapping = arGetChildren(
                     pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                getSignals(
-                    pdusigmapping,
-                    newFrame,
-                    arDict,
-                    ns,
-                    selectorId.text)
+                getSignals(pdusigmapping,newFrame,arDict,ns,selectorId.text)
 
     if newFrame.comment is None:
         newFrame.addComment(getDesc(pdu, arDict, ns))
@@ -1508,6 +1503,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 
 def load(file, **options):
     pduFrameMapping = {}
+    global signalRxs
     signalRxs = {}
 
     if 'arxmlIgnoreClusterInfo' in options:
@@ -1612,12 +1608,7 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            db.frames.addFrame(
-                getFrame(
-                    frameTrig,
-                    arDict,
-                    multiplexTranslation,
-                    ns))
+            db.frames.addFrame(getFrame(frameTrig,arDict,multiplexTranslation,ns))
 
         if ignoreClusterInfo == True:
             pass
