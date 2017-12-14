@@ -934,15 +934,57 @@ def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
     Bo.addSignalGroup(arGetName(syssignal, ns), 1, members)
 
 
+def decodeCompuMethod(compuMethod, arDict, ns):
+    values = {}
+    factor = 1.0
+    offset = 0
+    unit = arGetChild(compuMethod, "UNIT", arDict, ns)
+    const = None
+    compuscales = arGetXchildren(compuMethod, "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE", arDict, ns)
+    for compuscale in compuscales:
+        ll = arGetChild(compuscale, "LOWER-LIMIT", arDict, ns)
+        ul = arGetChild(compuscale, "UPPER-LIMIT", arDict, ns)
+        sl = arGetChild(compuscale, "SHORT-LABEL", arDict, ns)
+        if sl is None:
+            desc = getDesc(compuscale, arDict, ns)
+        else:
+            desc = sl.text
+        #####################################################################################################
+        # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
+        # keyword definition. 06Jun16
+        #####################################################################################################
+        if ll is not None and desc is not None and int(float(ul.text)) == int(float(ll.text)):
+            #####################################################################################################
+            #####################################################################################################
+            values[ll.text] = desc
+
+        scaleDesc = getDesc(compuscale, arDict, ns)
+        rational = arGetChild(compuscale, "COMPU-RATIONAL-COEFFS", arDict, ns)
+        if rational is not None:
+            numerator = arGetChild(rational, "COMPU-NUMERATOR", arDict, ns)
+            zaehler = arGetChildren(numerator, "V", arDict, ns)
+            denominator = arGetChild(rational, "COMPU-DENOMINATOR", arDict, ns)
+            nenner = arGetChildren(denominator, "V", arDict, ns)
+
+            factor = float(zaehler[1].text) / float(nenner[0].text)
+            offset = float(zaehler[0].text) / float(nenner[0].text)
+        else:
+            const = arGetChild(compuscale, "COMPU-CONST", arDict, ns)
+            # value hinzufuegen
+            if const is None:
+                logger.warn(
+                    "unknown Compu-Method: at sourceline %d " % compuMethod.sourceline)
+    return values, factor, offset, unit, const
+
 def getSignals(signalarray, Bo, arDict, ns, multiplexId):
     global signalRxs
     GroupId = 1
     if signalarray is None:  # Empty signalarray - nothing to do
         return
     for signal in signalarray:
-        values = {}
         motorolla = arGetChild(signal, "PACKING-BYTE-ORDER", arDict, ns)
         startBit = arGetChild(signal, "START-POSITION", arDict, ns)
+
         isignal = arGetChild(signal, "SIGNAL", arDict, ns)
         if isignal is None:
             isignal = arGetChild(signal, "I-SIGNAL", arDict, ns)
@@ -958,24 +1000,16 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if isignal is None:
             logger.debug(
                 'Frame %s, no isignal for %s found',
-                Bo.name,
-                arGetChild(
-                    signal,
-                    "SHORT-NAME",
-                    arDict,
-                    ns).text)
-        baseType = arGetChild(isignal,"BASE-TYPE",arDict, ns)
+                Bo.name,arGetChild(signal,"SHORT-NAME",arDict,ns).text)
+
+        baseType = arGetChild(isignal,"BASE-TYPE", arDict, ns)
 
         syssignal = arGetChild(isignal, "SYSTEM-SIGNAL", arDict, ns)
         if syssignal is None:
-            logger.debug(
-                'Frame %s, signal %s has no systemsignal',
-                isignal.tag,
-                Bo.name)
+            logger.debug('Frame %s, signal %s has no systemsignal',isignal.tag,Bo.name)
 
         if "SYSTEM-SIGNAL-GROUP" in syssignal.tag:
-            syssignalarray = arGetXchildren(
-                syssignal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL", arDict, ns)
+            syssignalarray = arGetXchildren(syssignal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL", arDict, ns)
             getSysSignals(syssignal, syssignalarray, Bo, GroupId, ns)
             GroupId = GroupId + 1
             continue
@@ -983,8 +1017,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         length = arGetChild(isignal, "LENGTH", arDict, ns)
         if length is None:
             length = arGetChild(syssignal, "LENGTH", arDict, ns)
-        name = arGetChild(syssignal, "SHORT-NAME", arDict, ns)
 
+        name = arGetChild(syssignal, "SHORT-NAME", arDict, ns)
         unitElement = arGetChild(isignal, "UNIT", arDict, ns)
         displayName = arGetChild(unitElement, "DISPLAY-NAME", arDict, ns)
         if displayName is not None:
@@ -994,23 +1028,17 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
         Min = None
         Max = None
-        factor = 1.0
-        offset = 0
         receiver = []
 
         signalDescription = getDesc(syssignal, arDict, ns)
+
         datatype = arGetChild(syssignal, "DATA-TYPE", arDict, ns)
         if datatype is None:  # AR4?
             dataConstr = arGetChild(isignal,"DATA-CONSTR", arDict, ns)
-            compuMethod = arGetChild(isignal,"COMPU-METHOD", arDict, ns)
+            compmethod = arGetChild(isignal,"COMPU-METHOD", arDict, ns)
             baseType  = arGetChild(isignal,"BASE-TYPE", arDict, ns)
-
             lower = arGetChild(dataConstr, "LOWER-LIMIT", arDict, ns)
             upper = arGetChild(dataConstr, "UPPER-LIMIT", arDict, ns)
-#            if lower is None: # data-constr has no limits defined - use limit from compu-method
-#                lower = arGetChild(compuMethod, "LOWER-LIMIT", arDict, ns)
-#            if upper is None: # data-constr has no limits defined - use limit from compu-method
-#                upper = arGetChild(compuMethod, "UPPER-LIMIT", arDict, ns)
             encoding = None # TODO - find encoding in AR4
         else:
             lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
@@ -1028,19 +1056,14 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
         datdefprops = arGetChild(datatype, "SW-DATA-DEF-PROPS", arDict, ns)
 
-        compmethod = arGetChild(datdefprops, "COMPU-METHOD", arDict, ns)
+        if compmethod is None:
+            compmethod = arGetChild(datdefprops, "COMPU-METHOD", arDict, ns)
         if compmethod is None:  # AR4
             compmethod = arGetChild(isignal, "COMPU-METHOD", arDict, ns)
             baseType = arGetChild(isignal, "BASE-TYPE", arDict, ns)
             encoding = arGetChild(baseType, "BASE-TYPE-ENCODING", arDict, ns)
             if encoding is not None and encoding.text == "IEEE754":
                 is_float = True
-
-
-        #####################################################################################################
-        # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
-        # keyword definition. 06Jun16
-        #####################################################################################################
         if compmethod == None:
             logger.debug('No Compmethod found!! - try alternate scheme 1.')
             networkrep = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
@@ -1058,7 +1081,16 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if compmethod == None:
             logger.debug('No Compmethod found!! - fuzzy search in syssignal.')
             compmethod = arGetChild(syssignal, "COMPU-METHOD", arDict, ns)
-        unit = arGetChild(compmethod, "UNIT", arDict, ns)
+
+        # decode compuMethod:
+        (values, factor, offset, unit, const) = decodeCompuMethod(compmethod, arDict, ns)
+
+        if Min is not None:
+            Min *= factor
+            Min += offset
+        if Max is not None:
+            Max *= factor
+            Max += offset
 
         if baseType is None:
             baseType = arGetChild(datdefprops, "BASE-TYPE", arDict, ns)
@@ -1083,17 +1115,9 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             if displayname is not None:
               Unit = displayname.text
             else:
-        #####################################################################################################
-        #####################################################################################################              
               l4 = arGetChild(longname, "L-4", arDict, ns)
               if l4 is not None:
                 Unit = l4.text
-
-        compuscales = arGetXchildren(
-            compmethod,
-            "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE",
-            arDict,
-            ns)
 
         initvalue = arGetXchildren(syssignal, "INIT-VALUE/VALUE", arDict, ns)
 
@@ -1104,47 +1128,6 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         else:
             initvalue = None
 
-        for compuscale in compuscales:
-            ll = arGetChild(compuscale, "LOWER-LIMIT", arDict, ns)
-            ul = arGetChild(compuscale, "UPPER-LIMIT", arDict, ns)
-            sl = arGetChild(compuscale, "SHORT-LABEL", arDict, ns)
-            if sl is None:
-                desc = getDesc(compuscale, arDict, ns)
-            else:
-                desc = sl.text
-        #####################################################################################################
-        # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
-        # keyword definition. 06Jun16
-        #####################################################################################################
-            if ll is not None and desc is not None and int(float(ul.text)) == int(float(ll.text)):
-        #####################################################################################################
-        #####################################################################################################
-                values[ll.text] = desc
-
-            scaleDesc = getDesc(compuscale, arDict, ns)
-            rational = arGetChild(
-                compuscale, "COMPU-RATIONAL-COEFFS", arDict, ns)
-            if rational is not None:
-                numerator = arGetChild(rational, "COMPU-NUMERATOR", arDict, ns)
-                zaehler = arGetChildren(numerator, "V", arDict, ns)
-                denominator = arGetChild(
-                    rational, "COMPU-DENOMINATOR", arDict, ns)
-                nenner = arGetChildren(denominator, "V", arDict, ns)
-
-                factor = float(zaehler[1].text) / float(nenner[0].text)
-                offset = float(zaehler[0].text) / float(nenner[0].text)
-                if Min is not None:
-                    Min *= factor
-                    Min += offset
-                if Max is not None:
-                    Max *= factor
-                    Max += offset
-            else:
-                const = arGetChild(compuscale, "COMPU-CONST", arDict, ns)
-                # value hinzufuegen
-                if const is None:
-                    logger.warn(
-                        "unknown Compu-Method: at sourceline %d " % compmethod.sourceline)
         is_little_endian = False
         if motorolla is not None:
             if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
@@ -1175,10 +1158,12 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                             comment=signalDescription,
                             is_float=is_float)
 
+
             if newSig.is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
                 newSig.setStartbit(int(startBit.text), bitNumbering=1)
 
+            # save signal, to determin receiver-ECUs for this signal later
             signalRxs[syssignal] = newSig
 
             if baseType is not None:
@@ -1204,6 +1189,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
 
 def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
+    global pduFrameMapping
     extEle = arGetChild(frameTriggering, "CAN-ADDRESSING-MODE", arDict, ns)
     idele = arGetChild(frameTriggering, "IDENTIFIER", arDict, ns)
     frameR = arGetChild(frameTriggering, "FRAME", arDict, ns)
@@ -1216,36 +1202,28 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     if None != frameR:
         dlc = arGetChild(frameR, "FRAME-LENGTH", arDict, ns)
         pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", arDict, ns)
-        pdumapping = arGetChild(
-            pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
+        pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
         pdu = arGetChild(pdumapping, "PDU", arDict, ns)  # SIGNAL-I-PDU
-#        newFrame = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+
         if 'SECURED-I-PDU' in pdu.tag:
             logger.info("found secured pdu - no signal extraction possible: %s", arGetName(pdu,ns))
 
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
-        newFrame = Frame(arGetName(frameR, ns),
-                         Id=idNum,
-                         dlc=int(dlc.text))
+        newFrame = Frame(arGetName(frameR, ns), Id=idNum, dlc=int(dlc.text))
         comment = getDesc(frameR, arDict, ns)
         if comment is not None:
             newFrame.addComment(comment)
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF" % (sn))
-        ipduTriggeringRefs = arGetChild(
-            frameTriggering, "I-PDU-TRIGGERING-REFS", arDict, ns)
-        ipduTriggering = arGetChild(
-            ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
+        ipduTriggeringRefs = arGetChild(frameTriggering, "I-PDU-TRIGGERING-REFS", arDict, ns)
+        ipduTriggering = arGetChild(ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
         pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns) 
         if pdu is None:
             pdu = arGetChild(ipduTriggering, "I-SIGNAL-I-PDU", arDict, ns) ## AR4.2
         dlc = arGetChild(pdu, "LENGTH", arDict, ns)
-#        newFrame = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
-        newFrame = Frame(sn.text,
-                         Id=idNum,
-                         dlc=int(dlc.text) / 8)
+        newFrame = Frame(sn.text,Id=idNum,dlc=int(dlc.text) / 8)
 
     if pdu is None:
         logger.error("ERROR: pdu")
@@ -1253,30 +1231,23 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         logger.debug(arGetName(pdu, ns))
 
     if "MULTIPLEXED-I-PDU" in pdu.tag:
-        selectorByteOrder = arGetChild(
-            pdu, "SELECTOR-FIELD-BYTE-ORDER", arDict, ns)
+        selectorByteOrder = arGetChild(pdu, "SELECTOR-FIELD-BYTE-ORDER", arDict, ns)
         selectorLen = arGetChild(pdu, "SELECTOR-FIELD-LENGTH", arDict, ns)
-        selectorStart = arGetChild(
-            pdu, "SELECTOR-FIELD-START-POSITION", arDict, ns)
+        selectorStart = arGetChild(pdu, "SELECTOR-FIELD-START-POSITION", arDict, ns)
         is_little_endian = False
         if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
         is_signed = False  # unsigned
-        multiplexor = Signal("Multiplexor",
-                             startBit=selectorStart.text,
-                             signalSize=selectorLen.text,
-                             is_little_endian=is_little_endian,
-                             multiplex="Multiplexor")
+        multiplexor = Signal("Multiplexor",startBit=selectorStart.text,signalSize=selectorLen.text,
+                             is_little_endian=is_little_endian,multiplex="Multiplexor")
 
         multiplexor._initValue = 0
         newFrame.addSignal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", arDict, ns)
         ipdu = arGetChild(staticPart, "I-PDU", arDict, ns)
         if ipdu is not None:
-            pdusigmappings = arGetChild(
-                ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
-            pdusigmapping = arGetChildren(
-                pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+            pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
+            pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
             getSignals(pdusigmapping, newFrame, arDict, ns, None)
             multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu, ns)
 
@@ -1286,20 +1257,15 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
 #               byteOrder = arGetChild(segmentPosition, "SEGMENT-BYTE-ORDER", arDict, ns)
 #               segLength = arGetChild(segmentPosition, "SEGMENT-LENGTH", arDict, ns)
 #               segPos = arGetChild(segmentPosition, "SEGMENT-POSITION", arDict, ns)
-        dynamicPartAlternatives = arGetChild(
-            dynamicPart, "DYNAMIC-PART-ALTERNATIVES", arDict, ns)
-        dynamicPartAlternativeList = arGetChildren(
-            dynamicPartAlternatives, "DYNAMIC-PART-ALTERNATIVE", arDict, ns)
+        dynamicPartAlternatives = arGetChild(dynamicPart, "DYNAMIC-PART-ALTERNATIVES", arDict, ns)
+        dynamicPartAlternativeList = arGetChildren(dynamicPartAlternatives, "DYNAMIC-PART-ALTERNATIVE", arDict, ns)
         for alternative in dynamicPartAlternativeList:
-            selectorId = arGetChild(
-                alternative, "SELECTOR-FIELD-CODE", arDict, ns)
+            selectorId = arGetChild(alternative, "SELECTOR-FIELD-CODE", arDict, ns)
             ipdu = arGetChild(alternative, "I-PDU", arDict, ns)
             multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu, ns)
             if ipdu is not None:
-                pdusigmappings = arGetChild(
-                    ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
-                pdusigmapping = arGetChildren(
-                    pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+                pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
+                pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
                 getSignals(pdusigmapping,newFrame,arDict,ns,selectorId.text)
 
     if newFrame.comment is None:
@@ -1321,34 +1287,29 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     if cyclicTiming is not None and eventTiming is not None:
         newFrame.addAttribute("GenMsgSendType", "5")        # CycleAndSpontan
         if minimumDelay is not None:
-            newFrame.addAttribute("GenMsgDelayTime", str(
-                int(float(minimumDelay.text) * 1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text) * 1000)))
         if repeats is not None:
             newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     elif cyclicTiming is not None:
         newFrame.addAttribute("GenMsgSendType", "0")  # CycleX
         if minimumDelay is not None:
-            newFrame.addAttribute("GenMsgDelayTime", str(
-                int(float(minimumDelay.text) * 1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text) * 1000)))
         if repeats is not None:
             newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     else:
         newFrame.addAttribute("GenMsgSendType", "1")  # Spontan
         if minimumDelay is not None:
-            newFrame.addAttribute("GenMsgDelayTime", str(
-                int(float(minimumDelay.text) * 1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text) * 1000)))
         if repeats is not None:
             newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
 
     if startingTime is not None:
         value = arGetChild(startingTime, "VALUE", arDict, ns)
-        newFrame.addAttribute("GenMsgStartDelayTime",
-                              str(int(float(value.text) * 1000)))
+        newFrame.addAttribute("GenMsgStartDelayTime",str(int(float(value.text) * 1000)))
 
     value = arGetChild(repeatingTime, "VALUE", arDict, ns)
     if value is not None:
-        newFrame.addAttribute("GenMsgCycleTime",
-                              str(int(float(value.text) * 1000)))
+        newFrame.addAttribute("GenMsgCycleTime",str(int(float(value.text) * 1000)))
 
 #    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
 #    if pdusigmappings is None or pdusigmappings.__len__() == 0:
@@ -1376,10 +1337,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
 #                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
                 getSignals(signaltopdumaps, newFrame, arDict, ns, None)
         else:
-            logger.debug(
-                "DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found" %
-                (newFrame.name))
-            
+            logger.debug("DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found" % (newFrame.name))
     return newFrame
 
 
@@ -1397,35 +1355,23 @@ def getDesc(element, arDict, ns):
 
 
 def processEcu(ecu, db, arDict, multiplexTranslation, ns):
+    global pduFrameMapping
     connectors = arGetChild(ecu, "CONNECTORS", arDict, ns)
     diagAddress = arGetChild(ecu, "DIAGNOSTIC-ADDRESS", arDict, ns)
     diagResponse = arGetChild(ecu, "RESPONSE-ADDRESSS", arDict, ns)
     # TODO: use diagAddress for frame-classification
-    commconnector = arGetChild(
-        connectors,
-        "COMMUNICATION-CONNECTOR",
-        arDict,
-        ns)
+    commconnector = arGetChild(connectors,"COMMUNICATION-CONNECTOR",arDict,ns)
     if commconnector is None:
-        commconnector = arGetChild(
-            connectors, "CAN-COMMUNICATION-CONNECTOR", arDict, ns)
-    frames = arGetXchildren(
-        commconnector,
-        "ECU-COMM-PORT-INSTANCES/FRAME-PORT",
-        arDict,
-        ns)
+        commconnector = arGetChild(connectors, "CAN-COMMUNICATION-CONNECTOR", arDict, ns)
+    frames = arGetXchildren(commconnector,"ECU-COMM-PORT-INSTANCES/FRAME-PORT",arDict,ns)
     nmAddress = arGetChild(commconnector, "NM-ADDRESS", arDict, ns)
     assocRefs = arGetChild(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", arDict, ns)
+
     if assocRefs is not None:
         assoc = arGetChildren(assocRefs, "ASSOCIATED-I-PDU-GROUP", arDict, ns)
     else:  # AR4
-        assocRefs = arGetChild(
-            ecu, "ASSOCIATED-COM-I-PDU-GROUP-REFS", arDict, ns)
-        assoc = arGetChildren(
-            assocRefs,
-            "ASSOCIATED-COM-I-PDU-GROUP",
-            arDict,
-            ns)
+        assocRefs = arGetChild(ecu, "ASSOCIATED-COM-I-PDU-GROUP-REFS", arDict, ns)
+        assoc = arGetChildren(assocRefs,"ASSOCIATED-COM-I-PDU-GROUP",arDict,ns)
 
     inFrame = []
     outFrame = []
@@ -1502,6 +1448,7 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 
 
 def load(file, **options):
+    global pduFrameMapping
     pduFrameMapping = {}
     global signalRxs
     signalRxs = {}
