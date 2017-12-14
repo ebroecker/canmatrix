@@ -982,6 +982,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
     if signalarray is None:  # Empty signalarray - nothing to do
         return
     for signal in signalarray:
+        compmethod = None
         motorolla = arGetChild(signal, "PACKING-BYTE-ORDER", arDict, ns)
         startBit = arGetChild(signal, "START-POSITION", arDict, ns)
 
