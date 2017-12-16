@@ -21,7 +21,7 @@
 
 import math
 
-def getFrameInfo(frame):
+def getFrameInfo(db, frame):
     retArray = []
     # frame-id
     if frame.extended:
@@ -31,52 +31,50 @@ def getFrameInfo(frame):
     # frame-Name
     retArray.append(frame.name)
 
-    # determin cycle-time
-    if "GenMsgCycleTime" in frame.attributes:
-        retArray.append(int(frame.attributes["GenMsgCycleTime"]))
-    else:
-        retArray.append("")
+    if "GenMsgCycleTime" in db.frameDefines:
+        # determin cycle-time
+        retArray.append(frame.attribute(db, "GenMsgCycleTime"))
 
     # determin send-type
-    if "GenMsgSendType" in frame.attributes:
-        if frame.attributes["GenMsgSendType"] == "5":
+    if "GenMsgSendType" in db.frameDefines:
+        if frame.attribute(db, "GenMsgSendType") == "5":
             retArray.append("Cyclic+Change")
-            if "GenMsgDelayTime" in frame.attributes:
-                retArray.append(int(frame.attributes["GenMsgDelayTime"]))
+            if "GenMsgDelayTime" in db.frameDefines:
+                retArray.append(frame.attribute(db, "GenMsgDelayTime"))
             else:
                 retArray.append("")
-        elif frame.attributes["GenMsgSendType"] == "0":
+        elif frame.attribute(db, "GenMsgSendType") == "0":
             retArray.append("Cyclic")
             retArray.append("")
-        elif frame.attributes["GenMsgSendType"] == "2":
+        elif frame.attribute(db, "GenMsgSendType") == "2":
             retArray.append("BAF")
-            if "GenMsgNrOfRepetitions" in frame.attributes:
-                retArray.append(int(frame.attributes["GenMsgNrOfRepetitions"]))
+            if "GenMsgNrOfRepetitions" in db.frameDefines:
+                retArray.append(frame.attribute(db, "GenMsgNrOfRepetitions"))
             else:
                 retArray.append("")
-        elif frame.attributes["GenMsgSendType"] == "8":
+        elif frame.attribute(db, "GenMsgSendType") == "8":
             retArray.append("DualCycle")
-            if "GenMsgCycleTimeActive" in frame.attributes:
-                retArray.append(int(frame.attributes["GenMsgCycleTimeActive"]))
+            if "GenMsgCycleTimeActive" in db.frameDefines:
+                retArray.append(frame.attribute(db, "GenMsgCycleTimeActive"))
             else:
                 retArray.append("")
-        elif frame.attributes["GenMsgSendType"] == "10":
+        elif frame.attribute(db, "GenMsgSendType") == "10":
             retArray.append("None")
 
-            if "GenMsgDelayTime" in frame.attributes:
-                retArray.append(int(frame.attributes["GenMsgDelayTime"]))
+            if "GenMsgDelayTime" in db.frameDefines:
+                retArray.append(frame.attribute(db, "GenMsgDelayTime"))
             else:
                 retArray.append("")
-        elif frame.attributes["GenMsgSendType"] == "9":
+        elif frame.attribute(db, "GenMsgSendType") == "9":
             retArray.append("OnChange")
-            if "GenMsgNrOfRepetitions" in frame.attributes:
-                retArray.append(int(frame.attributes["GenMsgNrOfRepetitions"]))
+            if "GenMsgNrOfRepetitions" in db.frameDefines:
+                retArray.append(frame.attribute(db, "GenMsgNrOfRepetitions"))
             else:
                 retArray.append("")
-        elif frame.attributes["GenMsgSendType"] == "1":
+        elif frame.attribute(db, "GenMsgSendType") == "1":
             retArray.append("Spontaneous")
-            if "GenMsgDelayTime" in frame.attributes:
-                retArray.append(int(frame.attributes["GenMsgDelayTime"]))
+            if "GenMsgDelayTime" in db.frameDefines:
+                retArray.append(frame.attribute(db, "GenMsgDelayTime"))
             else:
                 retArray.append("")
         else:
@@ -122,19 +120,21 @@ def getSignal(db, sig, motorolaBitFormat):
     frontArray.append(sig.signalsize)
 
     # startvalue of signal available
-    if "GenSigStartValue" in sig.attributes:
+    if "GenSigStartValue" in db.signalDefines:
         if db.signalDefines["GenSigStartValue"].definition == "STRING":
-            frontArray.append(sig.attributes["GenSigStartValue"])
+            frontArray.append(sig.attribute(db,"GenSigStartValue"))
         elif db.signalDefines["GenSigStartValue"].definition == "INT" or db.signalDefines["GenSigStartValue"].definition == "HEX":
-            frontArray.append("%Xh" %  int(sig.attributes["GenSigStartValue"]))
+            frontArray.append("%Xh" %  sig.attribute(db,"GenSigStartValue"))
         else:
             frontArray.append(" ")
     else:
         frontArray.append(" ")
 
     # SNA-value of signal available
-    if "GenSigSNA" in sig.attributes:
-        sna = sig.attributes["GenSigSNA"][1:-1]
+    if "GenSigSNA" in db.signalDefines:
+        sna = sig.attribute(db,"GenSigSNA")
+        if sna is not None:
+            sna = sna[1:-1]
         frontArray.append(sna)
     # no SNA-value of signal available / just for correct style:
     else:

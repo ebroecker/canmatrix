@@ -213,7 +213,7 @@ def dump(db, file, **options):
         # iterate over signals
         rowArray = []
         if len(sigHash) == 0:
-            rowArray += getFrameInfo(frame)
+            rowArray += getFrameInfo(db, frame)
             for item in range(5, head_start):
                 rowArray.append("")
             tempCol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
@@ -242,7 +242,7 @@ def dump(db, file, **options):
                 valstyle = sigstyle
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
-                    rowArray = getFrameInfo(frame)
+                    rowArray = getFrameInfo(db, frame)
                     frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                     if framestyle != sty_first_frame:
                         worksheet.row(row).level = 1
@@ -274,7 +274,7 @@ def dump(db, file, **options):
                 # loop over values ends here
             # no valuetable available
             else:
-                rowArray = getFrameInfo(frame)
+                rowArray = getFrameInfo(db, frame)
                 frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                 if framestyle != sty_first_frame:
                     worksheet.row(row).level = 1

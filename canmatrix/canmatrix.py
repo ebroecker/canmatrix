@@ -106,6 +106,15 @@ class BoardUnit(object):
         self.attributes = {}
         self.comment = None
 
+    def attribute(self, db, attributeName):
+        if attributeName in self.attributes:
+            return self.attributes[attributeName]
+        else:
+            if attributeName in db.buDefines:
+                define = db.buDefines[attributeName]
+                return define.defaultValue
+
+
     def addAttribute(self, attribute, value):
         """
         adds some Attribute to current Boardunit/ECU
@@ -249,6 +258,14 @@ class Signal(object):
     @values.setter
     def values(self, valueTable):
         self._values = normalizeValueTable(valueTable)
+
+    def attribute(self, db, attributeName):
+        if attributeName in self.attributes:
+            return self.attributes[attributeName]
+        else:
+            if attributeName in db.signalDefines:
+                define = db.signalDefines[attributeName]
+                return define.defaultValue
 
     def addComment(self, comment):
         """
@@ -515,6 +532,14 @@ class Frame(object):
                 return True
         return False
 
+
+    def attribute(self, db, attributeName):
+        if attributeName in self.attributes:
+            return self.attributes[attributeName]
+        else:
+            if attributeName in db.frameDefines:
+                define = db.frameDefines[attributeName]
+                return define.defaultValue
 
     def __iter__(self):
         return iter(self.signals)
@@ -854,6 +879,13 @@ class CanMatrix(object):
                 return True
         return False
 
+    def attribute(self, attributeName):
+        if attributeName in self.attributes:
+            return self.attributes[attributeName]
+        else:
+            if attributeName in self.globalDefines:
+                define = self.globalDefines[attributeName]
+                return define.defaultValue
 
     def addValueTable(self, name, valueTable):
         self.valueTables[name] = normalizeValueTable(valueTable)
