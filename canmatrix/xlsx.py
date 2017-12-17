@@ -122,12 +122,12 @@ def dump(db, filename, **options):
         'Byteorder']
     head_tail = ['Value', 'Name / Phys. Range', 'Function / Increment Unit']
 
-    if "additionalAttributes" in options:
+    if "additionalAttributes" in options and len(options["additionalAttributes"]) > 0:
         additionalSignalCollums = options["additionalAttributes"].split(",")
     else:
         additionalSignalCollums = []#["attributes['DisplayDecimalPlaces']"]
 
-    if "additionalFrameAttributes" in options:
+    if "additionalFrameAttributes" in options and len(options["additionalFrameAttributes"]) > 0:
         additionalFrameCollums = options["additionalFrameAttributes"].split(",")
     else:
         additionalFrameCollums = []#["attributes['DisplayDecimalPlaces']"]

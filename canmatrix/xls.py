@@ -117,12 +117,12 @@ def dump(db, file, **options):
                 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 
-    if "additionalAttributes" in options:
+    if "additionalAttributes" in options  and len(options["additionalAttributes"]) > 0:
         additionalSignalCollums = options["additionalAttributes"].split(",")
     else:
         additionalSignalCollums = []#["attributes['DisplayDecimalPlaces']"]
 
-    if "additionalFrameAttributes" in options:
+    if "additionalFrameAttributes" in options  and len(options["additionalFrameAttributes"]) > 0:
         additionalFrameCollums = options["additionalFrameAttributes"].split(",")
     else:
         additionalFrameCollums = []#["attributes['DisplayDecimalPlaces']"]
@@ -212,7 +212,7 @@ def dump(db, file, **options):
 
         # iterate over signals
         rowArray = []
-        if len(sigHash) == 0:
+        if len(sigHash) == 0: # Frames without signals
             rowArray += getFrameInfo(db, frame)
             for item in range(5, head_start):
                 rowArray.append("")
@@ -237,8 +237,7 @@ def dump(db, file, **options):
             if sigstyle != sty_first_frame:
                 sigstyle = sty_norm
 
-            # valuetable available?
-            if sig.values.__len__() > 0:
+            if sig.values.__len__() > 0: # signals with valuetable
                 valstyle = sigstyle
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):

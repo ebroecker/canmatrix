@@ -97,7 +97,7 @@ def getSignal(db, sig, motorolaBitFormat):
         startBit = sig.getStartbit(bitNumbering=1, startLittle=True)
 
     # startbyte
-    frontArray.append(math.floor(startBit / 8) + 1)
+    frontArray.append(int(startBit / 8) + 1)
     # startbit
     frontArray.append((startBit) % 8)
     # signalname
