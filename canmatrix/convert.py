@@ -124,7 +124,7 @@ def convert(infile, outfileName, **options):
                 if frame.size > int(options['cutLongFrames']):
                     deleteSignalList = []
                     for sig in frame.signals:
-                        if sig.getStartbit() + int(sig._signalsize) > int(options['cutLongFrames'])*8:
+                        if sig.getStartbit() + int(sig.signalsize) > int(options['cutLongFrames'])*8:
                             deleteSignalList.append(sig)
                     for sig in deleteSignalList:
                         frame.signals.remove(sig)

@@ -493,7 +493,7 @@ def load(f, **options):
             if decoded.startswith("BO_ "):
                 regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")
                 temp = regexp.match(decoded)
-    #            db._fl.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
+    #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
                 frame = Frame(temp.group(2), Id=temp.group(1), dlc=temp.group(3), transmitter=temp.group(4).split())
                 db.frames.addFrame(frame)
             elif decoded.startswith("SG_ "):

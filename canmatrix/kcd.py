@@ -175,11 +175,11 @@ def dump(dbs, f, **options):
 
             if frame.extended == 1:
                 message.set("format", "extended")
-            if "GenMsgCycleTime" in frame.attributes:
-                cycleTime = int(frame.attributes["GenMsgCycleTime"])
-                if cycleTime > 0:
+            if "GenMsgCycleTime" in db.frameDefines:
+                cycleTime = frame.attribute(db,"GenMsgCycleTime")
+                if cycleTime is not None and int(cycleTime) > 0:
                     message.set("triggered", "true")
-                    message.set("interval", "%d" % cycleTime)
+                    message.set("interval", "%d" % int(cycleTime))
 
             producer = etree.Element('Producer')
 
@@ -346,7 +346,7 @@ def load(f, **options):
         db = CanMatrix()
         db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
         for node in nodes:
-            db._BUs.add(BoardUnit(node.get('name')))
+            db.BUs.add(BoardUnit(node.get('name')))
             nodelist[node.get('id')] = node.get('name')
 
         messages = bus.findall('./' + namespace + 'Message')

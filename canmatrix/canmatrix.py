@@ -437,7 +437,7 @@ class SignalGroup(object):
     def __init__(self, name, Id):
         self.signals = []
         self.name = name
-        self._Id = Id
+        self.Id = Id
 
     def addSignal(self, signal):
         if signal not in self.signals:
@@ -458,7 +458,7 @@ class SignalGroup(object):
 
     @property
     def id(self):
-        return self._Id
+        return self.Id
 
     def __str__(self):
         return self.name

@@ -59,7 +59,7 @@ def dump(db, f, **options):
             if signal.is_little_endian == False:
                 signal.startbit = signal.getStartbit(
                     bitNumbering=1, startLittle=True)
-#                newdb.frames[i].signals[j]._startbit = signal._startbit
+#                newdb.frames[i].signals[j].startbit = signal.startbit
 
 #    f = open(filename, "w")
     if representers:

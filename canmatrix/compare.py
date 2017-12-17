@@ -61,13 +61,13 @@ def propagateChanges(res):
 def compareDb(db1, db2, ignore=None):
     result = compareResult()
     for f1 in db1.frames:
-        f2 = db2.frameById(f1._Id)
+        f2 = db2.frameById(f1.Id)
         if f2 is None:
             result.addChild(compareResult("deleted", "FRAME", f1))
         else:
             result.addChild(compareFrame(f1, f2, ignore))
     for f2 in db2.frames:
-        f1 = db1.frameById(f2._Id)
+        f1 = db1.frameById(f2.Id)
         if f1 is None:
             result.addChild(compareResult("added", "FRAME", f2))
 
@@ -114,12 +114,12 @@ def compareDb(db1, db2, ignore=None):
                 compareResult(
                     "deleted",
                     "valuetable " + vt1,
-                    db1._valueTables))
+                    db1.valueTables))
         else:
             result.addChild(
                 compareValueTable(
-                    db1._valueTables[vt1],
-                    db2._valueTables[vt1]))
+                    db1.valueTables[vt1],
+                    db2.valueTables[vt1]))
 
     for vt2 in db2.valueTables:
         if vt2 not in db1.valueTables:
@@ -127,7 +127,7 @@ def compareDb(db1, db2, ignore=None):
                 compareResult(
                     "added",
                     "valuetable " + vt2,
-                    db2._valueTables))
+                    db2.valueTables))
 
     propagateChanges(result)
 
@@ -291,8 +291,8 @@ def compareFrame(f1, f2, ignore=None):
             compareResult(
                 "changed", "FRAME", f1, [
                     "extended-Flag: %d" %
-                    f1._extended, "extended-Flag: %d" %
-                    f2._extended]))
+                    f1.extended, "extended-Flag: %d" %
+                    f2.extended]))
     if f2.comment is None:
         f2.addComment("")
     if f1.comment is None:

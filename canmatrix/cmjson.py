@@ -103,13 +103,13 @@ def dump(db, f, **options):
     else:  # exportall
         for frame in db.frames:
             frameattribs = {}
-            for attribute in frame.attributes:
-                frameattribs[attribute] = frame.attributes[attribute]
+            for attribute in db.frameDefines:
+                frameattribs[attribute] = frame.attribute(db,attribute)
             signals = []
             for signal in frame.signals:
                 attribs = {}
-                for attribute in signal.attributes:
-                    attribs[attribute] = signal.attributes[attribute]
+                for attribute in db.signalDefines:
+                    attribs[attribute] = signal.attribute(db,attribute)
                 if not signal.is_little_endian:
                     if motorolaBitFormat == "msb":
                         startBit = signal.getStartbit(bitNumbering=1)

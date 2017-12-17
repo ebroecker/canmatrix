@@ -92,7 +92,7 @@ def copyFrame(frameId, sourceDb, targetDb):
     else:
         frame = sourceDb.frameByName(frameId)
 
-    if targetDb.frameById(frame._Id) is not None:
+    if targetDb.frameById(frame.Id) is not None:
         # frame already in targetdb...
         return
 

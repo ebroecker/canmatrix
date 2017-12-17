@@ -53,7 +53,7 @@ def format_float(f):
     return s.upper()
 
 
-def createSignal(signal):
+def createSignal(db, signal):
     global enums
     global enumDict
     output = ""
@@ -100,9 +100,11 @@ def createSignal(signal):
                     key, val) in sorted(
                     signal.values.items())) + ")"
 
-    if "GenSigStartValue" in signal.attributes:
-        default = float(signal.attributes[
-                        "GenSigStartValue"]) * float(signal.factor)
+    if "GenSigStartValue" in db.signalDefines:
+        genSigStartVal = signal.attribute(db,"GenSigStartValue")
+        if genSigStartVal is None:
+            genSigStartVal = 0
+        default = float(genSigStartVal) * float(signal.factor)
         min_ok = signal.min is None or default >= float(signal.min)
         max_ok = signal.max is None or default <= float(signal.max)
         if min_ok and max_ok:
@@ -200,10 +202,10 @@ Title=\"canmatrix-Export\"
                                 muxOut += idType
                                 first = 1
                             muxOut += "DLC=%d\n" % (frame.size)
-                            if "GenMsgCycleTime" in frame.attributes:
-                                muxOut += "CycleTime=" + \
-                                          frame.attributes[
-                                              "GenMsgCycleTime"] + "\n"
+                            if "GenMsgCycleTime" in db.frameDefines:
+                                cycleTime = frame.attribute(db,"GenMsgCycleTime")
+                                if cycleTime is not None:
+                                    muxOut += "CycleTime=" + str(cycleTime) + "\n"
 
                             muxName = frame.mux_names.get(
                                 i, muxSignal.name + "%d" % i)
@@ -233,7 +235,7 @@ Title=\"canmatrix-Export\"
                     if found == 1:
                         for signal in frame.signals:
                             if signal.multiplex == i or signal.multiplex is None:
-                                muxOut += createSignal(signal)
+                                muxOut += createSignal(db, signal)
                         output += muxOut + "\n"
 
             else:
@@ -241,11 +243,12 @@ Title=\"canmatrix-Export\"
                 output += name
                 output += idType
                 output += "DLC=%d\n" % (frame.size)
-                if "GenMsgCycleTime" in frame.attributes:
-                    output += "CycleTime=" + \
-                        frame.attributes["GenMsgCycleTime"] + "\n"
+                if "GenMsgCycleTime" in db.frameDefines:
+                    cycleTime = frame.attribute(db, "GenMsgCycleTime")
+                    if cycleTime is not None:
+                        output += "CycleTime=" + str(cycleTime) + "\n"
                 for signal in frame.signals:
-                    output += createSignal(signal)
+                    output += createSignal(db, signal)
                 output += "\n"
     enums += '\n'.join(sorted(enumDict.values()))
     # write outputfile
