@@ -288,13 +288,13 @@ def dump(db, file, **options):
                     backRow.insert(0,str("%g..%g" %(sig.min,sig.max)))
                 else:
                     backRow.insert(0, "")
+                backRow.insert(0,"")
 
                 for item in additionalSignalCollums:
                     try:
                         temp = eval("sig." + col)
                     except:
                         temp = ""
-                backRow.append("")
                 backRow += additionalFrameInfo
                 for item in additionalSignalCollums:
                     try:
@@ -342,9 +342,7 @@ def load(file, **options):
     db.addFrameDefines("GenMsgCycleTimeActive", 'INT 0 65535')
     db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
 #       db.addFrameDefines("GenMsgStartValue",  'STRING')
-    db.addFrameDefines(
-        "GenMsgSendType",
-        'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
+    launchTypes = []
 #       db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
     db.addSignalDefines("GenSigSNA", 'STRING')
 
@@ -426,26 +424,9 @@ def load(file, **options):
 
             # eval launctype
             if launchType is not None:
-                if "Cyclic+Change" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "5")
-                    newBo.addAttribute("GenMsgDelayTime", launchParam)
-                elif "Cyclic" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "0")
-                elif "BAF" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "2")
-                    newBo.addAttribute("GenMsgNrOfRepetitions", launchParam)
-                elif "DualCycle" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "8")
-                    newBo.addAttribute("GenMsgCycleTimeActive", launchParam)
-                elif "None" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "10")
-                    newBo.addAttribute("GenMsgDelayTime", launchParam)
-                elif "OnChange" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "9")
-                    newBo.addAttribute("GenMsgNrOfRepetitions", launchParam)
-                elif "Spontaneous" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "1")
-                    newBo.addAttribute("GenMsgDelayTime", launchParam)
+                newBo.addAttribute("GenMsgSendType", launchType)
+                if launchType not in launchTypes:
+                    launchTypes.append(launchType)
 
             # eval cycletime
             if type(cycleTime).__name__ != "float":
@@ -571,5 +552,12 @@ def load(file, **options):
     for frame in db.frames:
         frame.updateReceiver()
         frame.calcDLC()
+
+    launchTypeEnum = "ENUM"
+    for launchType in launchTypes:
+        if len(launchType) > 0:
+            launchTypeEnum += ' "' + launchType + '",'
+    db.addFrameDefines("GenMsgSendType", launchTypeEnum[:-1])
+
     db.setFdType()
     return db

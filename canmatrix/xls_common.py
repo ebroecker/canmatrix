@@ -37,48 +37,10 @@ def getFrameInfo(db, frame):
 
     # determin send-type
     if "GenMsgSendType" in db.frameDefines:
-        if frame.attribute(db, "GenMsgSendType") == "5":
-            retArray.append("Cyclic+Change")
-            if "GenMsgDelayTime" in db.frameDefines:
-                retArray.append(frame.attribute(db, "GenMsgDelayTime"))
-            else:
-                retArray.append("")
-        elif frame.attribute(db, "GenMsgSendType") == "0":
-            retArray.append("Cyclic")
-            retArray.append("")
-        elif frame.attribute(db, "GenMsgSendType") == "2":
-            retArray.append("BAF")
-            if "GenMsgNrOfRepetitions" in db.frameDefines:
-                retArray.append(frame.attribute(db, "GenMsgNrOfRepetitions"))
-            else:
-                retArray.append("")
-        elif frame.attribute(db, "GenMsgSendType") == "8":
-            retArray.append("DualCycle")
-            if "GenMsgCycleTimeActive" in db.frameDefines:
-                retArray.append(frame.attribute(db, "GenMsgCycleTimeActive"))
-            else:
-                retArray.append("")
-        elif frame.attribute(db, "GenMsgSendType") == "10":
-            retArray.append("None")
-
-            if "GenMsgDelayTime" in db.frameDefines:
-                retArray.append(frame.attribute(db, "GenMsgDelayTime"))
-            else:
-                retArray.append("")
-        elif frame.attribute(db, "GenMsgSendType") == "9":
-            retArray.append("OnChange")
-            if "GenMsgNrOfRepetitions" in db.frameDefines:
-                retArray.append(frame.attribute(db, "GenMsgNrOfRepetitions"))
-            else:
-                retArray.append("")
-        elif frame.attribute(db, "GenMsgSendType") == "1":
-            retArray.append("Spontaneous")
-            if "GenMsgDelayTime" in db.frameDefines:
-                retArray.append(frame.attribute(db, "GenMsgDelayTime"))
-            else:
-                retArray.append("")
+        retArray.append(frame.attribute(db, "GenMsgSendType"))
+        if "GenMsgDelayTime" in db.frameDefines:
+            retArray.append(frame.attribute(db, "GenMsgDelayTime"))
         else:
-            retArray.append("")
             retArray.append("")
     else:
         retArray.append("")

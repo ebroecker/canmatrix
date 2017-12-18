@@ -297,6 +297,7 @@ def load(f, **options):
             # receiver is only given in the signals, so do propagate the
             # receiver to the frame:
             frame.updateReceiver()
+        db.EnumAttribs2Values()
     return db
 
 
@@ -305,6 +306,8 @@ def dump(db, f, **options):
         dbfExportEncoding = options["dbfExportEncoding"]
     else:
         dbfExportEncoding = 'iso-8859-1'
+
+    db.EnumAttribs2Keys()
 
     outstr =  """//******************************BUSMASTER Messages and signals Database ******************************//
 

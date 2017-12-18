@@ -1286,19 +1286,19 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     startingTime = arGetChild(timingSpec, "STARTING-TIME", arDict, ns)
 
     if cyclicTiming is not None and eventTiming is not None:
-        newFrame.addAttribute("GenMsgSendType", "5")        # CycleAndSpontan
+        newFrame.addAttribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
         if minimumDelay is not None:
             newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text) * 1000)))
         if repeats is not None:
             newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     elif cyclicTiming is not None:
-        newFrame.addAttribute("GenMsgSendType", "0")  # CycleX
+        newFrame.addAttribute("GenMsgSendType", "cyclicX")  # CycleX
         if minimumDelay is not None:
             newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text) * 1000)))
         if repeats is not None:
             newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     else:
-        newFrame.addAttribute("GenMsgSendType", "1")  # Spontan
+        newFrame.addAttribute("GenMsgSendType", "spontanX")  # Spontan
         if minimumDelay is not None:
             newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text) * 1000)))
         if repeats is not None:
@@ -1441,10 +1441,10 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     bu = BoardUnit(arGetName(ecu, ns))
     if nmAddress is not None:
         bu.addAttribute("NWM-Stationsadresse", nmAddress.text)
-        bu.addAttribute("NWM-Knoten", "1")
+        bu.addAttribute("NWM-Knoten", "ja")
     else:
         bu.addAttribute("NWM-Stationsadresse", "0")
-        bu.addAttribute("NWM-Knoten", "0")
+        bu.addAttribute("NWM-Knoten", "nein")
     return bu
 
 

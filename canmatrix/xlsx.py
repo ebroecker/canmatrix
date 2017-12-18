@@ -325,13 +325,14 @@ def dump(db, filename, **options):
                     backRow.insert(0,str("%g..%g" %(sig.min,sig.max)))
                 else:
                     backRow.insert(0, "")
+                backRow.insert(0,"")
 
                 for item in additionalSignalCollums:
                     try:
                         temp = eval("sig." + col)
                     except:
                         temp = ""
-                backRow.append("")
+#s                backRow.append("")
                 backRow += additionalFrameInfo
                 for item in additionalSignalCollums:
                     try:
@@ -445,6 +446,7 @@ def load(filename, **options):
         import canmatrix.xls
         return canmatrix.xls.load(filename, **options)
     except:
+        logger.error("xlsx: using legacy xlsx-reader - please get xlrd working for better results!")
         pass
 
     # else use this hack to read xlsx
@@ -463,55 +465,14 @@ def load(filename, **options):
             letterIndex.append("%s%s" % (a, b))
 
     # Defines not imported...
-#       db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
-#       db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
     db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
     db.addFrameDefines("GenMsgDelayTime", 'INT 0 65535')
     db.addFrameDefines("GenMsgCycleTimeActive", 'INT 0 65535')
     db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
-#       db.addFrameDefines("GenMsgStartValue",  'STRING')
-    db.addFrameDefines(
-        "GenMsgSendType",
-        'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
-#       db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
+    launchTypes = []
+
     db.addSignalDefines("GenSigSNA", 'STRING')
 
-    # eval search for correct collums:
-#       index = {}
-#       for i in range(sh.ncols):
-#               value = sh.cell(0,i).value
-#               if  value == "ID":
-#                       index['ID'] = i
-#               elif "Frame Name" in value:
-#                       index['frameName'] = i
-#               elif "Cycle" in value:
-#                       index['cycle'] = i
-#               elif "Launch Type" in value:
-#                       index['launchType'] = i
-#               elif "Launch Parameter" in value:
-#                       index['launchParam'] = i
-#               elif "Signal Byte No." in value:
-#                       index['startbyte'] = i
-#               elif "Signal Bit No." in value:
-#                       index['startbit'] = i
-#               elif "Signal Name" in value:
-#                       index['signalName'] = i
-#               elif "Signal Function" in value:
-#                       index['signalComment'] = i
-#               elif "Signal Length" in value:
-#                       index['signalLength'] = i
-#               elif "Signal Default" in value:
-#                       index['signalDefault'] = i
-#               elif "Signal Not Ava" in value:
-#                       index['signalSNA'] = i
-#               elif "Value" in value:
-#                       index['Value'] = i
-#               elif "Name / Phys" in value:
-#                       index['ValueName'] = i
-#               elif "Function /" in value:
-#                       index['function'] = i
-#               elif "Byteorder" in value:
-#                       index['byteorder'] = i
     if 'Byteorder' in list(sheet[0].values()):
         for key in sheet[0]:
             if sheet[0][key].strip() == 'Byteorder':
@@ -562,26 +523,9 @@ def load(filename, **options):
 
             # eval launchtype
             if launchType is not None:
-                if "Cyclic+Change" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "5")
-                    newBo.addAttribute("GenMsgDelayTime", launchParam)
-                elif "Cyclic" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "0")
-                elif "BAF" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "2")
-                    newBo.addAttribute("GenMsgNrOfRepetitions", launchParam)
-                elif "DualCycle" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "8")
-                    newBo.addAttribute("GenMsgCycleTimeActive", launchParam)
-                elif "None" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "10")
-                    newBo.addAttribute("GenMsgDelayTime", launchParam)
-                elif "OnChange" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "9")
-                    newBo.addAttribute("GenMsgNrOfRepetitions", launchParam)
-                elif "Spontaneous" == launchType:
-                    newBo.addAttribute("GenMsgSendType", "1")
-                    newBo.addAttribute("GenMsgDelayTime", launchParam)
+                newBo.addAttribute("GenMsgSendType", launchType)
+                if launchType not in launchTypes:
+                    launchTypes.append(launchType)
 
 #                       #eval cycletime
             if type(cycleTime).__name__ != "float":
@@ -711,6 +655,12 @@ def load(filename, **options):
     for frame in db.frames:
         frame.updateReceiver()
         frame.calcDLC()
+
+    launchTypeEnum = "ENUM"
+    for launchType in launchTypes:
+        if len(launchType) > 0:
+            launchTypeEnum += ' "' + launchType + '",'
+    db.addFrameDefines("GenMsgSendType", launchTypeEnum[:-1])
 
     db.setFdType()
     return db
