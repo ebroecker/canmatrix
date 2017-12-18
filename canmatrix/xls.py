@@ -412,9 +412,11 @@ def load(file, **options):
             launchType = sh.cell(rownum, index['launchType']).value
             dlc = 8
             launchParam = sh.cell(rownum, index['launchParam']).value
-            if type(launchParam).__name__ != "float":
-                launchParam = 0.0
-            launchParam = str(int(launchParam))
+
+            try:
+                launchParam = str(int(launchParam))
+            except:
+                launchParam = "0"
 
             if frameId.endswith("xh"):
                 newBo = Frame(frameName, Id=int(frameId[:-2], 16), dlc=dlc, extended = True)
@@ -429,8 +431,10 @@ def load(file, **options):
                     launchTypes.append(launchType)
 
             # eval cycletime
-            if type(cycleTime).__name__ != "float":
-                cycleTime = 0.0
+            try:
+                cycleTime = int(cycleTime)
+            except:
+                cycleTime = 0
             newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
 
         # new signal detected
