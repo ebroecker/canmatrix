@@ -878,5 +878,5 @@ def load(f, **options):
                     if define in signal.attributes:
                         signal.attributes[define] = signal.attributes[define][1:-1]
 
-        db.EnumAttribs2Values()
+    db.EnumAttribs2Values()
     return db
