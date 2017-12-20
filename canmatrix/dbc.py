@@ -309,26 +309,14 @@ def dump(db, f, **options):
         if dataType not in defaults and define.defaultValue is not None:
             defaults[dataType] = define.defaultValue
     for (dataType, define) in sorted(list(db.globalDefines.items())):
-        f.write(
-            ('BA_DEF_ "' +
-             dataType +
-             '" ').encode(dbcExportEncoding) +
-            define.definition.encode(
-                dbcExportEncoding,
-                'replace') +
-            ';\n'.encode(dbcExportEncoding))
+        f.write(('BA_DEF_ "' + dataType + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
         if dataType not in defaults and define.defaultValue is not None:
             defaults[dataType] = define.defaultValue
 
     for define in sorted(defaults):
         f.write(
-            ('BA_DEF_DEF_ "' +
-             define +
-             '" ').encode(dbcExportEncoding) +
-            defaults[define].encode(
-                dbcExportEncoding,
-                'replace') +
-            ';\n'.encode(dbcExportEncoding))
+            ('BA_DEF_DEF_ "' + define + '" ').encode(dbcExportEncoding) +
+            defaults[define].encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
 
     # boardunit-attributes:
     for bu in db.boardUnits:
@@ -338,13 +326,7 @@ def dump(db, f, **options):
             elif not val:
                 val = '""'
             f.write(
-                ('BA_ "' +
-                 attrib +
-                 '" BU_ ' +
-                 bu.name +
-                 ' ' +
-                 str(val) +
-                    ';\n').encode(dbcExportEncoding))
+                ('BA_ "' + attrib + '" BU_ ' + bu.name + ' ' + str(val) + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # global-attributes:
@@ -364,8 +346,7 @@ def dump(db, f, **options):
                val = '"' + val + '"'
             elif not val:
                 val = '""'
-            f.write(('BA_ "' + attrib + '" BO_ %d ' %
-                     frame.id + val + ';\n').encode(dbcExportEncoding))
+            f.write(('BA_ "' + attrib + '" BO_ %d ' % frame.id + val + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-attributes:
@@ -380,14 +361,7 @@ def dump(db, f, **options):
                 elif isinstance(val, float):
                     val = format_float(val)
                 f.write(
-                    ('BA_ "' +
-                     attrib +
-                     '" SG_ %d ' %
-                     frame.id +
-                     name +
-                     ' ' +
-                     val +
-                     ';\n').encode(dbcExportEncoding))
+                    ('BA_ "' + attrib + '" SG_ %d ' % frame.id + name + ' ' + val + ';\n').encode(dbcExportEncoding))
             if signal.is_float:
                 if int(signal.signalsize) > 32:
                     f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.id, output_names[bo][signal])).encode(dbcExportEncoding))

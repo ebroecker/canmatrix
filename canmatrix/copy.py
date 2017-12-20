@@ -44,6 +44,7 @@ def copyBU(buId, sourceDb, targetDb):
             attribute, sourceDb.buDefines[attribute].definition)
         targetDb.addDefineDefault(
             attribute, sourceDb.buDefines[attribute].defaultValue)
+    ###TODO
 
 
 def copyBUwithFrames(buId, sourceDb, targetDb):
@@ -77,6 +78,7 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
             attribute, sourceDb.buDefines[attribute].definition)
         targetDb.addDefineDefault(
             attribute, sourceDb.buDefines[attribute].defaultValue)
+    #####TODO
 
 
 def copyFrame(frameId, sourceDb, targetDb):
@@ -92,9 +94,9 @@ def copyFrame(frameId, sourceDb, targetDb):
     else:
         frame = sourceDb.frameByName(frameId)
 
-    if targetDb.frameById(frame.Id) is not None:
+    if targetDb.frameById(frame.id) is not None:
         # frame already in targetdb...
-        return
+        return False
 
     # copy Frame-Object:
     targetDb.frames.addFrame(frame)
@@ -119,10 +121,16 @@ def copyFrame(frameId, sourceDb, targetDb):
     # copy all frame-defines
     attributes = frame.attributes
     for attribute in attributes:
-        targetDb.addFrameDefines(
-            attribute, sourceDb.frameDefines[attribute].definition)
-        targetDb.addDefineDefault(
+        if attribute not in targetDb.frameDefines:
+            targetDb.addFrameDefines(
+                attribute, sourceDb.frameDefines[attribute].definition)
+            targetDb.addDefineDefault(
             attribute, sourceDb.frameDefines[attribute].defaultValue)
+        # update enum-datatypes if needed:
+        if sourceDb.frameDefines[attribute].type == 'ENUM':
+            tempAttr = frame.attribute(sourceDb, attribute)
+            if tempAttr not in targetDb.frameDefines[attribute].values:
+                targetDb.frameDefines[attribute].values.append(tempAttr)
 
     # trigger all signals of Frame
     for sig in frame.signals:
@@ -132,3 +140,10 @@ def copyFrame(frameId, sourceDb, targetDb):
                 attribute, sourceDb.signalDefines[attribute].definition)
             targetDb.addDefineDefault(
                 attribute, sourceDb.signalDefines[attribute].defaultValue)
+            # update enum-datatypes if needed:
+            if sourceDb.signalDefines[attribute].type == 'ENUM':
+                tempAttr = sig.attribute(sourceDb, attribute)
+                if tempAttr not in targetDb.signalDefines[attribute].values:
+                    targetDb.signalDefines[attribute].values.append(tempAttr)
+
+    return True

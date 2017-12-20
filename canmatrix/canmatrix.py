@@ -827,7 +827,15 @@ class Define(object):
 
         elif definition[0:4] == 'ENUM':
             self.type = 'ENUM'
-            self.values = definition[5:].split(',')
+            tempValues = definition[5:].split(',')
+            self.values = []
+            for value in tempValues:
+                value = value.strip()
+                if value[0] == '"':
+                    value = value[1:]
+                if value[-1] == '"':
+                    value = value[:-1]
+                self.values.append(value)
 
         elif definition[0:3] == 'HEX':
             self.type = 'HEX'
@@ -1110,16 +1118,12 @@ class CanMatrix(object):
                 for bu in self.boardUnits:
                     if define in bu.attributes:
                         bu.attributes[define] = self.buDefines[define].values[int(bu.attributes[define])]
-                        if bu.attributes[define][0] == '"' and bu.attributes[define][-1] == '"':
-                            bu.attributes[define] = bu.attributes[define][1:-1]
 
         for define in self.frameDefines:
             if self.frameDefines[define].type == "ENUM":
                 for frame in self.frames:
                     if define in frame.attributes:
                         frame.attributes[define] = self.frameDefines[define].values[int(frame.attributes[define])]
-                        if frame.attributes[define][0] == '"' and frame.attributes[define][-1] == '"':
-                            frame.attributes[define] = frame.attributes[define][1:-1]
 
         for define in self.signalDefines:
             if self.signalDefines[define].type == "ENUM":
@@ -1127,8 +1131,6 @@ class CanMatrix(object):
                     for signal in frame.signals:
                         if define in signal.attributes:
                             signal.attributes[define] = self.signalDefines[define].values[int(signal.attributes[define])]
-                            if signal.attributes[define][0] == '"' and signal.attributes[define][-1] == '"':
-                                signal.attributes[define] = signal.attributes[define][1:-1]
 
     def EnumAttribs2Keys(self):
         for define in self.buDefines:
@@ -1136,21 +1138,21 @@ class CanMatrix(object):
                 for bu in self.boardUnits:
                     if define in bu.attributes:
                         if len(bu.attributes[define]) > 0:
-                            bu.attributes[define] = self.buDefines[define].values.index('"' + bu.attributes[define] + '"')
+                            bu.attributes[define] = self.buDefines[define].values.index(bu.attributes[define])
                             bu.attributes[define] = str(bu.attributes[define])
         for define in self.frameDefines:
             if self.frameDefines[define].type == "ENUM":
                 for frame in self.frames:
                     if define in frame.attributes:
                         if len(frame.attributes[define]) > 0:
-                            frame.attributes[define] = self.frameDefines[define].values.index('"' + frame.attributes[define] + '"')
+                            frame.attributes[define] = self.frameDefines[define].values.index(frame.attributes[define])
                             frame.attributes[define] = str(frame.attributes[define])
         for define in self.signalDefines:
             if self.signalDefines[define].type == "ENUM":
                 for frame in self.frames:
                     for signal in frame.signals:
                         if define in signal.attributes:
-                            signal.attributes[define] = self.signalDefines[define].values.index('"' +signal.attributes[define]+ '"')
+                            signal.attributes[define] = self.signalDefines[define].values.index(signal.attributes[define])
                             signal.attributes[define] = str(signal.attributes[define])
 #
 #
