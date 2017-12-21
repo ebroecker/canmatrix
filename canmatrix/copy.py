@@ -40,11 +40,16 @@ def copyBU(buId, sourceDb, targetDb):
 
     # copy all bu-defines
     for attribute in bu.attributes:
-        targetDb.addBUDefines(
-            attribute, sourceDb.buDefines[attribute].definition)
-        targetDb.addDefineDefault(
-            attribute, sourceDb.buDefines[attribute].defaultValue)
-    ###TODO
+        if attribute not in targetDb.buDefines:
+            targetDb.addBUDefines(
+                attribute, sourceDb.buDefines[attribute].definition)
+            targetDb.addDefineDefault(
+                attribute, sourceDb.buDefines[attribute].defaultValue)
+        # update enum-datatypes if needed:
+        if sourceDb.buDefines[attribute].type == 'ENUM':
+            tempAttr = bu.attribute(sourceDb, attribute)
+            if tempAttr not in targetDb.buDefines[attribute].values:
+                targetDb.buDefines[attribute].values.append(tempAttr)
 
 
 def copyBUwithFrames(buId, sourceDb, targetDb):
@@ -74,11 +79,16 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
 
     # copy all bu-defines
     for attribute in bu.attributes:
-        targetDb.addBUDefines(
-            attribute, sourceDb.buDefines[attribute].definition)
-        targetDb.addDefineDefault(
-            attribute, sourceDb.buDefines[attribute].defaultValue)
-    #####TODO
+        if attribute not in targetDb.buDefines:
+            targetDb.addBUDefines(
+                attribute, sourceDb.buDefines[attribute].definition)
+            targetDb.addDefineDefault(
+                attribute, sourceDb.buDefines[attribute].defaultValue)
+        # update enum-datatypes if needed:
+        if sourceDb.buDefines[attribute].type == 'ENUM':
+            tempAttr = bu.attribute(sourceDb, attribute)
+            if tempAttr not in targetDb.buDefines[attribute].values:
+                targetDb.buDefines[attribute].values.append(tempAttr)
 
 
 def copyFrame(frameId, sourceDb, targetDb):
