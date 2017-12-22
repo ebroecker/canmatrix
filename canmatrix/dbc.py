@@ -467,7 +467,7 @@ def load(f, **options):
                 continue
             decoded = l.decode(dbcImportEncoding).strip()
             if decoded.startswith("BO_ "):
-                regexp = re.compile("^BO\_ (\w+) (\w+) *: (\w+) (\w+)")
+                regexp = re.compile("^BO\_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
                 frame = Frame(temp.group(2), Id=temp.group(1), dlc=temp.group(3), transmitter=temp.group(4).split())
