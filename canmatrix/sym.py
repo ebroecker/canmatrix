@@ -557,8 +557,8 @@ def load(f, **options):
 #               else:
 #                       print "Unrecocniced line: " + l + " (%d) " % i
         except:
-            print("Error decoding line %d" % linecount)
-            print(line)
+            logger.error("Error decoding line %d" % linecount)
+            logger.error(line)
     # TODO: CAMPid 939921818394902983238
     if frame is not None:
         if len(frame.mux_names) > 0:
