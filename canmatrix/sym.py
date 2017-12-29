@@ -214,7 +214,10 @@ Title=\"canmatrix-Export\"
                             startBit = muxSignal.getStartbit()
                             s = str(i)
                             if len(s) > 1:
-                                s = '{:04X}h'.format(i)
+                                length = len(
+                                    '{:X}'.format(int(muxSignal.calcMax()))
+                                )
+                                s = '{:0{}X}h'.format(i, length)
                             if signal.is_little_endian == 0:
                                 # Motorola
                                 muxOut += " %d,%d %s -m" % (startBit,
