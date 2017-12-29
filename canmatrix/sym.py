@@ -296,9 +296,7 @@ def load(f, **options):
     db.addSignalDefines("DisplayDecimalPlaces", 'INT 0 65535')
     db.addSignalDefines("LongName", 'STR')
 
-    linecount = 0
-    for line in f:
-        linecount += 1
+    for linecount, line in enumerate(f, 1):
         try:
             line = line.decode(symImportEncoding).strip()
             # ignore emty line:
