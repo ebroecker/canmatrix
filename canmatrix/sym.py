@@ -102,13 +102,12 @@ def createSignal(db, signal):
 
     if "GenSigStartValue" in db.signalDefines:
         genSigStartVal = signal.attribute(db,"GenSigStartValue")
-        if genSigStartVal is None:
-            genSigStartVal = 0
-        default = float(genSigStartVal) * float(signal.factor)
-        min_ok = signal.min is None or default >= float(signal.min)
-        max_ok = signal.max is None or default <= float(signal.max)
-        if min_ok and max_ok:
-            output += "/d:%g " % (default)
+        if genSigStartVal is not None:
+            default = float(genSigStartVal) * float(signal.factor)
+            min_ok = signal.min is None or default >= float(signal.min)
+            max_ok = signal.max is None or default <= float(signal.max)
+            if min_ok and max_ok:
+                output += "/d:%g " % (default)
 
     long_name = signal.attributes.get('LongName')
     if long_name is not None:
@@ -328,7 +327,7 @@ def load(f, **options):
                         if sys.version_info > (3, 0):  # is there a clean way to to it?
                             line += ' ' + f.readline().decode(symImportEncoding).strip()
                         else:
-                            line += ' ' + f.next().decode(symImportEncoding).strip()
+                            line += ' ' + next(f).decode(symImportEncoding).strip()
                     line = line.split('//')[0]
                     tempArray = line[5:].strip().rstrip(')').split('(', 1)
                     valtabName = tempArray[0]
