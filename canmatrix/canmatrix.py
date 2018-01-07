@@ -188,6 +188,7 @@ class Signal(object):
 
     def __init__(self, name, **kwargs):
         self.mux_val = None
+        self.is_multiplexer = False
         def multiplex(value):
             if value is not None and value != 'Multiplexor':
                 multiplex = int(value)
@@ -211,7 +212,6 @@ class Signal(object):
             ('unit', 'unit', None, ""),
             ('receiver', 'receiver', None, []),
             ('comment', 'comment', None, None),
-            ('is_multiplexer', 'is_multiplexer', None, False),
             ('multiplex', 'multiplex', multiplex, None),
             ('mux_value', 'mux_value', None, None),
             ('is_float', 'is_float', bool, False),
