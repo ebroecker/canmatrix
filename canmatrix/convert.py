@@ -100,6 +100,21 @@ def convert(infile, outfileName, **options):
             deleteFrameList = options['deleteFrame'].split(',')
             for frame in deleteFrameList:
                 db.delFrame(frame)
+        if 'frameIdIncrement' in options and options['frameIdIncrement'] is not None:
+            idIncrement = int(options['frameIdIncrement'])
+            for frame in db.frames:
+                frame.id += idIncrement
+        if 'changeFrameId' in options and options['changeFrameId'] is not None:
+            changeTuples = options['changeFrameId'].split(',')
+            for renameTuple in changeTuples:
+                old, new = renameTuple.split(':')
+                frame = db.frameById(int(old))
+                if frame is not None:
+                    frame.id = int(new)
+                else:
+                    logger.error("frame with id {} not found", old)
+
+
         if 'setFrameFd' in options and options['setFrameFd'] is not None:
             fdFrameList = options['setFrameFd'].split(',')
             for frame in fdFrameList:
@@ -322,6 +337,15 @@ def main():
     parser.add_option("", "--renameFrame",
                       dest="renameFrame", default=None,
                       help="rename Frame form databases. (comma separated list)\nSyntax: --renameFrame=myOldFrame:myNewFrame,mySecondFrame:mySecondNewFrame")
+
+    parser.add_option("", "--frameIdIncrement",
+                      dest="frameIdIncrement", default=None,
+                      help="increment each frame.id in database by increment\nSyntax: --frameIdIncrement=increment")
+
+    parser.add_option("", "--changeFrameId",
+                      dest="changeFrameId", default=None,
+                      help="change frame.id in database\nSyntax: --changeFrameId=oldId:newId")
+
 
     parser.add_option("", "--deleteSignal",
                       dest="deleteSignal", default=None,

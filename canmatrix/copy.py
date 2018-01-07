@@ -50,6 +50,8 @@ def copyBU(buId, sourceDb, targetDb):
             tempAttr = bu.attribute(sourceDb, attribute)
             if tempAttr not in targetDb.buDefines[attribute].values:
                 targetDb.buDefines[attribute].values.append(tempAttr)
+                targetDb.buDefines[attribute].update()
+
 
 
 def copyBUwithFrames(buId, sourceDb, targetDb):
@@ -89,6 +91,8 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
             tempAttr = bu.attribute(sourceDb, attribute)
             if tempAttr not in targetDb.buDefines[attribute].values:
                 targetDb.buDefines[attribute].values.append(tempAttr)
+                targetDb.buDefines[attribute].update()
+
 
 
 def copyFrame(frameId, sourceDb, targetDb):
@@ -141,6 +145,7 @@ def copyFrame(frameId, sourceDb, targetDb):
             tempAttr = frame.attribute(sourceDb, attribute)
             if tempAttr not in targetDb.frameDefines[attribute].values:
                 targetDb.frameDefines[attribute].values.append(tempAttr)
+                targetDb.frameDefines[attribute].update()
 
     # trigger all signals of Frame
     for sig in frame.signals:
@@ -155,5 +160,6 @@ def copyFrame(frameId, sourceDb, targetDb):
                 tempAttr = sig.attribute(sourceDb, attribute)
                 if tempAttr not in targetDb.signalDefines[attribute].values:
                     targetDb.signalDefines[attribute].values.append(tempAttr)
+                    targetDb.signalDefines[attribute].update()
 
     return True

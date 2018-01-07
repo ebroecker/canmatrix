@@ -61,13 +61,13 @@ def propagateChanges(res):
 def compareDb(db1, db2, ignore=None):
     result = compareResult()
     for f1 in db1.frames:
-        f2 = db2.frameById(f1.Id)
+        f2 = db2.frameById(f1.id)
         if f2 is None:
             result.addChild(compareResult("deleted", "FRAME", f1))
         else:
             result.addChild(compareFrame(f1, f2, ignore))
     for f2 in db2.frames:
-        f1 = db1.frameById(f2.Id)
+        f1 = db1.frameById(f2.id)
         if f1 is None:
             result.addChild(compareResult("added", "FRAME", f2))
 

@@ -851,7 +851,14 @@ class Define(object):
 
 
     def addDefault(self, default):
+        if len(default) > 2 and default[0] == '"' and default[-1] =='"':
+            default = default[1:-1]
         self.defaultValue = default
+
+    def update(self):
+        if self.type != 'ENUM':
+            return
+        self.definition = 'ENUM "' + '","' .join(self.values) +'"'
 
 
 class CanMatrix(object):
@@ -1050,13 +1057,13 @@ class CanMatrix(object):
 
     def renameFrame(self, old, newName):
         if type(old).__name__ == 'instance':
-            pass
-        else:
-            old = self.frameByName(old)
-        oldName = old.name
-        old.name = newName
+            oldName = old.name
         for frame in self.frames:
-            if frame.name == oldName:
+            if old[-1] == '*':
+                oldPrefixLen = len(old)-1
+                if frame.name[:oldPrefixLen] == old[:-1]:
+                    frame.name = newName + frame.name[oldPrefixLen:]
+            elif frame.name == oldName:
                 frame.name = newName
 
     def delFrame(self, frame):
@@ -1071,9 +1078,16 @@ class CanMatrix(object):
             old.name = newName
         else:
             for frame in self.frames:
-                signal = frame.signalByName(old)
-                if signal is not None:
-                    signal.name = newName
+                if old[-1] == '*':
+                    oldPrefixLen = len(old) - 1
+                    for signal in frame.signals:
+                        if signal.name[:oldPrefixLen] == old[:-1]:
+                            signal.name = newName + signal.name[oldPrefixLen:]
+
+                else:
+                    signal = frame.signalByName(old)
+                    if signal is not None:
+                        signal.name = newName
 
     def delSignal(self, signal):
         if type(signal).__name__ == 'instance' or type(signal).__name__ == 'Signal':
