@@ -279,37 +279,39 @@ def dump(db, f, **options):
         f.write(
             ('BA_DEF_ BO_ "' +  dataType + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
         if dataType not in defaults and define.defaultValue is not None:
-            defaults[dataType] = define.defaultValue
+            if define.type == "ENUM" or define.type == "STRING":
+                defaults[dataType] = '"' + define.defaultValue + '"'
+            else:
+                defaults[dataType] = define.defaultValue
+
     for (dataType, define) in sorted(list(db.signalDefines.items())):
         f.write(
-            ('BA_DEF_ SG_ "' +
-             dataType +
-             '" ').encode(dbcExportEncoding) +
-            define.definition.encode(
-                dbcExportEncoding,
-                'replace') +
-            ';\n'.encode(dbcExportEncoding))
+            ('BA_DEF_ SG_ "' + dataType + '" ').encode(dbcExportEncoding) +
+            define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
         if dataType not in defaults and define.defaultValue is not None:
-            defaults[dataType] = define.defaultValue
+            if define.type == "ENUM" or define.type == "STRING":
+                defaults[dataType] = '"' + define.defaultValue + '"'
+            else:
+                defaults[dataType] = define.defaultValue
     for (dataType, define) in sorted(list(db.buDefines.items())):
         f.write(
-            ('BA_DEF_ BU_ "' +
-             dataType +
-             '" ').encode(dbcExportEncoding) +
-            define.definition.encode(
-                dbcExportEncoding,
-                'replace') +
-            ';\n'.encode(dbcExportEncoding))
+            ('BA_DEF_ BU_ "' + dataType + '" ').encode(dbcExportEncoding) +
+            define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
         if dataType not in defaults and define.defaultValue is not None:
-            defaults[dataType] = define.defaultValue
+            if define.type == "ENUM" or define.type == "STRING":
+                defaults[dataType] = '"' + define.defaultValue + '"'
+            else:
+                defaults[dataType] = define.defaultValue
     for (dataType, define) in sorted(list(db.globalDefines.items())):
         f.write(('BA_DEF_ "' + dataType + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
         if dataType not in defaults and define.defaultValue is not None:
-            defaults[dataType] = define.defaultValue
+            if define.type == "ENUM" or define.type == "STRING":
+                defaults[dataType] = '"' + define.defaultValue + '"'
+            else:
+                defaults[dataType] = define.defaultValue
 
     for define in sorted(defaults):
-        f.write(
-            ('BA_DEF_DEF_ "' + define + '" ').encode(dbcExportEncoding) +
+        f.write(('BA_DEF_DEF_ "' + define + '" ').encode(dbcExportEncoding) +
             defaults[define].encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
 
     # boardunit-attributes:
@@ -319,8 +321,7 @@ def dump(db, f, **options):
                 val = '"' + val + '"'
             elif not val:
                 val = '""'
-            f.write(
-                ('BA_ "' + attrib + '" BU_ ' + bu.name + ' ' + str(val) + ';\n').encode(dbcExportEncoding))
+            f.write(('BA_ "' + attrib + '" BU_ ' + bu.name + ' ' + str(val) + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # global-attributes:

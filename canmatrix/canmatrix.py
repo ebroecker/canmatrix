@@ -851,7 +851,7 @@ class Define(object):
 
 
     def addDefault(self, default):
-        if len(default) > 2 and default[0] == '"' and default[-1] =='"':
+        if len(default) > 1 and default[0] == '"' and default[-1] =='"':
             default = default[1:-1]
         self.defaultValue = default
 
