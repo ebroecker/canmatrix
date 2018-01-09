@@ -33,13 +33,17 @@ import math
 from collections import OrderedDict
 
 import logging
+
+from decimal import Decimal
+
 logger = logging.getLogger('root')
 try:
     import bitstruct
 except:
     bitstruct = None
     logger.info("bitstruct could not be imported // No signal de/encoding possible // try pip install bitstruct")
-#from past.builtins import basestring
+
+from past.builtins import basestring
 
 
 class FrameList(object):
@@ -404,11 +408,7 @@ class Signal(object):
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
-        raw_value = (value - self.offset) / self.factor
-
-        if not self.is_float:
-            raw_value = int(raw_value)
-        return raw_value
+        return (Decimal(str(value)) - Decimal(self.offset)) / Decimal(str(self.factor))
 
     def raw2phys(self, value, decodeToStr = False):
         """Decode the given raw value (= as is on CAN)
@@ -416,7 +416,7 @@ class Signal(object):
         :return: physical value (scaled)
         """
 
-        value = value * self.factor + self.offset
+        value = Decimal(value) * Decimal(str(self.factor)) + Decimal(self.offset)
         if decodeToStr:
             for value_key, value_string in self.values.items():
                 if value_key == value:
