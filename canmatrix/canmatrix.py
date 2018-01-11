@@ -34,7 +34,6 @@ from collections import OrderedDict
 
 import logging
 
-from decimal import Decimal
 
 logger = logging.getLogger('root')
 try:
