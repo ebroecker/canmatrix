@@ -193,6 +193,7 @@ class Signal(object):
     def __init__(self, name, **kwargs):
         self.mux_val = None
         self.is_multiplexer = False
+
         def multiplex(value):
             if value is not None and value != 'Multiplexor':
                 multiplex = int(value)
@@ -202,17 +203,17 @@ class Signal(object):
                 multiplex = value
             return multiplex
 
-        float_factory = kwargs.pop('float_factory', float)
+        self.float_factory = kwargs.pop('float_factory', float)
 
         args = [
             ('startBit', 'startbit', int, 0),
             ('signalSize', 'signalsize', int, 0),
             ('is_little_endian', 'is_little_endian', bool, True),
             ('is_signed', 'is_signed', bool, True),
-            ('factor', 'factor', float_factory, 1),
-            ('offset', 'offset', float_factory, 0),
-            ('min', 'min', float_factory, None),
-            ('max', 'max', float_factory, None),
+            ('factor', 'factor', self.float_factory, 1),
+            ('offset', 'offset', self.float_factory, 0),
+            ('min', 'min', self.float_factory, None),
+            ('max', 'max', self.float_factory, None),
             ('unit', 'unit', None, ""),
             ('receiver', 'receiver', None, []),
             ('comment', 'comment', None, None),
@@ -226,8 +227,8 @@ class Signal(object):
             ('calc_min_for_none', 'calc_min_for_none', bool, True),
             ('calc_max_for_none', 'calc_max_for_none', bool, True),
             ('muxValMax', 'muxValMax', int, 0),
-            ('muxValMin','muxValMin', int, 0),
-            ('muxerForSignal','muxerForSignal', str, None)
+            ('muxValMin', 'muxValMin', int, 0),
+            ('muxerForSignal', 'muxerForSignal', str, None)
         ]
 
         for arg_name, destination, function, default in args:
@@ -408,15 +409,15 @@ class Signal(object):
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
-        return (Decimal(str(value)) - Decimal(self.offset)) / Decimal(str(self.factor))
+        return (self.float_factory(value) - self.offset) / self.factor
 
-    def raw2phys(self, value, decodeToStr = False):
+    def raw2phys(self, value, decodeToStr=False):
         """Decode the given raw value (= as is on CAN)
         :param value: raw value
         :return: physical value (scaled)
         """
 
-        value = Decimal(value) * Decimal(str(self.factor)) + Decimal(self.offset)
+        value = self.float_factory(value) * self.factor + self.offset
         if decodeToStr:
             for value_key, value_string in self.values.items():
                 if value_key == value:
