@@ -29,8 +29,6 @@ from __future__ import absolute_import
 import collections
 import logging
 
-import decimal
-
 logger = logging.getLogger('root')
 
 from builtins import *
@@ -410,7 +408,7 @@ def load(f, **options):
     else:
         dbcCommentEncoding = dbcImportEncoding
 
-    float_factory = options.get('float_factory', decimal.Decimal)
+    float_factory = options.get('float_factory')
 
     i = 0
 

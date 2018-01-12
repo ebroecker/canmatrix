@@ -408,7 +408,7 @@ class Signal(object):
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
-        return (self.float_factory(value) - self.offset) / self.factor
+        return (value - self.offset) / self.factor
 
     def raw2phys(self, value, decodeToStr=False):
         """Decode the given raw value (= as is on CAN)
@@ -416,7 +416,7 @@ class Signal(object):
         :return: physical value (scaled)
         """
 
-        value = self.float_factory(value) * self.factor + self.offset
+        value = value * self.factor + self.offset
         if decodeToStr:
             for value_key, value_string in self.values.items():
                 if value_key == value:
