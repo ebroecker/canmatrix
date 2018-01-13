@@ -156,6 +156,12 @@ def dump(db, f, **options):
     json.dump({"messages": exportArray}, temp, sort_keys=True,
               indent=4, separators=(',', ': '))
 
+    if sys.version_info > (3, 0):
+        # When TextIOWrapper is garbage collected, it closes the raw stream
+        # unless the raw stream is detached first
+        temp.detach()
+
+
 def load(f, **options):
     db = CanMatrix()
 
