@@ -202,17 +202,17 @@ class Signal(object):
                 multiplex = value
             return multiplex
 
-        self.float_factory = kwargs.pop('float_factory', float)
+        float_factory = kwargs.pop('float_factory', float)
 
         args = [
             ('startBit', 'startbit', int, 0),
             ('signalSize', 'signalsize', int, 0),
             ('is_little_endian', 'is_little_endian', bool, True),
             ('is_signed', 'is_signed', bool, True),
-            ('factor', 'factor', self.float_factory, 1),
-            ('offset', 'offset', self.float_factory, 0),
-            ('min', 'min', self.float_factory, None),
-            ('max', 'max', self.float_factory, None),
+            ('factor', 'factor', float_factory, 1),
+            ('offset', 'offset', float_factory, 0),
+            ('min', 'min', float_factory, None),
+            ('max', 'max', float_factory, None),
             ('unit', 'unit', None, ""),
             ('receiver', 'receiver', None, []),
             ('comment', 'comment', None, None),
@@ -385,10 +385,10 @@ class Signal(object):
         return endian + bit_type + str(self.signalsize)
 
     def phys2raw(self, value=None):
-        """Return the physical value (= as is on CAN)
+        """Return the raw value (= as is on CAN)
 
         :param value: (scaled) value or value choice to encode
-        :return:
+        :return: raw unscaled value as it appears on the bus
         """
         if value is None:
             return int(self.attributes.get('GenSigStartValue', 0))
@@ -408,7 +408,11 @@ class Signal(object):
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
-        return (value - self.offset) / self.factor
+        raw_value = (value - self.offset) / self.factor
+
+        if not self.is_float:
+            raw_value = int(raw_value)
+        return raw_value
 
     def raw2phys(self, value, decodeToStr=False):
         """Decode the given raw value (= as is on CAN)
