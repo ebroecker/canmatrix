@@ -3,3 +3,4 @@ xlwt
 xlrd
 xlsxwriter
 pyyaml
+future

@@ -28,13 +28,12 @@ from __future__ import absolute_import
 
 import collections
 import logging
+
 logger = logging.getLogger('root')
 
 from builtins import *
-import math
 from .canmatrix import *
 import re
-import codecs
 
 
 #dbcExportEncoding = 'iso-8859-1'
@@ -410,6 +409,8 @@ def load(f, **options):
     else:
         dbcCommentEncoding = dbcImportEncoding
 
+    float_factory = options.get('float_factory')
+
     i = 0
 
     class FollowUps(object):
@@ -476,18 +477,24 @@ def load(f, **options):
                 if temp:
                     receiver = list(map(str.strip, temp.group(11).split(',')))
 
-                    tempSig = Signal(temp.group(1),
-                                     startBit=temp.group(2),
-                                     signalSize=temp.group(3),
-                                     is_little_endian=(int(temp.group(4)) == 1),
-                                     is_signed=(temp.group(5) == '-'),
-                                     factor=temp.group(6),
-                                     offset=temp.group(7),
-                                     min=temp.group(8),
-                                     max=temp.group(9),
-                                     unit=temp_raw.group(10).decode(
-                                         dbcImportEncoding),
-                                     receiver=receiver)
+                    extras = {}
+                    if float_factory is not None:
+                        extras['float_factory'] = float_factory
+
+                    tempSig = Signal(
+                        temp.group(1),
+                        startBit=temp.group(2),
+                        signalSize=temp.group(3),
+                        is_little_endian=(int(temp.group(4)) == 1),
+                        is_signed=(temp.group(5) == '-'),
+                        factor=temp.group(6),
+                        offset=temp.group(7),
+                        min=temp.group(8),
+                        max=temp.group(9),
+                        unit=temp_raw.group(10).decode(dbcImportEncoding),
+                        receiver=receiver,
+                        **extras
+                    )
                     if not tempSig.is_little_endian:
                         # startbit of motorola coded signals are MSB in dbc
                         tempSig.setStartbit(int(temp.group(2)), bitNumbering=1)
@@ -515,19 +522,25 @@ def load(f, **options):
                         except:
                             raise Exception('error decoding line',line)
 
-                    tempSig = Signal(temp.group(1),
-                                     startBit=temp.group(3),
-                                     signalSize=temp.group(4),
-                                     is_little_endian=(int(temp.group(5)) == 1),
-                                     is_signed=(temp.group(6) == '-'),
-                                     factor=temp.group(7),
-                                     offset=temp.group(8),
-                                     min=temp.group(9),
-                                     max=temp.group(10),
-                                     unit=temp_raw.group(11).decode(
-                                         dbcImportEncoding),
-                                     receiver=receiver,
-                                     multiplex=multiplex)
+                    extras = {}
+                    if float_factory is not None:
+                        extras['float_factory'] = float_factory
+
+                    tempSig = Signal(
+                        temp.group(1),
+                        startBit=temp.group(3),
+                        signalSize=temp.group(4),
+                        is_little_endian=(int(temp.group(5)) == 1),
+                        is_signed=(temp.group(6) == '-'),
+                        factor=temp.group(7),
+                        offset=temp.group(8),
+                        min=temp.group(9),
+                        max=temp.group(10),
+                        unit=temp_raw.group(11).decode(dbcImportEncoding),
+                        receiver=receiver,
+                        multiplex=multiplex,
+                        **extras
+                    )
 
                     if is_complex_multiplexed:
                         tempSig.is_multiplexer = True

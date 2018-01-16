@@ -33,13 +33,16 @@ import math
 from collections import OrderedDict
 
 import logging
+
+
 logger = logging.getLogger('root')
 try:
     import bitstruct
 except:
     bitstruct = None
     logger.info("bitstruct could not be imported // No signal de/encoding possible // try pip install bitstruct")
-#from past.builtins import basestring
+
+from past.builtins import basestring
 
 
 class FrameList(object):
@@ -189,6 +192,7 @@ class Signal(object):
     def __init__(self, name, **kwargs):
         self.mux_val = None
         self.is_multiplexer = False
+
         def multiplex(value):
             if value is not None and value != 'Multiplexor':
                 multiplex = int(value)
@@ -222,8 +226,8 @@ class Signal(object):
             ('calc_min_for_none', 'calc_min_for_none', bool, True),
             ('calc_max_for_none', 'calc_max_for_none', bool, True),
             ('muxValMax', 'muxValMax', int, 0),
-            ('muxValMin','muxValMin', int, 0),
-            ('muxerForSignal','muxerForSignal', str, None)
+            ('muxValMin', 'muxValMin', int, 0),
+            ('muxerForSignal', 'muxerForSignal', str, None)
         ]
 
         for arg_name, destination, function, default in args:
@@ -381,10 +385,10 @@ class Signal(object):
         return endian + bit_type + str(self.signalsize)
 
     def phys2raw(self, value=None):
-        """Return the physical value (= as is on CAN)
+        """Return the raw value (= as is on CAN)
 
         :param value: (scaled) value or value choice to encode
-        :return:
+        :return: raw unscaled value as it appears on the bus
         """
         if value is None:
             return int(self.attributes.get('GenSigStartValue', 0))
@@ -410,7 +414,7 @@ class Signal(object):
             raw_value = int(raw_value)
         return raw_value
 
-    def raw2phys(self, value, decodeToStr = False):
+    def raw2phys(self, value, decodeToStr=False):
         """Decode the given raw value (= as is on CAN)
         :param value: raw value
         :return: physical value (scaled)
