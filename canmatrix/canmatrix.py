@@ -33,6 +33,7 @@ import math
 from collections import OrderedDict
 
 import logging
+import fnmatch
 
 
 logger = logging.getLogger('root')
@@ -91,6 +92,19 @@ class FrameList(object):
             if test.name == Name:
                 return test
         return None
+
+    def glob(self, globStr):
+        """
+        returns array of frame-objects by given globstr
+        :param globStr:
+        :return: array
+        """
+        returnArray = []
+        for test in self._list:
+            if fnmatch.fnmatchcase(test.name, globStr):
+                returnArray.append(test)
+        return returnArray
+
 
     def __iter__(self):
         return iter(self._list)
@@ -164,6 +178,19 @@ class BoardUnitList(object):
             if test.name == name:
                 return test
         return None
+
+    def glob(self, globStr):
+        """
+        returns array of ecu-objects by given globstr
+        :param globStr:
+        :return: array
+        """
+        returnArray = []
+        for test in self._list:
+            if fnmatch.fnmatchcase(test.name, globStr):
+                returnArray.append(test)
+        return returnArray
+
 
     def __iter__(self):
         return iter(self._list)
@@ -598,6 +625,16 @@ class Frame(object):
                 return signal
         return None
 
+    def globSignals(self, globStr):
+        """
+        returns signal-object by signalname
+        """
+        returnArray = []
+        for signal in self.signals:
+            if fnmatch.fnmatchcase(signal.name, globStr):
+                returnArray.append(signal)
+        return returnArray
+
     def addAttribute(self, attribute, value):
         """
         add attribute to attribute-list of frame; If Attribute already exits, modify value
@@ -855,7 +892,7 @@ class Define(object):
 
 
     def addDefault(self, default):
-        if len(default) > 1 and default[0] == '"' and default[-1] =='"':
+        if default is not None and len(default) > 1 and default[0] == '"' and default[-1] =='"':
             default = default[1:-1]
         self.defaultValue = default
 
@@ -996,8 +1033,15 @@ class CanMatrix(object):
     def frameByName(self, name):
         return self.frames.byName(name)
 
+    def globFrames(self, globStr):
+        return self.frames.glob(globStr)
+
     def boardUnitByName(self, name):
         return self.boardUnits.byName(name)
+
+    def globBoardUnits(self, globStr):
+        return self.boardUnits.glob(globStr)
+
 
     def deleteZeroSignals(self):
         for frame in self.frames:
@@ -1047,17 +1091,18 @@ class CanMatrix(object):
 
     def delEcu(self, ecu):
         if type(ecu).__name__ == 'instance':
-            pass
+            ecuList = [ecu]
         else:
-            ecu = self.boardUnitByName(ecu)
-        self.boardUnits.remove(ecu)
-        for frame in self.frames:
-            if ecu.name in frame.transmitter:
-                frame.transmitter.remove(ecu.name)
-            for signal in frame.signals:
-                if ecu.name in signal.receiver:
-                    signal.receiver.remove(ecu.name)
-            frame.updateReceiver()
+            ecuList = self.globBoardUnits(ecu)
+        for ecu in ecuList:
+            self.boardUnits.remove(ecu)
+            for frame in self.frames:
+                if ecu.name in frame.transmitter:
+                    frame.transmitter.remove(ecu.name)
+                for signal in frame.signals:
+                    if ecu.name in signal.receiver:
+                        signal.receiver.remove(ecu.name)
+                frame.updateReceiver()
 
     def renameFrame(self, old, newName):
         if type(old).__name__ == 'instance':
@@ -1067,7 +1112,11 @@ class CanMatrix(object):
                 oldPrefixLen = len(old)-1
                 if frame.name[:oldPrefixLen] == old[:-1]:
                     frame.name = newName + frame.name[oldPrefixLen:]
-            elif frame.name == oldName:
+            if old[0] == '*':
+                oldSuffixLen = len(old)-1
+                if frame.name[-oldSuffixLen:] == old[1:]:
+                    frame.name = frame.name[:-oldSuffixLen] + newName
+            elif frame.name == old:
                 frame.name = newName
 
     def delFrame(self, frame):
@@ -1087,6 +1136,11 @@ class CanMatrix(object):
                     for signal in frame.signals:
                         if signal.name[:oldPrefixLen] == old[:-1]:
                             signal.name = newName + signal.name[oldPrefixLen:]
+                if old[0] == '*':
+                    oldSuffixLen = len(old) - 1
+                    for signal in frame.signals:
+                        if signal.name[-oldSuffixLen:] == old[1:]:
+                            signal.name = signal.name[:-oldSuffixLen] + newName
 
                 else:
                     signal = frame.signalByName(old)
@@ -1100,8 +1154,8 @@ class CanMatrix(object):
                     frame.signals.remove(signal)
         else:
             for frame in self.frames:
-                sig = frame.signalByName(signal)
-                if sig is not None:
+                signalList = frame.globSignals(signal)
+                for sig in signalList:
                     frame.signals.remove(sig)
 
     def setFdType(self):

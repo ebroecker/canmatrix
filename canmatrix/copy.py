@@ -32,25 +32,26 @@ def copyBU(buId, sourceDb, targetDb):
     """
     # check wether buId is object or symbolic name
     if type(buId).__name__ == 'BoardUnit':
-        bu = buId
+        buList = [buId]
     else:
-        bu = sourceDb.boardUnits.byName(buId)
+        buList = sourceDb.globBoardUnits(buId)
 
-    targetDb.boardUnits.add(bu)
+    for bu in buList:
+        targetDb.boardUnits.add(bu)
 
-    # copy all bu-defines
-    for attribute in bu.attributes:
-        if attribute not in targetDb.buDefines:
-            targetDb.addBUDefines(
-                attribute, sourceDb.buDefines[attribute].definition)
-            targetDb.addDefineDefault(
-                attribute, sourceDb.buDefines[attribute].defaultValue)
-        # update enum-datatypes if needed:
-        if sourceDb.buDefines[attribute].type == 'ENUM':
-            tempAttr = bu.attribute(sourceDb, attribute)
-            if tempAttr not in targetDb.buDefines[attribute].values:
-                targetDb.buDefines[attribute].values.append(tempAttr)
-                targetDb.buDefines[attribute].update()
+        # copy all bu-defines
+        for attribute in bu.attributes:
+            if attribute not in targetDb.buDefines:
+                targetDb.addBUDefines(
+                    attribute, sourceDb.buDefines[attribute].definition)
+                targetDb.addDefineDefault(
+                    attribute, sourceDb.buDefines[attribute].defaultValue)
+            # update enum-datatypes if needed:
+            if sourceDb.buDefines[attribute].type == 'ENUM':
+                tempAttr = bu.attribute(sourceDb, attribute)
+                if tempAttr not in targetDb.buDefines[attribute].values:
+                    targetDb.buDefines[attribute].values.append(tempAttr)
+                    targetDb.buDefines[attribute].update()
 
 
 
@@ -61,37 +62,40 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
     """
     # check wether buId is object or symbolic name
     if type(buId).__name__ == 'instance':
-        bu = buId
+        buList = [buId]
     else:
-        bu = sourceDb.boardUnits.byName(buId)
+        buList = sourceDb.globBoardUnits(buId)
 
-    targetDb.boardUnits.add(bu)
+    for bu in buList:
+        logger.info("Copying ECU " + bu.name)
 
-    # copy tx-frames
-    for frame in sourceDb.frames:
-        if bu.name in frame.transmitter:
-            copyFrame(frame, sourceDb, targetDb)
+        targetDb.boardUnits.add(bu)
 
-    # copy rx-frames
-    for frame in sourceDb.frames:
-        for signal in frame.signals:
-            if bu.name in signal.receiver:
+        # copy tx-frames
+        for frame in sourceDb.frames:
+            if bu.name in frame.transmitter:
                 copyFrame(frame, sourceDb, targetDb)
-                break
 
-    # copy all bu-defines
-    for attribute in bu.attributes:
-        if attribute not in targetDb.buDefines:
-            targetDb.addBUDefines(
-                attribute, sourceDb.buDefines[attribute].definition)
-            targetDb.addDefineDefault(
-                attribute, sourceDb.buDefines[attribute].defaultValue)
-        # update enum-datatypes if needed:
-        if sourceDb.buDefines[attribute].type == 'ENUM':
-            tempAttr = bu.attribute(sourceDb, attribute)
-            if tempAttr not in targetDb.buDefines[attribute].values:
-                targetDb.buDefines[attribute].values.append(tempAttr)
-                targetDb.buDefines[attribute].update()
+        # copy rx-frames
+        for frame in sourceDb.frames:
+            for signal in frame.signals:
+                if bu.name in signal.receiver:
+                    copyFrame(frame, sourceDb, targetDb)
+                    break
+
+        # copy all bu-defines
+        for attribute in bu.attributes:
+            if attribute not in targetDb.buDefines:
+                targetDb.addBUDefines(
+                    attribute, sourceDb.buDefines[attribute].definition)
+                targetDb.addDefineDefault(
+                    attribute, sourceDb.buDefines[attribute].defaultValue)
+            # update enum-datatypes if needed:
+            if sourceDb.buDefines[attribute].type == 'ENUM':
+                tempAttr = bu.attribute(sourceDb, attribute)
+                if tempAttr not in targetDb.buDefines[attribute].values:
+                    targetDb.buDefines[attribute].values.append(tempAttr)
+                    targetDb.buDefines[attribute].update()
 
 
 
@@ -102,64 +106,67 @@ def copyFrame(frameId, sourceDb, targetDb):
     """
     # check wether frameId is object, id or symbolic name
     if 'int' in type(frameId).__name__ or 'long' in type(frameId).__name__:
-        frame = sourceDb.frameById(frameId)
+        frameList = [sourceDb.frameById(frameId)]
     elif type(frameId).__name__ == 'Frame':
-        frame = frameId
+        frameList = [frameId]
     else:
-        frame = sourceDb.frameByName(frameId)
+        frameList = sourceDb.globFrames(frameId)
 
-    if targetDb.frameById(frame.id) is not None:
-        # frame already in targetdb...
-        return False
+    for frame in frameList:
+        logger.info("Copying Frame " + frame.name)
 
-    # copy Frame-Object:
-    targetDb.frames.addFrame(frame)
+        if targetDb.frameById(frame.id) is not None:
+            # frame already in targetdb...
+            return False
 
-    # Boardunits:
-    # each transmitter of Frame could be ECU that is not listed already
-    for transmitter in frame.transmitter:
-        targetBU = targetDb.boardUnits.byName(transmitter)
-        sourceBU = sourceDb.boardUnits.byName(transmitter)
-        if sourceBU is not None and targetBU is None:
-            copyBU(sourceBU, sourceDb, targetDb)
+        # copy Frame-Object:
+        targetDb.frames.addFrame(frame)
 
-    # trigger all signals of Frame
-    for sig in frame.signals:
-        # each receiver of Signal could be ECU that is not listed already
-        for receiver in sig.receiver:
+        # Boardunits:
+        # each transmitter of Frame could be ECU that is not listed already
+        for transmitter in frame.transmitter:
             targetBU = targetDb.boardUnits.byName(transmitter)
             sourceBU = sourceDb.boardUnits.byName(transmitter)
             if sourceBU is not None and targetBU is None:
                 copyBU(sourceBU, sourceDb, targetDb)
 
-    # copy all frame-defines
-    attributes = frame.attributes
-    for attribute in attributes:
-        if attribute not in targetDb.frameDefines:
-            targetDb.addFrameDefines(
-                attribute, sourceDb.frameDefines[attribute].definition)
-            targetDb.addDefineDefault(
-            attribute, sourceDb.frameDefines[attribute].defaultValue)
-        # update enum-datatypes if needed:
-        if sourceDb.frameDefines[attribute].type == 'ENUM':
-            tempAttr = frame.attribute(sourceDb, attribute)
-            if tempAttr not in targetDb.frameDefines[attribute].values:
-                targetDb.frameDefines[attribute].values.append(tempAttr)
-                targetDb.frameDefines[attribute].update()
+        # trigger all signals of Frame
+        for sig in frame.signals:
+            # each receiver of Signal could be ECU that is not listed already
+            for receiver in sig.receiver:
+                targetBU = targetDb.boardUnits.byName(transmitter)
+                sourceBU = sourceDb.boardUnits.byName(transmitter)
+                if sourceBU is not None and targetBU is None:
+                    copyBU(sourceBU, sourceDb, targetDb)
 
-    # trigger all signals of Frame
-    for sig in frame.signals:
-        # delete all 'unknown' attributes
-        for attribute in sig.attributes:
-            targetDb.addSignalDefines(
-                attribute, sourceDb.signalDefines[attribute].definition)
-            targetDb.addDefineDefault(
-                attribute, sourceDb.signalDefines[attribute].defaultValue)
+        # copy all frame-defines
+        attributes = frame.attributes
+        for attribute in attributes:
+            if attribute not in targetDb.frameDefines:
+                targetDb.addFrameDefines(
+                    attribute, sourceDb.frameDefines[attribute].definition)
+                targetDb.addDefineDefault(
+                attribute, sourceDb.frameDefines[attribute].defaultValue)
             # update enum-datatypes if needed:
-            if sourceDb.signalDefines[attribute].type == 'ENUM':
-                tempAttr = sig.attribute(sourceDb, attribute)
-                if tempAttr not in targetDb.signalDefines[attribute].values:
-                    targetDb.signalDefines[attribute].values.append(tempAttr)
-                    targetDb.signalDefines[attribute].update()
+            if sourceDb.frameDefines[attribute].type == 'ENUM':
+                tempAttr = frame.attribute(sourceDb, attribute)
+                if tempAttr not in targetDb.frameDefines[attribute].values:
+                    targetDb.frameDefines[attribute].values.append(tempAttr)
+                    targetDb.frameDefines[attribute].update()
+
+        # trigger all signals of Frame
+        for sig in frame.signals:
+            # delete all 'unknown' attributes
+            for attribute in sig.attributes:
+                targetDb.addSignalDefines(
+                    attribute, sourceDb.signalDefines[attribute].definition)
+                targetDb.addDefineDefault(
+                    attribute, sourceDb.signalDefines[attribute].defaultValue)
+                # update enum-datatypes if needed:
+                if sourceDb.signalDefines[attribute].type == 'ENUM':
+                    tempAttr = sig.attribute(sourceDb, attribute)
+                    if tempAttr not in targetDb.signalDefines[attribute].values:
+                        targetDb.signalDefines[attribute].values.append(tempAttr)
+                        targetDb.signalDefines[attribute].update()
 
     return True
