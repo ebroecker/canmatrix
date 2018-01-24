@@ -145,7 +145,8 @@ def dump(db, f, **options):
                  "is_extended_frame": frame.extended == 1,
                  "signals": signals,
                  "attributes": frameattribs,
-                 "comment": frame.comment})
+                 "comment": frame.comment,
+                 "length": frame.size})
     if (sys.version_info > (3, 0)):
         import io
         temp = io.TextIOWrapper(f, encoding='UTF-8')
@@ -177,6 +178,8 @@ def load(f, **options):
             newframe = Frame(frame["name"],
                              Id=frame["id"],
                              dlc=8)
+            if "length" in frame:
+                newframe.size = frame["length"]
 
             if "is_extended_frame" in frame and frame["is_extended_frame"]:
                 newframe.extended = 1
