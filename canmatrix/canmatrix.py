@@ -421,7 +421,10 @@ class Signal(object):
                 break
         else:
             raise ValueError(
-                "{} is invalid value choice for {}".format(name, self)
+                "{} is an invalid enumerator name choice for {}".format(
+                    name,
+                    self,
+                )
             )
 
         return self.phys2raw(value=value)
