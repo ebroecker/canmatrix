@@ -50,13 +50,14 @@ Topic :: Scientific/Engineering
 
 import sys
 from setuptools import setup, find_packages
-from canmatrix.version import version
+import versioneer
 
 doclines = __doc__.split("\n")
 
 setup(
     name = "canmatrix",
-    version = version,
+    version = versioneer.get_version(),
+    cmdclass = versioneer.get_cmdclass(),
     maintainer = "Eduard Broecker",
     maintainer_email = "eduard at gmx dot de",
     url = "http://github.com/ebroecker/canmatrix",
