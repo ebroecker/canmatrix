@@ -449,19 +449,32 @@ class Signal(object):
             raw_value = int(raw_value)
         return raw_value
 
-    def raw2phys(self, value, decodeToStr=False):
+    def raw2enum(self, value):
+        """Decode the given raw value (= as is on CAN)
+        :param value: raw value
+        :return: enumerator name
+        """
+        for value_key, value_string in self.values.items():
+            if value_key == value:
+                value = value_string
+                break
+        else:
+            raise ValueError(
+                "{} is an invalid enumerator value choice for {}".format(
+                    value,
+                    self,
+                )
+            )
+
+        return value
+
+    def raw2phys(self, value):
         """Decode the given raw value (= as is on CAN)
         :param value: raw value
         :return: physical value (scaled)
         """
 
         value = value * self.factor + self.offset
-        if decodeToStr:
-            for value_key, value_string in self.values.items():
-                if value_key == value:
-                    value = value_string
-                    break
-
         return value
 
     def __str__(self):

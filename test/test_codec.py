@@ -114,8 +114,18 @@ class TestCanmatrixCodec(unittest.TestCase):
         with self.assertRaises(ValueError):
             s11.enum2raw(0)
 
+        with self.assertRaises(TypeError):
+            s11.raw2enum()
+
+        with self.assertRaises(ValueError):
+            s11.raw2enum('')
+
+        with self.assertRaises(ValueError):
+            s11.raw2enum(-1)
+
         for name, value in enumeration.items():
             self.assertEqual(s11.enum2raw(name), value)
+            self.assertEqual(s11.raw2enum(value), name)
 
     def test_encode_canmatrix(self):
         db_path = os.path.join(
