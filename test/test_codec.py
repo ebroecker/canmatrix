@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """Tests for `canmatrix` package."""
+import collections
 import unittest
 
 import os
@@ -90,6 +91,31 @@ class TestCanmatrixCodec(unittest.TestCase):
         self.assertEqual(s10.phys2raw(s10.min), 0)
         self.assertEqual(s10.phys2raw(0.005), 100)
         self.assertEqual(s10.phys2raw(0.003), 60)
+
+        s11 = Signal('signal', signalSize=8)
+
+        with self.assertRaises(ValueError):
+            s11.enum2raw('a')
+
+        enumeration = collections.OrderedDict((
+            ('a', 0),
+            ('b', 1),
+            ('c', 2),
+        ))
+        for name, value in enumeration.items():
+            s11.addValues(value=value, valueName=name)
+
+        with self.assertRaises(TypeError):
+            s11.enum2raw()
+
+        with self.assertRaises(ValueError):
+            s11.enum2raw('')
+
+        with self.assertRaises(ValueError):
+            s11.enum2raw(0)
+
+        for name, value in enumeration.items():
+            self.assertEqual(s11.enum2raw(name), value)
 
     def test_encode_canmatrix(self):
         db_path = os.path.join(

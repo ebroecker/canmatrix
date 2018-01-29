@@ -43,8 +43,6 @@ except:
     bitstruct = None
     logger.info("bitstruct could not be imported // No signal de/encoding possible // try pip install bitstruct")
 
-from past.builtins import basestring
-
 
 class FrameList(object):
     """
@@ -411,6 +409,23 @@ class Signal(object):
 
         return endian + bit_type + str(self.signalsize)
 
+    def enum2raw(self, name):
+        """Return the raw value (= as is on CAN)
+
+        :param name: enumerator name
+        :return: raw unscaled value as it appears on the bus
+        """
+        for value_key, value_string in self.values.items():
+            if value_string == name:
+                value = value_key
+                break
+        else:
+            raise ValueError(
+                "{} is invalid value choice for {}".format(name, self)
+            )
+
+        return self.phys2raw(value=value)
+
     def phys2raw(self, value=None):
         """Return the raw value (= as is on CAN)
 
@@ -419,16 +434,6 @@ class Signal(object):
         """
         if value is None:
             return int(self.attributes.get('GenSigStartValue', 0))
-
-        if isinstance(value, basestring):
-            for value_key, value_string in self.values.items():
-                if value_string == value:
-                    value = value_key
-                    break
-            else:
-                raise ValueError(
-                        "{} is invalid value choice for {}".format(value, self)
-                )
 
         if not (self.min <= value <= self.max):
             logger.info(
