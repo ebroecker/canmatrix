@@ -110,6 +110,10 @@ def dump(db, f, **options):
                 attribs = {}
                 for attribute in db.signalDefines:
                     attribs[attribute] = signal.attribute(db,attribute)
+
+                values = {}
+                for key in signal.values:
+                    values[key] = signal.values[key]
                 if not signal.is_little_endian:
                     if motorolaBitFormat == "msb":
                         startBit = signal.getStartbit(bitNumbering=1)
@@ -119,6 +123,7 @@ def dump(db, f, **options):
                         startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
                 else:  # motorolaBitFormat == "lsb"
                     startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
+
 
                 signalDict = {
                     "name": signal.name,
@@ -131,6 +136,7 @@ def dump(db, f, **options):
                     "is_float": signal.is_float,
                     "comment": signal.comment,
                     "attributes": attribs,
+                    "values": values    
                 }
                 if signal.multiplex is not None:
                     signalDict["multiplex"] = signal.multiplex
