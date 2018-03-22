@@ -187,11 +187,8 @@ def dump(db, filename, **options):
     rowArray += buList
 
     for col in range(0,len(rowArray)):
-        worksheet.set_column(col, col, 3.57)
+        worksheet.set_column(col, col, 2)
 
-    # write first row (header) cols after frameardunits:
-    for col in range(head_start, head_start+len(head_tail)):
-        worksheet.set_column(col, col, 6)
     rowArray += head_tail
 
     additionalFrame_start = len(rowArray)
@@ -202,8 +199,6 @@ def dump(db, filename, **options):
     worksheet.set_column(3, 3, 12.29)
     worksheet.set_column(7, 7, 21)
     worksheet.set_column(8, 8, 30)
-    worksheet.set_column(head_start + 1, head_start + 1, 21)
-    worksheet.set_column(head_start + 2, head_start + 2, 12)
 
     for additionalCol in additionalFrameCollums:
         rowArray.append("frame." + additionalCol)

@@ -861,4 +861,6 @@ def load(f, **options):
                         signal.attributes[define] = signal.attributes[define][1:-1]
 
     db.EnumAttribs2Values()
+    db.updateEcuList()
+    db.delEcu("Vector__XXX")
     return db

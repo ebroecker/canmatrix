@@ -134,8 +134,8 @@ def copyFrame(frameId, sourceDb, targetDb):
         for sig in frame.signals:
             # each receiver of Signal could be ECU that is not listed already
             for receiver in sig.receiver:
-                targetBU = targetDb.boardUnits.byName(transmitter)
-                sourceBU = sourceDb.boardUnits.byName(transmitter)
+                targetBU = targetDb.boardUnits.byName(receiver)
+                sourceBU = sourceDb.boardUnits.byName(receiver)
                 if sourceBU is not None and targetBU is None:
                     copyBU(sourceBU, sourceDb, targetDb)
 

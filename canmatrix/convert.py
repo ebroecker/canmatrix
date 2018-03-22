@@ -98,6 +98,16 @@ def convert(infile, outfileName, **options):
             deleteFrameList = options['deleteFrame'].split(',')
             for frame in deleteFrameList:
                 db.delFrame(frame)
+        if 'addFrameReceiver' in options and options['addFrameReceiver'] is not None:
+            touples = options['addFrameReceiver'].split(',')
+            for touple in touples:
+                (frameName, ecu) = touple.split(':')
+                frames = db.globFrames(frameName)
+                for frame in frames:
+                    for signal in frame.signals:
+                        signal.addReceiver(ecu)
+                    frame.updateReceiver()
+
         if 'frameIdIncrement' in options and options['frameIdIncrement'] is not None:
             idIncrement = int(options['frameIdIncrement'])
             for frame in db.frames:
@@ -328,6 +338,12 @@ def main():
     parser.add_option("", "--renameEcu",
                       dest="renameEcu", default=None,
                       help="rename Ecu form databases. (comma separated list)\nSyntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu")
+
+    parser.add_option("", "--addFrameReceiver",
+                      dest="addFrameReceiver", default=None,
+                      help="add receiver Ecu to frame(s) (comma separated list)\nSyntax: --addFrameReceiver=framename:myNewEcu,mySecondEcu:myNEWEcu")
+
+
 
     parser.add_option("", "--deleteFrame",
                       dest="deleteFrame", default=None,

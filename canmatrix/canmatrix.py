@@ -44,7 +44,7 @@ except:
     logger.info("bitstruct could not be imported // No signal de/encoding possible // try pip install bitstruct")
 
 from past.builtins import basestring
-
+import copy
 
 class FrameList(object):
     """
@@ -160,8 +160,10 @@ class BoardUnitList(object):
         """
         add Boardunit/ECU to list
         """
-        if BU.name.strip() not in self._list:
-            self._list.append(BU)
+        for bu in self._list:
+            if BU.name.strip() == bu.name:
+                return
+        self._list.append(BU)
 
     def remove(self, BU):
         """
@@ -306,10 +308,17 @@ class Signal(object):
 
     def addReceiver(self, receiver):
         """
-        add receiver Boardunit/ECU-Name to Signal
+        add receiver Boardunit/ECU-Name to signal
         """
         if receiver not in self.receiver:
             self.receiver.append(receiver)
+
+    def delReceiver(self, receiver):
+        """
+        remove receiver Boardunit/ECU-Name from signal
+        """
+        if receiver in self.receiver:
+            self.receiver.remove(receiver)
 
     def addAttribute(self, attribute, value):
         """
@@ -608,6 +617,13 @@ class Frame(object):
         """
         if transmitter not in self.transmitter:
             self.transmitter.append(transmitter)
+
+    def delTransmitter(self, transmitter):
+        """
+        del transmitter Boardunit/ECU-Name from Frame
+        """
+        if transmitter in self.transmitter:
+            self.transmitter.remove(transmitter)
 
     def addReceiver(self, receiver):
         """
@@ -1104,6 +1120,15 @@ class CanMatrix(object):
                         signal.receiver.remove(ecu.name)
                 frame.updateReceiver()
 
+    def updateEcuList(self):
+        for frame in self.frames:
+            for ecu in frame.transmitter:
+                self.boardUnits.add(BoardUnit(ecu))
+            frame.updateReceiver()
+            for signal in frame.signals:
+                for ecu in signal.receiver:
+                    self.boardUnits.add(BoardUnit(ecu))
+
     def renameFrame(self, old, newName):
         if type(old).__name__ == 'instance':
             oldName = old.name
@@ -1157,6 +1182,44 @@ class CanMatrix(object):
                 signalList = frame.globSignals(signal)
                 for sig in signalList:
                     frame.signals.remove(sig)
+
+    def addSignalReceiver(self, frameName, signalName, ecu):
+        frames = self.globFrames(frameName)
+        for frame in frames:
+            signal = frame.signalByName(signalName)
+            if signal is not None:
+                signal.addReceiver(ecu)
+                for signal in frame.globSignals(signalName):
+                    signal.addReceiver(ecu)
+                frame.updateReceiver()
+
+    def delSignalReceiver(self, frameName, signalName, ecu):
+        frames = self.globFrames(frameName)
+        for frame in frames:
+            signal = frame.signalByName(signalName)
+            if signal is not None:
+                signal.addReceiver(ecu)
+                for signal in frame.globSignals(signalName):
+                    signal.delReceiver(ecu)
+                frame.updateReceiver()
+
+    def addFrameTransmitter(self, frameName, ecu):
+        frames = self.globFrames(frameName)
+        for frame in frames:
+            frame.addTransmitter(ecu)
+
+    def delFrameTransmitter(self, frameName, ecu):
+        frames = self.globFrames(frameName)
+        for frame in frames:
+            frame.delTransmitter(ecu)
+
+    def merge(self, mergeArray):
+        for dbTemp in mergeArray:
+            for frame in dbTemp.frames:
+                copyResult = copy.copyFrame(frame.id, dbTemp, self)
+                if copyResult == False:
+                    logger.error(
+                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + database)
 
     def setFdType(self):
         for frame in self.frames:
