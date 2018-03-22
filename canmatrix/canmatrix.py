@@ -292,6 +292,7 @@ class Signal(object):
     def values(self, valueTable):
         self._values = normalizeValueTable(valueTable)
 
+
     def attribute(self, db, attributeName):
         if attributeName in self.attributes:
             return self.attributes[attributeName]
@@ -572,6 +573,9 @@ class Frame(object):
                 return True
         return False
 
+    @property
+    def pgn(self):
+        return CanId(self._Id).pgn
 
     def attribute(self, db, attributeName):
         if attributeName in self.attributes:
