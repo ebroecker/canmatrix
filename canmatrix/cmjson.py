@@ -218,6 +218,9 @@ def load(f, **options):
                 if "multiplex" in signal and signal["multiplex"]:
                     newsignal.unit = signal["multiplex"]
 
+                if "values" in signal and signal["values"]:
+                    for key in signal["values"]:
+                        newsignal.addValues(key, signal["values"][key])
                 if newsignal.is_little_endian == False:
 
                     newsignal.setStartbit(
