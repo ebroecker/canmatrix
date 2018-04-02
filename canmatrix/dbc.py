@@ -151,31 +151,31 @@ def dump(db, f, **options):
             output_names[frame][signal] = name
 
     # Frames
-    for bo in db.frames:
+    for frame in db.frames:
         multiplex_written = False
-        if bo.transmitter.__len__() == 0:
-            bo.addTransmitter("Vector__XXX")
+        if frame.transmitter.__len__() == 0:
+            frame.addTransmitter("Vector__XXX")
 
-        if bo.extended == 1:
-            bo.id += 0x80000000
+        if frame.extended == 1:
+            frame.id += 0x80000000
         
         f.write(
             ("BO_ %d " %
-             bo.id +
-             bo.name +
+             frame.id +
+             frame.name +
              ": %d " %
-             bo.size +
-             bo.transmitter[0] +
+             frame.size +
+             frame.transmitter[0] +
              "\n").encode(dbcExportEncoding))
         duplicate_signal_totals = collections.Counter(
-            normalizeName(s.name, whitespaceReplacement) for s in bo.signals
+            normalizeName(s.name, whitespaceReplacement) for s in frame.signals
         )
         duplicate_signal_counter = collections.Counter()
-        for signal in bo.signals:
-            if signal.multiplex == 'Multiplexor' and multiplex_written and not bo.is_complex_multiplexed:
+        for signal in frame.signals:
+            if signal.multiplex == 'Multiplexor' and multiplex_written and not frame.is_complex_multiplexed:
                 continue
 
-            f.write((" SG_ " + output_names[bo][signal] + " ").encode(dbcExportEncoding))
+            f.write((" SG_ " + output_names[frame][signal] + " ").encode(dbcExportEncoding))
             if signal.mux_val is not None:
                 f.write(("m%d" %
                          int(signal.mux_val)).encode(dbcExportEncoding))
@@ -220,37 +220,37 @@ def dump(db, f, **options):
     f.write("\n".encode(dbcExportEncoding))
 
     # second Sender:
-    for bo in db.frames:
-        if bo.transmitter.__len__() > 1:
+    for frame in db.frames:
+        if frame.transmitter.__len__() > 1:
             f.write(
                 ("BO_TX_BU_ %d : %s;\n" %
-                 (bo.id, ','.join(
-                     bo.transmitter))).encode(dbcExportEncoding))
+                 (frame.id, ','.join(
+                     frame.transmitter))).encode(dbcExportEncoding))
 
     # frame comments
-    for bo in db.frames:
-        if bo.comment is not None and bo.comment.__len__() > 0:
+    for frame in db.frames:
+        if frame.comment is not None and frame.comment.__len__() > 0:
             f.write(
                 ("CM_ BO_ " +
                  "%d " %
-                 bo.id +
+                 frame.id +
                  ' "').encode(dbcExportEncoding))
             f.write(
-                bo.comment.replace(
+                frame.comment.replace(
                     '"',
                     '\\"').encode(dbcExportCommentEncoding, 'ignore'))
             f.write('";\n'.encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal comments
-    for bo in db.frames:
-        for signal in bo.signals:
+    for frame in db.frames:
+        for signal in frame.signals:
             if signal.comment is not None and signal.comment.__len__() > 0:
-                name = output_names[bo][signal]
+                name = output_names[frame][signal]
                 f.write(
                     ("CM_ SG_ " +
                      "%d " %
-                     bo.id +
+                     frame.id +
                      name +
                      ' "').encode(dbcExportEncoding, 'ignore'))
                 f.write(
@@ -365,9 +365,9 @@ def dump(db, f, **options):
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-values:
-    for bo in db.frames:
+    for frame in db.frames:
         multiplex_written = False
-        for signal in bo.signals:
+        for signal in frame.signals:
             if signal.multiplex == 'Multiplexor' and multiplex_written:
                 continue
 
@@ -376,8 +376,8 @@ def dump(db, f, **options):
             if signal.values:
                 f.write(
                     ('VAL_ %d ' %
-                     bo.id +
-                     output_names[bo][signal]).encode(dbcExportEncoding))
+                     frame.id +
+                     output_names[frame][signal]).encode(dbcExportEncoding))
                 for attrib, val in sorted(
                         signal.values.items(), key=lambda x: int(x[0])):
                     f.write(
@@ -385,12 +385,12 @@ def dump(db, f, **options):
                 f.write(";\n".encode(dbcExportEncoding))
 
     # signal-groups:
-    for bo in db.frames:
-        for sigGroup in bo.signalGroups:
-            f.write(("SIG_GROUP_ " + str(bo.id) + " " + sigGroup.name +
+    for frame in db.frames:
+        for sigGroup in frame.signalGroups:
+            f.write(("SIG_GROUP_ " + str(frame.id) + " " + sigGroup.name +
                      " " + str(sigGroup.id) + " :").encode(dbcExportEncoding))
             for signal in sigGroup.signals:
-                f.write((" " + output_names[bo][signal]).encode(dbcExportEncoding))
+                f.write((" " + output_names[frame][signal]).encode(dbcExportEncoding))
             f.write(";\n".encode(dbcExportEncoding))
 
     for frame in db.frames:
