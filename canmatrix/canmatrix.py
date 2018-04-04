@@ -82,17 +82,23 @@ class FrameList(object):
         Id = int(Id)
         extendedMarker = 0x80000000
         for test in self._list:
-            if test.id == Id and extended is None:
-                # found ID while ignoring extended or standard
-                return test
-            elif extended is not None and test.extended == extended:
-                # found ID while checking extended or standard
-                return test
-            elif test.extended and Id & extendedMarker:
-                # check regarding common used extended Bit 31
-                if test.id == Id - extendedMarker:
+            if test.id == Id:
+                if extended is None:
+                    # found ID while ignoring extended or standard
                     return test
-    return None
+                elif test.extended == extended:
+                    # found ID while checking extended or standard
+                    return test
+            else:
+                if extended is not None:
+                    # what to do if Id is not equal and extended is also provided ???
+                    pass
+                else:
+                    if test.extended and Id & extendedMarker:
+                        # check regarding common used extended Bit 31
+                        if test.id == Id - extendedMarker:
+                            return test
+        return None
 
     def byName(self, Name):
         """
