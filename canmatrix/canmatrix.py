@@ -675,7 +675,10 @@ class Frame(object):
         """
         add attribute to attribute-list of frame; If Attribute already exits, modify value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except:
+            self.attributes[attribute] = value
 
     def delAttribute(self, attribute):
         """
