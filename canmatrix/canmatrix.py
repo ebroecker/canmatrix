@@ -75,14 +75,24 @@ class FrameList(object):
         """
         self._list.remove(frame)
 
-    def byId(self, Id):
+    def byId(self, Id, extended=None):
         """
         returns a Frame-Object by given Frame-ID
         """
+        Id = int(Id)
+        extendedMarker = 0x80000000
         for test in self._list:
-            if test.id == int(Id):
+            if test.id == Id and extended is None:
+                # found ID while ignoring extended or standard
                 return test
-        return None
+            elif extended is not None and test.extended == extended:
+                # found ID while checking extended or standard
+                return test
+            elif test.extended and Id & extendedMarker:
+                # check regarding common used extended Bit 31
+                if test.id == Id - extendedMarker:
+                    return test
+    return None
 
     def byName(self, Name):
         """
@@ -659,7 +669,7 @@ class Frame(object):
         """
         add attribute to attribute-list of frame; If Attribute already exits, modify value
         """
-        self.attributes[attribute] = str(value)
+        self.attributes[attribute] = value
 
     def delAttribute(self, attribute):
         """

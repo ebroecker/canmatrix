@@ -1,0 +1,38 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: 
+
+
+BO_ 1 canFdStandard1: 24 Vector__XXX
+ SG_ signal3 : 128|64@1- (1,0) [0|0] "" Vector__XXX
+ SG_ signal2 : 64|64@1- (1,0) [0|0] "" Vector__XXX
+ SG_ signal1 : 0|64@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 2147483650 CanFdExtended2: 16 Vector__XXX
+ SG_ signal2 : 64|64@1- (1,0) [0|0] "" Vector__XXX
+ SG_ signal1 : 0|64@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 2147483651 CanExtended3: 8 Vector__XXX
+
+BO_ 4 CanStandard4: 8 Vector__XXX
+
+
+
+
+
+BA_DEF_ BO_ "VFrameFormat" ENUM "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ "BusType" STRING;
+
+BA_ "BusType" "CAN FD";
+
+BA_ "VFrameFormat" BO_ 1 14;
+BA_ "VFrameFormat" BO_ 2147483650 15;
+BA_ "VFrameFormat" BO_ 2147483651 1;
+BA_ "VFrameFormat" BO_ 4 0;
+
+
