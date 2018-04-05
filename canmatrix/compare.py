@@ -489,6 +489,12 @@ def main():
         action="count",
         help="Output verbosity",
         default=0)
+    parser.add_option(
+        "-f","--frames",
+        dest="frames",
+        action="store_true",
+        help="show list of frames",
+        default=False)
     (cmdlineOptions, args) = parser.parse_args()
 
     if len(args) < 2:
@@ -517,10 +523,23 @@ def main():
     logger.info("%d Frames found" % (db2.frames.__len__()))
 
     ignore = {}
-    #ignore["ATTRIBUTE"] = "*"
-    #ignore["DEFINE"] = "*"
-    obj = compareDb(db1, db2, ignore)
-    dumpResult(obj)
+    if cmdlineOptions.frames:
+        onlyInMatrix1 = []
+        onlyInMatrix2 = []
+        for frame in db1.frames:
+            if db2.frameByName(frame.name) is None:
+                onlyInMatrix1.append(frame.name)
+        for frame in db2.frames:
+            if db1.frameByName(frame.name) is None:
+                onlyInMatrix2.append(frame.name)
+        print ("Frames only in " + matrix1 + ": " + " ".join(onlyInMatrix1))
+        print ("Frames only in " + matrix2 + ": " + " ".join(onlyInMatrix2))
+
+    else:
+        #ignore["ATTRIBUTE"] = "*"
+        #ignore["DEFINE"] = "*"
+        obj = compareDb(db1, db2, ignore)
+        dumpResult(obj)
 
 if __name__ == '__main__':
     sys.exit(main())
