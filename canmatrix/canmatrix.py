@@ -196,6 +196,8 @@ class Signal(object):
             ('comments', 'comments', None, {}),
             ('attributes', 'attributes', None, {}),
             ('values', '_values', None, {}),
+            ('longname', 'longname', str, ""),
+            ('datatype', 'datatype', str, "")
         ]
 
         for arg_name, destination, function, default in args:

@@ -69,6 +69,7 @@ def writeFrame(frame, worksheet, row, mystyle):
     worksheet.write(row, 0, label="%3Xh" % frame.id, style=mystyle)
     # frame-Name
     worksheet.write(row, 1, label=frame.name, style=mystyle)
+    worksheet.write(row, 18, label=frame.size, style=mystyle)
 
     # determin cycle-time
     if "GenMsgCycleTime" in frame.attributes:
@@ -251,6 +252,10 @@ def writeSignal(db, sig, worksheet, row, mystyle, rearCol, motorolaBitFormat):
         else:
             worksheet.write(row, rearCol + 2, label="", style=mystyle)
 
+    worksheet.write(row, 17, label=sig.longname, style=mystyle)
+    worksheet.write(row, 19, label=sig.datatype, style=mystyle)
+    worksheet.write(row, 20, label=sig.factor, style=mystyle)
+    worksheet.write(row, 21, label=sig.offset, style=mystyle)
 
 def writeValue(label, value, worksheet, row, rearCol, mystyle):
     # write value and lable in sheet
@@ -301,7 +306,7 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
 def dump(db, file, **options):
     head_top = ['ID', 'Frame Name', 'Cycle Time [ms]', 'Launch Type', 'Launch Parameter', 'Signal Byte No.', 'Signal Bit No.',
                 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
-    head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
+    head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit', 'Long Name', 'Frame Length', 'Data Type', 'Factor', 'Offset']
 
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
@@ -373,7 +378,7 @@ def dump(db, file, **options):
             continue
         for sig_idx in sorted(sigHash.keys()):
             sig = sigHash[sig_idx]
-
+            #logger.debug("DEBUG: signal long name is %s" % sig.longname)
             # if not first Signal in Frame, set style
             if sigstyle != sty_first_frame:
                 sigstyle = sty_norm

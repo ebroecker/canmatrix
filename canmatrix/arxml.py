@@ -898,6 +898,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         return
     for signal in signalarray:
         values = {}
+        
         motorolla = arGetChild(signal, "PACKING-BYTE-ORDER", arDict, ns)
         startBit = arGetChild(signal, "START-POSITION", arDict, ns)
         isignal = arGetChild(signal, "SIGNAL", arDict, ns)
@@ -934,6 +935,26 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             getSysSignals(syssignal, syssignalarray, Bo, GroupId, ns)
             GroupId = GroupId + 1
             continue
+
+        # force long name to be written to sheet
+        long_name = arGetChild(isignal, "LONG-NAME", arDict, ns)
+        if long_name!=None: 
+            l4 = arGetChild(long_name, "L-4", arDict, ns)
+            long_name = l4.text.encode('utf-8')
+        else: 
+            long_name = ""
+
+        # force data type to be written to sheet
+        sigDataType = ""
+        try:
+            lvl1 = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
+            lvl2 = arGetChild(lvl1, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)
+            lvl3 = arGetChild(lvl2, "SW-DATA-DEF-PROPS-CONDITIONAL", arDict, ns)
+            lvl4 = arGetChild(lvl3, "BASE-TYPE-REF", arDict, ns)
+            sigDataType = lvl4.text.encode('utf-8')
+            sigDataType = sigDataType.split("/")[-1]
+        except:
+            sigDataType = ""
 
         length = arGetChild(isignal, "LENGTH", arDict, ns)
         if length is None:
@@ -1041,7 +1062,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             initvalue = initvalue[0]
         else:
             initvalue = None
-
+        increment = ""
         for compuscale in compuscales:
             ll = arGetChild(compuscale, "LOWER-LIMIT", arDict, ns)
             ul = arGetChild(compuscale, "UPPER-LIMIT", arDict, ns)
@@ -1109,7 +1130,9 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                             receiver=receiver,
                             multiplex=multiplexId,
                             comment=signalDescription,
-                            is_float=is_float)
+                            is_float=is_float,
+                            longname=long_name,
+                            datatype=sigDataType)
 
             if newSig.is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
