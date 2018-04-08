@@ -47,6 +47,7 @@ def loads(string, importType=None, key="", flatImport=None, encoding="utf-8",**o
             string = bytes(string, encoding)
         fileObject = io.BytesIO(string)
     else:
+        string = string.encode(encoding)
         fileObject = StringIO.StringIO(string)
     return load(fileObject, importType, key, flatImport, **options)
 
