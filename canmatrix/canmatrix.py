@@ -29,6 +29,7 @@
 
 from __future__ import division
 import math
+from decimal import Decimal
 
 import logging
 logger = logging.getLogger('root')
@@ -195,6 +196,8 @@ class Signal(object):
             ('comments', 'comments', None, {}),
             ('attributes', 'attributes', None, {}),
             ('values', '_values', None, {}),
+            ('longname', 'longname', str, ""),
+            ('datatype', 'datatype', str, "")
         ]
 
         for arg_name, destination, function, default in args:
@@ -334,7 +337,7 @@ class Signal(object):
     def calcMax(self):
         rawMax = self.calculateRawRange()[1]
 
-        return self.offset + (rawMax * self.factor)
+        return Decimal(self.offset) + (rawMax * Decimal(self.factor))
 
     def __str__(self):
         return self.name
@@ -447,7 +450,7 @@ class Frame(object):
         returns signalGroup-object by signalname
         """
         for signalGroup in self.signalGroups:
-            if signalGroup._name == name:
+            if signalGroup.name == name:
                 return signalGroup
         return None
 
