@@ -25,7 +25,7 @@
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
-
+from copy import deepcopy
 import collections
 import logging
 
@@ -61,7 +61,10 @@ def format_float(f):
     return s.upper()
 
 
-def dump(db, f, **options):
+def dump(mydb, f, **options):
+    # create copy because export changes database
+    db = deepcopy(mydb)
+
     if 'dbcExportEncoding' in options:
         dbcExportEncoding = options["dbcExportEncoding"]
     else:

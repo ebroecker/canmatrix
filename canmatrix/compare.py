@@ -314,12 +314,15 @@ def compareFrame(f1, f2, ignore=None):
     else:
         result.addChild(compareAttributes(f1, f2, ignore))
 
+    temp = [str(item) for item in f2.transmitter]
     for transmitter in f1.transmitter:
-        if transmitter not in f2.transmitter:
+        if transmitter not in temp:
             result.addChild(compareResult("removed", "Frame-Transmitter", f1))
+
+    temp = [str(item) for item in f1.transmitter]
     for transmitter in f2.transmitter:
-        if transmitter not in f1.transmitter:
-            result.addChild(compareResult("added", "Frame-Transmitter", f2))
+        if transmitter not in temp:
+            result.addChild(compareResult("added", "Frame-Transmitter",  f2))
 
     for sg1 in f1.signalGroups:
         sg2 = f2.signalGroupbyName(sg1.name)
@@ -406,7 +409,7 @@ def compareSignal(s1, s2, ignore=None):
                         "only whitespaces differ", ""]))
 
     for receiver in s1.receiver:
-        if receiver not in s2.receiver:
+        if receiver.strip() not in s2.receiver:
             result.addChild(
                 compareResult(
                     "removed",
@@ -415,7 +418,7 @@ def compareSignal(s1, s2, ignore=None):
                     s1.receiver))
 
     for receiver in s2.receiver:
-        if receiver not in s1.receiver:
+        if receiver.strip() not in s1.receiver:
             result.addChild(
                 compareResult(
                     "added",

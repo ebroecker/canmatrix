@@ -23,7 +23,7 @@
 from __future__ import absolute_import
 
 from .canmatrix import *
-
+from copy import deepcopy
 
 def copyBU(buId, sourceDb, targetDb):
     """
@@ -37,20 +37,20 @@ def copyBU(buId, sourceDb, targetDb):
         buList = sourceDb.globBoardUnits(buId)
 
     for bu in buList:
-        targetDb.boardUnits.add(bu)
+        targetDb.boardUnits.add(deepcopy(bu))
 
         # copy all bu-defines
         for attribute in bu.attributes:
             if attribute not in targetDb.buDefines:
                 targetDb.addBUDefines(
-                    attribute, sourceDb.buDefines[attribute].definition)
+                    deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].definition))
                 targetDb.addDefineDefault(
-                    attribute, sourceDb.buDefines[attribute].defaultValue)
+                    deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].defaultValue))
             # update enum-datatypes if needed:
             if sourceDb.buDefines[attribute].type == 'ENUM':
                 tempAttr = bu.attribute(sourceDb, attribute)
                 if tempAttr not in targetDb.buDefines[attribute].values:
-                    targetDb.buDefines[attribute].values.append(tempAttr)
+                    targetDb.buDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.buDefines[attribute].update()
 
 
@@ -69,7 +69,7 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
     for bu in buList:
         logger.info("Copying ECU " + bu.name)
 
-        targetDb.boardUnits.add(bu)
+        targetDb.boardUnits.add(deepcopy(bu))
 
         # copy tx-frames
         for frame in sourceDb.frames:
@@ -87,14 +87,14 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
         for attribute in bu.attributes:
             if attribute not in targetDb.buDefines:
                 targetDb.addBUDefines(
-                    attribute, sourceDb.buDefines[attribute].definition)
+                    deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].definition))
                 targetDb.addDefineDefault(
-                    attribute, sourceDb.buDefines[attribute].defaultValue)
+                    deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].defaultValue))
             # update enum-datatypes if needed:
             if sourceDb.buDefines[attribute].type == 'ENUM':
                 tempAttr = bu.attribute(sourceDb, attribute)
                 if tempAttr not in targetDb.buDefines[attribute].values:
-                    targetDb.buDefines[attribute].values.append(tempAttr)
+                    targetDb.buDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.buDefines[attribute].update()
 
 
@@ -120,7 +120,7 @@ def copyFrame(frameId, sourceDb, targetDb):
             return False
 
         # copy Frame-Object:
-        targetDb.frames.addFrame(frame)
+        targetDb.frames.addFrame(deepcopy(frame))
 
         # Boardunits:
         # each transmitter of Frame could be ECU that is not listed already
@@ -144,14 +144,14 @@ def copyFrame(frameId, sourceDb, targetDb):
         for attribute in attributes:
             if attribute not in targetDb.frameDefines:
                 targetDb.addFrameDefines(
-                    attribute, sourceDb.frameDefines[attribute].definition)
+                    deepcopy(attribute), deepcopy(sourceDb.frameDefines[attribute].definition))
                 targetDb.addDefineDefault(
-                attribute, sourceDb.frameDefines[attribute].defaultValue)
+                    deepcopy(attribute), deepcopy(sourceDb.frameDefines[attribute].defaultValue))
             # update enum-datatypes if needed:
             if sourceDb.frameDefines[attribute].type == 'ENUM':
                 tempAttr = frame.attribute(sourceDb, attribute)
                 if tempAttr not in targetDb.frameDefines[attribute].values:
-                    targetDb.frameDefines[attribute].values.append(tempAttr)
+                    targetDb.frameDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.frameDefines[attribute].update()
 
         # trigger all signals of Frame
@@ -159,14 +159,14 @@ def copyFrame(frameId, sourceDb, targetDb):
             # delete all 'unknown' attributes
             for attribute in sig.attributes:
                 targetDb.addSignalDefines(
-                    attribute, sourceDb.signalDefines[attribute].definition)
+                    deepcopy(attribute), deepcopy(sourceDb.signalDefines[attribute].definition))
                 targetDb.addDefineDefault(
-                    attribute, sourceDb.signalDefines[attribute].defaultValue)
+                    deepcopy(attribute), deepcopy(sourceDb.signalDefines[attribute].defaultValue))
                 # update enum-datatypes if needed:
                 if sourceDb.signalDefines[attribute].type == 'ENUM':
                     tempAttr = sig.attribute(sourceDb, attribute)
                     if tempAttr not in targetDb.signalDefines[attribute].values:
-                        targetDb.signalDefines[attribute].values.append(tempAttr)
+                        targetDb.signalDefines[attribute].values.append(deepcopy(tempAttr))
                         targetDb.signalDefines[attribute].update()
 
     return True
