@@ -27,9 +27,8 @@
 from __future__ import division
 from __future__ import absolute_import
 from __future__ import print_function
-from builtins import *
+from copy import deepcopy
 
-import math
 import logging
 logger = logging.getLogger('root')
 
@@ -301,7 +300,10 @@ def load(f, **options):
     return db
 
 
-def dump(db, f, **options):
+def dump(mydb, f, **options):
+    # create copy because export changes database
+    db = deepcopy(mydb)
+
     if 'dbfExportEncoding' in options:
         dbfExportEncoding = options["dbfExportEncoding"]
     else:
