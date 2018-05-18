@@ -359,12 +359,7 @@ def dump(mydb, f, **options):
                     val = format_float(val)
                 f.write(
                     ('BA_ "' + attrib + '" SG_ %d ' % frame.id + name + ' ' + val + ';\n').encode(dbcExportEncoding))
-            if signal.is_float:
-                if int(signal.signalsize) > 32:
-                    f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.id, output_names[frame][signal])).encode(dbcExportEncoding))
-                else:
-                    f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.id, output_names[frame][signal])).encode(dbcExportEncoding))
- 
+
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-values:
@@ -386,6 +381,17 @@ def dump(mydb, f, **options):
                     f.write(
                         (' ' + str(attrib) + ' "' + val + '"').encode(dbcExportEncoding))
                 f.write(";\n".encode(dbcExportEncoding))
+
+    # SIG_VALTYPE
+    for frame in db.frames:
+        for signal in frame.signals:
+            if signal.is_float:
+                if int(signal.signalsize) > 32:
+                    f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.id, output_names[frame][signal])).encode(
+                        dbcExportEncoding))
+                else:
+                    f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.id, output_names[frame][signal])).encode(
+                        dbcExportEncoding))
 
     # signal-groups:
     for frame in db.frames:
