@@ -304,6 +304,13 @@ class Signal(object):
     def values(self):
         return self._values
 
+    @property
+    def spn(self):
+        if "SPN" in self.attributes:
+            return self.attributes["SPN"]
+        else:
+            return None
+
     @values.setter
     def values(self, valueTable):
         self._values = normalizeValueTable(valueTable)
@@ -554,6 +561,8 @@ class Frame(object):
             ('attributes', 'attributes', None, {}),
             ('receiver', 'receiver', None, []),
             ('signalGroups', 'signalGroups', None, []),
+#            ('cycleTime', '_cycleTime', int, None),
+#            ('sendType', '_sendType', str, None),
         ]
 
         for arg_name, destination, function, default in args:
@@ -593,13 +602,39 @@ class Frame(object):
     def pgn(self):
         return CanId(self._Id).pgn
 
+#    @property
+#    def cycleTime(self):
+#        if self._cycleTime is None:
+#            self._cycleTime = self.attribute(None, "GenMsgCycleTime")
+#        return self._cycleTime
+
+#    @property
+#    def sendType(self, db = None):
+#        if self._sendType is None:
+#            self._sendType = self.attribute(None, "GenMsgSendType")
+ #       return self._sendType
+
+#    @cycleTime.setter
+#    def cycleTime(self, value):
+#        self._cycleTime = value
+#        self.attributes["GenMsgCycleTime"] = value
+
+#    @sendType.setter
+#    def sendType(self, value):
+ #       self._sendType = value
+ #       self.attributes["GenMsgCycleTime"] = value
+
+
+
     def attribute(self, db, attributeName):
         if attributeName in self.attributes:
             return self.attributes[attributeName]
-        else:
+        elif db is not None:
             if attributeName in db.frameDefines:
                 define = db.frameDefines[attributeName]
                 return define.defaultValue
+        else:
+            return None
 
     def __iter__(self):
         return iter(self.signals)
@@ -1230,6 +1265,12 @@ class CanMatrix(object):
         frames = self.globFrames(frameName)
         for frame in frames:
             frame.addTransmitter(ecu)
+
+    def addFrameReceiver(self, frameName, ecu):
+        frames = self.globFrames(frameName)
+        for frame in frames:
+            for signal in frame.signals:
+                signal.addReceiver(ecu)
 
     def delFrameTransmitter(self, frameName, ecu):
         frames = self.globFrames(frameName)
