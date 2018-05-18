@@ -72,6 +72,15 @@ def createSignal(signal, nodeList, typeEnums):
         notes.text = comment
         sig.append(notes)
 
+    consumer = etree.Element('Consumer')
+    for receiver in signal.receiver:
+        if receiver in nodeList and len(receiver) > 1:
+            noderef = etree.Element('NodeRef', id=str(nodeList[receiver]))
+            consumer.append(noderef)
+        if consumer.__len__() > 0:
+            sig.append(consumer)
+
+
     value = etree.Element('Value')
     if signal.is_float:
         if signal.signalsize > 32:
@@ -105,13 +114,6 @@ def createSignal(signal, nodeList, typeEnums):
             labelset.append(label)
         sig.append(labelset)
 
-    consumer = etree.Element('Consumer')
-    for receiver in signal.receiver:
-        if receiver in nodeList and len(receiver) > 1:
-            noderef = etree.Element('NodeRef', id=str(nodeList[receiver]))
-            consumer.append(noderef)
-        if consumer.__len__() > 0:
-            sig.append(consumer)
     return sig
 
 
