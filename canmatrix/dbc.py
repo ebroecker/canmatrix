@@ -780,7 +780,7 @@ def load(f, **options):
                         temp.group(3))
                 else:
                     regexp = re.compile(
-                        "^BA\_ +\"([A-Za-z0-9\-\_]+)\" +([\"A-Za-z0-9\-\_]+);")
+                        "^BA\_ +\"([A-Za-z0-9\-\_]+)\" +([\"A-Za-z0-9\-\_\.]+);")
                     temp = regexp.match(decoded)
                     if temp:
                         db.addAttribute(temp.group(1), temp.group(2))
@@ -803,7 +803,7 @@ def load(f, **options):
     #                SIG_VALTYPE_ 0 float : 1;
 
             elif decoded.startswith("BA_DEF_DEF_ "):
-                pattern = "^BA\_DEF\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+)\;"
+                pattern = "^BA\_DEF\_DEF\_ +\"([A-Za-z0-9\-_\.]+)\" +(.+)\;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
