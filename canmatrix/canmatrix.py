@@ -29,7 +29,7 @@
 
 from __future__ import division
 import math
-
+from decimal import Decimal
 from collections import OrderedDict
 
 import logging
@@ -428,9 +428,9 @@ class Signal(object):
         return self.max
             
     def calcMax(self):
-        rawMax = self.calculateRawRange()[1]
+        rawMax = Decimal(self.calculateRawRange()[1])
 
-        return self.offset + (rawMax * self.factor)
+        return self._offset + (Decimal(rawMax) * Decimal(self._factor))
 
     def bitstruct_format(self):
         """Get the bit struct format for this signal
