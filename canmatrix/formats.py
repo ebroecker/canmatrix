@@ -56,7 +56,7 @@ def loadp(path, importType=None, key="", flatImport=None, **options):
     with open(path, "rb") as fileObject:
         if not importType:
             for supportedImportType, extension in extensionMapping.items():
-                if path.endswith(extension) and "load" in supportedFormats[supportedImportType]:
+                if path.lower().endswith(extension) and "load" in supportedFormats[supportedImportType]:
                     importType = supportedImportType
                     break
 
