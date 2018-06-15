@@ -85,6 +85,11 @@ def dump(mydb, f, **options):
     else:
         writeValTable = True
 
+    if 'compatibility' in options:
+        compatibility = options['compatibility']
+    else:
+        compatibility = True
+
     if db.contains_fd:
         db.addGlobalDefines("BusType","STRING")
         db.addAttribute("BusType", "CAN FD")
@@ -108,6 +113,7 @@ def dump(mydb, f, **options):
     f.write("\n".encode(dbcExportEncoding))
 
     f.write("NS_ :\n\nBS_:\n\n".encode(dbcExportEncoding))
+
 
     # Boardunits
     f.write("BU_: ".encode(dbcExportEncoding))
@@ -133,11 +139,15 @@ def dump(mydb, f, **options):
 
     output_names = collections.defaultdict(dict)
 
+
     for frame in db.frames:
         normalized_names = collections.OrderedDict((
             (s, normalizeName(s.name, whitespaceReplacement))
             for s in frame.signals
         ))
+
+        if compatibility and '-' in frame.name:
+            frame.name = frame.name.replace("-", whitespaceReplacement)
 
         duplicate_signal_totals = collections.Counter(normalized_names.values())
         duplicate_signal_counter = collections.Counter()
@@ -146,6 +156,8 @@ def dump(mydb, f, **options):
 
         for signal in frame.signals:
             name = normalized_names[signal]
+            if compatibility and '-' in name:
+                name = name.replace("-", whitespaceReplacement)
             duplicate_signal_counter[name] += 1
             if duplicate_signal_totals[name] > 1:
                 # TODO: pad to 01 in case of 10+ instances, for example?

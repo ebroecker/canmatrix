@@ -561,8 +561,12 @@ class Frame(object):
             ('attributes', 'attributes', None, {}),
             ('receiver', 'receiver', None, []),
             ('signalGroups', 'signalGroups', None, []),
-#            ('cycleTime', '_cycleTime', int, None),
-#            ('sendType', '_sendType', str, None),
+            ('j1939_pgn', '_j1939_pgn', int, None),
+            ('j1939_source', '_j1939_source', int, 0),
+            ('j1939_prio', '_j1939_prio', int, 0),
+            ('is_j1939', 'is_j1939', bool, False),
+            #            ('cycleTime', '_cycleTime', int, None),
+            #            ('sendType', '_sendType', str, None),
         ]
 
         for arg_name, destination, function, default in args:
@@ -583,6 +587,11 @@ class Frame(object):
                 ', '.join(kwargs.keys())
             ))
 
+        if self._j1939_pgn is not None:
+            self.recalcJ1939Id()
+        # we got a j1939 PGN,
+
+
     @property
     def id(self):
         return self._Id
@@ -602,7 +611,35 @@ class Frame(object):
     def pgn(self):
         return CanId(self._Id).pgn
 
-#    @property
+    @pgn.setter
+    def pgn(self, value):
+        self._j1939_pgn = value
+        self.recalcJ1939Id()
+
+    @property
+    def priority(self):
+        return self._j1939_prio
+
+    @priority.setter
+    def priority(self, value):
+        self._j1939_prio = value
+        self.recalcJ1939Id()
+
+    @property
+    def source(self):
+        return self._j1939_source
+
+    @source.setter
+    def pgn(self, value):
+        self._j1939_source = value
+        self.recalcJ1939Id()
+
+    def recalcJ1939Id(self):
+        self.id = (self._j1939_source & 0xff) + ((self._j1939_pgn & 0xffff) << 8) + ((self._j1939_prio & 0x7) << 26)
+        self.extended = True
+        self.is_j1939 = True
+
+    #    @property
 #    def cycleTime(self):
 #        if self._cycleTime is None:
 #            self._cycleTime = self.attribute(None, "GenMsgCycleTime")
@@ -1283,7 +1320,7 @@ class CanMatrix(object):
                 copyResult = copy.copyFrame(frame.id, dbTemp, self)
                 if copyResult == False:
                     logger.error(
-                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + database)
+                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + self.frameById(frame.id).name)
 
     def setFdType(self):
         for frame in self.frames:
