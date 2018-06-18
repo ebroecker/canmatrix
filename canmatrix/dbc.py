@@ -90,16 +90,22 @@ def dump(mydb, f, **options):
     else:
         compatibility = True
 
-    if db.contains_fd:
-        db.addGlobalDefines("BusType","STRING")
-        db.addAttribute("BusType", "CAN FD")
-        db.addFrameDefines("VFrameFormat",'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD"')
+    if db.contains_fd or db.contains_j1939:
+        if db.contains_fd:
+            db.addGlobalDefines("BusType", "STRING")
+            db.addAttribute("BusType", "CAN FD")
+        elif db.contains_j1939:
+            db.addGlobalDefines("ProtocolType", "STRING")
+            db.addAttribute("ProtocolType", "J1939")
+        db.addFrameDefines("VFrameFormat",'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
         for frame in db.frames:
             if frame.is_fd:
                 if frame.extended:
                     frame.addAttribute("VFrameFormat", "ExtendedCAN_FD")
                 else:
                     frame.addAttribute("VFrameFormat", "StandardCAN_FD")
+            elif frame.is_j1939:
+                frame.addAttribute("VFrameFormat","J1939PG")
             else:
                 if frame.extended:
                     frame.addAttribute("VFrameFormat", "ExtendedCAN")

@@ -1046,6 +1046,14 @@ class CanMatrix(object):
                 return True
         return False
 
+    @property
+    def contains_j1939(self):
+        for frame in self.frames:
+            if frame.is_j1939:
+                return True
+        return False
+
+
     def attribute(self, attributeName):
         if attributeName in self.attributes:
             return self.attributes[attributeName]
