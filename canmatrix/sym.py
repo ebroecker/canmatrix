@@ -71,7 +71,12 @@ def createSignal(db, signal):
     if signal.attributes.get('HexadecimalOutput', False):
         output += "-h "
     if len(signal.unit) > 0:
-        output += "/u:%s " % (signal.unit[0:16])
+        t = signal.unit[0:16]
+        if " " in t:
+            format_string = '/u:"%s" '
+        else:
+            format_string = '/u:%s '
+        output += format_string % (t)
     if float(signal.factor) != 1:
         output += "/f:%s " % (format_float(signal.factor))
     if float(signal.offset) != 0:
