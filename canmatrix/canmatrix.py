@@ -29,6 +29,7 @@
 
 from __future__ import division
 import math
+import attr
 
 from collections import OrderedDict
 
@@ -185,7 +186,7 @@ class BoardUnitList(object):
         """
         remove Boardunit/ECU to list
         """
-        if BU.name.strip() not in self._list:
+        if BU.name.strip() in self._list:
             self._list.remove(BU)
 
     def byName(self, name):
@@ -221,6 +222,7 @@ def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
 
 
+@attr.s
 class Signal(object):
     """
     contains on Signal of canmatrix-object
@@ -234,71 +236,50 @@ class Signal(object):
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
 
-    def __init__(self, name, **kwargs):
-        self.mux_val = None
-        self.is_multiplexer = False
-
-        def multiplex(value):
-            if value is not None and value != 'Multiplexor':
-                multiplex = int(value)
-                self.mux_val = int(value)
-            else:
-                self.is_multiplexer = True
-                multiplex = value
-            return multiplex
-
-        float_factory = kwargs.pop('float_factory', float)
-
-        args = [
-            ('startBit', 'startbit', int, 0),
-            ('signalSize', 'signalsize', int, 0),
-            ('is_little_endian', 'is_little_endian', bool, True),
-            ('is_signed', 'is_signed', bool, True),
-            ('factor', 'factor', float_factory, 1),
-            ('offset', 'offset', float_factory, 0),
-            ('min', 'min', float_factory, None),
-            ('max', 'max', float_factory, None),
-            ('unit', 'unit', None, ""),
-            ('receiver', 'receiver', None, []),
-            ('comment', 'comment', None, None),
-            ('multiplex', 'multiplex', multiplex, None),
-            ('mux_value', 'mux_value', None, None),
-            ('is_float', 'is_float', bool, False),
-            ('enumeration', 'enumeration', str, None),
-            ('comments', 'comments', None, {}),
-            ('attributes', 'attributes', None, {}),
-            ('values', '_values', None, {}),
-            ('calc_min_for_none', 'calc_min_for_none', bool, True),
-            ('calc_max_for_none', 'calc_max_for_none', bool, True),
-            ('muxValMax', 'muxValMax', int, 0),
-            ('muxValMin', 'muxValMin', int, 0),
-            ('muxerForSignal', 'muxerForSignal', str, None)
-        ]
-
-        for arg_name, destination, function, default in args:
-            try:
-                value = kwargs[arg_name]
-            except KeyError:
-                value = default
-            else:
-                kwargs.pop(arg_name)
-            if function is not None and value is not None:
-                value = function(value)
-            setattr(self, destination, value)
-            
-        if len(kwargs) > 0:
-            raise TypeError('{}() got unexpected argument{} {}'.format(
-                self.__class__.__name__,
-                's' if len(kwargs) > 1 else '',
-                ', '.join(kwargs.keys())
-            ))
 
 
-        # in case missing min/max calculation is enabled, be sure it happens
-        self.setMin(self.min)
-        self.setMax(self.max)
+    name = attr.ib(default = "")
+    float_factory = attr.ib(default=float)
+    startBit = attr.ib(type=int, default=0)
+    signalSize = attr.ib(type=int, default = 0)
+    is_little_endian = attr.ib(type=bool, default = True)
+    is_signed = attr.ib(type=bool, default = True)
+#    float_factory = attr.ib(default = float)
+    float_factory = float
+    offset = attr.ib(convert = float_factory, default = 0.0)
+    factor = attr.ib(convert = float_factory, default = 0.0)
 
-        self.name = name
+    #    offset = attr.ib(converter = float_factory, default = 0.0)
+
+    min  = attr.ib(convert=float_factory)
+    @min.default
+    def setDefaultMin(self):
+        return  self.calcMin()
+
+    max =  attr.ib(convert = float_factory)
+    @max.default
+    def setDefaultMax(self):
+        return  self.calcMax()
+
+    unit = attr.ib(type=str, default ="")
+    receiver = attr.ib(default =[])
+    comment = attr.ib(default = None)
+    _multiplex  = attr.ib(default =None)
+
+    mux_value = attr.ib(default = None)
+    is_float = attr.ib(type=bool, default = False)
+    enumeration = attr.ib(type=str, default = None),
+    comments = attr.ib(type=dict, default ={})
+    attributes = attr.ib(type=dict, default ={})
+    values = attr.ib(type=dict, default ={})
+    calc_min_for_none = attr.ib(type=bool, default = True)
+    calc_max_for_none = attr.ib(type=bool, default = True)
+    muxValMax = attr.ib(default = 0)
+    muxValMin = attr.ib(default = 0)
+    muxerForSignal= attr.ib(type=str, default = None)
+
+    def __attrs_post_init__(self):
+        self.multiplex(self._multiplex)
 
     @property
     def values(self):
@@ -314,6 +295,17 @@ class Signal(object):
     @values.setter
     def values(self, valueTable):
         self._values = normalizeValueTable(valueTable)
+
+    def multiplex(self, value):
+        self.mux_val = None
+        self.is_multiplexer = False
+        if value is not None and value != 'Multiplexor':
+            ret_multiplex = int(value)
+            self.mux_val = int(value)
+        else:
+            self.is_multiplexer = True
+            ret_multiplex = value
+        return ret_multiplex
 
 
     def attribute(self, db, attributeName):
@@ -390,18 +382,18 @@ class Signal(object):
         self.startbit = startBit
 
     def getStartbit(self, bitNumbering=None, startLittle=None):
-        startBit = self.startbit
+        startBit = self.startBit
         # convert from big endian start bit at
         # start bit(msbit) to end bit(lsbit)
         if startLittle is True and self.is_little_endian is False:
-            startBit = startBit + self.signalsize - 1
+            startBit = startBit + self.signalSize - 1
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self.is_little_endian:
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
         return int(startBit)
 
     def calculateRawRange(self):
-        rawRange = 2 ** self.signalsize
+        rawRange = 2 ** self.signalSize
         if self.is_signed:
             rawRange /= 2
         return (-rawRange if self.is_signed else 0,
@@ -1187,8 +1179,8 @@ class CanMatrix(object):
             if "force" == strategy:
                 maxBit = 0
                 for sig in frame.signals:
-                    if sig.getStartbit() + int(sig.signalsize) > maxBit:
-                        maxBit = sig.getStartbit() + int(sig.signalsize)
+                    if sig.getStartbit() + int(sig.signalSize) > maxBit:
+                        maxBit = sig.getStartbit() + int(sig.signalSize)
                 frame.size = math.ceil(maxBit / 8)
 
     def renameEcu(self, old, newName):
