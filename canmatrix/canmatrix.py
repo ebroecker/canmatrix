@@ -185,7 +185,7 @@ class BoardUnitList(object):
         """
         remove Boardunit/ECU to list
         """
-        if BU.name.strip() not in self._list:
+        if BU.name.strip() in self._list:
             self._list.remove(BU)
 
     def byName(self, name):
