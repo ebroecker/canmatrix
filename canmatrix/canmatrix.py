@@ -240,23 +240,22 @@ class Signal(object):
 
     name = attr.ib(default = "")
     float_factory = attr.ib(default=float)
+    float_factory = float
     startBit = attr.ib(type=int, default=0)
     signalSize = attr.ib(type=int, default = 0)
     is_little_endian = attr.ib(type=bool, default = True)
     is_signed = attr.ib(type=bool, default = True)
-#    float_factory = attr.ib(default = float)
-    float_factory = float
-    offset = attr.ib(convert = float_factory, default = 0.0)
-    factor = attr.ib(convert = float_factory, default = 0.0)
+    offset = attr.ib(converter = float_factory, default = 0.0)
+    factor = attr.ib(converter = float_factory, default = 0.0)
 
     #    offset = attr.ib(converter = float_factory, default = 0.0)
 
-    min  = attr.ib(convert=float_factory)
+    min  = attr.ib(converter=float_factory)
     @min.default
     def setDefaultMin(self):
         return  self.calcMin()
 
-    max =  attr.ib(convert = float_factory)
+    max =  attr.ib(converter = float_factory)
     @max.default
     def setDefaultMax(self):
         return  self.calcMax()
