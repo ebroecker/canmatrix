@@ -112,7 +112,7 @@ def createSignal(db, signal):
             min_ok = signal.min is None or default >= float(signal.min)
             max_ok = signal.max is None or default <= float(signal.max)
             if min_ok and max_ok:
-                output += "/d:%g " % (default)
+                output += "/d:%f " % (default)
 
     long_name = signal.attributes.get('LongName')
     if long_name is not None:
