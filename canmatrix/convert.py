@@ -25,7 +25,6 @@ from __future__ import absolute_import
 
 #from .log import setup_logger, set_log_level
 from canmatrix.log import setup_logger, set_log_level
-logger = setup_logger('root')
 import sys
 import os
 sys.path.append('..')
@@ -392,4 +391,5 @@ def main():
     convert(infile, outfileName, **cmdlineOptions.__dict__)
 
 if __name__ == '__main__':
+    logger = setup_logger('root')
     sys.exit(main())
