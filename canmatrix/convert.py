@@ -25,6 +25,8 @@ from __future__ import absolute_import
 
 #from .log import setup_logger, set_log_level
 from canmatrix.log import setup_logger, set_log_level
+import logging
+logger = logging.getLogger('root')
 import sys
 import os
 sys.path.append('..')
@@ -386,10 +388,10 @@ def main():
         # only print error messages, ignore verbosity flag
         verbosity = -1
 
+    setup_logger('root')
     set_log_level(logger, verbosity)
 
     convert(infile, outfileName, **cmdlineOptions.__dict__)
 
 if __name__ == '__main__':
-    logger = setup_logger('root')
     sys.exit(main())
