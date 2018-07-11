@@ -36,6 +36,13 @@ from collections import OrderedDict
 import logging
 import fnmatch
 
+defaultFloatFactory = float
+try:
+    from decimal import *
+    defaultFloatFactory = Decimal
+except:
+    defaultFloatFactory = float
+
 
 logger = logging.getLogger('root')
 try:
@@ -239,8 +246,8 @@ class Signal(object):
 
 
     name = attr.ib(default = "")
-    float_factory = attr.ib(default=float)
-    float_factory = float
+#    float_factory = attr.ib(default=defaultFloatFactory)
+    float_factory = defaultFloatFactory
     startBit = attr.ib(type=int, default=0)
     signalSize = attr.ib(type=int, default = 0)
     is_little_endian = attr.ib(type=bool, default = True)
