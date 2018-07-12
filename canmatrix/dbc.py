@@ -218,7 +218,7 @@ def dump(mydb, f, **options):
             f.write(
                 (": %d|%d@%d%c" %
                  (startbit,
-                  signal.signalsize,
+                  signal.size,
                   signal.is_little_endian,
                   sign)).encode(dbcExportEncoding))
             f.write(
@@ -254,7 +254,7 @@ def dump(mydb, f, **options):
             f.write(
                 ("CM_ BO_ " +
                  "%d " %
-                 frame.id +
+                 frame.Id +
                  ' "').encode(dbcExportEncoding))
             f.write(
                 frame.comment.replace(
@@ -271,7 +271,7 @@ def dump(mydb, f, **options):
                 f.write(
                     ("CM_ SG_ " +
                      "%d " %
-                     frame.id +
+                     frame.Id +
                      name +
                      ' "').encode(dbcExportEncoding, 'ignore'))
                 f.write(

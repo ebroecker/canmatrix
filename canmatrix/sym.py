@@ -65,9 +65,9 @@ def createSignal(db, signal):
     startBit = signal.getStartbit()
     if signal.is_little_endian == 0:
         # Motorola
-        output += "%d,%d -m " % (startBit, signal.signalsize)
+        output += "%d,%d -m " % (startBit, signal.size)
     else:
-        output += "%d,%d " % (startBit, signal.signalsize)
+        output += "%d,%d " % (startBit, signal.size)
     if signal.attributes.get('HexadecimalOutput', False):
         output += "-h "
     if len(signal.unit) > 0:
@@ -170,9 +170,9 @@ Title=\"canmatrix-Export\"
             name = "[" + frame.name + "]\n"
 
             if frame.extended == 1:
-                idType = "ID=%08Xh" % (frame.id)
+                idType = "ID=%08Xh" % (frame.Id)
             else:
-                idType = "ID=%03Xh" % (frame.id)
+                idType = "ID=%03Xh" % (frame.Id)
             if frame.comment is not None and len(frame.comment) > 0:
                 idType += "\t// " + \
                     frame.comment.replace('\n', ' ').replace('\r', ' ')
@@ -197,7 +197,7 @@ Title=\"canmatrix-Export\"
                 # ticker all possible mux-groups as i (0 - 2^ (number of bits of
                 # multiplexor))
                 first = 0
-                for i in range(0, 1 << int(muxSignal.signalsize)):
+                for i in range(0, 1 << int(muxSignal.size)):
                     found = 0
                     muxOut = ""
                     # ticker all signals

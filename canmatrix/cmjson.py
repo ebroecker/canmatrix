@@ -89,7 +89,7 @@ def dump(db, f, **options):
                 signals.append({
                     "name": signal.name,
                     "start_bit": startBit,
-                    "bit_length": signal.signalsize,
+                    "bit_length": signal.size,
                     "factor": float(signal.factor),
                     "offset": float(signal.offset),
                     "is_big_endian": signal.is_little_endian == 0,
@@ -97,7 +97,7 @@ def dump(db, f, **options):
                     "is_float": signal.is_float
                 })
             exportArray.append({"name": frame.name,
-                                "id": int(frame.id),
+                                "id": int(frame.Id),
                                 "is_extended_frame": frame.extended == 1,
                                 "signals": signals})
     else:  # exportall

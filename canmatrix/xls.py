@@ -183,7 +183,7 @@ def dump(db, file, **options):
         if frame.is_complex_multiplexed:
             logger.error("export complex multiplexers is not supported - ignoring frame " + frame.name)
             continue
-        frameHash[int(frame.id)] = frame
+        frameHash[int(frame.Id)] = frame
 
     # set row to first Frame (row = 0 is header)
     row = 1

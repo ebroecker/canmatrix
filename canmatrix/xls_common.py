@@ -25,9 +25,9 @@ def getFrameInfo(db, frame):
     retArray = []
     # frame-id
     if frame.extended:
-        retArray.append("%3Xxh" % frame.id)
+        retArray.append("%3Xxh" % frame.Id)
     else:
-        retArray.append("%3Xh" % frame.id)
+        retArray.append("%3Xh" % frame.Id)
     # frame-Name
     retArray.append(frame.name)
 
@@ -79,7 +79,7 @@ def getSignal(db, sig, motorolaBitFormat):
 
     # write comment and size of signal in sheet
     frontArray.append(comment)
-    frontArray.append(sig.signalsize)
+    frontArray.append(sig.size)
 
     # startvalue of signal available
     if "GenSigStartValue" in db.signalDefines:

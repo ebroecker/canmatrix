@@ -36,12 +36,12 @@ from collections import OrderedDict
 import logging
 import fnmatch
 
-defaultFloatFactory = float
 try:
-    from decimal import *
-    defaultFloatFactory = Decimal
-except:
+    import decimal
+except ImportError:
     defaultFloatFactory = float
+else:
+    defaultFloatFactory = decimal.Decimal
 
 
 logger = logging.getLogger('root')
@@ -54,89 +54,6 @@ except:
 from past.builtins import basestring
 import copy
 
-class FrameList(object):
-    """
-    Keeps all Frames of a Canmatrix
-    """
-
-    def __init__(self):
-        self._list = []
-
-    def addSignalToLastFrame(self, signal):
-        """
-        Adds a Signal to the last addes Frame, this is mainly for importers
-        """
-        lastFrame = self._list[len(self._list) - 1]
-        lastFrame.addSignal(signal)
-        return lastFrame
-
-    def addFrame(self, frame):
-        """
-        Adds a Frame
-        """
-        self._list.append(frame)
-        return self._list[len(self._list) - 1]
-
-    def remove(self, frame):
-        """
-        Adds a Frame
-        """
-        self._list.remove(frame)
-
-    def byId(self, Id, extended=None):
-        """
-        returns a Frame-Object by given Frame-ID
-        """
-        Id = int(Id)
-        extendedMarker = 0x80000000
-        for test in self._list:
-            if test.id == Id:
-                if extended is None:
-                    # found ID while ignoring extended or standard
-                    return test
-                elif test.extended == extended:
-                    # found ID while checking extended or standard
-                    return test
-            else:
-                if extended is not None:
-                    # what to do if Id is not equal and extended is also provided ???
-                    pass
-                else:
-                    if test.extended and Id & extendedMarker:
-                        # check regarding common used extended Bit 31
-                        if test.id == Id - extendedMarker:
-                            return test
-        return None
-
-    def byName(self, Name):
-        """
-        returns a Frame-Object by given Frame-Name
-        """
-        for test in self._list:
-            if test.name == Name:
-                return test
-        return None
-
-    def glob(self, globStr):
-        """
-        returns array of frame-objects by given globstr
-        :param globStr:
-        :return: array
-        """
-        returnArray = []
-        for test in self._list:
-            if fnmatch.fnmatchcase(test.name, globStr):
-                returnArray.append(test)
-        return returnArray
-
-
-    def __iter__(self):
-        return iter(self._list)
-
-    def __len__(self):
-        return len(self._list)
-
-
 class BoardUnit(object):
     """
     Contains one Boardunit/ECU
@@ -144,7 +61,7 @@ class BoardUnit(object):
 
     def __init__(self, name):
         self.name = name.strip()
-        self.attributes = {}
+        self.attributes = dict()
         self.comment = None
 
     def attribute(self, db, attributeName):
@@ -171,60 +88,6 @@ class BoardUnit(object):
     def __str__(self):
         return self.name
 
-
-class BoardUnitList(object):
-    """
-    Contains all Boardunits/ECUs of a canmatrix in a list
-    """
-
-    def __init__(self):
-        self._list = []
-
-    def add(self, BU):
-        """
-        add Boardunit/ECU to list
-        """
-        for bu in self._list:
-            if BU.name.strip() == bu.name:
-                return
-        self._list.append(BU)
-
-    def remove(self, BU):
-        """
-        remove Boardunit/ECU to list
-        """
-        if BU.name.strip() in self._list:
-            self._list.remove(BU)
-
-    def byName(self, name):
-        """
-        returns Boardunit-Object of list by Name
-        """
-        for test in self._list:
-            if test.name == name:
-                return test
-        return None
-
-    def glob(self, globStr):
-        """
-        returns array of ecu-objects by given globstr
-        :param globStr:
-        :return: array
-        """
-        returnArray = []
-        for test in self._list:
-            if fnmatch.fnmatchcase(test.name, globStr):
-                returnArray.append(test)
-        return returnArray
-
-
-    def __iter__(self):
-        return iter(self._list)
-
-    def __len__(self):
-        return len(self._list)
-
-
 def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
 
@@ -247,7 +110,7 @@ class Signal(object):
 #    float_factory = attr.ib(default=defaultFloatFactory)
     float_factory = defaultFloatFactory
     startBit = attr.ib(type=int, default=0)
-    signalSize = attr.ib(type=int, default = 0)
+    size = attr.ib(type=int, default = 0)
     is_little_endian = attr.ib(type=bool, default = True)
     is_signed = attr.ib(type=bool, default = True)
     offset = attr.ib(converter = float_factory, default = float_factory(0.0))
@@ -266,16 +129,16 @@ class Signal(object):
         return  self.calcMax()
 
     unit = attr.ib(type=str, default ="")
-    receiver = attr.ib(default =[])
+    receiver = attr.ib(default = attr.Factory(list))
     comment = attr.ib(default = None)
-    _multiplex  = attr.ib(default =None)
+    multiplex  = attr.ib(default = None)
 
     mux_value = attr.ib(default = None)
-    is_float = attr.ib(type=bool, default = False)
-    enumeration = attr.ib(type=str, default = None),
-    comments = attr.ib(type=dict, default ={})
-    attributes = attr.ib(type=dict, default ={})
-    values = attr.ib(type=dict, convert=normalizeValueTable, default ={})
+    is_float = attr.ib(type=bool, default=False)
+    enumeration = attr.ib(type=str, default = None)
+    comments = attr.ib(type=dict, default = attr.Factory(dict))
+    attributes = attr.ib(type=dict, default = attr.Factory(dict))
+    values = attr.ib(type=dict, convert=normalizeValueTable, default = attr.Factory(dict))
     calc_min_for_none = attr.ib(type=bool, default = True)
     calc_max_for_none = attr.ib(type=bool, default = True)
     muxValMax = attr.ib(default = 0)
@@ -283,7 +146,7 @@ class Signal(object):
     muxerForSignal= attr.ib(type=str, default = None)
 
     def __attrs_post_init__(self):
-        self.multiplex(self._multiplex)
+        self.multiplex = self.multiplexSetter(self.multiplex)
 
 
     @property
@@ -293,7 +156,7 @@ class Signal(object):
         else:
             return None
 
-    def multiplex(self, value):
+    def multiplexSetter(self, value):
         self.mux_val = None
         self.is_multiplexer = False
         if value is not None and value != 'Multiplexor':
@@ -303,7 +166,6 @@ class Signal(object):
             self.is_multiplexer = True
             ret_multiplex = value
         return ret_multiplex
-
 
     def attribute(self, db, attributeName):
         if attributeName in self.attributes:
@@ -383,14 +245,14 @@ class Signal(object):
         # convert from big endian start bit at
         # start bit(msbit) to end bit(lsbit)
         if startLittle is True and self.is_little_endian is False:
-            startBit = startBit + self.signalSize - 1
+            startBit = startBit + self.size - 1
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self.is_little_endian:
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
         return int(startBit)
 
     def calculateRawRange(self):
-        rawRange = 2 ** self.signalSize
+        rawRange = 2 ** self.size
         if self.is_signed:
             rawRange /= 2
         return (self.float_factory(-rawRange if self.is_signed else 0),
@@ -481,7 +343,6 @@ class Signal(object):
     def __str__(self):
         return self.name
 
-
 class SignalGroup(object):
     """
     contains Signals, which belong to signal-group
@@ -538,16 +399,16 @@ class Frame(object):
     name = attr.ib(default="")
     Id = attr.ib(default = 0)
     size = attr.ib(default = 0)
-    transmitter = attr.ib(default =[])
+    transmitter = attr.ib(default = attr.Factory(list))
     extended = attr.ib(type=bool, default = False)
     is_complex_multiplexed = attr.ib(type=bool, default = False)
     is_fd = attr.ib(type=bool, default = False)
     comment = attr.ib(default="")
-    signals = attr.ib(default =[])
-    mux_names = attr.ib(type=dict, default={})
-    attributes = attr.ib(type=dict, default={})
-    receiver = attr.ib(default =[])
-    signalGroups = attr.ib(default=[])
+    signals = attr.ib(default = attr.Factory(list))
+    mux_names = attr.ib(type=dict, default = attr.Factory(dict))
+    attributes = attr.ib(type=dict, default = attr.Factory(dict))
+    receiver = attr.ib(default = attr.Factory(list))
+    signalGroups = attr.ib(default = attr.Factory(list))
 
     j1939_pgn = attr.ib(default = None)
     j1939_source = attr.ib(default = 0)
@@ -833,7 +694,7 @@ class Frame(object):
             logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
             return None
 
-        data = {} if data is None else data
+        data = dict() if data is None else data
 
         if self.is_complex_multiplexed:
             # TODO
@@ -909,7 +770,6 @@ class Frame(object):
     def __str__(self):
         return self.name
 
-
 class Define(object):
     """
     these objects hold the defines and default-values
@@ -968,7 +828,7 @@ class Define(object):
             return
         self.definition = 'ENUM "' + '","' .join(self.values) +'"'
 
-
+@attr.s(cmp=False)
 class CanMatrix(object):
     """
     The Can-Matrix-Object
@@ -982,15 +842,15 @@ class CanMatrix(object):
     valueTables (global defined values)
     """
 
-    def __init__(self):
-        self.attributes = {}
-        self.boardUnits = BoardUnitList()
-        self.frames = FrameList()
-        self.signalDefines = {}
-        self.frameDefines = {}
-        self.globalDefines = {}
-        self.buDefines = {}
-        self.valueTables = {}
+    attributes = attr.ib(type=dict, default= attr.Factory(dict))
+    boardUnits = attr.ib(default = attr.Factory(list))
+    frames = attr.ib(default = attr.Factory(list))
+
+    signalDefines = attr.ib(default = attr.Factory(dict))
+    frameDefines = attr.ib(default = attr.Factory(dict))
+    globalDefines = attr.ib(default = attr.Factory(dict))
+    buDefines = attr.ib(default = attr.Factory(dict))
+    valueTables = attr.ib(default = attr.Factory(dict))
 
     def __iter__(self):
         return iter(self.frames)
@@ -1102,20 +962,80 @@ class CanMatrix(object):
         for element in toBeDeleted:
             del self.signalDefines[element]
 
-    def frameById(self, Id):
-        return self.frames.byId(Id)
+    def frameById(self, Id, extended=None):
+        Id = int(Id)
+        extendedMarker = 0x80000000
+        for test in self.frames:
+            if test.id == Id:
+                if extended is None:
+                    # found ID while ignoring extended or standard
+                    return test
+                elif test.extended == extended:
+                    # found ID while checking extended or standard
+                    return test
+            else:
+                if extended is not None:
+                    # what to do if Id is not equal and extended is also provided ???
+                    pass
+                else:
+                    if test.extended and Id & extendedMarker:
+                        # check regarding common used extended Bit 31
+                        if test.id == Id - extendedMarker:
+                            return test
+        return None
 
     def frameByName(self, name):
-        return self.frames.byName(name)
+        for test in self.frames:
+            if test.name == name:
+                return test
+        return None
 
     def globFrames(self, globStr):
-        return self.frames.glob(globStr)
+        """
+        returns array of frame-objects by given globstr
+        :param globStr:
+        :return: array
+        """
+        returnArray = []
+        for test in self.frames:
+            if fnmatch.fnmatchcase(test.name, globStr):
+                returnArray.append(test)
+        return returnArray
 
     def boardUnitByName(self, name):
-        return self.boardUnits.byName(name)
+        """
+        returns Boardunit-Object of list by Name
+        """
+        for test in self.boardUnits:
+            if test.name == name:
+                return test
+        return None
+
 
     def globBoardUnits(self, globStr):
-        return self.boardUnits.glob(globStr)
+        """
+        returns array of ecu-objects by given globstr
+        :param globStr:
+        :return: array
+        """
+        returnArray = []
+        for test in self.boardUnits:
+            if fnmatch.fnmatchcase(test.name, globStr):
+                returnArray.append(test)
+        return returnArray
+
+    def addFrame(self, frame):
+        """
+        Adds a Frame
+        """
+        self.frames.append(frame)
+        return self.frames[len(self.frames) - 1]
+
+    def removeFrame(self, frame):
+        """
+        Adds a Frame
+        """
+        self._list.remove(frame)
 
 
     def deleteZeroSignals(self):
@@ -1164,20 +1084,34 @@ class CanMatrix(object):
                     signal.addReceiver(newName)
             frame.updateReceiver()
 
+    def addEcu(self, ecu):
+        for bu in self.boardUnits:
+            if bu.name.strip() == bu.name:
+                return
+        self.boardUnits.append(ecu)
+
     def delEcu(self, ecu):
+        """
+        remove Boardunit/ECU to list
+        """
         if type(ecu).__name__ == 'instance':
             ecuList = [ecu]
         else:
             ecuList = self.globBoardUnits(ecu)
+
         for ecu in ecuList:
-            self.boardUnits.remove(ecu)
-            for frame in self.frames:
-                if ecu.name in frame.transmitter:
-                    frame.transmitter.remove(ecu.name)
-                for signal in frame.signals:
-                    if ecu.name in signal.receiver:
-                        signal.receiver.remove(ecu.name)
-                frame.updateReceiver()
+            """
+            remove Boardunit/ECU to list
+            """
+            if ecu in self.boardUnits:
+                self.boardUnits.remove(ecu)
+                for frame in self.frames:
+                    if ecu.name in frame.transmitter:
+                        frame.transmitter.remove(ecu.name)
+                    for signal in frame.signals:
+                        if ecu.name in signal.receiver:
+                            signal.receiver.remove(ecu.name)
+                    frame.updateReceiver()
 
     def updateEcuList(self):
         for frame in self.frames:

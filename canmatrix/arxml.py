@@ -1145,14 +1145,14 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
         if startBit is not None:
             newSig = Signal(name.text,
-                            startBit=startBit.text,
-                            signalSize=length.text,
+                            startBit=int(startBit.text),
+                            size=int(length.text),
                             is_little_endian=is_little_endian,
                             is_signed=is_signed,
                             factor=factor,
                             offset=offset,
-                            min=Min,
-                            max=Max,
+#                            min=Min,
+#                            max=Max,
                             unit=Unit,
                             receiver=receiver,
                             multiplex=multiplexId,
@@ -1211,7 +1211,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
 
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
-        newFrame = Frame(arGetName(frameR, ns), Id=idNum, dlc=int(dlc.text))
+        newFrame = Frame(arGetName(frameR, ns), Id=idNum, size=int(dlc.text))
         comment = getDesc(frameR, arDict, ns)
         if comment is not None:
             newFrame.addComment(comment)
@@ -1556,7 +1556,7 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            db.frames.addFrame(getFrame(frameTrig,arDict,multiplexTranslation,ns))
+            db.addFrame(getFrame(frameTrig,arDict,multiplexTranslation,ns))
 
         if ignoreClusterInfo == True:
             pass
@@ -1598,7 +1598,7 @@ def load(file, **options):
             if l2 is not None:
                 bu.addComment(l2.text)
 
-            db.boardUnits.add(bu)
+            db.addEcu(bu)
 
         for bo in db.frames:
             frame = 0

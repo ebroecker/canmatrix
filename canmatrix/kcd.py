@@ -46,8 +46,8 @@ def createSignal(signal, nodeList, typeEnums):
         name=signal.name,
         offset=str(
             signal.getStartbit()))
-    if signal.signalsize > 1:
-        sig.set("length", str(signal.signalsize))
+    if signal.size > 1:
+        sig.set("length", str(signal.size))
     if signal.is_little_endian == 0:
         sig.set('endianess', "big")
 
@@ -173,7 +173,7 @@ def dump(dbs, f, **options):
 
         for frame in db.frames:
             message = etree.Element('Message', id="0x%03X" %
-                                    frame.id, name=frame.name, length=str(int(frame.size)))
+                                    frame.Id, name=frame.name, length=str(int(frame.size)))
 
             if frame.extended == 1:
                 message.set("format", "extended")
