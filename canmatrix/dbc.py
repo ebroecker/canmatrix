@@ -178,11 +178,11 @@ def dump(mydb, f, **options):
             frame.addTransmitter("Vector__XXX")
 
         if frame.extended == 1:
-            frame.id += 0x80000000
+            frame.Id += 0x80000000
         
         f.write(
             ("BO_ %d " %
-             frame.id +
+             frame.Id +
              frame.name +
              ": %d " %
              frame.size +
@@ -361,7 +361,7 @@ def dump(mydb, f, **options):
                val = '"' + val + '"'
             elif not val:
                 val = '""'
-            f.write(('BA_ "' + attrib + '" BO_ %d ' % frame.id + val + ';\n').encode(dbcExportEncoding))
+            f.write(('BA_ "' + attrib + '" BO_ %d ' % frame.Id + val + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-attributes:
@@ -392,7 +392,7 @@ def dump(mydb, f, **options):
             if signal.values:
                 f.write(
                     ('VAL_ %d ' %
-                     frame.id +
+                     frame.Id +
                      output_names[frame][signal]).encode(dbcExportEncoding))
                 for attrib, val in sorted(
                         signal.values.items(), key=lambda x: int(x[0])):

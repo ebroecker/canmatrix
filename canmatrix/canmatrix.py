@@ -243,8 +243,6 @@ class Signal(object):
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
 
-
-
     name = attr.ib(default = "")
 #    float_factory = attr.ib(default=defaultFloatFactory)
     float_factory = defaultFloatFactory
@@ -521,7 +519,7 @@ class SignalGroup(object):
     def __iter__(self):
         return iter(self.signals)
 
-
+@attr.s(cmp=False)
 class Frame(object):
     """
     contains one Frame with following attributes
@@ -536,60 +534,27 @@ class Frame(object):
     comment
     """
 
-    def __init__(self, name, **kwargs):
-        self.name = name
-            
-        args = [
-            ('Id', '_Id', int, 0),
-            ('dlc', 'size', int, 0),
-            ('transmitter', 'transmitter', None, []),
-            ('extended', 'extended', bool, False),
-            ('is_complex_multiplexed', 'is_complex_multiplexed', bool, False),
-            ('is_fd', 'is_fd', bool, False),
-            ('comment', 'comment', str, None),
-            ('signals', 'signals', None, []),
-            ('mux_names', 'mux_names', None, {}),
-            ('attributes', 'attributes', None, {}),
-            ('receiver', 'receiver', None, []),
-            ('signalGroups', 'signalGroups', None, []),
-            ('j1939_pgn', '_j1939_pgn', int, None),
-            ('j1939_source', '_j1939_source', int, 0),
-            ('j1939_prio', '_j1939_prio', int, 0),
-            ('is_j1939', 'is_j1939', bool, False),
+
+    name = attr.ib(default="")
+    Id = attr.ib(default = 0)
+    size = attr.ib(default = 0)
+    transmitter = attr.ib(default =[])
+    extended = attr.ib(type=bool, default = False)
+    is_complex_multiplexed = attr.ib(type=bool, default = False)
+    is_fd = attr.ib(type=bool, default = False)
+    comment = attr.ib(default="")
+    signals = attr.ib(default =[])
+    mux_names = attr.ib(type=dict, default={})
+    attributes = attr.ib(type=dict, default={})
+    receiver = attr.ib(default =[])
+    signalGroups = attr.ib(default=[])
+
+    j1939_pgn = attr.ib(default = None)
+    j1939_source = attr.ib(default = 0)
+    j1939_prio  = attr.ib(default = 0)
+    is_j1939  = attr.ib(type=bool, default = False)
             #            ('cycleTime', '_cycleTime', int, None),
             #            ('sendType', '_sendType', str, None),
-        ]
-
-        for arg_name, destination, function, default in args:
-            try:
-                value = kwargs[arg_name]
-            except KeyError:
-                value = default
-            else:
-                kwargs.pop(arg_name)
-            if function is not None and value is not None:
-                value = function(value)
-            setattr(self, destination, value)
-            
-        if len(kwargs) > 0:
-            raise TypeError('{}() got unexpected argument{} {}'.format(
-                self.__class__.__name__,
-                's' if len(kwargs) > 1 else '',
-                ', '.join(kwargs.keys())
-            ))
-
-        if self._j1939_pgn is not None:
-            self.recalcJ1939Id()
-        # we got a j1939 PGN,
-
-
-    @property
-    def id(self):
-        return self._Id
-
-    @id.setter
-    def id(self, value):
-        self._Id = value
 
     @property
     def is_multiplexed(self):
@@ -600,11 +565,11 @@ class Frame(object):
 
     @property
     def pgn(self):
-        return CanId(self._Id).pgn
+        return CanId(self.Id).pgn
 
     @pgn.setter
     def pgn(self, value):
-        self._j1939_pgn = value
+        self.j1939_pgn = value
         self.recalcJ1939Id()
 
     @property
@@ -626,7 +591,7 @@ class Frame(object):
         self.recalcJ1939Id()
 
     def recalcJ1939Id(self):
-        self.id = (self._j1939_source & 0xff) + ((self._j1939_pgn & 0xffff) << 8) + ((self._j1939_prio & 0x7) << 26)
+        self.id = (self.j1939_source & 0xff) + ((self.j1939_pgn & 0xffff) << 8) + ((self.j1939_prio & 0x7) << 26)
         self.extended = True
         self.is_j1939 = True
 
