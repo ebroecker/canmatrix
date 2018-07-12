@@ -229,7 +229,7 @@ def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
 
 
-@attr.s
+@attr.s(cmp=False)
 class Signal(object):
     """
     contains on Signal of canmatrix-object
@@ -252,8 +252,8 @@ class Signal(object):
     signalSize = attr.ib(type=int, default = 0)
     is_little_endian = attr.ib(type=bool, default = True)
     is_signed = attr.ib(type=bool, default = True)
-    offset = attr.ib(converter = float_factory, default = 0.0)
-    factor = attr.ib(converter = float_factory, default = 0.0)
+    offset = attr.ib(converter = float_factory, default = float_factory(0.0))
+    factor = attr.ib(converter = float_factory, default = float_factory(0.0))
 
     #    offset = attr.ib(converter = float_factory, default = 0.0)
 
@@ -277,7 +277,7 @@ class Signal(object):
     enumeration = attr.ib(type=str, default = None),
     comments = attr.ib(type=dict, default ={})
     attributes = attr.ib(type=dict, default ={})
-    values = attr.ib(type=dict, default ={})
+    values = attr.ib(type=dict, convert=normalizeValueTable, default ={})
     calc_min_for_none = attr.ib(type=bool, default = True)
     calc_max_for_none = attr.ib(type=bool, default = True)
     muxValMax = attr.ib(default = 0)
@@ -287,9 +287,6 @@ class Signal(object):
     def __attrs_post_init__(self):
         self.multiplex(self._multiplex)
 
-    @property
-    def values(self):
-        return self._values
 
     @property
     def spn(self):
@@ -297,10 +294,6 @@ class Signal(object):
             return self.attributes["SPN"]
         else:
             return None
-
-    @values.setter
-    def values(self, valueTable):
-        self._values = normalizeValueTable(valueTable)
 
     def multiplex(self, value):
         self.mux_val = None
@@ -360,7 +353,7 @@ class Signal(object):
         """
         Add Value/Description to Signal
         """
-        self._values[int(value)] = valueName
+        self.values[int(value)] = valueName
 
     def setStartbit(self, startBit, bitNumbering=None, startLittle=None):
         """
@@ -402,8 +395,8 @@ class Signal(object):
         rawRange = 2 ** self.signalSize
         if self.is_signed:
             rawRange /= 2
-        return (-rawRange if self.is_signed else 0,
-                rawRange - 1)
+        return (self.float_factory(-rawRange if self.is_signed else 0),
+                self.float_factory(rawRange - 1))
 
     def setMin(self, min=None):
         self.min = min
