@@ -213,7 +213,7 @@ def dump(dbs, f, **options):
                     canFrameTriggering,
                     'CAN-ADDRESSING-MODE',
                     'EXTENDED')
-            createSubElement(canFrameTriggering, 'IDENTIFIER', str(frame.id))
+            createSubElement(canFrameTriggering, 'IDENTIFIER', str(frame.Id))
 
             pduTriggeringRef.text = "/Cluster/CAN/IPDUTRIGG_" + frame.name
 
@@ -522,7 +522,7 @@ def dump(dbs, f, **options):
                         dataTypeRef.set('DEST', 'INTEGER-TYPE')
                     dataTypeRef.text = "/DataType/" + signal.name
                     createSubElement(signalEle, 'LENGTH',
-                                     str(signal.signalsize))
+                                     str(signal.size))
             for group in frame.signalGroups:
                 groupEle = createSubElement(elements, 'SYSTEM-SIGNAL-GROUP')
                 createSubElement(signalEle, 'SHORT-NAME', group.name)
@@ -1151,14 +1151,16 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                             is_signed=is_signed,
                             factor=factor,
                             offset=offset,
-#                            min=Min,
-#                            max=Max,
                             unit=Unit,
                             receiver=receiver,
                             multiplex=multiplexId,
                             comment=signalDescription,
                             is_float=is_float)
 
+            if Min is not None:
+                Signal.min = Min
+            if Max is not None:
+                Signal.mex = Max
 
             if newSig.is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml

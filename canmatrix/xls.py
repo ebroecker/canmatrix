@@ -419,10 +419,10 @@ def load(file, **options):
                 launchParam = "0"
 
             if frameId.endswith("xh"):
-                newBo = Frame(frameName, Id=int(frameId[:-2], 16), dlc=dlc, extended = True)
+                newBo = Frame(frameName, Id=int(frameId[:-2], 16), size=dlc, extended = True)
             else:
-                newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
-            db.frames.addFrame(newBo)
+                newBo = Frame(frameName, Id=int(frameId[:-1], 16), size=dlc)
+            db.addFrame(newBo)
 
             # eval launctype
             if launchType is not None:
@@ -478,7 +478,7 @@ def load(file, **options):
 #                if signalLength > 8:
                 newSig = Signal(signalName,
                                 startBit=(startbyte - 1) * 8 + startbit,
-                                signalSize=signalLength,
+                                size=int(signalLength),
                                 is_little_endian=is_little_endian,
                                 is_signed=is_signed,
                                 receiver=receiver,

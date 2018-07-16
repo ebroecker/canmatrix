@@ -183,7 +183,7 @@ def load(f, **options):
             #            newframe = Frame(frame["id"],frame["name"],8,None)
             newframe = Frame(frame["name"],
                              Id=frame["id"],
-                             dlc=8)
+                             size=8)
             if "length" in frame:
                 newframe.size = frame["length"]
 
@@ -207,7 +207,7 @@ def load(f, **options):
                     is_signed = False
                 newsignal = Signal(signal["name"],
                                    startBit=signal["start_bit"],
-                                   signalSize=signal["bit_length"],
+                                   size=signal["bit_length"],
                                    is_little_endian=is_little_endian,
                                    is_signed=is_signed,
                                    factor=signal["factor"],
@@ -224,8 +224,8 @@ def load(f, **options):
                 if newsignal.is_little_endian == False:
 
                     newsignal.setStartbit(
-                        newsignal.startbit, bitNumbering=1, startLittle=True)
+                        newsignal.startBit, bitNumbering=1, startLittle=True)
                 newframe.addSignal(newsignal)
-            db.frames.addFrame(newframe)
+            db.addFrame(newframe)
     f.close()
     return db

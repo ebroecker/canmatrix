@@ -88,7 +88,7 @@ def load(f, **options):
             else:
                 (BUName, comment) = line.split(' ', 1)
                 comment = comment.replace('"', '').replace(';', '')
-                db.boardUnits.byName(BUName).addComment(comment)
+                db.boardUnitByName(BUName).addComment(comment)
 
         if mode == 'FrameDescription':
             if line.startswith(
@@ -120,7 +120,7 @@ def load(f, **options):
                 mode = ''
             else:
                 (bu, attrib, value) = line.split(',', 2)
-                db.boardUnits.byName(bu).addAttribute(
+                db.boardUnitByName(bu).addAttribute(
                     attrib.replace('"', ''), value[1:-1])
 
         elif mode == 'ParamNetVal':
@@ -216,10 +216,10 @@ def load(f, **options):
                     transmitter = temparray[6].split()
                 else:
                     transmitter = None
-                newBo = db.frames.addFrame(
+                newBo = db.addFrame(
                     Frame(name,
                           Id=int(Id),
-                          dlc=size,
+                          size=int(size),
                           transmitter=transmitter))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
@@ -230,7 +230,7 @@ def load(f, **options):
                 temstr = line.strip()[6:].strip()
                 boList = temstr.split(',')
                 for bo in boList:
-                    db.boardUnits.add(BoardUnit(bo))
+                    db.addEcu(BoardUnit(bo))
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
@@ -262,8 +262,8 @@ def load(f, **options):
                 startbit += (int(startbyte) - 1) * 8
 
                 newSig = newBo.addSignal(Signal(name,
-                                                startBit=startbit,
-                                                signalSize=size,
+                                                startBit=int(startbit),
+                                                size=int(size),
                                                 is_little_endian=(
                                                     int(byteorder) == 1),
                                                 is_signed=is_signed,

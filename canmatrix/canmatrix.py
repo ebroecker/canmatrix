@@ -36,12 +36,8 @@ from collections import OrderedDict
 import logging
 import fnmatch
 
-try:
-    import decimal
-except ImportError:
-    defaultFloatFactory = float
-else:
-    defaultFloatFactory = decimal.Decimal
+import decimal
+defaultFloatFactory = decimal.Decimal
 
 
 logger = logging.getLogger('root')
@@ -233,7 +229,7 @@ class Signal(object):
         # if given startbit is for the end of signal data (lsbit),
         # convert to start of signal data (msbit)
         if startLittle is True and self.is_little_endian is False:
-            startBit = startBit + 1 - self.signalsize
+            startBit = startBit + 1 - self.size
         if startBit < 0:
             print("wrong startbit found Signal: %s Startbit: %d" %
                   (self.name, startBit))
@@ -397,7 +393,7 @@ class Frame(object):
 
 
     name = attr.ib(default="")
-    Id = attr.ib(default = 0)
+    Id = attr.ib(type=int, default = 0)
     size = attr.ib(default = 0)
     transmitter = attr.ib(default = attr.Factory(list))
     extended = attr.ib(type=bool, default = False)
@@ -588,8 +584,8 @@ class Frame(object):
         """
         maxBit = 0
         for sig in self.signals:
-            if sig.getStartbit() + int(sig.signalsize) > maxBit:
-                maxBit = sig.getStartbit() + int(sig.signalsize)
+            if sig.getStartbit() + int(sig.size) > maxBit:
+                maxBit = sig.getStartbit() + int(sig.size)
         self.size = max(self.size, int(math.ceil(maxBit / 8)))
         
     def findNotUsedBits(self):
@@ -966,7 +962,7 @@ class CanMatrix(object):
         Id = int(Id)
         extendedMarker = 0x80000000
         for test in self.frames:
-            if test.id == Id:
+            if test.Id == Id:
                 if extended is None:
                     # found ID while ignoring extended or standard
                     return test
@@ -1086,7 +1082,7 @@ class CanMatrix(object):
 
     def addEcu(self, ecu):
         for bu in self.boardUnits:
-            if bu.name.strip() == bu.name:
+            if bu.name.strip() == ecu.name:
                 return
         self.boardUnits.append(ecu)
 
@@ -1116,11 +1112,11 @@ class CanMatrix(object):
     def updateEcuList(self):
         for frame in self.frames:
             for ecu in frame.transmitter:
-                self.boardUnits.add(BoardUnit(ecu))
+                self.addEcu(BoardUnit(ecu))
             frame.updateReceiver()
             for signal in frame.signals:
                 for ecu in signal.receiver:
-                    self.boardUnits.add(BoardUnit(ecu))
+                    self.addEcu(BoardUnit(ecu))
 
     def renameFrame(self, old, newName):
         if type(old).__name__ == 'instance':

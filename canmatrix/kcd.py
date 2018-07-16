@@ -210,7 +210,7 @@ def dump(dbs, f, **options):
             for signal in frame.signals:
                 if signal.multiplex is not None and signal.multiplex == 'Multiplexor':
                     multiplexor = etree.Element('Multiplex', name=signal.name, offset=str(
-                        signal.getStartbit()), length=str(int(signal.signalsize)))
+                        signal.getStartbit()), length=str(int(signal.size)))
                     value = etree.Element('Value')
                     if float(signal.min) != 0:
                         value.set('min', "%g" % signal.min)
@@ -300,18 +300,22 @@ def parseSignal(signal, mux, namespace, nodelist):
             receiver.append(nodelist[noderef.get('id')])
 
     newSig = Signal(signal.get('name'),
-                    startBit=startbit,
-                    signalSize=signalsize,
+                    startBit=int(startbit),
+                    size=int(signalsize),
                     is_little_endian=is_little_endian,
                     is_signed=is_signed,
                     factor=factor,
                     offset=offset,
-                    min=min,
-                    max=max,
                     unit=unit,
                     receiver=receiver,
                     is_float = is_float,
                     multiplex=mux)
+
+    if min is not None:
+        newSig.min = float(min)
+    if max is not None:
+        newSig.max = float(max)
+
     newSig.setStartbit(int(startbit))
 
     notes = signal.findall('./' + namespace + 'Notes')
@@ -407,17 +411,20 @@ def load(f, **options):
                         receiver.append(nodelist[noderef.get('id')])
 
                 newSig = Signal(multiplex.get('name'),
-                                startBit=startbit,
-                                signalSize=signalsize,
+                                startBit=int(startbit),
+                                size=int(signalsize),
                                 is_little_endian=is_little_endian,
                                 is_signed=is_signed,
                                 factor=factor,
                                 offset=offset,
-                                min=min,
-                                max=max,
                                 unit=unit,
                                 receiver=receiver,
                                 multiplex='Multiplexor')
+
+                if min is not None:
+                    newSig.min = float(min)
+                if max is not None:
+                    newSig.max = float(max)
 
                 if is_little_endian == False:
                     # motorola/big_endian set/convert startbit
@@ -471,7 +478,7 @@ def load(f, **options):
                 newBo.size = dlc
 
             newBo.updateReceiver()
-            db.frames.addFrame(newBo)
+            db.addFrame(newBo)
         name = bus.get('name')
         if not name:
             name = "CAN%d" % counter

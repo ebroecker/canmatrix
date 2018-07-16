@@ -493,8 +493,8 @@ def load(f, **options):
                 regexp = re.compile("^BO\_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-                frame = Frame(temp.group(2), Id=temp.group(1), dlc=temp.group(3), transmitter=temp.group(4).split())
-                db.frames.addFrame(frame)
+                frame = Frame(temp.group(2), Id=int(temp.group(1)), size=int(temp.group(3)), transmitter=temp.group(4).split())
+                db.frames.append(frame)
             elif decoded.startswith("SG_ "):
                 pattern = "^SG\_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                 regexp = re.compile(pattern)
@@ -510,8 +510,8 @@ def load(f, **options):
 
                     tempSig = Signal(
                         temp.group(1),
-                        startBit=temp.group(2),
-                        signalSize=temp.group(3),
+                        startBit=int(temp.group(2)),
+                        size=int(temp.group(3)),
                         is_little_endian=(int(temp.group(4)) == 1),
                         is_signed=(temp.group(5) == '-'),
                         factor=temp.group(6),
@@ -525,7 +525,8 @@ def load(f, **options):
                     if not tempSig.is_little_endian:
                         # startbit of motorola coded signals are MSB in dbc
                         tempSig.setStartbit(int(temp.group(2)), bitNumbering=1)
-                    db.frames.addSignalToLastFrame(tempSig)
+                    frame.addSignal(tempSig)
+    #                db.frames.addSignalToLastFrame(tempSig)
                 else:
                     pattern = "^SG\_ +(\w+) +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                     regexp = re.compile(pattern)
@@ -698,7 +699,7 @@ def load(f, **options):
                     myTempListe = temp.group(1).split(' ')
                     for ele in myTempListe:
                         if len(ele.strip()) > 1:
-                            db.boardUnits.add(BoardUnit(ele))
+                            db.boardUnits.append(BoardUnit(ele))
 
             elif decoded.startswith("VAL_ "):
                 regexp = re.compile("^VAL\_ +(\w+) +(\w+) +(.*);")
@@ -792,7 +793,7 @@ def load(f, **options):
                 elif tempba.group(1).strip().startswith("BU_ "):
                     regexp = re.compile("^BA\_ +\"(.*)\" +BU\_ +(\w+) +(.+);")
                     temp = regexp.match(decoded)
-                    db.boardUnits.byName(
+                    db.boardUnitByName(
                         temp.group(2)).addAttribute(
                         temp.group(1),
                         temp.group(3))
@@ -860,8 +861,8 @@ def load(f, **options):
         # to the frame:
         frame.updateReceiver()
         # extended-flag is implicite in canid, thus repair this:
-        if frame.id > 0x80000000:
-            frame.id -= 0x80000000
+        if frame.Id > 0x80000000:
+            frame.Id -= 0x80000000
             frame.extended = 1
 
         if "VFrameFormat" in frame.attributes and "_FD" in frame.attributes["VFrameFormat"]:

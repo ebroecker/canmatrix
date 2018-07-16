@@ -228,10 +228,10 @@ Title=\"canmatrix-Export\"
                             if signal.is_little_endian == 0:
                                 # Motorola
                                 muxOut += " %d,%d %s -m" % (startBit,
-                                                            muxSignal.signalsize, s)
+                                                            muxSignal.size, s)
                             else:
                                 muxOut += " %d,%d %s" % (startBit,
-                                                         muxSignal.signalsize, s)
+                                                         muxSignal.size, s)
                             if not muxOut.endswith('h'):
                                 muxOut += ' '
                             if i in muxSignal.comments:
@@ -358,7 +358,7 @@ def load(f, **options):
                             if len(frame.mux_names) > 0:
                                 frame.signalByName(
                                     frame.name + "_MUX").values = frame.mux_names
-                            db.frames.addFrame(frame)
+                            db.addFrame(frame)
 
                         frame = Frame(frameName)
 
@@ -480,19 +480,21 @@ def load(f, **options):
                                 extras['float_factory'] = float_factory
 
                             signal = Signal(frameName + "_MUX",
-                                            startBit=startBit,
-                                            signalSize=signalLength,
+                                            startBit=int(startBit),
+                                            size=int(signalLength),
                                             is_little_endian=intel,
                                             is_signed=is_signed,
                                             is_float=is_float,
                                             factor=factor,
                                             offset=offset,
-                                            min=min,
-                                            max=max,
                                             unit=unit,
                                             multiplex='Multiplexor',
                                             comment=comment,
                                             **extras)
+                            if min is not None:
+                                signal.min = float(min)
+                            if max is not None:
+                                signal.max = float(max)
     #                        signal.addComment(comment)
                             if intel == 0:
                                 # motorola set/convert startbit
@@ -511,19 +513,21 @@ def load(f, **options):
                             extras['float_factory'] = float_factory
 
                         signal = Signal(sigName,
-                                        startBit=startBit,
-                                        signalSize=signalLength,
+                                        startBit=int(startBit),
+                                        size=int(signalLength),
                                         is_little_endian=intel,
                                         is_signed=is_signed,
                                         is_float=is_float,
                                         factor=factor,
                                         offset=offset,
-                                        min=min,
-                                        max=max,
                                         unit=unit,
                                         multiplex=multiplexor,
                                          comment=comment,
                                          **extras)
+                        if min is not None:
+                            signal.min = float(min)
+                        if max is not None:
+                            signal.max = float(max)
     #
                         if intel == 0:
                             # motorola set/convert startbit
@@ -574,6 +578,6 @@ def load(f, **options):
     if frame is not None:
         if len(frame.mux_names) > 0:
             frame.signalByName(frame.name + "_MUX").values = frame.mux_names
-        db.frames.addFrame(frame)
+        db.addFrame(frame)
 
     return db
