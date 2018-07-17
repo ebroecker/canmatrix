@@ -31,18 +31,13 @@ import json
 import sys
 
 
+
 extension = 'json'
 
 def dump(db, f, **options):
-    if 'jsonCanard' in options:
-        exportCanard = options['jsonCanard']
-    else:
-        exportCanard = False
 
-    if 'jsonMotorolaBitFormat' in options:
-        motorolaBitFormat = options['jsonMotorolaBitFormat']
-    else:
-        motorolaBitFormat = "lsb"
+    exportCanard = options.get('jsonCanard', False)
+    motorolaBitFormat = options.get('jsonMotorolaBitFormat', "lsb")
 
 
     if 'jsonAll' in options:
@@ -90,8 +85,8 @@ def dump(db, f, **options):
                     "name": signal.name,
                     "start_bit": startBit,
                     "bit_length": signal.size,
-                    "factor": float(signal.factor),
-                    "offset": float(signal.offset),
+                    "factor": str(signal.factor),
+                    "offset": str(signal.offset),
                     "is_big_endian": signal.is_little_endian == 0,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float
@@ -129,8 +124,8 @@ def dump(db, f, **options):
                     "name": signal.name,
                     "start_bit": startBit,
                     "bit_length": signal.signalsize,
-                    "factor": float(signal.factor),
-                    "offset": float(signal.offset),
+                    "factor": str(signal.factor),
+                    "offset": str(signal.offset),
                     "is_big_endian": signal.is_little_endian == 0,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,

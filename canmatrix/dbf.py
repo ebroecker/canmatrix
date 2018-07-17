@@ -34,7 +34,9 @@ logger = logging.getLogger('root')
 
 from .canmatrix import *
 import re
-import codecs
+import decimal
+default_float_factory = decimal.Decimal
+
 
 # TODO support for [START_PARAM_NODE_RX_SIG]
 # TODO support for [START_PARAM_NODE_TX_MSG]
@@ -60,10 +62,8 @@ def decodeDefine(line):
 
 
 def load(f, **options):
-    if 'dbfImportEncoding' in options:
-        dbfImportEncoding = options["dbfImportEncoding"]
-    else:
-        dbfImportEncoding = 'iso-8859-1'
+    dbfImportEncoding = options.get("dbfImportEncoding",'iso-8859-1')
+    float_factory = options.get('float_factory', default_float_factory)
 
     db = CanMatrix()
 
@@ -269,8 +269,8 @@ def load(f, **options):
                                                 is_signed=is_signed,
                                                 factor=factor,
                                                 offset=offset,
-                                                min=float(Min) * float(factor),
-                                                max=float(Max) * float(factor),
+                                                min=float_factory(Min) * float_factory(factor),
+                                                max=float_factory(Max) * float_factory(factor),
                                                 unit=unit,
                                                 receiver=receiver,
                                                 is_float=is_float,

@@ -28,8 +28,10 @@ from __future__ import absolute_import
 from copy import deepcopy
 import collections
 import logging
+import decimal
 
 logger = logging.getLogger('root')
+default_float_factory = decimal.Decimal
 
 from builtins import *
 from .canmatrix import *
@@ -436,7 +438,7 @@ def load(f, **options):
     else:
         dbcCommentEncoding = dbcImportEncoding
 
-    float_factory = options.get('float_factory')
+    float_factory = options.get('float_factory', default_float_factory)
 
     i = 0
 
@@ -454,7 +456,7 @@ def load(f, **options):
         l = line.strip()
         if l.__len__() == 0:
             continue
-        try:
+#        try:
             if followUp == FollowUps.signalComment:
                 try:
                     comment += "\n" + \
@@ -849,9 +851,9 @@ def load(f, **options):
                         signal.muxerForSignal = muxerForSignal
                         signal.muxValMin = muxValMin
                         signal.muxValMax = muxValMax
-        except:
-            print ("error with line no: %d" % i)
-            print (line)
+#        except:
+#            print ("error with line no: %d" % i)
+#            print (line)
         #        else:
 #            print("Unrecocniced line: " + l + " (%d) " % i)
 # Backtracking

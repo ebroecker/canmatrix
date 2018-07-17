@@ -35,6 +35,8 @@ from .cancluster import *
 import os
 import re
 import math
+import decimal
+default_float_factory = decimal.Decimal
 
 clusterExporter = 1
 clusterImporter = 1
@@ -118,6 +120,7 @@ def createSignal(signal, nodeList, typeEnums):
 
 
 def dump(dbs, f, **options):
+
     signalTypeEnums = {}
     canClust = canCluster(dbs)
     for name in canClust:
@@ -248,7 +251,7 @@ def dump(dbs, f, **options):
     f.write(etree.tostring(root, pretty_print=True))
 
 
-def parseSignal(signal, mux, namespace, nodelist):
+def parseSignal(signal, mux, namespace, nodelist, float_factory):
     startbit = 0
     if 'offset' in signal.attrib:
         startbit = signal.get('offset')
@@ -312,9 +315,9 @@ def parseSignal(signal, mux, namespace, nodelist):
                     multiplex=mux)
 
     if min is not None:
-        newSig.min = float(min)
+        newSig.min = float_factory(min)
     if max is not None:
-        newSig.max = float(max)
+        newSig.max = float_factory(max)
 
     newSig.setStartbit(int(startbit))
 
@@ -337,6 +340,7 @@ def parseSignal(signal, mux, namespace, nodelist):
 
 
 def load(f, **options):
+    float_factory = options.get("float_factory", default_float_factory)
     dbs = {}
     tree = etree.parse(f)
     root = tree.getroot()
@@ -422,9 +426,9 @@ def load(f, **options):
                                 multiplex='Multiplexor')
 
                 if min is not None:
-                    newSig.min = float(min)
+                    newSig.min = float_factory(min)
                 if max is not None:
-                    newSig.max = float(max)
+                    newSig.max = float_factory(max)
 
                 if is_little_endian == False:
                     # motorola/big_endian set/convert startbit
@@ -450,7 +454,7 @@ def load(f, **options):
                     mux = muxgroup.get('count')
                     signales = muxgroup.findall('./' + namespace + 'Signal')
                     for signal in signales:
-                        newSig = parseSignal(signal, mux, namespace, nodelist)
+                        newSig = parseSignal(signal, mux, namespace, nodelist, float_factory)
                         newBo.addSignal(newSig)
 
             signales = message.findall('./' + namespace + 'Signal')
@@ -462,7 +466,7 @@ def load(f, **options):
                     newBo.addTransmitter(nodelist[noderef.get('id')])
 
             for signal in signales:
-                newSig = parseSignal(signal, None, namespace, nodelist)
+                newSig = parseSignal(signal, None, namespace, nodelist, float_factory)
                 newBo.addSignal(newSig)
 
             notes = message.findall('./' + namespace + 'Notes')

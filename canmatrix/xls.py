@@ -34,6 +34,9 @@ import codecs
 import xlwt
 import logging
 from canmatrix.xls_common import *
+import decimal
+default_float_factory = decimal.Decimal
+
 
 logger = logging.getLogger('root')
 
@@ -325,10 +328,8 @@ def dump(db, file, **options):
 
 
 def load(file, **options):
-    if 'xlsMotorolaBitFormat' in options:
-        motorolaBitFormat = options["xlsMotorolaBitFormat"]
-    else:
-        motorolaBitFormat = "msbreverse"
+    motorolaBitFormat = options.get("xlsMotorolaBitFormat","msbreverse")
+    float_factory = options.get("float_factory", default_float_factory)
 
     wb = xlrd.open_workbook(file_contents=file.read())
     sh = wb.sheet_by_index(0)
@@ -523,7 +524,7 @@ def load(file, **options):
                 unit = unit.strip()
                 newSig.unit = unit
                 try:
-                    newSig.factor = float(factor)
+                    newSig.factor = float_factory(factor)
                 except:
                     logger.warn(
                         "Some error occurred while decoding scale: Signal: %s; \"%s\"" %
@@ -538,9 +539,9 @@ def load(file, **options):
             (mini, maxi) = test.strip().split("..", 2)
             unit = ""
             try:
-                newSig.offset = float(mini)
-                newSig.min = float(mini)
-                newSig.max = float(maxi)
+                newSig.offset = float_factory(mini)
+                newSig.min = float_factory(mini)
+                newSig.max = float_factory(maxi)
             except:
                 newSig.offset = 0
 
@@ -549,7 +550,7 @@ def load(file, **options):
                 value = int(float(value))
                 newSig.addValues(value, valueName)
             maxi = pow(2, signalLength) - 1
-            newSig.max = float(maxi)
+            newSig.max = float_factory(maxi)
         else:
             newSig.offset = 0
 
