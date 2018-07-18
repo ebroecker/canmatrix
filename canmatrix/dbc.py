@@ -427,8 +427,10 @@ def dump(mydb, f, **options):
                     f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
 
     for envVar in db.envVars:
-        f.write("EV_ {0} : [{1}|{2}] {3} {4} {5} {6} {7};\n".format(envVar["varName"], envVar["min"], envVar["max"], envVar["unit"],
-                                                         envVar["initialValue"], envVar["evId"], envVar["accessType"], ",".join(envVar["accessNodes"])) )
+        f.write("EV_ {0} : {1} [{2}|{3}] \"{4}\" {5} {6} {7} {8};\n".format(envVar["varName"], envVar["varType"], envVar["min"],
+                                                                            envVar["max"], envVar["unit"],envVar["initialValue"],
+                                                                            envVar["evId"], envVar["accessType"],
+                                                                            ",".join(envVar["accessNodes"])) )
 
 def load(f, **options):
     if 'dbcImportEncoding' in options:

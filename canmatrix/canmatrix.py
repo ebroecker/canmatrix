@@ -1333,7 +1333,8 @@ class CanMatrix(object):
                 if copyResult == False:
                     logger.error(
                         "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + self.frameById(frame.id).name)
-
+            for envVar in dbTemp.envVars:
+                self.envVars.append(envVar)
     def setFdType(self):
         for frame in self.frames:
             if frame.size > 8:
