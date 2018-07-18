@@ -120,7 +120,7 @@ def getSignal(db, sig, motorolaBitFormat):
     else:
         # factor not 1.0 ?
         if float(sig.factor) != 1:
-            backArray.append("%g" % float(sig.factor))
+            backArray.append("%g -" % float(sig.factor))
         #factor == 1.0
         else:
             backArray.append("")
