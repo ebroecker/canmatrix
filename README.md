@@ -40,6 +40,11 @@ This installs the *canmatrix* package into your python installation.
 
 In addition to the *canmatrix* package there are 2 scripts installed with this package:
 
+
+for additional formats [arxml, kcd, fibex, xls, xlsx] use syntax like:
+`pip install git+https://github.com/ebroecker/canmatrix#egg=canmatrix[kcd]`
+
+
 1. **canconvert**: 
 
 	converts CAN database formats between all supported formats. 
