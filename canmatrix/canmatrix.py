@@ -778,8 +778,8 @@ class Define(object):
         if definition[0:3] == 'INT':
             self.type = 'INT'
             min, max = definition[4:].split(' ', 2)
-            self.min = int(min)
-            self.max = int(max)
+            self.min = int(defaultFloatFactory(min))
+            self.max = int(defaultFloatFactory(max))
 
         elif definition[0:6] == 'STRING':
             self.type = 'STRING'
@@ -801,14 +801,14 @@ class Define(object):
         elif definition[0:3] == 'HEX':
             self.type = 'HEX'
             min, max = definition[4:].split(' ', 2)
-            self.min = int(min)
-            self.max = int(max)
+            self.min = int(defaultFloatFactory(min))
+            self.max = int(defaultFloatFactory(max))
 
         elif definition[0:5] == 'FLOAT':
             self.type = 'FLOAT'
             min, max = definition[6:].split(' ', 2)
-            self.min = float(min)
-            self.max = float(max)
+            self.min = defaultFloatFactory(min)
+            self.max = defaultFloatFactory(max)
 
 
     def addDefault(self, default):
