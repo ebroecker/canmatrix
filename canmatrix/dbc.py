@@ -426,6 +426,10 @@ def dump(mydb, f, **options):
                 if signal.muxerForSignal is not None:
                     f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
 
+    for envVar in db.envVars:
+        f.write("EV_ {0} : [{1}|{2}] {3} {4} {5} {6} {7};\n".format(envVar["varName"], envVar["min"], envVar["max"], envVar["unit"],
+                                                         envVar["initialValue"], envVar["evId"], envVar["accessType"], ",".join(envVar["accessNodes"])) )
+
 def load(f, **options):
     if 'dbcImportEncoding' in options:
         dbcImportEncoding = options["dbcImportEncoding"]
@@ -848,6 +852,25 @@ def load(f, **options):
                         signal.muxerForSignal = muxerForSignal
                         signal.muxValMin = muxValMin
                         signal.muxValMax = muxValMax
+            elif decoded.startswith("EV_ "):
+                pattern = "^EV_ +([A-Za-z0-9\-_]+) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(\w*)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([A-Za-z0-9\-_]+) +(.*);"
+                regexp = re.compile(pattern)
+                temp = regexp.match(decoded)
+
+                varName = temp.group(1)
+                varType = temp.group(2)
+                min = temp.group(3)
+                max = temp.group(4)
+                unit = temp.group(5)
+                initialValue  = temp.group(6)
+                evId  = temp.group(7)
+                accessType  = temp.group(8)
+                accessNodes = temp.group(9).split(",")
+                db.addEnvVar({"varName": varName, "varType": varType, "min" : min, "max" : max,
+                              "unit" : unit, "initialValue" : initialValue, "evId" : evId,
+                              "accessType" : accessType, "accessNodes" : accessNodes})
+
+
         except:
             print ("error with line no: %d" % i)
             print (line)

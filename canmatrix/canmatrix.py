@@ -1035,9 +1035,13 @@ class CanMatrix(object):
         self.globalDefines = {}
         self.buDefines = {}
         self.valueTables = {}
+        self.envVars = list()
 
     def __iter__(self):
         return iter(self.frames)
+
+    def addEnvVar(self, envVarDict):
+        self.envVars.append(envVarDict)
 
     @property
     def contains_fd(self):
