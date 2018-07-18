@@ -237,6 +237,11 @@ def load(f, **options):
                 temparray = temstr.split(',')
                 (name, size, startbyte, startbit, sign, Max, Min, byteorder,
                  offset, factor, unit, multiplex) = temparray[0:12]
+                Min = float_factory(Min)
+                Max = float_factory(Max)
+                factor = float_factory(factor)
+                ofset = float_factory(offset)
+
                 if len(temparray) > 12:
                     receiver = temparray[12].split(',')
                 else:
@@ -269,8 +274,8 @@ def load(f, **options):
                                                 is_signed=is_signed,
                                                 factor=factor,
                                                 offset=offset,
-                                                min=float_factory(Min) * float_factory(factor),
-                                                max=float_factory(Max) * float_factory(factor),
+                                                min=Min * factor,
+                                                max=Max * factor,
                                                 unit=unit,
                                                 receiver=receiver,
                                                 is_float=is_float,
@@ -303,12 +308,7 @@ def load(f, **options):
 def dump(mydb, f, **options):
     # create copy because export changes database
     db = deepcopy(mydb)
-
-    if 'dbfExportEncoding' in options:
-        dbfExportEncoding = options["dbfExportEncoding"]
-    else:
-        dbfExportEncoding = 'iso-8859-1'
-
+    dbfExportEncoding = options.get("dbfExportEncoding", 'iso-8859-1')
     db.EnumAttribs2Keys()
 
     outstr =  """//******************************BUSMASTER Messages and signals Database ******************************//

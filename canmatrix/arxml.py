@@ -89,10 +89,7 @@ def getBaseTypeOfSignal(signal):
 
 
 def dump(dbs, f, **options):
-    if 'arVersion' in options:
-        arVersion = options["arVersion"]
-    else:
-        arVersion = "3.2.3"
+    arVersion = options.get("arVersion", "3.2.3")
 
     for name in dbs:
         db = dbs[name]

@@ -67,30 +67,16 @@ def dump(mydb, f, **options):
     # create copy because export changes database
     db = deepcopy(mydb)
 
-    if 'dbcExportEncoding' in options:
-        dbcExportEncoding = options["dbcExportEncoding"]
-    else:
-        dbcExportEncoding = 'iso-8859-1'
-    if 'dbcExportCommentEncoding' in options:
-        dbcExportCommentEncoding = options["dbcExportCommentEncoding"]
-    else:
-        dbcExportCommentEncoding = dbcExportEncoding
-    if 'whitespaceReplacement' in options:
-        whitespaceReplacement = options["whitespaceReplacement"]
-        if whitespaceReplacement in ['', None] or set(
-                [' ', '\t']).intersection(whitespaceReplacement):
-            print("Warning: Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
-    else:
-        whitespaceReplacement = '_'
-    if 'writeValTable' in options:
-        writeValTable = options["writeValTable"]
-    else:
-        writeValTable = True
+    dbcExportEncoding = options.get("dbcExportEncoding", 'iso-8859-1')
+    dbcExportCommentEncoding = options.get("dbcExportCommentEncoding",  dbcExportEncoding)
+    writeValTable = options.get("writeValTable", True)
+    compatibility = options.get('compatibility', True)
 
-    if 'compatibility' in options:
-        compatibility = options['compatibility']
-    else:
-        compatibility = True
+    whitespaceReplacement = options.get("whitespaceReplacement", '_')
+    if whitespaceReplacement in ['', None] or set(
+            [' ', '\t']).intersection(whitespaceReplacement):
+        print("Warning: Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
+
 
     if db.contains_fd or db.contains_j1939:
         if db.contains_fd:
@@ -429,15 +415,8 @@ def dump(mydb, f, **options):
                     f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
 
 def load(f, **options):
-    if 'dbcImportEncoding' in options:
-        dbcImportEncoding = options["dbcImportEncoding"]
-    else:
-        dbcImportEncoding = 'iso-8859-1'
-    if 'dbcImportCommentEncoding' in options:
-        dbcCommentEncoding = options["dbcImportCommentEncoding"]
-    else:
-        dbcCommentEncoding = dbcImportEncoding
-
+    dbcImportEncoding = options.get("dbcImportEncoding", 'iso-8859-1')
+    dbcCommentEncoding = options.get("dbcImportCommentEncoding", dbcImportEncoding)
     float_factory = options.get('float_factory', default_float_factory)
 
     i = 0
@@ -456,7 +435,7 @@ def load(f, **options):
         l = line.strip()
         if l.__len__() == 0:
             continue
-#        try:
+        try:
             if followUp == FollowUps.signalComment:
                 try:
                     comment += "\n" + \
@@ -507,8 +486,8 @@ def load(f, **options):
                     receiver = list(map(str.strip, temp.group(11).split(',')))
 
                     extras = {}
-                    if float_factory is not None:
-                        extras['float_factory'] = float_factory
+#                    if float_factory is not None:
+#                        extras['float_factory'] = float_factory
 
                     tempSig = Signal(
                         temp.group(1),
@@ -851,9 +830,9 @@ def load(f, **options):
                         signal.muxerForSignal = muxerForSignal
                         signal.muxValMin = muxValMin
                         signal.muxValMax = muxValMax
-#        except:
-#            print ("error with line no: %d" % i)
-#            print (line)
+        except:
+            print ("error with line no: %d" % i)
+            print (line)
         #        else:
 #            print("Unrecocniced line: " + l + " (%d) " % i)
 # Backtracking

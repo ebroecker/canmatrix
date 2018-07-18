@@ -266,8 +266,8 @@ def parseSignal(signal, mux, namespace, nodelist, float_factory):
             is_little_endian = False
 
     unit = ""
-    offset = 0
-    factor = 1
+    offset = float_factory('0')
+    factor = float_factory('1')
     min = None
     max = None
     is_signed = False
@@ -395,13 +395,13 @@ def load(f, **options):
                 values = multiplex.find('./' + namespace + 'Value')
                 if values is not None:
                     if 'min' in values.attrib:
-                        min = values.get('min')
+                        min = float_factory(values.get('min'))
                     if 'max' in values.attrib:
-                        max = values.get('max')
+                        max = float_factory(values.get('max'))
 
                 unit = ""
-                offset = 0
-                factor = 1
+                offset = float_factory('0')
+                factor = float_factory('1')
                 is_signed = False
                 if 'type' in multiplex.attrib:
                     if multiplex.get('type') == 'signed':
@@ -426,9 +426,9 @@ def load(f, **options):
                                 multiplex='Multiplexor')
 
                 if min is not None:
-                    newSig.min = float_factory(min)
+                    newSig.min = min
                 if max is not None:
-                    newSig.max = float_factory(max)
+                    newSig.max = max
 
                 if is_little_endian == False:
                     # motorola/big_endian set/convert startbit

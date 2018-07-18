@@ -538,12 +538,11 @@ def load(file, **options):
         if ".." in test:
             (mini, maxi) = test.strip().split("..", 2)
             unit = ""
-            try:
-                newSig.offset = float_factory(mini)
-                newSig.min = float_factory(mini)
-                newSig.max = float_factory(maxi)
-            except:
-                newSig.offset = 0
+            mini = float_factory(mini)
+            maxi = float_factory(maxi)
+            newSig.min = mini
+            newSig.max = maxi
+            newSig.offset = mini
 
         elif valueName.__len__() > 0:
             if value.strip().__len__() > 0:

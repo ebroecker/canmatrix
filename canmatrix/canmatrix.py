@@ -147,10 +147,7 @@ class Signal(object):
 
     @property
     def spn(self):
-        if "SPN" in self.attributes:
-            return self.attributes["SPN"]
-        else:
-            return None
+        return self.attributes.get("SPN", None)
 
     def multiplexSetter(self, value):
         self.mux_val = None
