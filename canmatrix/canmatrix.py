@@ -93,7 +93,7 @@ class Signal(object):
     """
     contains on Signal of canmatrix-object
     with following attributes:
-            name, startbit,signalsize (in Bits)
+            name, startBit,size (in Bits)
             is_little_endian (1: Intel, 0: Motorola)
             is_signed ()
             factor, offset, min, max
@@ -210,7 +210,7 @@ class Signal(object):
 
     def setStartbit(self, startBit, bitNumbering=None, startLittle=None):
         """
-        set startbit.
+        set startBit.
         bitNumbering is 1 for LSB0/LSBFirst, 0 for MSB0/MSBFirst.
         If bit numbering is consistent with byte order (little=LSB0, big=MSB0)
         (KCD, SYM), start bit unmodified.
@@ -223,26 +223,26 @@ class Signal(object):
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self.is_little_endian:
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-        # if given startbit is for the end of signal data (lsbit),
+        # if given startBit is for the end of signal data (lsbit),
         # convert to start of signal data (msbit)
         if startLittle is True and self.is_little_endian is False:
             startBit = startBit + 1 - self.size
         if startBit < 0:
-            print("wrong startbit found Signal: %s Startbit: %d" %
+            print("wrong startBit found Signal: %s Startbit: %d" %
                   (self.name, startBit))
-            raise Exception("startbit lower zero")
-        self.startbit = startBit
+            raise Exception("startBit lower zero")
+        self.startBit = startBit
 
     def getStartbit(self, bitNumbering=None, startLittle=None):
-        startBit = self.startBit
+        startBitInternal = self.startBit
         # convert from big endian start bit at
         # start bit(msbit) to end bit(lsbit)
         if startLittle is True and self.is_little_endian is False:
-            startBit = startBit + self.size - 1
+            startBitInternal = startBitInternal + self.size - 1
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self.is_little_endian:
-            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-        return int(startBit)
+            startBitInternal = startBitInternal - (startBitInternal % 8) + 7 - (startBitInternal % 8)
+        return int(startBitInternal)
 
     def calculateRawRange(self):
         rawRange = 2 ** self.size
@@ -286,7 +286,7 @@ class Signal(object):
         else:
             bit_type = 's' if self.is_signed else 'u'
 
-        return endian + bit_type + str(self.signalsize)
+        return endian + bit_type + str(self.size)
 
     def phys2raw(self, value=None):
         """Return the raw value (= as is on CAN)
@@ -344,7 +344,7 @@ class SignalGroup(object):
     def __init__(self, name, Id):
         self.signals = []
         self.name = name
-        self.Id = Id
+        self.id = Id
 
     def addSignal(self, signal):
         if signal not in self.signals:
@@ -363,10 +363,6 @@ class SignalGroup(object):
                 return test
         return None
 
-    @property
-    def id(self):
-        return self.Id
-
     def __str__(self):
         return self.name
 
@@ -377,7 +373,7 @@ class SignalGroup(object):
 class Frame(object):
     """
     contains one Frame with following attributes
-    _Id, 
+    id,
     name,
     transmitter (list of boardunits/ECU-names),
     size (= DLC),
@@ -390,7 +386,7 @@ class Frame(object):
 
 
     name = attr.ib(default="")
-    Id = attr.ib(type=int, default = 0)
+    id = attr.ib(type=int, default = 0)
     size = attr.ib(default = 0)
     transmitter = attr.ib(default = attr.Factory(list))
     extended = attr.ib(type=bool, default = False)
@@ -419,7 +415,7 @@ class Frame(object):
 
     @property
     def pgn(self):
-        return CanId(self.Id).pgn
+        return CanId(self.id).pgn
 
     @pgn.setter
     def pgn(self, value):
@@ -602,7 +598,7 @@ class Frame(object):
 
         for sig in self.signals:
             i += 1
-            for bit in range(sig.getStartbit(),  sig.getStartbit() + int(sig.signalsize)):
+            for bit in range(sig.getStartbit(),  sig.getStartbit() + int(sig.size)):
                 if sig.is_little_endian:
                     bitfieldLe[bit] = i
                 else:
@@ -632,7 +628,7 @@ class Frame(object):
             if (i == 63 or bitfield[i] != 0) and startBit != -1:
                 if i == 63:
                     i = 64
-                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),signalSize=i-startBit, startBit=startBit, is_little_endian = False))
+                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=i-startBit, startBit=startBit, is_little_endian = False))
                 startBit = -1
                 sigCount +=1
                 
@@ -665,8 +661,8 @@ class Frame(object):
             signals = sorted(signalsToDecode, key=lambda s: s.getStartbit())
 
         for signal in signals:
-            start = frame_size - signal.getStartbit() - signal.signalsize
-            padding = end - (start + signal.signalsize)
+            start = frame_size - signal.getStartbit() - signal.size
+            padding = end - (start + signal.size)
             if padding > 0:
                 fmt.append('p' + str(padding))
             fmt.append(signal.bitstruct_format())
@@ -774,12 +770,18 @@ class Define(object):
         self.type = None
         self.defaultValue = None
 
+        def saveConvertStrToInt(inStr):
+            out = int(defaultFloatFactory(inStr))
+            if out != defaultFloatFactory(inStr):
+                logger.warning("Warning, integer was expected but got float: got: {0} using {1}\n".format(inStr, str(out)))
+            return out
+
         # for any known type:
         if definition[0:3] == 'INT':
             self.type = 'INT'
             min, max = definition[4:].split(' ', 2)
-            self.min = int(defaultFloatFactory(min))
-            self.max = int(defaultFloatFactory(max))
+            self.min = saveConvertStrToInt(min)
+            self.max = saveConvertStrToInt(max)
 
         elif definition[0:6] == 'STRING':
             self.type = 'STRING'
@@ -801,8 +803,8 @@ class Define(object):
         elif definition[0:3] == 'HEX':
             self.type = 'HEX'
             min, max = definition[4:].split(' ', 2)
-            self.min = int(defaultFloatFactory(min))
-            self.max = int(defaultFloatFactory(max))
+            self.min = saveConvertStrToInt(min)
+            self.max = saveConvertStrToInt(max)
 
         elif definition[0:5] == 'FLOAT':
             self.type = 'FLOAT'
@@ -959,7 +961,7 @@ class CanMatrix(object):
         Id = int(Id)
         extendedMarker = 0x80000000
         for test in self.frames:
-            if test.Id == Id:
+            if test.id == Id:
                 if extended is None:
                     # found ID while ignoring extended or standard
                     return test
@@ -1034,7 +1036,7 @@ class CanMatrix(object):
     def deleteZeroSignals(self):
         for frame in self.frames:
             for signal in frame.signals:
-                if 0 == signal.signalsize:
+                if 0 == signal.size:
                     frame.signals.remove(signal)
 
     def delSignalAttributes(self, unwantedAttributes):
@@ -1056,8 +1058,8 @@ class CanMatrix(object):
             if "force" == strategy:
                 maxBit = 0
                 for sig in frame.signals:
-                    if sig.getStartbit() + int(sig.signalSize) > maxBit:
-                        maxBit = sig.getStartbit() + int(sig.signalSize)
+                    if sig.getStartbit() + int(sig.size) > maxBit:
+                        maxBit = sig.getStartbit() + int(sig.size)
                 frame.size = math.ceil(maxBit / 8)
 
     def renameEcu(self, old, newName):
@@ -1284,7 +1286,7 @@ class CanMatrix(object):
 #
 #
 #
-def computeSignalValueInFrame(startbit, ln, fmt, value):
+def computeSignalValueInFrame(startBit, ln, fmt, value):
     """
     compute the signal value in the frame
     """
@@ -1292,7 +1294,7 @@ def computeSignalValueInFrame(startbit, ln, fmt, value):
     frame = 0
     if fmt == 1:  # Intel
     # using "sawtooth bit counting policy" here
-        pos = ((7 - (startbit % 8)) + 8*(int(startbit/8)))
+        pos = ((7 - (startBit % 8)) + 8*(int(startBit/8)))
         while ln > 0:
             # How many bits can we stuff in current byte?
             #  (Should be 8 for anything but the first loop)
@@ -1312,7 +1314,7 @@ def computeSignalValueInFrame(startbit, ln, fmt, value):
     else:  # Motorola
         # Work this out in "sequential bit counting policy"
         # Compute the LSB position in "sequential"
-        lsbpos = ((7 - (startbit % 8)) + 8*(int(startbit/8)))
+        lsbpos = ((7 - (startBit % 8)) + 8*(int(startBit/8)))
         # deduce the MSB position
         msbpos = 1 + lsbpos - ln
         # "reverse" the value

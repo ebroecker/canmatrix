@@ -167,9 +167,9 @@ Title=\"canmatrix-Export\"
             name = "[" + frame.name + "]\n"
 
             if frame.extended == 1:
-                idType = "ID=%08Xh" % (frame.Id)
+                idType = "ID=%08Xh" % (frame.id)
             else:
-                idType = "ID=%03Xh" % (frame.Id)
+                idType = "ID=%03Xh" % (frame.id)
             if frame.comment is not None and len(frame.comment) > 0:
                 idType += "\t// " + \
                     frame.comment.replace('\n', ' ').replace('\r', ' ')

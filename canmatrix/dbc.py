@@ -166,11 +166,11 @@ def dump(mydb, f, **options):
             frame.addTransmitter("Vector__XXX")
 
         if frame.extended == 1:
-            frame.Id += 0x80000000
+            frame.id += 0x80000000
         
         f.write(
             ("BO_ %d " %
-             frame.Id +
+             frame.id +
              frame.name +
              ": %d " %
              frame.size +
@@ -242,7 +242,7 @@ def dump(mydb, f, **options):
             f.write(
                 ("CM_ BO_ " +
                  "%d " %
-                 frame.Id +
+                 frame.id +
                  ' "').encode(dbcExportEncoding))
             f.write(
                 frame.comment.replace(
@@ -259,7 +259,7 @@ def dump(mydb, f, **options):
                 f.write(
                     ("CM_ SG_ " +
                      "%d " %
-                     frame.Id +
+                     frame.id +
                      name +
                      ' "').encode(dbcExportEncoding, 'ignore'))
                 f.write(
@@ -349,7 +349,7 @@ def dump(mydb, f, **options):
                val = '"' + val + '"'
             elif not val:
                 val = '""'
-            f.write(('BA_ "' + attrib + '" BO_ %d ' % frame.Id + val + ';\n').encode(dbcExportEncoding))
+            f.write(('BA_ "' + attrib + '" BO_ %d ' % frame.id + val + ';\n').encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-attributes:
@@ -380,7 +380,7 @@ def dump(mydb, f, **options):
             if signal.values:
                 f.write(
                     ('VAL_ %d ' %
-                     frame.Id +
+                     frame.id +
                      output_names[frame][signal]).encode(dbcExportEncoding))
                 for attrib, val in sorted(
                         signal.values.items(), key=lambda x: int(x[0])):
@@ -474,7 +474,7 @@ def load(f, **options):
                 regexp = re.compile("^BO\_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-                frame = Frame(temp.group(2), Id=int(temp.group(1)), size=int(temp.group(3)), transmitter=temp.group(4).split())
+                frame = Frame(temp.group(2), id=int(temp.group(1)), size=int(temp.group(3)), transmitter=temp.group(4).split())
                 db.frames.append(frame)
             elif decoded.startswith("SG_ "):
                 pattern = "^SG\_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
@@ -842,8 +842,8 @@ def load(f, **options):
         # to the frame:
         frame.updateReceiver()
         # extended-flag is implicite in canid, thus repair this:
-        if frame.Id > 0x80000000:
-            frame.Id -= 0x80000000
+        if frame.id > 0x80000000:
+            frame.id -= 0x80000000
             frame.extended = 1
 
         if "VFrameFormat" in frame.attributes and "_FD" in frame.attributes["VFrameFormat"]:

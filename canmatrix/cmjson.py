@@ -92,7 +92,7 @@ def dump(db, f, **options):
                     "is_float": signal.is_float
                 })
             exportArray.append({"name": frame.name,
-                                "id": int(frame.Id),
+                                "id": int(frame.id),
                                 "is_extended_frame": frame.extended == 1,
                                 "signals": signals})
     else:  # exportall
@@ -177,7 +177,7 @@ def load(f, **options):
         for frame in jsonData["messages"]:
             #            newframe = Frame(frame["id"],frame["name"],8,None)
             newframe = Frame(frame["name"],
-                             Id=frame["id"],
+                             id=frame["id"],
                              size=8)
             if "length" in frame:
                 newframe.size = frame["length"]

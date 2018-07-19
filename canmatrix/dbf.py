@@ -218,7 +218,7 @@ def load(f, **options):
                     transmitter = None
                 newBo = db.addFrame(
                     Frame(name,
-                          Id=int(Id),
+                          id=int(Id),
                           size=int(size),
                           transmitter=transmitter))
                 #   Frame(int(Id), name, size, transmitter))
@@ -335,7 +335,7 @@ def dump(mydb, f, **options):
         if frame.extended == 1:
             extended = 'X'
         outstr += "[START_MSG] " + frame.name + \
-            ",%d,%d,%d,1,%c," % (frame.Id, frame.size,
+            ",%d,%d,%d,1,%c," % (frame.id, frame.size,
                                  len(frame.signals), extended)
         if frame.transmitter.__len__() == 0:
             frame.addTransmitter("Vector__XXX")
@@ -410,7 +410,7 @@ def dump(mydb, f, **options):
     for frame in db.frames:
         if frame.comment is not None:
             comment = frame.comment.replace("\n", " ")
-            outstr += str(frame.Id) + ' S "' + comment + '";\n'
+            outstr += str(frame.id) + ' S "' + comment + '";\n'
 
     outstr += "[END_DESC_MSG]\n"
 
@@ -432,7 +432,7 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             if signal.comment is not None:
                 comment = signal.comment.replace("\n", " ")
-                outstr += "%d S " % frame.Id + signal.name + ' "' + comment + '";\n'
+                outstr += "%d S " % frame.id + signal.name + ' "' + comment + '";\n'
 
     outstr += "[END_DESC_SIG]\n"
     outstr += "[END_DESC]\n\n"
@@ -490,7 +490,7 @@ def dump(mydb, f, **options):
             continue
 
         for attrib, val in sorted(list(frame.attributes.items())):
-            outstr += str(frame.Id) + ',S,"' + attrib + '","' + val + '"\n'
+            outstr += str(frame.id) + ',S,"' + attrib + '","' + val + '"\n'
     outstr += "[END_PARAM_MSG_VAL]\n"
 
     # signal-attributes:

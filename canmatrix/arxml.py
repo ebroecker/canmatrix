@@ -211,7 +211,7 @@ def dump(dbs, f, **options):
                     canFrameTriggering,
                     'CAN-ADDRESSING-MODE',
                     'EXTENDED')
-            createSubElement(canFrameTriggering, 'IDENTIFIER', str(frame.Id))
+            createSubElement(canFrameTriggering, 'IDENTIFIER', str(frame.id))
 
             pduTriggeringRef.text = "/Cluster/CAN/IPDUTRIGG_" + frame.name
 
@@ -1211,7 +1211,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns, float_factory):
 
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
-        newFrame = Frame(arGetName(frameR, ns), Id=idNum, size=int(dlc.text))
+        newFrame = Frame(arGetName(frameR, ns), id=idNum, size=int(dlc.text))
         comment = getDesc(frameR, arDict, ns)
         if comment is not None:
             newFrame.addComment(comment)
@@ -1224,7 +1224,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns, float_factory):
         if pdu is None:
             pdu = arGetChild(ipduTriggering, "I-SIGNAL-I-PDU", arDict, ns) ## AR4.2
         dlc = arGetChild(pdu, "LENGTH", arDict, ns)
-        newFrame = Frame(sn.text,Id=idNum,dlc=int(dlc.text) / 8)
+        newFrame = Frame(sn.text,id=idNum,dlc=int(dlc.text) / 8)
 
     if pdu is None:
         logger.error("ERROR: pdu")

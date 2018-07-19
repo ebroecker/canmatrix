@@ -8,7 +8,7 @@ def list_pgn(db):
     :param db:
     :return: pgn and id
     """
-    id = [x.Id for x in db.frames]
+    id = [x.id for x in db.frames]
     r = [CanId(t).tuples() for t in id]
     return [t[1] for t in r], id
 
@@ -51,7 +51,7 @@ def join_frame_by_signal_startbit(files):
 
 def renameFrameWithID(sourceDb):
     for frameSc in sourceDb.frames:
-        _, pgn, sa = CanId(frameSc.Id).tuples()
+        _, pgn, sa = CanId(frameSc.id).tuples()
 
         exten = "__{pgn:#04X}_{sa:#02X}_{sa:03d}d".format(pgn=pgn, sa=sa)
         new_name = frameSc.name + exten
@@ -88,7 +88,7 @@ def join_frame_for_manufacturer(db, files):
             targetFr = db.frameById(idx)
             sourceFr = sourceDb.frameById(idy)
 
-            _, pgn, sa = CanId(targetFr.Id).tuples()
+            _, pgn, sa = CanId(targetFr.id).tuples()
             if(sa < 128):
                 print('less', targetFr.name)
                 to_add = []

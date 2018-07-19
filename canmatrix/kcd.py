@@ -176,7 +176,7 @@ def dump(dbs, f, **options):
 
         for frame in db.frames:
             message = etree.Element('Message', id="0x%03X" %
-                                    frame.Id, name=frame.name, length=str(int(frame.size)))
+                                    frame.id, name=frame.name, length=str(int(frame.size)))
 
             if frame.extended == 1:
                 message.set("format", "extended")
@@ -364,7 +364,7 @@ def load(f, **options):
         for message in messages:
             dlc = None
             #newBo = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
-            newBo = Frame(message.get('name'), Id=int(message.get('id'), 16))
+            newBo = Frame(message.get('name'), id=int(message.get('id'), 16))
 
             if 'triggered' in message.attrib:
                 newBo.addAttribute("GenMsgCycleTime", message.get('interval'))

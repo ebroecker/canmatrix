@@ -214,7 +214,7 @@ def dump(db, filename, **options):
         if frame.is_complex_multiplexed:
             logger.error("export complex multiplexers is not supported - ignoring frame " + frame.name)
             continue
-        frameHash[int(frame.Id)] = frame
+        frameHash[int(frame.id)] = frame
 
     # set row to first Frame (row = 0 is header)
     row = 1
@@ -510,9 +510,9 @@ def load(filename, **options):
             launchParam = str(int(launchParam))
 
             if frameId.endswith("xh"):
-                newBo = Frame(frameName, Id=int(frameId[:-2], 16), dlc=dlc, extended=True)
+                newBo = Frame(frameName, id=int(frameId[:-2], 16), dlc=dlc, extended=True)
             else:
-                newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
+                newBo = Frame(frameName, id=int(frameId[:-1], 16), dlc=dlc)
 
             db.frames.addFrame(newBo)
 

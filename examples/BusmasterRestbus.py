@@ -20,7 +20,6 @@
 # DAMAGE.
 
 from __future__ import division
-from builtins import *
 import math
 from struct import *
 import zipfile

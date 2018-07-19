@@ -25,9 +25,9 @@ def getFrameInfo(db, frame):
     retArray = []
     # frame-id
     if frame.extended:
-        retArray.append("%3Xxh" % frame.Id)
+        retArray.append("%3Xxh" % frame.id)
     else:
-        retArray.append("%3Xh" % frame.Id)
+        retArray.append("%3Xh" % frame.id)
     # frame-Name
     retArray.append(frame.name)
 
