@@ -330,6 +330,7 @@ def load(file, **options):
     else:
         motorolaBitFormat = "msbreverse"
 
+    additionalInputs = dict()
     wb = xlrd.open_workbook(file_contents=file.read())
     sh = wb.sheet_by_index(0)
     db = CanMatrix()
@@ -382,6 +383,9 @@ def load(file, **options):
             index['function'] = i
         elif "Byteorder" in value:
             index['byteorder'] = i
+        else:
+            if 'Value' in index and i > index['Value']:
+                additionalInputs[i] = value
 
     if "byteorder" in index:
         index['BUstart'] = index['byteorder'] + 1
@@ -436,6 +440,13 @@ def load(file, **options):
             except:
                 cycleTime = 0
             newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
+
+            for additionalIndex in additionalInputs:
+                if "frame" in additionalInputs[additionalIndex]:
+                    commandStr = additionalInputs[additionalIndex].replace("frame", "newBo")
+                    commandStr += "="
+                    commandStr += str(sh.cell(rownum, additionalIndex).value)
+                    exec(commandStr)
 
         # new signal detected
         if sh.cell(rownum, index['signalName']).value != signalName and len(sh.cell(rownum, index['signalName']).value)>0:
@@ -497,9 +508,19 @@ def load(file, **options):
                             (startbyte - 1) * 8 + startbit,
                             bitNumbering=1,
                             startLittle=True)
+
+                for additionalIndex in additionalInputs:
+                    if "signal" in additionalInputs[additionalIndex]:
+                        commandStr = additionalInputs[additionalIndex].replace("signal", "newSig")
+                        commandStr += "="
+                        commandStr += str(sh.cell(rownum, additionalIndex).value)
+                        exec (commandStr)
+
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
                 function = sh.cell(rownum, index['function']).value
+
+
         value = str(sh.cell(rownum, index['Value']).value)
         valueName = sh.cell(rownum, index['ValueName']).value
 
