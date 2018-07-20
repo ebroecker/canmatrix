@@ -1206,7 +1206,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
         pdu = arGetChild(pdumapping, "PDU", arDict, ns)  # SIGNAL-I-PDU
 
-        if 'SECURED-I-PDU' in pdu.tag:
+        if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
             logger.info("found secured pdu - no signal extraction possible: %s", arGetName(pdu,ns))
 
         pduFrameMapping[pdu] = arGetName(frameR, ns)
