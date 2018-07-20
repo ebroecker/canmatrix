@@ -426,8 +426,9 @@ def dump(mydb, f, **options):
                 if signal.muxerForSignal is not None:
                     f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
 
-    for envVar in db.envVars:
-        f.write("EV_ {0} : {1} [{2}|{3}] \"{4}\" {5} {6} {7} {8};\n".format(envVar["varName"], envVar["varType"], envVar["min"],
+    for envVarName in db.envVars:
+        envVar = db.envVars[envVarName]
+        f.write("EV_ {0} : {1} [{2}|{3}] \"{4}\" {5} {6} {7} {8};\n".format(envVarName, envVar["varType"], envVar["min"],
                                                                             envVar["max"], envVar["unit"],envVar["initialValue"],
                                                                             envVar["evId"], envVar["accessType"],
                                                                             ",".join(envVar["accessNodes"])) )
@@ -868,7 +869,7 @@ def load(f, **options):
                 evId  = temp.group(7)
                 accessType  = temp.group(8)
                 accessNodes = temp.group(9).split(",")
-                db.addEnvVar({"varName": varName, "varType": varType, "min" : min, "max" : max,
+                db.addEnvVar( varName, {"varType": varType, "min" : min, "max" : max,
                               "unit" : unit, "initialValue" : initialValue, "evId" : evId,
                               "accessType" : accessType, "accessNodes" : accessNodes})
 
