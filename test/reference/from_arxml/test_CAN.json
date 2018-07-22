@@ -10,7 +10,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Enable_command",
                     "offset": 0.0,
                     "start_bit": 0
@@ -20,7 +20,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FaultClear_command",
                     "offset": 0.0,
                     "start_bit": 2
@@ -30,7 +30,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "InvertHwEnable_command",
                     "offset": 0.0,
                     "start_bit": 56
@@ -40,7 +40,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "EnableUPSMode_command",
                     "offset": 0.0,
                     "start_bit": 58
@@ -50,7 +50,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "EnableSplitPhase_command",
                     "offset": 0.0,
                     "start_bit": 60
@@ -60,7 +60,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ForceRelayMX1_command",
                     "offset": 0.0,
                     "start_bit": 32
@@ -70,7 +70,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ForceRelayMX2_command",
                     "offset": 0.0,
                     "start_bit": 34
@@ -80,7 +80,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ForceRelayK1_Precharge_command",
                     "offset": 0.0,
                     "start_bit": 36
@@ -90,7 +90,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ForceRelayRelayK2_DCRun_comand",
                     "offset": 0.0,
                     "start_bit": 38
@@ -100,7 +100,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "PhaseRotation_command",
                     "offset": 0.0,
                     "start_bit": 62
@@ -110,7 +110,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MasterFollowerMode_command",
                     "offset": 0.0,
                     "start_bit": 16
@@ -127,7 +127,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "RealPower command",
                     "offset": 0.0,
                     "start_bit": 24
@@ -137,7 +137,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ReactivePower_command",
                     "offset": 0.0,
                     "start_bit": 56
@@ -154,7 +154,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Voltage_command",
                     "offset": 0.0,
                     "start_bit": 8
@@ -164,7 +164,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Frequency_command",
                     "offset": 0.0,
                     "start_bit": 24
@@ -181,7 +181,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "RealPower_measured",
                     "offset": 0.0,
                     "start_bit": 24
@@ -191,7 +191,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ReactivePower_measured",
                     "offset": 0.0,
                     "start_bit": 56
@@ -208,7 +208,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "WriteSerialNumber",
                     "offset": 0.0,
                     "start_bit": 0
@@ -218,7 +218,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "SerialNumber",
                     "offset": 0.0,
                     "start_bit": 56
@@ -228,7 +228,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FactoryAccess",
                     "offset": 0.0,
                     "start_bit": 24
@@ -245,7 +245,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "CommandSetNVParam_MUX",
                     "offset": 0.0,
                     "start_bit": 8
@@ -255,7 +255,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Dummy",
                     "offset": 0.0,
                     "start_bit": 24
@@ -265,7 +265,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "VUnder50pct",
                     "offset": 0.0,
                     "start_bit": 24
@@ -275,7 +275,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "V50to88pct",
                     "offset": 0.0,
                     "start_bit": 40
@@ -285,7 +285,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "V110to120pct",
                     "offset": 0.0,
                     "start_bit": 56
@@ -295,7 +295,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "VOver120",
                     "offset": 0.0,
                     "start_bit": 24
@@ -305,7 +305,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqHi",
                     "offset": 0.0,
                     "start_bit": 24
@@ -315,7 +315,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqLo",
                     "offset": 0.0,
                     "start_bit": 40
@@ -325,7 +325,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqVeryLo",
                     "offset": 0.0,
                     "start_bit": 56
@@ -335,7 +335,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqVeryLo",
                     "offset": 0.0,
                     "start_bit": 24
@@ -345,7 +345,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqLo",
                     "offset": 0.0,
                     "start_bit": 40
@@ -355,7 +355,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqHi",
                     "offset": 0.0,
                     "start_bit": 56
@@ -365,7 +365,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "NodeID",
                     "offset": 0.0,
                     "start_bit": 16
@@ -375,7 +375,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "SA_Mask",
                     "offset": 0.0,
                     "start_bit": 24
@@ -385,7 +385,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Baudrate",
                     "offset": 0.0,
                     "start_bit": 36
@@ -395,7 +395,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ThermalOverload",
                     "offset": 0.0,
                     "start_bit": 16
@@ -405,7 +405,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MX1Open",
                     "offset": 0.0,
                     "start_bit": 24
@@ -415,7 +415,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MX1Close",
                     "offset": 0.0,
                     "start_bit": 40
@@ -425,7 +425,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MX2Open",
                     "offset": 0.0,
                     "start_bit": 56
@@ -435,7 +435,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MX2Close",
                     "offset": 0.0,
                     "start_bit": 24
@@ -445,7 +445,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "K1Open",
                     "offset": 0.0,
                     "start_bit": 40
@@ -455,7 +455,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "K1Close",
                     "offset": 0.0,
                     "start_bit": 56
@@ -465,7 +465,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "K2Open",
                     "offset": 0.0,
                     "start_bit": 24
@@ -475,7 +475,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "K2Close",
                     "offset": 0.0,
                     "start_bit": 40
@@ -492,7 +492,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Enable_command",
                     "offset": 0.0,
                     "start_bit": 0
@@ -502,7 +502,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FaultClear_command",
                     "offset": 0.0,
                     "start_bit": 2
@@ -512,7 +512,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "InvertHwEnable_command",
                     "offset": 0.0,
                     "start_bit": 56
@@ -522,7 +522,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "EnableUPSMode_command",
                     "offset": 0.0,
                     "start_bit": 58
@@ -532,7 +532,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "EnableSplitPhase_command",
                     "offset": 0.0,
                     "start_bit": 60
@@ -542,7 +542,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ForceRelayMX1_command",
                     "offset": 0.0,
                     "start_bit": 32
@@ -552,7 +552,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ForceRelayMX2_command",
                     "offset": 0.0,
                     "start_bit": 34
@@ -562,7 +562,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ForceRelayK1_Precharge_command",
                     "offset": 0.0,
                     "start_bit": 36
@@ -572,7 +572,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ForceRelayRelayK2_DCRun_comand",
                     "offset": 0.0,
                     "start_bit": 38
@@ -582,7 +582,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "PhaseRotation_command",
                     "offset": 0.0,
                     "start_bit": 62
@@ -592,7 +592,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MasterFollowerMode_command",
                     "offset": 0.0,
                     "start_bit": 16
@@ -609,7 +609,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "RealPower_command",
                     "offset": 0.0,
                     "start_bit": 24
@@ -619,7 +619,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ReactivePower_command",
                     "offset": 0.0,
                     "start_bit": 56
@@ -636,7 +636,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Voltage_command",
                     "offset": 0.0,
                     "start_bit": 8
@@ -646,7 +646,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Frequency_command",
                     "offset": 0.0,
                     "start_bit": 24
@@ -663,7 +663,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "RealPower_measured",
                     "offset": 0.0,
                     "start_bit": 24
@@ -673,7 +673,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ReactivePower_measured",
                     "offset": 0.0,
                     "start_bit": 56
@@ -696,7 +696,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "RealPower_measured",
                     "offset": 0.0,
                     "start_bit": 24
@@ -713,7 +713,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "RealPower_measured",
                     "offset": 0.0,
                     "start_bit": 24
@@ -723,7 +723,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ReactivePower_measured",
                     "offset": 0.0,
                     "start_bit": 56
@@ -740,7 +740,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "RealPower_echo",
                     "offset": 0.0,
                     "start_bit": 24
@@ -750,7 +750,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ReactivePower_echo",
                     "offset": 0.0,
                     "start_bit": 56
@@ -767,7 +767,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "State_status",
                     "offset": 0.0,
                     "start_bit": 0
@@ -777,7 +777,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MX2Permissive_status",
                     "offset": 0.0,
                     "start_bit": 18
@@ -787,7 +787,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "PowerAvailAC_status",
                     "offset": 0.0,
                     "start_bit": 10
@@ -797,7 +797,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "PowerAvailDC_status",
                     "offset": 0.0,
                     "start_bit": 12
@@ -807,7 +807,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "PowerCircuitEnabled_status",
                     "offset": 0.0,
                     "start_bit": 14
@@ -817,7 +817,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "HardwareEnable_status",
                     "offset": 0.0,
                     "start_bit": 8
@@ -827,7 +827,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Enable_echo",
                     "offset": 0.0,
                     "start_bit": 4
@@ -837,7 +837,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FaultClr_echo",
                     "offset": 0.0,
                     "start_bit": 6
@@ -847,7 +847,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MessageValidModeControl_status",
                     "offset": 0.0,
                     "start_bit": 24
@@ -857,7 +857,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MX1Permissive_status",
                     "offset": 0.0,
                     "start_bit": 16
@@ -867,7 +867,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "K2DCRunPermissive_status",
                     "offset": 0.0,
                     "start_bit": 22
@@ -877,7 +877,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "K1PrechargePermissive_status",
                     "offset": 0.0,
                     "start_bit": 20
@@ -887,7 +887,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MessageValidPowerCMD_status",
                     "offset": 0.0,
                     "start_bit": 26
@@ -897,7 +897,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "MessageValidVF_status",
                     "offset": 0.0,
                     "start_bit": 28
@@ -907,7 +907,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "CANbus_status",
                     "offset": 0.0,
                     "start_bit": 30
@@ -917,7 +917,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "EnableUPSMode_echo",
                     "offset": 0.0,
                     "start_bit": 32
@@ -927,7 +927,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "EnableSplitPhase_echo",
                     "offset": 0.0,
                     "start_bit": 34
@@ -937,7 +937,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "PhaseRotation_status",
                     "offset": 0.0,
                     "start_bit": 36
@@ -947,7 +947,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "LineVoltageDetected_status",
                     "offset": 0.0,
                     "start_bit": 38
@@ -957,7 +957,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "PhaseRotation_echo",
                     "offset": 0.0,
                     "start_bit": 40
@@ -974,7 +974,7 @@
                     "factor": 0.01,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "v5p0_Supply",
                     "offset": 0.0,
                     "start_bit": 8
@@ -984,7 +984,7 @@
                     "factor": 0.01,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "v3p3_Supply",
                     "offset": 0.0,
                     "start_bit": 24
@@ -994,7 +994,7 @@
                     "factor": 0.01,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "v24_Supply",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1004,7 +1004,7 @@
                     "factor": 0.01,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "v15_Supply",
                     "offset": 0.0,
                     "start_bit": 56
@@ -1021,7 +1021,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "TempInlet_measured",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1031,7 +1031,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "TempInternal_measured",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1041,7 +1041,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ConverterLosses",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1058,7 +1058,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "BridgeAVoltageOk_status",
                     "offset": 0.0,
                     "start_bit": 59
@@ -1068,7 +1068,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "OvercurrentAC_status",
                     "offset": 0.0,
                     "start_bit": 2
@@ -1078,7 +1078,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "BridgeBVoltageOk_status",
                     "offset": 0.0,
                     "start_bit": 43
@@ -1088,7 +1088,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "OvervoltageDC_status",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1098,7 +1098,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "OvertempPowerDevice_status",
                     "offset": 0.0,
                     "start_bit": 14
@@ -1108,7 +1108,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "OvertempInternal_status",
                     "offset": 0.0,
                     "start_bit": 12
@@ -1118,7 +1118,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "LossValidControlMessage_status",
                     "offset": 0.0,
                     "start_bit": 20
@@ -1128,7 +1128,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "UndervoltageDC_status",
                     "offset": 0.0,
                     "start_bit": 10
@@ -1138,7 +1138,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ControlHardwareFail_status",
                     "offset": 0.0,
                     "start_bit": 16
@@ -1148,7 +1148,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "OvercurrentDC_status",
                     "offset": 0.0,
                     "start_bit": 6
@@ -1158,7 +1158,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "GeneralFault_status",
                     "offset": 0.0,
                     "start_bit": 0
@@ -1168,7 +1168,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "LossOfAC_status",
                     "offset": 0.0,
                     "start_bit": 4
@@ -1178,7 +1178,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "EStopShutdown_status",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1188,7 +1188,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "BridgeAFault_status",
                     "offset": 0.0,
                     "start_bit": 56
@@ -1198,7 +1198,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "BridgeBFault_status",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1208,7 +1208,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "IllegalTransition_status",
                     "offset": 0.0,
                     "start_bit": 26
@@ -1218,7 +1218,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "InvalidEEHeader_status",
                     "offset": 0.0,
                     "start_bit": 28
@@ -1228,7 +1228,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "InvalidEESection_status",
                     "offset": 0.0,
                     "start_bit": 30
@@ -1238,7 +1238,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ThermalOverload",
                     "offset": 0.0,
                     "start_bit": 32
@@ -1255,7 +1255,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "VoltageAC_measured",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1265,7 +1265,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "CurrentAC_measured",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1275,7 +1275,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Frequency_measured",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1292,7 +1292,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "VoltageDCBus",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1302,7 +1302,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "CurrentDC_measured",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1312,7 +1312,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "VoltageDCInput_measured",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1329,7 +1329,7 @@
                     "factor": 0.01,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "n15V_Supply",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1339,7 +1339,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "DiodeTemperature",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1349,7 +1349,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "IGBTTemperature",
                     "offset": 0.0,
                     "start_bit": 56
@@ -1366,7 +1366,7 @@
                     "factor": 0.01,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "InterfaceRev",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1376,7 +1376,7 @@
                     "factor": 0.01,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "ControlSwRev",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1386,7 +1386,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "BuildTime",
                     "offset": 0.0,
                     "start_bit": 56
@@ -1403,7 +1403,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Voltage_echo",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1413,7 +1413,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Frequency_echo",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1430,7 +1430,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "SerialNumber",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1447,7 +1447,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Hash",
                     "offset": 0.0,
                     "start_bit": 28
@@ -1464,7 +1464,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusNVParam_MUX",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1474,7 +1474,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "Dummy",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1484,7 +1484,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "VUnder50pct",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1494,7 +1494,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "V50to88pct",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1504,7 +1504,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "V110to120pct",
                     "offset": 0.0,
                     "start_bit": 56
@@ -1514,7 +1514,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "VOver120",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1524,7 +1524,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqHi",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1534,7 +1534,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqLo",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1544,7 +1544,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqVeryLo",
                     "offset": 0.0,
                     "start_bit": 56
@@ -1554,7 +1554,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqVeryLo",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1564,7 +1564,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqLo",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1574,7 +1574,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "FreqHi",
                     "offset": 0.0,
                     "start_bit": 56
@@ -1584,7 +1584,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusNodeID",
                     "offset": 0.0,
                     "start_bit": 16
@@ -1594,7 +1594,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusSA_Mask",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1604,7 +1604,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusBaudrate",
                     "offset": 0.0,
                     "start_bit": 36
@@ -1614,7 +1614,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusThermalOverload",
                     "offset": 0.0,
                     "start_bit": 16
@@ -1624,7 +1624,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusMX1Open",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1634,7 +1634,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusMX1Close",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1644,7 +1644,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusMX2Open",
                     "offset": 0.0,
                     "start_bit": 56
@@ -1654,7 +1654,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusMX2Close",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1664,7 +1664,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusK1Open",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1674,7 +1674,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusK1Close",
                     "offset": 0.0,
                     "start_bit": 56
@@ -1684,7 +1684,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusK2Open",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1694,7 +1694,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "StatusK2Close",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1711,7 +1711,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "L1Current_measured",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1721,7 +1721,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "L2Current_measured",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1731,7 +1731,7 @@
                     "factor": 1.0,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "L3Current_measured",
                     "offset": 0.0,
                     "start_bit": 40
@@ -1748,7 +1748,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "L1Voltage_measured",
                     "offset": 0.0,
                     "start_bit": 8
@@ -1758,7 +1758,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "L2Voltage_measured",
                     "offset": 0.0,
                     "start_bit": 24
@@ -1768,7 +1768,7 @@
                     "factor": 0.1,
                     "is_big_endian": true,
                     "is_float": false,
-                    "is_signed": false,
+                    "is_signed": true,
                     "name": "L3Voltage_measured",
                     "offset": 0.0,
                     "start_bit": 40

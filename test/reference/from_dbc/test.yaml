@@ -1,89 +1,118 @@
 !!python/object:canmatrix.canmatrix.CanMatrix
-_BUs: !!python/object:canmatrix.canmatrix.BoardUnitList
+attributes: {}
+boardUnits: !!python/object:canmatrix.canmatrix.BoardUnitList
   _list:
   - !!python/object:canmatrix.canmatrix.BoardUnit
-    _attributes: {NetworkNode: '273'}
-    _comment: sender ECU
-    _name: testBU
+    attributes: {NetworkNode: '273'}
+    comment: sender ECU
+    name: testBU
   - !!python/object:canmatrix.canmatrix.BoardUnit
-    _attributes: {}
-    _comment: receiver ECU
-    _name: recBU
-_attributes: {}
-_buDefines:
-  NetworkNode: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null, _type: INT,
-    definition: INT 0 65535, max: 65535, min: 0, type: null}
-_fl: !!python/object:canmatrix.canmatrix.FrameList
+    attributes: {}
+    comment: receiver ECU
+    name: recBU
+buDefines:
+  NetworkNode: !!python/object:canmatrix.canmatrix.Define {defaultValue: null, definition: INT
+      0 65535, max: 65535, min: 0, type: INT}
+envVars: {}
+frameDefines:
+  GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {defaultValue: null,
+    definition: INT 0 65535, max: 65535, min: 0, type: INT}
+frames: !!python/object:canmatrix.canmatrix.FrameList
   _list:
   - !!Frame
     _Id: 291
-    _SignalGroups: []
-    _Size: 8
-    _Transmitter: [testBU]
-    _attributes: {GenMsgCycleTime: '100'}
-    _comment: 'Multi
+    _j1939_pgn: null
+    _j1939_prio: 0
+    _j1939_source: 0
+    attributes: {GenMsgCycleTime: '100'}
+    comment: 'Multi
 
       Line
 
       Frame comment'
-    _extended: false
-    _mux_names: {}
-    _name: testFrame1
-    _receiver: [recBU]
-    _signals:
+    extended: false
+    is_complex_multiplexed: false
+    is_fd: false
+    is_j1939: false
+    mux_names: {}
+    name: testFrame1
+    receiver: [recBU]
+    signalGroups: []
+    signals:
     - !!python/object:canmatrix.canmatrix.Signal
-      _attributes: {}
-      _comment: "Multi\nLine\nSignal comment with a-umlaut: \xE4"
-      _factor: 5.0
-      _is_float: false
-      _is_little_endian: false
-      _is_signed: false
-      _max: 500.0
-      _min: 0.0
-      _multiplex: null
-      _name: someTestSignal
-      _offset: 1.0
-      _receiver: [recBU]
-      _signalsize: 11
-      _startbit: 9
-      _unit: "specialCharUnit\xB0$"
       _values: {}
+      attributes: {}
+      calc_max_for_none: true
+      calc_min_for_none: true
+      comment: "Multi\nLine\nSignal comment with a-umlaut: \xE4"
       comments: {}
       enumeration: null
+      factor: 5.0
+      is_float: false
+      is_little_endian: false
+      is_multiplexer: false
+      is_signed: false
+      max: 500.0
+      min: 0.0
+      multiplex: null
+      muxValMax: 0
+      muxValMin: 0
+      mux_val: null
+      mux_value: null
+      muxerForSignal: null
+      name: someTestSignal
+      offset: 1.0
+      receiver: [recBU]
+      signalsize: 11
+      startbit: 9
+      unit: "specialCharUnit\xB0$"
     - !!python/object:canmatrix.canmatrix.Signal
-      _attributes: {}
-      _comment: null
-      _factor: 1.0
-      _is_float: false
-      _is_little_endian: true
-      _is_signed: false
-      _max: 6.0
-      _min: 0.0
-      _multiplex: null
-      _name: Signal
-      _offset: 0.0
-      _receiver: [recBU]
-      _signalsize: 3
-      _startbit: 20
-      _unit: someUnit
       _values: {1: one, 2: two, 3: three}
+      attributes: {}
+      calc_max_for_none: true
+      calc_min_for_none: true
+      comment: null
       comments: {}
       enumeration: null
+      factor: 1.0
+      is_float: false
+      is_little_endian: true
+      is_multiplexer: false
+      is_signed: false
+      max: 6.0
+      min: 0.0
+      multiplex: null
+      muxValMax: 0
+      muxValMin: 0
+      mux_val: null
+      mux_value: null
+      muxerForSignal: null
+      name: Signal
+      offset: 0.0
+      receiver: [recBU]
+      signalsize: 3
+      startbit: 20
+      unit: someUnit
+    size: 8
+    transmitter: [testBU]
   - !!Frame
     _Id: 18
-    _SignalGroups: []
-    _Size: 8
-    _Transmitter: [testBU]
-    _attributes: {}
-    _comment: null
-    _extended: 1
-    _mux_names: {}
-    _name: extendedFrame
-    _receiver: []
-    _signals: []
-_frameDefines:
-  GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {_defaultValue: null,
-    _type: INT, definition: INT 0 65535, max: 65535, min: 0, type: null}
-_globalDefines: {}
-_signalDefines: {}
-_valueTables: {}
+    _j1939_pgn: null
+    _j1939_prio: 0
+    _j1939_source: 0
+    attributes: {}
+    comment: null
+    extended: 1
+    is_complex_multiplexed: false
+    is_fd: false
+    is_j1939: false
+    mux_names: {}
+    name: extendedFrame
+    receiver: []
+    signalGroups: []
+    signals: []
+    size: 8
+    transmitter: [testBU]
+globalDefines: {}
+signalDefines: {}
+valueTables: {}

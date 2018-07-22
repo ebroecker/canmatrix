@@ -131,7 +131,7 @@ def dump(mydb, f, **options):
 
     if writeValTable:
         # ValueTables
-        for table in db.valueTables:
+        for table in sorted(db.valueTables):
             f.write(("VAL_TABLE_ " + table).encode(dbcExportEncoding))
             for row in db.valueTables[table]:
                 f.write(

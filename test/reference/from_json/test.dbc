@@ -9,10 +9,10 @@ BU_:
 
 
 BO_ 291 testFrame1: 8 Vector__XXX
- SG_ someTestSignal : 3|11@0+ (5,1) [1|10236] "" Vector__XXX
- SG_ Signal : 20|3@1+ (1,0) [0|7] "" Vector__XXX
+ SG_ someTestSignal : 3|11@0+ (5,1) [1|10236] "specialCharUnit°$" Vector__XXX
+ SG_ Signal : 20|3@1+ (1,0) [0|7] "someUnit" Vector__XXX
 
-BO_ 18 extendedFrame: 8 Vector__XXX
+BO_ 2147483666 extendedFrame: 8 Vector__XXX
 
 
 

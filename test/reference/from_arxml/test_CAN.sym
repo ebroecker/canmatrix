@@ -64,112 +64,112 @@ enum WriteSerialNumber(0="Disable", 1="Enable", 2="Error", 3="N/A")
 ID=00FFAB41h	// Operational commands are received by the module via control bits within this message.
 Type=Extended
 DLC=8
-Var=Enable_command unsigned 6,2 -m /e:Enable_command	// Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.
-Var=FaultClear_command unsigned 4,2 -m /e:FaultClear_command	// Clears the latched fault message.
-Var=InvertHwEnable_command unsigned 62,2 -m /e:InvertHwEnable_command	// Inverts the logic of the Hardware Enable input.
-Var=EnableUPSMode_command unsigned 60,2 -m /e:EnableUPSMode_command	// Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.
-Var=EnableSplitPhase_command unsigned 58,2 -m /e:EnableSplitPhase_command	// Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.
-Var=ForceRelayMX1_command unsigned 38,2 -m /e:ForceRelayMX1_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-Var=ForceRelayMX2_command unsigned 36,2 -m /e:ForceRelayMX2_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-Var=ForceRelayK1_Precharge_command unsigned 34,2 -m /e:ForceRelayK1_Precharge_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-Var=ForceRelayRelayK2_DCRun_comand unsigned 32,2 -m /e:ForceRelayRelayK2_DCRun_comand	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-Var=PhaseRotation_command unsigned 56,2 -m /e:PhaseRotation_command	// Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.
-Var=MasterFollowerMode_command unsigned 22,2 -m /e:MasterFollowerMode_command	// Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.
+Var=Enable_command signed 6,2 -m /min:-2 /max:1 /e:Enable_command	// Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.
+Var=FaultClear_command signed 4,2 -m /min:-2 /max:1 /e:FaultClear_command	// Clears the latched fault message.
+Var=InvertHwEnable_command signed 62,2 -m /min:-2 /max:1 /e:InvertHwEnable_command	// Inverts the logic of the Hardware Enable input.
+Var=EnableUPSMode_command signed 60,2 -m /min:-2 /max:1 /e:EnableUPSMode_command	// Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.
+Var=EnableSplitPhase_command signed 58,2 -m /min:-2 /max:1 /e:EnableSplitPhase_command	// Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.
+Var=ForceRelayMX1_command signed 38,2 -m /min:-2 /max:1 /e:ForceRelayMX1_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
+Var=ForceRelayMX2_command signed 36,2 -m /min:-2 /max:1 /e:ForceRelayMX2_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
+Var=ForceRelayK1_Precharge_command signed 34,2 -m /min:-2 /max:1 /e:ForceRelayK1_Precharge_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
+Var=ForceRelayRelayK2_DCRun_comand signed 32,2 -m /min:-2 /max:1 /e:ForceRelayRelayK2_DCRun_comand	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
+Var=PhaseRotation_command signed 56,2 -m /min:-2 /max:1 /e:PhaseRotation_command	// Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.
+Var=MasterFollowerMode_command signed 22,2 -m /min:-2 /max:1 /e:MasterFollowerMode_command	// Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.
 
 [FRAME_CommandPower]
 ID=0CFFAC41h	// Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.
 Type=Extended
 DLC=8
-Var=RealPower command unsigned 0,32 -m	// Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
-Var=ReactivePower_command unsigned 32,32 -m	// Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
+Var=RealPower command signed 0,32 -m /min:-2147483648 /max:2147483647	// Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
+Var=ReactivePower_command signed 32,32 -m /min:-2147483648 /max:2147483647	// Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
 
 [FRAME_CommandVF]
 ID=0CFFAE41h	// Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.
 Type=Extended
 DLC=8
-Var=Voltage_command unsigned 0,16 -m /f:0.1	// Desired output voltage while in grid forming mode.
-Var=Frequency_command unsigned 16,16 -m /f:0.1	// Desired output frequency while in grid forming mode.
+Var=Voltage_command signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Desired output voltage while in grid forming mode.
+Var=Frequency_command signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Desired output frequency while in grid forming mode.
 
 [FRAME_MasterMeasuredPower]
 ID=0CFFCAF6h	// Returns the actual measured power.
 Type=Extended
 DLC=8
-Var=RealPower_measured unsigned 0,32 -m	// Measured real power of master unit.
-Var=ReactivePower_measured unsigned 32,32 -m	// Measured reactive power of master unit.
+Var=RealPower_measured signed 0,32 -m /min:-2147483648 /max:2147483647	// Measured real power of master unit.
+Var=ReactivePower_measured signed 32,32 -m /min:-2147483648 /max:2147483647	// Measured reactive power of master unit.
 
 [FRAME_CommandFactoryControl]
 ID=0CFFAF41h
 Type=Extended
 DLC=8
-Var=WriteSerialNumber unsigned 6,2 -m /e:WriteSerialNumber
-Var=SerialNumber unsigned 32,32 -m
-Var=FactoryAccess unsigned 16,16 -m
+Var=WriteSerialNumber signed 6,2 -m /min:-2 /max:1 /e:WriteSerialNumber
+Var=SerialNumber signed 32,32 -m /min:-2147483648 /max:2147483647
+Var=FactoryAccess signed 16,16 -m /min:-32768 /max:32767
 
 [FRAME_CommandSetNVParam]
 ID=0CFFAA41h	// Provides access to configure non-volatile parameters.  Note that these parameters can only be set when the inverter's power stage is disabled (PowerCircuitEnabled_status in StatusBits message is 'Disabled.')
 Type=Extended
 DLC=8
-Var=CommandSetNVParam_MUX unsigned 0,16 -m /e:CommandSetNVParam_MUX
-Var=Dummy unsigned 16,16 -m
-Var=VUnder50pct unsigned 16,16 -m	// Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-Var=V50to88pct unsigned 32,16 -m	// Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-Var=V110to120pct unsigned 48,16 -m	// Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-Var=VOver120 unsigned 16,16 -m	// Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-Var=FreqHi unsigned 16,16 -m /f:0.1	// Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.
-Var=FreqLo unsigned 32,16 -m /f:0.1	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-Var=FreqVeryLo unsigned 48,16 -m /f:0.1	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-Var=FreqVeryLo unsigned 16,16 -m /f:0.1	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-Var=FreqLo unsigned 32,16 -m /f:0.1	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-Var=FreqHi unsigned 48,16 -m /f:0.1	// Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.
-Var=NodeID unsigned 16,8 -m	// J1939 Source Address node for the module.
-Var=SA_Mask unsigned 24,8 -m	// Not presently used.
-Var=Baudrate unsigned 32,4 -m /e:Baudrate	// CAN baudrate
-Var=ThermalOverload unsigned 22,2 -m /e:ThermalOverload	// Configures action to take when thermal overload input is active.
-Var=MX1Open unsigned 16,16 -m	// Maximum time required for the MX1 contactor to open.
-Var=MX1Close unsigned 32,16 -m	// Maximum time required for the MX1 contactor to close.
-Var=MX2Open unsigned 48,16 -m	// Maximum time required for the MX2 contactor to open.
-Var=MX2Close unsigned 16,16 -m	// Maximum time required for the MX2 contactor to open.
-Var=K1Open unsigned 32,16 -m	// Maximum time required for the K1 contactor to open.
-Var=K1Close unsigned 48,16 -m	// Maximum time required for the K1 contactor to close.
-Var=K2Open unsigned 16,16 -m	// Maximum time required for the K2 contactor to open.
-Var=K2Close unsigned 32,16 -m	// Maximum time required for the K2 contactor to close.
+Var=CommandSetNVParam_MUX signed 0,16 -m /min:-32768 /max:32767 /e:CommandSetNVParam_MUX
+Var=Dummy signed 16,16 -m /min:-32768 /max:32767
+Var=VUnder50pct signed 16,16 -m /min:-32768 /max:32767	// Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
+Var=V50to88pct signed 32,16 -m /min:-32768 /max:32767	// Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
+Var=V110to120pct signed 48,16 -m /min:-32768 /max:32767	// Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
+Var=VOver120 signed 16,16 -m /min:-32768 /max:32767	// Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
+Var=FreqHi signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.
+Var=FreqLo signed 32,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
+Var=FreqVeryLo signed 48,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
+Var=FreqVeryLo signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
+Var=FreqLo signed 32,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
+Var=FreqHi signed 48,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.
+Var=NodeID signed 16,8 -m /min:-128 /max:127	// J1939 Source Address node for the module.
+Var=SA_Mask signed 24,8 -m /min:-128 /max:127	// Not presently used.
+Var=Baudrate signed 32,4 -m /min:-8 /max:7 /e:Baudrate	// CAN baudrate
+Var=ThermalOverload signed 22,2 -m /min:-2 /max:1 /e:ThermalOverload	// Configures action to take when thermal overload input is active.
+Var=MX1Open signed 16,16 -m /min:-32768 /max:32767	// Maximum time required for the MX1 contactor to open.
+Var=MX1Close signed 32,16 -m /min:-32768 /max:32767	// Maximum time required for the MX1 contactor to close.
+Var=MX2Open signed 48,16 -m /min:-32768 /max:32767	// Maximum time required for the MX2 contactor to open.
+Var=MX2Close signed 16,16 -m /min:-32768 /max:32767	// Maximum time required for the MX2 contactor to open.
+Var=K1Open signed 32,16 -m /min:-32768 /max:32767	// Maximum time required for the K1 contactor to open.
+Var=K1Close signed 48,16 -m /min:-32768 /max:32767	// Maximum time required for the K1 contactor to close.
+Var=K2Open signed 16,16 -m /min:-32768 /max:32767	// Maximum time required for the K2 contactor to open.
+Var=K2Close signed 32,16 -m /min:-32768 /max:32767	// Maximum time required for the K2 contactor to close.
 
 [FRAME_CommandModeControlAPU2]
 ID=00FF9B41h	// Operational commands are received by the module via control bits within this message.
 Type=Extended
 DLC=8
-Var=Enable_command unsigned 6,2 -m /e:Enable_command	// Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.
-Var=FaultClear_command unsigned 4,2 -m /e:FaultClear_command	// Clears the latched fault message.
-Var=InvertHwEnable_command unsigned 62,2 -m /e:InvertHwEnable_command	// Inverts the logic of the Hardware Enable input.
-Var=EnableUPSMode_command unsigned 60,2 -m /e:EnableUPSMode_command	// Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.
-Var=EnableSplitPhase_command unsigned 58,2 -m /e:EnableSplitPhase_command	// Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.
-Var=ForceRelayMX1_command unsigned 38,2 -m /e:ForceRelayMX1_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-Var=ForceRelayMX2_command unsigned 36,2 -m /e:ForceRelayMX2_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-Var=ForceRelayK1_Precharge_command unsigned 34,2 -m /e:ForceRelayK1_Precharge_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-Var=ForceRelayRelayK2_DCRun_comand unsigned 32,2 -m /e:ForceRelayRelayK2_DCRun_comand	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-Var=PhaseRotation_command unsigned 56,2 -m /e:PhaseRotation_command	// Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.
-Var=MasterFollowerMode_command unsigned 22,2 -m /e:MasterFollowerMode_command	// Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.
+Var=Enable_command signed 6,2 -m /min:-2 /max:1 /e:Enable_command	// Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.
+Var=FaultClear_command signed 4,2 -m /min:-2 /max:1 /e:FaultClear_command	// Clears the latched fault message.
+Var=InvertHwEnable_command signed 62,2 -m /min:-2 /max:1 /e:InvertHwEnable_command	// Inverts the logic of the Hardware Enable input.
+Var=EnableUPSMode_command signed 60,2 -m /min:-2 /max:1 /e:EnableUPSMode_command	// Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.
+Var=EnableSplitPhase_command signed 58,2 -m /min:-2 /max:1 /e:EnableSplitPhase_command	// Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.
+Var=ForceRelayMX1_command signed 38,2 -m /min:-2 /max:1 /e:ForceRelayMX1_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
+Var=ForceRelayMX2_command signed 36,2 -m /min:-2 /max:1 /e:ForceRelayMX2_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
+Var=ForceRelayK1_Precharge_command signed 34,2 -m /min:-2 /max:1 /e:ForceRelayK1_Precharge_command	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
+Var=ForceRelayRelayK2_DCRun_comand signed 32,2 -m /min:-2 /max:1 /e:ForceRelayRelayK2_DCRun_comand	// If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
+Var=PhaseRotation_command signed 56,2 -m /min:-2 /max:1 /e:PhaseRotation_command	// Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.
+Var=MasterFollowerMode_command signed 22,2 -m /min:-2 /max:1 /e:MasterFollowerMode_command	// Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.
 
 [FRAME_CommandPowerAPU2]
 ID=0CFF9C41h	// Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.
 Type=Extended
 DLC=8
-Var=RealPower_command unsigned 0,32 -m	// Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
-Var=ReactivePower_command unsigned 32,32 -m	// Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
+Var=RealPower_command signed 0,32 -m /min:-2147483648 /max:2147483647	// Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
+Var=ReactivePower_command signed 32,32 -m /min:-2147483648 /max:2147483647	// Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
 
 [FRAME_CommandVFAPU2]
 ID=0CFF9E41h	// Sets the desired voltage and frequency for the module to produce while in the GRID FORMING mode.  In addition, while in the READY and GRID FOLLOWING modes, this message is used to set the nominal voltage levels for detection of acceptable AC line voltage.
 Type=Extended
 DLC=8
-Var=Voltage_command unsigned 0,16 -m /f:0.1	// Desired output voltage while in grid forming mode.
-Var=Frequency_command unsigned 16,16 -m /f:0.1	// Desired output frequency while in grid forming mode.
+Var=Voltage_command signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Desired output voltage while in grid forming mode.
+Var=Frequency_command signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Desired output frequency while in grid forming mode.
 
 [FRAME_MasterMeasuredPowerAPU2]
 ID=0CFFCAF7h	// Returns the actual measured power.
 Type=Extended
 DLC=8
-Var=RealPower_measured unsigned 0,32 -m	// Measured real power of master unit.
-Var=ReactivePower_measured unsigned 32,32 -m	// Measured reactive power of master unit.
+Var=RealPower_measured signed 0,32 -m /min:-2147483648 /max:2147483647	// Measured real power of master unit.
+Var=ReactivePower_measured signed 32,32 -m /min:-2147483648 /max:2147483647	// Measured reactive power of master unit.
 
 [FRAME_justString]
 ID=1CFFACC0h
@@ -180,181 +180,181 @@ DLC=8
 ID=1CFFABC0h
 Type=Extended
 DLC=8
-Var=RealPower_measured unsigned 0,32 -m	// Measured real power of master unit.
+Var=RealPower_measured signed 0,32 -m /min:-2147483648 /max:2147483647	// Measured real power of master unit.
 
 [FRAME_StatusMeasuredPower]
 ID=0CFFCAF7h	// Returns the actual measured power.
 Type=Extended
 DLC=8
-Var=RealPower_measured unsigned 0,32 -m	// Measured real power of master unit.
-Var=ReactivePower_measured unsigned 32,32 -m	// Measured reactive power of master unit.
+Var=RealPower_measured signed 0,32 -m /min:-2147483648 /max:2147483647	// Measured real power of master unit.
+Var=ReactivePower_measured signed 32,32 -m /min:-2147483648 /max:2147483647	// Measured reactive power of master unit.
 
 [FRAME_StatusCommandedPower]
 ID=18FFC4F7h	// Echoes the commanded power (P&Q) as received in CommandPQ.
 Type=Extended
 DLC=8
-Var=RealPower_echo unsigned 0,32 -m	// Echoed real power command.
-Var=ReactivePower_echo unsigned 32,32 -m	// Echoed reactive power command.
+Var=RealPower_echo signed 0,32 -m /min:-2147483648 /max:2147483647	// Echoed real power command.
+Var=ReactivePower_echo signed 32,32 -m /min:-2147483648 /max:2147483647	// Echoed reactive power command.
 
 [FRAME_StatusBits]
 ID=0CFFC3F7h	// Bits representing the status of the power module.
 Type=Extended
 DLC=8
-Var=State_status unsigned 4,4 -m /e:State_status	// Active control mode.
-Var=MX2Permissive_status unsigned 20,2 -m /e:MX2Permissive_status	// MX2 relay status
-Var=PowerAvailAC_status unsigned 12,2 -m /e:PowerAvailAC_status	// Indicates that AC power is connected and that voltage and frequency are within nominal ranges.
-Var=PowerAvailDC_status unsigned 10,2 -m /e:PowerAvailDC_status	// Indicates that DC bus voltage is within operating range.
-Var=PowerCircuitEnabled_status unsigned 8,2 -m /e:PowerCircuitEnabled_status	// Indicates whether the switching devices are active.
-Var=HardwareEnable_status unsigned 14,2 -m /e:HardwareEnable_status	// Status of the hardware enable.
-Var=Enable_echo unsigned 2,2 -m /e:Enable_echo	// Echos the state of the Enable command withing the CommandModeControl message.
-Var=FaultClr_echo unsigned 0,2 -m /e:FaultClr_echo	// Echos the state of the FaultClear command withing the CommandModeControl message.
-Var=MessageValidModeControl_status unsigned 30,2 -m /e:MessageValidModeControl_status	// Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.
-Var=MX1Permissive_status unsigned 22,2 -m /e:MX1Permissive_status	// MX1 relay status
-Var=K2DCRunPermissive_status unsigned 16,2 -m /e:K2DCRunPermissive_status	// K2 DC Run relay status.
-Var=K1PrechargePermissive_status unsigned 18,2 -m /e:K1PrechargePermissive_status	// K1 precharge relay status.
-Var=MessageValidPowerCMD_status unsigned 28,2 -m /e:MessageValidPowerCMD_status	// Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.
-Var=MessageValidVF_status unsigned 26,2 -m /e:MessageValidVF_status	// Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.
-Var=CANbus_status unsigned 24,2 -m /e:CANbus_status	// Operational status of the CAN bus driver.
-Var=EnableUPSMode_echo unsigned 38,2 -m /e:EnableUPSMode_echo	// Echos the state of the EnableUPSMode command withing the CommandModeControl message.
-Var=EnableSplitPhase_echo unsigned 36,2 -m /e:EnableSplitPhase_echo	// Echos the state of the EnableSplitPhase command withing the CommandModeControl message.
-Var=PhaseRotation_status unsigned 34,2 -m /e:PhaseRotation_status	// Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.
-Var=LineVoltageDetected_status unsigned 32,2 -m /e:LineVoltageDetected_status	// Flag indicating if voltage is detected on L1, L2 or L3.
-Var=PhaseRotation_echo unsigned 46,2 -m /e:PhaseRotation_echo	// Echos the state of PhaseRotation_command withing the CommandModeControl message.
+Var=State_status signed 4,4 -m /min:-8 /max:7 /e:State_status	// Active control mode.
+Var=MX2Permissive_status signed 20,2 -m /min:-2 /max:1 /e:MX2Permissive_status	// MX2 relay status
+Var=PowerAvailAC_status signed 12,2 -m /min:-2 /max:1 /e:PowerAvailAC_status	// Indicates that AC power is connected and that voltage and frequency are within nominal ranges.
+Var=PowerAvailDC_status signed 10,2 -m /min:-2 /max:1 /e:PowerAvailDC_status	// Indicates that DC bus voltage is within operating range.
+Var=PowerCircuitEnabled_status signed 8,2 -m /min:-2 /max:1 /e:PowerCircuitEnabled_status	// Indicates whether the switching devices are active.
+Var=HardwareEnable_status signed 14,2 -m /min:-2 /max:1 /e:HardwareEnable_status	// Status of the hardware enable.
+Var=Enable_echo signed 2,2 -m /min:-2 /max:1 /e:Enable_echo	// Echos the state of the Enable command withing the CommandModeControl message.
+Var=FaultClr_echo signed 0,2 -m /min:-2 /max:1 /e:FaultClr_echo	// Echos the state of the FaultClear command withing the CommandModeControl message.
+Var=MessageValidModeControl_status signed 30,2 -m /min:-2 /max:1 /e:MessageValidModeControl_status	// Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.
+Var=MX1Permissive_status signed 22,2 -m /min:-2 /max:1 /e:MX1Permissive_status	// MX1 relay status
+Var=K2DCRunPermissive_status signed 16,2 -m /min:-2 /max:1 /e:K2DCRunPermissive_status	// K2 DC Run relay status.
+Var=K1PrechargePermissive_status signed 18,2 -m /min:-2 /max:1 /e:K1PrechargePermissive_status	// K1 precharge relay status.
+Var=MessageValidPowerCMD_status signed 28,2 -m /min:-2 /max:1 /e:MessageValidPowerCMD_status	// Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.
+Var=MessageValidVF_status signed 26,2 -m /min:-2 /max:1 /e:MessageValidVF_status	// Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.
+Var=CANbus_status signed 24,2 -m /min:-2 /max:1 /e:CANbus_status	// Operational status of the CAN bus driver.
+Var=EnableUPSMode_echo signed 38,2 -m /min:-2 /max:1 /e:EnableUPSMode_echo	// Echos the state of the EnableUPSMode command withing the CommandModeControl message.
+Var=EnableSplitPhase_echo signed 36,2 -m /min:-2 /max:1 /e:EnableSplitPhase_echo	// Echos the state of the EnableSplitPhase command withing the CommandModeControl message.
+Var=PhaseRotation_status signed 34,2 -m /min:-2 /max:1 /e:PhaseRotation_status	// Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.
+Var=LineVoltageDetected_status signed 32,2 -m /min:-2 /max:1 /e:LineVoltageDetected_status	// Flag indicating if voltage is detected on L1, L2 or L3.
+Var=PhaseRotation_echo signed 46,2 -m /min:-2 /max:1 /e:PhaseRotation_echo	// Echos the state of PhaseRotation_command withing the CommandModeControl message.
 
 [FRAME_StatusControlVoltage]
 ID=1CFFC5F7h	// Lists present voltage of each power supply on the control board (24V, 15V, 5V, and 3.3V.)
 Type=Extended
 DLC=8
-Var=v5p0_Supply unsigned 0,16 -m /f:0.01	// Present voltage of the control board 5V power suppy.
-Var=v3p3_Supply unsigned 16,16 -m /f:0.01	// Present voltage of the control board 3.3V power supply.
-Var=v24_Supply unsigned 32,16 -m /f:0.01	// Present voltage of the control board 24V power supply.
-Var=v15_Supply unsigned 48,16 -m /f:0.01	// Present voltage of the control board 15V power supply.
+Var=v5p0_Supply signed 0,16 -m /f:0.01 /min:-327.68 /max:327.67	// Present voltage of the control board 5V power suppy.
+Var=v3p3_Supply signed 16,16 -m /f:0.01 /min:-327.68 /max:327.67	// Present voltage of the control board 3.3V power supply.
+Var=v24_Supply signed 32,16 -m /f:0.01 /min:-327.68 /max:327.67	// Present voltage of the control board 24V power supply.
+Var=v15_Supply signed 48,16 -m /f:0.01 /min:-327.68 /max:327.67	// Present voltage of the control board 15V power supply.
 
 [FRAME_StatusTemps]
 ID=18FFCBF7h	// Returns the inlet water temperature to the module as well as module internal ambient temperature.
 Type=Extended
 DLC=8
-Var=TempInlet_measured unsigned 0,16 -m /f:0.1	// Coolant inlet temperature
-Var=TempInternal_measured unsigned 16,16 -m /f:0.1	// Internal ambient temperature
-Var=ConverterLosses unsigned 32,16 -m	// Power converter thermal loss
+Var=TempInlet_measured signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Coolant inlet temperature
+Var=TempInternal_measured signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Internal ambient temperature
+Var=ConverterLosses signed 32,16 -m /min:-32768 /max:32767	// Power converter thermal loss
 
 [FRAME_StatusFaults]
 ID=0CFFC8F7h	// Fault bits.
 Type=Extended
 DLC=8
-Var=BridgeAVoltageOk_status unsigned 60,1 -m /e:BridgeAVoltageOk_status	// Indicates whether a hardware trip has been activated.
-Var=OvercurrentAC_status unsigned 4,2 -m /e:OvercurrentAC_status	// Set immediately upon the software detection of AC current exceeding the threshold value.
-Var=BridgeBVoltageOk_status unsigned 44,1 -m /e:BridgeBVoltageOk_status	// Indicates whether a hardware trip has been activated.
-Var=OvervoltageDC_status unsigned 14,2 -m /e:OvervoltageDC_status	// Set immediately upon the software detection of DC voltage exceeding the threshold value.
-Var=OvertempPowerDevice_status unsigned 8,2 -m /e:OvertempPowerDevice_status	// Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.
-Var=OvertempInternal_status unsigned 10,2 -m /e:OvertempInternal_status	// Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.
-Var=LossValidControlMessage_status unsigned 16,4 -m /e:LossValidControlMessage_status	// Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.
-Var=UndervoltageDC_status unsigned 12,2 -m /e:UndervoltageDC_status	// Indicates loss of DC source voltage.
-Var=ControlHardwareFail_status unsigned 20,4 -m /e:ControlHardwareFail_status	// Set upon the failure of control hardware to return expected response.
-Var=OvercurrentDC_status unsigned 0,2 -m /e:OvercurrentDC_status	// Set immediately upon the software detection of DC current exceeding the threshold value.
-Var=GeneralFault_status unsigned 6,2 -m /e:GeneralFault_status	// Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.
-Var=LossOfAC_status unsigned 2,2 -m /e:LossOfAC_status	// In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.
-Var=EStopShutdown_status unsigned 30,2 -m /e:EStopShutdown_status	// Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.
-Var=BridgeAFault_status unsigned 61,3 -m /e:BridgeAFault_status	// Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.
-Var=BridgeBFault_status unsigned 45,3 -m /e:BridgeBFault_status	// Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.
-Var=IllegalTransition_status unsigned 28,2 -m /e:IllegalTransition_status	// Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.
-Var=InvalidEEHeader_status unsigned 26,2 -m /e:InvalidEEHeader_status	// Indicates that reading of non-volatile parameters at power-up failed.
-Var=InvalidEESection_status unsigned 24,2 -m /e:InvalidEESection_status	// Indicates that reading or writing of an non-volatile parameter section failed.
-Var=ThermalOverload unsigned 38,2 -m /e:ThermalOverload	// Configures action to take when thermal overload input is active.
+Var=BridgeAVoltageOk_status signed 60,1 -m /min:-1 /max:0 /e:BridgeAVoltageOk_status	// Indicates whether a hardware trip has been activated.
+Var=OvercurrentAC_status signed 4,2 -m /min:-2 /max:1 /e:OvercurrentAC_status	// Set immediately upon the software detection of AC current exceeding the threshold value.
+Var=BridgeBVoltageOk_status signed 44,1 -m /min:-1 /max:0 /e:BridgeBVoltageOk_status	// Indicates whether a hardware trip has been activated.
+Var=OvervoltageDC_status signed 14,2 -m /min:-2 /max:1 /e:OvervoltageDC_status	// Set immediately upon the software detection of DC voltage exceeding the threshold value.
+Var=OvertempPowerDevice_status signed 8,2 -m /min:-2 /max:1 /e:OvertempPowerDevice_status	// Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.
+Var=OvertempInternal_status signed 10,2 -m /min:-2 /max:1 /e:OvertempInternal_status	// Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.
+Var=LossValidControlMessage_status signed 16,4 -m /min:-8 /max:7 /e:LossValidControlMessage_status	// Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.
+Var=UndervoltageDC_status signed 12,2 -m /min:-2 /max:1 /e:UndervoltageDC_status	// Indicates loss of DC source voltage.
+Var=ControlHardwareFail_status signed 20,4 -m /min:-8 /max:7 /e:ControlHardwareFail_status	// Set upon the failure of control hardware to return expected response.
+Var=OvercurrentDC_status signed 0,2 -m /min:-2 /max:1 /e:OvercurrentDC_status	// Set immediately upon the software detection of DC current exceeding the threshold value.
+Var=GeneralFault_status signed 6,2 -m /min:-2 /max:1 /e:GeneralFault_status	// Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.
+Var=LossOfAC_status signed 2,2 -m /min:-2 /max:1 /e:LossOfAC_status	// In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.
+Var=EStopShutdown_status signed 30,2 -m /min:-2 /max:1 /e:EStopShutdown_status	// Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.
+Var=BridgeAFault_status signed 61,3 -m /min:-4 /max:3 /e:BridgeAFault_status	// Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.
+Var=BridgeBFault_status signed 45,3 -m /min:-4 /max:3 /e:BridgeBFault_status	// Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.
+Var=IllegalTransition_status signed 28,2 -m /min:-2 /max:1 /e:IllegalTransition_status	// Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.
+Var=InvalidEEHeader_status signed 26,2 -m /min:-2 /max:1 /e:InvalidEEHeader_status	// Indicates that reading of non-volatile parameters at power-up failed.
+Var=InvalidEESection_status signed 24,2 -m /min:-2 /max:1 /e:InvalidEESection_status	// Indicates that reading or writing of an non-volatile parameter section failed.
+Var=ThermalOverload signed 38,2 -m /min:-2 /max:1 /e:ThermalOverload	// Configures action to take when thermal overload input is active.
 
 [FRAME_StatusACParameters]
 ID=0CFFC2F7h	// RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.
 Type=Extended
 DLC=8
-Var=VoltageAC_measured unsigned 0,16 -m /f:0.1	// Measured RMS AC voltage.
-Var=CurrentAC_measured unsigned 16,16 -m	// Measured RMS AC current.
-Var=Frequency_measured unsigned 32,16 -m /f:0.1	// Measured frequency.
+Var=VoltageAC_measured signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Measured RMS AC voltage.
+Var=CurrentAC_measured signed 16,16 -m /min:-32768 /max:32767	// Measured RMS AC current.
+Var=Frequency_measured signed 32,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Measured frequency.
 
 [FRAME_StatusDCParameters]
 ID=1CFFC7F7h	// Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input voltage.
 Type=Extended
 DLC=8
-Var=VoltageDCBus unsigned 16,16 -m	// Measured DC bus voltage.
-Var=CurrentDC_measured unsigned 32,16 -m	// Measured DC current.
-Var=VoltageDCInput_measured unsigned 0,16 -m	// Estimated DC input voltage.
+Var=VoltageDCBus signed 16,16 -m /min:-32768 /max:32767	// Measured DC bus voltage.
+Var=CurrentDC_measured signed 32,16 -m /min:-32768 /max:32767	// Measured DC current.
+Var=VoltageDCInput_measured signed 0,16 -m /min:-32768 /max:32767	// Estimated DC input voltage.
 
 [FRAME_StatusControlVolts2]
 ID=1CFFC6F7h	// Present voltage of the -15V power supply on the control board.
 Type=Extended
 DLC=8
-Var=n15V_Supply unsigned 0,16 -m /f:0.01	// Present voltage of the control board -15V power supply.
-Var=DiodeTemperature unsigned 32,16 -m	// Hottest diode
-Var=IGBTTemperature unsigned 48,16 -m	// Hottest IGBT
+Var=n15V_Supply signed 0,16 -m /f:0.01 /min:-327.68 /max:327.67	// Present voltage of the control board -15V power supply.
+Var=DiodeTemperature signed 32,16 -m /min:-32768 /max:32767	// Hottest diode
+Var=IGBTTemperature signed 48,16 -m /min:-32768 /max:32767	// Hottest IGBT
 
 [FRAME_softwareRev]
 ID=1CFFC1F7h	// Software revision.
 Type=Extended
 DLC=8
-Var=InterfaceRev unsigned 16,16 -m /f:0.01	// Software revision of the CAN communication interface.
-Var=ControlSwRev unsigned 0,16 -m /f:0.01	// Software revision of the control firmware.
-Var=BuildTime unsigned 32,32 -m	// Build timestamp.
+Var=InterfaceRev signed 16,16 -m /f:0.01 /min:-327.68 /max:327.67	// Software revision of the CAN communication interface.
+Var=ControlSwRev signed 0,16 -m /f:0.01 /min:-327.68 /max:327.67	// Software revision of the control firmware.
+Var=BuildTime signed 32,32 -m /min:-2147483648 /max:2147483647	// Build timestamp.
 
 [FRAME_StatusCommandVF]
 ID=18FFC9F7h	// Echoes the voltage and frequency commands from commandVF.
 Type=Extended
 DLC=8
-Var=Voltage_echo unsigned 0,16 -m /f:0.1	// Echoed voltage command
-Var=Frequency_echo unsigned 16,16 -m /f:0.1	// Echoed frequency command.
+Var=Voltage_echo signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Echoed voltage command
+Var=Frequency_echo signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Echoed frequency command.
 
 [FRAME_serialNumber]
 ID=1CFFCCF7h	// Serial number of the power module.
 Type=Extended
 DLC=8
-Var=SerialNumber unsigned 0,32 -m
+Var=SerialNumber signed 0,32 -m /min:-2147483648 /max:2147483647
 
 [FRAME_softwareRevHash]
 ID=1CFFCDF7h	// Unique software revision identification hashcode.
 Type=Extended
 DLC=8
-Var=Hash unsigned 0,28 -m	// Unique revision identification hashcode.
+Var=Hash signed 0,28 -m /min:-134217728 /max:134217727	// Unique revision identification hashcode.
 
 [FRAME_StatusNVParam]
 ID=1CFFA9F7h	// Echos back parameter values.
 Type=Extended
 DLC=8
-Var=StatusNVParam_MUX unsigned 0,16 -m /e:StatusNVParam_MUX
-Var=Dummy unsigned 16,16 -m
-Var=VUnder50pct unsigned 16,16 -m	// Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-Var=V50to88pct unsigned 32,16 -m	// Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-Var=V110to120pct unsigned 48,16 -m	// Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-Var=VOver120 unsigned 16,16 -m	// Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
-Var=FreqHi unsigned 16,16 -m /f:0.1	// Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.
-Var=FreqLo unsigned 32,16 -m /f:0.1	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-Var=FreqVeryLo unsigned 48,16 -m /f:0.1	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-Var=FreqVeryLo unsigned 16,16 -m /f:0.1	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-Var=FreqLo unsigned 32,16 -m /f:0.1	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
-Var=FreqHi unsigned 48,16 -m /f:0.1	// Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.
-Var=StatusNodeID unsigned 16,8 -m	// J1939 Source Address node for the module
-Var=StatusSA_Mask unsigned 24,8 -m	// Mask used to configure from which master source addresses to accept commands.
-Var=StatusBaudrate unsigned 32,4 -m /e:StatusBaudrate
-Var=StatusThermalOverload unsigned 22,2 -m /e:StatusThermalOverload	// Configured action to take when thermal overload input is active.
-Var=StatusMX1Open unsigned 16,16 -m	// Maximum time required for the MX1 contactor to open.
-Var=StatusMX1Close unsigned 32,16 -m	// Maximum time required for the MX1 contactor to close.
-Var=StatusMX2Open unsigned 48,16 -m	// Maximum time required for the MX2 contactor to open.
-Var=StatusMX2Close unsigned 16,16 -m	// Maximum time required for the MX2 contactor to open.
-Var=StatusK1Open unsigned 32,16 -m	// Maximum time required for the K1 contactor to open.
-Var=StatusK1Close unsigned 48,16 -m	// Maximum time required for the K1 contactor to close.
-Var=StatusK2Open unsigned 16,16 -m	// Maximum time required for the K2 contactor to open.
-Var=StatusK2Close unsigned 32,16 -m	// Maximum time required for the K2 contactor to close.
+Var=StatusNVParam_MUX signed 0,16 -m /min:-32768 /max:32767 /e:StatusNVParam_MUX
+Var=Dummy signed 16,16 -m /min:-32768 /max:32767
+Var=VUnder50pct signed 16,16 -m /min:-32768 /max:32767	// Determines the fault trip time when Line-to-line rms voltage for a phase remains under 50 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
+Var=V50to88pct signed 32,16 -m /min:-32768 /max:32767	// Determines the fault trip time when Line-to-line rms voltage for a phase remains between 50 and 88 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
+Var=V110to120pct signed 48,16 -m /min:-32768 /max:32767	// Determines the fault trip time when Line-to-line rms voltage for a phase remains between 110 and 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
+Var=VOver120 signed 16,16 -m /min:-32768 /max:32767	// Determines the fault trip time when Line-to-line rms voltage for a phase remains Over 120 percent of the nominal value specified in the CommandVF message while the inverter is running in GRID FOLLOWING mode.
+Var=FreqHi signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.
+Var=FreqLo signed 32,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
+Var=FreqVeryLo signed 48,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
+Var=FreqVeryLo signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
+Var=FreqLo signed 32,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, in which the frequency monitor will trip if the line frequency remains below this bound but above the value of FreqVeryLo for the time specified in FreqLo of the LFM_ClearingTimes Mux.
+Var=FreqHi signed 48,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Determines the upper bound, above which the frequency monitor will trip if the line frequency remains for the time specified in FreqHi of the LFM_ClearingTimes Mux.
+Var=StatusNodeID signed 16,8 -m /min:-128 /max:127	// J1939 Source Address node for the module
+Var=StatusSA_Mask signed 24,8 -m /min:-128 /max:127	// Mask used to configure from which master source addresses to accept commands.
+Var=StatusBaudrate signed 32,4 -m /min:-8 /max:7 /e:StatusBaudrate
+Var=StatusThermalOverload signed 22,2 -m /min:-2 /max:1 /e:StatusThermalOverload	// Configured action to take when thermal overload input is active.
+Var=StatusMX1Open signed 16,16 -m /min:-32768 /max:32767	// Maximum time required for the MX1 contactor to open.
+Var=StatusMX1Close signed 32,16 -m /min:-32768 /max:32767	// Maximum time required for the MX1 contactor to close.
+Var=StatusMX2Open signed 48,16 -m /min:-32768 /max:32767	// Maximum time required for the MX2 contactor to open.
+Var=StatusMX2Close signed 16,16 -m /min:-32768 /max:32767	// Maximum time required for the MX2 contactor to open.
+Var=StatusK1Open signed 32,16 -m /min:-32768 /max:32767	// Maximum time required for the K1 contactor to open.
+Var=StatusK1Close signed 48,16 -m /min:-32768 /max:32767	// Maximum time required for the K1 contactor to close.
+Var=StatusK2Open signed 16,16 -m /min:-32768 /max:32767	// Maximum time required for the K2 contactor to open.
+Var=StatusK2Close signed 32,16 -m /min:-32768 /max:32767	// Maximum time required for the K2 contactor to close.
 
 [FRAME_StatusLineCurrents]
 ID=18FFD0F7h	// Measured RMS line currents.
 Type=Extended
 DLC=8
-Var=L1Current_measured unsigned 0,16 -m	// Measured L1 RMS line current.
-Var=L2Current_measured unsigned 16,16 -m	// Measured L2 RMS line current.
-Var=L3Current_measured unsigned 32,16 -m	// Measured L3 RMS line current.
+Var=L1Current_measured signed 0,16 -m /min:-32768 /max:32767	// Measured L1 RMS line current.
+Var=L2Current_measured signed 16,16 -m /min:-32768 /max:32767	// Measured L2 RMS line current.
+Var=L3Current_measured signed 32,16 -m /min:-32768 /max:32767	// Measured L3 RMS line current.
 
 [FRAME_StatusLineVoltages]
 ID=18FFD1F7h	// Measured RMS line voltages.
 Type=Extended
 DLC=8
-Var=L1Voltage_measured unsigned 0,16 -m /f:0.1	// Measured L1 RMS line-neutral voltage
-Var=L2Voltage_measured unsigned 16,16 -m /f:0.1	// Measured L2 RMS line-neutral voltage
-Var=L3Voltage_measured unsigned 32,16 -m /f:0.1	// Measured L3 RMS line-neutral voltage
+Var=L1Voltage_measured signed 0,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Measured L1 RMS line-neutral voltage
+Var=L2Voltage_measured signed 16,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Measured L2 RMS line-neutral voltage
+Var=L3Voltage_measured signed 32,16 -m /f:0.1 /min:-3276.8 /max:3276.7000000000003	// Measured L3 RMS line-neutral voltage
 
