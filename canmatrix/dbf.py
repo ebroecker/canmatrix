@@ -440,7 +440,7 @@ def dump(mydb, f, **options):
     outstr += "[START_PARAM]\n"
     # db-parameter
     outstr += "[START_PARAM_NET]\n"
-    for (type, define) in list(db.globalDefines.items()):
+    for (type, define) in sorted(list(db.globalDefines.items())):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -449,7 +449,7 @@ def dump(mydb, f, **options):
 
     # bu-parameter
     outstr += "[START_PARAM_NODE]\n"
-    for (type, define) in list(db.buDefines.items()):
+    for (type, define) in sorted(list(db.buDefines.items())):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -458,7 +458,7 @@ def dump(mydb, f, **options):
 
     # frame-parameter
     outstr += "[START_PARAM_MSG]\n"
-    for (type, define) in list(db.frameDefines.items()):
+    for (type, define) in sorted(list(db.frameDefines.items())):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"

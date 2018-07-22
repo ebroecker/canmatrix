@@ -119,7 +119,7 @@ def dump(mydb, f, **options):
 
     if writeValTable:
         # ValueTables
-        for table in db.valueTables:
+        for table in sorted(db.valueTables):
             f.write(("VAL_TABLE_ " + table).encode(dbcExportEncoding))
             for row in db.valueTables[table]:
                 f.write(
@@ -413,6 +413,13 @@ def dump(mydb, f, **options):
             for signal in frame.signals:
                 if signal.muxerForSignal is not None:
                     f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
+
+    for envVarName in db.envVars:
+        envVar = db.envVars[envVarName]
+        f.write("EV_ {0} : {1} [{2}|{3}] \"{4}\" {5} {6} {7} {8};\n".format(envVarName, envVar["varType"], envVar["min"],
+                                                                            envVar["max"], envVar["unit"],envVar["initialValue"],
+                                                                            envVar["evId"], envVar["accessType"],
+                                                                            ",".join(envVar["accessNodes"])) )
 
 def load(f, **options):
     dbcImportEncoding = options.get("dbcImportEncoding", 'iso-8859-1')
@@ -830,6 +837,25 @@ def load(f, **options):
                         signal.muxerForSignal = muxerForSignal
                         signal.muxValMin = muxValMin
                         signal.muxValMax = muxValMax
+            elif decoded.startswith("EV_ "):
+                pattern = "^EV_ +([A-Za-z0-9\-_]+) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(\w*)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([A-Za-z0-9\-_]+) +(.*);"
+                regexp = re.compile(pattern)
+                temp = regexp.match(decoded)
+
+                varName = temp.group(1)
+                varType = temp.group(2)
+                min = temp.group(3)
+                max = temp.group(4)
+                unit = temp.group(5)
+                initialValue  = temp.group(6)
+                evId  = temp.group(7)
+                accessType  = temp.group(8)
+                accessNodes = temp.group(9).split(",")
+                db.addEnvVar( varName, {"varType": varType, "min" : min, "max" : max,
+                              "unit" : unit, "initialValue" : initialValue, "evId" : evId,
+                              "accessType" : accessType, "accessNodes" : accessNodes})
+
+
         except:
             print ("error with line no: %d" % i)
             print (line)

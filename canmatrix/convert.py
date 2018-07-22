@@ -68,10 +68,11 @@ def convert(infile, outfileName, **options):
                 for dbTemp in dbTempList:
                     if mergeString.__len__() == 1:
                         print ("merge complete: " + mergeString[0])
-                        for frame in dbTempList[dbTemp].frames:
-                            copyResult = cmcp.copyFrame(frame.id, dbTempList[dbTemp], db)
-                            if copyResult == False:
-                                logger.error("ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + database)
+                        db.merge([dbTempList[dbTemp]])
+#                        for frame in dbTempList[dbTemp].frames:
+#                            copyResult = cmcp.copyFrame(frame.id, dbTempList[dbTemp], db)
+#                            if copyResult == False:
+#                                logger.error("ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + database)
                     for mergeOpt in mergeString[1:]:
                         if mergeOpt.split('=')[0] == "ecu":
                             cmcp.copyBUwithFrames(

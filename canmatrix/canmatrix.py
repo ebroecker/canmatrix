@@ -846,9 +846,13 @@ class CanMatrix(object):
     globalDefines = attr.ib(default = attr.Factory(dict))
     buDefines = attr.ib(default = attr.Factory(dict))
     valueTables = attr.ib(default = attr.Factory(dict))
+    envVars = attr.ib(default = attr.Factory(dict))
 
     def __iter__(self):
         return iter(self.frames)
+
+    def addEnvVar(self, name, envVarDict):
+        self.envVars[name] = envVarDict
 
     @property
     def contains_fd(self):
@@ -1214,6 +1218,12 @@ class CanMatrix(object):
                 if copyResult == False:
                     logger.error(
                         "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + self.frameById(frame.id).name)
+            for envVar in dbTemp.envVars:
+                if envVar not in self.envVars:
+                    self.addEnvVar(envVar, dbTemp.envVars[envVar])
+                else:
+                    logger.error(
+                        "Name Conflict, could not copy/merge EnvVar " + envVar)
 
     def setFdType(self):
         for frame in self.frames:
