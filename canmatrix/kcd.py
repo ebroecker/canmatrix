@@ -77,7 +77,7 @@ def createSignal(signal, nodeList, typeEnums):
             consumer.append(noderef)
         if consumer.__len__() > 0:
             sig.append(consumer)
-   value = etree.Element('Value')
+    value = etree.Element('Value')
     if signal.is_float:
         if signal.signalsize > 32:
             value.set('type', "double")
@@ -192,16 +192,6 @@ def dump(dbs, f, **options):
                     producer.append(noderef)
             if producer.__len__() > 0:
                 message.append(producer)
-            #comment = etree.Element('Notes')
-            #if frame.comment is not None:
-            #    comment.text = frame.comment
-            #    message.append(comment)
-
-            # standard-signals:
-            #for signal in frame.signals:
-            #    if signal.multiplex is None:
-            #        sig = createSignal(signal, nodeList, signalTypeEnums)
-            #        message.append(sig)
 
             # check Multiplexor if present:
             value = None
@@ -209,7 +199,6 @@ def dump(dbs, f, **options):
             multiplexor = None
             for signal in frame.signals:
                 if signal.multiplex is not None and signal.multiplex == 'Multiplexor':
-                    print ("murali:2")
                     multiplexor = etree.Element('Multiplex', name=signal.name, offset=str(
                         signal.getStartbit()), length=str(int(signal.signalsize)))
                     value = etree.Element('Value')
@@ -217,8 +206,6 @@ def dump(dbs, f, **options):
                         value.set('min', "%g" % signal.min)
                     if float(signal.max) != 1:
                         value.set('max', "%g" % signal.max)
-                    #multiplexor.append(value)
-                    print (value)
                     labelset = etree.Element('LabelSet')
                     for valueVal, valName in sorted(
                             signal.values.items(), key=lambda x: int(x[0])):
@@ -226,11 +213,8 @@ def dump(dbs, f, **options):
                             'Label', name=valName.replace(
                                 '"', ''), value=str(valueVal))
                         labelset.append(label)
-                    #multiplexor.append(labelset)
-                    print (labelset)
            # multiplexor found
             if multiplexor is not None:
-                print ("murali:3");
                 # ticker all potential muxgroups
                 for i in range(0, 1 << int(multiplexor.get('length'))):
                     empty = 0
