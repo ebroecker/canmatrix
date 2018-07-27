@@ -1,6 +1,6 @@
 <NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:schemaLocation="Definition.xsd">
   <Document name="Some Document Name">some text</Document>
-  <Bus>
+  <Bus name="converted/from_sym/test">
     <Message id="0xFFAB41" length="8" name="CommandModeControl" format="extended">
       <Notes>Operational commands are received by the module via control bits within this message.</Notes>
       <Signal name="Enable_command" offset="6" length="2" endianess="big">

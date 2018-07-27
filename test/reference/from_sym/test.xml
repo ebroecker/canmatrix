@@ -5590,7 +5590,7 @@
                 <ho:COMPU-SCALES>
                   <ho:COMPU-SCALE>
                     <ho:LOWER-LIMIT INTERVAL-TYPE="CLOSED">-3276.8</ho:LOWER-LIMIT>
-                    <ho:UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7</ho:UPPER-LIMIT>
+                    <ho:UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7000000000003</ho:UPPER-LIMIT>
                     <ho:COMPU-RATIONAL-COEFFS>
                       <ho:COMPU-NUMERATOR>
                         <ho:V>0.0</ho:V>
@@ -5618,7 +5618,7 @@
                 <ho:COMPU-SCALES>
                   <ho:COMPU-SCALE>
                     <ho:LOWER-LIMIT INTERVAL-TYPE="CLOSED">-3276.8</ho:LOWER-LIMIT>
-                    <ho:UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7</ho:UPPER-LIMIT>
+                    <ho:UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7000000000003</ho:UPPER-LIMIT>
                     <ho:COMPU-RATIONAL-COEFFS>
                       <ho:COMPU-NUMERATOR>
                         <ho:V>0.0</ho:V>
@@ -6206,7 +6206,7 @@
                 <ho:COMPU-SCALES>
                   <ho:COMPU-SCALE>
                     <ho:LOWER-LIMIT INTERVAL-TYPE="CLOSED">-3276.8</ho:LOWER-LIMIT>
-                    <ho:UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7</ho:UPPER-LIMIT>
+                    <ho:UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7000000000003</ho:UPPER-LIMIT>
                     <ho:COMPU-RATIONAL-COEFFS>
                       <ho:COMPU-NUMERATOR>
                         <ho:V>0.0</ho:V>
@@ -6262,7 +6262,7 @@
                 <ho:COMPU-SCALES>
                   <ho:COMPU-SCALE>
                     <ho:LOWER-LIMIT INTERVAL-TYPE="CLOSED">-3276.8</ho:LOWER-LIMIT>
-                    <ho:UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7</ho:UPPER-LIMIT>
+                    <ho:UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7000000000003</ho:UPPER-LIMIT>
                     <ho:COMPU-RATIONAL-COEFFS>
                       <ho:COMPU-NUMERATOR>
                         <ho:V>0.0</ho:V>

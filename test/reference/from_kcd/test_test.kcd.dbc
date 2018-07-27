@@ -39,30 +39,30 @@ BO_ 2365566785 CommandFactoryControl: 8 Vector__XXX
  SG_ FactoryAccess : 24|16@1+ (1,0) [0|65535] "" Vector__XXX
 
 BO_ 2365565505 CommandSetNVParam: 8 Vector__XXX
- SG_ CommandSetNVParam_MUX M  : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ Dummy m0  : 24|16@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ VUnder50pct m1  : 24|16@1+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ V50to88pct m1  : 40|16@1+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ V110to120pct m1  : 56|16@1+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ VOver120 m2  : 24|16@1+ (1,0) [1|30000] "" Vector__XXX
- SG_ FreqHi0 m3  : 24|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqLo0 m3  : 40|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqVeryLo0 m3  : 56|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqVeryLo1 m4  : 24|16@1+ (1,0) [160|160] "ms" Vector__XXX
- SG_ FreqLo1 m4  : 40|16@1+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ FreqHi1 m4  : 56|16@1+ (1,0) [160|160] "ms" Vector__XXX
- SG_ NodeID m5  : 16|8@1+ (1,0) [0|247] "" Vector__XXX
- SG_ SA_Mask m5  : 24|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ Baudrate m5  : 36|4@1+ (1,0) [0|3] "" Vector__XXX
- SG_ ThermalOverload m6  : 16|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ MX1Open m7  : 24|16@1+ (1,0) [0|5000] "ms" Vector__XXX
- SG_ MX1Close m7  : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ MX2Open m7  : 56|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ MX2Close m8  : 24|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K1Open m8  : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K1Close m8  : 56|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K2Open m10  : 24|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K2Close m10  : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ CommandSetNVParam_MUX M : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Dummy m0 : 24|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ VUnder50pct m1 : 24|16@1+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ V50to88pct m1 : 40|16@1+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ V110to120pct m1 : 56|16@1+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ VOver120 m2 : 24|16@1+ (1,0) [1|30000] "" Vector__XXX
+ SG_ FreqHi0 m3 : 24|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqLo0 m3 : 40|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqVeryLo0 m3 : 56|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqVeryLo1 m4 : 24|16@1+ (1,0) [160|160] "ms" Vector__XXX
+ SG_ FreqLo1 m4 : 40|16@1+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ FreqHi1 m4 : 56|16@1+ (1,0) [160|160] "ms" Vector__XXX
+ SG_ NodeID m5 : 16|8@1+ (1,0) [0|247] "" Vector__XXX
+ SG_ SA_Mask m5 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Baudrate m5 : 36|4@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ ThermalOverload m6 : 16|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ MX1Open m7 : 24|16@1+ (1,0) [0|5000] "ms" Vector__XXX
+ SG_ MX1Close m7 : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ MX2Open m7 : 56|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ MX2Close m8 : 24|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K1Open m8 : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K1Close m8 : 56|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K2Open m10 : 24|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K2Close m10 : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
 
 BO_ 2164235073 CommandModeControlAPU2: 8 Vector__XXX
  SG_ Enable_command : 0|2@1+ (1,0) [0|3] "" Vector__XXX
@@ -126,8 +126,8 @@ BO_ 2634008055 StatusControlVoltage: 8 Vector__XXX
  SG_ v15_Supply : 56|16@1- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
 BO_ 2566900727 StatusTemps: 8 Vector__XXX
- SG_ TempInlet_measured : 8|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
- SG_ TempInternal_measured : 24|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ TempInlet_measured : 8|16@1- (0.1,0) [-3276.8|3276.7000000000003] "C" Vector__XXX
+ SG_ TempInternal_measured : 24|16@1- (0.1,0) [-3276.8|3276.7000000000003] "C" Vector__XXX
  SG_ ConverterLosses : 40|16@1+ (1,0) [0|65535] "W" Vector__XXX
 
 BO_ 2365573367 StatusFaults: 8 Vector__XXX
@@ -152,9 +152,9 @@ BO_ 2365573367 StatusFaults: 8 Vector__XXX
  SG_ ThermalOverload : 32|2@1+ (1,0) [0|3] "" Vector__XXX
 
 BO_ 2365571831 StatusACParameters: 8 Vector__XXX
- SG_ VoltageAC_measured : 8|16@1- (0.1,0) [-3276.8|3276.7] "V" Vector__XXX
+ SG_ VoltageAC_measured : 8|16@1- (0.1,0) [-3276.8|3276.7000000000003] "V" Vector__XXX
  SG_ CurrentAC_measured : 24|16@1- (1,0) [-32768|32767] "A" Vector__XXX
- SG_ Frequency_measured : 40|16@1- (0.1,0) [-3276.8|3276.7] "Hz" Vector__XXX
+ SG_ Frequency_measured : 40|16@1- (0.1,0) [-3276.8|3276.7000000000003] "Hz" Vector__XXX
 
 BO_ 2634008567 StatusDCParameters: 8 Vector__XXX
  SG_ VoltageDCBus : 24|16@1- (1,0) [-32768|32767] "V" Vector__XXX
@@ -182,30 +182,30 @@ BO_ 2634010103 softwareRevHash: 8 Vector__XXX
  SG_ Hash : 28|28@1+ (1,0) [0|268435455] "" Vector__XXX
 
 BO_ 2634000887 StatusNVParam: 8 Vector__XXX
- SG_ StatusNVParam_MUX M  : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ Dummy m0  : 24|16@1+ (1,0) [5|10] "" Vector__XXX
- SG_ VUnder50pct m1  : 24|16@1+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ V50to88pct m1  : 40|16@1+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ V110to120pct m1  : 56|16@1+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ VOver120 m2  : 24|16@1+ (1,0) [1|30000] "" Vector__XXX
- SG_ FreqHi0 m3  : 24|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqLo0 m3  : 40|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqVeryLo0 m3  : 56|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqVeryLo1 m4  : 24|16@1+ (1,0) [160|160] "ms" Vector__XXX
- SG_ FreqLo1 m4  : 40|16@1+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ FreqHi1 m4  : 56|16@1+ (1,0) [160|160] "ms" Vector__XXX
- SG_ StatusNodeID m5  : 16|8@1+ (1,0) [0|247] "" Vector__XXX
- SG_ StatusSA_Mask m5  : 24|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ StatusBaudrate m5  : 36|4@1+ (1,0) [0|3] "" Vector__XXX
- SG_ StatusThermalOverload m6  : 16|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ StatusMX1Open m7  : 24|16@1+ (1,0) [0|5000] "ms" Vector__XXX
- SG_ StatusMX1Close m7  : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusMX2Open m7  : 56|16@1+ (1,0) [0|65535] "ms" Vector__XXX
- SG_ StatusMX2Close m8  : 24|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusK1Open m8  : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusK1Close m8  : 56|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusK2Open m9  : 24|16@1+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusK2Close m9  : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusNVParam_MUX M : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Dummy m0 : 24|16@1+ (1,0) [5|10] "" Vector__XXX
+ SG_ VUnder50pct m1 : 24|16@1+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ V50to88pct m1 : 40|16@1+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ V110to120pct m1 : 56|16@1+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ VOver120 m2 : 24|16@1+ (1,0) [1|30000] "" Vector__XXX
+ SG_ FreqHi0 m3 : 24|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqLo0 m3 : 40|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqVeryLo0 m3 : 56|16@1+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqVeryLo1 m4 : 24|16@1+ (1,0) [160|160] "ms" Vector__XXX
+ SG_ FreqLo1 m4 : 40|16@1+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ FreqHi1 m4 : 56|16@1+ (1,0) [160|160] "ms" Vector__XXX
+ SG_ StatusNodeID m5 : 16|8@1+ (1,0) [0|247] "" Vector__XXX
+ SG_ StatusSA_Mask m5 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ StatusBaudrate m5 : 36|4@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ StatusThermalOverload m6 : 16|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ StatusMX1Open m7 : 24|16@1+ (1,0) [0|5000] "ms" Vector__XXX
+ SG_ StatusMX1Close m7 : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusMX2Open m7 : 56|16@1+ (1,0) [0|65535] "ms" Vector__XXX
+ SG_ StatusMX2Close m8 : 24|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusK1Open m8 : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusK1Close m8 : 56|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusK2Open m9 : 24|16@1+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusK2Close m9 : 40|16@1+ (1,0) [0|2000] "ms" Vector__XXX
 
 BO_ 2566902007 StatusLineCurrents: 8 Vector__XXX
  SG_ L1Current_measured : 8|16@1+ (1,0) [0|65535] "A" Vector__XXX

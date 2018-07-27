@@ -7,11 +7,11 @@
 [BUSMASTER_VERSION] [1.7.2]
 [NUMBER_OF_MESSAGES] 2
 [START_MSG] testFrame1,291,8,2,1,S,Vector__XXX
-[START_SIGNALS] someTestSignal,11,2,1,U,2047.2,0.2,0,1.0,5.0,,,
-[START_SIGNALS] Signal,3,3,4,U,7.0,0.0,1,0.0,1.0,,,
+[START_SIGNALS] someTestSignal,11,2,1,U,2047.2,0.2,0,1.0,5.0,specialCharUnit°$,,
+[START_SIGNALS] Signal,3,3,4,U,7.0,0.0,1,0.0,1.0,someUnit,,
 [END_MSG]
 
-[START_MSG] extendedFrame,18,8,0,1,S,Vector__XXX
+[START_MSG] extendedFrame,18,8,0,1,X,Vector__XXX
 [END_MSG]
 
 [NODE] 
