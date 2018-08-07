@@ -572,6 +572,8 @@ class Frame(object):
         for arg_name, destination, function, default in args:
             try:
                 value = kwargs[arg_name]
+                if value is None:
+                    value = default
             except KeyError:
                 value = default
             else:
