@@ -170,7 +170,7 @@ def dump(dbs, f, **options):
             createSubElement(canFrameTriggering, 'SHORT-NAME', frame.name)
             framePortRefs = createSubElement(
                 canFrameTriggering, 'FRAME-PORT-REFS')
-            for transmitter in frame.transmitter:
+            for transmitter in frame.transmitters:
                 framePortRef = createSubElement(
                     framePortRefs, 'FRAME-PORT-REF')
                 framePortRef.set('DEST', 'FRAME-PORT')
@@ -695,7 +695,7 @@ def dump(dbs, f, **options):
                 if frame.is_complex_multiplexed:
                     continue
 
-                if ecu.name in frame.transmitter:
+                if ecu.name in frame.transmitters:
                     frameport = createSubElement(
                         ecuCommPortInstances, 'FRAME-PORT')
                     createSubElement(frameport, 'SHORT-NAME', frame.name)

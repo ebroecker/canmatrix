@@ -213,14 +213,14 @@ def load(f, **options):
                 else:
                     extended = None
                 if len(temparray) > 6:
-                    transmitter = temparray[6].split()
+                    transmitters = temparray[6].split()
                 else:
-                    transmitter = None
+                    transmitters = list()
                 newBo = db.addFrame(
                     Frame(name,
                           id=int(Id),
                           size=int(size),
-                          transmitter=transmitter))
+                          transmitters=transmitters))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")
@@ -337,10 +337,10 @@ def dump(mydb, f, **options):
         outstr += "[START_MSG] " + frame.name + \
             ",%d,%d,%d,1,%c," % (frame.id, frame.size,
                                  len(frame.signals), extended)
-        if frame.transmitter.__len__() == 0:
+        if frame.transmitters.__len__() == 0:
             frame.addTransmitter("Vector__XXX")
 # DBF does not support multiple Transmitters
-        outstr += frame.transmitter[0] + "\n"
+        outstr += frame.transmitters[0] + "\n"
 
         for signal in frame.signals:
             # m_acName ucLength m_ucWhichByte m_ucStartBit

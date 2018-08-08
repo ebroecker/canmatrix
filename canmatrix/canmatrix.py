@@ -375,7 +375,7 @@ class Frame(object):
     contains one Frame with following attributes
     id,
     name,
-    transmitter (list of boardunits/ECU-names),
+    transmitters (list of boardunits/ECU-names),
     size (= DLC),
     signals (list of signal-objects),
     attributes (list of attributes),
@@ -388,7 +388,7 @@ class Frame(object):
     name = attr.ib(default="")
     id = attr.ib(type=int, default = 0)
     size = attr.ib(default = 0)
-    transmitter = attr.ib(default = attr.Factory(list))
+    transmitters = attr.ib(default = attr.Factory(list))
     extended = attr.ib(type=bool, default = False)
     is_complex_multiplexed = attr.ib(type=bool, default = False)
     is_fd = attr.ib(type=bool, default = False)
@@ -513,15 +513,15 @@ class Frame(object):
         """
         add transmitter Boardunit/ECU-Name to Frame
         """
-        if transmitter not in self.transmitter:
-            self.transmitter.append(transmitter)
+        if transmitter not in self.transmitters:
+            self.transmitters.append(transmitter)
 
     def delTransmitter(self, transmitter):
         """
         del transmitter Boardunit/ECU-Name from Frame
         """
-        if transmitter in self.transmitter:
-            self.transmitter.remove(transmitter)
+        if transmitter in self.transmitters:
+            self.transmitters.remove(transmitter)
 
     def addReceiver(self, receiver):
         """
@@ -1074,8 +1074,8 @@ class CanMatrix(object):
             oldName = old.name
         old.name = newName
         for frame in self.frames:
-            if oldName in frame.transmitter:
-                frame.transmitter.remove(oldName)
+            if oldName in frame.transmitters:
+                frame.transmitters.remove(oldName)
                 frame.addTransmitter(newName)
             for signal in frame.signals:
                 if oldName in signal.receiver:
@@ -1105,8 +1105,8 @@ class CanMatrix(object):
             if ecu in self.boardUnits:
                 self.boardUnits.remove(ecu)
                 for frame in self.frames:
-                    if ecu.name in frame.transmitter:
-                        frame.transmitter.remove(ecu.name)
+                    if ecu.name in frame.transmitters:
+                        frame.transmitters.remove(ecu.name)
                     for signal in frame.signals:
                         if ecu.name in signal.receiver:
                             signal.receiver.remove(ecu.name)
@@ -1114,7 +1114,7 @@ class CanMatrix(object):
 
     def updateEcuList(self):
         for frame in self.frames:
-            for ecu in frame.transmitter:
+            for ecu in frame.transmitters:
                 self.addEcu(BoardUnit(ecu))
             frame.updateReceiver()
             for signal in frame.signals:

@@ -97,11 +97,11 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
 
         # write "s" "r" "r/s" if signal is sent, recieved or send and recived
         # by boardunit
-        if sig and bu in sig.receiver and bu in frame.transmitter:
+        if sig and bu in sig.receiver and bu in frame.transmitters:
             worksheet.write(row, col, label="r/s", style=locStyleSender)
         elif sig and bu in sig.receiver:
             worksheet.write(row, col, label="r", style=locStyle)
-        elif bu in frame.transmitter:
+        elif bu in frame.transmitters:
             worksheet.write(row, col, label="s", style=locStyleSender)
         else:
             worksheet.write(row, col, label="", style=locStyle)

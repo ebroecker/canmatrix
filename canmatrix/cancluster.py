@@ -14,7 +14,7 @@ class canCluster(dict):
                     frameArray.append(frame)
                 else:
                     index = frameArrayName.index(frame.name)
-                    for transmitter in frame.transmitter:
+                    for transmitter in frame.transmitters:
                         frameArray[index].addTransmitter(transmitter)
                     for receiver in frame.receiver:
                         frameArray[index].addReceiver(receiver)

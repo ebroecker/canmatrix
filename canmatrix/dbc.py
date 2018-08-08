@@ -162,7 +162,7 @@ def dump(mydb, f, **options):
     # Frames
     for frame in db.frames:
         multiplex_written = False
-        if frame.transmitter.__len__() == 0:
+        if frame.transmitters.__len__() == 0:
             frame.addTransmitter("Vector__XXX")
 
         if frame.extended == 1:
@@ -174,7 +174,7 @@ def dump(mydb, f, **options):
              frame.name +
              ": %d " %
              frame.size +
-             frame.transmitter[0] +
+             frame.transmitters[0] +
              "\n").encode(dbcExportEncoding))
         duplicate_signal_totals = collections.Counter(
             normalizeName(s.name, whitespaceReplacement) for s in frame.signals
@@ -230,11 +230,11 @@ def dump(mydb, f, **options):
 
     # second Sender:
     for frame in db.frames:
-        if frame.transmitter.__len__() > 1:
+        if frame.transmitters.__len__() > 1:
             f.write(
                 ("BO_TX_BU_ %d : %s;\n" %
                  (frame.id, ','.join(
-                     frame.transmitter))).encode(dbcExportEncoding))
+                     frame.transmitters))).encode(dbcExportEncoding))
 
     # frame comments
     for frame in db.frames:
@@ -481,7 +481,7 @@ def load(f, **options):
                 regexp = re.compile("^BO\_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-                frame = Frame(temp.group(2), id=int(temp.group(1)), size=int(temp.group(3)), transmitter=temp.group(4).split())
+                frame = Frame(temp.group(2), id=int(temp.group(1)), size=int(temp.group(3)), transmitters=temp.group(4).split())
                 db.frames.append(frame)
             elif decoded.startswith("SG_ "):
                 pattern = "^SG\_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"

@@ -188,7 +188,7 @@ def dump(dbs, f, **options):
 
             producer = etree.Element('Producer')
 
-            for transmitter in frame.transmitter:
+            for transmitter in frame.transmitters:
                 if transmitter in nodeList and len(transmitter) > 1:
                     noderef = etree.Element(
                         'NodeRef', id=str(

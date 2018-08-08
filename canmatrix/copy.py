@@ -73,7 +73,7 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
 
         # copy tx-frames
         for frame in sourceDb.frames:
-            if bu.name in frame.transmitter:
+            if bu.name in frame.transmitters:
                 copyFrame(frame, sourceDb, targetDb)
 
         # copy rx-frames
@@ -124,7 +124,7 @@ def copyFrame(frameId, sourceDb, targetDb):
 
         # Boardunits:
         # each transmitter of Frame could be ECU that is not listed already
-        for transmitter in frame.transmitter:
+        for transmitter in frame.transmitters:
             targetBU = targetDb.boardUnits.byName(transmitter)
             sourceBU = sourceDb.boardUnits.byName(transmitter)
             if sourceBU is not None and targetBU is None:

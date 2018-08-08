@@ -79,11 +79,11 @@ def writeBuMatrixx(buList, sig, frame, worksheet, row, col, firstframe):
             locStyleSender = sender_green
         # write "s" "r" "r/s" if signal is sent, recieved or send and recived
         # by boardunit
-        if sig is not None and bu in sig.receiver and bu in frame.transmitter:
+        if sig is not None and bu in sig.receiver and bu in frame.transmitters:
             worksheet.write(row, col, "r/s", locStyleSender)
         elif sig is not None and bu in sig.receiver:
             worksheet.write(row, col, "r", locStyle)
-        elif bu in frame.transmitter:
+        elif bu in frame.transmitters:
             worksheet.write(row, col, "s", locStyleSender)
         else:
             worksheet.write(row, col, "", locStyle)
