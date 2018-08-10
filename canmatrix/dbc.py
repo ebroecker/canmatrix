@@ -819,7 +819,7 @@ def load(f, **options):
                     frame.addSignalGroup(temp.group(2), temp.group(3), signalArray)
 
             elif decoded.startswith("SIG_VALTYPE_ "):
-                regexp = re.compile("^SIG\_VALTYPE\_ +(\w+) +(\w+) +\:(.*);")
+                regexp = re.compile("^SIG\_VALTYPE\_ +(\w+) +(\w+)\s*\:(.*);")
                 temp = regexp.match(decoded)
                 frame = db.frameById(temp.group(1))
                 if frame:
