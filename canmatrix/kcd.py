@@ -40,8 +40,6 @@ default_float_factory = decimal.Decimal
 
 clusterExporter = 1
 clusterImporter = 1
-
-
 def createSignal(signal, nodeList, typeEnums):
     sig = etree.Element(
         'Signal',
@@ -81,8 +79,6 @@ def createSignal(signal, nodeList, typeEnums):
             consumer.append(noderef)
         if consumer.__len__() > 0:
             sig.append(consumer)
-
-
     value = etree.Element('Value')
     if signal.is_float:
         if signal.signalsize > 32:
@@ -117,8 +113,6 @@ def createSignal(signal, nodeList, typeEnums):
         sig.append(labelset)
 
     return sig
-
-
 def dump(dbs, f, **options):
 
     signalTypeEnums = {}
@@ -158,7 +152,6 @@ def dump(dbs, f, **options):
         root.append(node)
         nodeList[bu.name] = id
         id += 1
-
     for name in canClust:
         db = canClust[name]
         # Bus
@@ -186,6 +179,12 @@ def dump(dbs, f, **options):
                     message.set("triggered", "true")
                     message.set("interval", "%d" % int(cycleTime))
 
+            comment = etree.Element('Notes')
+            if frame.comment is not None:
+                comment.text = frame.comment
+                message.append(comment)
+
+
             producer = etree.Element('Producer')
 
             for transmitter in frame.transmitters:
@@ -197,18 +196,9 @@ def dump(dbs, f, **options):
             if producer.__len__() > 0:
                 message.append(producer)
 
-            comment = etree.Element('Notes')
-            if frame.comment is not None:
-                comment.text = frame.comment
-                message.append(comment)
-
-            # standard-signals:
-            for signal in frame.signals:
-                if signal.multiplex is None:
-                    sig = createSignal(signal, nodeList, signalTypeEnums)
-                    message.append(sig)
-
             # check Multiplexor if present:
+            value = None
+            labelset = None
             multiplexor = None
             for signal in frame.signals:
                 if signal.multiplex is not None and signal.multiplex == 'Multiplexor':
@@ -219,7 +209,6 @@ def dump(dbs, f, **options):
                         value.set('min', "%g" % signal.min)
                     if float(signal.max) != 1:
                         value.set('max', "%g" % signal.max)
-                    multiplexor.append(value)
                     labelset = etree.Element('LabelSet')
                     for valueVal, valName in sorted(
                             signal.values.items(), key=lambda x: int(x[0])):
@@ -227,9 +216,7 @@ def dump(dbs, f, **options):
                             'Label', name=valName.replace(
                                 '"', ''), value=str(valueVal))
                         labelset.append(label)
-                    multiplexor.append(labelset)
-
-            # multiplexor found
+           # multiplexor found
             if multiplexor is not None:
                 # ticker all potential muxgroups
                 for i in range(0, 1 << int(multiplexor.get('length'))):
@@ -243,13 +230,22 @@ def dump(dbs, f, **options):
                             empty = 1
                     if empty == 1:
                         multiplexor.append(muxgroup)
+                        multiplexor.append(value)
+                        multiplexor.append(labelset)
                 message.append(multiplexor)
+
+
+            # standard-signals:
+            for signal in frame.signals:
+                if signal.multiplex is None:
+                    sig = createSignal(signal, nodeList, signalTypeEnums)
+                    message.append(sig)
+
 
             bus.append(message)
 
         root.append(bus)
     f.write(etree.tostring(root, pretty_print=True))
-
 
 def parseSignal(signal, mux, namespace, nodelist, float_factory):
     startbit = 0
@@ -283,7 +279,7 @@ def parseSignal(signal, mux, namespace, nodelist, float_factory):
                 is_signed = False
             else:
                 is_signed = True
-                
+
         if 'slope' in values.attrib:
             factor = values.get('slope')
         if 'intercept' in values.attrib:
@@ -294,7 +290,6 @@ def parseSignal(signal, mux, namespace, nodelist, float_factory):
             min = values.get('min')
         if 'max' in values.attrib:
             max = values.get('max')
-
     receiver = []
     consumers = signal.findall('./' + namespace + 'Consumer')
     for consumer in consumers:
@@ -337,8 +332,6 @@ def parseSignal(signal, mux, namespace, nodelist, float_factory):
             newSig.addValues(value, name)
 
     return newSig
-
-
 def load(f, **options):
     float_factory = options.get("float_factory", default_float_factory)
     dbs = {}
@@ -350,7 +343,7 @@ def load(f, **options):
     nodes = root.findall('./' + namespace + 'Node')
 
     busses = root.findall('./' + namespace + 'Bus')
-    
+
     counter = 0
     for bus in busses:
         db = CanMatrix()
@@ -378,7 +371,6 @@ def load(f, **options):
                     newBo.extended = 1
 
             multiplex = message.find('./' + namespace + 'Multiplex')
-
             if multiplex is not None:
                 startbit = 0
                 if 'offset' in multiplex.attrib:
@@ -413,7 +405,6 @@ def load(f, **options):
                     noderefs = consumer.findall('./' + namespace + 'NodeRef')
                     for noderef in noderefs:
                         receiver.append(nodelist[noderef.get('id')])
-
                 newSig = Signal(multiplex.get('name'),
                                 startBit=int(startbit),
                                 size=int(signalsize),
@@ -464,7 +455,6 @@ def load(f, **options):
                 noderefs = producer.findall('./' + namespace + 'NodeRef')
                 for noderef in noderefs:
                     newBo.addTransmitter(nodelist[noderef.get('id')])
-
             for signal in signales:
                 newSig = parseSignal(signal, None, namespace, nodelist, float_factory)
                 newBo.addSignal(newSig)

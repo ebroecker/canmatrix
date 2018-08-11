@@ -438,6 +438,7 @@ def dump(mydb, f, **options):
     outstr += "[END_DESC]\n\n"
 
     outstr += "[START_PARAM]\n"
+
     # db-parameter
     outstr += "[START_PARAM_NET]\n"
     for (type, define) in sorted(list(db.globalDefines.items())):
