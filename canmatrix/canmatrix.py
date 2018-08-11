@@ -31,6 +31,9 @@ from __future__ import division
 import math
 import attr
 
+if attr.__version__ < '17.4.0':
+    raise "need attrs >= 17.4.0"
+
 from collections import OrderedDict
 
 import logging
