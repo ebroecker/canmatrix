@@ -79,7 +79,7 @@ def getSignal(db, sig, motorolaBitFormat):
 
     # write comment and size of signal in sheet
     frontArray.append(comment)
-    frontArray.append(sig.signalsize)
+    frontArray.append(sig.size)
 
     # startvalue of signal available
     if "GenSigStartValue" in db.signalDefines:

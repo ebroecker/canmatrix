@@ -30,12 +30,12 @@ logger = logging.getLogger('root')
 
 from builtins import *
 import collections
-import math
 import shlex
 from .canmatrix import *
-import re
-import codecs
 import sys
+import decimal
+default_float_factory = decimal.Decimal
+
 
 enumDict = {}
 enums = "{ENUMS}\n"
@@ -65,9 +65,9 @@ def createSignal(db, signal):
     startBit = signal.getStartbit()
     if signal.is_little_endian == 0:
         # Motorola
-        output += "%d,%d -m " % (startBit, signal.signalsize)
+        output += "%d,%d -m " % (startBit, signal.size)
     else:
-        output += "%d,%d " % (startBit, signal.signalsize)
+        output += "%d,%d " % (startBit, signal.size)
     if signal.attributes.get('HexadecimalOutput', False):
         output += "-h "
     if len(signal.unit) > 0:
@@ -131,10 +131,7 @@ def dump(db, f, **options):
     """
     global enumDict
     global enums
-    if 'symExportEncoding' in options:
-        symEncoding = options["symExportEncoding"]
-    else:
-        symEncoding = 'iso-8859-1'
+    symEncoding = options.get('symExportEncoding', 'iso-8859-1')
 
     enumDict = {}
     enums = "{ENUMS}\n"
@@ -197,7 +194,7 @@ Title=\"canmatrix-Export\"
                 # ticker all possible mux-groups as i (0 - 2^ (number of bits of
                 # multiplexor))
                 first = 0
-                for i in range(0, 1 << int(muxSignal.signalsize)):
+                for i in range(0, 1 << int(muxSignal.size)):
                     found = 0
                     muxOut = ""
                     # ticker all signals
@@ -228,10 +225,10 @@ Title=\"canmatrix-Export\"
                             if signal.is_little_endian == 0:
                                 # Motorola
                                 muxOut += " %d,%d %s -m" % (startBit,
-                                                            muxSignal.signalsize, s)
+                                                            muxSignal.size, s)
                             else:
                                 muxOut += " %d,%d %s" % (startBit,
-                                                         muxSignal.signalsize, s)
+                                                         muxSignal.size, s)
                             if not muxOut.endswith('h'):
                                 muxOut += ' '
                             if i in muxSignal.comments:
@@ -285,7 +282,7 @@ def load(f, **options):
 
     calc_min_for_none = options.get('calc_min_for_none')
     calc_max_for_none = options.get('calc_max_for_none')
-    float_factory = options.get('float_factory')
+    float_factory = options.get('float_factory', default_float_factory)
 
     class Mode(object):
         glob, enums, send, sendReceive, receive = list(range(5))
@@ -358,7 +355,7 @@ def load(f, **options):
                             if len(frame.mux_names) > 0:
                                 frame.signalByName(
                                     frame.name + "_MUX").values = frame.mux_names
-                            db.frames.addFrame(frame)
+                            db.addFrame(frame)
 
                         frame = Frame(frameName)
 
@@ -476,23 +473,25 @@ def load(f, **options):
                                 extras['calc_min_for_none'] = calc_min_for_none
                             if calc_max_for_none is not None:
                                 extras['calc_max_for_none'] = calc_max_for_none
-                            if float_factory is not None:
-                                extras['float_factory'] = float_factory
+#                            if float_factory is not None:
+#                                extras['float_factory'] = float_factory
 
                             signal = Signal(frameName + "_MUX",
-                                            startBit=startBit,
-                                            signalSize=signalLength,
+                                            startBit=int(startBit),
+                                            size=int(signalLength),
                                             is_little_endian=intel,
                                             is_signed=is_signed,
                                             is_float=is_float,
                                             factor=factor,
                                             offset=offset,
-                                            min=min,
-                                            max=max,
                                             unit=unit,
                                             multiplex='Multiplexor',
                                             comment=comment,
                                             **extras)
+                            if min is not None:
+                                signal.min = float_factory(min)
+                            if max is not None:
+                                signal.max = float_factory(max)
     #                        signal.addComment(comment)
                             if intel == 0:
                                 # motorola set/convert startbit
@@ -507,23 +506,25 @@ def load(f, **options):
                             extras['calc_min_for_none'] = calc_min_for_none
                         if calc_max_for_none is not None:
                             extras['calc_max_for_none'] = calc_max_for_none
-                        if float_factory is not None:
-                            extras['float_factory'] = float_factory
+#                        if float_factory is not None:
+#                            extras['float_factory'] = float_factory
 
                         signal = Signal(sigName,
-                                        startBit=startBit,
-                                        signalSize=signalLength,
+                                        startBit=int(startBit),
+                                        size=int(signalLength),
                                         is_little_endian=intel,
                                         is_signed=is_signed,
                                         is_float=is_float,
                                         factor=factor,
                                         offset=offset,
-                                        min=min,
-                                        max=max,
                                         unit=unit,
                                         multiplex=multiplexor,
                                          comment=comment,
                                          **extras)
+                        if min is not None:
+                            signal.min = float_factory(min)
+                        if max is not None:
+                            signal.max = float_factory(max)
     #
                         if intel == 0:
                             # motorola set/convert startbit
@@ -534,7 +535,7 @@ def load(f, **options):
       #                  signal.addComment(comment)
                         # ... (1 / ...) because this somehow made 59.8/0.1 be 598.0 rather than 597.9999999999999
                         if startValue is not None:
-                            startValue = float(startValue) * (1 / float(factor))
+                            startValue = float_factory(startValue) * (1 / float_factory(factor))
                             signal.addAttribute("GenSigStartValue", str(startValue))
                         frame.addSignal(signal)
                     if longName is not None:
@@ -574,6 +575,6 @@ def load(f, **options):
     if frame is not None:
         if len(frame.mux_names) > 0:
             frame.signalByName(frame.name + "_MUX").values = frame.mux_names
-        db.frames.addFrame(frame)
+        db.addFrame(frame)
 
     return db

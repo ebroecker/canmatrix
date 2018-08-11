@@ -28,8 +28,10 @@ from __future__ import absolute_import
 from copy import deepcopy
 import collections
 import logging
+import decimal
 
 logger = logging.getLogger('root')
+default_float_factory = decimal.Decimal
 
 from builtins import *
 from .canmatrix import *
@@ -65,30 +67,16 @@ def dump(mydb, f, **options):
     # create copy because export changes database
     db = deepcopy(mydb)
 
-    if 'dbcExportEncoding' in options:
-        dbcExportEncoding = options["dbcExportEncoding"]
-    else:
-        dbcExportEncoding = 'iso-8859-1'
-    if 'dbcExportCommentEncoding' in options:
-        dbcExportCommentEncoding = options["dbcExportCommentEncoding"]
-    else:
-        dbcExportCommentEncoding = dbcExportEncoding
-    if 'whitespaceReplacement' in options:
-        whitespaceReplacement = options["whitespaceReplacement"]
-        if whitespaceReplacement in ['', None] or set(
-                [' ', '\t']).intersection(whitespaceReplacement):
-            print("Warning: Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
-    else:
-        whitespaceReplacement = '_'
-    if 'writeValTable' in options:
-        writeValTable = options["writeValTable"]
-    else:
-        writeValTable = True
+    dbcExportEncoding = options.get("dbcExportEncoding", 'iso-8859-1')
+    dbcExportCommentEncoding = options.get("dbcExportCommentEncoding",  dbcExportEncoding)
+    writeValTable = options.get("writeValTable", True)
+    compatibility = options.get('compatibility', True)
 
-    if 'compatibility' in options:
-        compatibility = options['compatibility']
-    else:
-        compatibility = True
+    whitespaceReplacement = options.get("whitespaceReplacement", '_')
+    if whitespaceReplacement in ['', None] or set(
+            [' ', '\t']).intersection(whitespaceReplacement):
+        print("Warning: Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
+
 
     if db.contains_fd or db.contains_j1939:
         if db.contains_fd:
@@ -174,7 +162,7 @@ def dump(mydb, f, **options):
     # Frames
     for frame in db.frames:
         multiplex_written = False
-        if frame.transmitter.__len__() == 0:
+        if frame.transmitters.__len__() == 0:
             frame.addTransmitter("Vector__XXX")
 
         if frame.extended == 1:
@@ -186,7 +174,7 @@ def dump(mydb, f, **options):
              frame.name +
              ": %d " %
              frame.size +
-             frame.transmitter[0] +
+             frame.transmitters[0] +
              "\n").encode(dbcExportEncoding))
         duplicate_signal_totals = collections.Counter(
             normalizeName(s.name, whitespaceReplacement) for s in frame.signals
@@ -218,7 +206,7 @@ def dump(mydb, f, **options):
             f.write(
                 (": %d|%d@%d%c" %
                  (startbit,
-                  signal.signalsize,
+                  signal.size,
                   signal.is_little_endian,
                   sign)).encode(dbcExportEncoding))
             f.write(
@@ -242,11 +230,11 @@ def dump(mydb, f, **options):
 
     # second Sender:
     for frame in db.frames:
-        if frame.transmitter.__len__() > 1:
+        if frame.transmitters.__len__() > 1:
             f.write(
                 ("BO_TX_BU_ %d : %s;\n" %
                  (frame.id, ','.join(
-                     frame.transmitter))).encode(dbcExportEncoding))
+                     frame.transmitters))).encode(dbcExportEncoding))
 
     # frame comments
     for frame in db.frames:
@@ -434,16 +422,9 @@ def dump(mydb, f, **options):
                                                                             ",".join(envVar["accessNodes"])) )
 
 def load(f, **options):
-    if 'dbcImportEncoding' in options:
-        dbcImportEncoding = options["dbcImportEncoding"]
-    else:
-        dbcImportEncoding = 'iso-8859-1'
-    if 'dbcImportCommentEncoding' in options:
-        dbcCommentEncoding = options["dbcImportCommentEncoding"]
-    else:
-        dbcCommentEncoding = dbcImportEncoding
-
-    float_factory = options.get('float_factory')
+    dbcImportEncoding = options.get("dbcImportEncoding", 'iso-8859-1')
+    dbcCommentEncoding = options.get("dbcImportCommentEncoding", dbcImportEncoding)
+    float_factory = options.get('float_factory', default_float_factory)
 
     i = 0
 
@@ -500,8 +481,8 @@ def load(f, **options):
                 regexp = re.compile("^BO\_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-                frame = Frame(temp.group(2), Id=temp.group(1), dlc=temp.group(3), transmitter=temp.group(4).split())
-                db.frames.addFrame(frame)
+                frame = Frame(temp.group(2), id=int(temp.group(1)), size=int(temp.group(3)), transmitters=temp.group(4).split())
+                db.frames.append(frame)
             elif decoded.startswith("SG_ "):
                 pattern = "^SG\_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                 regexp = re.compile(pattern)
@@ -512,13 +493,13 @@ def load(f, **options):
                     receiver = list(map(str.strip, temp.group(11).split(',')))
 
                     extras = {}
-                    if float_factory is not None:
-                        extras['float_factory'] = float_factory
+#                    if float_factory is not None:
+#                        extras['float_factory'] = float_factory
 
                     tempSig = Signal(
                         temp.group(1),
-                        startBit=temp.group(2),
-                        signalSize=temp.group(3),
+                        startBit=int(temp.group(2)),
+                        size=int(temp.group(3)),
                         is_little_endian=(int(temp.group(4)) == 1),
                         is_signed=(temp.group(5) == '-'),
                         factor=temp.group(6),
@@ -532,7 +513,8 @@ def load(f, **options):
                     if not tempSig.is_little_endian:
                         # startbit of motorola coded signals are MSB in dbc
                         tempSig.setStartbit(int(temp.group(2)), bitNumbering=1)
-                    db.frames.addSignalToLastFrame(tempSig)
+                    frame.addSignal(tempSig)
+    #                db.frames.addSignalToLastFrame(tempSig)
                 else:
                     pattern = "^SG\_ +(\w+) +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                     regexp = re.compile(pattern)
@@ -705,7 +687,7 @@ def load(f, **options):
                     myTempListe = temp.group(1).split(' ')
                     for ele in myTempListe:
                         if len(ele.strip()) > 1:
-                            db.boardUnits.add(BoardUnit(ele))
+                            db.boardUnits.append(BoardUnit(ele))
 
             elif decoded.startswith("VAL_ "):
                 regexp = re.compile("^VAL\_ +(\w+) +(\w+) +(.*);")
@@ -799,7 +781,7 @@ def load(f, **options):
                 elif tempba.group(1).strip().startswith("BU_ "):
                     regexp = re.compile("^BA\_ +\"(.*)\" +BU\_ +(\w+) +(.+);")
                     temp = regexp.match(decoded)
-                    db.boardUnits.byName(
+                    db.boardUnitByName(
                         temp.group(2)).addAttribute(
                         temp.group(1),
                         temp.group(3))

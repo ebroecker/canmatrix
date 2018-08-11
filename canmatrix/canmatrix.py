@@ -29,11 +29,15 @@
 
 from __future__ import division
 import math
+import attr
 
 from collections import OrderedDict
 
 import logging
 import fnmatch
+
+import decimal
+defaultFloatFactory = decimal.Decimal
 
 
 logger = logging.getLogger('root')
@@ -46,89 +50,6 @@ except:
 from past.builtins import basestring
 import copy
 
-class FrameList(object):
-    """
-    Keeps all Frames of a Canmatrix
-    """
-
-    def __init__(self):
-        self._list = []
-
-    def addSignalToLastFrame(self, signal):
-        """
-        Adds a Signal to the last addes Frame, this is mainly for importers
-        """
-        lastFrame = self._list[len(self._list) - 1]
-        lastFrame.addSignal(signal)
-        return lastFrame
-
-    def addFrame(self, frame):
-        """
-        Adds a Frame
-        """
-        self._list.append(frame)
-        return self._list[len(self._list) - 1]
-
-    def remove(self, frame):
-        """
-        Adds a Frame
-        """
-        self._list.remove(frame)
-
-    def byId(self, Id, extended=None):
-        """
-        returns a Frame-Object by given Frame-ID
-        """
-        Id = int(Id)
-        extendedMarker = 0x80000000
-        for test in self._list:
-            if test.id == Id:
-                if extended is None:
-                    # found ID while ignoring extended or standard
-                    return test
-                elif test.extended == extended:
-                    # found ID while checking extended or standard
-                    return test
-            else:
-                if extended is not None:
-                    # what to do if Id is not equal and extended is also provided ???
-                    pass
-                else:
-                    if test.extended and Id & extendedMarker:
-                        # check regarding common used extended Bit 31
-                        if test.id == Id - extendedMarker:
-                            return test
-        return None
-
-    def byName(self, Name):
-        """
-        returns a Frame-Object by given Frame-Name
-        """
-        for test in self._list:
-            if test.name == Name:
-                return test
-        return None
-
-    def glob(self, globStr):
-        """
-        returns array of frame-objects by given globstr
-        :param globStr:
-        :return: array
-        """
-        returnArray = []
-        for test in self._list:
-            if fnmatch.fnmatchcase(test.name, globStr):
-                returnArray.append(test)
-        return returnArray
-
-
-    def __iter__(self):
-        return iter(self._list)
-
-    def __len__(self):
-        return len(self._list)
-
-
 class BoardUnit(object):
     """
     Contains one Boardunit/ECU
@@ -136,7 +57,7 @@ class BoardUnit(object):
 
     def __init__(self, name):
         self.name = name.strip()
-        self.attributes = {}
+        self.attributes = dict()
         self.comment = None
 
     def attribute(self, db, attributeName):
@@ -163,69 +84,16 @@ class BoardUnit(object):
     def __str__(self):
         return self.name
 
-
-class BoardUnitList(object):
-    """
-    Contains all Boardunits/ECUs of a canmatrix in a list
-    """
-
-    def __init__(self):
-        self._list = []
-
-    def add(self, BU):
-        """
-        add Boardunit/ECU to list
-        """
-        for bu in self._list:
-            if BU.name.strip() == bu.name:
-                return
-        self._list.append(BU)
-
-    def remove(self, BU):
-        """
-        remove Boardunit/ECU to list
-        """
-        if BU.name.strip() in self._list:
-            self._list.remove(BU)
-
-    def byName(self, name):
-        """
-        returns Boardunit-Object of list by Name
-        """
-        for test in self._list:
-            if test.name == name:
-                return test
-        return None
-
-    def glob(self, globStr):
-        """
-        returns array of ecu-objects by given globstr
-        :param globStr:
-        :return: array
-        """
-        returnArray = []
-        for test in self._list:
-            if fnmatch.fnmatchcase(test.name, globStr):
-                returnArray.append(test)
-        return returnArray
-
-
-    def __iter__(self):
-        return iter(self._list)
-
-    def __len__(self):
-        return len(self._list)
-
-
 def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
 
 
+@attr.s(cmp=False)
 class Signal(object):
     """
     contains on Signal of canmatrix-object
     with following attributes:
-            name, startbit,signalsize (in Bits)
+            name, startBit,size (in Bits)
             is_little_endian (1: Intel, 0: Motorola)
             is_signed ()
             factor, offset, min, max
@@ -234,87 +102,63 @@ class Signal(object):
             _multiplex ('Multiplexor' or Number of Multiplex)
     """
 
-    def __init__(self, name, **kwargs):
-        self.mux_val = None
-        self.is_multiplexer = False
+    name = attr.ib(default = "")
+#    float_factory = attr.ib(default=defaultFloatFactory)
+    float_factory = defaultFloatFactory
+    startBit = attr.ib(type=int, default=0)
+    size = attr.ib(type=int, default = 0)
+    is_little_endian = attr.ib(type=bool, default = True)
+    is_signed = attr.ib(type=bool, default = True)
+    offset = attr.ib(converter = float_factory, default = float_factory(0.0))
+    factor = attr.ib(converter = float_factory, default = float_factory(0.0))
 
-        def multiplex(value):
-            if value is not None and value != 'Multiplexor':
-                multiplex = int(value)
-                self.mux_val = int(value)
-            else:
-                self.is_multiplexer = True
-                multiplex = value
-            return multiplex
+    #    offset = attr.ib(converter = float_factory, default = 0.0)
 
-        float_factory = kwargs.pop('float_factory', float)
+    min  = attr.ib(converter=float_factory)
+    @min.default
+    def setDefaultMin(self):
+        return  self.calcMin()
 
-        args = [
-            ('startBit', 'startbit', int, 0),
-            ('signalSize', 'signalsize', int, 0),
-            ('is_little_endian', 'is_little_endian', bool, True),
-            ('is_signed', 'is_signed', bool, True),
-            ('factor', 'factor', float_factory, 1),
-            ('offset', 'offset', float_factory, 0),
-            ('min', 'min', float_factory, None),
-            ('max', 'max', float_factory, None),
-            ('unit', 'unit', None, ""),
-            ('receiver', 'receiver', None, []),
-            ('comment', 'comment', None, None),
-            ('multiplex', 'multiplex', multiplex, None),
-            ('mux_value', 'mux_value', None, None),
-            ('is_float', 'is_float', bool, False),
-            ('enumeration', 'enumeration', str, None),
-            ('comments', 'comments', None, {}),
-            ('attributes', 'attributes', None, {}),
-            ('values', '_values', None, {}),
-            ('calc_min_for_none', 'calc_min_for_none', bool, True),
-            ('calc_max_for_none', 'calc_max_for_none', bool, True),
-            ('muxValMax', 'muxValMax', int, 0),
-            ('muxValMin', 'muxValMin', int, 0),
-            ('muxerForSignal', 'muxerForSignal', str, None)
-        ]
+    max =  attr.ib(converter = float_factory)
+    @max.default
+    def setDefaultMax(self):
+        return  self.calcMax()
 
-        for arg_name, destination, function, default in args:
-            try:
-                value = kwargs[arg_name]
-            except KeyError:
-                value = default
-            else:
-                kwargs.pop(arg_name)
-            if function is not None and value is not None:
-                value = function(value)
-            setattr(self, destination, value)
-            
-        if len(kwargs) > 0:
-            raise TypeError('{}() got unexpected argument{} {}'.format(
-                self.__class__.__name__,
-                's' if len(kwargs) > 1 else '',
-                ', '.join(kwargs.keys())
-            ))
+    unit = attr.ib(type=str, default ="")
+    receiver = attr.ib(default = attr.Factory(list))
+    comment = attr.ib(default = None)
+    multiplex  = attr.ib(default = None)
 
+    mux_value = attr.ib(default = None)
+    is_float = attr.ib(type=bool, default=False)
+    enumeration = attr.ib(type=str, default = None)
+    comments = attr.ib(type=dict, default = attr.Factory(dict))
+    attributes = attr.ib(type=dict, default = attr.Factory(dict))
+    values = attr.ib(type=dict, convert=normalizeValueTable, default = attr.Factory(dict))
+    calc_min_for_none = attr.ib(type=bool, default = True)
+    calc_max_for_none = attr.ib(type=bool, default = True)
+    muxValMax = attr.ib(default = 0)
+    muxValMin = attr.ib(default = 0)
+    muxerForSignal= attr.ib(type=str, default = None)
 
-        # in case missing min/max calculation is enabled, be sure it happens
-        self.setMin(self.min)
-        self.setMax(self.max)
+    def __attrs_post_init__(self):
+        self.multiplex = self.multiplexSetter(self.multiplex)
 
-        self.name = name
-
-    @property
-    def values(self):
-        return self._values
 
     @property
     def spn(self):
-        if "SPN" in self.attributes:
-            return self.attributes["SPN"]
+        return self.attributes.get("SPN", None)
+
+    def multiplexSetter(self, value):
+        self.mux_val = None
+        self.is_multiplexer = False
+        if value is not None and value != 'Multiplexor':
+            ret_multiplex = int(value)
+            self.mux_val = int(value)
         else:
-            return None
-
-    @values.setter
-    def values(self, valueTable):
-        self._values = normalizeValueTable(valueTable)
-
+            self.is_multiplexer = True
+            ret_multiplex = value
+        return ret_multiplex
 
     def attribute(self, db, attributeName):
         if attributeName in self.attributes:
@@ -362,11 +206,11 @@ class Signal(object):
         """
         Add Value/Description to Signal
         """
-        self._values[int(value)] = valueName
+        self.values[int(value)] = valueName
 
     def setStartbit(self, startBit, bitNumbering=None, startLittle=None):
         """
-        set startbit.
+        set startBit.
         bitNumbering is 1 for LSB0/LSBFirst, 0 for MSB0/MSBFirst.
         If bit numbering is consistent with byte order (little=LSB0, big=MSB0)
         (KCD, SYM), start bit unmodified.
@@ -379,33 +223,33 @@ class Signal(object):
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self.is_little_endian:
             startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-        # if given startbit is for the end of signal data (lsbit),
+        # if given startBit is for the end of signal data (lsbit),
         # convert to start of signal data (msbit)
         if startLittle is True and self.is_little_endian is False:
-            startBit = startBit + 1 - self.signalsize
+            startBit = startBit + 1 - self.size
         if startBit < 0:
-            print("wrong startbit found Signal: %s Startbit: %d" %
+            print("wrong startBit found Signal: %s Startbit: %d" %
                   (self.name, startBit))
-            raise Exception("startbit lower zero")
-        self.startbit = startBit
+            raise Exception("startBit lower zero")
+        self.startBit = startBit
 
     def getStartbit(self, bitNumbering=None, startLittle=None):
-        startBit = self.startbit
+        startBitInternal = self.startBit
         # convert from big endian start bit at
         # start bit(msbit) to end bit(lsbit)
         if startLittle is True and self.is_little_endian is False:
-            startBit = startBit + self.signalsize - 1
+            startBitInternal = startBitInternal + self.size - 1
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self.is_little_endian:
-            startBit = startBit - (startBit % 8) + 7 - (startBit % 8)
-        return int(startBit)
+            startBitInternal = startBitInternal - (startBitInternal % 8) + 7 - (startBitInternal % 8)
+        return int(startBitInternal)
 
     def calculateRawRange(self):
-        rawRange = 2 ** self.signalsize
+        rawRange = 2 ** self.size
         if self.is_signed:
             rawRange /= 2
-        return (-rawRange if self.is_signed else 0,
-                rawRange - 1)
+        return (self.float_factory(-rawRange if self.is_signed else 0),
+                self.float_factory(rawRange - 1))
 
     def setMin(self, min=None):
         self.min = min
@@ -442,7 +286,7 @@ class Signal(object):
         else:
             bit_type = 's' if self.is_signed else 'u'
 
-        return endian + bit_type + str(self.signalsize)
+        return endian + bit_type + str(self.size)
 
     def phys2raw(self, value=None):
         """Return the raw value (= as is on CAN)
@@ -492,7 +336,6 @@ class Signal(object):
     def __str__(self):
         return self.name
 
-
 class SignalGroup(object):
     """
     contains Signals, which belong to signal-group
@@ -501,7 +344,7 @@ class SignalGroup(object):
     def __init__(self, name, Id):
         self.signals = []
         self.name = name
-        self.Id = Id
+        self.id = Id
 
     def addSignal(self, signal):
         if signal not in self.signals:
@@ -520,23 +363,19 @@ class SignalGroup(object):
                 return test
         return None
 
-    @property
-    def id(self):
-        return self.Id
-
     def __str__(self):
         return self.name
 
     def __iter__(self):
         return iter(self.signals)
 
-
+@attr.s(cmp=False)
 class Frame(object):
     """
     contains one Frame with following attributes
-    _Id, 
+    id,
     name,
-    transmitter (list of boardunits/ECU-names),
+    transmitters (list of boardunits/ECU-names),
     size (= DLC),
     signals (list of signal-objects),
     attributes (list of attributes),
@@ -545,60 +384,27 @@ class Frame(object):
     comment
     """
 
-    def __init__(self, name, **kwargs):
-        self.name = name
-            
-        args = [
-            ('Id', '_Id', int, 0),
-            ('dlc', 'size', int, 0),
-            ('transmitter', 'transmitter', None, []),
-            ('extended', 'extended', bool, False),
-            ('is_complex_multiplexed', 'is_complex_multiplexed', bool, False),
-            ('is_fd', 'is_fd', bool, False),
-            ('comment', 'comment', str, None),
-            ('signals', 'signals', None, []),
-            ('mux_names', 'mux_names', None, {}),
-            ('attributes', 'attributes', None, {}),
-            ('receiver', 'receiver', None, []),
-            ('signalGroups', 'signalGroups', None, []),
-            ('j1939_pgn', '_j1939_pgn', int, None),
-            ('j1939_source', '_j1939_source', int, 0),
-            ('j1939_prio', '_j1939_prio', int, 0),
-            ('is_j1939', 'is_j1939', bool, False),
+
+    name = attr.ib(default="")
+    id = attr.ib(type=int, default = 0)
+    size = attr.ib(default = 0)
+    transmitters = attr.ib(default = attr.Factory(list))
+    extended = attr.ib(type=bool, default = False)
+    is_complex_multiplexed = attr.ib(type=bool, default = False)
+    is_fd = attr.ib(type=bool, default = False)
+    comment = attr.ib(default="")
+    signals = attr.ib(default = attr.Factory(list))
+    mux_names = attr.ib(type=dict, default = attr.Factory(dict))
+    attributes = attr.ib(type=dict, default = attr.Factory(dict))
+    receiver = attr.ib(default = attr.Factory(list))
+    signalGroups = attr.ib(default = attr.Factory(list))
+
+    j1939_pgn = attr.ib(default = None)
+    j1939_source = attr.ib(default = 0)
+    j1939_prio  = attr.ib(default = 0)
+    is_j1939  = attr.ib(type=bool, default = False)
             #            ('cycleTime', '_cycleTime', int, None),
             #            ('sendType', '_sendType', str, None),
-        ]
-
-        for arg_name, destination, function, default in args:
-            try:
-                value = kwargs[arg_name]
-            except KeyError:
-                value = default
-            else:
-                kwargs.pop(arg_name)
-            if function is not None and value is not None:
-                value = function(value)
-            setattr(self, destination, value)
-            
-        if len(kwargs) > 0:
-            raise TypeError('{}() got unexpected argument{} {}'.format(
-                self.__class__.__name__,
-                's' if len(kwargs) > 1 else '',
-                ', '.join(kwargs.keys())
-            ))
-
-        if self._j1939_pgn is not None:
-            self.recalcJ1939Id()
-        # we got a j1939 PGN,
-
-
-    @property
-    def id(self):
-        return self._Id
-
-    @id.setter
-    def id(self, value):
-        self._Id = value
 
     @property
     def is_multiplexed(self):
@@ -609,11 +415,11 @@ class Frame(object):
 
     @property
     def pgn(self):
-        return CanId(self._Id).pgn
+        return CanId(self.id).pgn
 
     @pgn.setter
     def pgn(self, value):
-        self._j1939_pgn = value
+        self.j1939_pgn = value
         self.recalcJ1939Id()
 
     @property
@@ -635,7 +441,7 @@ class Frame(object):
         self.recalcJ1939Id()
 
     def recalcJ1939Id(self):
-        self.id = (self._j1939_source & 0xff) + ((self._j1939_pgn & 0xffff) << 8) + ((self._j1939_prio & 0x7) << 26)
+        self.id = (self.j1939_source & 0xff) + ((self.j1939_pgn & 0xffff) << 8) + ((self.j1939_prio & 0x7) << 26)
         self.extended = True
         self.is_j1939 = True
 
@@ -707,15 +513,15 @@ class Frame(object):
         """
         add transmitter Boardunit/ECU-Name to Frame
         """
-        if transmitter not in self.transmitter:
-            self.transmitter.append(transmitter)
+        if transmitter not in self.transmitters:
+            self.transmitters.append(transmitter)
 
     def delTransmitter(self, transmitter):
         """
         del transmitter Boardunit/ECU-Name from Frame
         """
-        if transmitter in self.transmitter:
-            self.transmitter.remove(transmitter)
+        if transmitter in self.transmitters:
+            self.transmitters.remove(transmitter)
 
     def addReceiver(self, receiver):
         """
@@ -771,8 +577,8 @@ class Frame(object):
         """
         maxBit = 0
         for sig in self.signals:
-            if sig.getStartbit() + int(sig.signalsize) > maxBit:
-                maxBit = sig.getStartbit() + int(sig.signalsize)
+            if sig.getStartbit() + int(sig.size) > maxBit:
+                maxBit = sig.getStartbit() + int(sig.size)
         self.size = max(self.size, int(math.ceil(maxBit / 8)))
         
     def findNotUsedBits(self):
@@ -792,7 +598,7 @@ class Frame(object):
 
         for sig in self.signals:
             i += 1
-            for bit in range(sig.getStartbit(),  sig.getStartbit() + int(sig.signalsize)):
+            for bit in range(sig.getStartbit(),  sig.getStartbit() + int(sig.size)):
                 if sig.is_little_endian:
                     bitfieldLe[bit] = i
                 else:
@@ -822,7 +628,7 @@ class Frame(object):
             if (i == 63 or bitfield[i] != 0) and startBit != -1:
                 if i == 63:
                     i = 64
-                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),signalSize=i-startBit, startBit=startBit, is_little_endian = False))
+                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=i-startBit, startBit=startBit, is_little_endian = False))
                 startBit = -1
                 sigCount +=1
                 
@@ -855,8 +661,8 @@ class Frame(object):
             signals = sorted(signalsToDecode, key=lambda s: s.getStartbit())
 
         for signal in signals:
-            start = frame_size - signal.getStartbit() - signal.signalsize
-            padding = end - (start + signal.signalsize)
+            start = frame_size - signal.getStartbit() - signal.size
+            padding = end - (start + signal.size)
             if padding > 0:
                 fmt.append('p' + str(padding))
             fmt.append(signal.bitstruct_format())
@@ -877,7 +683,7 @@ class Frame(object):
             logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
             return None
 
-        data = {} if data is None else data
+        data = dict() if data is None else data
 
         if self.is_complex_multiplexed:
             # TODO
@@ -953,7 +759,6 @@ class Frame(object):
     def __str__(self):
         return self.name
 
-
 class Define(object):
     """
     these objects hold the defines and default-values
@@ -965,12 +770,18 @@ class Define(object):
         self.type = None
         self.defaultValue = None
 
+        def saveConvertStrToInt(inStr):
+            out = int(defaultFloatFactory(inStr))
+            if out != defaultFloatFactory(inStr):
+                logger.warning("Warning, integer was expected but got float: got: {0} using {1}\n".format(inStr, str(out)))
+            return out
+
         # for any known type:
         if definition[0:3] == 'INT':
             self.type = 'INT'
             min, max = definition[4:].split(' ', 2)
-            self.min = int(min)
-            self.max = int(max)
+            self.min = saveConvertStrToInt(min)
+            self.max = saveConvertStrToInt(max)
 
         elif definition[0:6] == 'STRING':
             self.type = 'STRING'
@@ -992,14 +803,14 @@ class Define(object):
         elif definition[0:3] == 'HEX':
             self.type = 'HEX'
             min, max = definition[4:].split(' ', 2)
-            self.min = int(min)
-            self.max = int(max)
+            self.min = saveConvertStrToInt(min)
+            self.max = saveConvertStrToInt(max)
 
         elif definition[0:5] == 'FLOAT':
             self.type = 'FLOAT'
             min, max = definition[6:].split(' ', 2)
-            self.min = float(min)
-            self.max = float(max)
+            self.min = defaultFloatFactory(min)
+            self.max = defaultFloatFactory(max)
 
 
     def addDefault(self, default):
@@ -1012,7 +823,7 @@ class Define(object):
             return
         self.definition = 'ENUM "' + '","' .join(self.values) +'"'
 
-
+@attr.s(cmp=False)
 class CanMatrix(object):
     """
     The Can-Matrix-Object
@@ -1026,16 +837,16 @@ class CanMatrix(object):
     valueTables (global defined values)
     """
 
-    def __init__(self):
-        self.attributes = {}
-        self.boardUnits = BoardUnitList()
-        self.frames = FrameList()
-        self.signalDefines = {}
-        self.frameDefines = {}
-        self.globalDefines = {}
-        self.buDefines = {}
-        self.valueTables = {}
-        self.envVars = dict()
+    attributes = attr.ib(type=dict, default= attr.Factory(dict))
+    boardUnits = attr.ib(default = attr.Factory(list))
+    frames = attr.ib(default = attr.Factory(list))
+
+    signalDefines = attr.ib(default = attr.Factory(dict))
+    frameDefines = attr.ib(default = attr.Factory(dict))
+    globalDefines = attr.ib(default = attr.Factory(dict))
+    buDefines = attr.ib(default = attr.Factory(dict))
+    valueTables = attr.ib(default = attr.Factory(dict))
+    envVars = attr.ib(default = attr.Factory(dict))
 
     def __iter__(self):
         return iter(self.frames)
@@ -1150,26 +961,86 @@ class CanMatrix(object):
         for element in toBeDeleted:
             del self.signalDefines[element]
 
-    def frameById(self, Id):
-        return self.frames.byId(Id)
+    def frameById(self, Id, extended=None):
+        Id = int(Id)
+        extendedMarker = 0x80000000
+        for test in self.frames:
+            if test.id == Id:
+                if extended is None:
+                    # found ID while ignoring extended or standard
+                    return test
+                elif test.extended == extended:
+                    # found ID while checking extended or standard
+                    return test
+            else:
+                if extended is not None:
+                    # what to do if Id is not equal and extended is also provided ???
+                    pass
+                else:
+                    if test.extended and Id & extendedMarker:
+                        # check regarding common used extended Bit 31
+                        if test.id == Id - extendedMarker:
+                            return test
+        return None
 
     def frameByName(self, name):
-        return self.frames.byName(name)
+        for test in self.frames:
+            if test.name == name:
+                return test
+        return None
 
     def globFrames(self, globStr):
-        return self.frames.glob(globStr)
+        """
+        returns array of frame-objects by given globstr
+        :param globStr:
+        :return: array
+        """
+        returnArray = []
+        for test in self.frames:
+            if fnmatch.fnmatchcase(test.name, globStr):
+                returnArray.append(test)
+        return returnArray
 
     def boardUnitByName(self, name):
-        return self.boardUnits.byName(name)
+        """
+        returns Boardunit-Object of list by Name
+        """
+        for test in self.boardUnits:
+            if test.name == name:
+                return test
+        return None
+
 
     def globBoardUnits(self, globStr):
-        return self.boardUnits.glob(globStr)
+        """
+        returns array of ecu-objects by given globstr
+        :param globStr:
+        :return: array
+        """
+        returnArray = []
+        for test in self.boardUnits:
+            if fnmatch.fnmatchcase(test.name, globStr):
+                returnArray.append(test)
+        return returnArray
+
+    def addFrame(self, frame):
+        """
+        Adds a Frame
+        """
+        self.frames.append(frame)
+        return self.frames[len(self.frames) - 1]
+
+    def removeFrame(self, frame):
+        """
+        Adds a Frame
+        """
+        self._list.remove(frame)
 
 
     def deleteZeroSignals(self):
         for frame in self.frames:
             for signal in frame.signals:
-                if 0 == signal.signalsize:
+                if 0 == signal.size:
                     frame.signals.remove(signal)
 
     def delSignalAttributes(self, unwantedAttributes):
@@ -1191,8 +1062,8 @@ class CanMatrix(object):
             if "force" == strategy:
                 maxBit = 0
                 for sig in frame.signals:
-                    if sig.getStartbit() + int(sig.signalsize) > maxBit:
-                        maxBit = sig.getStartbit() + int(sig.signalsize)
+                    if sig.getStartbit() + int(sig.size) > maxBit:
+                        maxBit = sig.getStartbit() + int(sig.size)
                 frame.size = math.ceil(maxBit / 8)
 
     def renameEcu(self, old, newName):
@@ -1203,8 +1074,8 @@ class CanMatrix(object):
             oldName = old.name
         old.name = newName
         for frame in self.frames:
-            if oldName in frame.transmitter:
-                frame.transmitter.remove(oldName)
+            if oldName in frame.transmitters:
+                frame.transmitters.remove(oldName)
                 frame.addTransmitter(newName)
             for signal in frame.signals:
                 if oldName in signal.receiver:
@@ -1212,29 +1083,43 @@ class CanMatrix(object):
                     signal.addReceiver(newName)
             frame.updateReceiver()
 
+    def addEcu(self, ecu):
+        for bu in self.boardUnits:
+            if bu.name.strip() == ecu.name:
+                return
+        self.boardUnits.append(ecu)
+
     def delEcu(self, ecu):
+        """
+        remove Boardunit/ECU to list
+        """
         if type(ecu).__name__ == 'instance':
             ecuList = [ecu]
         else:
             ecuList = self.globBoardUnits(ecu)
+
         for ecu in ecuList:
-            self.boardUnits.remove(ecu)
-            for frame in self.frames:
-                if ecu.name in frame.transmitter:
-                    frame.transmitter.remove(ecu.name)
-                for signal in frame.signals:
-                    if ecu.name in signal.receiver:
-                        signal.receiver.remove(ecu.name)
-                frame.updateReceiver()
+            """
+            remove Boardunit/ECU to list
+            """
+            if ecu in self.boardUnits:
+                self.boardUnits.remove(ecu)
+                for frame in self.frames:
+                    if ecu.name in frame.transmitters:
+                        frame.transmitters.remove(ecu.name)
+                    for signal in frame.signals:
+                        if ecu.name in signal.receiver:
+                            signal.receiver.remove(ecu.name)
+                    frame.updateReceiver()
 
     def updateEcuList(self):
         for frame in self.frames:
-            for ecu in frame.transmitter:
-                self.boardUnits.add(BoardUnit(ecu))
+            for ecu in frame.transmitters:
+                self.addEcu(BoardUnit(ecu))
             frame.updateReceiver()
             for signal in frame.signals:
                 for ecu in signal.receiver:
-                    self.boardUnits.add(BoardUnit(ecu))
+                    self.addEcu(BoardUnit(ecu))
 
     def renameFrame(self, old, newName):
         if type(old).__name__ == 'instance':
@@ -1411,7 +1296,7 @@ class CanMatrix(object):
 #
 #
 #
-def computeSignalValueInFrame(startbit, ln, fmt, value):
+def computeSignalValueInFrame(startBit, ln, fmt, value):
     """
     compute the signal value in the frame
     """
@@ -1419,7 +1304,7 @@ def computeSignalValueInFrame(startbit, ln, fmt, value):
     frame = 0
     if fmt == 1:  # Intel
     # using "sawtooth bit counting policy" here
-        pos = ((7 - (startbit % 8)) + 8*(int(startbit/8)))
+        pos = ((7 - (startBit % 8)) + 8*(int(startBit/8)))
         while ln > 0:
             # How many bits can we stuff in current byte?
             #  (Should be 8 for anything but the first loop)
@@ -1439,7 +1324,7 @@ def computeSignalValueInFrame(startbit, ln, fmt, value):
     else:  # Motorola
         # Work this out in "sequential bit counting policy"
         # Compute the LSB position in "sequential"
-        lsbpos = ((7 - (startbit % 8)) + 8*(int(startbit/8)))
+        lsbpos = ((7 - (startBit % 8)) + 8*(int(startBit/8)))
         # deduce the MSB position
         msbpos = 1 + lsbpos - ln
         # "reverse" the value

@@ -314,13 +314,13 @@ def compareFrame(f1, f2, ignore=None):
     else:
         result.addChild(compareAttributes(f1, f2, ignore))
 
-    temp = [str(item) for item in f2.transmitter]
-    for transmitter in f1.transmitter:
+    temp = [str(item) for item in f2.transmitters]
+    for transmitter in f1.transmitters:
         if transmitter not in temp:
             result.addChild(compareResult("removed", "Frame-Transmitter", f1))
 
-    temp = [str(item) for item in f1.transmitter]
-    for transmitter in f2.transmitter:
+    temp = [str(item) for item in f1.transmitters]
+    for transmitter in f2.transmitters:
         if transmitter not in temp:
             result.addChild(compareResult("added", "Frame-Transmitter",  f2))
 

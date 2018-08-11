@@ -34,7 +34,9 @@ logger = logging.getLogger('root')
 
 from .canmatrix import *
 import re
-import codecs
+import decimal
+default_float_factory = decimal.Decimal
+
 
 # TODO support for [START_PARAM_NODE_RX_SIG]
 # TODO support for [START_PARAM_NODE_TX_MSG]
@@ -60,10 +62,8 @@ def decodeDefine(line):
 
 
 def load(f, **options):
-    if 'dbfImportEncoding' in options:
-        dbfImportEncoding = options["dbfImportEncoding"]
-    else:
-        dbfImportEncoding = 'iso-8859-1'
+    dbfImportEncoding = options.get("dbfImportEncoding",'iso-8859-1')
+    float_factory = options.get('float_factory', default_float_factory)
 
     db = CanMatrix()
 
@@ -88,7 +88,7 @@ def load(f, **options):
             else:
                 (BUName, comment) = line.split(' ', 1)
                 comment = comment.replace('"', '').replace(';', '')
-                db.boardUnits.byName(BUName).addComment(comment)
+                db.boardUnitByName(BUName).addComment(comment)
 
         if mode == 'FrameDescription':
             if line.startswith(
@@ -120,7 +120,7 @@ def load(f, **options):
                 mode = ''
             else:
                 (bu, attrib, value) = line.split(',', 2)
-                db.boardUnits.byName(bu).addAttribute(
+                db.boardUnitByName(bu).addAttribute(
                     attrib.replace('"', ''), value[1:-1])
 
         elif mode == 'ParamNetVal':
@@ -213,14 +213,14 @@ def load(f, **options):
                 else:
                     extended = None
                 if len(temparray) > 6:
-                    transmitter = temparray[6].split()
+                    transmitters = temparray[6].split()
                 else:
-                    transmitter = None
-                newBo = db.frames.addFrame(
+                    transmitters = list()
+                newBo = db.addFrame(
                     Frame(name,
-                          Id=int(Id),
-                          dlc=size,
-                          transmitter=transmitter))
+                          id=int(Id),
+                          size=int(size),
+                          transmitters=transmitters))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")
@@ -230,13 +230,18 @@ def load(f, **options):
                 temstr = line.strip()[6:].strip()
                 boList = temstr.split(',')
                 for bo in boList:
-                    db.boardUnits.add(BoardUnit(bo))
+                    db.addEcu(BoardUnit(bo))
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
                 temparray = temstr.split(',')
                 (name, size, startbyte, startbit, sign, Max, Min, byteorder,
                  offset, factor, unit, multiplex) = temparray[0:12]
+                Min = float_factory(Min)
+                Max = float_factory(Max)
+                factor = float_factory(factor)
+                ofset = float_factory(offset)
+
                 if len(temparray) > 12:
                     receiver = temparray[12].split(',')
                 else:
@@ -262,15 +267,15 @@ def load(f, **options):
                 startbit += (int(startbyte) - 1) * 8
 
                 newSig = newBo.addSignal(Signal(name,
-                                                startBit=startbit,
-                                                signalSize=size,
+                                                startBit=int(startbit),
+                                                size=int(size),
                                                 is_little_endian=(
                                                     int(byteorder) == 1),
                                                 is_signed=is_signed,
                                                 factor=factor,
                                                 offset=offset,
-                                                min=float(Min) * float(factor),
-                                                max=float(Max) * float(factor),
+                                                min=Min * factor,
+                                                max=Max * factor,
                                                 unit=unit,
                                                 receiver=receiver,
                                                 is_float=is_float,
@@ -303,12 +308,7 @@ def load(f, **options):
 def dump(mydb, f, **options):
     # create copy because export changes database
     db = deepcopy(mydb)
-
-    if 'dbfExportEncoding' in options:
-        dbfExportEncoding = options["dbfExportEncoding"]
-    else:
-        dbfExportEncoding = 'iso-8859-1'
-
+    dbfExportEncoding = options.get("dbfExportEncoding", 'iso-8859-1')
     db.EnumAttribs2Keys()
 
     outstr =  """//******************************BUSMASTER Messages and signals Database ******************************//
@@ -337,10 +337,10 @@ def dump(mydb, f, **options):
         outstr += "[START_MSG] " + frame.name + \
             ",%d,%d,%d,1,%c," % (frame.id, frame.size,
                                  len(frame.signals), extended)
-        if frame.transmitter.__len__() == 0:
+        if frame.transmitters.__len__() == 0:
             frame.addTransmitter("Vector__XXX")
 # DBF does not support multiple Transmitters
-        outstr += frame.transmitter[0] + "\n"
+        outstr += frame.transmitters[0] + "\n"
 
         for signal in frame.signals:
             # m_acName ucLength m_ucWhichByte m_ucStartBit
@@ -367,7 +367,7 @@ def dump(mydb, f, **options):
             if signal.factor == 0:
                 signal.factor = 1
 
-            outstr += "[START_SIGNALS] " + signal.name + ",%d,%d,%d,%c," % (signal.signalsize,
+            outstr += "[START_SIGNALS] " + signal.name + ",%d,%d,%d,%c," % (signal.size,
                                                                             whichbyte,
                                                                             int(signal.getStartbit(bitNumbering=1,
                                                                                                    startLittle=True)) % 8,

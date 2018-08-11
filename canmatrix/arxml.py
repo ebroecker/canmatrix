@@ -32,14 +32,15 @@ from __future__ import absolute_import
 import logging
 logger = logging.getLogger('root')
 
-import math
-import os
-
 from builtins import *
 from lxml import etree
 
 from .canmatrix import *
 from .autosarhelper import *
+
+import decimal
+default_float_factory = decimal.Decimal
+
 
 clusterExporter = 1
 clusterImporter = 1
@@ -88,10 +89,7 @@ def getBaseTypeOfSignal(signal):
 
 
 def dump(dbs, f, **options):
-    if 'arVersion' in options:
-        arVersion = options["arVersion"]
-    else:
-        arVersion = "3.2.3"
+    arVersion = options.get("arVersion", "3.2.3")
 
     for name in dbs:
         db = dbs[name]
@@ -172,7 +170,7 @@ def dump(dbs, f, **options):
             createSubElement(canFrameTriggering, 'SHORT-NAME', frame.name)
             framePortRefs = createSubElement(
                 canFrameTriggering, 'FRAME-PORT-REFS')
-            for transmitter in frame.transmitter:
+            for transmitter in frame.transmitters:
                 framePortRef = createSubElement(
                     framePortRefs, 'FRAME-PORT-REF')
                 framePortRef.set('DEST', 'FRAME-PORT')
@@ -522,7 +520,7 @@ def dump(dbs, f, **options):
                         dataTypeRef.set('DEST', 'INTEGER-TYPE')
                     dataTypeRef.text = "/DataType/" + signal.name
                     createSubElement(signalEle, 'LENGTH',
-                                     str(signal.signalsize))
+                                     str(signal.size))
             for group in frame.signalGroups:
                 groupEle = createSubElement(elements, 'SYSTEM-SIGNAL-GROUP')
                 createSubElement(signalEle, 'SHORT-NAME', group.name)
@@ -697,7 +695,7 @@ def dump(dbs, f, **options):
                 if frame.is_complex_multiplexed:
                     continue
 
-                if ecu.name in frame.transmitter:
+                if ecu.name in frame.transmitters:
                     frameport = createSubElement(
                         ecuCommPortInstances, 'FRAME-PORT')
                     createSubElement(frameport, 'SHORT-NAME', frame.name)
@@ -934,7 +932,7 @@ def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
     Bo.addSignalGroup(arGetName(syssignal, ns), 1, members)
 
 
-def decodeCompuMethod(compuMethod, arDict, ns):
+def decodeCompuMethod(compuMethod, arDict, ns, float_factory):
     values = {}
     factor = 1.0
     offset = 0
@@ -953,7 +951,7 @@ def decodeCompuMethod(compuMethod, arDict, ns):
         # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
         # keyword definition. 06Jun16
         #####################################################################################################
-        if ll is not None and desc is not None and int(float(ul.text)) == int(float(ll.text)):
+        if ll is not None and desc is not None and int(float_factory(ul.text)) == int(float_factory(ll.text)):
             #####################################################################################################
             #####################################################################################################
             values[ll.text] = desc
@@ -966,8 +964,8 @@ def decodeCompuMethod(compuMethod, arDict, ns):
             denominator = arGetChild(rational, "COMPU-DENOMINATOR", arDict, ns)
             nenner = arGetChildren(denominator, "V", arDict, ns)
 
-            factor = float(zaehler[1].text) / float(nenner[0].text)
-            offset = float(zaehler[0].text) / float(nenner[0].text)
+            factor = float_factory(zaehler[1].text) / float_factory(nenner[0].text)
+            offset = float_factory(zaehler[0].text) / float_factory(nenner[0].text)
         else:
             const = arGetChild(compuscale, "COMPU-CONST", arDict, ns)
             # value hinzufuegen
@@ -976,7 +974,7 @@ def decodeCompuMethod(compuMethod, arDict, ns):
                     "unknown Compu-Method: at sourceline %d " % compuMethod.sourceline)
     return values, factor, offset, unit, const
 
-def getSignals(signalarray, Bo, arDict, ns, multiplexId):
+def getSignals(signalarray, Bo, arDict, ns, multiplexId, float_factory):
     global signalRxs
     GroupId = 1
     if signalarray is None:  # Empty signalarray - nothing to do
@@ -1052,8 +1050,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             is_float = False
         
         if lower is not None and upper is not None:
-            Min = float(lower.text)
-            Max = float(upper.text)
+            Min = float_factory(lower.text)
+            Max = float_factory(upper.text)
 
         datdefprops = arGetChild(datatype, "SW-DATA-DEF-PROPS", arDict, ns)
 
@@ -1084,7 +1082,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             compmethod = arGetChild(syssignal, "COMPU-METHOD", arDict, ns)
 
         # decode compuMethod:
-        (values, factor, offset, unit, const) = decodeCompuMethod(compmethod, arDict, ns)
+        (values, factor, offset, unit, const) = decodeCompuMethod(compmethod, arDict, ns, float_factory)
 
         if Min is not None:
             Min *= factor
@@ -1145,20 +1143,22 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
         if startBit is not None:
             newSig = Signal(name.text,
-                            startBit=startBit.text,
-                            signalSize=length.text,
+                            startBit=int(startBit.text),
+                            size=int(length.text),
                             is_little_endian=is_little_endian,
                             is_signed=is_signed,
                             factor=factor,
                             offset=offset,
-                            min=Min,
-                            max=Max,
                             unit=Unit,
                             receiver=receiver,
                             multiplex=multiplexId,
                             comment=signalDescription,
                             is_float=is_float)
 
+            if Min is not None:
+                Signal.min = Min
+            if Max is not None:
+                Signal.mex = Max
 
             if newSig.is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
@@ -1189,7 +1189,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             Bo.addSignal(newSig)
 
 
-def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
+def getFrame(frameTriggering, arDict, multiplexTranslation, ns, float_factory):
     global pduFrameMapping
     extEle = arGetChild(frameTriggering, "CAN-ADDRESSING-MODE", arDict, ns)
     idele = arGetChild(frameTriggering, "IDENTIFIER", arDict, ns)
@@ -1211,7 +1211,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
 
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
-        newFrame = Frame(arGetName(frameR, ns), Id=idNum, dlc=int(dlc.text))
+        newFrame = Frame(arGetName(frameR, ns), id=idNum, size=int(dlc.text))
         comment = getDesc(frameR, arDict, ns)
         if comment is not None:
             newFrame.addComment(comment)
@@ -1224,7 +1224,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         if pdu is None:
             pdu = arGetChild(ipduTriggering, "I-SIGNAL-I-PDU", arDict, ns) ## AR4.2
         dlc = arGetChild(pdu, "LENGTH", arDict, ns)
-        newFrame = Frame(sn.text,Id=idNum,dlc=int(dlc.text) / 8)
+        newFrame = Frame(sn.text,id=idNum,dlc=int(dlc.text) / 8)
 
     if pdu is None:
         logger.error("ERROR: pdu")
@@ -1288,29 +1288,29 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     if cyclicTiming is not None and eventTiming is not None:
         newFrame.addAttribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
         if minimumDelay is not None:
-            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text) * 1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
         if repeats is not None:
             newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     elif cyclicTiming is not None:
         newFrame.addAttribute("GenMsgSendType", "cyclicX")  # CycleX
         if minimumDelay is not None:
-            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text) * 1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
         if repeats is not None:
             newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
     else:
         newFrame.addAttribute("GenMsgSendType", "spontanX")  # Spontan
         if minimumDelay is not None:
-            newFrame.addAttribute("GenMsgDelayTime", str(int(float(minimumDelay.text) * 1000)))
+            newFrame.addAttribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
         if repeats is not None:
             newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
 
     if startingTime is not None:
         value = arGetChild(startingTime, "VALUE", arDict, ns)
-        newFrame.addAttribute("GenMsgStartDelayTime",str(int(float(value.text) * 1000)))
+        newFrame.addAttribute("GenMsgStartDelayTime",str(int(float_factory(value.text) * 1000)))
 
     value = arGetChild(repeatingTime, "VALUE", arDict, ns)
     if value is not None:
-        newFrame.addAttribute("GenMsgCycleTime",str(int(float(value.text) * 1000)))
+        newFrame.addAttribute("GenMsgCycleTime",str(int(float_factory(value.text) * 1000)))
 
 #    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
 #    if pdusigmappings is None or pdusigmappings.__len__() == 0:
@@ -1318,7 +1318,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     pdusigmapping = arGetChildren(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
 
     if pdusigmapping is not None and pdusigmapping.__len__() > 0:
-        getSignals(pdusigmapping, newFrame, arDict, ns, None)
+        getSignals(pdusigmapping, newFrame, arDict, ns, None, float_factory)
 
     # Seen some pdusigmapping being [] and not None with some arxml 4.2
     else: ##AR 4.2
@@ -1454,10 +1454,8 @@ def load(file, **options):
     global signalRxs
     signalRxs = {}
 
-    if 'arxmlIgnoreClusterInfo' in options:
-        ignoreClusterInfo = options["arxmlIgnoreClusterInfo"]
-    else:
-        ignoreClusterInfo = False
+    float_factory = options.get("float_factory", default_float_factory)
+    ignoreClusterInfo = options.get("arxmlIgnoreClusterInfo", False)
 
     result = {}
     logger.debug("Read arxml ...")
@@ -1556,7 +1554,7 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            db.frames.addFrame(getFrame(frameTrig,arDict,multiplexTranslation,ns))
+            db.addFrame(getFrame(frameTrig,arDict,multiplexTranslation,ns, float_factory))
 
         if ignoreClusterInfo == True:
             pass
@@ -1598,7 +1596,7 @@ def load(file, **options):
             if l2 is not None:
                 bu.addComment(l2.text)
 
-            db.boardUnits.add(bu)
+            db.addEcu(bu)
 
         for bo in db.frames:
             frame = 0

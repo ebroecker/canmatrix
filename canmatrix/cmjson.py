@@ -31,18 +31,13 @@ import json
 import sys
 
 
+
 extension = 'json'
 
 def dump(db, f, **options):
-    if 'jsonCanard' in options:
-        exportCanard = options['jsonCanard']
-    else:
-        exportCanard = False
 
-    if 'jsonMotorolaBitFormat' in options:
-        motorolaBitFormat = options['jsonMotorolaBitFormat']
-    else:
-        motorolaBitFormat = "lsb"
+    exportCanard = options.get('jsonCanard', False)
+    motorolaBitFormat = options.get('jsonMotorolaBitFormat', "lsb")
 
 
     if 'jsonAll' in options:
@@ -89,9 +84,9 @@ def dump(db, f, **options):
                 signals.append({
                     "name": signal.name,
                     "start_bit": startBit,
-                    "bit_length": signal.signalsize,
-                    "factor": float(signal.factor),
-                    "offset": float(signal.offset),
+                    "bit_length": signal.size,
+                    "factor": str(signal.factor),
+                    "offset": str(signal.offset),
                     "is_big_endian": signal.is_little_endian == 0,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float
@@ -129,8 +124,8 @@ def dump(db, f, **options):
                     "name": signal.name,
                     "start_bit": startBit,
                     "bit_length": signal.signalsize,
-                    "factor": float(signal.factor),
-                    "offset": float(signal.offset),
+                    "factor": str(signal.factor),
+                    "offset": str(signal.offset),
                     "is_big_endian": signal.is_little_endian == 0,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
@@ -182,8 +177,8 @@ def load(f, **options):
         for frame in jsonData["messages"]:
             #            newframe = Frame(frame["id"],frame["name"],8,None)
             newframe = Frame(frame["name"],
-                             Id=frame["id"],
-                             dlc=8)
+                             id=frame["id"],
+                             size=8)
             if "length" in frame:
                 newframe.size = frame["length"]
 
@@ -207,7 +202,7 @@ def load(f, **options):
                     is_signed = False
                 newsignal = Signal(signal["name"],
                                    startBit=signal["start_bit"],
-                                   signalSize=signal["bit_length"],
+                                   size=signal["bit_length"],
                                    is_little_endian=is_little_endian,
                                    is_signed=is_signed,
                                    factor=signal["factor"],
@@ -224,8 +219,8 @@ def load(f, **options):
                 if newsignal.is_little_endian == False:
 
                     newsignal.setStartbit(
-                        newsignal.startbit, bitNumbering=1, startLittle=True)
+                        newsignal.startBit, bitNumbering=1, startLittle=True)
                 newframe.addSignal(newsignal)
-            db.frames.addFrame(newframe)
+            db.addFrame(newframe)
     f.close()
     return db

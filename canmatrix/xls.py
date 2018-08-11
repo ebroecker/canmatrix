@@ -34,6 +34,9 @@ import codecs
 import xlwt
 import logging
 from canmatrix.xls_common import *
+import decimal
+default_float_factory = decimal.Decimal
+
 
 logger = logging.getLogger('root')
 
@@ -94,11 +97,11 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
 
         # write "s" "r" "r/s" if signal is sent, recieved or send and recived
         # by boardunit
-        if sig and bu in sig.receiver and bu in frame.transmitter:
+        if sig and bu in sig.receiver and bu in frame.transmitters:
             worksheet.write(row, col, label="r/s", style=locStyleSender)
         elif sig and bu in sig.receiver:
             worksheet.write(row, col, label="r", style=locStyle)
-        elif bu in frame.transmitter:
+        elif bu in frame.transmitters:
             worksheet.write(row, col, label="s", style=locStyleSender)
         else:
             worksheet.write(row, col, label="", style=locStyle)
@@ -325,10 +328,8 @@ def dump(db, file, **options):
 
 
 def load(file, **options):
-    if 'xlsMotorolaBitFormat' in options:
-        motorolaBitFormat = options["xlsMotorolaBitFormat"]
-    else:
-        motorolaBitFormat = "msbreverse"
+    motorolaBitFormat = options.get("xlsMotorolaBitFormat","msbreverse")
+    float_factory = options.get("float_factory", default_float_factory)
 
     additionalInputs = dict()
     wb = xlrd.open_workbook(file_contents=file.read())
@@ -423,10 +424,10 @@ def load(file, **options):
                 launchParam = "0"
 
             if frameId.endswith("xh"):
-                newBo = Frame(frameName, Id=int(frameId[:-2], 16), dlc=dlc, extended = True)
+                newBo = Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended = True)
             else:
-                newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
-            db.frames.addFrame(newBo)
+                newBo = Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
+            db.addFrame(newBo)
 
             # eval launctype
             if launchType is not None:
@@ -489,7 +490,7 @@ def load(file, **options):
 #                if signalLength > 8:
                 newSig = Signal(signalName,
                                 startBit=(startbyte - 1) * 8 + startbit,
-                                signalSize=signalLength,
+                                size=int(signalLength),
                                 is_little_endian=is_little_endian,
                                 is_signed=is_signed,
                                 receiver=receiver,
@@ -544,7 +545,7 @@ def load(file, **options):
                 unit = unit.strip()
                 newSig.unit = unit
                 try:
-                    newSig.factor = float(factor)
+                    newSig.factor = float_factory(factor)
                 except:
                     logger.warn(
                         "Some error occurred while decoding scale: Signal: %s; \"%s\"" %
@@ -558,19 +559,18 @@ def load(file, **options):
         if ".." in test:
             (mini, maxi) = test.strip().split("..", 2)
             unit = ""
-            try:
-                newSig.offset = float(mini)
-                newSig.min = float(mini)
-                newSig.max = float(maxi)
-            except:
-                newSig.offset = 0
+            mini = float_factory(mini)
+            maxi = float_factory(maxi)
+            newSig.min = mini
+            newSig.max = maxi
+            newSig.offset = mini
 
         elif valueName.__len__() > 0:
             if value.strip().__len__() > 0:
                 value = int(float(value))
                 newSig.addValues(value, valueName)
             maxi = pow(2, signalLength) - 1
-            newSig.max = float(maxi)
+            newSig.max = float_factory(maxi)
         else:
             newSig.offset = 0
 
