@@ -1249,7 +1249,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns, float_factory):
         if ipdu is not None:
             pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
             pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-            getSignals(pdusigmapping, newFrame, arDict, ns, None)
+            getSignals(pdusigmapping, newFrame, arDict, ns, None, float_factory)
             multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu, ns)
 
         dynamicPart = arGetChild(pdu, "DYNAMIC-PART", arDict, ns)
@@ -1267,7 +1267,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns, float_factory):
             if ipdu is not None:
                 pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
                 pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                getSignals(pdusigmapping,newFrame,arDict,ns,selectorId.text)
+                getSignals(pdusigmapping,newFrame,arDict,ns,selectorId.text, float_factory)
 
     if newFrame.comment is None:
         newFrame.addComment(getDesc(pdu, arDict, ns))
@@ -1336,7 +1336,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns, float_factory):
                 if signaltopdumaps is None:
                     logger.debug("DEBUG: AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!" % (arGetName(ipdus, ns)))
 #                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                getSignals(signaltopdumaps, newFrame, arDict, ns, None)
+                getSignals(signaltopdumaps, newFrame, arDict, ns, None, float_factory)
         else:
             logger.debug("DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found" % (newFrame.name))
     return newFrame
