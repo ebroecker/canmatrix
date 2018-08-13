@@ -1231,7 +1231,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns, float_factory):
     else:
         logger.debug(arGetName(pdu, ns))
 
-    if "MULTIPLEXED-I-PDU" in pdu.tag:
+    if pdu is not None and "MULTIPLEXED-I-PDU" in pdu.tag:
         selectorByteOrder = arGetChild(pdu, "SELECTOR-FIELD-BYTE-ORDER", arDict, ns)
         selectorLen = arGetChild(pdu, "SELECTOR-FIELD-LENGTH", arDict, ns)
         selectorStart = arGetChild(pdu, "SELECTOR-FIELD-START-POSITION", arDict, ns)
