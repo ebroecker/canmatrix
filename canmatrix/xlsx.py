@@ -484,7 +484,7 @@ def load(filename, **options):
 
     # BoardUnits:
     for x in range(_BUstart, _BUend):
-        db.boardUnits.add(BoardUnit(sheet[0][letterIndex[x]]))
+        db.addEcu(BoardUnit(sheet[0][letterIndex[x]]))
 
     # initialize:
     frameId = None
