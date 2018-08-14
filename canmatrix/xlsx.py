@@ -510,9 +510,9 @@ def load(filename, **options):
             launchParam = str(int(launchParam))
 
             if frameId.endswith("xh"):
-                newBo = Frame(frameName, id=int(frameId[:-2], 16), dlc=dlc, extended=True)
+                newBo = Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended=True)
             else:
-                newBo = Frame(frameName, id=int(frameId[:-1], 16), dlc=dlc)
+                newBo = Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
 
             db.frames.addFrame(newBo)
 
@@ -571,7 +571,7 @@ def load(filename, **options):
 #                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
                 newSig = Signal(signalName,
                                 startBit=(startbyte - 1) * 8 + startbit,
-                                signalSize=signalLength,
+                                size=signalLength,
                                 is_little_endian=is_little_endian,
                                 is_signed=is_signed,
                                 receiver=receiver,
