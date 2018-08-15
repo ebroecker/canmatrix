@@ -437,12 +437,11 @@ def load(filename, **options):
     from sys import modules
 
     # use xlrd excel reader if available, because its more robust
-#    try:
-#        import canmatrix.xls
-#        return canmatrix.xls.load(filename, **options)
-#    except:
-#        logger.error("xlsx: using legacy xlsx-reader - please get xlrd working for better results!")
-#        pass
+    if 'xlsxLegacy' in options and options['xlsxLegacy'] == True:
+        logger.error("xlsx: using legacy xlsx-reader - please get xlrd working for better results!")
+    else:
+        import canmatrix.xls
+        return canmatrix.xls.load(filename, **options)
 
     # else use this hack to read xlsx
     if 'xlsMotorolaBitFormat' in options:
