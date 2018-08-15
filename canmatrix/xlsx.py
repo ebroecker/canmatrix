@@ -437,12 +437,12 @@ def load(filename, **options):
     from sys import modules
 
     # use xlrd excel reader if available, because its more robust
-    try:
-        import canmatrix.xls
-        return canmatrix.xls.load(filename, **options)
-    except:
-        logger.error("xlsx: using legacy xlsx-reader - please get xlrd working for better results!")
-        pass
+#    try:
+#        import canmatrix.xls
+#        return canmatrix.xls.load(filename, **options)
+#    except:
+#        logger.error("xlsx: using legacy xlsx-reader - please get xlrd working for better results!")
+#        pass
 
     # else use this hack to read xlsx
     if 'xlsMotorolaBitFormat' in options:
@@ -514,7 +514,7 @@ def load(filename, **options):
             else:
                 newBo = Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
 
-            db.frames.addFrame(newBo)
+            db.addFrame(newBo)
 
             # eval launchtype
             if launchType is not None:
