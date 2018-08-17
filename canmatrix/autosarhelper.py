@@ -76,7 +76,7 @@ def arGetXchildren(root, path, arDict, ns):
 #
 
 
-def arGetPath(ardict, path):
+def arGetPath2(ardict, path):
     ptr = ardict
     for p in path.split('/'):
         if p.strip():
