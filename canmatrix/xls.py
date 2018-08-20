@@ -396,7 +396,7 @@ def load(file, **options):
 
     # BoardUnits:
     for x in range(index['BUstart'], index['BUend']):
-        db.boardUnits.add(BoardUnit(sh.cell(0, x).value))
+        db.addEcu(BoardUnit(sh.cell(0, x).value))
 
     # initialize:
     frameId = None

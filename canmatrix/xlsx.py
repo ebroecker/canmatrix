@@ -437,12 +437,11 @@ def load(filename, **options):
     from sys import modules
 
     # use xlrd excel reader if available, because its more robust
-    try:
+    if 'xlsxLegacy' in options and options['xlsxLegacy'] == True:
+        logger.error("xlsx: using legacy xlsx-reader - please get xlrd working for better results!")
+    else:
         import canmatrix.xls
         return canmatrix.xls.load(filename, **options)
-    except:
-        logger.error("xlsx: using legacy xlsx-reader - please get xlrd working for better results!")
-        pass
 
     # else use this hack to read xlsx
     if 'xlsMotorolaBitFormat' in options:
@@ -510,11 +509,11 @@ def load(filename, **options):
             launchParam = str(int(launchParam))
 
             if frameId.endswith("xh"):
-                newBo = Frame(frameName, id=int(frameId[:-2], 16), dlc=dlc, extended=True)
+                newBo = Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended=True)
             else:
-                newBo = Frame(frameName, id=int(frameId[:-1], 16), dlc=dlc)
+                newBo = Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
 
-            db.frames.addFrame(newBo)
+            db.addFrame(newBo)
 
             # eval launchtype
             if launchType is not None:
@@ -571,7 +570,7 @@ def load(filename, **options):
 #                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
                 newSig = Signal(signalName,
                                 startBit=(startbyte - 1) * 8 + startbit,
-                                signalSize=signalLength,
+                                size=signalLength,
                                 is_little_endian=is_little_endian,
                                 is_signed=is_signed,
                                 receiver=receiver,
