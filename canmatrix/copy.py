@@ -37,7 +37,7 @@ def copyBU(buId, sourceDb, targetDb):
         buList = sourceDb.globBoardUnits(buId)
 
     for bu in buList:
-        targetDb.boardUnits.append(deepcopy(bu))
+        targetDb.addEcu(deepcopy(bu))
 
         # copy all bu-defines
         for attribute in bu.attributes:
@@ -69,7 +69,7 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
     for bu in buList:
         logger.info("Copying ECU " + bu.name)
 
-        targetDb.boardUnits.append(deepcopy(bu))
+        targetDb.addEcu(deepcopy(bu))
 
         # copy tx-frames
         for frame in sourceDb.frames:
