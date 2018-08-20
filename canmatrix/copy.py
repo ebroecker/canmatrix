@@ -37,7 +37,7 @@ def copyBU(buId, sourceDb, targetDb):
         buList = sourceDb.globBoardUnits(buId)
 
     for bu in buList:
-        targetDb.boardUnits.add(deepcopy(bu))
+        targetDb.boardUnits.append(deepcopy(bu))
 
         # copy all bu-defines
         for attribute in bu.attributes:
@@ -69,7 +69,7 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
     for bu in buList:
         logger.info("Copying ECU " + bu.name)
 
-        targetDb.boardUnits.add(deepcopy(bu))
+        targetDb.boardUnits.append(deepcopy(bu))
 
         # copy tx-frames
         for frame in sourceDb.frames:
@@ -120,13 +120,13 @@ def copyFrame(frameId, sourceDb, targetDb):
             return False
 
         # copy Frame-Object:
-        targetDb.frames.addFrame(deepcopy(frame))
+        targetDb.addFrame(deepcopy(frame))
 
         # Boardunits:
         # each transmitter of Frame could be ECU that is not listed already
         for transmitter in frame.transmitters:
-            targetBU = targetDb.boardUnits.byName(transmitter)
-            sourceBU = sourceDb.boardUnits.byName(transmitter)
+            targetBU = targetDb.boardUnitByName(transmitter)
+            sourceBU = sourceDb.boardUnitByName(transmitter)
             if sourceBU is not None and targetBU is None:
                 copyBU(sourceBU, sourceDb, targetDb)
 
@@ -134,8 +134,8 @@ def copyFrame(frameId, sourceDb, targetDb):
         for sig in frame.signals:
             # each receiver of Signal could be ECU that is not listed already
             for receiver in sig.receiver:
-                targetBU = targetDb.boardUnits.byName(receiver)
-                sourceBU = sourceDb.boardUnits.byName(receiver)
+                targetBU = targetDb.boardUnitByName(receiver)
+                sourceBU = sourceDb.boardUnitByName(receiver)
                 if sourceBU is not None and targetBU is None:
                     copyBU(sourceBU, sourceDb, targetDb)
 

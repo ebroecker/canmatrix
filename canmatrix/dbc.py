@@ -545,7 +545,7 @@ def load(f, **options):
                     tempSig = Signal(
                         temp.group(1),
                         startBit=temp.group(3),
-                        signalSize=temp.group(4),
+                        size=temp.group(4),
                         is_little_endian=(int(temp.group(5)) == 1),
                         is_signed=(temp.group(6) == '-'),
                         factor=temp.group(7),
@@ -565,8 +565,7 @@ def load(f, **options):
                     if not tempSig.is_little_endian:
                         # startbit of motorola coded signals are MSB in dbc
                         tempSig.setStartbit(int(temp.group(3)), bitNumbering=1)
-
-                    frame = db.frames.addSignalToLastFrame(tempSig)
+                    frame.addSignal(tempSig)
 
                     if is_complex_multiplexed:
                         frame.is_complex_multiplexed = True
@@ -856,9 +855,10 @@ def load(f, **options):
                               "accessType" : accessType, "accessNodes" : accessNodes})
 
 
-        except:
+        except Exception, e:
             print ("error with line no: %d" % i)
             print (line)
+            print(e.message)
         #        else:
 #            print("Unrecocniced line: " + l + " (%d) " % i)
 # Backtracking
