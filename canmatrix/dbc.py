@@ -539,13 +539,13 @@ def load(f, **options):
                             raise Exception('error decoding line',line)
 
                     extras = {}
-                    if float_factory is not None:
-                        extras['float_factory'] = float_factory
+#                    if float_factory is not None:
+#                        extras['float_factory'] = float_factory
 
                     tempSig = Signal(
                         temp.group(1),
-                        startBit=temp.group(3),
-                        size=temp.group(4),
+                        startBit=int(temp.group(3)),
+                        size=int(temp.group(4)),
                         is_little_endian=(int(temp.group(5)) == 1),
                         is_signed=(temp.group(6) == '-'),
                         factor=temp.group(7),
