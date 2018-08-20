@@ -855,10 +855,9 @@ def load(f, **options):
                               "accessType" : accessType, "accessNodes" : accessNodes})
 
 
-        except Exception, e:
+        except:
             print ("error with line no: %d" % i)
             print (line)
-            print(e.message)
         #        else:
 #            print("Unrecocniced line: " + l + " (%d) " % i)
 # Backtracking
