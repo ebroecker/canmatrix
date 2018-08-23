@@ -17,7 +17,7 @@ for module in moduleList:
         import_module("canmatrix." + module)
         loadedFormats.append(module)
     except ImportError:
-        logger.error("Error importing canmatrix." + module)
+        logger.info("%s is not supported", module)
 
 for loadedModule in loadedFormats:
     supportedFormats[loadedModule] = []
@@ -53,6 +53,7 @@ def loadp(path, importType=None, key="", flatImport=None, **options):
     if importType:
         return load(fileObject, importType, **options)
     else:
+        logger.error("This file format is not supported for reading")
         return None
 
 
@@ -101,5 +102,7 @@ def dumpp(canCluster, path, exportType=None, **options):
                 fileObject = open(outfile, "wb")
                 dump(db, fileObject, exportType, **options)
                 fileObject.close()
+    else:
+        logger.error("This file format is not supported for writing")
 
     return None

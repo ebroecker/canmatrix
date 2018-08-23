@@ -35,18 +35,18 @@ from .canmatrix import *
 class arTree(object):
 
     def __init__(self, name="", ref=None):
-        self._name = name
-        self._ref = ref
-        self._array = []
+        self.name = name
+        self.ref = ref
+        self.array = []
 
     def new(self, name, child):
         temp = arTree(name, child)
-        self._array.append(temp)
+        self.array.append(temp)
         return temp
 
     def getChild(self, path):
-        for tem in self._array:
-            if tem._name == path:
+        for tem in self.array:
+            if tem.name == path:
                 return tem
 
 
@@ -85,7 +85,7 @@ def arGetPath(ardict, path):
             else:
                 return None
     if ptr is not None:
-        return ptr._ref
+        return ptr.ref
     else:
         return None
 

@@ -247,7 +247,7 @@ Merges REAR_FRAME out of ```second.dbc``` with ```source.dbc``` and store result
 
 **combinations and multiple extraction possible:**
 
-```canconvert.py second.dbc:ecu=REAR_ECU:ecu=FRONT_ECU:frame=FRAME1:FRAME=FRAME2 source.dbc target.dbc```
+```canconvert.py --merge=second.dbc:ecu=REAR_ECU:ecu=FRONT_ECU:frame=FRAME1:FRAME=FRAME2 source.dbc target.dbc```
 
 Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with ```source.dbc``` and store result in ```target.dbc```.
 

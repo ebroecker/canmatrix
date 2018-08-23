@@ -1,4 +1,4 @@
-version = "0.5"
+version = "0.6"
 major = 0
-minor = 5
+minor = 6
 patchlevlel = 0

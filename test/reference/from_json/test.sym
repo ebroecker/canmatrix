@@ -2,16 +2,18 @@ FormatVersion=5.0 // Do not edit this line!
 Title="canmatrix-Export"
 {ENUMS}
 
+
 {SENDRECEIVE}
+
 [testFrame1]
-ID=     123h
+ID=00000123h
 Type=Standard
 DLC=8
-Var=someTestSignal unsigned 4,11 -m /f:5 /o:1 /min:1.0 /max:10236.0 
-Var=Signal unsigned 20,3 -i /min:0.0 /max:7.0 
+Var=someTestSignal unsigned 4,11 -m /f:5 /o:1
+Var=Signal unsigned 20,3
 
 [extendedFrame]
-ID=      12h
+ID=00000012h
 Type=Standard
 DLC=8
 

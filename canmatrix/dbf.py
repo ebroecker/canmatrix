@@ -89,7 +89,7 @@ def load(f, **options):
             else:
                 (BUName, comment) = line.split(' ', 1)
                 comment = comment.replace('"', '').replace(';', '')
-                db._BUs.byName(BUName).addComment(comment)
+                db.boardUnits.byName(BUName).addComment(comment)
 
         if mode == 'FrameDescription':
             if line.startswith(
@@ -98,7 +98,9 @@ def load(f, **options):
             else:
                 (boId, temS, comment) = line.split(' ', 2)
                 comment = comment.replace('"', '').replace(';', '')
-                db.frameById(int(boId)).addComment(comment)
+                frame = db.frameById(int(boId))
+                if frame:
+                    frame.addComment(comment)
 
         elif mode == 'ParamMsgVal':
             if line.startswith("[END_PARAM_MSG_VAL]"):
@@ -119,7 +121,7 @@ def load(f, **options):
                 mode = ''
             else:
                 (bu, attrib, value) = line.split(',', 2)
-                db._BUs.byName(bu).addAttribute(
+                db.boardUnits.byName(bu).addAttribute(
                     attrib.replace('"', ''), value[1:-1])
 
         elif mode == 'ParamNetVal':
@@ -212,12 +214,12 @@ def load(f, **options):
                 else:
                     extended = None
                 if len(temparray) > 6:
-                    transmitter = temparray[6]
+                    transmitter = temparray[6].split()
                 else:
                     transmitter = None
-                newBo = db._fl.addFrame(
+                newBo = db.frames.addFrame(
                     Frame(name,
-                          Id=int(Id),
+                          id=int(Id),
                           dlc=size,
                           transmitter=transmitter))
                 #   Frame(int(Id), name, size, transmitter))
@@ -229,7 +231,7 @@ def load(f, **options):
                 temstr = line.strip()[6:].strip()
                 boList = temstr.split(',')
                 for bo in boList:
-                    db._BUs.add(BoardUnit(bo))
+                    db.boardUnits.add(BoardUnit(bo))
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
@@ -248,8 +250,13 @@ def load(f, **options):
                 else:
                     multiplex = None
 
+                is_float = False
+                is_signed = False
+                
                 if sign == "U":
                     is_signed = False
+                elif sign == "F" or sign == "D":
+                    is_float = True
                 else:
                     is_signed = True
                 startbit = int(startbit)
@@ -267,6 +274,7 @@ def load(f, **options):
                                                 max=float(Max) * float(factor),
                                                 unit=unit,
                                                 receiver=receiver,
+                                                is_float=is_float,
                                                 multiplex=multiplex))
 
                 if int(byteorder) == 0:
@@ -340,6 +348,13 @@ def dump(db, f, **options):
 
             if not signal.is_signed:
                 sign = 'U'
+            
+            if signal.is_float:
+                if signal.signalsize > 32:
+                    sign = 'D'
+                else:
+                    sign = 'F'
+                    
             outstr += "[START_SIGNALS] " + signal.name + ",%d,%d,%d,%c," % (signal.signalsize,
                                                                             whichbyte,
                                                                             int(signal.getStartbit(bitNumbering=1,

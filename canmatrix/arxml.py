@@ -51,6 +51,41 @@ def createSubElement(parent, elementName, strName=None):
         sn.text = str(strName)
     return sn
 
+def getBaseTypeOfSignal(signal):
+    if signal.is_float:
+        if signal.signalsize > 32:
+            createType = "double"
+            size = 64
+        else:
+            createType = "single"
+            size = 32
+    else:
+        if signal.signalsize > 32:
+            if signal.is_signed:
+                createType = "sint64"
+            else:
+                createType = "uint64"
+            size = 64
+        elif signal.signalsize > 16:
+            if signal.is_signed:
+                createType = "sint32"
+            else:
+                createType = "uint32"
+            size = 32
+        elif signal.signalsize > 8:
+            if signal.is_signed:
+                createType = "sint16"
+            else:
+                createType = "uint16"
+            size = 16
+        else:
+            if signal.is_signed:
+                createType = "sint8"
+            else:
+                createType = "uint8"
+            size = 8
+    return createType, size
+
 
 def dump(dbs, f, **options):
     if 'arVersion' in options:
@@ -377,7 +412,7 @@ def dump(dbs, f, **options):
                                  str(signal.getStartbit(bitNumbering=1)))
                 # missing: TRANSFER-PROPERTY: PENDING/...
 
-            for group in frame.SignalGroups:
+            for group in frame.signalGroups:
                 signalToPduMapping = createSubElement(
                     signalToPduMappings, 'I-SIGNAL-TO-I-PDU-MAPPING')
                 createSubElement(signalToPduMapping, 'SHORT-NAME', group.name)
@@ -408,6 +443,11 @@ def dump(dbs, f, **options):
                         networkRepresentProps, 'SW-DATA-DEF-PROPS-VARIANTS')
                     swDataDefPropsConditional = createSubElement(
                         swDataDefPropsVariants, 'SW-DATA-DEF-PROPS-CONDITIONAL')
+
+                    baseTypeRef = createSubElement(swDataDefPropsConditional, 'BASE-TYPE-REF')
+                    baseTypeRef.set('DEST', 'SW-BASE-TYPE')
+                    createType, size = getBaseTypeOfSignal(signal)
+                    baseTypeRef.text = "/DataType/" + createType
                     compuMethodRef = createSubElement(
                         swDataDefPropsConditional,
                         'COMPU-METHOD-REF',
@@ -423,7 +463,7 @@ def dump(dbs, f, **options):
                 sysSigRef.text = "/Signal/" + signal.name
 
                 sysSigRef.set('DEST', 'SYSTEM-SIGNAL')
-            for group in frame.SignalGroups:
+            for group in frame.signalGroups:
                 signalEle = createSubElement(elements, 'I-SIGNAL')
                 createSubElement(signalEle, 'SHORT-NAME', group.name)
                 sysSigRef = createSubElement(signalEle, 'SYSTEM-SIGNAL-REF')
@@ -449,11 +489,14 @@ def dump(dbs, f, **options):
                     l2.text = signal.comment
                 if arVersion[0] == "3":
                     dataTypeRef = createSubElement(signalEle, 'DATA-TYPE-REF')
-                    dataTypeRef.set('DEST', 'INTEGER-TYPE')
+                    if signal.is_float:
+                        dataTypeRef.set('DEST', 'REAL-TYPE')
+                    else:
+                        dataTypeRef.set('DEST', 'INTEGER-TYPE')
                     dataTypeRef.text = "/DataType/" + signal.name
                     createSubElement(signalEle, 'LENGTH',
                                      str(signal.signalsize))
-            for group in frame.SignalGroups:
+            for group in frame.signalGroups:
                 groupEle = createSubElement(elements, 'SYSTEM-SIGNAL-GROUP')
                 createSubElement(signalEle, 'SHORT-NAME', group.name)
                 if arVersion[0] == "3":
@@ -482,18 +525,42 @@ def dump(dbs, f, **options):
             db = dbs[name]
             for frame in db.frames:
                 for signal in frame.signals:
-                    intType = createSubElement(elements, 'INTEGER-TYPE')
-                    createSubElement(intType, 'SHORT-NAME', signal.name)
+                    if signal.is_float:
+                        typeEle = createSubElement(elements, 'REAL-TYPE')
+                    else:
+                        typeEle = createSubElement(elements, 'INTEGER-TYPE')
+                    createSubElement(typeEle, 'SHORT-NAME', signal.name)
                     swDataDefProps = createSubElement(
-                        intType, 'SW-DATA-DEF-PROPS')
+                        typeEle, 'SW-DATA-DEF-PROPS')
+                    if signal.is_float:
+                        encoding = createSubElement(typeEle, 'ENCODING')
+                        if signal.signalsize > 32:
+                            encoding.text = "DOUBLE"
+                        else:
+                            encoding.text = "SINGLE"
                     compuMethodRef = createSubElement(
                         swDataDefProps, 'COMPU-METHOD-REF')
                     compuMethodRef.set('DEST', 'COMPU-METHOD')
                     compuMethodRef.text = "/DataType/Semantics/" + signal.name
     else:
-        # SW-BASE-TYPE missing
-        pass
-        # TODO
+        createdTypes = []
+        for name in dbs:
+            db = dbs[name]
+            for frame in db.frames:
+                for signal in frame.signals:
+                    createType, size = getBaseTypeOfSignal(signal)
+                    if createType not in createdTypes:
+                        createdTypes.append(createType)
+                        swBaseType = createSubElement(elements, 'SW-BASE-TYPE')
+                        sname = createSubElement(swBaseType, 'SHORT-NAME')
+                        sname.text = createType
+                        cat = createSubElement(swBaseType, 'CATEGORY')
+                        cat.text = "FIXED_LENGTH"
+                        baseTypeSize = createSubElement(swBaseType, 'BASE-TYPE-SIZE')
+                        baseTypeSize.text = str(size)
+                        if signal.is_float:
+                            enc = createSubElement(swBaseType, 'BASE-TYPE-ENCODING')
+                            enc.text = "IEEE754"
 
     if arVersion[0] == "3":
         subpackages = createSubElement(arPackage, 'SUB-PACKAGES')
@@ -726,18 +793,18 @@ def dump(dbs, f, **options):
 class arTree(object):
 
     def __init__(self, name="", ref=None):
-        self._name = name
-        self._ref = ref
-        self._array = []
+        self.name = name
+        self.ref = ref
+        self.array = []
 
     def new(self, name, child):
         temp = arTree(name, child)
-        self._array.append(temp)
+        self.array.append(temp)
         return temp
 
     def getChild(self, path):
-        for tem in self._array:
-            if tem._name == path:
+        for tem in self.array:
+            if tem.name == path:
                 return tem
 
 
@@ -776,7 +843,7 @@ def arGetPath(ardict, path):
             else:
                 return None
     if ptr is not None:
-        return ptr._ref
+        return ptr.ref
     else:
         return None
 
@@ -827,6 +894,8 @@ def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
 
 def getSignals(signalarray, Bo, arDict, ns, multiplexId):
     GroupId = 1
+    if signalarray is None:  # Empty signalarray - nothing to do
+        return
     for signal in signalarray:
         values = {}
         motorolla = arGetChild(signal, "PACKING-BYTE-ORDER", arDict, ns)
@@ -837,6 +906,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if isignal is None:
             isignal = arGetChild(signal, "I-SIGNAL-GROUP", arDict, ns)
             if isignal is not None:
+                logger.debug("getSignals: found I-SIGNAL-GROUP ")
+
                 isignalarray = arGetXchildren(isignal, "I-SIGNAL", arDict, ns)
                 getSysSignals(isignal, isignalarray, Bo, GroupId, ns)
                 GroupId = GroupId + 1
@@ -885,12 +956,30 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         signalDescription = getDesc(syssignal, arDict, ns)
         datatype = arGetChild(syssignal, "DATA-TYPE", arDict, ns)
         if datatype is None:  # AR4?
-            print("no datatype reference")
-        lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
-        upper = arGetChild(datatype, "UPPER-LIMIT", arDict, ns)
+            dataConstr = arGetChild(isignal,"DATA-CONSTR", arDict, ns)
+            compuMethod = arGetChild(isignal,"COMPU-METHOD", arDict, ns)
+            baseType  = arGetChild(isignal,"BASE-TYPE", arDict, ns)
+
+            lower = arGetChild(dataConstr, "LOWER-LIMIT", arDict, ns)
+            upper = arGetChild(dataConstr, "UPPER-LIMIT", arDict, ns)
+#            if lower is None: # data-constr has no limits defined - use limit from compu-method
+#                lower = arGetChild(compuMethod, "LOWER-LIMIT", arDict, ns)
+#            if upper is None: # data-constr has no limits defined - use limit from compu-method
+#                upper = arGetChild(compuMethod, "UPPER-LIMIT", arDict, ns)
+            encoding = None # TODO - find encoding in AR4
+        else:
+            lower = arGetChild(datatype, "LOWER-LIMIT", arDict, ns)
+            upper = arGetChild(datatype, "UPPER-LIMIT", arDict, ns)
+            encoding = arGetChild(datatype, "ENCODING", arDict, ns)
+
+        if encoding is not None and (encoding.text == "SINGLE" or encoding.text == "DOUBLE"):
+            is_float = True
+        else:
+            is_float = False
+
         if lower is not None and upper is not None:
-            Min = int(lower.text)
-            Max = int(upper.text)
+            Min = float(lower.text)
+            Max = float(upper.text)
 
         datdefprops = arGetChild(datatype, "SW-DATA-DEF-PROPS", arDict, ns)
 
@@ -914,25 +1003,58 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         #####################################################################################################
         #####################################################################################################
             compmethod = arGetChild(isignal, "COMPU-METHOD", arDict, ns)
+            baseType = arGetChild(isignal, "BASE-TYPE", arDict, ns)
+            encoding = arGetChild(baseType, "BASE-TYPE-ENCODING", arDict, ns)
+            if encoding is not None and encoding.text == "IEEE754":
+                is_float = True
+        #####################################################################################################
+        # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
+        # keyword definition. 06Jun16
+        #####################################################################################################
+        if compmethod == None:
+            logger.debug('No Compmethod found!! - try alternate scheme.')
+            networkrep = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
+            datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)
+            datdefpropscond = arGetChild(datdefpropsvar, "SW-DATA-DEF-PROPS-CONDITIONAL", arDict ,ns)
+            if datdefpropscond != None:
+                try:
+                    compmethod = arGetChild(datdefpropscond, "COMPU-METHOD", arDict, ns)
+                except:
+                    logger.debug('No valid compu method found for this - check ARXML file!!')
+                    compmethod = None
+        #####################################################################################################
+        #####################################################################################################
 
         unit = arGetChild(compmethod, "UNIT", arDict, ns)
         if unit is not None:
-            displayName = arGetChild(unit, "DISPLAY-NAME", arDict, ns)
-            if displayName is not None:
-                Unit = displayName.text
+            longname = arGetChild(unit, "LONG-NAME", arDict, ns)
+        #####################################################################################################
+        # Modification to support obtaining the Signals Unit by DISPLAY-NAME. 07June16
+        #####################################################################################################
+            try:
+              displayname = arGetChild(unit, "DISPLAY-NAME", arDict, ns)
+            except:
+              logger.debug('No Unit Display name found!! - using long name')
+            if displayname is not None:
+              Unit = displayname.text
             else:
-                longname = arGetChild(unit, "LONG-NAME", arDict, ns)
-                l4 = arGetChild(longname, "L-4", arDict, ns)
-                if l4 is not None:
-                    Unit = l4.text
+        #####################################################################################################
+        #####################################################################################################
+              l4 = arGetChild(longname, "L-4", arDict, ns)
+              if l4 is not None:
+                Unit = l4.text
 
         compuscales = arGetXchildren(
             compmethod,
             "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE",
             arDict,
             ns)
+
         initvalue = arGetXchildren(syssignal, "INIT-VALUE/VALUE", arDict, ns)
-        if initvalue is not None and initvalue.__len__() > 1:
+
+        if initvalue is None or initvalue.__len__() == 0:
+            initvalue = arGetXchildren(isignal, "INIT-VALUE/NUMERICAL-VALUE-SPECIFICATION/VALUE", arDict, ns) ##AR4.2
+        if initvalue is not None and initvalue.__len__() >= 1:
             initvalue = initvalue[0]
         else:
             initvalue = None
@@ -952,8 +1074,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             if ll is not None and desc is not None and int(float(ul.text)) == int(float(ll.text)):
         #####################################################################################################
         #####################################################################################################
-        
-              values[ll.text] = desc
+                values[ll.text] = desc
 
             scaleDesc = getDesc(compuscale, arDict, ns)
             rational = arGetChild(
@@ -966,7 +1087,13 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                 nenner = arGetChildren(denominator, "V", arDict, ns)
 
                 factor = float(zaehler[1].text) / float(nenner[0].text)
-                offset = float(zaehler[0].text)
+                offset = float(zaehler[0].text) / float(nenner[0].text)
+                if Min is not None:
+                    Min *= factor
+                    Min += offset
+                if Max is not None:
+                    Max *= factor
+                    Max += offset
             else:
                 const = arGetChild(compuscale, "COMPU-CONST", arDict, ns)
                 # value hinzufuegen
@@ -998,7 +1125,8 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                             unit=Unit,
                             receiver=receiver,
                             multiplex=multiplexId,
-                            comment=signalDescription)
+                            comment=signalDescription,
+                            is_float=is_float)
 
             if newSig.is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
@@ -1013,15 +1141,16 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                     newSig.addValues(1, "TRUE")
                     newSig.addValues(0, "FALSE")
 
+
             if initvalue is not None and initvalue.text is not None:
                 if initvalue.text == "false":
                     initvalue.text = "0"
                 elif initvalue.text == "true":
                     initvalue.text = "1"
-                newSig._initValue = int(initvalue.text)
-                newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
+                newSig.initValue = int(initvalue.text)
+                newSig.addAttribute("GenSigStartValue", str(newSig.initValue))
             else:
-                newSig._initValue = 0
+                newSig.initValue = 0
 
             for key, value in list(values.items()):
                 newSig.addValues(key, value)
@@ -1034,6 +1163,8 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
     frameR = arGetChild(frameTriggering, "FRAME", arDict, ns)
 
     sn = arGetChild(frameTriggering, "SHORT-NAME", arDict, ns)
+    logger.debug("processing Frame: %s", sn.text)
+
     idNum = int(idele.text)
 
     if None != frameR:
@@ -1043,10 +1174,13 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
             pdumappings, "PDU-TO-FRAME-MAPPING", arDict, ns)
         pdu = arGetChild(pdumapping, "PDU", arDict, ns)  # SIGNAL-I-PDU
 #        newFrame = Frame(idNum, arGetName(frameR, ns), int(dlc.text), None)
+        if 'SECURED-I-PDU' in pdu.tag:
+            logger.info("found secured pdu - no signal extraction possible: %s", arGetName(pdu,ns))
+
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
         newFrame = Frame(arGetName(frameR, ns),
-                         Id=idNum,
+                         id=idNum,
                          dlc=int(dlc.text))
         comment = getDesc(frameR, arDict, ns)
         if comment is not None:
@@ -1059,16 +1193,18 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
         ipduTriggering = arGetChild(
             ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
         pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns)
+        if pdu is None:
+            pdu = arGetChild(ipduTriggering, "I-SIGNAL-I-PDU", arDict, ns) ## AR4.2
         dlc = arGetChild(pdu, "LENGTH", arDict, ns)
 #        newFrame = Frame(idNum, sn.text, int(int(dlc.text)/8), None)
         newFrame = Frame(sn.text,
                          Id=idNum,
                          dlc=int(dlc.text) / 8)
 
-        if pdu is None:
-            logger.error("ERROR: pdu")
-        else:
-            logger.debug(arGetName(pdu, ns))
+    if pdu is None:
+        logger.error("ERROR: pdu")
+    else:
+        logger.debug(arGetName(pdu, ns))
 
     if "MULTIPLEXED-I-PDU" in pdu.tag:
         selectorByteOrder = arGetChild(
@@ -1086,7 +1222,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
                              is_little_endian=is_little_endian,
                              multiplex="Multiplexor")
 
-        multiplexor._initValue = 0
+        multiplexor.initValue = 0
         newFrame.addSignal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", arDict, ns)
         ipdu = arGetChild(staticPart, "I-PDU", arDict, ns)
@@ -1177,11 +1313,28 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
 #    if pdusigmappings is None or pdusigmappings.__len__() == 0:
 #        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newFrame.name))
     pdusigmapping = arGetChildren(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-    if pdusigmapping is None or pdusigmapping.__len__() == 0:
-        logger.debug(
-            "DEBUG: Frame %s no I-SIGNAL-TO-I-PDU-MAPPING found" %
-            (newFrame.name))
-    getSignals(pdusigmapping, newFrame, arDict, ns, None)
+
+    if pdusigmapping is not None and pdusigmapping.__len__() > 0:
+        getSignals(pdusigmapping, newFrame, arDict, ns, None)
+
+    # Seen some pdusigmapping being [] and not None with some arxml 4.2
+    else: ##AR 4.2
+        pdutrigs = arGetChildren(frameTriggering, "PDU-TRIGGERINGS", arDict, ns)
+        if pdutrigs is not None:
+            for pdutrig in pdutrigs:
+                trigrefcond = arGetChild(pdutrig, "PDU-TRIGGERING-REF-CONDITIONAL", arDict, ns)
+                trigs = arGetChild(trigrefcond, "PDU-TRIGGERING", arDict, ns)
+                ipdus = arGetChild(trigs, "I-PDU", arDict, ns)
+                signaltopdumaps = arGetChild(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
+                if signaltopdumaps is None:
+                    logger.debug("DEBUG: AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!" % (arGetName(ipdus, ns)))
+#                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+                getSignals(signaltopdumaps, newFrame, arDict, ns, None)
+        else:
+            logger.debug(
+                "DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found" %
+                (newFrame.name))
+
     return newFrame
 
 
@@ -1333,7 +1486,10 @@ def load(file, **options):
     arParseTree(topLevelPackages, arDict, ns)
     logger.debug(" Done\n")
 
-    frames = root.findall('.//' + ns + 'FRAME')
+    frames = root.findall('.//' + ns + 'CAN-FRAME')  ## AR4.2
+    if frames is None:
+        frames = root.findall('.//' + ns + 'FRAME') ## AR3.2-4.1?
+
     logger.debug("DEBUG %d frames in arxml..." % (frames.__len__()))
     canTriggers = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
     logger.debug(
@@ -1406,7 +1562,7 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            db._fl.addFrame(
+            db.frames.addFrame(
                 getFrame(
                     frameTrig,
                     arDict,
@@ -1420,12 +1576,13 @@ def load(file, **options):
             isignaltriggerings = arGetXchildren(
                 physicalChannel, "I-SIGNAL-TRIGGERING", arDict, ns)
             for sigTrig in isignaltriggerings:
-                test = arGetChild(sigTrig, 'SIGNAL-REF', arDict, ns)
                 isignal = arGetChild(sigTrig, 'SIGNAL', arDict, ns)
                 if isignal is None:
                     isignal = arGetChild(sigTrig, 'I-SIGNAL', arDict, ns)
                 if isignal is None:
-                    logger.debug("no isignal for %s" % arGetName(sigTrig, ns))
+                    sigTrig_text = arGetName(sigTrig, ns) if sigTrig is not None else "None"
+                    logger.debug("load: no isignal for %s" % sigTrig_text)
+
                     continue
                 portRef = arGetChildren(sigTrig, "I-SIGNAL-PORT", arDict, ns)
 
@@ -1451,24 +1608,21 @@ def load(file, **options):
             if l2 is not None:
                 bu.addComment(l2.text)
 
-            db._BUs.add(bu)
+            db.boardUnits.add(bu)
 
         for bo in db.frames:
-            frame = [0, 0, 0, 0, 0, 0, 0, 0]
+            frame = 0
             for sig in bo.signals:
-                if sig._initValue != 0:
-                    putSignalValueInFrame(
+                if sig.initValue != 0:
+                    stbit = sig.getStartbit(bitNumbering=1, startLittle=True)
+                    frame |= computeSignalValueInFrame(
                         sig.getStartbit(
                             bitNumbering=1,
                             startLittle=True),
                         sig.signalsize,
                         sig.is_little_endian,
-                        sig._initValue,
-                        frame)
-            hexStr = ""
-            for i in range(bo.size):
-                hexStr += "%02X" % frame[i]
-            bo.addAttribute("GenMsgStartValue", hexStr)
-
+                        sig.initValue)
+            fmt = "%0" + "%d" % bo.size + "X"
+            bo.addAttribute("GenMsgStartValue", fmt % frame)
         result[busname] = db
     return result

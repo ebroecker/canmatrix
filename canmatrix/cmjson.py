@@ -76,7 +76,8 @@ def dump(db, f, **options):
                     "factor": float(signal.factor),
                     "offset": float(signal.offset),
                     "is_big_endian": signal.is_little_endian == 0,
-                    "is_signed": signal.is_signed
+                    "is_signed": signal.is_signed,
+                    "is_float": signal.is_float
                 })
             exportArray.append({"name": frame.name,
                                 "id": int(frame.id),
@@ -92,7 +93,7 @@ def dump(db, f, **options):
                 attribs = {}
                 for attribute in signal.attributes:
                     attribs[attribute] = signal.attributes[attribute]
-                signals.append({
+                signalDict = {
                     "name": signal.name,
                     "start_bit": signal.getStartbit(bitNumbering=1, startLittle=True),
                     "bit_length": signal.signalsize,
@@ -100,9 +101,18 @@ def dump(db, f, **options):
                     "offset": float(signal.offset),
                     "is_big_endian": signal.is_little_endian == 0,
                     "is_signed": signal.is_signed,
+                    "is_float": signal.is_float,
                     "comment": signal.comment,
-                    "attributes": attribs
-                })
+                    "attributes": attribs,
+                }
+                if signal.multiplex is not None:
+                    signalDict["multiplex"] = signal.multiplex
+                signals.append(signalDict)
+                if signal.unit is not None:
+                    signalDict["unit"] = signal.unit
+                signals.append(signalDict)
+
+
             exportArray.append(
                 {"name": frame.name,
                  "id": int(frame.id),
@@ -133,7 +143,7 @@ def load(f, **options):
         for frame in jsonData["messages"]:
             #            newframe = Frame(frame["id"],frame["name"],8,None)
             newframe = Frame(frame["name"],
-                             Id=frame["id"],
+                             id=frame["id"],
                              dlc=8)
 
             if "is_extended_frame" in frame and frame["is_extended_frame"]:
@@ -142,11 +152,15 @@ def load(f, **options):
                 newframe.extended = 0
 
             for signal in frame["signals"]:
-                if signal["is_big_endian"]:
+                if "is_big_endian" in signal and signal["is_big_endian"]:
                     is_little_endian = False
                 else:
                     is_little_endian = True
-                if signal["is_signed"]:
+                if "is_float" in signal and signal["is_float"]:
+                    is_float = True
+                else:
+                    is_float = False                    
+                if "is_signed" in signal and signal["is_signed"]:
                     is_signed = True
                 else:
                     is_signed = False
@@ -157,12 +171,17 @@ def load(f, **options):
                                    is_signed=is_signed,
                                    factor=signal["factor"],
                                    offset=signal["offset"])
+                if "unit" in signal and signal["unit"]:
+                    newsignal.unit = signal["unit"]
+
+                if "multiplex" in signal and signal["multiplex"]:
+                    newsignal.unit = signal["multiplex"]
 
                 if newsignal.is_little_endian == False:
 
                     newsignal.setStartbit(
-                        newsignal._startbit, bitNumbering=1, startLittle=True)
+                        newsignal.startbit, bitNumbering=1, startLittle=True)
                 newframe.addSignal(newsignal)
-            db._fl.addFrame(newframe)
+            db.frames.addFrame(newframe)
     f.close()
     return db

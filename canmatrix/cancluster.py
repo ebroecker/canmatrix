@@ -9,11 +9,11 @@ class canCluster(dict):
         frameArrayName = []
         for matrixName in self:
             for frame in self[matrixName].frames:
-                if frame._name not in frameArrayName:
-                    frameArrayName.append(frame._name)
+                if frame.name not in frameArrayName:
+                    frameArrayName.append(frame.name)
                     frameArray.append(frame)
                 else:
-                    index = frameArrayName.index(frame._name)
+                    index = frameArrayName.index(frame.name)
                     for transmitter in frame.transmitter:
                         frameArray[index].addTransmitter(transmitter)
                     for receiver in frame.receiver:
@@ -27,11 +27,11 @@ class canCluster(dict):
         for matrixName in self:
             for frame in self[matrixName].frames:
                 for signal in frame.signals:
-                    if signal._name not in signalArrayName:
-                        signalArrayName.append(signal._name)
+                    if signal.name not in signalArrayName:
+                        signalArrayName.append(signal.name)
                         signalArray.append(signal)
                     else:
-                        index = signalArrayName.index(signal._name)
+                        index = signalArrayName.index(signal.name)
                         for receiver in signal.receiver:
                             signalArray[index].addReceiver(receiver)
         self._signals = signalArray
@@ -41,8 +41,8 @@ class canCluster(dict):
         ECUArrayName = []
         for matrixName in self:
             for ecu in self[matrixName].boardUnits:
-                if ecu._name not in ECUArrayName:
-                    ECUArrayName.append(ecu._name)
+                if ecu.name not in ECUArrayName:
+                    ECUArrayName.append(ecu.name)
                     ECUArray.append(ecu)
         self._ecus = ECUArray
 

@@ -57,7 +57,7 @@ def dump(db, f, **options):
     for i, frame in enumerate(newdb.frames):
         for j, signal in enumerate(frame.signals):
             if signal.is_little_endian == False:
-                signal._startbit = signal.getStartbit(
+                signal.startbit = signal.getStartbit(
                     bitNumbering=1, startLittle=True)
 #                newdb.frames[i].signals[j]._startbit = signal._startbit
 
@@ -70,15 +70,64 @@ def dump(db, f, **options):
 
 def load(f, **options):
     db = yaml.load(f)
+    # TODO: don't close here.  someone else opened, they should close.
     f.close()
 
-    for i, frame in enumerate(db.frames):
-        for j, signal in enumerate(frame.signals):
-            if signal.is_little_endian == False:
-                signal.setStartbit(
-                    signal._startbit,
-                    bitNumbering=1,
-                    startLittle=True)
-#                db.frames[i].signals[j]._startbit = signal._startbit
-
     return db
+
+
+def constructor(loader, node, cls, mapping={}):
+    d = {k.lstrip('_'): v for k, v in loader.construct_mapping(node).items()}
+    name = d.pop('name')
+    for old, new in mapping.items():
+        d[new] = d.pop(old)
+    return cls(name, **d)
+
+
+def frame_constructor(loader, node):
+    return constructor(
+        loader=loader,
+        node=node,
+        cls=Frame,
+        mapping={
+            'Transmitter': 'transmitter',
+            'Size': 'dlc',
+        },
+    )
+
+
+def signal_constructor(loader, node):
+    mapping = {
+        'startbit': 'startBit',
+        'signalsize': 'signalSize',
+    }
+
+    signal = constructor(
+        loader=loader,
+        node=node,
+        cls=Signal,
+        mapping={
+            'startbit': 'startBit',
+            'signalsize': 'signalSize',
+        },
+    )
+
+    if signal.is_little_endian == False:
+        signal.setStartbit(
+            loader.construct_mapping(node)['_startbit'],
+            bitNumbering=1,
+            startLittle=False)
+
+    return signal
+
+
+def frame_representer(dumper, data):
+    node = yaml.representer.Representer.represent_object(dumper, data)
+    node.tag = '{}:Frame'.format(node.tag.partition(':python/object:')[0])
+
+    return node
+
+
+yaml.add_constructor(u'tag:yaml.org,2002:Frame', frame_constructor)
+yaml.add_constructor(u'tag:yaml.org,2002:Signal', signal_constructor)
+yaml.add_representer(Frame, frame_representer)

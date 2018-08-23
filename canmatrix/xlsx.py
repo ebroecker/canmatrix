@@ -616,7 +616,7 @@ def load(filename, **options):
 
     # BoardUnits:
     for x in range(_BUstart, _BUend):
-        db._BUs.add(BoardUnit(sheet[0][letterIndex[x]]))
+        db.boardUnits.add(BoardUnit(sheet[0][letterIndex[x]]))
 
     # initialize:
     frameId = None
@@ -644,7 +644,7 @@ def load(filename, **options):
 #            newBo = Frame(int(frameId[:-1], 16), frameName, dlc, None)
             newBo = Frame(frameName, Id=int(frameId[:-1], 16), dlc=dlc)
 
-            db._fl.addFrame(newBo)
+            db.frames.addFrame(newBo)
 
             # eval launchtype
             if launchType is not None:

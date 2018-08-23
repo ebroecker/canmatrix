@@ -26,7 +26,7 @@ from __future__ import absolute_import
 
 from .log import setup_logger, set_log_level
 logger = setup_logger('root')
-
+import types
 import sys
 
 
@@ -61,13 +61,13 @@ def propagateChanges(res):
 def compareDb(db1, db2, ignore=None):
     result = compareResult()
     for f1 in db1.frames:
-        f2 = db2.frameById(f1._Id)
+        f2 = db2.frameById(f1.id)
         if f2 is None:
             result.addChild(compareResult("deleted", "FRAME", f1))
         else:
             result.addChild(compareFrame(f1, f2, ignore))
     for f2 in db2.frames:
-        f1 = db1.frameById(f2._Id)
+        f1 = db1.frameById(f2.id)
         if f1 is None:
             result.addChild(compareResult("added", "FRAME", f2))
 
@@ -114,12 +114,12 @@ def compareDb(db1, db2, ignore=None):
                 compareResult(
                     "deleted",
                     "valuetable " + vt1,
-                    db1._valueTables))
+                    db1.valueTables))
         else:
             result.addChild(
                 compareValueTable(
-                    db1._valueTables[vt1],
-                    db2._valueTables[vt1]))
+                    db1.valueTables[vt1],
+                    db2.valueTables[vt1]))
 
     for vt2 in db2.valueTables:
         if vt2 not in db1.valueTables:
@@ -127,7 +127,7 @@ def compareDb(db1, db2, ignore=None):
                 compareResult(
                     "added",
                     "valuetable " + vt2,
-                    db2._valueTables))
+                    db2.valueTables))
 
     propagateChanges(result)
 
@@ -148,7 +148,7 @@ def compareValueTable(vt1, vt2):
             result.addChild(compareResult("changed", "Value " +
                                           str(value) +
                                           " " +
-                                          str(vt1[value]), [vt1[value], vt2[value]]))
+                                          str(vt1[value].encode('ascii', 'ignore')), [vt1[value], vt2[value]]))
     for value in vt2:
         if value not in vt1:
             result.addChild(
@@ -291,8 +291,8 @@ def compareFrame(f1, f2, ignore=None):
             compareResult(
                 "changed", "FRAME", f1, [
                     "extended-Flag: %d" %
-                    f1._extended, "extended-Flag: %d" %
-                    f2._extended]))
+                    f1.extended, "extended-Flag: %d" %
+                    f2.extended]))
     if f2.comment is None:
         f2.addComment("")
     if f1.comment is None:
@@ -303,7 +303,7 @@ def compareFrame(f1, f2, ignore=None):
                 "changed", "FRAME", f1, [
                     "comment: " + f1.comment, "comment: " + f2.comment]))
 
-    for s2 in f2._signals:
+    for s2 in f2.signals:
         s1 = f1.signalByName(s2.name)
         if not s1:
             result.addChild(compareResult("added", "SIGNAL", s2))
@@ -328,71 +328,71 @@ def compareFrame(f1, f2, ignore=None):
         else:
             result.addChild(compareSignalGroup(sg1, sg2))
 
-    for sg2 in f2._SignalGroups:
+    for sg2 in f2.SignalGroups:
         if f1.signalGroupbyName(sg2.name) is None:
-            result.addChild(compareResult("added", "Signalgroup", sg1))
+            result.addChild(compareResult("added", "Signalgroup", sg2))
     return result
 
 
 def compareSignal(s1, s2, ignore=None):
     result = compareResult("equal", "SIGNAL", s1)
 
-    if s1._startbit != s2._startbit:
+    if s1.startbit != s2.startbit:
         result.addChild(
             compareResult(
                 "changed", "startbit", s1, [
                     " %d" %
-                    s1._startbit, " %d" %
-                    s2._startbit]))
-    if s1._signalsize != s2._signalsize:
+                    s1.startbit, " %d" %
+                    s2.startbit]))
+    if s1.signalsize != s2.signalsize:
         result.addChild(
             compareResult(
                 "changed", "signalsize", s1, [
                     " %d" %
-                    s1._signalsize, " %d" %
-                    s2._signalsize]))
-    if float(s1._factor) != float(s2._factor):
+                    s1.signalsize, " %d" %
+                    s2.signalsize]))
+    if float(s1.factor) != float(s2.factor):
         result.addChild(
             compareResult(
                 "changed", "factor", s1, [
-                    s1._factor, s2._factor]))
-    if float(s1._offset) != float(s2._offset):
+                    s1.factor, s2.factor]))
+    if float(s1.offset) != float(s2.offset):
         result.addChild(
             compareResult(
                 "changed", "offset", s1, [
-                    s1._offset, s2._offset]))
-    if float(s1._min) != float(s2._min):
+                    s1.offset, s2.offset]))
+    if float(s1.min) != float(s2.min):
         result.addChild(
             compareResult(
                 "changed", "min", s1, [
-                    s1._min, s2._min]))
-    if float(s1._max) != float(s2._max):
+                    s1.min, s2.min]))
+    if float(s1.max) != float(s2.max):
         result.addChild(
             compareResult(
                 "changed", "max", s1, [
-                    s1._max, s2._max]))
-    if s1._is_little_endian != s2._is_little_endian:
+                    s1.max, s2.max]))
+    if s1.is_little_endian != s2.is_little_endian:
         result.addChild(
             compareResult(
                 "changed", "is_little_endian", s1, [
                     " %d" %
-                    s1._is_little_endian, " %d" %
-                    s2._is_little_endian]))
-    if s1._is_signed != s2._is_signed:
+                    s1.is_little_endian, " %d" %
+                    s2.is_little_endian]))
+    if s1.is_signed != s2.is_signed:
         result.addChild(
             compareResult(
                 "changed", "sign", s1, [
                     " %d" %
-                    s1._is_signed, " %d" %
-                    s2._is_signed]))
-    if s1._multiplex != s2._multiplex:
+                    s1.is_signed, " %d" %
+                    s2.is_signed]))
+    if s1.multiplex != s2.multiplex:
         result.addChild(compareResult("changed", "multiplex", s1, [
-                        str(s1._multiplex), str(s2._multiplex)]))
-    if s1._unit != s2._unit:
+                        str(s1.multiplex), str(s2.multiplex)]))
+    if s1.unit != s2.unit:
         result.addChild(
             compareResult(
                 "changed", "unit", s1, [
-                    s1._unit, s2._unit]))
+                    s1.unit, s2.unit]))
     if s1.comment is not None and s2.comment is not None and s1.comment != s2.comment:
         if s1.comment.replace("\n", " ") != s2.comment.replace("\n", " "):
             result.addChild(
@@ -405,23 +405,23 @@ def compareSignal(s1, s2, ignore=None):
                     "changed", "comment", s1, [
                         "only whitespaces differ", ""]))
 
-    for receiver in s1._receiver:
-        if receiver not in s2._receiver:
+    for receiver in s1.receiver:
+        if receiver not in s2.receiver:
             result.addChild(
                 compareResult(
                     "removed",
                     "receiver " +
                     receiver,
-                    s1._receiver))
+                    s1.receiver))
 
-    for receiver in s2._receiver:
-        if receiver not in s1._receiver:
+    for receiver in s2.receiver:
+        if receiver not in s1.receiver:
             result.addChild(
                 compareResult(
                     "added",
                     "receiver " +
                     receiver,
-                    s1._receiver))
+                    s1.receiver))
 
     if ignore is not None and "ATTRIBUTE" in ignore and ignore[
             "ATTRIBUTE"] == "*":
@@ -429,13 +429,13 @@ def compareSignal(s1, s2, ignore=None):
     else:
         result.addChild(compareAttributes(s1, s2, ignore))
 
-    result.addChild(compareValueTable(s1._values, s2._values))
+    result.addChild(compareValueTable(s1.values, s2.values))
 
     return result
 
 
 def dumpResult(res, depth=0):
-    if res._type is not None and res._result != "equal":
+    if res.type is not None and res.result != "equal":
         for _ in range(0, depth):
             print(" ", end=' ')
         print(res._type + " " + res._result + " ", end=' ')
@@ -447,10 +447,14 @@ def dumpResult(res, depth=0):
                 0] is not None and res._changes[1] is not None:
             for _ in range(0, depth):
                 print(" ", end=' ')
+            if type(res._changes[0]) == types.UnicodeType:
+                res._changes[0] = res._changes[0].encode('ascii', 'ignore')
+            if type(res._changes[1]) == types.UnicodeType:
+                res._changes[1] = res._changes[1].encode('ascii', 'ignore')
             print("old: " +
-                  str(res._changes[0]).encode('ascii', 'replace') +
+                  str(res._changes[0]) +
                   " new: " +
-                  str(res._changes[1]).encode('ascii', 'replace'))
+                  str(res._changes[1]))
     for child in res._children:
         dumpResult(child, depth + 1)
 
@@ -499,11 +503,11 @@ def main():
 
     logger.info("Importing " + matrix1 + " ... ")
     db1 = next(iter(canmatrix.formats.loadp(matrix1).values()))
-    logger.info("%d Frames found" % (db1._fl._list.__len__()))
+    logger.info("%d Frames found" % (db1.frames.__len__()))
 
     logger.info("Importing " + matrix2 + " ... ")
     db2 = next(iter(canmatrix.formats.loadp(matrix2).values()))
-    logger.info("%d Frames found" % (db2._fl._list.__len__()))
+    logger.info("%d Frames found" % (db2.frames.__len__()))
 
     ignore = {}
     #ignore["ATTRIBUTE"] = "*"

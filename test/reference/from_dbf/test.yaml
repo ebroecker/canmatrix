@@ -15,14 +15,15 @@ _buDefines:
     _type: INT, definition: INT 0 0, max: 0, min: 0, type: null}
 _fl: !!python/object:canmatrix.canmatrix.FrameList
   _list:
-  - !!python/object:canmatrix.canmatrix.Frame
+  - !!Frame
     _Id: 291
     _SignalGroups: []
     _Size: 8
     _Transmitter: [testBU]
     _attributes: {GenMsgCycleTime: '100'}
     _comment: ' Multi  Line  Frame comment'
-    _extended: 0
+    _extended: false
+    _mux_names: {}
     _name: testFrame1
     _receiver: [recBU]
     _signals:
@@ -43,6 +44,8 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 9
       _unit: "specialCharUnit\xB0$"
       _values: {}
+      comments: {}
+      enumeration: null
     - !!python/object:canmatrix.canmatrix.Signal
       _attributes: {}
       _comment: null
@@ -60,7 +63,9 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
       _startbit: 20
       _unit: someUnit
       _values: {1: one, 2: two, 3: three}
-  - !!python/object:canmatrix.canmatrix.Frame
+      comments: {}
+      enumeration: null
+  - !!Frame
     _Id: 18
     _SignalGroups: []
     _Size: 8
@@ -68,6 +73,7 @@ _fl: !!python/object:canmatrix.canmatrix.FrameList
     _attributes: {}
     _comment: null
     _extended: 1
+    _mux_names: {}
     _name: extendedFrame
     _receiver: []
     _signals: []

@@ -4,9 +4,7 @@
     <Message id="0xFFAB41" length="8" name="CommandModeControl" format="extended">
       <Notes>Operational commands are received by the module via control bits within this message.</Notes>
       <Signal name="Enable_command" offset="6" length="2" endianess="big">
-        <Notes>Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.</Notes>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -15,9 +13,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="FaultClear_command" offset="4" length="2" endianess="big">
-        <Notes>Clears the latched fault message.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Clears the latched fault message.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Clear Faults" value="1"/>
@@ -26,9 +22,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="InvertHwEnable_command" offset="62" length="2" endianess="big">
-        <Notes>Inverts the logic of the Hardware Enable input.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Inverts the logic of the Hardware Enable input.</Notes>
         <LabelSet>
           <Label name="No invert" value="0"/>
           <Label name="Invert" value="1"/>
@@ -37,9 +31,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="EnableUPSMode_command" offset="60" length="2" endianess="big">
-        <Notes>Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.</Notes>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -48,9 +40,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="EnableSplitPhase_command" offset="58" length="2" endianess="big">
-        <Notes>Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.</Notes>
         <LabelSet>
           <Label name="Normal - Three Phase Mode" value="0"/>
           <Label name="Enable Split Phase Mode" value="1"/>
@@ -59,9 +49,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayMX1_command" offset="38" length="2" endianess="big">
-        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -70,9 +58,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayMX2_command" offset="36" length="2" endianess="big">
-        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -83,7 +69,7 @@ GenSigStartValue: 0.0</Notes>
       <Signal name="ForceRelayK1_Precharge_command" offset="34" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
 
-GenSigStartValue: 0.0</Notes>
+DisplayDecimalPlaces: 0</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -92,9 +78,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayRelayK2_DCRun_comand" offset="32" length="2" endianess="big">
-        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -103,9 +87,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="PhaseRotation_command" offset="56" length="2" endianess="big">
-        <Notes>Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING.</Notes>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -114,9 +96,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="MasterFollowerMode_command" offset="22" length="2" endianess="big">
-        <Notes>Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.</Notes>
         <LabelSet>
           <Label name="Master" value="0"/>
           <Label name="Follower" value="1"/>
@@ -128,15 +108,11 @@ GenSigStartValue: 0.0</Notes>
     <Message id="0xCFFAC41" length="8" name="CommandPower" format="extended">
       <Notes>Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.</Notes>
       <Signal name="RealPower command" offset="0" length="32" endianess="big">
-        <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.</Notes>
         <Value type="signed" min="-90000" max="90000" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_command" offset="32" length="32" endianess="big">
-        <Notes>Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.</Notes>
         <Value type="signed" min="-90000" max="90000" unit="VA"/>
       </Signal>
     </Message>
@@ -158,24 +134,18 @@ GenSigStartValue: 500.0</Notes>
     <Message id="0xCFFCAF6" length="8" name="MasterMeasuredPower" format="extended">
       <Notes>Returns the actual measured power.</Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
-        <Notes>Measured real power of master unit.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured real power of master unit.</Notes>
         <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="32" length="32" endianess="big">
-        <Notes>Measured reactive power of master unit.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured reactive power of master unit.</Notes>
         <Value type="signed" min="-2147483648" max="2147483647" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0xCFFAF41" length="8" name="CommandFactoryControl" format="extended">
       <Notes></Notes>
       <Signal name="WriteSerialNumber" offset="6" length="2" endianess="big">
-        <Notes>
-
-GenSigStartValue: 0.0</Notes>
+        <Notes></Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
@@ -185,15 +155,11 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="SerialNumber" offset="32" length="32" endianess="big">
-        <Notes>
-
-GenSigStartValue: 0.0</Notes>
+        <Notes></Notes>
         <Value max="4294967295"/>
       </Signal>
       <Signal name="FactoryAccess" offset="16" length="16" endianess="big">
-        <Notes>
-
-GenSigStartValue: 0.0</Notes>
+        <Notes></Notes>
         <Value max="65535"/>
       </Signal>
     </Message>
@@ -215,9 +181,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
         <MuxGroup count="0">
           <Signal name="Dummy" offset="16" length="16" endianess="big">
-            <Notes>
-
-GenSigStartValue: 0.0</Notes>
+            <Notes></Notes>
             <Value max="65535"/>
           </Signal>
         </MuxGroup>
@@ -317,9 +281,7 @@ GenSigStartValue: 2.0</Notes>
         </MuxGroup>
         <MuxGroup count="6">
           <Signal name="ThermalOverload" offset="22" length="2" endianess="big">
-            <Notes>Configures action to take when thermal overload input is active.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Configures action to take when thermal overload input is active.</Notes>
             <LabelSet>
               <Label name="Warning" value="0"/>
               <Label name="Fault" value="1"/>
@@ -342,43 +304,31 @@ GenSigStartValue: 100.0</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="MX2Open" offset="48" length="16" endianess="big">
-            <Notes>Maximum time required for the MX2 contactor to open.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the MX2 contactor to open.</Notes>
             <Value unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="8">
           <Signal name="MX2Close" offset="16" length="16" endianess="big">
-            <Notes>Maximum time required for the MX2 contactor to open.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the MX2 contactor to open.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="K1Open" offset="32" length="16" endianess="big">
-            <Notes>Maximum time required for the K1 contactor to open.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the K1 contactor to open.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="K1Close" offset="48" length="16" endianess="big">
-            <Notes>Maximum time required for the K1 contactor to close.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the K1 contactor to close.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="10">
           <Signal name="K2Open" offset="16" length="16" endianess="big">
-            <Notes>Maximum time required for the K2 contactor to open.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the K2 contactor to open.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="K2Close" offset="32" length="16" endianess="big">
-            <Notes>Maximum time required for the K2 contactor to close.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the K2 contactor to close.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
@@ -387,9 +337,7 @@ GenSigStartValue: 0.0</Notes>
     <Message id="0xFF9B41" length="8" name="CommandModeControlAPU2" format="extended">
       <Notes>Operational commands are received by the module via control bits within this message.</Notes>
       <Signal name="Enable_command" offset="6" length="2" endianess="big">
-        <Notes>Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.</Notes>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -398,9 +346,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="FaultClear_command" offset="4" length="2" endianess="big">
-        <Notes>Clears the latched fault message.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Clears the latched fault message.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Clear Faults" value="1"/>
@@ -409,9 +355,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="InvertHwEnable_command" offset="62" length="2" endianess="big">
-        <Notes>Inverts the logic of the Hardware Enable input.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Inverts the logic of the Hardware Enable input.</Notes>
         <LabelSet>
           <Label name="No invert" value="0"/>
           <Label name="Invert" value="1"/>
@@ -420,9 +364,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="EnableUPSMode_command" offset="60" length="2" endianess="big">
-        <Notes>Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Enables uninterruptible operation when transitioning from GRID FOLLOWING to GRID FORMING operation.  If operating in GRID FOLLOWING mode, and AC grid voltage is interrupted, the module will transition to GRID FORMING mode, with no interruption in power.</Notes>
         <LabelSet>
           <Label name="Disable" value="0"/>
           <Label name="Enable" value="1"/>
@@ -431,9 +373,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="EnableSplitPhase_command" offset="58" length="2" endianess="big">
-        <Notes>Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Dictates to the module whether it is connected to a three-phase (four wire) or split phase (L1, L2 and N) electrical system.</Notes>
         <LabelSet>
           <Label name="Normal - Three Phase Mode" value="0"/>
           <Label name="Enable Split Phase Mode" value="1"/>
@@ -442,9 +382,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayMX1_command" offset="38" length="2" endianess="big">
-        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -453,9 +391,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayMX2_command" offset="36" length="2" endianess="big">
-        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -466,7 +402,7 @@ GenSigStartValue: 0.0</Notes>
       <Signal name="ForceRelayK1_Precharge_command" offset="34" length="2" endianess="big">
         <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
 
-GenSigStartValue: 0.0</Notes>
+DisplayDecimalPlaces: 0</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -475,9 +411,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="ForceRelayRelayK2_DCRun_comand" offset="32" length="2" endianess="big">
-        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>If set to 'Force On,' will force the relay closed, overriding firmware state machine commands.  Meant for diagnostic purposes only.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Force On" value="1"/>
@@ -486,9 +420,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="PhaseRotation_command" offset="56" length="2" endianess="big">
-        <Notes>Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Specifies phase rotation direction.  Only active while transitioning from READY to GRID_FORMING</Notes>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -497,9 +429,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="MasterFollowerMode_command" offset="22" length="2" endianess="big">
-        <Notes>Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Specifies what power command the inverter will follow in GRID FOLLOWING mode.  When configured as Master, CommandPower will be used as the power command.  When configured as Slave, the values in StatusMeasuredPower of the master inverter will be used.</Notes>
         <LabelSet>
           <Label name="Master" value="0"/>
           <Label name="Follower" value="1"/>
@@ -511,15 +441,11 @@ GenSigStartValue: 0.0</Notes>
     <Message id="0xCFF9C41" length="8" name="CommandPowerAPU2" format="extended">
       <Notes>Sets the desired real (P) and reactive (Q) power levels for the module to follow while in the GRID FOLLOWING mode.</Notes>
       <Signal name="RealPower_command" offset="0" length="32" endianess="big">
-        <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Commanded real power (W) while in grid following mode - positive real power is defined as power being put into the ac network.</Notes>
         <Value type="signed" min="-90000" max="90000" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_command" offset="32" length="32" endianess="big">
-        <Notes>Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Commanded reactive power (VA) while in grid following mode - positive reactive power is defined as the converter having a leading power factor.</Notes>
         <Value type="signed" min="-90000" max="90000" unit="VA"/>
       </Signal>
     </Message>
@@ -541,15 +467,11 @@ GenSigStartValue: 500.0</Notes>
     <Message id="0xCFFCAF7" length="8" name="MasterMeasuredPowerAPU2" format="extended">
       <Notes>Returns the actual measured power.</Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
-        <Notes>Measured real power of master unit.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured real power of master unit.</Notes>
         <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="32" length="32" endianess="big">
-        <Notes>Measured reactive power of master unit.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured reactive power of master unit.</Notes>
         <Value type="signed" min="-2147483648" max="2147483647" unit="VA"/>
       </Signal>
     </Message>
@@ -559,48 +481,36 @@ GenSigStartValue: 0.0</Notes>
     <Message id="0x1CFFABC0" length="8" name="stringAndOther" format="extended">
       <Notes></Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
-        <Notes>Measured real power.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured real power.</Notes>
         <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
     </Message>
     <Message id="0xCFFCAF7" length="8" name="StatusMeasuredPower" format="extended" triggered="true" interval="100">
       <Notes>Returns the actual measured power.</Notes>
       <Signal name="RealPower_measured" offset="0" length="32" endianess="big">
-        <Notes>Measured real power.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured real power.</Notes>
         <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_measured" offset="32" length="32" endianess="big">
-        <Notes>Measured reactive power.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured reactive power.</Notes>
         <Value type="signed" min="-2147483648" max="2147483647" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0x18FFC4F7" length="8" name="StatusCommandedPower" format="extended" triggered="true" interval="100">
       <Notes>Echoes the commanded power (P&amp;Q) as received in CommandPQ.</Notes>
       <Signal name="RealPower_echo" offset="0" length="32" endianess="big">
-        <Notes>Echoed real power command.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Echoed real power command.</Notes>
         <Value type="signed" min="-2147483648" max="2147483647" unit="W"/>
       </Signal>
       <Signal name="ReactivePower_echo" offset="32" length="32" endianess="big">
-        <Notes>Echoed reactive power command.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Echoed reactive power command.</Notes>
         <Value type="signed" min="-2147483648" max="2147483647" unit="VA"/>
       </Signal>
     </Message>
     <Message id="0xCFFC3F7" length="8" name="StatusBits" format="extended" triggered="true" interval="100">
       <Notes>Bits representing the status of the power module.</Notes>
       <Signal name="State_status" offset="4" length="4" endianess="big">
-        <Notes>Active control mode.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Active control mode.</Notes>
         <Value max="7"/>
         <LabelSet>
           <Label name="Power On Reset, and a quoted comma" value="0"/>
@@ -622,9 +532,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="MX2Permissive_status" offset="20" length="2" endianess="big">
-        <Notes>MX2 relay status
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>MX2 relay status</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
@@ -634,9 +542,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="PowerAvailAC_status" offset="12" length="2" endianess="big">
-        <Notes>Indicates that AC power is connected and that voltage and frequency are within nominal ranges.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates that AC power is connected and that voltage and frequency are within nominal ranges.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="None" value="0"/>
@@ -646,9 +552,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="PowerAvailDC_status" offset="10" length="2" endianess="big">
-        <Notes>Indicates that DC bus voltage is within operating range.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates that DC bus voltage is within operating range.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="None" value="0"/>
@@ -658,9 +562,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="PowerCircuitEnabled_status" offset="8" length="2" endianess="big">
-        <Notes>Indicates whether the switching devices are active.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates whether the switching devices are active.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Disabled" value="0"/>
@@ -670,9 +572,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="HardwareEnable_status" offset="14" length="2" endianess="big">
-        <Notes>Status of the hardware enable.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Status of the hardware enable.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Not Active" value="0"/>
@@ -682,9 +582,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="Enable_echo" offset="2" length="2" endianess="big">
-        <Notes>Echos the state of the Enable command withing the CommandModeControl message.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Echos the state of the Enable command withing the CommandModeControl message.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
@@ -694,9 +592,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="FaultClr_echo" offset="0" length="2" endianess="big">
-        <Notes>Echos the state of the FaultClear command withing the CommandModeControl message.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Echos the state of the FaultClear command withing the CommandModeControl message.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -706,9 +602,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="MessageValidModeControl_status" offset="30" length="2" endianess="big">
-        <Notes>Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates the validity of the CommandModeControl message.  Message must be received at least once per second and parameter data within range to be considered valid.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Invalid" value="0"/>
@@ -718,9 +612,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="MX1Permissive_status" offset="22" length="2" endianess="big">
-        <Notes>MX1 relay status
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>MX1 relay status</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
@@ -730,9 +622,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="K2DCRunPermissive_status" offset="16" length="2" endianess="big">
-        <Notes>K2 DC Run relay status.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>K2 DC Run relay status.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
@@ -742,9 +632,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="K1PrechargePermissive_status" offset="18" length="2" endianess="big">
-        <Notes>K1 precharge relay status.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>K1 precharge relay status.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Open" value="0"/>
@@ -754,9 +642,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="MessageValidPowerCMD_status" offset="28" length="2" endianess="big">
-        <Notes>Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates the validity of the CommandPQ message.  Message must be received at least once per second and parameter data within range to be considered valid.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Invalid" value="0"/>
@@ -766,9 +652,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="MessageValidVF_status" offset="26" length="2" endianess="big">
-        <Notes>Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates the validity of the CommandVF message.  Message must be received at least once per second and parameter data within range to be considered valid.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Invalid" value="0"/>
@@ -778,9 +662,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="CANbus_status" offset="24" length="2" endianess="big">
-        <Notes>Operational status of the CAN bus driver.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Operational status of the CAN bus driver.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -790,9 +672,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="EnableUPSMode_echo" offset="38" length="2" endianess="big">
-        <Notes>Echos the state of the EnableUPSMode command withing the CommandModeControl message.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Echos the state of the EnableUPSMode command withing the CommandModeControl message.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Disable" value="0"/>
@@ -802,9 +682,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="EnableSplitPhase_echo" offset="36" length="2" endianess="big">
-        <Notes>Echos the state of the EnableSplitPhase command withing the CommandModeControl message.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Echos the state of the EnableSplitPhase command withing the CommandModeControl message.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal - Three Phase Mode" value="0"/>
@@ -814,9 +692,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="PhaseRotation_status" offset="34" length="2" endianess="big">
-        <Notes>Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Phase rotation order.  When L1 phase angle leads L2 phase angle, rotation is considered positive.</Notes>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -825,9 +701,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="LineVoltageDetected_status" offset="32" length="2" endianess="big">
-        <Notes>Flag indicating if voltage is detected on L1, L2 or L3.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Flag indicating if voltage is detected on L1, L2 or L3.</Notes>
         <LabelSet>
           <Label name="No_Voltage" value="0"/>
           <Label name="Voltage_Detected" value="1"/>
@@ -836,9 +710,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="PhaseRotation_echo" offset="46" length="2" endianess="big">
-        <Notes>Echos the state of PhaseRotation_command withing the CommandModeControl message.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Echos the state of PhaseRotation_command withing the CommandModeControl message.</Notes>
         <LabelSet>
           <Label name="Negative" value="0"/>
           <Label name="Positive" value="1"/>
@@ -850,57 +722,41 @@ GenSigStartValue: 0.0</Notes>
     <Message id="0x1CFFC5F7" length="8" name="StatusControlVoltage" format="extended" triggered="true" interval="100">
       <Notes>Lists present voltage of each power supply on the control board (24V, 15V, 5V, and 3.3V.)</Notes>
       <Signal name="v5p0_Supply" offset="0" length="16" endianess="big">
-        <Notes>Present voltage of the control board 5V power suppy.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Present voltage of the control board 5V power suppy.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
       </Signal>
       <Signal name="v3p3_Supply" offset="16" length="16" endianess="big">
-        <Notes>Present voltage of the control board 3.3V power supply.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Present voltage of the control board 3.3V power supply.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
       </Signal>
       <Signal name="v24_Supply" offset="32" length="16" endianess="big">
-        <Notes>Present voltage of the control board 24V power supply.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Present voltage of the control board 24V power supply.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
       </Signal>
       <Signal name="v15_Supply" offset="48" length="16" endianess="big">
-        <Notes>Present voltage of the control board 15V power supply.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Present voltage of the control board 15V power supply.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
       </Signal>
     </Message>
     <Message id="0x18FFCBF7" length="8" name="StatusTemps" format="extended" triggered="true" interval="100">
       <Notes>Returns the inlet water temperature to the module as well as module internal ambient temperature.</Notes>
       <Signal name="TempInlet_measured" offset="0" length="16" endianess="big">
-        <Notes>Coolant inlet temperature
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Coolant inlet temperature</Notes>
         <Value type="signed" slope="0.1" min="-3276.8" max="3276.7" unit="C"/>
       </Signal>
       <Signal name="TempInternal_measured" offset="16" length="16" endianess="big">
-        <Notes>Internal ambient temperature
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Internal ambient temperature</Notes>
         <Value type="signed" slope="0.1" min="-3276.8" max="3276.7" unit="C"/>
       </Signal>
       <Signal name="ConverterLosses" offset="32" length="16" endianess="big">
-        <Notes>Power converter thermal loss
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Power converter thermal loss</Notes>
         <Value unit="W"/>
       </Signal>
     </Message>
     <Message id="0xCFFC8F7" length="8" name="StatusFaults" format="extended" triggered="true" interval="100">
       <Notes>Fault bits.</Notes>
       <Signal name="BridgeAVoltageOk_status" offset="60" endianess="big">
-        <Notes>Indicates whether a hardware trip has been activated.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates whether a hardware trip has been activated.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -909,9 +765,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="OvercurrentAC_status" offset="4" length="2" endianess="big">
-        <Notes>Set immediately upon the software detection of AC current exceeding the threshold value.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Set immediately upon the software detection of AC current exceeding the threshold value.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -921,9 +775,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="BridgeBVoltageOk_status" offset="44" endianess="big">
-        <Notes>Indicates whether a hardware trip has been activated.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates whether a hardware trip has been activated.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -932,9 +784,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="OvervoltageDC_status" offset="14" length="2" endianess="big">
-        <Notes>Set immediately upon the software detection of DC voltage exceeding the threshold value.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Set immediately upon the software detection of DC voltage exceeding the threshold value.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -944,9 +794,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="OvertempPowerDevice_status" offset="8" length="2" endianess="big">
-        <Notes>Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Set immediately upon the software detection of an IGBT temperature exceeding the threshold value.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -956,9 +804,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="OvertempInternal_status" offset="10" length="2" endianess="big">
-        <Notes>Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Set immediately upon the software detection of an internal inverter temperature exceeding the threshold value.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -968,9 +814,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="LossValidControlMessage_status" offset="16" length="4" endianess="big">
-        <Notes>Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Set whenever a control message required for operation contains out of range data or has not been received within the required timeout period.</Notes>
         <Value max="15"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -980,9 +824,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="UndervoltageDC_status" offset="12" length="2" endianess="big">
-        <Notes>Indicates loss of DC source voltage.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates loss of DC source voltage.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -992,9 +834,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="ControlHardwareFail_status" offset="20" length="4" endianess="big">
-        <Notes>Set upon the failure of control hardware to return expected response.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Set upon the failure of control hardware to return expected response.</Notes>
         <Value max="15"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -1004,9 +844,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="OvercurrentDC_status" offset="0" length="2" endianess="big">
-        <Notes>Set immediately upon the software detection of DC current exceeding the threshold value.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Set immediately upon the software detection of DC current exceeding the threshold value.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -1016,9 +854,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="GeneralFault_status" offset="6" length="2" endianess="big">
-        <Notes>Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Will be set any time a fault shutdown has occurred.  It is always accompanied by an additional fault descriptor.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -1028,9 +864,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="LossOfAC_status" offset="2" length="2" endianess="big">
-        <Notes>In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>In grid following mode, this fault will be triggered if AC voltage or frequency goes outside of nominal bounds and EnableUPSMode is not set in the CommandModeControl message.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -1040,9 +874,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="EStopShutdown_status" offset="30" length="2" endianess="big">
-        <Notes>Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Set when an enable request has been sent whithout the WakeUpSignal flag (hardware enable) in the StatusBits message being active.</Notes>
         <Value max="3"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -1052,9 +884,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="BridgeAFault_status" offset="61" length="3" endianess="big">
-        <Notes>Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.</Notes>
         <Value max="7"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -1068,9 +898,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="BridgeBFault_status" offset="45" length="3" endianess="big">
-        <Notes>Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Each bridge has hardware protection features as a backup to software protection.  This bitfield indicates which, if any of these protection trips is active.</Notes>
         <Value max="7"/>
         <LabelSet>
           <Label name="Normal" value="0"/>
@@ -1084,9 +912,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="IllegalTransition_status" offset="28" length="2" endianess="big">
-        <Notes>Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates that an illegal state transition was requested.  For example, this fault will occur if Enable is commanded and line voltage is detected but AC power is not available.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -1095,9 +921,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="InvalidEEHeader_status" offset="26" length="2" endianess="big">
-        <Notes>Indicates that reading of non-volatile parameters at power-up failed.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates that reading of non-volatile parameters at power-up failed.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -1106,9 +930,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="InvalidEESection_status" offset="24" length="2" endianess="big">
-        <Notes>Indicates that reading or writing of an non-volatile parameter section failed.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Indicates that reading or writing of an non-volatile parameter section failed.</Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -1117,9 +939,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
       </Signal>
       <Signal name="ThermalOverload" offset="38" length="2" endianess="big">
-        <Notes>
-
-GenSigStartValue: 0.0</Notes>
+        <Notes></Notes>
         <LabelSet>
           <Label name="Normal" value="0"/>
           <Label name="Fault Active" value="1"/>
@@ -1131,63 +951,45 @@ GenSigStartValue: 0.0</Notes>
     <Message id="0xCFFC2F7" length="8" name="StatusACParameters" format="extended" triggered="true" interval="100">
       <Notes>RMS AC Voltage, current, and frequency measured by line A, B and C feedbacks.</Notes>
       <Signal name="VoltageAC_measured" offset="0" length="16" endianess="big">
-        <Notes>Measured RMS AC voltage.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured RMS AC voltage.</Notes>
         <Value type="signed" slope="0.1" min="-3276.8" max="3276.7" unit="V"/>
       </Signal>
       <Signal name="CurrentAC_measured" offset="16" length="16" endianess="big">
-        <Notes>Measured RMS AC current.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured RMS AC current.</Notes>
         <Value type="signed" min="-32768" max="32767" unit="A"/>
       </Signal>
       <Signal name="Frequency_measured" offset="32" length="16" endianess="big">
-        <Notes>Measured frequency.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured frequency.</Notes>
         <Value type="signed" slope="0.1" min="-3276.8" max="3276.7" unit="Hz"/>
       </Signal>
     </Message>
     <Message id="0x1CFFC7F7" length="8" name="StatusDCParameters" format="extended" triggered="true" interval="100">
       <Notes>Measured (boosted) DC Bus voltage, DC Current, and estimated DC Input voltage.</Notes>
       <Signal name="VoltageDCBus" offset="16" length="16" endianess="big">
-        <Notes>Measured DC bus voltage.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured DC bus voltage.</Notes>
         <Value type="signed" min="-32768" max="32767" unit="V"/>
       </Signal>
       <Signal name="CurrentDC_measured" offset="32" length="16" endianess="big">
-        <Notes>Measured DC current.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured DC current.</Notes>
         <Value type="signed" min="-32768" max="32767" unit="A"/>
       </Signal>
       <Signal name="VoltageDCInput_measured" offset="0" length="16" endianess="big">
-        <Notes>Estimated DC input voltage.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Estimated DC input voltage.</Notes>
         <Value type="signed" min="-32768" max="32767" unit="V"/>
       </Signal>
     </Message>
     <Message id="0x1CFFC6F7" length="8" name="StatusControlVolts2" format="extended" triggered="true" interval="100">
       <Notes>Present voltage of the -15V power supply on the control board.</Notes>
       <Signal name="n15V_Supply" offset="0" length="16" endianess="big">
-        <Notes>Present voltage of the control board -15V power supply.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Present voltage of the control board -15V power supply.</Notes>
         <Value type="signed" slope="0.01" min="-327.68" max="327.67" unit="V"/>
       </Signal>
       <Signal name="DiodeTemperature" offset="32" length="16" endianess="big">
-        <Notes>Hottest diode
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Hottest diode</Notes>
         <Value unit="C"/>
       </Signal>
       <Signal name="IGBTTemperature" offset="48" length="16" endianess="big">
-        <Notes>Hottest IGBT
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Hottest IGBT</Notes>
         <Value unit="C"/>
       </Signal>
     </Message>
@@ -1196,43 +998,35 @@ GenSigStartValue: 0.0</Notes>
       <Signal name="InterfaceRev" offset="16" length="16" endianess="big">
         <Notes>Software revision of the CAN communication interface.
 
-GenSigStartValue: 0.0</Notes>
+DisplayDecimalPlaces: 2</Notes>
         <Value slope="0.01" max="655.35"/>
       </Signal>
       <Signal name="ControlSwRev" offset="0" length="16" endianess="big">
         <Notes>Software revision of the control firmware.
 
-GenSigStartValue: 0.0</Notes>
+DisplayDecimalPlaces: 2</Notes>
         <Value slope="0.01" max="655.35"/>
       </Signal>
       <Signal name="BuildTime" offset="32" length="32" endianess="big">
-        <Notes>Build timestamp.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Build timestamp.</Notes>
         <Value max="4294967295"/>
       </Signal>
     </Message>
     <Message id="0x18FFC9F7" length="8" name="StatusCommandVF" format="extended" triggered="true" interval="100">
       <Notes>Echoes the voltage and frequency commands from commandVF.</Notes>
       <Signal name="Voltage_echo" offset="0" length="16" endianess="big">
-        <Notes>Echoed voltage command
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Echoed voltage command</Notes>
         <Value slope="0.1" max="6553.5" unit="Vrms"/>
       </Signal>
       <Signal name="Frequency_echo" offset="16" length="16" endianess="big">
-        <Notes>Echoed frequency command.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Echoed frequency command.</Notes>
         <Value slope="0.1" max="6553.5" unit="Hz"/>
       </Signal>
     </Message>
     <Message id="0x1CFFCCF7" length="8" name="serialNumber" format="extended">
       <Notes>Serial number of the power module.</Notes>
       <Signal name="SerialNumber" offset="0" length="32" endianess="big">
-        <Notes>Serial number of the power module.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Serial number of the power module.</Notes>
         <Value max="4294967295"/>
       </Signal>
     </Message>
@@ -1241,7 +1035,7 @@ GenSigStartValue: 0.0</Notes>
       <Signal name="Hash" offset="0" length="28" endianess="big">
         <Notes>Unique revision identification hashcode.
 
-GenSigStartValue: 0.0</Notes>
+HexadecimalOutput: True</Notes>
         <Value max="268435455"/>
       </Signal>
     </Message>
@@ -1263,9 +1057,7 @@ GenSigStartValue: 0.0</Notes>
         </LabelSet>
         <MuxGroup count="0">
           <Signal name="Dummy" offset="16" length="16" endianess="big">
-            <Notes>
-
-GenSigStartValue: 0.0</Notes>
+            <Notes></Notes>
             <Value min="5" max="10"/>
           </Signal>
         </MuxGroup>
@@ -1365,9 +1157,7 @@ GenSigStartValue: 2.0</Notes>
         </MuxGroup>
         <MuxGroup count="6">
           <Signal name="StatusThermalOverload" offset="22" length="2" endianess="big">
-            <Notes>Configured action to take when thermal overload input is active.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Configured action to take when thermal overload input is active.</Notes>
             <LabelSet>
               <Label name="Warning" value="0"/>
               <Label name="Fault" value="1"/>
@@ -1390,43 +1180,31 @@ GenSigStartValue: 100.0</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusMX2Open" offset="48" length="16" endianess="big">
-            <Notes>Maximum time required for the MX2 contactor to open.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the MX2 contactor to open.</Notes>
             <Value unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="8">
           <Signal name="StatusMX2Close" offset="16" length="16" endianess="big">
-            <Notes>Maximum time required for the MX2 contactor to open.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the MX2 contactor to open.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusK1Open" offset="32" length="16" endianess="big">
-            <Notes>Maximum time required for the K1 contactor to open.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the K1 contactor to open.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusK1Close" offset="48" length="16" endianess="big">
-            <Notes>Maximum time required for the K1 contactor to close.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the K1 contactor to close.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
         <MuxGroup count="9">
           <Signal name="StatusK2Open" offset="16" length="16" endianess="big">
-            <Notes>Maximum time required for the K2 contactor to open.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the K2 contactor to open.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
           <Signal name="StatusK2Close" offset="32" length="16" endianess="big">
-            <Notes>Maximum time required for the K2 contactor to close.
-
-GenSigStartValue: 0.0</Notes>
+            <Notes>Maximum time required for the K2 contactor to close.</Notes>
             <Value max="2000" unit="ms"/>
           </Signal>
         </MuxGroup>
@@ -1435,42 +1213,30 @@ GenSigStartValue: 0.0</Notes>
     <Message id="0x18FFD0F7" length="8" name="StatusLineCurrents" format="extended" triggered="true" interval="100">
       <Notes>Measured RMS line currents.</Notes>
       <Signal name="L1Current_measured" offset="0" length="16" endianess="big">
-        <Notes>Measured L1 RMS line current.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured L1 RMS line current.</Notes>
         <Value unit="A"/>
       </Signal>
       <Signal name="L2Current_measured" offset="16" length="16" endianess="big">
-        <Notes>Measured L2 RMS line current.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured L2 RMS line current.</Notes>
         <Value unit="A"/>
       </Signal>
       <Signal name="L3Current_measured" offset="32" length="16" endianess="big">
-        <Notes>Measured L3 RMS line current.
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured L3 RMS line current.</Notes>
         <Value unit="A"/>
       </Signal>
     </Message>
     <Message id="0x18FFD1F7" length="8" name="StatusLineVoltages" format="extended" triggered="true" interval="100">
       <Notes>Measured RMS line voltages.</Notes>
       <Signal name="L1Voltage_measured" offset="0" length="16" endianess="big">
-        <Notes>Measured L1 RMS line-neutral voltage
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured L1 RMS line-neutral voltage</Notes>
         <Value slope="0.1" unit="Vrms"/>
       </Signal>
       <Signal name="L2Voltage_measured" offset="16" length="16" endianess="big">
-        <Notes>Measured L2 RMS line-neutral voltage
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured L2 RMS line-neutral voltage</Notes>
         <Value slope="0.1" unit="Vrms"/>
       </Signal>
       <Signal name="L3Voltage_measured" offset="32" length="16" endianess="big">
-        <Notes>Measured L3 RMS line-neutral voltage
-
-GenSigStartValue: 0.0</Notes>
+        <Notes>Measured L3 RMS line-neutral voltage</Notes>
         <Value slope="0.1" unit="Vrms"/>
       </Signal>
     </Message>

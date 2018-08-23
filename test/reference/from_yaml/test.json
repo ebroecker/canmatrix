@@ -9,100 +9,111 @@
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Enable_command",
                     "offset": 0.0,
-                    "start_bit": 0
+                    "start_bit": 15
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FaultClear_command",
                     "offset": 0.0,
-                    "start_bit": 2
+                    "start_bit": 1
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "InvertHwEnable_command",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 71
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "EnableUPSMode_command",
                     "offset": 0.0,
-                    "start_bit": 58
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "EnableSplitPhase_command",
                     "offset": 0.0,
-                    "start_bit": 60
+                    "start_bit": 59
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ForceRelayMX1_command",
                     "offset": 0.0,
-                    "start_bit": 32
+                    "start_bit": 47
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ForceRelayMX2_command",
                     "offset": 0.0,
-                    "start_bit": 34
+                    "start_bit": 33
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ForceRelayK1_Precharge_command",
                     "offset": 0.0,
-                    "start_bit": 36
+                    "start_bit": 35
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ForceRelayRelayK2_DCRun_comand",
                     "offset": 0.0,
-                    "start_bit": 38
+                    "start_bit": 37
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "PhaseRotation_command",
                     "offset": 0.0,
-                    "start_bit": 62
+                    "start_bit": 61
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MasterFollowerMode_command",
                     "offset": 0.0,
-                    "start_bit": 16
+                    "start_bit": 31
                 }
             ]
         },
@@ -115,19 +126,21 @@
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "RealPower command",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "ReactivePower_command",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 89
                 }
             ]
         },
@@ -140,19 +153,21 @@
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Voltage_command",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Frequency_command",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 }
             ]
         },
@@ -165,19 +180,21 @@
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "RealPower_measured",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "ReactivePower_measured",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 89
                 }
             ]
         },
@@ -190,28 +207,31 @@
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "WriteSerialNumber",
                     "offset": 0.0,
-                    "start_bit": 0
+                    "start_bit": 15
                 },
                 {
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "SerialNumber",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 89
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FactoryAccess",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 }
             ]
         },
@@ -224,217 +244,241 @@
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "CommandSetNVParam_MUX",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Dummy",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "VUnder50pct",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "V50to88pct",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "V110to120pct",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "VOver120",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqHi",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqLo",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqVeryLo",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqVeryLo",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqLo",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqHi",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 8,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "NodeID",
                     "offset": 0.0,
-                    "start_bit": 16
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 8,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "SA_Mask",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 33
                 },
                 {
                     "bit_length": 4,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Baudrate",
                     "offset": 0.0,
-                    "start_bit": 36
+                    "start_bit": 33
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ThermalOverload",
                     "offset": 0.0,
-                    "start_bit": 16
+                    "start_bit": 31
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MX1Open",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MX1Close",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MX2Open",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MX2Close",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "K1Open",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "K1Close",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "K2Open",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "K2Close",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 }
             ]
         },
@@ -447,100 +491,111 @@
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Enable_command",
                     "offset": 0.0,
-                    "start_bit": 0
+                    "start_bit": 15
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FaultClear_command",
                     "offset": 0.0,
-                    "start_bit": 2
+                    "start_bit": 1
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "InvertHwEnable_command",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 71
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "EnableUPSMode_command",
                     "offset": 0.0,
-                    "start_bit": 58
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "EnableSplitPhase_command",
                     "offset": 0.0,
-                    "start_bit": 60
+                    "start_bit": 59
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ForceRelayMX1_command",
                     "offset": 0.0,
-                    "start_bit": 32
+                    "start_bit": 47
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ForceRelayMX2_command",
                     "offset": 0.0,
-                    "start_bit": 34
+                    "start_bit": 33
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ForceRelayK1_Precharge_command",
                     "offset": 0.0,
-                    "start_bit": 36
+                    "start_bit": 35
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ForceRelayRelayK2_DCRun_comand",
                     "offset": 0.0,
-                    "start_bit": 38
+                    "start_bit": 37
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "PhaseRotation_command",
                     "offset": 0.0,
-                    "start_bit": 62
+                    "start_bit": 61
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MasterFollowerMode_command",
                     "offset": 0.0,
-                    "start_bit": 16
+                    "start_bit": 31
                 }
             ]
         },
@@ -553,19 +608,21 @@
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "RealPower_command",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "ReactivePower_command",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 89
                 }
             ]
         },
@@ -578,19 +635,21 @@
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Voltage_command",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Frequency_command",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 }
             ]
         },
@@ -603,19 +662,21 @@
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "RealPower_measured",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "ReactivePower_measured",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 89
                 }
             ]
         },
@@ -634,10 +695,11 @@
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "RealPower_measured",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 57
                 }
             ]
         },
@@ -650,19 +712,21 @@
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "RealPower_measured",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "ReactivePower_measured",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 89
                 }
             ]
         },
@@ -675,19 +739,21 @@
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "RealPower_echo",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "ReactivePower_echo",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 89
                 }
             ]
         },
@@ -700,181 +766,201 @@
                     "bit_length": 4,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "State_status",
                     "offset": 0.0,
-                    "start_bit": 0
+                    "start_bit": 13
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MX2Permissive_status",
                     "offset": 0.0,
-                    "start_bit": 18
+                    "start_bit": 17
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "PowerAvailAC_status",
                     "offset": 0.0,
-                    "start_bit": 10
+                    "start_bit": 9
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "PowerAvailDC_status",
                     "offset": 0.0,
-                    "start_bit": 12
+                    "start_bit": 11
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "PowerCircuitEnabled_status",
                     "offset": 0.0,
-                    "start_bit": 14
+                    "start_bit": 13
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "HardwareEnable_status",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 23
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Enable_echo",
                     "offset": 0.0,
-                    "start_bit": 4
+                    "start_bit": 3
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FaultClr_echo",
                     "offset": 0.0,
-                    "start_bit": 6
+                    "start_bit": 5
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MessageValidModeControl_status",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 39
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MX1Permissive_status",
                     "offset": 0.0,
-                    "start_bit": 16
+                    "start_bit": 31
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "K2DCRunPermissive_status",
                     "offset": 0.0,
-                    "start_bit": 22
+                    "start_bit": 21
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "K1PrechargePermissive_status",
                     "offset": 0.0,
-                    "start_bit": 20
+                    "start_bit": 19
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MessageValidPowerCMD_status",
                     "offset": 0.0,
-                    "start_bit": 26
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "MessageValidVF_status",
                     "offset": 0.0,
-                    "start_bit": 28
+                    "start_bit": 27
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "CANbus_status",
                     "offset": 0.0,
-                    "start_bit": 30
+                    "start_bit": 29
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "EnableUPSMode_echo",
                     "offset": 0.0,
-                    "start_bit": 32
+                    "start_bit": 47
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "EnableSplitPhase_echo",
                     "offset": 0.0,
-                    "start_bit": 34
+                    "start_bit": 33
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "PhaseRotation_status",
                     "offset": 0.0,
-                    "start_bit": 36
+                    "start_bit": 35
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "LineVoltageDetected_status",
                     "offset": 0.0,
-                    "start_bit": 38
+                    "start_bit": 37
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "PhaseRotation_echo",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 55
                 }
             ]
         },
@@ -887,37 +973,41 @@
                     "bit_length": 16,
                     "factor": 0.01,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "v5p0_Supply",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.01,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "v3p3_Supply",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.01,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "v24_Supply",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.01,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "v15_Supply",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 }
             ]
         },
@@ -930,28 +1020,31 @@
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "TempInlet_measured",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "TempInternal_measured",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ConverterLosses",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 }
             ]
         },
@@ -964,6 +1057,7 @@
                     "bit_length": 1,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "BridgeAVoltageOk_status",
                     "offset": 0.0,
@@ -973,15 +1067,17 @@
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "OvercurrentAC_status",
                     "offset": 0.0,
-                    "start_bit": 2
+                    "start_bit": 1
                 },
                 {
                     "bit_length": 1,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "BridgeBVoltageOk_status",
                     "offset": 0.0,
@@ -991,145 +1087,161 @@
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "OvervoltageDC_status",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 23
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "OvertempPowerDevice_status",
                     "offset": 0.0,
-                    "start_bit": 14
+                    "start_bit": 13
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "OvertempInternal_status",
                     "offset": 0.0,
-                    "start_bit": 12
+                    "start_bit": 11
                 },
                 {
                     "bit_length": 4,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "LossValidControlMessage_status",
                     "offset": 0.0,
-                    "start_bit": 20
+                    "start_bit": 17
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "UndervoltageDC_status",
                     "offset": 0.0,
-                    "start_bit": 10
+                    "start_bit": 9
                 },
                 {
                     "bit_length": 4,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ControlHardwareFail_status",
                     "offset": 0.0,
-                    "start_bit": 16
+                    "start_bit": 29
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "OvercurrentDC_status",
                     "offset": 0.0,
-                    "start_bit": 6
+                    "start_bit": 5
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "GeneralFault_status",
                     "offset": 0.0,
-                    "start_bit": 0
+                    "start_bit": 15
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "LossOfAC_status",
                     "offset": 0.0,
-                    "start_bit": 4
+                    "start_bit": 3
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "EStopShutdown_status",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 39
                 },
                 {
                     "bit_length": 3,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "BridgeAFault_status",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 70
                 },
                 {
                     "bit_length": 3,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "BridgeBFault_status",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 54
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "IllegalTransition_status",
                     "offset": 0.0,
-                    "start_bit": 26
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "InvalidEEHeader_status",
                     "offset": 0.0,
-                    "start_bit": 28
+                    "start_bit": 27
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "InvalidEESection_status",
                     "offset": 0.0,
-                    "start_bit": 30
+                    "start_bit": 29
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ThermalOverload",
                     "offset": 0.0,
-                    "start_bit": 32
+                    "start_bit": 47
                 }
             ]
         },
@@ -1142,28 +1254,31 @@
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "VoltageAC_measured",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "CurrentAC_measured",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "Frequency_measured",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 }
             ]
         },
@@ -1176,28 +1291,31 @@
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "VoltageDCBus",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "CurrentDC_measured",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "VoltageDCInput_measured",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 }
             ]
         },
@@ -1210,28 +1328,31 @@
                     "bit_length": 16,
                     "factor": 0.01,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "n15V_Supply",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "DiodeTemperature",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "IGBTTemperature",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 }
             ]
         },
@@ -1244,28 +1365,31 @@
                     "bit_length": 16,
                     "factor": 0.01,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "InterfaceRev",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.01,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "ControlSwRev",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "BuildTime",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 89
                 }
             ]
         },
@@ -1278,19 +1402,21 @@
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Voltage_echo",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Frequency_echo",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 }
             ]
         },
@@ -1303,10 +1429,11 @@
                     "bit_length": 32,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "SerialNumber",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 57
                 }
             ]
         },
@@ -1319,10 +1446,11 @@
                     "bit_length": 28,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Hash",
                     "offset": 0.0,
-                    "start_bit": 28
+                    "start_bit": 49
                 }
             ]
         },
@@ -1335,217 +1463,241 @@
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": true,
                     "name": "StatusNVParam_MUX",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "Dummy",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "VUnder50pct",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "V50to88pct",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "V110to120pct",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "VOver120",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqHi",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqLo",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqVeryLo",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqVeryLo",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqLo",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "FreqHi",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 8,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusNodeID",
                     "offset": 0.0,
-                    "start_bit": 16
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 8,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusSA_Mask",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 33
                 },
                 {
                     "bit_length": 4,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusBaudrate",
                     "offset": 0.0,
-                    "start_bit": 36
+                    "start_bit": 33
                 },
                 {
                     "bit_length": 2,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusThermalOverload",
                     "offset": 0.0,
-                    "start_bit": 16
+                    "start_bit": 31
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusMX1Open",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusMX1Close",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusMX2Open",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusMX2Close",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusK1Open",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusK1Close",
                     "offset": 0.0,
-                    "start_bit": 56
+                    "start_bit": 73
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusK2Open",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "StatusK2Close",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 }
             ]
         },
@@ -1558,28 +1710,31 @@
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "L1Current_measured",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "L2Current_measured",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 1.0,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "L3Current_measured",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 }
             ]
         },
@@ -1592,28 +1747,31 @@
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "L1Voltage_measured",
                     "offset": 0.0,
-                    "start_bit": 8
+                    "start_bit": 25
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "L2Voltage_measured",
                     "offset": 0.0,
-                    "start_bit": 24
+                    "start_bit": 41
                 },
                 {
                     "bit_length": 16,
                     "factor": 0.1,
                     "is_big_endian": true,
+                    "is_float": false,
                     "is_signed": false,
                     "name": "L3Voltage_measured",
                     "offset": 0.0,
-                    "start_bit": 40
+                    "start_bit": 57
                 }
             ]
         }
