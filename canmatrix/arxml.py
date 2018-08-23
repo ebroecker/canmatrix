@@ -985,23 +985,6 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
 
         compmethod = arGetChild(datdefprops, "COMPU-METHOD", arDict, ns)
         if compmethod is None:  # AR4
-        #####################################################################################################
-        # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
-        # keyword definition. 06Jun16
-        #####################################################################################################
-          logger.debug('No Compmethod found!! - try alternate scheme.')
-          networkrep = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
-          datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)
-          datdefpropscond = arGetChild(datdefpropsvar, "SW-DATA-DEF-PROPS-CONDITIONAL", arDict ,ns)
-          if datdefpropscond != None:
-            try:
-              compmethod = arGetChild(datdefpropscond, "COMPU-METHOD", arDict, ns)
-            except:
-              logger.debug('No valid compu method found for this - check ARXML file!!')
-              compmethod = None
-          else:
-        #####################################################################################################
-        #####################################################################################################
             compmethod = arGetChild(isignal, "COMPU-METHOD", arDict, ns)
             baseType = arGetChild(isignal, "BASE-TYPE", arDict, ns)
             encoding = arGetChild(baseType, "BASE-TYPE-ENCODING", arDict, ns)
@@ -1104,7 +1087,16 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         is_little_endian = False
         if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
-        is_signed = False  # unsigned
+        if baseType is not None:
+            typeName = arGetName(baseType, ns)
+            # Ensure usigned, boolean, and ASCII datatypes stay unsigned
+            if typeName[0].lower() in  ('u','b','a'):
+               is_signed = False  # unsigned
+            else:
+               is_signed = True  # signed
+        else:
+            is_signed = False  # unsigned - unless signs are negative, keep everything positive.
+            
         if name is None:
             logger.debug('no name for signal given')
         if startBit is None:

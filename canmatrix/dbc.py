@@ -54,7 +54,7 @@ def format_float(f):
     s = str(f).upper()
     if s.endswith('.0'):
         s = s[:-2]
-
+        s = '%.7g' % float(s)
     if 'E' in s:
         s = s.split('E')
         s = '%sE%s%s' % (s[0], s[1][0], s[1][1:].rjust(3, '0'))
