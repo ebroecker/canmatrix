@@ -443,7 +443,7 @@ def dump(dbs, f, **options):
                         networkRepresentProps, 'SW-DATA-DEF-PROPS-VARIANTS')
                     swDataDefPropsConditional = createSubElement(
                         swDataDefPropsVariants, 'SW-DATA-DEF-PROPS-CONDITIONAL')
-
+                    
                     baseTypeRef = createSubElement(swDataDefPropsConditional, 'BASE-TYPE-REF')
                     baseTypeRef.set('DEST', 'SW-BASE-TYPE')
                     createType, size = getBaseTypeOfSignal(signal)
@@ -976,7 +976,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
             is_float = True
         else:
             is_float = False
-
+        
         if lower is not None and upper is not None:
             Min = float(lower.text)
             Max = float(upper.text)
@@ -984,12 +984,24 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         datdefprops = arGetChild(datatype, "SW-DATA-DEF-PROPS", arDict, ns)
 
         compmethod = arGetChild(datdefprops, "COMPU-METHOD", arDict, ns)
+
+        is_signed = False
         if compmethod is None:  # AR4
             compmethod = arGetChild(isignal, "COMPU-METHOD", arDict, ns)
             baseType = arGetChild(isignal, "BASE-TYPE", arDict, ns)
             encoding = arGetChild(baseType, "BASE-TYPE-ENCODING", arDict, ns)
             if encoding is not None and encoding.text == "IEEE754":
                 is_float = True
+            if baseType is not None:
+                typeName = arGetName(baseType, ns)
+                # Ensure usigned, boolean, and ASCII datatypes stay unsigned
+                if typeName[0].lower() in  ('u','b','a'):
+                    is_signed = False  # unsigned
+                else:
+                   is_signed = True  # signed
+            else:
+                is_signed = False  # unsigned - unless signs are negative, keep everything positive.
+                                
         #####################################################################################################
         # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
         # keyword definition. 06Jun16
@@ -1007,7 +1019,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
                     compmethod = None
         #####################################################################################################
         #####################################################################################################
-
+             
         unit = arGetChild(compmethod, "UNIT", arDict, ns)
         if unit is not None:
             longname = arGetChild(unit, "LONG-NAME", arDict, ns)
@@ -1087,15 +1099,6 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         is_little_endian = False
         if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
-        if baseType is not None:
-            typeName = arGetName(baseType, ns)
-            # Ensure usigned, boolean, and ASCII datatypes stay unsigned
-            if typeName[0].lower() in  ('u','b','a'):
-               is_signed = False  # unsigned
-            else:
-               is_signed = True  # signed
-        else:
-            is_signed = False  # unsigned - unless signs are negative, keep everything positive.
             
         if name is None:
             logger.debug('no name for signal given')
@@ -1326,7 +1329,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
             logger.debug(
                 "DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found" %
                 (newFrame.name))
-
+            
     return newFrame
 
 
@@ -1481,7 +1484,7 @@ def load(file, **options):
     frames = root.findall('.//' + ns + 'CAN-FRAME')  ## AR4.2
     if frames is None:
         frames = root.findall('.//' + ns + 'FRAME') ## AR3.2-4.1?
-
+    
     logger.debug("DEBUG %d frames in arxml..." % (frames.__len__()))
     canTriggers = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
     logger.debug(
@@ -1574,7 +1577,7 @@ def load(file, **options):
                 if isignal is None:
                     sigTrig_text = arGetName(sigTrig, ns) if sigTrig is not None else "None"
                     logger.debug("load: no isignal for %s" % sigTrig_text)
-
+                    
                     continue
                 portRef = arGetChildren(sigTrig, "I-SIGNAL-PORT", arDict, ns)
 
