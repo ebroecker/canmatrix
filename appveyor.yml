@@ -3,38 +3,11 @@ environment:
 
   matrix:
     - TOXENV: py27
-      PYTHON: "C:\\Python27"
-
-    - TOXENV: py27
-      PYTHON: "C:\\Python27-x64"
-
     - TOXENV: py34
-      PYTHON: "C:\\Python34"
-
-    - TOXENV: py34
-      PYTHON: "C:\\Python34-x64"
-
     - TOXENV: py35
-      PYTHON: "C:\\Python35"
-
-    - TOXENV: py35
-      PYTHON: "C:\\Python35-x64"
-
     - TOXENV: py36
-      PYTHON: "C:\\Python36"
-
-    - TOXENV: py36
-      PYTHON: "C:\\Python36-x64"
-
     - TOXENV: py37
-      PYTHON: "C:\\Python37"
-
-    - TOXENV: py37
-      PYTHON: "C:\\Python37-x64"
-
-    - TOXENV: py37
-      PYTHON: "C:\\Python37-x64"
-      BUILD_WHEEL: 1
+    - TOXENV: wheel
 
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 init:
@@ -48,10 +21,7 @@ install:
   - ps: Update-AppveyorBuild -Version "v$(python get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
 
 build_script:
-  - if defined BUILD_WHEEL tox -e wheel
-
-test_script:
-  - if not defined BUILD_WHEEL tox
+  - tox
 
 artifacts:
   - path: "dist\\*.whl"
