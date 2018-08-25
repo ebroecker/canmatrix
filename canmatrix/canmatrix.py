@@ -248,9 +248,7 @@ class Signal(object):
         return int(startBitInternal)
 
     def calculateRawRange(self):
-        rawRange = 2 ** self.size
-        if self.is_signed:
-            rawRange /= 2
+        rawRange = 2 ** (self.size - (1 if self.is_signed else 0))
         return (self.float_factory(-rawRange if self.is_signed else 0),
                 self.float_factory(rawRange - 1))
 

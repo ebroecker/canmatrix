@@ -1143,7 +1143,7 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
         if startBit is not None:
             newSig = Signal(name.text,
                             startBit=int(startBit.text),
-                            size=float_factory(length.text),
+                            size=int(length.text),
                             is_little_endian=is_little_endian,
                             is_signed=is_signed,
                             factor=factor,
