@@ -1,0 +1,54 @@
+environment:
+  VENV: "%APPVEYOR_BUILD_FOLDER%\\venv"
+
+  matrix:
+    - TOXENV: py27
+      PYTHON: "C:\\Python27"
+
+    - TOXENV: py27
+      PYTHON: "C:\\Python27-x64"
+
+    - TOXENV: py34
+      PYTHON: "C:\\Python34"
+
+    - TOXENV: py34
+      PYTHON: "C:\\Python34-x64"
+
+    - TOXENV: py35
+      PYTHON: "C:\\Python35"
+
+    - TOXENV: py35
+      PYTHON: "C:\\Python35-x64"
+
+    - TOXENV: py36
+      PYTHON: "C:\\Python36"
+
+    - TOXENV: py36
+      PYTHON: "C:\\Python36-x64"
+
+    - TOXENV: py37
+      PYTHON: "C:\\Python37"
+
+    - TOXENV: py37
+      PYTHON: "C:\\Python37-x64"
+
+# https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
+init:
+  - ps: if (Get-ChildItem Env:ENABLE_RDP -ErrorAction SilentlyContinue) {iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))} else {echo RDP not enabled}
+  - echo "TOXENV- %TOXENV%"
+
+install:
+  - virtualenv -p "%PYTHON%\\python.exe" "%VENV%"
+  - "%VENV%\\Scripts\\activate"
+  - pip install -r requirements.tox.txt
+  - ps: Update-AppveyorBuild -Version "v$(python -c 'import sys; import canmatrix; sys.stdout.write(canmatrix.__version__)') b$Env:APPVEYOR_BUILD_NUMBER"
+
+test_script:
+  - tox
+
+artifacts:
+  - path: "dist\\*.whl"
+
+# https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
+on_finish:
+  - ps: if (Get-ChildItem Env:ENABLE_RDP -ErrorAction SilentlyContinue) {$blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))} else {echo RDP not enabled}
