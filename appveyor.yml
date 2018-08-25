@@ -10,6 +10,10 @@ environment:
     - TOXENV: py37
     - TOXENV: pypy3
     - TOXENV: wheel
+    allow_failures:
+      # until we get pypy3 in chocolatey
+      # pypy comes from https://github.com/kirbyfan64/python.pypy
+      - TOXENV: pypy3
 
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 init:
