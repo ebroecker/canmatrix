@@ -32,6 +32,10 @@ environment:
     - TOXENV: py37
       PYTHON: "C:\\Python37-x64"
 
+    - TOXENV: py37
+      PYTHON: "C:\\Python37-x64"
+      BUILD_WHEEL: 1
+
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 init:
   - ps: if (Get-ChildItem Env:ENABLE_RDP -ErrorAction SilentlyContinue) {iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))} else {echo RDP not enabled}
@@ -43,8 +47,11 @@ install:
   - pip install -r requirements.tox.txt
   - ps: Update-AppveyorBuild -Version "v$(python get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
 
+build_script:
+  - if defined BUILD_WHEEL tox -e wheel
+
 test_script:
-  - tox
+  - if not defined BUILD_WHEEL tox
 
 artifacts:
   - path: "dist\\*.whl"
