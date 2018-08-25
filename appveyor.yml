@@ -3,10 +3,12 @@ environment:
 
   matrix:
     - TOXENV: py27
+    - TOXENV: pypy
     - TOXENV: py34
     - TOXENV: py35
     - TOXENV: py36
     - TOXENV: py37
+    - TOXENV: pypy3
     - TOXENV: wheel
 
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
@@ -15,6 +17,8 @@ init:
   - echo "TOXENV- %TOXENV%"
 
 install:
+  - if "%TOXENV%"=="pypy" choco install python.pypy
+  - if "%TOXENV%"=="pypy3" choco install python.pypy3
   - virtualenv "%VENV%"
   - "%VENV%\\Scripts\\activate"
   - pip install -r requirements.tox.txt
