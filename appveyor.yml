@@ -41,7 +41,7 @@ install:
   - virtualenv -p "%PYTHON%\\python.exe" "%VENV%"
   - "%VENV%\\Scripts\\activate"
   - pip install -r requirements.tox.txt
-  - ps: Update-AppveyorBuild -Version "v$(python -c 'import sys; import canmatrix; sys.stdout.write(canmatrix.__version__)') b$Env:APPVEYOR_BUILD_NUMBER"
+  - ps: Update-AppveyorBuild -Version "v$(python get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
 
 test_script:
   - tox
