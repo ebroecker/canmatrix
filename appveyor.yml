@@ -15,7 +15,7 @@ init:
   - echo "TOXENV- %TOXENV%"
 
 install:
-  - virtualenv -p "%PYTHON%\\python.exe" "%VENV%"
+  - virtualenv "%VENV%"
   - "%VENV%\\Scripts\\activate"
   - pip install -r requirements.tox.txt
   - ps: Update-AppveyorBuild -Version "v$(python get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
