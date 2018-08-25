@@ -65,13 +65,13 @@ def getBaseTypeOfSignal(signal):
                 createType = "sint64"
             else:
                 createType = "uint64"
-            size = 64                            
+            size = 64
         elif signal.signalsize > 16:
             if signal.is_signed:
                 createType = "sint32"
             else:
                 createType = "uint32"
-            size = 32                            
+            size = 32
         elif signal.signalsize > 8:
             if signal.is_signed:
                 createType = "sint16"
@@ -533,7 +533,7 @@ def dump(dbs, f, **options):
                     swDataDefProps = createSubElement(
                         typeEle, 'SW-DATA-DEF-PROPS')
                     if signal.is_float:
-                        encoding = createSubElement(typeEle, 'ENCODING')                        
+                        encoding = createSubElement(typeEle, 'ENCODING')
                         if signal.signalsize > 32:
                             encoding.text = "DOUBLE"
                         else:
@@ -984,12 +984,24 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         datdefprops = arGetChild(datatype, "SW-DATA-DEF-PROPS", arDict, ns)
 
         compmethod = arGetChild(datdefprops, "COMPU-METHOD", arDict, ns)
+
+        is_signed = False
         if compmethod is None:  # AR4
             compmethod = arGetChild(isignal, "COMPU-METHOD", arDict, ns)
             baseType = arGetChild(isignal, "BASE-TYPE", arDict, ns)
             encoding = arGetChild(baseType, "BASE-TYPE-ENCODING", arDict, ns)
             if encoding is not None and encoding.text == "IEEE754":
                 is_float = True
+            if baseType is not None:
+                typeName = arGetName(baseType, ns)
+                # Ensure usigned, boolean, and ASCII datatypes stay unsigned
+                if typeName[0].lower() in  ('u','b','a'):
+                    is_signed = False  # unsigned
+                else:
+                   is_signed = True  # signed
+            else:
+                is_signed = False  # unsigned - unless signs are negative, keep everything positive.
+                                
         #####################################################################################################
         # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
         # keyword definition. 06Jun16
@@ -997,11 +1009,11 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         if compmethod == None:
             logger.debug('No Compmethod found!! - try alternate scheme.')
             networkrep = arGetChild(isignal, "NETWORK-REPRESENTATION-PROPS", arDict, ns)
-            datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)            
+            datdefpropsvar = arGetChild(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", arDict, ns)
             datdefpropscond = arGetChild(datdefpropsvar, "SW-DATA-DEF-PROPS-CONDITIONAL", arDict ,ns)
             if datdefpropscond != None:
                 try:
-                    compmethod = arGetChild(datdefpropscond, "COMPU-METHOD", arDict, ns)            
+                    compmethod = arGetChild(datdefpropscond, "COMPU-METHOD", arDict, ns)
                 except:
                     logger.debug('No valid compu method found for this - check ARXML file!!')
                     compmethod = None
@@ -1020,9 +1032,9 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
               logger.debug('No Unit Display name found!! - using long name')
             if displayname is not None:
               Unit = displayname.text
-            else:  
+            else:
         #####################################################################################################
-        #####################################################################################################              
+        #####################################################################################################
               l4 = arGetChild(longname, "L-4", arDict, ns)
               if l4 is not None:
                 Unit = l4.text
@@ -1087,7 +1099,7 @@ def getSignals(signalarray, Bo, arDict, ns, multiplexId):
         is_little_endian = False
         if motorolla.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
-        is_signed = False  # unsigned
+            
         if name is None:
             logger.debug('no name for signal given')
         if startBit is None:
@@ -1175,7 +1187,7 @@ def getFrame(frameTriggering, arDict, multiplexTranslation, ns):
             frameTriggering, "I-PDU-TRIGGERING-REFS", arDict, ns)
         ipduTriggering = arGetChild(
             ipduTriggeringRefs, "I-PDU-TRIGGERING", arDict, ns)
-        pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns) 
+        pdu = arGetChild(ipduTriggering, "I-PDU", arDict, ns)
         if pdu is None:
             pdu = arGetChild(ipduTriggering, "I-SIGNAL-I-PDU", arDict, ns) ## AR4.2
         dlc = arGetChild(pdu, "LENGTH", arDict, ns)
