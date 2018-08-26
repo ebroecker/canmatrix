@@ -80,7 +80,7 @@ setup(
         "json": [],
         "sym": [],
         "codec": ["bitstruct"],
-        "test": ["pytest", "tox"],
+        "test": ["coverage", "pytest", "pytest-cov", "tox"],
     },
 
     packages = find_packages(),

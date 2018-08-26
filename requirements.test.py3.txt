@@ -1,6 +1,7 @@
 atomicwrites==1.1.5
 attrs==18.1.0
 -e .[test]
+coverage==4.5.1
 future==0.16.0
 more-itertools==4.3.0
 pluggy==0.7.1
