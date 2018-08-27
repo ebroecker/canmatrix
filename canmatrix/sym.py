@@ -161,16 +161,18 @@ Title=\"canmatrix-Export\"
         # trigger all frames
         for frame in frames:
             name = "[" + frame.name + "]\n"
-
-            idType = "ID=%08Xh" % (frame.id)
+            if frame.extended == 1:
+                idType = "ID=%08Xh" % (frame.id)
+            else:
+                idType = "ID=%Xh" % (frame.id)
             if frame.comment is not None and len(frame.comment) > 0:
                 idType += "\t// " + \
                     frame.comment.replace('\n', ' ').replace('\r', ' ')
             idType += "\n"
             if frame.extended == 1:
                 idType += "Type=Extended\n"
-            else:
-                idType += "Type=Standard\n"
+          #  else:
+           #     idType += "Type=Standard\n"
 
             # check if frame has multiplexed signals
             multiplex = 0
@@ -185,7 +187,7 @@ Title=\"canmatrix-Export\"
                         muxSignal = signal
 
                 # ticker all possible mux-groups as i (0 - 2^ (number of bits of
-                # multiplexor))
+                # multiplexer))
                 first = 0
                 for i in range(0, 1 << int(muxSignal.signalsize)):
                     found = 0
