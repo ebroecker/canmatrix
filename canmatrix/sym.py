@@ -161,18 +161,19 @@ Title=\"canmatrix-Export\"
         # trigger all frames
         for frame in frames:
             name = "[" + frame.name + "]\n"
+
             if frame.extended == 1:
                 idType = "ID=%08Xh" % (frame.id)
             else:
-                idType = "ID=%Xh" % (frame.id)
+                idType = "ID=%03Xh" % (frame.id)
             if frame.comment is not None and len(frame.comment) > 0:
                 idType += "\t// " + \
                     frame.comment.replace('\n', ' ').replace('\r', ' ')
             idType += "\n"
             if frame.extended == 1:
                 idType += "Type=Extended\n"
-          #  else:
-           #     idType += "Type=Standard\n"
+            else:
+                idType += "Type=Standard\n"
 
             # check if frame has multiplexed signals
             multiplex = 0
