@@ -3384,7 +3384,7 @@
             <L-2 L="FOR-ALL">Run command.  When set to a value of 'Enable', causes transition to grid forming or grid following mode depending on whether AC power is detected.  Must be set to 'Disable' to leave POR or FAULTED state.</L-2>
           </DESC>
           <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/Enable_command</DATA-TYPE-REF>
-          <LENGTH>2</LENGTH>
+          <LENGTH>32760</LENGTH>
         </SYSTEM-SIGNAL>
         <SYSTEM-SIGNAL>
           <SHORT-NAME>FaultClear_command</SHORT-NAME>
