@@ -14,7 +14,7 @@ matrix:
     - python: 3.7
       dist: xenial
       sudo: true
-      env: TOXENV=wheel
+      env: TOXENV=dist
     - python: 2.7
       env: TOXENV=old_tests
     - python: 3.7

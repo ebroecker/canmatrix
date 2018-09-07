@@ -9,7 +9,7 @@ environment:
     - TOXENV: py36
     - TOXENV: py37
     - TOXENV: pypy3
-    - TOXENV: wheel
+    - TOXENV: dist
 
 matrix:
   allow_failures:
