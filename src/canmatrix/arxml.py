@@ -1167,7 +1167,7 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
             signalRxs[syssignal] = newSig
 
             if baseType is not None:
-                temp = arGetChild(baseType, "SHORT-NAME", arDict, ns)
+                temp = arGetChild(baseType, "SHORT-NAME", xmlRoot, ns)
                 if temp is not None and "boolean" == temp.text:
                     newSig.addValues(1, "TRUE")
                     newSig.addValues(0, "FALSE")
@@ -1276,6 +1276,8 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
             newFrame.extended = 1
 
     timingSpec = arGetChild(pdu, "I-PDU-TIMING-SPECIFICATION", xmlRoot, ns)
+    if timingSpec is None:
+        timingSpec = arGetChild(pdu, "I-PDU-TIMING-SPECIFICATIONS", xmlRoot, ns)
     cyclicTiming = arGetChild(timingSpec, "CYCLIC-TIMING", xmlRoot, ns)
     repeatingTime = arGetChild(cyclicTiming, "REPEATING-TIME", xmlRoot, ns)
 
@@ -1283,6 +1285,9 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
     repeats = arGetChild(eventTiming, "NUMBER-OF-REPEATS", xmlRoot, ns)
     minimumDelay = arGetChild(timingSpec, "MINIMUM-DELAY", xmlRoot, ns)
     startingTime = arGetChild(timingSpec, "STARTING-TIME", xmlRoot, ns)
+
+    timeOffset = arGetChild(cyclicTiming, "TIME-OFFSET", xmlRoot, ns)
+    timePeriod = arGetChild(cyclicTiming, "TIME-PERIOD", xmlRoot, ns)
 
     if cyclicTiming is not None and eventTiming is not None:
         newFrame.addAttribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
@@ -1306,10 +1311,19 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
     if startingTime is not None:
         value = arGetChild(startingTime, "VALUE", xmlRoot, ns)
         newFrame.addAttribute("GenMsgStartDelayTime",str(int(float_factory(value.text) * 1000)))
+    elif cyclicTiming is not None:
+        value = arGetChild(timeOffset, "VALUE", xmlRoot, ns)
+        if value is not None:
+            newFrame.addAttribute("GenMsgStartDelayTime",str(int(float_factory(value.text) * 1000)))
 
     value = arGetChild(repeatingTime, "VALUE", xmlRoot, ns)
     if value is not None:
         newFrame.addAttribute("GenMsgCycleTime",str(int(float_factory(value.text) * 1000)))
+    elif cyclicTiming is not None:
+        value = arGetChild(timePeriod, "VALUE", xmlRoot, ns)
+        if value is not None:
+            newFrame.addAttribute("GenMsgCycleTime",str(int(float_factory(value.text) * 1000)))
+
 
 #    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
 #    if pdusigmappings is None or pdusigmappings.__len__() == 0:

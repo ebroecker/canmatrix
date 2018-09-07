@@ -5,7 +5,7 @@ from __future__ import absolute_import
 
 
 import sys
-sys.path.append('..')
+sys.path.append('../src')
 
 import canmatrix.convert
 import canmatrix.formats
