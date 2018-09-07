@@ -83,7 +83,8 @@ setup(
         "test": ["coverage", "pytest", "pytest-cov", "tox"],
     },
 
-    packages = find_packages(),
+    packages = find_packages("src"),
+    package_dir = {"": "src"},
     entry_points={'console_scripts': ['cancompare = canmatrix.compare:main',
                                       'canconvert = canmatrix.convert:main']}
 )
