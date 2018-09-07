@@ -79,7 +79,8 @@ setup(
         "dbf": [],
         "json": [],
         "sym": [],
-        "codec": ["bitstruct"]
+        "codec": ["bitstruct"],
+        "test": ["coverage", "pytest", "pytest-cov", "tox"],
     },
 
     packages = find_packages("src"),
