@@ -34,7 +34,7 @@ build_script:
   - tox -e codecov
 
 artifacts:
-  - path: "dist\\*.whl"
+  - path: "dist\\*"
 
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 on_finish:
