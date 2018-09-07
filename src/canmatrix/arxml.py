@@ -829,6 +829,31 @@ def dump(dbs, f, **options):
 ###################################
 
 
+class arTree(object):
+    def __init__(self, name="", ref=None):
+        self._name = name
+        self._ref = ref
+        self._array = []
+    def new(self, name, child):
+        temp = arTree(name, child)
+        self._array.append(temp)
+        return temp
+    def getChild(self, path):
+        for tem in self._array:
+            if tem._name == path:
+                return tem
+
+def arParseTree(tag, ardict, namespace):
+    for child in tag:
+        name = child.find('./' + namespace + 'SHORT-NAME')
+#               namel = child.find('./' + namespace + 'LONG-NAME')
+        if name is not None and child is not None:
+            arParseTree(child, ardict.new(name.text, child), namespace)
+        if name is None and child is not None:
+            arParseTree(child, ardict, namespace)
+
+
+
 
 def arGetXchildren(root, path, arDict, ns):
     pathElements = path.split('/')
@@ -873,18 +898,18 @@ def getArPath(tree, arPath, namespaces):
     return found
 
 
-#def arGetPath(ardict, path):
-#    ptr = ardict
-#    for p in path.split('/'):
-#        if p.strip():
-#            if ptr is not None:
-#                ptr = ptr.getChild(p)
-#            else:
-#                return None
-#    if ptr is not None:
-#        return ptr._ref
-#    else:
-#        return None
+def arGetPath(ardict, path):
+    ptr = ardict
+    for p in path.split('/'):
+        if p.strip():
+            if ptr is not None:
+                ptr = ptr.getChild(p)
+            else:
+                return None
+    if ptr is not None:
+        return ptr._ref
+    else:
+        return None
 
 
 def arGetChild(parent, tagname, xmlRoot, namespace):
@@ -895,7 +920,10 @@ def arGetChild(parent, tagname, xmlRoot, namespace):
     if ret is None:
         ret = parent.find('.//' + namespace + tagname + '-REF')
         if ret is not None:
-            ret = getArPath(xmlRoot, ret.text, namespace)
+            if isinstance(xmlRoot, type(arTree())):
+                ret = arGetPath(xmlRoot, ret.text)
+            else:
+                ret = getArPath(xmlRoot, ret.text, namespace)
     return ret
 
 
@@ -1471,6 +1499,7 @@ def load(file, **options):
 
     float_factory = options.get("float_factory", default_float_factory)
     ignoreClusterInfo = options.get("arxmlIgnoreClusterInfo", False)
+    useArXPath = options.get("arxmlUseXpath", True)
 
     result = {}
     logger.debug("Read arxml ...")
@@ -1489,8 +1518,14 @@ def load(file, **options):
         topLevelPackages = root
 
     logger.debug("Build arTree ...")
-#    arDict = arTree()
-#    arParseTree(topLevelPackages, arDict, ns)
+
+    if useArXPath:
+        searchPoint = topLevelPackages
+    else:
+        arDict = arTree()
+        arParseTree(topLevelPackages, arDict, ns)
+        searchPoint = arDict
+
     logger.debug(" Done\n")
 
     frames = root.findall('.//' + ns + 'CAN-FRAME')  ## AR4.2
@@ -1536,7 +1571,7 @@ def load(file, **options):
             canframetrig = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
             busname = ""
         else:
-            speed = arGetChild(cc, "SPEED", topLevelPackages, ns)
+            speed = arGetChild(cc, "SPEED", searchPoint, ns)
             logger.debug("Busname: " + arGetName(cc, ns))
 
             busname = arGetName(cc, ns)
@@ -1547,17 +1582,17 @@ def load(file, **options):
             if physicalChannels is None:
                 logger.error("Error - PHYSICAL-CHANNELS not found")
 
-            nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", topLevelPackages, ns)
+            nmLowerId = arGetChild(cc, "NM-LOWER-CAN-ID", searchPoint, ns)
 
             physicalChannel = arGetChild(
-                physicalChannels, "PHYSICAL-CHANNEL", topLevelPackages, ns)
+                physicalChannels, "PHYSICAL-CHANNEL", searchPoint, ns)
             if physicalChannel is None:
                 physicalChannel = arGetChild(
-                    physicalChannels, "CAN-PHYSICAL-CHANNEL", topLevelPackages, ns)
+                    physicalChannels, "CAN-PHYSICAL-CHANNEL", searchPoint, ns)
             if physicalChannel is None:
                 logger.debug("Error - PHYSICAL-CHANNEL not found")
             canframetrig = arGetChildren(
-                physicalChannel, "CAN-FRAME-TRIGGERING", topLevelPackages, ns)
+                physicalChannel, "CAN-FRAME-TRIGGERING", searchPoint, ns)
             if canframetrig is None:
                 logger.error("Error - CAN-FRAME-TRIGGERING not found")
             else:
@@ -1567,32 +1602,32 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            db.addFrame(getFrame(frameTrig,topLevelPackages,multiplexTranslation,ns, float_factory))
+            db.addFrame(getFrame(frameTrig,searchPoint,multiplexTranslation,ns, float_factory))
 
         if ignoreClusterInfo == True:
             pass
             # no support for signal direction
         else:
             isignaltriggerings = arGetXchildren(
-                physicalChannel, "I-SIGNAL-TRIGGERING", topLevelPackages, ns)
+                physicalChannel, "I-SIGNAL-TRIGGERING", searchPoint, ns)
             for sigTrig in isignaltriggerings:
-                isignal = arGetChild(sigTrig, 'SIGNAL', topLevelPackages, ns)
+                isignal = arGetChild(sigTrig, 'SIGNAL', searchPoint, ns)
                 if isignal is None:
-                    isignal = arGetChild(sigTrig, 'I-SIGNAL', topLevelPackages, ns)
+                    isignal = arGetChild(sigTrig, 'I-SIGNAL', searchPoint, ns)
                 if isignal is None:
                     sigTrig_text = arGetName(sigTrig, ns) if sigTrig is not None else "None"
                     logger.debug("load: no isignal for %s" % sigTrig_text)
                     
                     continue
 
-                portRef = arGetChildren(sigTrig, "I-SIGNAL-PORT", topLevelPackages, ns)
+                portRef = arGetChildren(sigTrig, "I-SIGNAL-PORT", searchPoint, ns)
 
                 for port in portRef:
                     comDir = arGetChild(
-                        port, "COMMUNICATION-DIRECTION", topLevelPackages, ns)
+                        port, "COMMUNICATION-DIRECTION", searchPoint, ns)
                     if comDir is not None and comDir.text == "IN":
                         sysSignal = arGetChild(
-                            isignal, "SYSTEM-SIGNAL", topLevelPackages, ns)
+                            isignal, "SYSTEM-SIGNAL", searchPoint, ns)
                         ecuName = arGetName(
                             port.getparent().getparent().getparent().getparent(), ns)
                         # port points in ECU; probably more stable to go up
@@ -1603,9 +1638,9 @@ def load(file, **options):
     # find ECUs:
         nodes = root.findall('.//' + ns + 'ECU-INSTANCE')
         for node in nodes:
-            bu = processEcu(node, db, topLevelPackages, multiplexTranslation, ns)
-            desc = arGetChild(node, "DESC", topLevelPackages, ns)
-            l2 = arGetChild(desc, "L-2", topLevelPackages, ns)
+            bu = processEcu(node, db, searchPoint, multiplexTranslation, ns)
+            desc = arGetChild(node, "DESC", searchPoint, ns)
+            l2 = arGetChild(desc, "L-2", searchPoint, ns)
             if l2 is not None:
                 bu.addComment(l2.text)
 

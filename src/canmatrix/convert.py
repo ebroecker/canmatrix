@@ -269,6 +269,12 @@ def main():
     parser.add_option("", "--arxmlIgnoreClusterInfo", action="store_true",
                       dest="arxmlIgnoreClusterInfo", default=False,
                       help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault 0")
+
+    parser.add_option("", "--arxmlUseXpath", action="store_true",
+                      dest="arxmlUseXpath", default=False,
+                      help="Use Xpath-Implementation for resolving AR-Paths; \ndefault False")
+
+
     parser.add_option("", "--arxmlExportVersion",
                       dest="arVersion", default="3.2.3",
                       help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 3.2.3")
