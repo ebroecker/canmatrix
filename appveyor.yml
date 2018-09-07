@@ -2,6 +2,7 @@ environment:
   VENV: "%APPVEYOR_BUILD_FOLDER%\\venv"
 
   matrix:
+    - TOXENV: dist
     - TOXENV: py27
     - TOXENV: pypy
     - TOXENV: py34
@@ -9,7 +10,6 @@ environment:
     - TOXENV: py36
     - TOXENV: py37
     - TOXENV: pypy3
-    - TOXENV: dist
 
 matrix:
   allow_failures:

@@ -2,6 +2,10 @@ language: python
 
 matrix:
   include:
+    - python: 3.7
+      dist: xenial
+      sudo: true
+      env: TOXENV=dist
     - python: 2.7
     - python: pypy
     - python: 3.4
@@ -11,10 +15,6 @@ matrix:
     - python: 3.7
       dist: xenial
       sudo: true
-    - python: 3.7
-      dist: xenial
-      sudo: true
-      env: TOXENV=dist
     - python: 2.7
       env: TOXENV=old_tests
     - python: 3.7
