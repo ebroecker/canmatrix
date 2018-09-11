@@ -961,8 +961,8 @@ def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
 
 def decodeCompuMethod(compuMethod, arDict, ns, float_factory):
     values = {}
-    factor = 1.0
-    offset = 0
+    factor = float_factory(1.0)
+    offset = float_factory(0)
     unit = arGetChild(compuMethod, "UNIT", arDict, ns)
     const = None
     compuscales = arGetXchildren(compuMethod, "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE", arDict, ns)
@@ -1266,7 +1266,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
         is_signed = False  # unsigned
-        multiplexor = Signal("Multiplexor",startBit=selectorStart.text,signalSize=selectorLen.text,
+        multiplexor = Signal("Multiplexor",startBit=selectorStart.text,size=int(selectorLen.text),
                              is_little_endian=is_little_endian,multiplex="Multiplexor")
 
         multiplexor._initValue = 0
@@ -1655,7 +1655,7 @@ def load(file, **options):
                         sig.getStartbit(
                             bitNumbering=1,
                             startLittle=True),
-                        sig.signalsize,
+                        sig.size,
                         sig.is_little_endian,
                         sig._initValue)
             fmt = "%0" + "%d" % bo.size + "X"
