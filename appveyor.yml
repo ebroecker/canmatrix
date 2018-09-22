@@ -13,10 +13,6 @@ environment:
     - TOXENV: py37
     - TOXENV: pypy3
 
-matrix:
-  allow_failures:
-    - TOXENV: pypy3 # until we get pypy3 in chocolatey
-
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 init:
   - ps: if (Get-ChildItem Env:ENABLE_RDP -ErrorAction SilentlyContinue) {iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))} else {echo RDP not enabled}
