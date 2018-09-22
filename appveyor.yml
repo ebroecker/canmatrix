@@ -20,7 +20,7 @@ init:
 
 install:
   - if "%TOXENV%"=="pypy" choco install python.pypy
-  - if "%TOXENV%"=="pypy3" choco install python.pypy3
+  - if "%TOXENV%"=="pypy3" choco install pypy3
   - py -3.7 -m venv "%VENV%"
   - "%VENV%\\Scripts\\activate"
   - python -c "import sys; print(sys.version)"
