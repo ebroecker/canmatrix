@@ -205,5 +205,3 @@ class TestCanmatrixCodec(unittest.TestCase):
             with open(out_file_name, "r") as file:
                 data = file.read()
             self.assertIn("UserFrameAttr", data)
-
-        # formats.dumpp(dbs, "output-all.json", jsonAll=True)
