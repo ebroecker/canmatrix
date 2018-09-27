@@ -761,10 +761,9 @@ class Frame(object):
 
     def __getattr__(self, item):
         """Allow to access any Frame Attribute from `self.attributes` simply as frame.attr_name."""
-        if item in self.attributes:
-            return self.attributes[item]
-        else:
-            raise AttributeError("Object % has not attribute '%" % (self.__class__.name, item))
+        if item == '__setstate__' or item not in self.attributes:  # prevent endless recursion in deepcopy()
+            raise AttributeError
+        return self.attributes[item]
 
 
 class Define(object):

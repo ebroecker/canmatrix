@@ -50,9 +50,9 @@ def dump(db, f, **options):
     else:
         mode = 'wb'
 
+    additionalFrameColums = []
     if "additionalFrameAttributes" in options and options["additionalFrameAttributes"]:
         additionalFrameColums = options["additionalFrameAttributes"].split(",")
-
 
     exportArray = []
 
