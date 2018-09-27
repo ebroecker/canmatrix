@@ -3,7 +3,7 @@
 
 """Tests for `canmatrix` package."""
 import unittest
-
+import tempfile
 import os
 from canmatrix import formats
 
@@ -194,3 +194,16 @@ class TestCanmatrixCodec(unittest.TestCase):
             for k, v in data.items():
                 assert str(decoded[k]) == v
 
+    def test_import_export_additional_frame_info(self):
+        db_path = os.path.join(
+            os.path.dirname(__file__), "..", "test", "test.dbc")
+        dbs = formats.loadp(db_path)
+        tmp_dir = tempfile.mkdtemp()
+        for extension in ['csv', 'json']:
+            out_file_name = tmp_dir + "/output." + extension
+            formats.dumpp(dbs, out_file_name, additionalFrameAttributes="UserFrameAttr")
+            with open(out_file_name, "r") as file:
+                data = file.read()
+            self.assertIn("UserFrameAttr", data)
+
+        # formats.dumpp(dbs, "output-all.json", jsonAll=True)

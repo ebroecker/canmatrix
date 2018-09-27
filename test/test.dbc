@@ -9,7 +9,7 @@ BU_: testBU recBU
 
 
 BO_ 291 testFrame1: 8 testBU
- SG_ someTestSignal : 3|11@0+ (5,1) [0.0|500.0] "specialCharUnit°$" recBU
+ SG_ someTestSignal : 3|11@0+ (5,1) [0.0|500.0] "specialCharUnitï¿½$" recBU
  SG_ Signal : 20|3@1+ (1,0) [0.0|6.0] "someUnit" recBU
 
 BO_ 2147483666 extendedFrame: 8 testBU
@@ -21,7 +21,7 @@ CM_ BO_ 291  "Multi
 
 CM_ SG_ 291 someTestSignal "Multi 
  Line 
- Signal comment with a-umlaut: ä";
+ Signal comment with a-umlaut: ï¿½";
 
 CM_ BU_ testBU "sender ECU";
 CM_ BU_ recBU "receiver ECU";
@@ -32,6 +32,7 @@ BA_ "NetworkNode" BU_ testBU 273;
 
 
 BA_ "GenMsgCycleTime" BO_ 291 100;
+BA_ "UserFrameAttr" BO_ 291 "UserFrameValue";
 
 
 VAL_ 291 Signal 1 "one" 2 "two" 3 "three";
