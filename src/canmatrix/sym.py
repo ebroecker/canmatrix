@@ -106,7 +106,7 @@ def createSignal(db, signal):
                     signal.values.items())) + ")"
 
     if "GenSigStartValue" in db.signalDefines:
-        genSigStartVal = signal.attribute(db,"GenSigStartValue")
+        genSigStartVal = signal.attribute("GenSigStartValue", db)
         if genSigStartVal is not None:
             default = float(genSigStartVal) * float(signal.factor)
             min_ok = signal.min is None or default >= float(signal.min)
@@ -207,7 +207,7 @@ Title=\"canmatrix-Export\"
                                 first = 1
                             muxOut += "DLC=%d\n" % (frame.size)
                             if "GenMsgCycleTime" in db.frameDefines:
-                                cycleTime = frame.attribute(db,"GenMsgCycleTime")
+                                cycleTime = frame.attribute("GenMsgCycleTime", db)
                                 if cycleTime is not None:
                                     muxOut += "CycleTime=" + str(cycleTime) + "\n"
 
@@ -251,7 +251,7 @@ Title=\"canmatrix-Export\"
                 output += idType
                 output += "DLC=%d\n" % (frame.size)
                 if "GenMsgCycleTime" in db.frameDefines:
-                    cycleTime = frame.attribute(db, "GenMsgCycleTime")
+                    cycleTime = frame.attribute("GenMsgCycleTime", db)
                     if cycleTime is not None:
                         output += "CycleTime=" + str(cycleTime) + "\n"
                 for signal in frame.signals:

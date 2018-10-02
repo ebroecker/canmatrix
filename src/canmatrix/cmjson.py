@@ -101,21 +101,21 @@ def dump(db, f, **options):
                               "signals": signals}
             frame_attributes = {}
             for frame_info in additionalFrameColums:  # Look for additional Frame Attributes
-                if hasattr(frame, frame_info):
-                    frame_attributes[frame_info] = getattr(frame, frame_info)
+                if frame.attribute(frame_info):  # does the attribute exist?
+                    frame_attributes[frame_info] = frame.attribute(frame_info)
             if frame_attributes:  # only add Attributes if there are any
                 symbolic_frame["attributes"] = frame_attributes
             exportArray.append(symbolic_frame)
-    else:  # exportall
+    else:  # exportAll
         for frame in db.frames:
             frameattribs = {}
             for attribute in db.frameDefines:
-                frameattribs[attribute] = frame.attribute(db,attribute)
+                frameattribs[attribute] = frame.attribute(attribute, db)
             signals = []
             for signal in frame.signals:
                 attribs = {}
                 for attribute in db.signalDefines:
-                    attribs[attribute] = signal.attribute(db,attribute)
+                    attribs[attribute] = signal.attribute(attribute, db)
 
                 values = {}
                 for key in signal.values:

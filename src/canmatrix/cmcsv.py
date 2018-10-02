@@ -183,7 +183,7 @@ def dump(db, thefile, delimiter=',', **options):
 
         additionalFrameInfo = []
         for frameInfo in additionalFrameCollums:
-            temp = getattr(frame, frameInfo, "")
+            temp = frame.attribute(frameInfo, default="")
             additionalFrameInfo.append(temp)
 
 

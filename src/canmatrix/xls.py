@@ -207,7 +207,7 @@ def dump(db, file, **options):
 
         additionalFrameInfo = []
         for frameInfo in additionalFrameCollums:
-            temp = getattr(frame, frameInfo, "")
+            temp = frame.attribute(frameInfo, default="")
             additionalFrameInfo.append(temp)
 
         # iterate over signals
