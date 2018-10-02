@@ -849,6 +849,8 @@ class CanMatrix(object):
     valueTables = attr.ib(default = attr.Factory(dict))
     envVars = attr.ib(default = attr.Factory(dict))
 
+    load_errors = attr.ib(factory=list)
+
     def __iter__(self):
         return iter(self.frames)
 
