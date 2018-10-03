@@ -416,7 +416,7 @@ class Frame(object):
 
     @property
     def is_multiplexed(self):
-        """Frame is multiplexed if at least one of its signals is multiplexed."""
+        """Frame is multiplexed if at least one of its signals is a multiplexer."""
         for sig in self.signals:
             if sig.is_multiplexer:
                 return True
@@ -483,21 +483,21 @@ class Frame(object):
 
 
 
-    def attribute(self, name, db=None, default=None):
+    def attribute(self, attributeName, db=None, default=None):
         """Get any Frame attribute by its name.
 
-        :param str name: attribute name, can be mandatory (ex: id) or optional (customer) attribute.
+        :param str attributeName: attribute name, can be mandatory (ex: id) or optional (customer) attribute.
         :param CanMatrix db: Optional database parameter to get global default attribute value.
         :param default: Default value if attribute doesn't exist.
         :return: Return the attribute value if found, else `default` or None
         """
-        if name in attr.fields_dict(type(self)):
-            return getattr(self, name)
-        if name in self.attributes:
-            return self.attributes[name]
+        if attributeName in attr.fields_dict(type(self)):
+            return getattr(self, attributeName)
+        if attributeName in self.attributes:
+            return self.attributes[attributeName]
         elif db is not None:
-            if name in db.frameDefines:
-                define = db.frameDefines[name]
+            if attributeName in db.frameDefines:
+                define = db.frameDefines[attributeName]
                 return define.defaultValue
         else:
             return default
@@ -590,7 +590,7 @@ class Frame(object):
         """
         try:
             self.attributes[attribute] = str(value)
-        except:  # could it really fail?
+        except UnicodeDecodeError:
             self.attributes[attribute] = value
 
     def delAttribute(self, attribute):
