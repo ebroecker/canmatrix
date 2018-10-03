@@ -106,7 +106,7 @@ def createSignal(db, signal):
                     signal.values.items())) + ")"
 
     if "GenSigStartValue" in db.signalDefines:
-        genSigStartVal = signal.attribute("GenSigStartValue", db=db)
+        genSigStartVal = signal.attribute(db,"GenSigStartValue")
         if genSigStartVal is not None:
             default = float(genSigStartVal) * float(signal.factor)
             min_ok = signal.min is None or default >= float(signal.min)

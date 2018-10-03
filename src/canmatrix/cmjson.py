@@ -115,7 +115,7 @@ def dump(db, f, **options):
             for signal in frame.signals:
                 attribs = {}
                 for attribute in db.signalDefines:
-                    attribs[attribute] = signal.attribute(attribute, db=db)
+                    attribs[attribute] = signal.attribute(db,attribute)
 
                 values = {}
                 for key in signal.values:
