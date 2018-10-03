@@ -48,7 +48,7 @@ def copyBU(buId, sourceDb, targetDb):
                     deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].defaultValue))
             # update enum-datatypes if needed:
             if sourceDb.buDefines[attribute].type == 'ENUM':
-                tempAttr = bu.attribute(attribute, sourceDb)
+                tempAttr = bu.attribute(attribute, db=sourceDb)
                 if tempAttr not in targetDb.buDefines[attribute].values:
                     targetDb.buDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.buDefines[attribute].update()
@@ -92,7 +92,7 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
                     deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].defaultValue))
             # update enum-datatypes if needed:
             if sourceDb.buDefines[attribute].type == 'ENUM':
-                tempAttr = bu.attribute(attribute, sourceDb)
+                tempAttr = bu.attribute(attribute, db=sourceDb)
                 if tempAttr not in targetDb.buDefines[attribute].values:
                     targetDb.buDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.buDefines[attribute].update()
@@ -149,7 +149,7 @@ def copyFrame(frameId, sourceDb, targetDb):
                     deepcopy(attribute), deepcopy(sourceDb.frameDefines[attribute].defaultValue))
             # update enum-datatypes if needed:
             if sourceDb.frameDefines[attribute].type == 'ENUM':
-                tempAttr = frame.attribute(attribute, sourceDb)
+                tempAttr = frame.attribute(attribute, db=sourceDb)
                 if tempAttr not in targetDb.frameDefines[attribute].values:
                     targetDb.frameDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.frameDefines[attribute].update()
@@ -164,7 +164,7 @@ def copyFrame(frameId, sourceDb, targetDb):
                     deepcopy(attribute), deepcopy(sourceDb.signalDefines[attribute].defaultValue))
                 # update enum-datatypes if needed:
                 if sourceDb.signalDefines[attribute].type == 'ENUM':
-                    tempAttr = sig.attribute(attribute, sourceDb)
+                    tempAttr = sig.attribute(attribute, db=sourceDb)
                     if tempAttr not in targetDb.signalDefines[attribute].values:
                         targetDb.signalDefines[attribute].values.append(deepcopy(tempAttr))
                         targetDb.signalDefines[attribute].update()
