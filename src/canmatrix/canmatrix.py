@@ -491,7 +491,7 @@ class Frame(object):
         :param default: Default value if attribute doesn't exist.
         :return: Return the attribute value if found, else `default` or None
         """
-        if hasattr(self, name):
+        if name in attr.fields_dict(type(self)):
             return getattr(self, name)
         if name in self.attributes:
             return self.attributes[name]

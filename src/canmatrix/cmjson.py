@@ -101,7 +101,7 @@ def dump(db, f, **options):
                               "signals": signals}
             frame_attributes = {}
             for frame_info in additionalFrameColums:  # Look for additional Frame Attributes
-                if frame.attribute(frame_info):  # does the attribute exist?
+                if frame.attribute(frame_info) is not None:  # does the attribute exist? None value isn't exported.
                     frame_attributes[frame_info] = frame.attribute(frame_info)
             if frame_attributes:  # only add Attributes if there are any
                 symbolic_frame["attributes"] = frame_attributes
