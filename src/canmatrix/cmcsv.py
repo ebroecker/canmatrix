@@ -253,15 +253,17 @@ def dump(db, thefile, delimiter=',', **options):
     else:
         temp = thefile
 
-    writer = csv.writer(temp, delimiter=delimiter)
-    for row in csvtable:
-        writer.writerow(row.as_list)
-#    else:
-#        # just print to stdout
-#        finalTableString = "\n".join(
-#            [row.toCSV(delimiter) for row in csvtable])
-#        print(finalTableString)
-    if sys.version_info > (3, 0):
-        # When TextIOWrapper is garbage collected, it closes the raw stream
-        # unless the raw stream is detached first
-        temp.detach()
+    try:
+        writer = csv.writer(temp, delimiter=delimiter)
+        for row in csvtable:
+            writer.writerow(row.as_list)
+        # else:
+        #    # just print to stdout
+        #    finalTableString = "\n".join(
+        #        [row.toCSV(delimiter) for row in csvtable])
+        #    print(finalTableString)
+    finally:
+        if sys.version_info > (3, 0):
+            # When TextIOWrapper is garbage collected, it closes the raw stream
+            # unless the raw stream is detached first
+            temp.detach()
