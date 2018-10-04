@@ -113,7 +113,7 @@ class Signal(object):
     is_little_endian = attr.ib(type=bool, default = True)
     is_signed = attr.ib(type=bool, default = True)
     offset = attr.ib(converter = float_factory, default = float_factory(0.0))
-    factor = attr.ib(converter = float_factory, default = float_factory(0.0))
+    factor = attr.ib(converter = float_factory, default = float_factory(1.0))
 
     #    offset = attr.ib(converter = float_factory, default = 0.0)
 
