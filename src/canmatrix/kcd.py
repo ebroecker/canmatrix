@@ -174,7 +174,7 @@ def dump(dbs, f, **options):
             if frame.extended == 1:
                 message.set("format", "extended")
             if "GenMsgCycleTime" in db.frameDefines:
-                cycleTime = frame.attribute(db,"GenMsgCycleTime")
+                cycleTime = frame.attribute("GenMsgCycleTime", db=db)
                 if cycleTime is not None and int(cycleTime) > 0:
                     message.set("triggered", "true")
                     message.set("interval", "%d" % int(cycleTime))

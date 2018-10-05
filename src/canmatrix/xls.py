@@ -207,10 +207,7 @@ def dump(db, file, **options):
 
         additionalFrameInfo = []
         for frameInfo in additionalFrameCollums:
-            try:
-                temp = eval("frame." + frameInfo)
-            except:
-                temp = ""
+            temp = frame.attribute(frameInfo, default="")
             additionalFrameInfo.append(temp)
 
         # iterate over signals
@@ -257,10 +254,7 @@ def dump(db, file, **options):
                     writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
                     backRow += additionalFrameInfo
                     for item in additionalSignalCollums:
-                        try:
-                            temp = eval("sig." + item)
-                        except:
-                            temp = ""
+                        temp = getattr(sig, item, "")
                         backRow.append(temp)
 
                     writeExcelLine(worksheet, row, col + 2, backRow, sigstyle)
@@ -293,17 +287,9 @@ def dump(db, file, **options):
                     backRow.insert(0, "")
                 backRow.insert(0,"")
 
-                for item in additionalSignalCollums:
-                    try:
-                        temp = eval("sig." + col)
-                    except:
-                        temp = ""
                 backRow += additionalFrameInfo
                 for item in additionalSignalCollums:
-                    try:
-                        temp = eval("sig." + item)
-                    except:
-                        temp = ""
+                    temp = getattr(sig, item, "")
                     backRow.append(temp)
 
                 writeExcelLine(worksheet, row, col, backRow, sigstyle)

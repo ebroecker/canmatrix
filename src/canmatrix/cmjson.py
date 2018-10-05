@@ -50,6 +50,10 @@ def dump(db, f, **options):
     else:
         mode = 'wb'
 
+    additionalFrameColums = []
+    if "additionalFrameAttributes" in options and options["additionalFrameAttributes"]:
+        additionalFrameColums = options["additionalFrameAttributes"].split(",")
+
     exportArray = []
 
     if exportCanard:
@@ -91,15 +95,22 @@ def dump(db, f, **options):
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float
                 })
-            exportArray.append({"name": frame.name,
-                                "id": int(frame.id),
-                                "is_extended_frame": frame.extended == 1,
-                                "signals": signals})
-    else:  # exportall
+            symbolic_frame = {"name": frame.name,
+                              "id": int(frame.id),
+                              "is_extended_frame": frame.extended == 1,
+                              "signals": signals}
+            frame_attributes = {}
+            for frame_info in additionalFrameColums:  # Look for additional Frame Attributes
+                if frame.attribute(frame_info) is not None:  # does the attribute exist? None value isn't exported.
+                    frame_attributes[frame_info] = frame.attribute(frame_info)
+            if frame_attributes:  # only add Attributes if there are any
+                symbolic_frame["attributes"] = frame_attributes
+            exportArray.append(symbolic_frame)
+    else:  # exportAll
         for frame in db.frames:
             frameattribs = {}
             for attribute in db.frameDefines:
-                frameattribs[attribute] = frame.attribute(db,attribute)
+                frameattribs[attribute] = frame.attribute(attribute, db=db)
             signals = []
             for signal in frame.signals:
                 attribs = {}

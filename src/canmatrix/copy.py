@@ -149,7 +149,7 @@ def copyFrame(frameId, sourceDb, targetDb):
                     deepcopy(attribute), deepcopy(sourceDb.frameDefines[attribute].defaultValue))
             # update enum-datatypes if needed:
             if sourceDb.frameDefines[attribute].type == 'ENUM':
-                tempAttr = frame.attribute(sourceDb, attribute)
+                tempAttr = frame.attribute(attribute, db=sourceDb)
                 if tempAttr not in targetDb.frameDefines[attribute].values:
                     targetDb.frameDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.frameDefines[attribute].update()

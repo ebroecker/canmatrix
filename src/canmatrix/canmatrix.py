@@ -271,7 +271,7 @@ class Signal(object):
             self.max = self.calcMax()
 
         return self.max
-            
+
     def calcMax(self):
         rawMax = self.calculateRawRange()[1]
 
@@ -322,6 +322,7 @@ class Signal(object):
     def raw2phys(self, value, decodeToStr=False):
         """Decode the given raw value (= as is on CAN)
         :param value: raw value
+        :param bool decodeToStr: If True, try to get value representation as *string* ('Init' etc.)
         :return: physical value (scaled)
         """
 
@@ -373,18 +374,24 @@ class SignalGroup(object):
 @attr.s(cmp=False)
 class Frame(object):
     """
-    contains one Frame with following attributes
-    id,
-    name,
-    transmitters (list of boardunits/ECU-names),
-    size (= DLC),
-    signals (list of signal-objects),
-    attributes (list of attributes),
-    receiver (list of boardunits/ECU-names),
-    extended (Extended Frame = 1),
-    comment
-    """
+    Contains one CAN Frame.
 
+    The Frame has  following mandatory attributes
+
+    * id,
+    * name,
+    * transmitters (list of boardunits/ECU-names),
+    * size (= DLC),
+    * signals (list of signal-objects),
+    * attributes (list of attributes),
+    * receiver (list of boardunits/ECU-names),
+    * extended (Extended Frame = 1),
+    * comment
+
+    and any *custom* attributes in `attributes` dict.
+
+    Frame signals can be accessed using the iterator.
+    """
 
     name = attr.ib(default="")
     id = attr.ib(type=int, default = 0)
@@ -409,6 +416,7 @@ class Frame(object):
 
     @property
     def is_multiplexed(self):
+        """Frame is multiplexed if at least one of its signals is a multiplexer."""
         for sig in self.signals:
             if sig.is_multiplexer:
                 return True
@@ -425,23 +433,28 @@ class Frame(object):
 
     @property
     def priority(self):
+        """Get J1939 priority."""
         return self._j1939_prio
 
     @priority.setter
     def priority(self, value):
+        """Set J1939 priority."""
         self._j1939_prio = value
         self.recalcJ1939Id()
 
     @property
     def source(self):
+        """Get J1939 source."""
         return self._j1939_source
 
     @source.setter
-    def pgn(self, value):
+    def source(self, value):
+        """Set J1939 source."""
         self._j1939_source = value
         self.recalcJ1939Id()
 
     def recalcJ1939Id(self):
+        """Recompute J1939 ID"""
         self.id = (self.j1939_source & 0xff) + ((self.j1939_pgn & 0xffff) << 8) + ((self.j1939_prio & 0x7) << 26)
         self.extended = True
         self.is_j1939 = True
@@ -470,7 +483,16 @@ class Frame(object):
 
 
 
-    def attribute(self, db, attributeName):
+    def attribute(self, attributeName, db=None, default=None):
+        """Get any Frame attribute by its name.
+
+        :param str attributeName: attribute name, can be mandatory (ex: id) or optional (customer) attribute.
+        :param CanMatrix db: Optional database parameter to get global default attribute value.
+        :param default: Default value if attribute doesn't exist.
+        :return: Return the attribute value if found, else `default` or None
+        """
+        if attributeName in attr.fields_dict(type(self)):
+            return getattr(self, attributeName)
         if attributeName in self.attributes:
             return self.attributes[attributeName]
         elif db is not None:
@@ -478,9 +500,10 @@ class Frame(object):
                 define = db.frameDefines[attributeName]
                 return define.defaultValue
         else:
-            return None
+            return default
 
     def __iter__(self):
+        """Iterator over all signals."""
         return iter(self.signals)
 
     def addSignalGroup(self, Name, Id, signalNames):
@@ -495,8 +518,9 @@ class Frame(object):
                 newGroup.addSignal(signalId)
 
     def signalGroupbyName(self, name):
-        """
-        returns signalGroup-object by signalname
+        """Get signal group.
+
+        :return: signalGroup-object by signal name or None if not found.
         """
         for signalGroup in self.signalGroups:
             if signalGroup.name == name:
@@ -505,7 +529,10 @@ class Frame(object):
 
     def addSignal(self, signal):
         """
-        add Signal to Frame
+        Add Signal to Frame.
+
+        :param Signal signal: Signal to be added.
+        :return: the signal added.
         """
         self.signals.append(signal)
         return self.signals[len(self.signals) - 1]
@@ -533,7 +560,10 @@ class Frame(object):
 
     def signalByName(self, name):
         """
-        returns signal-object by signalname
+        Get signal by name.
+
+        :param str name: signal name to be found.
+        :return: signal with given name or None if not found
         """
         for signal in self.signals:
             if signal.name == name:
@@ -541,8 +571,10 @@ class Frame(object):
         return None
 
     def globSignals(self, globStr):
-        """
-        returns signal-object by signalname
+        """Find frame signals by a name pattern.
+
+        :param str globStr: pattern for signal name. See `fnmatch.fnmatchcase`
+        :return: signal-object by name pattern.
         """
         returnArray = []
         for signal in self.signals:
@@ -552,45 +584,54 @@ class Frame(object):
 
     def addAttribute(self, attribute, value):
         """
-        add attribute to attribute-list of frame; If Attribute already exits, modify value
+        Add the attribute with value to customer Frame attribute-list. If Attribute already exits, modify its value.
+        :param str attribute: Attribute name
+        :param any value: attribute value
         """
         try:
             self.attributes[attribute] = str(value)
-        except:
+        except UnicodeDecodeError:
             self.attributes[attribute] = value
 
     def delAttribute(self, attribute):
         """
-        Remove attribute to attribute-list of frame
+        Remove attribute from customer Frame attribute-list.
+
+        :param str attribute: Attribute name
         """
         if attribute in self.attributes:
             del self.attributes[attribute]
 
     def addComment(self, comment):
         """
-        set comment of frame
+        Set Frame comment.
+
+        :param str comment: Frame comment
         """
         self.comment = comment
 
     def calcDLC(self):
         """
-        calc minimal DLC/length for frame (using signal information)
+        Compute minimal Frame DLC (length) based on its Signals
+
+        :return: Message DLC
         """
         maxBit = 0
         for sig in self.signals:
             if sig.getStartbit() + int(sig.size) > maxBit:
                 maxBit = sig.getStartbit() + int(sig.size)
         self.size = max(self.size, int(math.ceil(maxBit / 8)))
-        
+
     def findNotUsedBits(self):
         """
-        find unused bits in frame
-        return dict with position and length-tuples
+        Find unused bits in frame
+
+        :return: dict with position and length-tuples
         """
         bitfield = []
         bitfieldLe = []
         bitfieldBe = []
-        
+
         for i in range(0,64):
             bitfieldBe.append(0)
             bitfieldLe.append(0)
@@ -613,11 +654,15 @@ class Frame(object):
             for j in range(0,8):
                 if bitfield[i*8+j] == 0:
                     bitfield[i*8+j] = bitfieldBe[i*8+j]
-        
+
 
         return bitfield
-    
+
     def createDummySignals(self):
+        """Create dummy signals for unused bits.
+
+        Names of dummy signals are *_Dummy_<frame.name>_<index>*
+        """
         bitfield = self.findNotUsedBits()
 #        for i in range(0,8):
 #            print (bitfield[(i)*8:(i+1)*8])
@@ -632,17 +677,17 @@ class Frame(object):
                 self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=i-startBit, startBit=startBit, is_little_endian = False))
                 startBit = -1
                 sigCount +=1
-                
+
 #        bitfield = self.findNotUsedBits()
 #        for i in range(0,8):
 #            print (bitfield[(i)*8:(i+1)*8])
-                
-            
-                
+
+
+
 
     def updateReceiver(self):
         """
-        collect receivers of frame out of receiver given in each signal
+        Collect receivers of frame out of receiver given in each signal. Add them to `self.receiver` list.
         """
         for sig in self.signals:
             for receiver in sig.receiver:
@@ -677,8 +722,9 @@ class Frame(object):
         """Return a byte string containing the values from data packed
         according to the frame format.
 
-        :param data: data dictionary
+        :param dict data: data dictionary
         :return: A byte string of the packed values.
+        :rtype: bitstruct
         """
         if bitstruct is None:
             logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
@@ -719,6 +765,7 @@ class Frame(object):
 
         :param data: Iterable or bytes.
             i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :param bool decodeToStr: If True, try to get value representation as *string* ('Init' etc.)
         :return: OrderedDictionary
         """
         if bitstruct is None:
@@ -758,7 +805,9 @@ class Frame(object):
 
 
     def __str__(self):
-        return self.name
+        """Represent the frame by its name only."""
+        return self.name  # add more details than the name only?
+
 
 class Define(object):
     """

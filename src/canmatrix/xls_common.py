@@ -33,13 +33,13 @@ def getFrameInfo(db, frame):
 
     if "GenMsgCycleTime" in db.frameDefines:
         # determin cycle-time
-        retArray.append(frame.attribute(db, "GenMsgCycleTime"))
+        retArray.append(frame.attribute("GenMsgCycleTime", db=db))
 
     # determin send-type
     if "GenMsgSendType" in db.frameDefines:
-        retArray.append(frame.attribute(db, "GenMsgSendType"))
+        retArray.append(frame.attribute("GenMsgSendType", db=db))
         if "GenMsgDelayTime" in db.frameDefines:
-            retArray.append(frame.attribute(db, "GenMsgDelayTime"))
+            retArray.append(frame.attribute("GenMsgDelayTime", db=db))
         else:
             retArray.append("")
     else:

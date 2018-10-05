@@ -183,10 +183,7 @@ def dump(db, thefile, delimiter=',', **options):
 
         additionalFrameInfo = []
         for frameInfo in additionalFrameCollums:
-            try:
-                temp = eval("frame." + frameInfo)
-            except:
-                temp = ""
+            temp = frame.attribute(frameInfo, default="")
             additionalFrameInfo.append(temp)
 
 
@@ -213,10 +210,7 @@ def dump(db, thefile, delimiter=',', **options):
 
                     signalRow += additionalFrameInfo
                     for item in additionalSignalCollums:
-                        try:
-                            temp = eval("sig." + item)
-                        except:
-                            temp = ""
+                        temp = getattr(sig, item, "")
                         signalRow += [temp]
 
                     # next row
@@ -243,10 +237,7 @@ def dump(db, thefile, delimiter=',', **options):
 
                 signalRow += additionalFrameInfo
                 for item in additionalSignalCollums:
-                    try:
-                        temp = eval("sig." + item)
-                    except:
-                        temp = ""
+                    temp = getattr(sig, item, "")
                     signalRow += [temp]
 
                 # next row
@@ -256,17 +247,23 @@ def dump(db, thefile, delimiter=',', **options):
         # loop over signals ends here
     # loop over frames ends here
 
-    if (sys.version_info > (3, 0)):
+    if sys.version_info > (3, 0):
         import io
         temp = io.TextIOWrapper(thefile, encoding='UTF-8')
     else:
         temp = thefile
 
-    writer = csv.writer(temp, delimiter=delimiter)
-    for row in csvtable:
-        writer.writerow(row.as_list)
-#    else:
-#        # just print to stdout
-#        finalTableString = "\n".join(
-#            [row.toCSV(delimiter) for row in csvtable])
-#        print(finalTableString)
+    try:
+        writer = csv.writer(temp, delimiter=delimiter)
+        for row in csvtable:
+            writer.writerow(row.as_list)
+        # else:
+        #    # just print to stdout
+        #    finalTableString = "\n".join(
+        #        [row.toCSV(delimiter) for row in csvtable])
+        #    print(finalTableString)
+    finally:
+        if sys.version_info > (3, 0):
+            # When TextIOWrapper is garbage collected, it closes the raw stream
+            # unless the raw stream is detached first
+            temp.detach()
