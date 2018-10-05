@@ -41,6 +41,48 @@ enumDict = {}
 enums = "{ENUMS}\n"
 
 
+@attr.s
+class ParsingError(Exception):
+    line_number = attr.ib()
+    line = attr.ib()
+    message = attr.ib(default=None)
+    original = attr.ib(default=None)
+
+    def __attrs_post_init__(self):
+        if self.message is None:
+            self.message = self.line
+
+        self.message = 'line {line_number}: {message}'.format(
+            line_number=self.line_number,
+            message=self.message
+        )
+        super(ParsingError, self).__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+@attr.s
+class DuplicateMuxIdError(ParsingError):
+    id = attr.ib(default=None)
+    old = attr.ib(default=None)
+    new = attr.ib(default=None)
+
+    def __attrs_post_init__(self):
+        if None in (self.id, self.old, self.new):
+            raise Exception('ack')
+
+        self.message = (
+            '{id:X}h already in use'
+            ' (old: {old}, new: {new})'
+        ).format(
+            id=self.id,
+            old=self.old,
+            new=self.new,
+        )
+        super(DuplicateMuxIdError, self).__attrs_post_init__()
+
+
 def format_float(f):
     s = str(f).upper()
     if s.endswith('.0'):
@@ -433,6 +475,14 @@ def load(f, **options):
                             multiplexor = int(multiplexor[:-1], 16)
                         else:
                             multiplexor = int(multiplexor)
+                        if multiplexor in frame.mux_names:
+                            raise DuplicateMuxIdError(
+                                id=multiplexor,
+                                old=frame.mux_names[multiplexor],
+                                new=sigName,
+                                line_number=linecount,
+                                line=line,
+                            )
                         frame.mux_names[multiplexor] = sigName
                         indexOffset = 2
 
@@ -568,7 +618,17 @@ def load(f, **options):
 #                               print line
 #               else:
 #                       print "Unrecocniced line: " + l + " (%d) " % i
-        except:
+        except Exception as e:
+            if not isinstance(e, ParsingError):
+                ParsingError(
+                    message=str(e),
+                    line_number=linecount,
+                    line=line,
+                    original=e,
+                )
+
+            db.load_errors.append(e)
+
             logger.error("Error decoding line %d" % linecount)
             logger.error(line)
     # TODO: CAMPid 939921818394902983238

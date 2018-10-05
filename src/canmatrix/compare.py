@@ -108,26 +108,29 @@ def compareDb(db1, db2, ignore=None):
         temp._type = "Signal Defines"
         result.addChild(temp)
 
-    for vt1 in db1.valueTables:
-        if vt1 not in db2.valueTables:
-            result.addChild(
-                compareResult(
-                    "deleted",
-                    "valuetable " + vt1,
-                    db1.valueTables))
-        else:
-            result.addChild(
-                compareValueTable(
-                    db1.valueTables[vt1],
-                    db2.valueTables[vt1]))
+    if "VALUETABLES" in ignore and ignore["VALUETABLES"]:
+        pass
+    else:
+        for vt1 in db1.valueTables:
+            if vt1 not in db2.valueTables:
+                result.addChild(
+                    compareResult(
+                        "deleted",
+                        "valuetable " + vt1,
+                        db1.valueTables))
+            else:
+                result.addChild(
+                    compareValueTable(
+                        db1.valueTables[vt1],
+                        db2.valueTables[vt1]))
 
-    for vt2 in db2.valueTables:
-        if vt2 not in db1.valueTables:
-            result.addChild(
-                compareResult(
-                    "added",
-                    "valuetable " + vt2,
-                    db2.valueTables))
+        for vt2 in db2.valueTables:
+            if vt2 not in db1.valueTables:
+                result.addChild(
+                    compareResult(
+                        "added",
+                        "valuetable " + vt2,
+                        db2.valueTables))
 
     propagateChanges(result)
 
@@ -250,11 +253,12 @@ def compareAttributes(ele1, ele2, ignore=None):
 def compareBu(bu1, bu2, ignore=None):
     result = compareResult("equal", "ECU", bu1)
 
-    if bu1.comment != bu2.comment:
-        result.addChild(
-            compareResult(
-                "changed", "ECU", bu1, [
-                    bu1.comment, bu2.comment]))
+    if not "comment" in ignore:
+        if bu1.comment != bu2.comment:
+            result.addChild(
+                compareResult(
+                    "changed", "ECU", bu1, [
+                        bu1.comment, bu2.comment]))
 
     if ignore is not None and "ATTRIBUTE" in ignore and ignore[
             "ATTRIBUTE"] == "*":
@@ -293,15 +297,16 @@ def compareFrame(f1, f2, ignore=None):
                     "extended-Flag: %d" %
                     f1.extended, "extended-Flag: %d" %
                     f2.extended]))
-    if f2.comment is None:
-        f2.addComment("")
-    if f1.comment is None:
-        f1.addComment("")
-    if f1.comment != f2.comment:
-        result.addChild(
-            compareResult(
-                "changed", "FRAME", f1, [
-                    "comment: " + f1.comment, "comment: " + f2.comment]))
+    if not "comment" in ignore:
+        if f2.comment is None:
+            f2.addComment("")
+        if f1.comment is None:
+            f1.addComment("")
+        if f1.comment != f2.comment:
+            result.addChild(
+                compareResult(
+                    "changed", "FRAME", f1, [
+                        "comment: " + f1.comment, "comment: " + f2.comment]))
 
     for s2 in f2.signals:
         s1 = f1.signalByName(s2.name)
@@ -340,14 +345,14 @@ def compareFrame(f1, f2, ignore=None):
 def compareSignal(s1, s2, ignore=None):
     result = compareResult("equal", "SIGNAL", s1)
 
-    if s1.startbit != s2.startbit:
+    if s1.startBit != s2.startBit:
         result.addChild(
             compareResult(
                 "changed", "startbit", s1, [
                     " %d" %
                     s1.startbit, " %d" %
                     s2.startbit]))
-    if s1.signalsize != s2.signalsize:
+    if s1.size != s2.size:
         result.addChild(
             compareResult(
                 "changed", "signalsize", s1, [
@@ -396,17 +401,18 @@ def compareSignal(s1, s2, ignore=None):
             compareResult(
                 "changed", "unit", s1, [
                     s1.unit, s2.unit]))
-    if s1.comment is not None and s2.comment is not None and s1.comment != s2.comment:
-        if s1.comment.replace("\n", " ") != s2.comment.replace("\n", " "):
-            result.addChild(
-                compareResult(
-                    "changed", "comment", s1, [
-                        s1.comment, s2.comment]))
-        else:
-            result.addChild(
-                compareResult(
-                    "changed", "comment", s1, [
-                        "only whitespaces differ", ""]))
+    if not "comment" in ignore:
+        if s1.comment is not None and s2.comment is not None and s1.comment != s2.comment:
+            if s1.comment.replace("\n", " ") != s2.comment.replace("\n", " "):
+                result.addChild(
+                    compareResult(
+                        "changed", "comment", s1, [
+                            s1.comment, s2.comment]))
+            else:
+                result.addChild(
+                    compareResult(
+                        "changed", "comment", s1, [
+                            "only whitespaces differ", ""]))
 
     for receiver in s1.receiver:
         if receiver.strip() not in s2.receiver:
@@ -432,7 +438,10 @@ def compareSignal(s1, s2, ignore=None):
     else:
         result.addChild(compareAttributes(s1, s2, ignore))
 
-    result.addChild(compareValueTable(s1.values, s2.values))
+    if "VALUETABLES" in ignore and ignore["VALUETABLES"]:
+        pass
+    else:
+        result.addChild(compareValueTable(s1.values, s2.values))
 
     return result
 
@@ -498,6 +507,25 @@ def main():
         action="store_true",
         help="show list of frames",
         default=False)
+    parser.add_option(
+        "-c", "--comments",
+        dest="check_comments",
+        action="store_true",
+        help="check changed comments",
+        default=False)
+    parser.add_option(
+        "-a", "--attributes",
+        dest="check_attributes",
+        action="store_true",
+        help="check changed attributes",
+        default=False)
+    parser.add_option(
+        "-t", "--valueTable",
+        dest="ignore_valuetables",
+        action="store_true",
+        help="check changed valuetables",
+        default=False)
+
     (cmdlineOptions, args) = parser.parse_args()
 
     if len(args) < 2:
@@ -526,6 +554,17 @@ def main():
     logger.info("%d Frames found" % (db2.frames.__len__()))
 
     ignore = {}
+
+    if not cmdlineOptions.check_comments:
+        ignore["comment"] = "*"
+
+    if not cmdlineOptions.check_attributes:
+        ignore["ATTRIBUTE"] = "*"
+
+
+    if cmdlineOptions.ignore_valuetables:
+        ignore["VALUETABLES"] = True
+
     if cmdlineOptions.frames:
         onlyInMatrix1 = []
         onlyInMatrix2 = []
