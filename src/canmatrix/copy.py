@@ -48,7 +48,7 @@ def copyBU(buId, sourceDb, targetDb):
                     deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].defaultValue))
             # update enum-datatypes if needed:
             if sourceDb.buDefines[attribute].type == 'ENUM':
-                tempAttr = bu.attribute(sourceDb, attribute)
+                tempAttr = bu.attribute(attribute, db=sourceDb)
                 if tempAttr not in targetDb.buDefines[attribute].values:
                     targetDb.buDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.buDefines[attribute].update()
@@ -92,7 +92,7 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
                     deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].defaultValue))
             # update enum-datatypes if needed:
             if sourceDb.buDefines[attribute].type == 'ENUM':
-                tempAttr = bu.attribute(sourceDb, attribute)
+                tempAttr = bu.attribute(attribute, db=sourceDb)
                 if tempAttr not in targetDb.buDefines[attribute].values:
                     targetDb.buDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.buDefines[attribute].update()
@@ -164,7 +164,7 @@ def copyFrame(frameId, sourceDb, targetDb):
                     deepcopy(attribute), deepcopy(sourceDb.signalDefines[attribute].defaultValue))
                 # update enum-datatypes if needed:
                 if sourceDb.signalDefines[attribute].type == 'ENUM':
-                    tempAttr = sig.attribute(sourceDb, attribute)
+                    tempAttr = sig.attribute(attribute, db=sourceDb)
                     if tempAttr not in targetDb.signalDefines[attribute].values:
                         targetDb.signalDefines[attribute].values.append(deepcopy(tempAttr))
                         targetDb.signalDefines[attribute].update()

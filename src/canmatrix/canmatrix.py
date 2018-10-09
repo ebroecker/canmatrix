@@ -63,24 +63,36 @@ class BoardUnit(object):
         self.attributes = dict()
         self.comment = None
 
-    def attribute(self, db, attributeName):
+    def attribute(self, attributeName, db=None, default=None):
+        """Get Board unit attribute by its name.
+
+        :param str attributeName: attribute name.
+        :param CanMatrix db: Optional database parameter to get global default attribute value.
+        :param default: Default value if attribute doesn't exist.
+        :return: Return the attribute value if found, else `default` or None
+        """
         if attributeName in self.attributes:
             return self.attributes[attributeName]
-        else:
+        elif db is not None:
             if attributeName in db.buDefines:
                 define = db.buDefines[attributeName]
                 return define.defaultValue
-
+        return default
 
     def addAttribute(self, attribute, value):
         """
-        adds some Attribute to current Boardunit/ECU
+        Add the Attribute to current Boardunit/ECU. If the attribute already exists, update the value.
+
+        :param str attribute: Attribute name
+        :param any value: Attribute value
         """
         self.attributes[attribute] = value
 
     def addComment(self, comment):
         """
-        Set comment of Signal
+        Set Board unit comment.
+
+        :param str comment: BU comment/description.
         """
         self.comment = comment
 
@@ -94,15 +106,18 @@ def normalizeValueTable(table):
 @attr.s(cmp=False)
 class Signal(object):
     """
-    contains on Signal of canmatrix-object
-    with following attributes:
-            name, startBit,size (in Bits)
-            is_little_endian (1: Intel, 0: Motorola)
-            is_signed ()
-            factor, offset, min, max
-            receiver  (Boarunit/ECU-Name)
-            attributes, _values, _unit, _comment
-            _multiplex ('Multiplexor' or Number of Multiplex)
+    Represents a Signal in CAN Matrix.
+
+    Signal has following attributes:
+
+    * name
+    * startBit, size (in Bits)
+    * is_little_endian (1: Intel, 0: Motorola)
+    * is_signed (bool)
+    * factor, offset, min, max
+    * receiver  (Boarunit/ECU-Name)
+    * attributes, _values, unit, comment
+    * _multiplex ('Multiplexor' or Number of Multiplex)
     """
 
     name = attr.ib(default = "")
@@ -112,8 +127,8 @@ class Signal(object):
     size = attr.ib(type=int, default = 0)
     is_little_endian = attr.ib(type=bool, default = True)
     is_signed = attr.ib(type=bool, default = True)
-    offset = attr.ib(converter = float_factory, default = float_factory(0.0))
     factor = attr.ib(converter = float_factory, default = float_factory(1.0))
+    offset = attr.ib(converter = float_factory, default = float_factory(0.0))
 
     #    offset = attr.ib(converter = float_factory, default = 0.0)
 
@@ -150,6 +165,7 @@ class Signal(object):
 
     @property
     def spn(self):
+        """Get signal J1939 SPN or None if not defined."""
         return self.attributes.get("SPN", None)
 
     def multiplexSetter(self, value):
@@ -158,62 +174,86 @@ class Signal(object):
         if value is not None and value != 'Multiplexor':
             ret_multiplex = int(value)
             self.mux_val = int(value)
-        else:
+        else:  # is it valid for None too?
             self.is_multiplexer = True
             ret_multiplex = value
         return ret_multiplex
 
-    def attribute(self, db, attributeName):
+    def attribute(self, attributeName, db=None, default=None):
+        """Get any Signal attribute by its name.
+
+        :param str attributeName: attribute name, can be mandatory (ex: startBit, size) or optional (customer) attribute.
+        :param CanMatrix db: Optional database parameter to get global default attribute value.
+        :param default: Default value if attribute doesn't exist.
+        :return: Return the attribute value if found, else `default` or None
+        """
+        if attributeName in attr.fields_dict(type(self)):
+            return getattr(self, attributeName)
         if attributeName in self.attributes:
             return self.attributes[attributeName]
-        else:
+        if db is not None:
             if attributeName in db.signalDefines:
                 define = db.signalDefines[attributeName]
                 return define.defaultValue
+        return default
 
     def addComment(self, comment):
         """
-        Set comment of Signal
+        Set signal description.
+
+        :param str comment: description
         """
         self.comment = comment
 
     def addReceiver(self, receiver):
         """
-        add receiver Boardunit/ECU-Name to signal
+        Add signal receiver.
+
+        :param BoardUnit receiver: Boardunit/ECU instance.
         """
         if receiver not in self.receiver:
             self.receiver.append(receiver)
 
     def delReceiver(self, receiver):
         """
-        remove receiver Boardunit/ECU-Name from signal
+        Remove receiver (Boardunit/ECU) from signal
+
+        :param BoardUnit receiver: Boardunit/ECU instance.
         """
         if receiver in self.receiver:
             self.receiver.remove(receiver)
 
     def addAttribute(self, attribute, value):
         """
-        Add Attribute to Signal
+        Add user defined attribute to the Signal. Update the value if the attribute already exists.
+
+        :param str attribute: attribute name
+        :param value: attribute value
         """
         self.attributes[attribute] = value
 
     def delAttribute(self, attribute):
         """
-        Remove Attribute to Signal
-        """
+        Remove user defined attribute from Signal.
 
+        :param str attribute: attribute name
+        """
         if attribute in self.attributes:
             del self.attributes[attribute]
 
     def addValues(self, value, valueName):
         """
-        Add Value/Description to Signal
+        Add named Value Description to the Signal.
+
+        :param int value: signal value (0xFF)
+        :param str valueName: Human readable value description ("Init")
         """
         self.values[int(value)] = valueName
 
     def setStartbit(self, startBit, bitNumbering=None, startLittle=None):
         """
-        set startBit.
+        Set startBit.
+
         bitNumbering is 1 for LSB0/LSBFirst, 0 for MSB0/MSBFirst.
         If bit numbering is consistent with byte order (little=LSB0, big=MSB0)
         (KCD, SYM), start bit unmodified.
@@ -221,7 +261,7 @@ class Signal(object):
         both little endian and big endian use LSB0.
         If bitNumbering is None, assume consistent with byte order.
         If startLittle is set, given startBit is assumed start from lsb bit
-        rather than the start of the signal data in the message data
+        rather than the start of the signal data in the message data.
         """
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self.is_little_endian:
@@ -237,6 +277,7 @@ class Signal(object):
         self.startBit = startBit
 
     def getStartbit(self, bitNumbering=None, startLittle=None):
+        """Get signal start bit. Handle byte and bit order."""
         startBitInternal = self.startBit
         # convert from big endian start bit at
         # start bit(msbit) to end bit(lsbit)
@@ -248,11 +289,20 @@ class Signal(object):
         return int(startBitInternal)
 
     def calculateRawRange(self):
+        """Compute raw signal range based on Signal bit width and whether the Signal is signed or not.
+
+        :return: Signal range, i.e. (0, 15) for unsigned 4 bit Signal or (-8, 7) for signed one.
+        :rtype: tuple
+        """
         rawRange = 2 ** (self.size - (1 if self.is_signed else 0))
         return (self.float_factory(-rawRange if self.is_signed else 0),
                 self.float_factory(rawRange - 1))
 
     def setMin(self, min=None):
+        """Set minimal physical Signal value.
+
+        :param float min: minimal physical value. If None, compute using `calcMin`
+        """
         self.min = min
         if self.calc_min_for_none and self.min is None:
             self.min = self.calcMin()
@@ -260,11 +310,16 @@ class Signal(object):
         return self.min
 
     def calcMin(self):
+        """Compute minimal physical Signal value based on offset and factor and `calculateRawRange`."""
         rawMin = self.calculateRawRange()[0]
 
         return self.offset + (rawMin * self.factor)
 
     def setMax(self, max=None):
+        """Set maximal signal value.
+
+        :param float max: minimal physical value. If None, compute using `calcMax`
+        """
         self.max = max
 
         if self.calc_max_for_none and self.max is None:
@@ -273,14 +328,17 @@ class Signal(object):
         return self.max
 
     def calcMax(self):
+        """Compute maximal physical Signal value based on offset, factor and `calculateRawRange`."""
         rawMax = self.calculateRawRange()[1]
 
         return self.offset + (rawMax * self.factor)
 
     def bitstruct_format(self):
-        """Get the bit struct format for this signal
+        """Get the bit struct format for this signal.
 
-        :return: str        """
+        :return: bitstruct representation of the Signal
+        :rtype: str
+        """
         endian = '<' if self.is_little_endian else '>'
         if self.is_float:
             bit_type = 'f'
@@ -290,7 +348,7 @@ class Signal(object):
         return endian + bit_type + str(self.size)
 
     def phys2raw(self, value=None):
-        """Return the raw value (= as is on CAN)
+        """Return the raw value (= as is on CAN).
 
         :param value: (scaled) value or value choice to encode
         :return: raw unscaled value as it appears on the bus
@@ -338,27 +396,40 @@ class Signal(object):
     def __str__(self):
         return self.name
 
+
 class SignalGroup(object):
     """
-    contains Signals, which belong to signal-group
+    Represents signal-group, containing multiple Signals.
     """
 
     def __init__(self, name, Id):
-        self.signals = []
+        self.signals = []  # use attr.ib?
         self.name = name
         self.id = Id
 
     def addSignal(self, signal):
+        """Add a Signal to SignalGroup.
+
+        :param Signal signal: signal to add
+        """
         if signal not in self.signals:
             self.signals.append(signal)
 
     def delSignal(self, signal):
-        if signal in self.signals:
-            self.signals[signal].remove()
+        """Remove Signal from SignalGroup.
 
-    def byName(self, name):
+        :param Signal signal: signal to remove
         """
-        returns Signalobject-Object of list by Name
+        if signal in self.signals:
+            self.signals.remove(signal)
+
+    def byName(self, name):  # add 'Signal' to function name?
+        """
+        Find a Signal in the group by Signal name.
+
+        :param str name: Signal name to find
+        :return: signal contained in the group identified by name
+        :rtype: Signal
         """
         for test in self.signals:
             if test.name == name:
@@ -369,7 +440,9 @@ class SignalGroup(object):
         return self.name
 
     def __iter__(self):
+        """Iterate over all contained signals."""
         return iter(self.signals)
+
 
 @attr.s(cmp=False)
 class Frame(object):
@@ -462,13 +535,13 @@ class Frame(object):
     #    @property
 #    def cycleTime(self):
 #        if self._cycleTime is None:
-#            self._cycleTime = self.attribute(None, "GenMsgCycleTime")
+#            self._cycleTime = self.attribute("GenMsgCycleTime")
 #        return self._cycleTime
 
 #    @property
 #    def sendType(self, db = None):
 #        if self._sendType is None:
-#            self._sendType = self.attribute(None, "GenMsgSendType")
+#            self._sendType = self.attribute("GenMsgSendType")
  #       return self._sendType
 
 #    @cycleTime.setter
@@ -507,6 +580,12 @@ class Frame(object):
         return iter(self.signals)
 
     def addSignalGroup(self, Name, Id, signalNames):
+        """Add new SignalGroup to the Frame. Add given signals to the group.
+
+        :param str Name: Group name
+        :param int Id: Group id
+        :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
+        """
         newGroup = SignalGroup(Name, Id)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
@@ -517,10 +596,12 @@ class Frame(object):
             if signalId is not None:
                 newGroup.addSignal(signalId)
 
-    def signalGroupbyName(self, name):
+    def signalGroupbyName(self, name):  # capital B: ByName?
         """Get signal group.
 
-        :return: signalGroup-object by signal name or None if not found.
+        :param str name: group name
+        :return: SignalGroup by name or None if not found.
+        :rtype: SignalGroup
         """
         for signalGroup in self.signalGroups:
             if signalGroup.name == name:
@@ -539,21 +620,27 @@ class Frame(object):
 
     def addTransmitter(self, transmitter):
         """
-        add transmitter Boardunit/ECU-Name to Frame
+        Add transmitter Boardunit/ECU-Name to Frame.
+
+        :param BoardUnit transmitter: transmitter name
         """
         if transmitter not in self.transmitters:
             self.transmitters.append(transmitter)
 
     def delTransmitter(self, transmitter):
         """
-        del transmitter Boardunit/ECU-Name from Frame
+        Delete transmitter Boardunit/ECU-Name from Frame.
+
+        :param BoardUnit transmitter: transmitter name
         """
         if transmitter in self.transmitters:
             self.transmitters.remove(transmitter)
 
     def addReceiver(self, receiver):
         """
-        add receiver Boardunit/ECU-Name to Frame
+        Add receiver Boardunit/ECU-Name to Frame.
+
+        :param BoardUnit receiver: receiver name
         """
         if receiver not in self.receiver:
             self.receiver.append(receiver)
@@ -571,10 +658,11 @@ class Frame(object):
         return None
 
     def globSignals(self, globStr):
-        """Find frame signals by a name pattern.
+        """Find Frame Signals by a name pattern.
 
         :param str globStr: pattern for signal name. See `fnmatch.fnmatchcase`
-        :return: signal-object by name pattern.
+        :return: list of Signals by name pattern.
+        :rtype: list of Signal
         """
         returnArray = []
         for signal in self.signals:
@@ -687,7 +775,7 @@ class Frame(object):
 
     def updateReceiver(self):
         """
-        Collect receivers of frame out of receiver given in each signal. Add them to `self.receiver` list.
+        Collect Frame receivers out of receiver given in each signal. Add them to `self.receiver` list.
         """
         for sig in self.signals:
             for receiver in sig.receiver:
@@ -697,6 +785,7 @@ class Frame(object):
         """Returns the Bitstruct format string of this frame
 
         :return: Bitstruct format string.
+        :rtype: str
         """
         fmt = []
         frame_size = self.size * 8
@@ -811,16 +900,25 @@ class Frame(object):
 
 class Define(object):
     """
-    these objects hold the defines and default-values
+    Hold the defines and default-values.
     """
 
     def __init__(self, definition):
+        """Initialize Define object.
+
+        :param str definition: definition string. Ex: "INT -5 10"
+        """
         definition = definition.strip()
         self.definition = definition
         self.type = None
         self.defaultValue = None
 
-        def saveConvertStrToInt(inStr):
+        def safeConvertStrToInt(inStr):
+            """Convert string to int safely. Check that it isn't float.
+
+            :param str inStr: integer represented as string.
+            :rtype: int
+            """
             out = int(defaultFloatFactory(inStr))
             if out != defaultFloatFactory(inStr):
                 logger.warning("Warning, integer was expected but got float: got: {0} using {1}\n".format(inStr, str(out)))
@@ -830,8 +928,8 @@ class Define(object):
         if definition[0:3] == 'INT':
             self.type = 'INT'
             min, max = definition[4:].split(' ', 2)
-            self.min = saveConvertStrToInt(min)
-            self.max = saveConvertStrToInt(max)
+            self.min = safeConvertStrToInt(min)
+            self.max = safeConvertStrToInt(max)
 
         elif definition[0:6] == 'STRING':
             self.type = 'STRING'
@@ -853,8 +951,8 @@ class Define(object):
         elif definition[0:3] == 'HEX':
             self.type = 'HEX'
             min, max = definition[4:].split(' ', 2)
-            self.min = saveConvertStrToInt(min)
-            self.max = saveConvertStrToInt(max)
+            self.min = safeConvertStrToInt(min)  # the same for INT and HEX?
+            self.max = safeConvertStrToInt(max)
 
         elif definition[0:5] == 'FLOAT':
             self.type = 'FLOAT'
@@ -863,15 +961,24 @@ class Define(object):
             self.max = defaultFloatFactory(max)
 
 
-    def addDefault(self, default):
+    def addDefault(self, default):  # rename to setDefault ?
+        """Set Definition default value.
+
+        :param default: default value, number, str or quoted str ("value")
+        """
         if default is not None and len(default) > 1 and default[0] == '"' and default[-1] =='"':
             default = default[1:-1]
         self.defaultValue = default
 
     def update(self):
+        """Update definition string for type ENUM.
+
+        For type ENUM rebuild the definition string from current values. Otherwise do nothing.
+        """
         if self.type != 'ENUM':
             return
         self.definition = 'ENUM "' + '","' .join(self.values) +'"'
+
 
 @attr.s(cmp=False)
 class CanMatrix(object):
@@ -901,6 +1008,7 @@ class CanMatrix(object):
     load_errors = attr.ib(factory=list)
 
     def __iter__(self):
+        """Matrix iterates over Frames (Messages)."""
         return iter(self.frames)
 
     def addEnvVar(self, name, envVarDict):
@@ -915,13 +1023,20 @@ class CanMatrix(object):
 
     @property
     def contains_j1939(self):
+        """Check whether the Matrix contains any J1939 Frame."""
         for frame in self.frames:
             if frame.is_j1939:
                 return True
         return False
 
 
-    def attribute(self, attributeName):
+    def attribute(self, attributeName, default=None):
+        """Return custom Matrix attribute by name.
+
+        :param str attributeName: attribute name
+        :param default: default value if given attribute doesn't exist
+        :return: attribute value or default or None if no such attribute found.
+        """
         if attributeName in self.attributes:
             return self.attributes[attributeName]
         else:
@@ -930,38 +1045,58 @@ class CanMatrix(object):
                 return define.defaultValue
 
     def addValueTable(self, name, valueTable):
+        """Add named value table.
+
+        :param str name: value table name
+        :param valueTable: value table itself
+        """
         self.valueTables[name] = normalizeValueTable(valueTable)
 
     def addAttribute(self, attribute, value):
         """
-        add attribute to attribute-list of canmatrix
+        Add attribute to Matrix attribute-list.
+
+        :param str attribute: attribute name
+        :param value: attribute value
         """
         self.attributes[attribute] = value
 
     def addSignalDefines(self, type, definition):
         """
-        add signal-attribute definition to canmatrix
+        Add signal-attribute definition to canmatrix.
+
+        :param str type: signal type
+        :param str definition: signal-attribute string definition, see class Define
         """
         if type not in self.signalDefines:
             self.signalDefines[type] = Define(definition)
 
     def addFrameDefines(self, type, definition):
         """
-        add frame-attribute definition to canmatrix
+        Add frame-attribute definition to canmatrix.
+
+        :param str type: frame type
+        :param str definition: frame definition as string
         """
         if type not in self.frameDefines:
             self.frameDefines[type] = Define(definition)
 
     def addBUDefines(self, type, definition):
         """
-        add Boardunit-attribute definition to canmatrix
+        Add Boardunit-attribute definition to canmatrix.
+
+        :param str type: Boardunit type
+        :param str definition: BU definition as string
         """
         if type not in self.buDefines:
             self.buDefines[type] = Define(definition)
 
     def addGlobalDefines(self, type, definition):
         """
-        add global-attribute definition to canmatrix
+        Add global-attribute definition to canmatrix.
+
+        :param str type: attribute type
+        :param str definition: attribute definition as string
         """
         if type not in self.globalDefines:
             self.globalDefines[type] = Define(definition)
@@ -977,6 +1112,10 @@ class CanMatrix(object):
             self.globalDefines[name].addDefault(value)
 
     def deleteObsoleteDefines(self):
+        """Delete all unused Defines.
+
+        Delete them from frameDefines, buDefines and signalDefines.
+        """
         toBeDeleted = []
         for frameDef in self.frameDefines:
             found = False
@@ -1014,6 +1153,12 @@ class CanMatrix(object):
             del self.signalDefines[element]
 
     def frameById(self, Id, extended=None):
+        """Get Frame by its arbitration id.
+
+        :param Id: Frame id as str or int
+        :param extended: is it an extended id? None means "doesn't matter"
+        :rtype: Frame or None
+        """
         Id = int(Id)
         extendedMarker = 0x80000000
         for test in self.frames:
@@ -1036,16 +1181,21 @@ class CanMatrix(object):
         return None
 
     def frameByName(self, name):
+        """Get Frame by name.
+
+        :param str name: Frame name to search for
+        :rtype: Frame or None
+        """
         for test in self.frames:
             if test.name == name:
                 return test
         return None
 
     def globFrames(self, globStr):
-        """
-        returns array of frame-objects by given globstr
-        :param globStr:
-        :return: array
+        """Find Frames by given name pattern.
+
+        :param str globStr: Frame name pattern to be filtered. See `fnmatch.fnmatchcase`.
+        :rtype: list of Frame
         """
         returnArray = []
         for test in self.frames:
@@ -1055,19 +1205,22 @@ class CanMatrix(object):
 
     def boardUnitByName(self, name):
         """
-        returns Boardunit-Object of list by Name
+        Returns Boardunit by Name.
+
+        :param str name: BoardUnit name
+        :rtype: BoardUnit or None
         """
         for test in self.boardUnits:
             if test.name == name:
                 return test
         return None
 
-
     def globBoardUnits(self, globStr):
         """
-        returns array of ecu-objects by given globstr
-        :param globStr:
-        :return: array
+        Find ECUs by given name pattern.
+
+        :param globStr: BoardUnit name pattern to be filtered. See `fnmatch.fnmatchcase`.
+        :rtype: list of BoardUnit
         """
         returnArray = []
         for test in self.boardUnits:
@@ -1076,39 +1229,54 @@ class CanMatrix(object):
         return returnArray
 
     def addFrame(self, frame):
-        """
-        Adds a Frame
+        """Add the Frame to the Matrix.
+
+        :param Frame frame: Frame to add
+        :return: the inserted Frame
         """
         self.frames.append(frame)
         return self.frames[len(self.frames) - 1]
 
     def removeFrame(self, frame):
-        """
-        Adds a Frame
-        """
-        self._list.remove(frame)
+        """Remove the Frame from Matrix.
 
+        :param Frame frame: frame to remove from CAN Matrix
+        """
+        self.frames.remove(frame)
 
     def deleteZeroSignals(self):
+        """Delete all signals with zero bit width from all Frames."""
         for frame in self.frames:
             for signal in frame.signals:
                 if 0 == signal.size:
                     frame.signals.remove(signal)
 
     def delSignalAttributes(self, unwantedAttributes):
+        """Delete Signal attributes from all Signals of all Frames.
+
+        :param list of str unwantedAttributes: List of attributes to remove
+        """
         for frame in self.frames:
             for signal in frame.signals:
                 for attrib in unwantedAttributes:
                     signal.delAttribute(attrib)
 
     def delFrameAttributes(self, unwantedAttributes):
+        """Delete Frame attributes from all Frames.
+
+        :param list of str unwantedAttributes: List of attributes to remove
+        """
         for frame in self.frames:
             for attrib in unwantedAttributes:
                 frame.delAttribute(attrib)
 
     def recalcDLC(self, strategy):
+        """Recompute DLC of all Frames.
+
+        :param str strategy: selected strategy, "max" or "force".
+        """
         for frame in self.frames:
-            originalDlc = frame.size
+            originalDlc = frame.size  # unused, remove?
             if "max" == strategy:
                 frame.calcDLC()
             if "force" == strategy:
@@ -1119,11 +1287,18 @@ class CanMatrix(object):
                 frame.size = math.ceil(maxBit / 8)
 
     def renameEcu(self, old, newName):
-        if type(old).__name__ == 'instance':
+        """Rename ECU in the Matrix. Update references in all Frames.
+
+        :param str or BoardUnit old: old name or ECU instance
+        :param str newName: new name
+        """
+        if type(old).__name__ == 'instance':  # accept BoardUnit instance
             pass
-        else:
+        else:  # or string
             old = self.boardUnitByName(old)
-            oldName = old.name
+        if old is None:
+            return
+        oldName = old.name
         old.name = newName
         for frame in self.frames:
             if oldName in frame.transmitters:
@@ -1136,24 +1311,26 @@ class CanMatrix(object):
             frame.updateReceiver()
 
     def addEcu(self, ecu):
+        """Add new ECU to the Matrix. Do nothing if ecu with the same name already exists.
+
+        :param BoardUnit ecu: ECU name to add
+        """
         for bu in self.boardUnits:
             if bu.name.strip() == ecu.name:
                 return
         self.boardUnits.append(ecu)
 
     def delEcu(self, ecu):
+        """Remove ECU from Matrix and all Frames.
+
+        :param str or BoardUnit ecu: ECU name pattern or instance to remove from list
         """
-        remove Boardunit/ECU to list
-        """
-        if type(ecu).__name__ == 'instance':
+        if type(ecu).__name__ == 'instance':  # accept the BoardUnit instance
             ecuList = [ecu]
-        else:
+        else:  # as well as the name
             ecuList = self.globBoardUnits(ecu)
 
         for ecu in ecuList:
-            """
-            remove Boardunit/ECU to list
-            """
             if ecu in self.boardUnits:
                 self.boardUnits.remove(ecu)
                 for frame in self.frames:
@@ -1165,6 +1342,7 @@ class CanMatrix(object):
                     frame.updateReceiver()
 
     def updateEcuList(self):
+        """Check all Frames and add unknown ECUs to the Matrix ECU list."""
         for frame in self.frames:
             for ecu in frame.transmitters:
                 self.addEcu(BoardUnit(ecu))
@@ -1174,8 +1352,13 @@ class CanMatrix(object):
                     self.addEcu(BoardUnit(ecu))
 
     def renameFrame(self, old, newName):
+        """Rename Frame.
+
+        :param Frame or str old: Old Frame instance or name or part of the name with '*' at the beginning or the end.
+        :param str newName: new Frame name, suffix or prefix
+        """
         if type(old).__name__ == 'instance':
-            oldName = old.name
+            old = old.name
         for frame in self.frames:
             if old[-1] == '*':
                 oldPrefixLen = len(old)-1
@@ -1189,6 +1372,9 @@ class CanMatrix(object):
                 frame.name = newName
 
     def delFrame(self, frame):
+        """Delete Frame from Matrix.
+
+        :param Frame or str frame: Frame or name to delete"""
         if type(frame).__name__ == 'instance' or type(frame).__name__ == 'Frame':
             pass
         else:
@@ -1196,6 +1382,11 @@ class CanMatrix(object):
         self.frames.remove(frame)
 
     def renameSignal(self, old, newName):
+        """Rename Signal.
+
+        :param Signal or str old: Old Signal instance or name or part of the name with '*' at the beginning or the end.
+        :param str newName: new Signal name, suffix or prefix
+        """
         if type(old).__name__ == 'instance' or type(old).__name__ == 'Signal':
             old.name = newName
         else:
@@ -1217,6 +1408,9 @@ class CanMatrix(object):
                         signal.name = newName
 
     def delSignal(self, signal):
+        """Delete Signal from Matrix and all Frames.
+
+        :param Signal or str signal: Signal instance or signal name to be deleted"""
         if type(signal).__name__ == 'instance' or type(signal).__name__ == 'Signal':
             for frame in self.frames:
                 if signal in frame.signals:
@@ -1227,43 +1421,77 @@ class CanMatrix(object):
                 for sig in signalList:
                     frame.signals.remove(sig)
 
-    def addSignalReceiver(self, frameName, signalName, ecu):
-        frames = self.globFrames(frameName)
+    def addSignalReceiver(self, framePattern, signalName, ecu):
+        """Add Receiver to all Frames by name pattern.
+
+        :param str framePattern: Frame name pattern
+        :param str signalName: signal name
+        :param BoardUnit ecu: Receiver ECU name
+        """
+        frames = self.globFrames(framePattern)
         for frame in frames:
             signal = frame.signalByName(signalName)
             if signal is not None:
                 signal.addReceiver(ecu)
                 for signal in frame.globSignals(signalName):
-                    signal.addReceiver(ecu)
+                    signal.addReceiver(ecu)  # already set, redundant line
                 frame.updateReceiver()
 
-    def delSignalReceiver(self, frameName, signalName, ecu):
-        frames = self.globFrames(frameName)
+    def delSignalReceiver(self, framePattern, signalName, ecu):
+        """Delete Receiver from all Frames by name pattern.
+
+        :param str framePattern: Frame name pattern
+        :param str signalName: signal name
+        :param BoardUnit ecu: Receiver ECU name
+        """
+        frames = self.globFrames(framePattern)
         for frame in frames:
             signal = frame.signalByName(signalName)
             if signal is not None:
-                signal.addReceiver(ecu)
+                signal.delReceiver(ecu)
                 for signal in frame.globSignals(signalName):
-                    signal.delReceiver(ecu)
+                    signal.delReceiver(ecu)  # redundant
                 frame.updateReceiver()
 
-    def addFrameTransmitter(self, frameName, ecu):
-        frames = self.globFrames(frameName)
+    def addFrameTransmitter(self, framePattern, ecu):
+        """Add Transmitter to all Frames by name pattern.
+
+        :param str framePattern: Frame name pattern
+        :param BoardUnit ecu: Receiver ECU name
+        """
+        frames = self.globFrames(framePattern)
         for frame in frames:
             frame.addTransmitter(ecu)
 
-    def addFrameReceiver(self, frameName, ecu):
-        frames = self.globFrames(frameName)
+    def addFrameReceiver(self, framePattern, ecu):
+        """Add Receiver to all Frames by name pattern.
+
+        :param str framePattern: Frame name pattern
+        :param BoardUnit ecu: Receiver ECU name
+        """
+        frames = self.globFrames(framePattern)
         for frame in frames:
             for signal in frame.signals:
                 signal.addReceiver(ecu)
 
-    def delFrameTransmitter(self, frameName, ecu):
-        frames = self.globFrames(frameName)
+    def delFrameTransmitter(self, framePattern, ecu):
+        """Delete Transmitter from all Frames by name pattern.
+
+        :param str framePattern: Frame name pattern
+        :param BoardUnit ecu: Receiver ECU name
+        """
+        frames = self.globFrames(framePattern)
         for frame in frames:
             frame.delTransmitter(ecu)
 
     def merge(self, mergeArray):
+        """Merge multiple Matrices to this Matrix.
+
+        Try to copy all Frames and all environment variables from source Matrices. Don't make duplicates.
+        Log collisions.
+
+        :param list of Matrix mergeArray: list of source CAN Matrices to be merged to to self.
+        """
         for dbTemp in mergeArray:
             for frame in dbTemp.frames:
                 copyResult = copy.copyFrame(frame.id, dbTemp, self)
@@ -1278,9 +1506,10 @@ class CanMatrix(object):
                         "Name Conflict, could not copy/merge EnvVar " + envVar)
 
     def setFdType(self):
+        """Deduce the CAN type. If any Frame is longer than 8 bytes, it must be Flexible Data Rate CAN (CAN FD)"""
         for frame in self.frames:
             if frame.size > 8:
-                frame.is_fd = True
+                frame.is_fd = True  # no use case to set back to False? Probably not.
 
     def encode(self, frame_id, data):
         """Return a byte string containing the values from data packed
@@ -1290,7 +1519,6 @@ class CanMatrix(object):
         :param data: data dictionary
         :return: A byte string of the packed values.
         """
-
         return self.frameById(frame_id).encode(data)
 
     def decode(self, frame_id, data, decodeToStr=False):
@@ -1350,7 +1578,14 @@ class CanMatrix(object):
 #
 def computeSignalValueInFrame(startBit, ln, fmt, value):
     """
-    compute the signal value in the frame
+    Compute the Signal value in the Frame.
+
+    :param int startBit: signal start bit
+    :param int ln: signal length
+    :param int fmt: byte order, 1 for Little Endian (Intel), else Big Endian (Motorola)
+    :param int value: signal value
+    :return: data frame with signal set to value
+    :rtype: int
     """
 
     frame = 0
@@ -1390,7 +1625,7 @@ def computeSignalValueInFrame(startBit, ln, fmt, value):
 
 class CanId(object):
     """
-    Split Id into Global source addresses (source, destination) off ECU and PGN
+    Split Id into Global source addresses (source, destination) off ECU and PGN (SAE J1939).
     """
     # TODO link to BoardUnit/ECU
     source = None  # Source Address
@@ -1407,6 +1642,9 @@ class CanId(object):
             pass
 
     def tuples(self):
+        """Get tuple (destination, PGN, source)
+
+        :rtype: tuple"""
         return self.destination, self.pgn, self.source
 
     def __str__(self):
