@@ -349,7 +349,7 @@ class Signal(object):
     def phys2raw(self, value=None):
         """Return the raw value (= as is on CAN).
 
-        :param value: (scaled) value or value choice to encode
+        :param decimal.Decimal or str value: (scaled) value or value choice to encode
         :return: raw unscaled value as it appears on the bus
         :rtype: int or float
         """
@@ -366,8 +366,6 @@ class Signal(object):
                         "{} is invalid value choice for {}".format(value, self)
                 )
 
-        if not isinstance(value, defaultFloatFactory):  # use the same data type as offset and factor
-            value = defaultFloatFactory(value)
         if not (self.min <= value <= self.max):
             logger.info(
                 "Value {} is not valid for {}. Min={} and Max={}".format(
@@ -380,12 +378,13 @@ class Signal(object):
         return float(raw_value)
 
     def raw2phys(self, value, decodeToStr=False):
-        """Decode the given raw value (= as is on CAN)
-        :param value: raw value
+        """Decode the given raw value (= as is on CAN).
+
+        :param value: raw value. Preferably int or str, not float (to not lose precision)
         :param bool decodeToStr: If True, try to get value representation as *string* ('Init' etc.)
         :return: physical value (scaled)
         """
-        value = defaultFloatFactory(value)
+
         value = value * self.factor + self.offset
         if decodeToStr:
             for value_key, value_string in self.values.items():

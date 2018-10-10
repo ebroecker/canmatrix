@@ -5,12 +5,10 @@
 import unittest
 import tempfile
 import os
-import decimal
+from decimal import Decimal
 
 from canmatrix import formats
 from canmatrix.canmatrix import Signal
-
-D = decimal.Decimal
 
 
 class TestCanmatrixCodec(unittest.TestCase):
@@ -39,37 +37,37 @@ class TestCanmatrixCodec(unittest.TestCase):
     def test_encode_signal(self):
         s1 = Signal('signal', size=8)
         self.assertEqual(s1.phys2raw(), 0)
-        self.assertEqual(s1.phys2raw(1), 1)
+        self.assertEqual(s1.phys2raw(Decimal(1)), 1)
         self.assertEqual(s1.phys2raw(s1.max), 127)
         self.assertEqual(s1.phys2raw(s1.min), -128)
 
         s2 = Signal('signal', size=10, is_signed=False)
         self.assertEqual(s2.phys2raw(), 0)
-        self.assertEqual(s2.phys2raw(10), 10)
+        self.assertEqual(s2.phys2raw(Decimal(10)), 10)
         self.assertEqual(s2.phys2raw(s2.max), 1023)
         self.assertEqual(s2.phys2raw(s2.min), 0)
 
         s3 = Signal('signal', size=8, factor=2)
         self.assertEqual(s3.phys2raw(), 0)
-        self.assertEqual(s3.phys2raw(10), 5)
+        self.assertEqual(s3.phys2raw(Decimal(10)), 5)
         self.assertEqual(s3.phys2raw(s3.max), 127)
         self.assertEqual(s3.phys2raw(s3.min), -128)
 
         s4 = Signal('signal', size=8, is_signed=False, factor=5)
         self.assertEqual(s4.phys2raw(), 0)
-        self.assertEqual(s4.phys2raw(10), 2)
+        self.assertEqual(s4.phys2raw(Decimal(10)), 2)
         self.assertEqual(s4.phys2raw(s4.max), 255)
         self.assertEqual(s4.phys2raw(s4.min), 0)
 
         s5 = Signal('signal', size=8, offset=2)
         self.assertEqual(s5.phys2raw(), 0)
-        self.assertEqual(s5.phys2raw(10), 8)
+        self.assertEqual(s5.phys2raw(Decimal(10)), 8)
         self.assertEqual(s5.phys2raw(s5.max), 127)
         self.assertEqual(s5.phys2raw(s5.min), -128)
 
         s6 = Signal('signal', size=8, is_signed=False, offset=5)
         self.assertEqual(s6.phys2raw(), 0)
-        self.assertEqual(s6.phys2raw(10), 5)
+        self.assertEqual(s6.phys2raw(Decimal(10)), 5)
         self.assertEqual(s6.phys2raw(s6.max), 255)
         self.assertEqual(s6.phys2raw(s6.min), 0)
 
@@ -85,14 +83,14 @@ class TestCanmatrixCodec(unittest.TestCase):
         self.assertEqual(s9.phys2raw(), 0)
         self.assertEqual(s9.phys2raw(s9.max), 65535)
         self.assertEqual(s9.phys2raw(s9.min), 0)
-        self.assertEqual(s9.phys2raw(D(50123)*D(0.001)), 50123)
+        self.assertEqual(s9.phys2raw(Decimal("50.123")), 50123)
 
         s10 = Signal('signal', size=8, is_signed=False, factor=0.00005)
         self.assertEqual(s10.phys2raw(), 0)
         self.assertEqual(s10.phys2raw(s10.max), 255)
         self.assertEqual(s10.phys2raw(s10.min), 0)
-        self.assertEqual(s10.phys2raw(0.005), 100)
-        self.assertEqual(s10.phys2raw(0.003), 60)
+        self.assertEqual(s10.phys2raw(Decimal("0.005")), 100)
+        self.assertEqual(s10.phys2raw(Decimal("0.003")), 60)
 
     # def test_encode_canmatrix(self):
     #     db_path = os.path.join(
@@ -137,17 +135,17 @@ class TestCanmatrixCodec(unittest.TestCase):
         self.assertEqual(s6.raw2phys(255), s6.max)
         self.assertEqual(s6.raw2phys(0), s6.min)
 
-        s7 = Signal('signal', size=16, is_signed=False, factor=0.001)
+        s7 = Signal('signal', size=16, is_signed=False, factor='0.001')
         self.assertEqual(s7.raw2phys(65535), s7.max)
         self.assertEqual(s7.raw2phys(0), s7.min)
-        self.assertAlmostEqual(s7.raw2phys(50123), D(50.123))
+        self.assertEqual(s7.raw2phys(50123), Decimal("50.123"))
 
-        s8 = Signal('signal', size=8, is_signed=False, factor=0.00005)
+        s8 = Signal('signal', size=8, is_signed=False, factor='0.00005')
         self.assertEqual(s8.raw2phys(255), s8.max)
         self.assertEqual(s8.raw2phys(0), s8.min)
-        self.assertAlmostEqual(s8.raw2phys(1), D(0.00005))
-        self.assertAlmostEqual(s8.raw2phys(2), D(0.0001))
-        self.assertAlmostEqual(s8.raw2phys(3), D(0.00015))
+        self.assertEqual(s8.raw2phys(1), Decimal('0.00005'))
+        self.assertEqual(s8.raw2phys(2), Decimal('0.0001'))
+        self.assertEqual(s8.raw2phys(3), Decimal('0.00015'))
 
     # def test_encode_decode_signal_value(self):
     #     db_path = os.path.join(
