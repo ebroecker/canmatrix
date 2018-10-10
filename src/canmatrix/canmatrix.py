@@ -319,7 +319,7 @@ class Signal(object):
         raw_value = (value - self.offset) / self.factor
 
         if not self.is_float:
-            raw_value = int(raw_value)
+            raw_value = round(raw_value)
         return float(raw_value)
 
     def raw2phys(self, value, decodeToStr=False):
