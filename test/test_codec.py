@@ -205,3 +205,19 @@ class TestCanmatrixCodec(unittest.TestCase):
             with open(out_file_name, "r") as file:
                 data = file.read()
             self.assertIn("UserFrameAttr", data)
+
+    def test_export_jsonall(self):
+        """Check the jsonAll doesn't raise and export some additional field."""
+        db_path = os.path.join(
+            os.path.dirname(__file__), "..", "test", "test.dbc")
+        dbs = formats.loadp(db_path)
+        tmp_dir = tempfile.mkdtemp()
+        out_file_name = tmp_dir + "/output.json"
+        formats.dumpp(dbs, out_file_name, jsonAll=True)
+        with open(out_file_name, "r") as file:
+            data = file.read()
+        self.assertIn("comment", data)
+
+
+if __name__ == "__main__":
+    unittest.main()
