@@ -53,15 +53,16 @@ except:
 from past.builtins import basestring
 import copy
 
+
+@attr.s
 class BoardUnit(object):
     """
     Contains one Boardunit/ECU
     """
 
-    def __init__(self, name):
-        self.name = name.strip()
-        self.attributes = dict()
-        self.comment = None
+    name = attr.ib(type=str)
+    comment = attr.ib(type=str, default=None)
+    attributes = attr.ib(factory=dict, repr=False)
 
     def attribute(self, attributeName, db=None, default=None):
         """Get Board unit attribute by its name.
@@ -96,8 +97,6 @@ class BoardUnit(object):
         """
         self.comment = comment
 
-    def __str__(self):
-        return self.name
 
 def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
