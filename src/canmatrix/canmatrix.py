@@ -396,15 +396,14 @@ class Signal(object):
         return self.name
 
 
+@attr.s(cmp=False)
 class SignalGroup(object):
     """
     Represents signal-group, containing multiple Signals.
     """
-
-    def __init__(self, name, Id):
-        self.signals = []
-        self.name = name
-        self.id = Id
+    name = attr.ib(type=str)
+    id = attr.ib(type=int)
+    signals = attr.ib(type=list, default=attr.Factory(list), repr=False)
 
     def addSignal(self, signal):
         """Add a Signal to SignalGroup.
@@ -435,12 +434,15 @@ class SignalGroup(object):
                 return test
         return None
 
-    def __str__(self):
-        return self.name
-
     def __iter__(self):
         """Iterate over all contained signals."""
         return iter(self.signals)
+
+    def __getitem__(self, name):
+        signal = self.byName(name)
+        if signal:
+            return signal
+        raise IndexError("Signal {} doesn't exist".format(name))
 
 
 @attr.s(cmp=False)
