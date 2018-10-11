@@ -330,14 +330,14 @@ def compareFrame(f1, f2, ignore=None):
             result.addChild(compareResult("added", "Frame-Transmitter",  f2))
 
     for sg1 in f1.signalGroups:
-        sg2 = f2.signalGroupbyName(sg1.name)
+        sg2 = f2.signalGroupByName(sg1.name)
         if sg2 is None:
             result.addChild(compareResult("removed", "Signalgroup", sg1))
         else:
             result.addChild(compareSignalGroup(sg1, sg2))
 
     for sg2 in f2.signalGroups:
-        if f1.signalGroupbyName(sg2.name) is None:
+        if f1.signalGroupByName(sg2.name) is None:
             result.addChild(compareResult("added", "Signalgroup", sg2))
     return result
 
