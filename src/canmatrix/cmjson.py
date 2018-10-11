@@ -146,7 +146,7 @@ def dump(db, f, **options):
                 }
                 if signal.multiplex is not None:
                     signalDict["multiplex"] = signal.multiplex
-                if signal.unit is not None:
+                if signal.unit:
                     signalDict["unit"] = signal.unit
                 signals.append(signalDict)
 
