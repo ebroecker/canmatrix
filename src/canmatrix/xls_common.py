@@ -84,7 +84,7 @@ def getSignal(db, sig, motorolaBitFormat):
     # startvalue of signal available
     if "GenSigStartValue" in db.signalDefines:
         if db.signalDefines["GenSigStartValue"].definition == "STRING":
-            frontArray.append(sig.attribute("GenSigStartValue"), db=db)
+            frontArray.append(sig.attribute("GenSigStartValue", db=db))
         elif db.signalDefines["GenSigStartValue"].definition == "INT" or db.signalDefines["GenSigStartValue"].definition == "HEX":
             frontArray.append("%Xh" % sig.attribute("GenSigStartValue", db=db))
         else:
