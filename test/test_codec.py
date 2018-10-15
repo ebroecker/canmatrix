@@ -37,37 +37,37 @@ class TestCanmatrixCodec(unittest.TestCase):
     def test_encode_signal(self):
         s1 = Signal('signal', size=8)
         self.assertEqual(s1.phys2raw(), 0)
-        self.assertEqual(s1.phys2raw(Decimal(1)), 1)
+        self.assertEqual(s1.phys2raw(1), 1)
         self.assertEqual(s1.phys2raw(s1.max), 127)
         self.assertEqual(s1.phys2raw(s1.min), -128)
 
         s2 = Signal('signal', size=10, is_signed=False)
         self.assertEqual(s2.phys2raw(), 0)
-        self.assertEqual(s2.phys2raw(Decimal(10)), 10)
+        self.assertEqual(s2.phys2raw(10), 10)
         self.assertEqual(s2.phys2raw(s2.max), 1023)
         self.assertEqual(s2.phys2raw(s2.min), 0)
 
         s3 = Signal('signal', size=8, factor=2)
         self.assertEqual(s3.phys2raw(), 0)
-        self.assertEqual(s3.phys2raw(Decimal(10)), 5)
+        self.assertEqual(s3.phys2raw(10), 5)
         self.assertEqual(s3.phys2raw(s3.max), 127)
         self.assertEqual(s3.phys2raw(s3.min), -128)
 
         s4 = Signal('signal', size=8, is_signed=False, factor=5)
         self.assertEqual(s4.phys2raw(), 0)
-        self.assertEqual(s4.phys2raw(Decimal(10)), 2)
+        self.assertEqual(s4.phys2raw(10), 2)
         self.assertEqual(s4.phys2raw(s4.max), 255)
         self.assertEqual(s4.phys2raw(s4.min), 0)
 
         s5 = Signal('signal', size=8, offset=2)
         self.assertEqual(s5.phys2raw(), 0)
-        self.assertEqual(s5.phys2raw(Decimal(10)), 8)
+        self.assertEqual(s5.phys2raw(10), 8)
         self.assertEqual(s5.phys2raw(s5.max), 127)
         self.assertEqual(s5.phys2raw(s5.min), -128)
 
         s6 = Signal('signal', size=8, is_signed=False, offset=5)
         self.assertEqual(s6.phys2raw(), 0)
-        self.assertEqual(s6.phys2raw(Decimal(10)), 5)
+        self.assertEqual(s6.phys2raw(10), 5)
         self.assertEqual(s6.phys2raw(s6.max), 255)
         self.assertEqual(s6.phys2raw(s6.min), 0)
 
@@ -92,17 +92,17 @@ class TestCanmatrixCodec(unittest.TestCase):
         self.assertEqual(s10.phys2raw(Decimal('0.005')), 100)
         self.assertEqual(s10.phys2raw(Decimal('0.003')), 60)
 
-    # def test_encode_canmatrix(self):
-    #     db_path = os.path.join(
-    #         os.path.dirname(__file__), "..", "test", "test.dbc")
-    #     for matrix in formats.loadp(db_path).values():
-    #         test_frame1 = 0x123
-    #         data = {
-    #             'Signal': 2,
-    #             'someTestSignal': 101,
-    #         }
-    #         encoded = matrix.encode(test_frame1, data)
-    #         self.assertEqual(bytearray(encoded).hex(), bytearray((0, 0x28, 0x04, 0, 0, 0, 0, 0)).hex())
+    def test_encode_canmatrix(self):
+        db_path = os.path.join(
+            os.path.dirname(__file__), "..", "test", "test.dbc")
+        for bus in formats.loadp(db_path).values():
+            test_frame1 = 0x123
+            data = {
+                'Signal': 2,
+                'someTestSignal': 101,
+            }
+            data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
+            assert data_bytes == (0, 0x28, 0x04, 0, 0, 0, 0, 0)
 
     def test_decode_signal(self):
         s1 = Signal('signal', size=8)
@@ -147,53 +147,53 @@ class TestCanmatrixCodec(unittest.TestCase):
         self.assertEqual(s8.raw2phys(2), Decimal('0.0001'))
         self.assertEqual(s8.raw2phys(3), Decimal('0.00015'))
 
-    # def test_encode_decode_signal_value(self):
-    #     db_path = os.path.join(
-    #         os.path.dirname(__file__), "..", "test", "test.dbc")
-    #     for bus in formats.loadp(db_path).values():
-    #         test_frame1 = 0x123
-    #
-    #         data = {
-    #             'Signal': 2,
-    #             'someTestSignal': 101,
-    #         }
-    #         data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
-    #         decoded = bus.decode(test_frame1, data_bytes, False)
-    #
-    #         for k, v in data.items():
-    #             assert decoded[k] == v
-    #
-    # def test_encode_decode_signal_value_choice_unicode(self):
-    #     db_path = os.path.join(
-    #         os.path.dirname(__file__), "..", "test", "test.dbc")
-    #     for bus in formats.loadp(db_path).values():
-    #         test_frame1 = 0x123
-    #
-    #         data = {
-    #             'Signal': u'two'
-    #         }
-    #         data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
-    #
-    #         decoded = bus.decode(test_frame1, data_bytes, True)
-    #
-    #         for k, v in data.items():
-    #             assert str(decoded[k]) == v
-    #
-    # def test_encode_decode_signal_value_choice_str(self):
-    #     db_path = os.path.join(
-    #         os.path.dirname(__file__), "..", "test", "test.dbc")
-    #     for bus in formats.loadp(db_path).values():
-    #         test_frame1 = 0x123
-    #
-    #         data = {
-    #             'Signal': 'two'
-    #         }
-    #         data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
-    #
-    #         decoded = bus.decode(test_frame1, data_bytes, True)
-    #
-    #         for k, v in data.items():
-    #             assert str(decoded[k]) == v
+    def test_encode_decode_signal_value(self):
+        db_path = os.path.join(
+            os.path.dirname(__file__), "..", "test", "test.dbc")
+        for bus in formats.loadp(db_path).values():
+            test_frame1 = 0x123
+
+            data = {
+                'Signal': 2,
+                'someTestSignal': 101,
+            }
+            data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
+            decoded = bus.decode(test_frame1, data_bytes, False)
+
+            for k, v in data.items():
+                assert decoded[k] == v
+
+    def test_encode_decode_signal_value_choice_unicode(self):
+        db_path = os.path.join(
+            os.path.dirname(__file__), "..", "test", "test.dbc")
+        for bus in formats.loadp(db_path).values():
+            test_frame1 = 0x123
+
+            data = {
+                'Signal': u'two'
+            }
+            data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
+
+            decoded = bus.decode(test_frame1, data_bytes, True)
+
+            for k, v in data.items():
+                assert str(decoded[k]) == v
+
+    def test_encode_decode_signal_value_choice_str(self):
+        db_path = os.path.join(
+            os.path.dirname(__file__), "..", "test", "test.dbc")
+        for bus in formats.loadp(db_path).values():
+            test_frame1 = 0x123
+
+            data = {
+                'Signal': 'two'
+            }
+            data_bytes = tuple(bytearray(bus.encode(test_frame1, data)))
+
+            decoded = bus.decode(test_frame1, data_bytes, True)
+
+            for k, v in data.items():
+                assert str(decoded[k]) == v
 
     def test_import_export_additional_frame_info(self):
         db_path = os.path.join(
