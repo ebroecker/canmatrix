@@ -653,10 +653,10 @@ class Frame(object):
         return None
 
     def globSignals(self, globStr):
-        """Find Frame Signals by a name pattern.
+        """Find Frame Signals by given glob pattern.
 
-        :param str globStr: pattern for signal name. See `fnmatch.fnmatchcase`
-        :return: list of Signals by name pattern.
+        :param str globStr: glob pattern for signal name. See `fnmatch.fnmatchcase`
+        :return: list of Signals by glob pattern.
         :rtype: list of Signal
         """
         returnArray = []
@@ -1179,9 +1179,9 @@ class CanMatrix(object):
         return None
 
     def globFrames(self, globStr):
-        """Find Frames by given name pattern.
+        """Find Frames by given glob pattern.
 
-        :param str globStr: Frame name pattern to be filtered. See `fnmatch.fnmatchcase`.
+        :param str globStr: glob pattern to filter Frames. See `fnmatch.fnmatchcase`.
         :rtype: list of Frame
         """
         returnArray = []
@@ -1204,9 +1204,9 @@ class CanMatrix(object):
 
     def globBoardUnits(self, globStr):
         """
-        Find ECUs by given name pattern.
+        Find ECUs by given glob pattern.
 
-        :param globStr: BoardUnit name pattern to be filtered. See `fnmatch.fnmatchcase`.
+        :param globStr: glob pattern to filter BoardUnits. See `fnmatch.fnmatchcase`.
         :rtype: list of BoardUnit
         """
         returnArray = []
@@ -1310,7 +1310,7 @@ class CanMatrix(object):
     def delEcu(self, ecu):
         """Remove ECU from Matrix and all Frames.
 
-        :param str or BoardUnit ecu: ECU name pattern or instance to remove from list
+        :param str or BoardUnit ecu: ECU instance or glob pattern to remove from list
         """
         if type(ecu).__name__ == 'instance':
             ecuList = [ecu]
@@ -1397,7 +1397,7 @@ class CanMatrix(object):
     def delSignal(self, signal):
         """Delete Signal from Matrix and all Frames.
 
-        :param Signal or str signal: Signal instance or signal name to be deleted"""
+        :param Signal or str signal: Signal instance or glob pattern to be deleted"""
         if type(signal).__name__ == 'instance' or type(signal).__name__ == 'Signal':
             for frame in self.frames:
                 if signal in frame.signals:
@@ -1408,60 +1408,60 @@ class CanMatrix(object):
                 for sig in signalList:
                     frame.signals.remove(sig)
 
-    def addSignalReceiver(self, framePattern, signalName, ecu):
-        """Add Receiver to all Frames by name pattern.
+    def addSignalReceiver(self, globFrame, globSignal, ecu):
+        """Add Receiver to all Frames and Signals by glob pattern.
 
-        :param str framePattern: Frame name pattern
-        :param str signalName: signal name
+        :param str globFrame: glob pattern for Frame name.
+        :param str globSignal: glob pattern for Signal name. Only signals under globFrame are filtered.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
-            for signal in frame.globSignals(signalName):
+            for signal in frame.globSignals(globSignal):
                 signal.addReceiver(ecu)
             frame.updateReceiver()
 
-    def delSignalReceiver(self, framePattern, signalName, ecu):
-        """Delete Receiver from all Frames by name pattern.
+    def delSignalReceiver(self, globFrame, globSignal, ecu):
+        """Delete Receiver from all Frames by glob pattern.
 
-        :param str framePattern: Frame name pattern
-        :param str signalName: signal name
+        :param str globFrame: glob pattern for Frame name.
+        :param str globSignal: glob pattern for Signal name. Only signals under globFrame are filtered.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
-            for signal in frame.globSignals(signalName):
+            for signal in frame.globSignals(globSignal):
                 signal.delReceiver(ecu)
             frame.updateReceiver()
 
-    def addFrameTransmitter(self, framePattern, ecu):
-        """Add Transmitter to all Frames by name pattern.
+    def addFrameTransmitter(self, globFrame, ecu):
+        """Add Transmitter to all Frames by glob pattern.
 
-        :param str framePattern: Frame name pattern
+        :param str globFrame: glob pattern for Frame name.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
             frame.addTransmitter(ecu)
 
-    def addFrameReceiver(self, framePattern, ecu):
-        """Add Receiver to all Frames by name pattern.
+    def addFrameReceiver(self, globFrame, ecu):
+        """Add Receiver to all Frames by glob pattern.
 
-        :param str framePattern: Frame name pattern
+        :param str globFrame: glob pattern for Frame name.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
             for signal in frame.signals:
                 signal.addReceiver(ecu)
 
-    def delFrameTransmitter(self, framePattern, ecu):
-        """Delete Transmitter from all Frames by name pattern.
+    def delFrameTransmitter(self, globFrame, ecu):
+        """Delete Transmitter from all Frames by glob pattern.
 
-        :param str framePattern: Frame name pattern
+        :param str globFrame: glob pattern for Frame name.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
             frame.delTransmitter(ecu)
 
