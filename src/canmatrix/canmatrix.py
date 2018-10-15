@@ -403,7 +403,7 @@ class SignalGroup(object):
     """
     name = attr.ib(type=str)
     id = attr.ib(type=int)
-    signals = attr.ib(type=list, default=attr.Factory(list), repr=False)
+    signals = attr.ib(factory=list, repr=False)
 
     def addSignal(self, signal):
         """Add a Signal to SignalGroup.
@@ -442,7 +442,7 @@ class SignalGroup(object):
         signal = self.byName(name)
         if signal:
             return signal
-        raise IndexError("Signal {} doesn't exist".format(name))
+        raise KeyError("Signal '{}' doesn't exist".format(name))
 
 
 @attr.s(cmp=False)
