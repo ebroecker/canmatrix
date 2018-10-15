@@ -79,18 +79,18 @@ class TestCanmatrixCodec(unittest.TestCase):
         s8.addAttribute('GenSigStartValue', '5')
         self.assertEqual(s8.phys2raw(), 5)
 
-        s9 = Signal('signal', size=16, is_signed=False, factor=0.001)
+        s9 = Signal('signal', size=16, is_signed=False, factor='0.001')
         self.assertEqual(s9.phys2raw(), 0)
         self.assertEqual(s9.phys2raw(s9.max), 65535)
         self.assertEqual(s9.phys2raw(s9.min), 0)
-        self.assertEqual(s9.phys2raw(Decimal("50.123")), 50123)
+        self.assertEqual(s9.phys2raw(Decimal('50.123')), 50123)
 
-        s10 = Signal('signal', size=8, is_signed=False, factor=0.00005)
+        s10 = Signal('signal', size=8, is_signed=False, factor='0.00005')
         self.assertEqual(s10.phys2raw(), 0)
         self.assertEqual(s10.phys2raw(s10.max), 255)
         self.assertEqual(s10.phys2raw(s10.min), 0)
-        self.assertEqual(s10.phys2raw(Decimal("0.005")), 100)
-        self.assertEqual(s10.phys2raw(Decimal("0.003")), 60)
+        self.assertEqual(s10.phys2raw(Decimal('0.005')), 100)
+        self.assertEqual(s10.phys2raw(Decimal('0.003')), 60)
 
     # def test_encode_canmatrix(self):
     #     db_path = os.path.join(

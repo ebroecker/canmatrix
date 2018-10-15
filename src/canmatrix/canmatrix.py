@@ -351,7 +351,7 @@ class Signal(object):
 
         :param decimal.Decimal or str value: (scaled) value or value choice to encode
         :return: raw unscaled value as it appears on the bus
-        :rtype: int or float
+        :rtype: int or decimal.Decimal
         """
         if value is None:
             return int(self.attributes.get('GenSigStartValue', 0))
@@ -374,13 +374,13 @@ class Signal(object):
         raw_value = (value - self.offset) / self.factor
 
         if not self.is_float:
-            raw_value = round(raw_value)
-        return float(raw_value)
+            raw_value = int(raw_value)
+        return raw_value
 
     def raw2phys(self, value, decodeToStr=False):
         """Decode the given raw value (= as is on CAN).
 
-        :param value: raw value. Preferably int or str, not float (to not lose precision)
+        :param int or decimal.Decimal value: raw value. Don't use the type 'float' to remain accuracy.
         :param bool decodeToStr: If True, try to get value representation as *string* ('Init' etc.)
         :return: physical value (scaled)
         """
