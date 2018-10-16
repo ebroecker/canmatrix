@@ -152,7 +152,7 @@ class Signal(object):
     enumeration = attr.ib(type=str, default = None)
     comments = attr.ib(type=dict, default = attr.Factory(dict))
     attributes = attr.ib(type=dict, default = attr.Factory(dict))
-    values = attr.ib(type=dict, convert=normalizeValueTable, default = attr.Factory(dict))
+    values = attr.ib(type=dict, converter=normalizeValueTable, default = attr.Factory(dict))
     calc_min_for_none = attr.ib(type=bool, default = True)
     calc_max_for_none = attr.ib(type=bool, default = True)
     muxValMax = attr.ib(default = 0)
