@@ -175,7 +175,7 @@ class Signal(object):
             ret_multiplex = int(value)
             self.mux_val = int(value)
         else:  # is it valid for None too?
-            self.is_multiplexer = True
+            self.is_multiplexer = False
             ret_multiplex = value
         return ret_multiplex
 
