@@ -835,7 +835,7 @@ class Frame(object):
         signal_value = []
         for signal in signals:
             signal_value.append(
-                signal.phys2raw(data.get(signal.name))
+                signal.phys2raw(defaultFloatFactory(data.get(signal.name)))
             )
 
         return bitstruct.pack(fmt, *signal_value)
