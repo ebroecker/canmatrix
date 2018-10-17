@@ -873,7 +873,7 @@ class Frame(object):
                     signals_values = OrderedDict()
                     for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
                         signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
-                muxVal = int(signals_values.values()[0])
+                muxVal = int(list(signals_values.values())[0])
             # find all signals with the identified multiplexer-value
             muxedSignals = []
             for signal in self.signals:
