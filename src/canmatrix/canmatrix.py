@@ -175,7 +175,7 @@ class Signal(object):
             ret_multiplex = int(value)
             self.mux_val = int(value)
         else:  # is it valid for None too?
-            self.is_multiplexer = True
+            self.is_multiplexer = False
             ret_multiplex = value
         return ret_multiplex
 
@@ -844,7 +844,7 @@ class Frame(object):
         signal_value = []
         for signal in signals:
             signal_value.append(
-                signal.phys2raw(data.get(signal.name))
+                signal.phys2raw(defaultFloatFactory(data.get(signal.name)))
             )
 
         return bitstruct.pack(fmt, *signal_value)
@@ -872,8 +872,8 @@ class Frame(object):
                     signals = sorted(self.signals, key=lambda s: s.getStartbit())
                     signals_values = OrderedDict()
                     for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
-                        signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
-                muxVal = int(signals_values.values()[0])
+                        signals_values[signal.name] = signal.raw2phys(defaultFloatFactory(value), decodeToStr)
+                muxVal = int(list(signals_values.values())[0])
             # find all signals with the identified multiplexer-value
             muxedSignals = []
             for signal in self.signals:
@@ -888,7 +888,7 @@ class Frame(object):
         #decode
         signals_values = OrderedDict()
         for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
-            signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
+            signals_values[signal.name] = signal.raw2phys(defaultFloatFactory(value), decodeToStr)
 
         return signals_values
 
