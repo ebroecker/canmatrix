@@ -61,7 +61,7 @@ class BoardUnit(object):
     """
 
     name = attr.ib(type=str)
-    comment = attr.ib(type=str, default=None)
+    comment = attr.ib(default=None)
     attributes = attr.ib(factory=dict, repr=False)
 
     def attribute(self, attributeName, db=None, default=None):
