@@ -1,6 +1,5 @@
 import pytest
 import decimal
-from collections import OrderedDict
 
 import canmatrix.canmatrix
 
@@ -203,7 +202,7 @@ def test_signalgroup_delete_nothing(the_group, some_signal):
 
 
 def test_encode_decode_frame():
-    input_data = OrderedDict([('signal', decimal.Decimal('3.5'))])
+    input_data = {'signal': decimal.Decimal('3.5')}
 
     s1 = canmatrix.canmatrix.Signal('signal', size=32, is_float=True)
     f1 = canmatrix.canmatrix.Frame('frame', id=1, size=4)
