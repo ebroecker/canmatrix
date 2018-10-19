@@ -380,6 +380,8 @@ class Signal(object):
         :return: physical value (scaled)
         """
 
+        if self.is_float:
+            value = self.float_factory(value)
         value = value * self.factor + self.offset
         if decodeToStr:
             for value_key, value_string in self.values.items():
@@ -859,7 +861,7 @@ class Frame(object):
                     signals = sorted(self.signals, key=lambda s: s.getStartbit())
                     signals_values = OrderedDict()
                     for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
-                        signals_values[signal.name] = signal.raw2phys(defaultFloatFactory(value), decodeToStr)
+                        signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
                 muxVal = int(signals_values.values()[0])
             # find all signals with the identified multiplexer-value
             muxedSignals = []
@@ -875,7 +877,7 @@ class Frame(object):
         #decode
         signals_values = OrderedDict()
         for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
-            signals_values[signal.name] = signal.raw2phys(defaultFloatFactory(value), decodeToStr)
+            signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
 
         return signals_values
 
