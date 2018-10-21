@@ -44,11 +44,7 @@ defaultFloatFactory = decimal.Decimal
 
 
 logger = logging.getLogger('root')
-try:
-    import bitstruct
-except:
-    bitstruct = None
-    logger.info("bitstruct could not be imported // No signal de/encoding possible // try pip install bitstruct")
+import bitstruct
 
 from past.builtins import basestring
 import copy
@@ -815,10 +811,6 @@ class Frame(object):
         :return: A byte string of the packed values.
         :rtype: bitstruct
         """
-        if bitstruct is None:
-            logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
-            return None
-
         data = dict() if data is None else data
 
         if self.is_complex_multiplexed:
@@ -857,10 +849,6 @@ class Frame(object):
         :param bool decodeToStr: If True, try to get value representation as *string* ('Init' etc.)
         :return: OrderedDictionary
         """
-        if bitstruct is None:
-            logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
-            return None
-
         if self.is_complex_multiplexed:
             # TODO
             pass
