@@ -117,6 +117,34 @@ def test_decode_signal():
     assert s8.raw2phys(3) == decimal.Decimal('0.00015')
 
 
+# BoardUnit
+def test_ecu_find_attribute():
+    ecu = canmatrix.canmatrix.BoardUnit(name="Gateway")
+    ecu.addAttribute("attr1", 255)
+    assert ecu.attribute("attr1") == 255
+
+
+def test_ecu_no_attribute():
+    ecu = canmatrix.canmatrix.BoardUnit(name="Gateway")
+    assert ecu.attribute("wrong") is None
+    assert ecu.attribute("wrong", default=0) == 0
+
+
+def test_ecu_default_attr_from_db():
+    ecu = canmatrix.canmatrix.BoardUnit(name="Gateway")
+    define = canmatrix.canmatrix.Define("INT 0 255")
+    define.defaultValue = 33
+    matrix = canmatrix.canmatrix.CanMatrix(buDefines={"temperature": define})
+    assert ecu.attribute("temperature", db=matrix, default=2) == 33
+    assert ecu.attribute("wrong", db=matrix, default=2) == 2
+
+
+def test_ecu_repr():
+    ecu = canmatrix.canmatrix.BoardUnit(name="Gateway")
+    ecu.addComment("with bug")
+    assert str(ecu) == "BoardUnit(name='Gateway', comment='with bug')"
+
+
 # SignalGroup
 @pytest.fixture
 def the_group():
