@@ -43,7 +43,7 @@ import re
 
 
 def normalizeName(name, whitespaceReplacement):
-    name = re.sub('\s+', whitespaceReplacement, name)
+    name = re.sub(r'\s+', whitespaceReplacement, name)
 
     if ' ' in name:
         name = '"' + name + '"'
@@ -478,13 +478,13 @@ def load(f, **options):
                 continue
             decoded = l.decode(dbcImportEncoding).strip()
             if decoded.startswith("BO_ "):
-                regexp = re.compile("^BO\_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
+                regexp = re.compile(r"^BO_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
                 frame = Frame(temp.group(2), id=int(temp.group(1)), size=int(temp.group(3)), transmitters=temp.group(4).split())
                 db.frames.append(frame)
             elif decoded.startswith("SG_ "):
-                pattern = "^SG\_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
+                pattern = r"^SG_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
@@ -516,7 +516,7 @@ def load(f, **options):
                     frame.addSignal(tempSig)
     #                db.frames.addSignalToLastFrame(tempSig)
                 else:
-                    pattern = "^SG\_ +(\w+) +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
+                    pattern = r"^SG_ +(\w+) +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                     regexp = re.compile(pattern)
                     regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                     temp = regexp.match(decoded)
@@ -572,13 +572,13 @@ def load(f, **options):
 
 
             elif decoded.startswith("BO_TX_BU_ "):
-                regexp = re.compile("^BO_TX_BU_ ([0-9]+) *: *(.+);")
+                regexp = re.compile(r"^BO_TX_BU_ ([0-9]+) *: *(.+);")
                 temp = regexp.match(decoded)
                 botschaft = db.frameById(temp.group(1))
                 for bu in temp.group(2).split(','):
                     botschaft.addTransmitter(bu)
             elif decoded.startswith("CM_ SG_ "):
-                pattern = "^CM\_ +SG\_ +(\w+) +(\w+) +\"(.*)\";"
+                pattern = r"^CM_ +SG_ +(\w+) +(\w+) +\"(.*)\";"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -595,7 +595,7 @@ def load(f, **options):
                                 "Error decoding line: %d (%s)" %
                                 (i, line))
                 else:
-                    pattern = "^CM\_ +SG\_ +(\w+) +(\w+) +\"(.*)"
+                    pattern = r"^CM_ +SG_ +(\w+) +(\w+) +\"(.*)"
                     regexp = re.compile(pattern)
                     regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                     temp = regexp.match(decoded)
@@ -613,7 +613,7 @@ def load(f, **options):
                         followUp = FollowUps.signalComment
 
             elif decoded.startswith("CM_ BO_ "):
-                pattern = "^CM\_ +BO\_ +(\w+) +\"(.*)\";"
+                pattern = r"^CM_ +BO_ +(\w+) +\"(.*)\";"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -629,7 +629,7 @@ def load(f, **options):
                                 "Error decoding line: %d (%s)" %
                                 (i, line))
                 else:
-                    pattern = "^CM\_ +BO\_ +(\w+) +\"(.*)"
+                    pattern = r"^CM_ +BO_ +(\w+) +\"(.*)"
                     regexp = re.compile(pattern)
                     regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                     temp = regexp.match(decoded)
@@ -645,7 +645,7 @@ def load(f, **options):
                                 (i, line))
                         followUp = FollowUps.frameComment
             elif decoded.startswith("CM_ BU_ "):
-                pattern = "^CM\_ +BU\_ +(\w+) +\"(.*)\";"
+                pattern = r"^CM_ +BU_ +(\w+) +\"(.*)\";"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -661,7 +661,7 @@ def load(f, **options):
                                 "Error decoding line: %d (%s)" %
                                 (i, line))
                 else:
-                    pattern = "^CM\_ +BU\_ +(\w+) +\"(.*)"
+                    pattern = r"^CM_ +BU_ +(\w+) +\"(.*)"
                     regexp = re.compile(pattern)
                     regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                     temp = regexp.match(decoded)
@@ -678,7 +678,7 @@ def load(f, **options):
                                     (i, line))
                             followUp = FollowUps.boardUnitComment
             elif decoded.startswith("BU_:"):
-                pattern = "^BU\_\:(.*)"
+                pattern = r"^BU_\:(.*)"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -689,7 +689,7 @@ def load(f, **options):
                             db.boardUnits.append(BoardUnit(ele))
 
             elif decoded.startswith("VAL_ "):
-                regexp = re.compile("^VAL\_ +(\w+) +(\w+) +(.*);")
+                regexp = re.compile(r"^VAL_ +(\w+) +(\w+) +(.*);")
                 temp = regexp.match(decoded)
                 if temp:
                     botschaftId = temp.group(1)
@@ -709,7 +709,7 @@ def load(f, **options):
                         logger.info("Warning: enviroment variables currently not supported")
 
             elif decoded.startswith("VAL_TABLE_ "):
-                regexp = re.compile("^VAL\_TABLE\_ +(\w+) +(.*);")
+                regexp = re.compile(r"^VAL_TABLE_ +(\w+) +(.*);")
                 temp = regexp.match(decoded)
                 if temp:
                     tableName = temp.group(1)
@@ -726,7 +726,7 @@ def load(f, **options):
                     logger.debug(l)
 
             elif decoded.startswith("BA_DEF_ SG_ "):
-                pattern = "^BA\_DEF\_ +SG\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
+                pattern = r"^BA_DEF_ +SG_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -735,7 +735,7 @@ def load(f, **options):
                     db.addSignalDefines(temp.group(1),
                                         temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("BA_DEF_ BO_ "):
-                pattern = "^BA\_DEF\_ +BO\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
+                pattern = r"^BA_DEF_ +BO_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -744,7 +744,7 @@ def load(f, **options):
                     db.addFrameDefines(temp.group(1),
                                        temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("BA_DEF_ BU_ "):
-                pattern = "^BA\_DEF\_ +BU\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
+                pattern = r"^BA_DEF_ +BU_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -753,7 +753,7 @@ def load(f, **options):
                     db.addBUDefines(temp.group(1),
                                     temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("BA_DEF_ "):
-                pattern = "^BA\_DEF\_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
+                pattern = r"^BA_DEF_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -763,22 +763,22 @@ def load(f, **options):
                                         temp_raw.group(2).decode(dbcImportEncoding))
 
             elif decoded.startswith("BA_ "):
-                regexp = re.compile("^BA\_ +\"[A-Za-z0-9[\-_ .]+\" +(.+)")
+                regexp = re.compile(r"^BA_ +\"[A-Za-z0-9[\-_ .]+\" +(.+)")
                 tempba = regexp.match(decoded)
 
                 if tempba.group(1).strip().startswith("BO_ "):
-                    regexp = re.compile("^BA\_ +\"(.*)\" +BO\_ +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.*)\" +BO_ +(\w+) +(.+);")
                     temp = regexp.match(decoded)
                     db.frameById(int(temp.group(2))).addAttribute(
                         temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("SG_ "):
-                    regexp = re.compile("^BA\_ +\"(.*)\" +SG\_ +(\w+) +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.*)\" +SG_ +(\w+) +(\w+) +(.+);")
                     temp = regexp.match(decoded)
                     if temp!=None:
                         db.frameById(int(temp.group(2))).signalByName(
                             temp.group(3)).addAttribute(temp.group(1), temp.group(4))
                 elif tempba.group(1).strip().startswith("BU_ "):
-                    regexp = re.compile("^BA\_ +\"(.*)\" +BU\_ +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.*)\" +BU_ +(\w+) +(.+);")
                     temp = regexp.match(decoded)
                     db.boardUnitByName(
                         temp.group(2)).addAttribute(
@@ -786,13 +786,13 @@ def load(f, **options):
                         temp.group(3))
                 else:
                     regexp = re.compile(
-                        "^BA\_ +\"([A-Za-z0-9\-\_]+)\" +([\"A-Za-z0-9\-\_\.]+);")
+                        r"^BA_ +\"([A-Za-z0-9\-_]+)\" +([\"A-Za-z0-9\-_\.]+);")
                     temp = regexp.match(decoded)
                     if temp:
                         db.addAttribute(temp.group(1), temp.group(2))
 
             elif decoded.startswith("SIG_GROUP_ "):
-                regexp = re.compile("^SIG\_GROUP\_ +(\w+) +(\w+) +(\w+) +\:(.*);")
+                regexp = re.compile(r"^SIG_GROUP_ +(\w+) +(\w+) +(\w+) +\:(.*);")
                 temp = regexp.match(decoded)
                 frame = db.frameById(temp.group(1))
                 if frame is not None:
@@ -800,7 +800,7 @@ def load(f, **options):
                     frame.addSignalGroup(temp.group(2), temp.group(3), signalArray)
 
             elif decoded.startswith("SIG_VALTYPE_ "):
-                regexp = re.compile("^SIG\_VALTYPE\_ +(\w+) +(\w+)\s*\:(.*);")
+                regexp = re.compile(r"^SIG_VALTYPE_ +(\w+) +(\w+)\s*\:(.*);")
                 temp = regexp.match(decoded)
                 frame = db.frameById(temp.group(1))
                 if frame:
@@ -809,7 +809,7 @@ def load(f, **options):
     #                SIG_VALTYPE_ 0 float : 1;
 
             elif decoded.startswith("BA_DEF_DEF_ "):
-                pattern = "^BA\_DEF\_DEF\_ +\"([A-Za-z0-9\-_\.]+)\" +(.+)\;"
+                pattern = r"^BA_DEF_DEF_ +\"([A-Za-z0-9\-_\.]+)\" +(.+)\;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -818,7 +818,7 @@ def load(f, **options):
                     db.addDefineDefault(temp.group(1),
                                         temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("SG_MUL_VAL_ "):
-                pattern = "^SG\_MUL\_VAL\_ +([0-9]+) +([A-Za-z0-9\-_]+) +([A-Za-z0-9\-_]+) +([0-9]+)\-([0-9]+) *;"
+                pattern = r"^SG_MUL_VAL_ +([0-9]+) +([A-Za-z0-9\-_]+) +([A-Za-z0-9\-_]+) +([0-9]+)\-([0-9]+) *;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -837,7 +837,7 @@ def load(f, **options):
                         signal.muxValMin = muxValMin
                         signal.muxValMax = muxValMax
             elif decoded.startswith("EV_ "):
-                pattern = "^EV_ +([A-Za-z0-9\-_]+) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(\w*)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([A-Za-z0-9\-_]+) +(.*);"
+                pattern = r"^EV_ +([A-Za-z0-9\-_]+) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(\w*)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([A-Za-z0-9\-_]+) +(.*);"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
 
