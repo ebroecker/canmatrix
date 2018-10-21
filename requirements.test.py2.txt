@@ -1,6 +1,5 @@
 atomicwrites==1.1.5
 attrs==18.1.0
-bitstruct==4.0.0
 -e .[test]
 coverage==4.5.1
 funcsigs==1.0.2

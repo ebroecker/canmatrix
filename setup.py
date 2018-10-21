@@ -67,7 +67,7 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-    install_requires = ["future", "attrs>=17.4.0", "bitstruct"],
+    install_requires = ["future", "attrs>=17.4.0"],
     extras_require = {
         "arxml": ["lxml"],
         "kcd": ["lxml"],
@@ -79,6 +79,7 @@ setup(
         "dbf": [],
         "json": [],
         "sym": [],
+        "codec": ["bitstruct"],
         "test": ["coverage", "pytest", "pytest-cov", "tox"],
     },
 
