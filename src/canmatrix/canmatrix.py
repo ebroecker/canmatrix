@@ -44,24 +44,21 @@ defaultFloatFactory = decimal.Decimal
 
 
 logger = logging.getLogger('root')
-try:
-    import bitstruct
-except:
-    bitstruct = None
-    logger.info("bitstruct could not be imported // No signal de/encoding possible // try pip install bitstruct")
+import bitstruct
 
 from past.builtins import basestring
 import copy
 
+
+@attr.s
 class BoardUnit(object):
     """
     Contains one Boardunit/ECU
     """
 
-    def __init__(self, name):
-        self.name = name.strip()
-        self.attributes = dict()
-        self.comment = None
+    name = attr.ib(type=str)
+    comment = attr.ib(default=None)
+    attributes = attr.ib(factory=dict, repr=False)
 
     def attribute(self, attributeName, db=None, default=None):
         """Get Board unit attribute by its name.
@@ -96,8 +93,6 @@ class BoardUnit(object):
         """
         self.comment = comment
 
-    def __str__(self):
-        return self.name
 
 def normalizeValueTable(table):
     return {int(k): v for k, v in table.items()}
@@ -152,7 +147,7 @@ class Signal(object):
     enumeration = attr.ib(type=str, default = None)
     comments = attr.ib(type=dict, default = attr.Factory(dict))
     attributes = attr.ib(type=dict, default = attr.Factory(dict))
-    values = attr.ib(type=dict, convert=normalizeValueTable, default = attr.Factory(dict))
+    values = attr.ib(type=dict, converter=normalizeValueTable, default = attr.Factory(dict))
     calc_min_for_none = attr.ib(type=bool, default = True)
     calc_max_for_none = attr.ib(type=bool, default = True)
     muxValMax = attr.ib(default = 0)
@@ -815,10 +810,6 @@ class Frame(object):
         :return: A byte string of the packed values.
         :rtype: bitstruct
         """
-        if bitstruct is None:
-            logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
-            return None
-
         data = dict() if data is None else data
 
         if self.is_complex_multiplexed:
@@ -857,10 +848,6 @@ class Frame(object):
         :param bool decodeToStr: If True, try to get value representation as *string* ('Init' etc.)
         :return: OrderedDictionary
         """
-        if bitstruct is None:
-            logger.error("message decoding not supported due bitstruct import error // try pip install bitstruct")
-            return None
-
         if self.is_complex_multiplexed:
             # TODO
             pass

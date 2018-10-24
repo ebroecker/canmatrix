@@ -353,7 +353,7 @@ def dump(mydb, f, **options):
                         startLittle=True) /
                     8) +
                 1)
-            sign = 'S'
+            sign = 'I'
 
             if not signal.is_signed:
                 sign = 'U'
