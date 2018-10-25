@@ -1,0 +1,45 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: 
+
+
+BO_ 1 testFrame1: 8 TEST_ECU
+ SG_ sig0 : 1|2@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig1 : 7|6@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig2 : 15|11@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig3 : 20|12@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig4 : 24|9@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig5 : 50|3@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig6 : 53|3@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig7 : 47|10@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig8 : 58|3@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig9 : 61|3@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ sig10 : 63|2@0+ (1.0,0.0) [0|0] "" CCL_TEST 
+
+BO_ 2 testFrame2: 8 TEST_ECU 
+ SG_ secSig1 : 60|2@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig2 : 55|1@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig3 : 20|4@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig4 : 62|2@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig5 : 34|3@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig6 : 37|3@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig7 : 59|1@1- (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig8 : 56|3@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig9 : 52|3@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig10 : 8|12@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig11 : 24|10@1- (1.0,0.0) [0|0] "" CCL_TEST 
+ SG_ secSig12 : 0|8@1+ (1.0,0.0) [0|0] "" CCL_TEST 
+
+
+
+
+
+
+
+
+
