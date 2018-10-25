@@ -295,7 +295,7 @@ class Signal(object):
     def setMin(self, min=None):
         """Set minimal physical Signal value.
 
-        :param float min: minimal physical value. If None, compute using `calcMin`
+        :param float or None min: minimal physical value. If None, compute using `calcMin`
         """
         self.min = min
         if self.calc_min_for_none and self.min is None:
@@ -312,7 +312,7 @@ class Signal(object):
     def setMax(self, max=None):
         """Set maximal signal value.
 
-        :param float max: minimal physical value. If None, compute using `calcMax`
+        :param float or None max: minimal physical value. If None, compute using `calcMax`
         """
         self.max = max
 
