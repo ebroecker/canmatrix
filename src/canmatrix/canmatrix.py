@@ -1560,7 +1560,6 @@ class CanMatrix(object):
                         if define in signal.attributes:
                             signal.attributes[define] = self.signalDefines[define].values.index(signal.attributes[define])
                             signal.attributes[define] = str(signal.attributes[define])
-    # EOF CanMatrix
 
 
 def computeSignalValueInFrame(startBit, ln, fmt, value):
@@ -1577,7 +1576,7 @@ def computeSignalValueInFrame(startBit, ln, fmt, value):
 
     frame = 0
     if fmt == 1:  # Intel
-    # using "sawtooth bit counting policy" here
+        # using "sawtooth bit counting policy" here
         pos = ((7 - (startBit % 8)) + 8*(int(startBit/8)))
         while ln > 0:
             # How many bits can we stuff in current byte?
