@@ -3,8 +3,6 @@ import decimal
 
 import canmatrix.canmatrix
 
-make_decimal = decimal.Decimal
-
 
 def test_signal_defaults_to_decimal():
     signal = canmatrix.canmatrix.Signal(
@@ -65,14 +63,14 @@ def test_encode_signal():
     assert s9.phys2raw() == 0
     assert s9.phys2raw(s9.max) == 65535
     assert s9.phys2raw(s9.min) == 0
-    assert s9.phys2raw(make_decimal('50.123')) == 50123
+    assert s9.phys2raw(decimal.Decimal('50.123')) == 50123
 
     s10 = canmatrix.canmatrix.Signal('signal', size=8, is_signed=False, factor='0.00005')
     assert s10.phys2raw() == 0
     assert s10.phys2raw(s10.max) == 255
     assert s10.phys2raw(s10.min) == 0
-    assert s10.phys2raw(make_decimal('0.005')) == 100
-    assert s10.phys2raw(make_decimal('0.003')) == 60
+    assert s10.phys2raw(decimal.Decimal('0.005')) == 100
+    assert s10.phys2raw(decimal.Decimal('0.003')) == 60
 
 
 def test_decode_signal():
@@ -109,14 +107,14 @@ def test_decode_signal():
     s7 = canmatrix.canmatrix.Signal('signal', size=16, is_signed=False, factor='0.001')
     assert s7.raw2phys(65535) == s7.max
     assert s7.raw2phys(0) == s7.min
-    assert s7.raw2phys(50123) == make_decimal('50.123')
+    assert s7.raw2phys(50123) == decimal.Decimal('50.123')
 
     s8 = canmatrix.canmatrix.Signal('signal', size=8, is_signed=False, factor='0.00005')
     assert s8.raw2phys(255) == s8.max
     assert s8.raw2phys(0) == s8.min
-    assert s8.raw2phys(1) == make_decimal('0.00005')
-    assert s8.raw2phys(2) == make_decimal('0.0001')
-    assert s8.raw2phys(3) == make_decimal('0.00015')
+    assert s8.raw2phys(1) == decimal.Decimal('0.00005')
+    assert s8.raw2phys(2) == decimal.Decimal('0.0001')
+    assert s8.raw2phys(3) == decimal.Decimal('0.00015')
 
 
 # BoardUnit
@@ -154,15 +152,21 @@ def test_signal_has_comment(some_signal):
     assert some_signal.comment == comment
 
 
-def test_signal_find_attribute(some_signal):
+def test_signal_find_mandatory_attribute(some_signal):
+    assert some_signal.attribute("is_float") == some_signal.is_float
+
+
+def test_signal_find_optional_attribute(some_signal):
     some_signal.addAttribute("attr1", 255)
-    assert some_signal.attribute("attr1") == 255  # check value from 'attributes'
-    assert some_signal.attribute("is_float") is False  # check value from member attribute
+    assert some_signal.attribute("attr1") == 255
 
 
 def test_signal_no_attribute(some_signal):
-    assert some_signal.attribute("wrong") is None  # check default is None
-    assert some_signal.attribute("wrong", default=0) == 0  # check user defined default
+    assert some_signal.attribute("wrong") is None
+
+
+def test_signal_no_attribute_with_default(some_signal):
+    assert some_signal.attribute("wrong", default=0) == 0
 
 
 def test_signal_default_attr_from_db(some_signal):
@@ -226,13 +230,13 @@ def test_signal_set_startbit_conversion():
 
 def test_signal_set_startbit_raise():
     signal = canmatrix.canmatrix.Signal(size=16, is_little_endian=False)
-    with pytest.raises(Exception):  # TODO change to ValueError?
+    with pytest.raises(Exception):
         signal.setStartbit(5, startLittle=True)  # lsb would be on -10
 
 
 def test_signal_get_startbit():
     signal_big = canmatrix.canmatrix.Signal(startBit=2, size=16, is_little_endian=True)
-    assert signal_big.getStartbit(startLittle=True) == 2
+    assert signal_big.getStartbit() == 2
 
 
 def test_signal_get_startbit_conversion():
@@ -243,9 +247,9 @@ def test_signal_get_startbit_conversion():
 
 def test_signal_range():
     unsigned = canmatrix.canmatrix.Signal(size=8, is_signed=False)
-    assert unsigned.calculateRawRange() == (make_decimal(0), make_decimal(255))
+    assert unsigned.calculateRawRange() == (decimal.Decimal(0), decimal.Decimal(255))
     signed = canmatrix.canmatrix.Signal(size=8)
-    assert signed.calculateRawRange() == (make_decimal(-128), make_decimal(127))
+    assert signed.calculateRawRange() == (decimal.Decimal(-128), decimal.Decimal(127))
 
 
 def test_signal_set_min_max():
@@ -275,6 +279,9 @@ def test_signal_encode_named_value(some_signal):
     some_signal.addValues(255, "Init")
     some_signal.addValues(254, "Error")
     assert some_signal.phys2raw("Error") == 254
+
+
+def test_signal_encode_invalid_named_value(some_signal):
     with pytest.raises(ValueError):
         some_signal.phys2raw("wrong")
 
@@ -336,7 +343,7 @@ def test_signalgroup_delete_nothing(the_group, some_signal):
 
 
 def test_encode_decode_frame():
-    input_data = {'signal': make_decimal('3.5')}
+    input_data = {'signal': decimal.Decimal('3.5')}
 
     s1 = canmatrix.canmatrix.Signal('signal', size=32, is_float=True)
     f1 = canmatrix.canmatrix.Frame('frame', id=1, size=4)
