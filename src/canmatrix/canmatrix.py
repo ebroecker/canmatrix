@@ -508,23 +508,23 @@ class Frame(object):
     @property
     def priority(self):
         """Get J1939 priority."""
-        return self._j1939_prio
+        return self.j1939_prio
 
     @priority.setter
     def priority(self, value):
         """Set J1939 priority."""
-        self._j1939_prio = value
+        self.j1939_prio = value
         self.recalcJ1939Id()
 
     @property
     def source(self):
         """Get J1939 source."""
-        return self._j1939_source
+        return self.j1939_source
 
     @source.setter
     def source(self, value):
         """Set J1939 source."""
-        self._j1939_source = value
+        self.j1939_source = value
         self.recalcJ1939Id()
 
     def recalcJ1939Id(self):
@@ -569,12 +569,10 @@ class Frame(object):
             return getattr(self, attributeName)
         if attributeName in self.attributes:
             return self.attributes[attributeName]
-        elif db is not None:
-            if attributeName in db.frameDefines:
-                define = db.frameDefines[attributeName]
-                return define.defaultValue
-        else:
-            return default
+        elif db is not None and attributeName in db.frameDefines:
+            define = db.frameDefines[attributeName]
+            return define.defaultValue
+        return default
 
     def __iter__(self):
         """Iterator over all signals."""
@@ -676,7 +674,7 @@ class Frame(object):
         """
         try:
             self.attributes[attribute] = str(value)
-        except UnicodeDecodeError:
+        except UnicodeDecodeError:  # pragma: no cover
             self.attributes[attribute] = value
 
     def delAttribute(self, attribute):
@@ -710,9 +708,16 @@ class Frame(object):
 
     def findNotUsedBits(self):
         """
-        Find unused bits in frame
+        Find unused bits in frame.
 
-        :return: dict with position and length-tuples
+        Represents the bit usage in the frame by means of a list with 64 items.
+        Every item represents one bit and contains index of signal, occupying that bit.
+        Bits with "zero" index are unused.
+
+        Example: [2, 2, 2, 1, 1, 0, 0, 3, 3, 3, 3, 0, 0, ...]
+
+        :return: list with signal index in every bit. Zeros mean 'unused'.
+        :rtype: list of int
         """
         bitfield = []
         bitfieldLe = []
@@ -745,7 +750,7 @@ class Frame(object):
         return bitfield
 
     def createDummySignals(self):
-        """Create dummy signals for unused bits.
+        """Create big-endian dummy signals for unused bits.
 
         Names of dummy signals are *_Dummy_<frame.name>_<index>*
         """
