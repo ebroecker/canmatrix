@@ -166,10 +166,11 @@ class Signal(object):
     def multiplexSetter(self, value):
         self.mux_val = None
         self.is_multiplexer = False
+        ret_multiplex = None
         if value is not None and value != 'Multiplexor':
             ret_multiplex = int(value)
             self.mux_val = int(value)
-        else:  # is it valid for None too?
+        elif value == 'Multiplexor':
             self.is_multiplexer = True
             ret_multiplex = value
         return ret_multiplex
