@@ -355,6 +355,64 @@ def test_encode_decode_frame():
     assert decoded_data == input_data
 
 
+# Define tests
+def test_define_set_default():
+    define = canmatrix.canmatrix.Define("")
+    define.setDefault("string")
+    assert define.defaultValue == "string"
+    define.setDefault('"quoted_string"')
+    assert define.defaultValue == "quoted_string"
+
+
+def test_define_update_enum_definition():
+    define = canmatrix.canmatrix.Define("")
+    define.type = "ENUM"
+    define.values = ["ready", "off"]
+    define.update()
+    assert define.definition == 'ENUM "ready","off"'
+
+
+def test_define_update_ingored_non_enum():
+    def_str = "INT 0 100"
+    define = canmatrix.canmatrix.Define(def_str)
+    define.update()
+    assert  define.definition == def_str
+
+
+def test_define_for_int():
+    define = canmatrix.canmatrix.Define("INT -5 10")
+    assert define.type == "INT"
+    assert define.min == -5
+    assert define.max == 10
+
+
+# def test_define_for_hex():
+#     define = canmatrix.canmatrix.Define("HEX ? ?")
+#     assert define.type == "HEX"
+#     assert define.min == ?
+#     assert define.max == ?
+
+
+def test_define_for_string():
+    define = canmatrix.canmatrix.Define("STRING")
+    assert define.type == "STRING"
+    assert define.min is None
+    assert define.max is None
+
+
+def test_define_for_enum():
+    define = canmatrix.canmatrix.Define('ENUM "red","green", blue')
+    assert define.type == "ENUM"
+    assert define.values == ["red", "green", "blue"]
+
+
+def test_define_for_float():
+    define = canmatrix.canmatrix.Define("FLOAT -2.2 111.11")
+    assert define.type == "FLOAT"
+    assert define.min == decimal.Decimal('-2.2')
+    assert define.max == decimal.Decimal('111.11')
+
+
 # CanId tests
 def test_canid_parse_values():
     can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
