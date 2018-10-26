@@ -341,6 +341,9 @@ class Signal(object):
 
         return endian + bit_type + str(self.size)
 
+    def unpack_bitstring(self, bits):
+        return unpack_bitstring(self.size, self.is_float, self.is_signed, bits)
+
     def phys2raw(self, value=None):
         """Return the raw value (= as is on CAN).
 
@@ -442,6 +445,61 @@ class SignalGroup(object):
         if signal:
             return signal
         raise KeyError("Signal '{}' doesn't exist".format(name))
+
+def unpack_bitstring(length, is_float, is_signed, bits):
+    if is_float:
+        # TODO: CAMPid 097897541967932453154321546542175421549
+        types = {
+            32: '>f',
+            64: '>d'
+        }
+
+        float_type = types.get(length)
+
+        if float_type is None:
+            raise Exception(
+                'float type only supports lengths in [{}]'.
+                    format(', '.join([str(t) for t in types.keys()]))
+            )
+
+        value, = struct.unpack(
+            float_type,
+            bytes(int(''.join(b), 2)
+                  for b in epyqlib.utils.general.grouper(bits, 8))
+        )
+    else:
+        value = int(bits, 2)
+
+        if is_signed and bits[0] == '1':
+            value -= (1 << len(bits))
+
+    return value
+
+
+def bytes_to_bitstrings(data):
+    b = tuple('{:08b}'.format(b) for b in data)
+    little = ''.join(reversed(b))
+    big = ''.join(b)
+
+    return little, big
+
+def bitstring_to_signal_list(signals, big, little):
+    unpacked = []
+    for signal in signals:
+        if signal.is_little_endian:
+            least = 64 - signal.startBit
+            most = least - signal.size
+
+            bits = little[most:least]
+        else:
+            most = signal.startBit
+            least = most + signal.size
+
+            bits = big[most:least]
+
+        unpacked.append(signal.unpack_bitstring(bits))
+    return unpacked
+
 
 
 @attr.s(cmp=False)
@@ -841,6 +899,28 @@ class Frame(object):
             )
 
         return bitstruct.pack(fmt, *signal_value)
+
+    def unpack(self, data, report_error=True, only_return=False):
+        rx_length = len(data)
+        if rx_length != self.size and report_error:
+            print(
+                'Received message 0x{self.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
+        else:
+            little, big = bytes_to_bitstrings(bytes(data))
+
+            unpacked = bitstring_to_signal_list(self.signals, big, little)
+
+            if only_return:
+                return dict(zip(self.signals, unpacked))
+
+            returnDict = dict()
+
+            for s, v in zip(self.signals, unpacked):
+                returnDict[s.name] = v
+
+            return returnDict
+
+    ###
 
     def decode(self, data, decodeToStr=False):
         """Return OrderedDictionary with Signal Name: Signal Value

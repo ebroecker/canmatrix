@@ -1,9 +1,11 @@
 import pytest
 import canmatrix.formats
+import os.path
 
 
 def test_decode_from_dbc():
-    cm = canmatrix.formats.loadp("test_frame_decoding.dbc", flatImport = True)
+    here = os.path.dirname(os.path.realpath(__file__))
+    cm = canmatrix.formats.loadp(os.path.join(here ,"test_frame_decoding.dbc"), flatImport = True)
     # 001#8d00100100820100
     frameData1 = bytes([141, 0, 16, 1, 0, 130, 1, 0])
 
@@ -11,7 +13,8 @@ def test_decode_from_dbc():
     frameData2 = bytes([12, 0, 5, 112, 3, 205, 31, 131])
 
     frame1 = cm.frameById(1)
-    decoded1 = frame1.decode(frameData1)
+#    decoded1 = frame1.decode(frameData1)
+    decoded1 = frame1.unpack(frameData1)
     assert decoded1["sig0"] == 1
     assert decoded1["sig1"] == 35
     assert decoded1["sig2"] == 0
@@ -25,7 +28,8 @@ def test_decode_from_dbc():
     assert decoded1["sig10"] == 0
 
     frame2 = cm.frameById(2)
-    decoded2 = frame2.decode(frameData2)
+#    decoded2 = frame2.decode(frameData2)
+    decoded2 = frame2.unpack(frameData2)
     assert decoded2["secSig1"] == 0
     assert decoded2["secSig2"] == 0
     assert decoded2["secSig3"] == 0
