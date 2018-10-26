@@ -116,7 +116,7 @@ class Signal(object):
     """
 
     name = attr.ib(default = "")
-#    float_factory = attr.ib(default=defaultFloatFactory)
+    # float_factory = attr.ib(default=defaultFloatFactory)
     float_factory = defaultFloatFactory
     startBit = attr.ib(type=int, default=0)
     size = attr.ib(type=int, default = 0)
@@ -125,7 +125,7 @@ class Signal(object):
     offset = attr.ib(converter = float_factory, default = float_factory(0.0))
     factor = attr.ib(converter = float_factory, default = float_factory(1.0))
 
-    #    offset = attr.ib(converter = float_factory, default = 0.0)
+    # offset = attr.ib(converter = float_factory, default = 0.0)
 
     min  = attr.ib(converter=float_factory)
     @min.default
@@ -484,8 +484,8 @@ class Frame(object):
     j1939_source = attr.ib(default = 0)
     j1939_prio  = attr.ib(default = 0)
     is_j1939  = attr.ib(type=bool, default = False)
-            #            ('cycleTime', '_cycleTime', int, None),
-            #            ('sendType', '_sendType', str, None),
+    # ('cycleTime', '_cycleTime', int, None),
+    # ('sendType', '_sendType', str, None),
 
     @property
     def is_multiplexed(self):
@@ -532,27 +532,27 @@ class Frame(object):
         self.extended = True
         self.is_j1939 = True
 
-    #    @property
-#    def cycleTime(self):
-#        if self._cycleTime is None:
-#            self._cycleTime = self.attribute("GenMsgCycleTime")
-#        return self._cycleTime
-
-#    @property
-#    def sendType(self, db = None):
-#        if self._sendType is None:
-#            self._sendType = self.attribute("GenMsgSendType")
- #       return self._sendType
-
-#    @cycleTime.setter
-#    def cycleTime(self, value):
-#        self._cycleTime = value
-#        self.attributes["GenMsgCycleTime"] = value
-
-#    @sendType.setter
-#    def sendType(self, value):
- #       self._sendType = value
- #       self.attributes["GenMsgCycleTime"] = value
+    # @property
+    # def cycleTime(self):
+    #    if self._cycleTime is None:
+    #        self._cycleTime = self.attribute("GenMsgCycleTime")
+    #    return self._cycleTime
+    #
+    # @property
+    # def sendType(self, db = None):
+    #    if self._sendType is None:
+    #        self._sendType = self.attribute("GenMsgSendType")
+    #    return self._sendType
+    #
+    # @cycleTime.setter
+    # def cycleTime(self, value):
+    #    self._cycleTime = value
+    #    self.attributes["GenMsgCycleTime"] = value
+    #
+    # @sendType.setter
+    # def sendType(self, value):
+    #    self._sendType = value
+    #    self.attributes["GenMsgCycleTime"] = value
 
 
 
@@ -749,8 +749,8 @@ class Frame(object):
         Names of dummy signals are *_Dummy_<frame.name>_<index>*
         """
         bitfield = self.findNotUsedBits()
-#        for i in range(0,8):
-#            print (bitfield[(i)*8:(i+1)*8])
+        # for i in range(0,8):
+        #    print (bitfield[(i)*8:(i+1)*8])
         startBit = -1
         sigCount = 0
         for i in range(0,64):
@@ -763,9 +763,9 @@ class Frame(object):
                 startBit = -1
                 sigCount +=1
 
-#        bitfield = self.findNotUsedBits()
-#        for i in range(0,8):
-#            print (bitfield[(i)*8:(i+1)*8])
+        # bitfield = self.findNotUsedBits()
+        # for i in range(0,8):
+        #    print (bitfield[(i)*8:(i+1)*8])
 
 
 
@@ -874,7 +874,7 @@ class Frame(object):
             fmt = self.bitstruct_format()
             signals = sorted(self.signals, key=lambda s: s.getStartbit())
 
-        #decode
+        # decode
         signals_values = OrderedDict()
         for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
             signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
@@ -1560,9 +1560,9 @@ class CanMatrix(object):
                         if define in signal.attributes:
                             signal.attributes[define] = self.signalDefines[define].values.index(signal.attributes[define])
                             signal.attributes[define] = str(signal.attributes[define])
-#
-#
-#
+    # EOF CanMatrix
+
+
 def computeSignalValueInFrame(startBit, ln, fmt, value):
     """
     Compute the Signal value in the Frame.
@@ -1581,7 +1581,7 @@ def computeSignalValueInFrame(startBit, ln, fmt, value):
         pos = ((7 - (startBit % 8)) + 8*(int(startBit/8)))
         while ln > 0:
             # How many bits can we stuff in current byte?
-            #  (Should be 8 for anything but the first loop)
+            # (Should be 8 for anything but the first loop)
             availbitsInByte = 1 + (pos % 8)
             # extract relevant bits from value
             valueInByte = value & ((1<<availbitsInByte)-1)
