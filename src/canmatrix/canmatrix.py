@@ -1635,5 +1635,5 @@ class CanId(object):
         return self.destination, self.pgn, self.source
 
     def __str__(self):
-        return "DA:{da:#02X} PGN:{pgn:#04X} SA:{sa:#02X}".format(
+        return "DA:0x{da:02X} PGN:0x{pgn:04X} SA:0x{sa:02X}".format(
             da=self.destination, pgn=self.pgn, sa=self.source)

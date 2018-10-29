@@ -353,3 +353,17 @@ def test_encode_decode_frame():
     decoded_data = f1.decode(raw_bytes)
 
     assert decoded_data == input_data
+
+
+# CanId tests
+def test_canid_parse_values():
+    can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
+    assert can_id.source == 0x02
+    assert can_id.destination == 0x01
+    assert can_id.pgn == 0xABCD
+    assert can_id.tuples() == (1, 0xABCD, 2)
+
+
+def test_canid_repr():
+    can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
+    assert str(can_id) == "DA:0x01 PGN:0xABCD SA:0x02"
