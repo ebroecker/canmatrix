@@ -13,32 +13,30 @@ def test_decode_from_dbc():
     frameData2 = bytes([12, 0, 5, 112, 3, 205, 31, 131])
 
     frame1 = cm.frameById(1)
-#    decoded1 = frame1.decode(frameData1)
-    decoded1 = frame1.unpack(frameData1)
-    assert decoded1["sig0"] == 1
-    assert decoded1["sig1"] == 35
-    assert decoded1["sig2"] == 0
-    assert decoded1["sig3"] == 2048
-    assert decoded1["sig4"] == 256
-    assert decoded1["sig5"] == 1
-    assert decoded1["sig6"] == 0
-    assert decoded1["sig7"] == 520
-    assert decoded1["sig8"] == 0
-    assert decoded1["sig9"] == 0
-    assert decoded1["sig10"] == 0
+    decoded1 = frame1.decode(frameData1)
+    assert decoded1["sig0"].rawValue == 1
+    assert decoded1["sig1"].rawValue == 35
+    assert decoded1["sig2"].rawValue == 0
+    assert decoded1["sig3"].rawValue == 2048
+    assert decoded1["sig4"].rawValue == 256
+    assert decoded1["sig5"].rawValue == 1
+    assert decoded1["sig6"].rawValue == 0
+    assert decoded1["sig7"].rawValue == 520
+    assert decoded1["sig8"].rawValue == 0
+    assert decoded1["sig9"].rawValue == 0
+    assert decoded1["sig10"].rawValue == 0
 
     frame2 = cm.frameById(2)
-#    decoded2 = frame2.decode(frameData2)
-    decoded2 = frame2.unpack(frameData2)
-    assert decoded2["secSig1"] == 0
-    assert decoded2["secSig2"] == 0
-    assert decoded2["secSig3"] == 0
-    assert decoded2["secSig4"] == 2
-    assert decoded2["secSig5"] == 0
-    assert decoded2["secSig6"] == 0
-    assert decoded2["secSig7"] == 0
-    assert decoded2["secSig8"] == 3
-    assert decoded2["secSig9"] == 1
-    assert decoded2["secSig10"] == 1280
-    assert decoded2["secSig11"] == -144
-    assert decoded2["secSig12"] == 12
+    decoded2 = frame2.decode(frameData2)
+    assert decoded2["secSig1"].rawValue == 0
+    assert decoded2["secSig2"].rawValue == 0
+    assert decoded2["secSig3"].rawValue == 0
+    assert decoded2["secSig4"].rawValue == 2
+    assert decoded2["secSig5"].rawValue == 0
+    assert decoded2["secSig6"].rawValue == 0
+    assert decoded2["secSig7"].rawValue == 0
+    assert decoded2["secSig8"].rawValue == 3
+    assert decoded2["secSig9"].rawValue == 1
+    assert decoded2["secSig10"].rawValue == 1280
+    assert decoded2["secSig11"].rawValue == -144
+    assert decoded2["secSig12"].rawValue == 12
