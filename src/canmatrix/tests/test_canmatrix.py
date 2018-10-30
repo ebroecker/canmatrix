@@ -548,3 +548,17 @@ def test_frame_find_signal_group(empty_frame):
 def test_frame_find_wrong_signal_group(empty_frame):
     empty_frame.addSignalGroup("G1", 1, [])
     assert empty_frame.signalGroupByName("wrong") is None
+
+
+# CanId tests
+def test_canid_parse_values():
+    can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
+    assert can_id.source == 0x02
+    assert can_id.destination == 0x01
+    assert can_id.pgn == 0xABCD
+    assert can_id.tuples() == (1, 0xABCD, 2)
+
+
+def test_canid_repr():
+    can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
+    assert str(can_id) == "DA:0x01 PGN:0xABCD SA:0x02"
