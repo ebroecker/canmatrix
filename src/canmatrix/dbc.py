@@ -490,7 +490,7 @@ def load(f, **options):
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    receiver = list(map(str.strip, temp.group(11).split(',')))
+                    receiver = list(map(str.strip, [str(b) for b in temp.group(11).split(',')]))
 
                     extras = {}
 #                    if float_factory is not None:
@@ -521,7 +521,8 @@ def load(f, **options):
                     regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
-                    receiver = list(map(str.strip, temp.group(12).split(',')))
+                    receiverTemp = [str(b) for b in temp.group(12).split(',')]
+                    receiver = list(map(str.strip, receiverTemp))
                     multiplex = temp.group(2)
 
                     is_complex_multiplexed = False
