@@ -674,7 +674,7 @@ class Frame(object):
         """
         try:
             self.attributes[attribute] = str(value)
-        except UnicodeDecodeError:  # pragma: no cover
+        except UnicodeDecodeError:
             self.attributes[attribute] = value
 
     def delAttribute(self, attribute):
@@ -711,12 +711,14 @@ class Frame(object):
         Find unused bits in frame.
 
         Represents the bit usage in the frame by means of a list with 64 items.
-        Every item represents one bit and contains index of signal, occupying that bit.
+        Every item represents one bit and contains unique number for each signal, occupying that bit.
+        Numbering starts from one.
+
         Bits with "zero" index are unused.
 
         Example: [2, 2, 2, 1, 1, 0, 0, 3, 3, 3, 3, 0, 0, ...]
 
-        :return: list with signal index in every bit. Zeros mean 'unused'.
+        :return: list with signal "index plus one" in every bit. Zeros mean 'unused'.
         :rtype: list of int
         """
         bitfield = []
