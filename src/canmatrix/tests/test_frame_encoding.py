@@ -7,6 +7,29 @@ def loadDbc():
     return canmatrix.formats.loadp(os.path.join(here ,"test_frame_decoding.dbc"), flatImport = True)
 
 
+def test_decode_with_dbc_little_endian():
+    cm = loadDbc()
+    # 002#0C00057003CD1F83
+    frame = cm.frameById(1)
+
+    toEncode = dict()
+
+    toEncode["sig0"] = 1
+    toEncode["sig1"] = 35
+    toEncode["sig2"] = 0
+    toEncode["sig3"] = 2048
+    toEncode["sig4"] = 256
+    toEncode["sig5"] = 1
+    toEncode["sig6"] = 0
+    toEncode["sig7"] = 520
+    toEncode["sig8"] = 0
+    toEncode["sig9"] = 0
+    toEncode["sig10"] = 0
+
+
+    frameData = frame.encode(toEncode)
+    assert frameData == bytearray([141, 0, 16, 1, 0, 130, 1, 0])
+
 def test_encode_with_dbc_little_endian():
     cm = loadDbc()
     # 002#0C00057003CD1F83
@@ -29,27 +52,6 @@ def test_encode_with_dbc_little_endian():
     frameData = frame.encode(toEncode)
     assert frameData == bytearray([12, 0, 5, 112, 3, 205, 31, 131])
 
-def test_decode_with_dbc_little_endian():
-    cm = loadDbc()
-    # 002#0C00057003CD1F83
-    frame = cm.frameById(2)
-
-    toEncode = dict()
-    toEncode["secSig1"] = 0
-    toEncode["secSig2"] = 0
-    toEncode["secSig3"] = 0
-    toEncode["secSig4"] = 2
-    toEncode["secSig5"] = 0
-    toEncode["secSig6"] = 0
-    toEncode["secSig7"] = 0
-    toEncode["secSig8"] = 3
-    toEncode["secSig9"] = 1
-    toEncode["secSig10"] = 1280
-    toEncode["secSig11"] = -144
-    toEncode["secSig12"] = 12
-
-    frameData = frame.encode(toEncode)
-    assert frameData == bytearray([12, 0, 5, 112, 3, 205, 31, 131])
 
 def test_encode_with_dbc_float():
     cm = loadDbc()
