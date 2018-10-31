@@ -49,7 +49,7 @@ def test_decode_with_dbc_little_endian():
     toEncode["secSig12"] = 12
 
     frameData = frame.encode(toEncode)
-#    assert frameData == bytearray([12, 0, 5, 112, 3, 205, 31, 131])
+    assert frameData == bytearray([12, 0, 5, 112, 3, 205, 31, 131])
 
 def test_encode_with_dbc_float():
     cm = loadDbc()
@@ -87,4 +87,4 @@ def test_encode_with_dbc_multiplex():
     toEncode2["muxSig8"] =  -8
     toEncode2["muxSig9"] =  0x20
     frameData2 = frame.encode(toEncode2)
-    #assert frameData2 == bytearray([0x38, 0x63, 0x8A, 0x7E, 0x18, 0x20, 0x20])
+    assert frameData2 == bytearray([0x38, 0x63, 0x8A, 0x7E, 0x18, 0x20, 0x20])
