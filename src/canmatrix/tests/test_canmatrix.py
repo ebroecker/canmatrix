@@ -376,7 +376,7 @@ def test_define_update_ingored_non_enum():
     def_str = "INT 0 100"
     define = canmatrix.canmatrix.Define(def_str)
     define.update()
-    assert  define.definition == def_str
+    assert define.definition == def_str
 
 
 def test_define_for_int():
