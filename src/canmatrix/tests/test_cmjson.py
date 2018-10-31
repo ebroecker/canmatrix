@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
-import pytest
+
 import io
+import json
+
+import pytest
+
 import canmatrix.canmatrix
 import canmatrix.formats
 
@@ -41,3 +45,19 @@ def test_export_additional_frame_info(default_matrix):
     canmatrix.formats.dump(matrix, out_file, "cmjson", additionalFrameAttributes="my_attribute1")
     data = out_file.getvalue().decode("utf-8")
     assert "my_value1" in data
+
+
+def test_export_long_signal_names():
+    matrix = canmatrix.canmatrix.CanMatrix()
+    frame = canmatrix.canmatrix.Frame(name="test_frame", id=10)
+    matrix.addFrame(frame)
+    long_signal_name = "FAILURE_ZELL_UNTERTEMPERATUR_ENTLADEN_ALARM_IDX_01"
+    assert len(long_signal_name) > 32
+    signal = canmatrix.canmatrix.Signal(name=long_signal_name, size=8)
+    frame.addSignal(signal)
+
+    out_file = io.BytesIO()
+    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonAll=True)
+    data = json.loads(out_file.getvalue().decode("utf-8"))
+
+    assert data['messages'][0]['signals'][0]['name'] == long_signal_name
