@@ -1,4 +1,5 @@
 import io
+import textwrap
 
 import pathlib2
 
@@ -9,12 +10,12 @@ here = pathlib2.Path(__file__).parent
 
 
 def test_long_signal_name_imports():
-    long_signal_name = "FAILURE_ZELL_UNTERTEMPERATUR_ENTLADEN_ALARM_IDX_01"
+    long_signal_name = u'FAILURE_ZELL_UNTERTEMPERATUR_ENTLADEN_ALARM_IDX_01'
     assert len(long_signal_name) > 32
-    dbc = io.BytesIO(b"""\
+    dbc = io.BytesIO(textwrap.dedent(u'''\
     BO_ 1 testFrame1: 1 TEST_ECU
      SG_ {} : 1|2@0+ (1,0) [0|0] ""  CCL_TEST
-    """.format(long_signal_name))
+    ''').format(long_signal_name).encode('utf-8'))
 
     matrix = canmatrix.dbc.load(dbc)
 
