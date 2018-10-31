@@ -350,7 +350,6 @@ class Signal(object):
 
     def unpack_bitstring(self, length, is_float, is_signed, bits):
         if is_float:
-            # TODO: CAMPid 097897541967932453154321546542175421549
             types = {
                 32: '>f',
                 64: '>d'
@@ -378,7 +377,6 @@ class Signal(object):
 
     def pack_bitstring(self, length, is_float, value, signed):
         if is_float:
-            # TODO: CAMPid 097897541967932453154321546542175421549
             types = {
                 32: '>f',
                 64: '>d'
@@ -851,11 +849,6 @@ class Frame(object):
                 startBit = -1
                 sigCount +=1
 
-        # bitfield = self.findNotUsedBits()
-        # for i in range(0,8):
-        #    print (bitfield[(i)*8:(i+1)*8])
-
-
 
 
     def updateReceiver(self):
@@ -871,19 +864,20 @@ class Frame(object):
         little_bits = [None] * (self.size * 8)
         big_bits = list(little_bits)
         for signal in self.signals:
-            value = data.get(signal.name, 0)
-            bits = signal.pack_bitstring(signal.size, signal.is_float, value, signal.is_signed)
+            if signal.name in data:
+                value = data.get(signal.name)
+                bits = signal.pack_bitstring(signal.size, signal.is_float, value, signal.is_signed)
 
-            if signal.is_little_endian:
-                least = 64 - signal.startBit
-                most = least - signal.size
+                if signal.is_little_endian:
+                    least = self.size * 8 - signal.startBit
+                    most = least - signal.size
 
-                little_bits[most:least] = bits
-            else:
-                most = signal.startBit
-                least = most + signal.size
+                    little_bits[most:least] = bits
+                else:
+                    most = signal.startBit
+                    least = most + signal.size
 
-                big_bits[most:least] = bits
+                    big_bits[most:least] = bits
         little_bits = reversed(tuple(grouper(little_bits, 8)))
         little_bits = tuple(chain(*little_bits))
         bitstring = ''.join(
@@ -911,14 +905,13 @@ class Frame(object):
         :return: A byte string of the packed values.
         :rtype: bitstruct
         """
-        return self.signals_to_bytes(data)
 
 
         data = dict() if data is None else data
 
         if self.is_complex_multiplexed:
             # TODO
-            pass
+            Exception("encoding complex multiplexed frames not yet implemented")
         elif self.is_multiplexed:
             # search for mulitplexer-signal
             muxSignal = None
@@ -926,23 +919,19 @@ class Frame(object):
                 if signal.is_multiplexer:
                     muxSignal = signal
                     muxVal = data.get(signal.name)
+                    break
             # create list of signals which belong to muxgroup
-            encodeSignals = [muxSignal]
+            encodeSignals = [muxSignal.name]
             for signal in self.signals:
                 if signal.mux_val == muxVal or signal.mux_val is None:
-                    encodeSignals.append(signal)
-            fmt = self.bitstruct_format(encodeSignals)
-            signals = sorted(encodeSignals, key=lambda s: s.getStartbit())
-        else:
-            fmt = self.bitstruct_format()
-            signals = sorted(self.signals, key=lambda s: s.getStartbit())
-        signal_value = []
-        for signal in signals:
-            signal_value.append(
-                signal.phys2raw(data.get(signal.name))
-            )
-
-        return bitstruct.pack(fmt, *signal_value)
+                    encodeSignals.append(signal.name)
+            newData = dict()
+            # kick out signals, which do not belong to this mux-id
+            for signalName in data:
+                if signalName in encodeSignals:
+                    newData[signalName] = data[signalName]
+            data = newData
+        return self.signals_to_bytes(data)
 
     def bytes_to_bitstrings(self, data):
         b = tuple('{:08b}'.format(b) for b in data)
