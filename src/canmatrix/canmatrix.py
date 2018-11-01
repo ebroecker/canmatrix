@@ -400,7 +400,7 @@ class Signal(object):
                                signed=signed)
             b = '{:0{}b}'.format(int.from_bytes(b, byteorder='big'),
                                  length)
-            bitstring = b[:length]
+            bitstring = b[-length:]
 
         return bitstring
 

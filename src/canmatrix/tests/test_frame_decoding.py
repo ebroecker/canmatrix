@@ -27,8 +27,8 @@ def test_decode_with_dbc_big_endian():
 
 def test_decode_with_dbc_little_endian():
     cm = loadDbc()
-    # 002#0C00057003CD1F83
-    frameData = bytearray([12, 0, 5, 112, 3, 205, 31, 131])
+    # 002#0C00057003001F83
+    frameData = bytearray([12, 0, 5, 112, 3, 0, 31, 131])
     frame = cm.frameById(2)
     decoded = frame.decode(frameData)
     assert decoded["secSig1"].rawValue == 0
@@ -56,7 +56,7 @@ def test_decode_with_dbc_float():
 
 def test_decode_with_dbc_multiplex():
     cm = loadDbc()
-    frameData1 = bytearray([0x38, 0x63, 0x8A, 0x7E, 0x18, 0x20, 0x00])
+    frameData1 = bytearray([0x38, 0x63, 0x8A, 0x7E, 0x00, 0x20, 0x00])
     frame = cm.frameById(4)
     decoded1 = frame.decode(frameData1)
     assert decoded1["myMuxer"].rawValue == 0
@@ -67,7 +67,7 @@ def test_decode_with_dbc_multiplex():
     assert decoded1["muxSig4"].rawValue == 0x3F
     assert decoded1["muxSig9"].rawValue == 0x20
 
-    frameData2 = bytearray([0x38, 0x63, 0x8A, 0x7E, 0x18, 0x20, 0x20])
+    frameData2 = bytearray([0x38, 0x63, 0x8A, 0x1E, 0x18, 0x20, 0x20])
     decoded2 = frame.decode(frameData2)
     assert decoded2["myMuxer"].rawValue == 1
     assert decoded2["muxSig9"].rawValue == 0x20

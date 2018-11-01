@@ -7,7 +7,7 @@ def loadDbc():
     return canmatrix.formats.loadp(os.path.join(here ,"test_frame_decoding.dbc"), flatImport = True)
 
 
-def test_decode_with_dbc_little_endian():
+def test_encode_with_dbc_little_endian():
     cm = loadDbc()
     # 002#0C00057003CD1F83
     frame = cm.frameById(1)
@@ -50,7 +50,7 @@ def test_encode_with_dbc_little_endian():
     toEncode["secSig12"] = 12
 
     frameData = frame.encode(toEncode)
-    assert frameData == bytearray([12, 0, 5, 112, 3, 205, 31, 131])
+    assert frameData == bytearray([0x0c, 0x00, 0x05, 0x70, 0x03, 0x00, 0x10, 0x83])
 
 
 def test_encode_with_dbc_float():
@@ -75,7 +75,6 @@ def test_encode_with_dbc_multiplex():
     toEncode1["muxSig2"] = 0x63
     toEncode1["muxSig3"] = 0x8A
     toEncode1["muxSig4"] = 0x3F
-    toEncode1["muxSig9"] = 0x20
 
     frameData1 = frame.encode(toEncode1)
     assert frameData1 == bytearray([0x38, 0x63, 0x8A, 0x7E, 0x00, 0x20, 0x00])
@@ -87,6 +86,5 @@ def test_encode_with_dbc_multiplex():
     toEncode2["muxSig6"] =  0x18
     toEncode2["muxSig7"] =  0x0C
     toEncode2["muxSig8"] =  -8
-    toEncode2["muxSig9"] =  0x20
     frameData2 = frame.encode(toEncode2)
-    assert frameData2 == bytearray([0x38, 0x63, 0x8A, 0x7E, 0x18, 0x20, 0x20])
+    assert frameData2 == bytearray([0x38, 0x60, 0x80, 0x1E, 0x18, 0x20, 0x20])
