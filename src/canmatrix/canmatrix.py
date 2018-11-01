@@ -50,7 +50,6 @@ except:
     from itertools import izip_longest as zip_longest
 from itertools import chain
 import struct
-import bitstruct
 
 from past.builtins import basestring
 import copy
@@ -334,21 +333,16 @@ class Signal(object):
 
         return self.offset + (rawMax * self.factor)
 
-    def bitstruct_format(self):
-        """Get the bit struct format for this signal.
-
-        :return: bitstruct representation of the Signal
-        :rtype: str
-        """
-        endian = '<' if self.is_little_endian else '>'
-        if self.is_float:
-            bit_type = 'f'
-        else:
-            bit_type = 's' if self.is_signed else 'u'
-
-        return endian + bit_type + str(self.size)
-
     def unpack_bitstring(self, length, is_float, is_signed, bits):
+        """
+        returns a value calculated from bits
+        :param length: length of signal in bits
+        :param is_float: value is float
+        :param bits: value as bits (array/iterable)
+        :param is_signed: value is signed
+        :return:
+        """
+
         if is_float:
             types = {
                 32: '>f',
@@ -376,6 +370,14 @@ class Signal(object):
         return value
 
     def pack_bitstring(self, length, is_float, value, signed):
+        """
+        returns a value in bits
+        :param length: length of signal in bits
+        :param is_float: value is float
+        :param value: value to encode
+        :param signed: value is signed
+        :return:
+        """
         if is_float:
             types = {
                 32: '>f',
@@ -509,16 +511,30 @@ class SignalGroup(object):
 
 
 class decodedSignal(object):
+    """
+    Contains a decoded signal (frame decoding)
+
+    * rawValue : rawValue (value on the bus)
+    * physValue: physical Value (the scaled value)
+    * namedValue: value of Valuetable
+    * signal: pointer signal (object) which was decoded
+    """
     def __init__(self, rawValue, signal):
         self.rawValue = rawValue
         self.signal = signal
 
     @property
     def physValue(self):
+        """
+        :return: physical Value (the scaled value)
+        """
         return self.signal.raw2phys(self.rawValue)
 
     @property
     def namedValue(self):
+        """
+        :return: value of Valuetable
+        """
         return self.signal.raw2phys(self.rawValue, decodeToStr=True)
 
 
@@ -861,6 +877,13 @@ class Frame(object):
 
 
     def signals_to_bytes(self, data):
+        """Return a byte string containing the values from data packed
+        according to the frame format.
+
+        :param data: data dictionary of signal : rawValue
+        :return: A byte string of the packed values.
+        """
+
         little_bits = [None] * (self.size * 8)
         big_bits = list(little_bits)
         for signal in self.signals:
@@ -903,7 +926,6 @@ class Frame(object):
 
         :param dict data: data dictionary
         :return: A byte string of the packed values.
-        :rtype: bitstruct
         """
 
 
@@ -934,6 +956,12 @@ class Frame(object):
         return self.signals_to_bytes(data)
 
     def bytes_to_bitstrings(self, data):
+        """Return two arrays big and little containing bits of given data (bytearray)
+
+        :param data: bytearray of bits (little endian). Iterable or bytes.
+            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :return: bit arrays in big and little byteorder
+        """
         b = tuple('{:08b}'.format(b) for b in data)
         little = ''.join(reversed(b))
         big = ''.join(b)
@@ -941,6 +969,13 @@ class Frame(object):
         return little, big
 
     def bitstring_to_signal_list(self, signals, big, little):
+        """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
+
+        :param signals: Iterable of signals (class signal) to decode from frame.
+        :param big: bytearray of bits (big endian).
+        :param little: bytearray of bits (little endian).
+        :return: array with raw values (same order like signals)
+        """
         unpacked = []
         for signal in signals:
             if signal.is_little_endian:
@@ -959,6 +994,13 @@ class Frame(object):
         return unpacked
 
     def unpack(self, data, report_error=True):
+        """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
+
+        :param data: Iterable or bytes.
+            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :return: OrderedDictionary
+        """
+
         rx_length = len(data)
         if rx_length != self.size and report_error:
             print(
@@ -978,21 +1020,18 @@ class Frame(object):
 
             return returnDict
 
-    ###
-
     def decode(self, data):
-        """Return OrderedDictionary with Signal Name: Signal Value
+        """Return OrderedDictionary with Signal Name: object decodedSignal (support for multiplexed frames)
 
         :param data: Iterable or bytes.
             i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
-        :param bool decodeToStr: If True, try to get value representation as *string* ('Init' etc.)
         :return: OrderedDictionary
         """
         decoded = self.unpack(data)
 
         if self.is_complex_multiplexed:
             # TODO
-            raise Exception("decoding complex multiplexed frames not yet implemented")
+            raise Exception("decoding complex multiplexed frames not implemented")
         elif self.is_multiplexed:
             returnDict = dict()
             # find multiplexer and decode only its value:
@@ -1002,7 +1041,6 @@ class Frame(object):
                     muxVal = decoded[signal.name].rawValue
 
             # find all signals with the identified multiplexer-value
-
             for signal in self.signals:
                 if signal.mux_val == muxVal or signal.mux_val is None:
                     returnDict[signal.name] = decoded[signal.name]
@@ -1637,15 +1675,15 @@ class CanMatrix(object):
         """
         return self.frameById(frame_id).encode(data)
 
-    def decode(self, frame_id, data, decodeToStr=False):
-        """Return OrderedDictionary with Signal Name: Signal Value
+    def decode(self, frame_id, data):
+        """Return OrderedDictionary with Signal Name: object decodedSignal
 
         :param frame_id: frame id
         :param data: Iterable or bytes.
             i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
         :return: OrderedDictionary
         """
-        return self.frameById(frame_id).decode(data, decodeToStr)
+        return self.frameById(frame_id).decode(data)
 
     def EnumAttribs2Values(self):
         for define in self.buDefines:
