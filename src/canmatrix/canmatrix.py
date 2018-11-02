@@ -356,10 +356,7 @@ class Signal(object):
                     'float type only supports lengths in [{}]'.
                         format(', '.join([str(t) for t in types.keys()]))
                 )
-            if sys.version_info > (3, 0):
-                value, = struct.unpack(float_type, bytes(int(''.join(b), 2)  for b in grouper(bits, 8)))
-            else:
-                value, = struct.unpack(float_type, bytearray(int(''.join(b), 2)  for b in grouper(bits, 8)))
+            value, = struct.unpack(float_type, bytearray(int(''.join(b), 2)  for b in grouper(bits, 8)))
 
         else:
             value = int(bits, 2)
@@ -398,12 +395,6 @@ class Signal(object):
                 x = map(ord, tuple(x))
             bitstring = ''.join('{:08b}'.format(b) for b in x)
         else:
-#            if sys.version_info > (3,):
-#                b = value.to_bytes(math.ceil(length / 8), byteorder='big',
-#                                   signed=signed)
-#                b = '{:0{}b}'.format(int.from_bytes(b, byteorder='big'),
-#                                     length)
-#            else:
             b = '{:0{}b}'.format((2<<length )+ value, length)
             bitstring = b[-length:]
 
@@ -911,16 +902,10 @@ class Frame(object):
             # l if l != ' ' else (b if b != ' ' else '0')
             for l, b in zip(little_bits, big_bits)
         )
-        if sys.version_info > (3,):
-            return bytes(
-                int(''.join(b), 2)
-                for b in grouper(bitstring, 8)
-            )
-        else:
-            return bytearray(
-                int(''.join(b), 2)
-                for b in grouper(bitstring, 8)
-            )
+        return bytearray(
+            int(''.join(b), 2)
+            for b in grouper(bitstring, 8)
+        )
 
 
     def encode(self, data=None):
@@ -1009,7 +994,7 @@ class Frame(object):
             print(
                 'Received message 0x{self.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
         else:
-            if sys.version_info > (3, 0):
+            if sys.version_info > (3,):
                 little, big = self.bytes_to_bitstrings(bytes(data))
             else:
                 little, big = self.bytes_to_bitstrings(data)
