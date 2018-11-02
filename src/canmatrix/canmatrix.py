@@ -394,14 +394,17 @@ class Signal(object):
 
             x = struct.pack(float_type, value)
 
-            if sys.version_info < (3, 0):
+            if sys.version_info < (3, ):
                 x = map(ord, tuple(x))
             bitstring = ''.join('{:08b}'.format(b) for b in x)
         else:
-            b = value.to_bytes(math.ceil(length / 8), byteorder='big',
-                               signed=signed)
-            b = '{:0{}b}'.format(int.from_bytes(b, byteorder='big'),
-                                 length)
+#            if sys.version_info > (3,):
+#                b = value.to_bytes(math.ceil(length / 8), byteorder='big',
+#                                   signed=signed)
+#                b = '{:0{}b}'.format(int.from_bytes(b, byteorder='big'),
+#                                     length)
+#            else:
+            b = '{:0{}b}'.format((2<<length )+ value, length)
             bitstring = b[-length:]
 
         return bitstring
@@ -908,7 +911,7 @@ class Frame(object):
             # l if l != ' ' else (b if b != ' ' else '0')
             for l, b in zip(little_bits, big_bits)
         )
-        if sys.version_info > (3, 0):
+        if sys.version_info > (3,):
             return bytes(
                 int(''.join(b), 2)
                 for b in grouper(bitstring, 8)
