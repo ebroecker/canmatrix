@@ -1,7 +1,6 @@
 import io
 import textwrap
 
-
 import canmatrix.dbc
 
 
@@ -19,3 +18,10 @@ def test_long_signal_name_imports():
     matrix = canmatrix.dbc.load(dbc)
 
     assert matrix.frames[0].signals[0].name == long_signal_name
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(matrix, outdbc, "dbc")
+    for line in outdbc.getvalue().decode('utf8').split('\n'):
+        if line.strip().startswith("SG_"):
+            assert len(line.split()[1]) <= 32
+        if line.strip().startswith("BA_ "):
+            assert line.split()[5][1:-2] == long_signal_name
