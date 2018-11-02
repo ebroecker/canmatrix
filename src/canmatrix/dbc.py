@@ -873,6 +873,11 @@ def load(f, **options):
 
         if "VFrameFormat" in frame.attributes and "_FD" in frame.attributes["VFrameFormat"]:
             frame.is_fd = True
+
+        for signal in frame.signals:
+            if signal.attribute("SystemSignalLongSymbol") is not None:
+                signal.name = signal.attribute("SystemSignalLongSymbol")
+                signal.delAttribute("SystemSignalLongSymbol")
     for define in db.globalDefines:
         if db.globalDefines[define].type == "STRING":
             if define in db.attributes:
@@ -897,4 +902,5 @@ def load(f, **options):
     db.EnumAttribs2Values()
     db.updateEcuList()
     db.delEcu("Vector__XXX")
+
     return db

@@ -1,12 +1,9 @@
 import io
 import textwrap
 
-import pathlib2
 
 import canmatrix.dbc
 
-
-here = pathlib2.Path(__file__).parent
 
 
 def test_long_signal_name_imports():
@@ -14,7 +11,9 @@ def test_long_signal_name_imports():
     assert len(long_signal_name) > 32
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BO_ 1 testFrame1: 1 TEST_ECU
-     SG_ {} : 1|2@0+ (1,0) [0|0] ""  CCL_TEST
+     SG_ someShortenedDummyName: 1|2@0+ (1,0) [0|0] ""  CCL_TEST
+     
+    BA_ "SystemSignalLongSymbol" SG_ 1 someShortenedDummyName "{}";  
     ''').format(long_signal_name).encode('utf-8'))
 
     matrix = canmatrix.dbc.load(dbc)
