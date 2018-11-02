@@ -116,7 +116,7 @@ class Signal(object):
     """
 
     name = attr.ib(default = "")
-#    float_factory = attr.ib(default=defaultFloatFactory)
+    # float_factory = attr.ib(default=defaultFloatFactory)
     float_factory = defaultFloatFactory
     startBit = attr.ib(type=int, default=0)
     size = attr.ib(type=int, default = 0)
@@ -125,7 +125,7 @@ class Signal(object):
     offset = attr.ib(converter = float_factory, default = float_factory(0.0))
     factor = attr.ib(converter = float_factory, default = float_factory(1.0))
 
-    #    offset = attr.ib(converter = float_factory, default = 0.0)
+    # offset = attr.ib(converter = float_factory, default = 0.0)
 
     min  = attr.ib(converter=float_factory)
     @min.default
@@ -166,10 +166,11 @@ class Signal(object):
     def multiplexSetter(self, value):
         self.mux_val = None
         self.is_multiplexer = False
+        ret_multiplex = None
         if value is not None and value != 'Multiplexor':
             ret_multiplex = int(value)
             self.mux_val = int(value)
-        else:  # is it valid for None too?
+        elif value == 'Multiplexor':
             self.is_multiplexer = True
             ret_multiplex = value
         return ret_multiplex
@@ -295,7 +296,7 @@ class Signal(object):
     def setMin(self, min=None):
         """Set minimal physical Signal value.
 
-        :param float min: minimal physical value. If None, compute using `calcMin`
+        :param float or None min: minimal physical value. If None, compute using `calcMin`
         """
         self.min = min
         if self.calc_min_for_none and self.min is None:
@@ -312,7 +313,7 @@ class Signal(object):
     def setMax(self, max=None):
         """Set maximal signal value.
 
-        :param float max: minimal physical value. If None, compute using `calcMax`
+        :param float or None max: minimal physical value. If None, compute using `calcMax`
         """
         self.max = max
 
@@ -484,8 +485,8 @@ class Frame(object):
     j1939_source = attr.ib(default = 0)
     j1939_prio  = attr.ib(default = 0)
     is_j1939  = attr.ib(type=bool, default = False)
-            #            ('cycleTime', '_cycleTime', int, None),
-            #            ('sendType', '_sendType', str, None),
+    # ('cycleTime', '_cycleTime', int, None),
+    # ('sendType', '_sendType', str, None),
 
     @property
     def is_multiplexed(self):
@@ -532,27 +533,27 @@ class Frame(object):
         self.extended = True
         self.is_j1939 = True
 
-    #    @property
-#    def cycleTime(self):
-#        if self._cycleTime is None:
-#            self._cycleTime = self.attribute("GenMsgCycleTime")
-#        return self._cycleTime
-
-#    @property
-#    def sendType(self, db = None):
-#        if self._sendType is None:
-#            self._sendType = self.attribute("GenMsgSendType")
- #       return self._sendType
-
-#    @cycleTime.setter
-#    def cycleTime(self, value):
-#        self._cycleTime = value
-#        self.attributes["GenMsgCycleTime"] = value
-
-#    @sendType.setter
-#    def sendType(self, value):
- #       self._sendType = value
- #       self.attributes["GenMsgCycleTime"] = value
+    # @property
+    # def cycleTime(self):
+    #    if self._cycleTime is None:
+    #        self._cycleTime = self.attribute("GenMsgCycleTime")
+    #    return self._cycleTime
+    #
+    # @property
+    # def sendType(self, db = None):
+    #    if self._sendType is None:
+    #        self._sendType = self.attribute("GenMsgSendType")
+    #    return self._sendType
+    #
+    # @cycleTime.setter
+    # def cycleTime(self, value):
+    #    self._cycleTime = value
+    #    self.attributes["GenMsgCycleTime"] = value
+    #
+    # @sendType.setter
+    # def sendType(self, value):
+    #    self._sendType = value
+    #    self.attributes["GenMsgCycleTime"] = value
 
 
 
@@ -655,10 +656,10 @@ class Frame(object):
         return None
 
     def globSignals(self, globStr):
-        """Find Frame Signals by a name pattern.
+        """Find Frame Signals by given glob pattern.
 
-        :param str globStr: pattern for signal name. See `fnmatch.fnmatchcase`
-        :return: list of Signals by name pattern.
+        :param str globStr: glob pattern for signal name. See `fnmatch.fnmatchcase`
+        :return: list of Signals by glob pattern.
         :rtype: list of Signal
         """
         returnArray = []
@@ -749,8 +750,8 @@ class Frame(object):
         Names of dummy signals are *_Dummy_<frame.name>_<index>*
         """
         bitfield = self.findNotUsedBits()
-#        for i in range(0,8):
-#            print (bitfield[(i)*8:(i+1)*8])
+        # for i in range(0,8):
+        #    print (bitfield[(i)*8:(i+1)*8])
         startBit = -1
         sigCount = 0
         for i in range(0,64):
@@ -763,9 +764,9 @@ class Frame(object):
                 startBit = -1
                 sigCount +=1
 
-#        bitfield = self.findNotUsedBits()
-#        for i in range(0,8):
-#            print (bitfield[(i)*8:(i+1)*8])
+        # bitfield = self.findNotUsedBits()
+        # for i in range(0,8):
+        #    print (bitfield[(i)*8:(i+1)*8])
 
 
 
@@ -874,7 +875,7 @@ class Frame(object):
             fmt = self.bitstruct_format()
             signals = sorted(self.signals, key=lambda s: s.getStartbit())
 
-        #decode
+        # decode
         signals_values = OrderedDict()
         for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
             signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
@@ -1181,9 +1182,9 @@ class CanMatrix(object):
         return None
 
     def globFrames(self, globStr):
-        """Find Frames by given name pattern.
+        """Find Frames by given glob pattern.
 
-        :param str globStr: Frame name pattern to be filtered. See `fnmatch.fnmatchcase`.
+        :param str globStr: glob pattern to filter Frames. See `fnmatch.fnmatchcase`.
         :rtype: list of Frame
         """
         returnArray = []
@@ -1206,9 +1207,9 @@ class CanMatrix(object):
 
     def globBoardUnits(self, globStr):
         """
-        Find ECUs by given name pattern.
+        Find ECUs by given glob pattern.
 
-        :param globStr: BoardUnit name pattern to be filtered. See `fnmatch.fnmatchcase`.
+        :param globStr: glob pattern to filter BoardUnits. See `fnmatch.fnmatchcase`.
         :rtype: list of BoardUnit
         """
         returnArray = []
@@ -1312,7 +1313,7 @@ class CanMatrix(object):
     def delEcu(self, ecu):
         """Remove ECU from Matrix and all Frames.
 
-        :param str or BoardUnit ecu: ECU name pattern or instance to remove from list
+        :param str or BoardUnit ecu: ECU instance or glob pattern to remove from list
         """
         if type(ecu).__name__ == 'instance':
             ecuList = [ecu]
@@ -1399,7 +1400,7 @@ class CanMatrix(object):
     def delSignal(self, signal):
         """Delete Signal from Matrix and all Frames.
 
-        :param Signal or str signal: Signal instance or signal name to be deleted"""
+        :param Signal or str signal: Signal instance or glob pattern to be deleted"""
         if type(signal).__name__ == 'instance' or type(signal).__name__ == 'Signal':
             for frame in self.frames:
                 if signal in frame.signals:
@@ -1410,60 +1411,60 @@ class CanMatrix(object):
                 for sig in signalList:
                     frame.signals.remove(sig)
 
-    def addSignalReceiver(self, framePattern, signalName, ecu):
-        """Add Receiver to all Frames by name pattern.
+    def addSignalReceiver(self, globFrame, globSignal, ecu):
+        """Add Receiver to all Frames and Signals by glob pattern.
 
-        :param str framePattern: Frame name pattern
-        :param str signalName: signal name
+        :param str globFrame: glob pattern for Frame name.
+        :param str globSignal: glob pattern for Signal name. Only signals under globFrame are filtered.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
-            for signal in frame.globSignals(signalName):
+            for signal in frame.globSignals(globSignal):
                 signal.addReceiver(ecu)
             frame.updateReceiver()
 
-    def delSignalReceiver(self, framePattern, signalName, ecu):
-        """Delete Receiver from all Frames by name pattern.
+    def delSignalReceiver(self, globFrame, globSignal, ecu):
+        """Delete Receiver from all Frames by glob pattern.
 
-        :param str framePattern: Frame name pattern
-        :param str signalName: signal name
+        :param str globFrame: glob pattern for Frame name.
+        :param str globSignal: glob pattern for Signal name. Only signals under globFrame are filtered.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
-            for signal in frame.globSignals(signalName):
+            for signal in frame.globSignals(globSignal):
                 signal.delReceiver(ecu)
             frame.updateReceiver()
 
-    def addFrameTransmitter(self, framePattern, ecu):
-        """Add Transmitter to all Frames by name pattern.
+    def addFrameTransmitter(self, globFrame, ecu):
+        """Add Transmitter to all Frames by glob pattern.
 
-        :param str framePattern: Frame name pattern
+        :param str globFrame: glob pattern for Frame name.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
             frame.addTransmitter(ecu)
 
-    def addFrameReceiver(self, framePattern, ecu):
-        """Add Receiver to all Frames by name pattern.
+    def addFrameReceiver(self, globFrame, ecu):
+        """Add Receiver to all Frames by glob pattern.
 
-        :param str framePattern: Frame name pattern
+        :param str globFrame: glob pattern for Frame name.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
             for signal in frame.signals:
                 signal.addReceiver(ecu)
 
-    def delFrameTransmitter(self, framePattern, ecu):
-        """Delete Transmitter from all Frames by name pattern.
+    def delFrameTransmitter(self, globFrame, ecu):
+        """Delete Transmitter from all Frames by glob pattern.
 
-        :param str framePattern: Frame name pattern
+        :param str globFrame: glob pattern for Frame name.
         :param str ecu: Receiver ECU name
         """
-        frames = self.globFrames(framePattern)
+        frames = self.globFrames(globFrame)
         for frame in frames:
             frame.delTransmitter(ecu)
 
@@ -1560,9 +1561,8 @@ class CanMatrix(object):
                         if define in signal.attributes:
                             signal.attributes[define] = self.signalDefines[define].values.index(signal.attributes[define])
                             signal.attributes[define] = str(signal.attributes[define])
-#
-#
-#
+
+
 def computeSignalValueInFrame(startBit, ln, fmt, value):
     """
     Compute the Signal value in the Frame.
@@ -1577,11 +1577,11 @@ def computeSignalValueInFrame(startBit, ln, fmt, value):
 
     frame = 0
     if fmt == 1:  # Intel
-    # using "sawtooth bit counting policy" here
+        # using "sawtooth bit counting policy" here
         pos = ((7 - (startBit % 8)) + 8*(int(startBit/8)))
         while ln > 0:
             # How many bits can we stuff in current byte?
-            #  (Should be 8 for anything but the first loop)
+            # (Should be 8 for anything but the first loop)
             availbitsInByte = 1 + (pos % 8)
             # extract relevant bits from value
             valueInByte = value & ((1<<availbitsInByte)-1)
@@ -1635,5 +1635,5 @@ class CanId(object):
         return self.destination, self.pgn, self.source
 
     def __str__(self):
-        return "DA:{da:#02X} PGN:{pgn:#04X} SA:{sa:#02X}".format(
+        return "DA:0x{da:02X} PGN:0x{pgn:04X} SA:0x{sa:02X}".format(
             da=self.destination, pgn=self.pgn, sa=self.source)
