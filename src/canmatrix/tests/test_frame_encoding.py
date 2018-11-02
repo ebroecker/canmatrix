@@ -1,6 +1,11 @@
+import io
+import os.path
+import textwrap
+
+import attr
 import pytest
 import canmatrix.formats
-import os.path
+
 
 def loadDbc():
     here = os.path.dirname(os.path.realpath(__file__))
@@ -88,3 +93,112 @@ def test_encode_with_dbc_multiplex():
     toEncode2["muxSig8"] =  -8
     frameData2 = frame.encode(toEncode2)
     assert frameData2 == bytearray([0x38, 0x60, 0x80, 0x1E, 0x18, 0x20, 0x20])
+
+
+def test_sym():
+    """Test signal and frame encoding based on a .sym file
+
+    The symbol file was created using the PCAN Symbol Editor.  The reference
+    transmissions were created using PCAN Explorer.  The result message bytes
+    were observed in PCAN-View.
+
+    PCAN Symbol Editor v3.1.6.342
+    PCAN Explorer v5.3.4.823
+    PCAN-View v4.2.1.533
+    """
+    s = textwrap.dedent(
+        u'''\
+        FormatVersion=5.0 // Do not edit this line!
+        Title="Untitled"
+
+        {SENDRECEIVE}
+
+        [Unsigned]
+        ID=000h
+        DLC=7
+        Var=two_bit_big_endian unsigned 33,2 -m
+        Var=two_bit_little_endian unsigned 30,2
+        Var=seven_bit_big_endian unsigned 4,7 -m
+        Var=seven_bit_little_endian unsigned 5,7
+        Var=eleven_bit_big_endian unsigned 35,11 -m
+        Var=eleven_bit_little_endian unsigned 18,11
+
+        [Signed]
+        ID=001h
+        DLC=7
+        Var=two_bit_big_endian signed 33,2 -m
+        Var=two_bit_little_endian signed 30,2
+        Var=seven_bit_big_endian signed 4,7 -m
+        Var=seven_bit_little_endian signed 5,7
+        Var=eleven_bit_big_endian signed 35,11 -m
+        Var=eleven_bit_little_endian signed 18,11
+        ''',
+    )
+    f = io.BytesIO(s.encode('utf-8'))
+
+    matrix = canmatrix.formats.load(f, importType='sym', flatImport=True)
+    unsigned_frame = matrix.frameByName('Unsigned')
+    signed_frame = matrix.frameByName('Signed')
+
+    @attr.s(frozen=True)
+    class TestFrame:
+        two_bit_big_endian = attr.ib(default=0)
+        two_bit_little_endian = attr.ib(default=0)
+        seven_bit_big_endian = attr.ib(default=0)
+        seven_bit_little_endian = attr.ib(default=0)
+        eleven_bit_big_endian = attr.ib(default=0)
+        eleven_bit_little_endian = attr.ib(default=0)
+
+        def encode(self, frame):
+            return frame.encode(attr.asdict(self))
+
+    unsigned_cases = {
+        TestFrame(): b'\x00\x00\x00\x00\x00\x00\x00',
+        TestFrame(two_bit_big_endian=1): b'\x00\x00\x00\x00\x20\x00\x00',
+        TestFrame(two_bit_big_endian=2): b'\x00\x00\x00\x00\x40\x00\x00',
+        TestFrame(two_bit_little_endian=1): b'\x00\x00\x00\x40\x00\x00\x00',
+        TestFrame(two_bit_little_endian=2): b'\x00\x00\x00\x80\x00\x00\x00',
+        TestFrame(seven_bit_big_endian=1): b'\x00\x20\x00\x00\x00\x00\x00',
+        TestFrame(seven_bit_big_endian=64): b'\x08\x00\x00\x00\x00\x00\x00',
+        TestFrame(seven_bit_little_endian=1): b'\x20\x00\x00\x00\x00\x00\x00',
+        TestFrame(seven_bit_little_endian=64): b'\x00\x08\x00\x00\x00\x00\x00',
+        TestFrame(eleven_bit_big_endian=1): b'\x00\x00\x00\x00\x00\x04\x00',
+        TestFrame(eleven_bit_big_endian=1024): b'\x00\x00\x00\x00\x10\x00\x00',
+        TestFrame(eleven_bit_little_endian=1): b'\x00\x00\x04\x00\x00\x00\x00',
+        TestFrame(eleven_bit_little_endian=1024): (
+            b'\x00\x00\x00\x10\x00\x00\x00'
+        ),
+    }
+
+    signed_cases = {
+        TestFrame(): b'\x00\x00\x00\x00\x00\x00\x00',
+        TestFrame(two_bit_big_endian=1): b'\x00\x00\x00\x00\x20\x00\x00',
+        TestFrame(two_bit_big_endian=-2): b'\x00\x00\x00\x00\x40\x00\x00',
+        TestFrame(two_bit_little_endian=1): b'\x00\x00\x00\x40\x00\x00\x00',
+        TestFrame(two_bit_little_endian=-2): b'\x00\x00\x00\x80\x00\x00\x00',
+        TestFrame(seven_bit_big_endian=1): b'\x00\x20\x00\x00\x00\x00\x00',
+        TestFrame(seven_bit_big_endian=-2): b'\x0F\xC0\x00\x00\x00\x00\x00',
+        TestFrame(seven_bit_little_endian=1): b'\x20\x00\x00\x00\x00\x00\x00',
+        TestFrame(seven_bit_little_endian=-2): b'\xC0\x0F\x00\x00\x00\x00\x00',
+        TestFrame(eleven_bit_big_endian=1): b'\x00\x00\x00\x00\x00\x04\x00',
+        TestFrame(eleven_bit_big_endian=-2): b'\x00\x00\x00\x00\x1F\xF8\x00',
+        TestFrame(eleven_bit_little_endian=1): b'\x00\x00\x04\x00\x00\x00\x00',
+        TestFrame(eleven_bit_little_endian=-2): (
+            b'\x00\x00\xF8\x1F\x00\x00\x00'
+        ),
+    }
+
+    def h(b):
+        return ' '.join('{:02X}'.format(c) for c in b)
+
+    frame_case_pairs = (
+        (unsigned_frame, unsigned_cases),
+        (signed_frame, signed_cases),
+    )
+    for frame, cases in frame_case_pairs:
+        for test_frame, expected in cases.items():
+            encoded = test_frame.encode(frame)
+            print(test_frame)
+            print(h(encoded))
+            print(h(expected))
+            assert encoded == expected
