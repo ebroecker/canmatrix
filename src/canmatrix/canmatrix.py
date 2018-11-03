@@ -333,72 +333,6 @@ class Signal(object):
 
         return self.offset + (rawMax * self.factor)
 
-    def unpack_bitstring(self, length, is_float, is_signed, bits):
-        """
-        returns a value calculated from bits
-        :param length: length of signal in bits
-        :param is_float: value is float
-        :param bits: value as bits (array/iterable)
-        :param is_signed: value is signed
-        :return:
-        """
-
-        if is_float:
-            types = {
-                32: '>f',
-                64: '>d'
-            }
-
-            float_type = types.get(length)
-
-            if float_type is None:
-                raise Exception(
-                    'float type only supports lengths in [{}]'.
-                        format(', '.join([str(t) for t in types.keys()]))
-                )
-            value, = struct.unpack(float_type, bytearray(int(''.join(b), 2)  for b in grouper(bits, 8)))
-
-        else:
-            value = int(bits, 2)
-
-            if is_signed and bits[0] == '1':
-                value -= (1 << len(bits))
-
-        return value
-
-    def pack_bitstring(self, length, is_float, value, signed):
-        """
-        returns a value in bits
-        :param length: length of signal in bits
-        :param is_float: value is float
-        :param value: value to encode
-        :param signed: value is signed
-        :return:
-        """
-        if is_float:
-            types = {
-                32: '>f',
-                64: '>d'
-            }
-
-            float_type = types.get(length)
-
-            if float_type is None:
-                raise Exception(
-                    'float type only supports lengths in [{}]'.
-                        format(', '.join([str(t) for t in types.keys()]))
-                )
-
-            x = struct.pack(float_type, value)
-
-            if sys.version_info < (3, ):
-                x = map(ord, tuple(x))
-            bitstring = ''.join('{:08b}'.format(b) for b in x)
-        else:
-            b = '{:0{}b}'.format((2<<length )+ value, length)
-            bitstring = b[-length:]
-
-        return bitstring
 
     def phys2raw(self, value=None):
         """Return the raw value (= as is on CAN).
@@ -539,6 +473,55 @@ def grouper(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
     return zip_longest(*args, fillvalue=fillvalue)
 
+def unpack_bitstring(length, is_float, is_signed, bits):
+    """
+    returns a value calculated from bits
+    :param length: length of signal in bits
+    :param is_float: value is float
+    :param bits: value as bits (array/iterable)
+    :param is_signed: value is signed
+    :return:
+    """
+
+    if is_float:
+        types = {
+            32: '>f',
+            64: '>d'
+        }
+
+        float_type = types[length]
+        value, = struct.unpack(float_type, bytearray(int(''.join(b), 2)  for b in grouper(bits, 8)))
+    else:
+        value = int(bits, 2)
+
+        if is_signed and bits[0] == '1':
+            value -= (1 << len(bits))
+
+    return value
+
+def pack_bitstring(length, is_float, value, signed):
+    """
+    returns a value in bits
+    :param length: length of signal in bits
+    :param is_float: value is float
+    :param value: value to encode
+    :param signed: value is signed
+    :return:
+    """
+    if is_float:
+        types = {
+            32: '>f',
+            64: '>d'
+        }
+
+        float_type = types[length]
+        x = bytearray(struct.pack(float_type, value))
+        bitstring = ''.join('{:08b}'.format(b) for b in x)
+    else:
+        b = '{:0{}b}'.format((2<<length )+ value, length)
+        bitstring = b[-length:]
+
+    return bitstring
 
 @attr.s(cmp=False)
 class Frame(object):
@@ -883,7 +866,7 @@ class Frame(object):
         for signal in self.signals:
             if signal.name in data:
                 value = data.get(signal.name)
-                bits = signal.pack_bitstring(signal.size, signal.is_float, value, signal.is_signed)
+                bits = pack_bitstring(signal.size, signal.is_float, value, signal.is_signed)
 
                 if signal.is_little_endian:
                     least = self.size * 8 - signal.startBit
@@ -977,7 +960,7 @@ class Frame(object):
 
                 bits = big[most:least]
 
-            unpacked.append(signal.unpack_bitstring(signal.size, signal.is_float, signal.is_signed, bits))
+            unpacked.append(unpack_bitstring(signal.size, signal.is_float, signal.is_signed, bits))
 
         return unpacked
 
