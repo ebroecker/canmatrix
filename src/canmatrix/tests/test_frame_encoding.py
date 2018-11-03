@@ -141,7 +141,7 @@ def test_sym():
     signed_frame = matrix.frameByName('Signed')
 
     @attr.s(frozen=True)
-    class TestFrame:
+    class TestFrame(object):
         two_bit_big_endian = attr.ib(default=0)
         two_bit_little_endian = attr.ib(default=0)
         seven_bit_big_endian = attr.ib(default=0)
@@ -197,6 +197,7 @@ def test_sym():
     )
     for frame, cases in frame_case_pairs:
         for test_frame, expected in cases.items():
+            expected = bytearray(expected)
             encoded = test_frame.encode(frame)
             print(test_frame)
             print(h(encoded))
