@@ -504,7 +504,10 @@ class SignalGroup(object):
 
 
 
+@attr.s
 class decodedSignal(object):
+    rawValue = attr.ib()
+    signal = attr.ib()
     """
     Contains a decoded signal (frame decoding)
 
