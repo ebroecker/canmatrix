@@ -352,7 +352,7 @@ def test_encode_decode_frame():
     raw_bytes = f1.encode(input_data)
     decoded_data = f1.decode(raw_bytes)
 
-    assert decoded_data['signal'].rawValue == float(input_data['signal'])
+    assert decoded_data['signal'].raw_value == float(input_data['signal'])
 
 
 # CanId tests

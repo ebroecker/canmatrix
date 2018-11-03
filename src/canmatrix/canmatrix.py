@@ -38,7 +38,6 @@ from collections import OrderedDict
 
 import logging
 import fnmatch
-
 import decimal
 defaultFloatFactory = decimal.Decimal
 
@@ -54,6 +53,15 @@ import struct
 from past.builtins import basestring
 import copy
 
+
+class ExceptionTemplate(Exception):
+    def __call__(self, *args):
+        return self.__class__(*(self.args + args))
+
+class StarbitLowerZero(ExceptionTemplate): pass
+class EncodingComplexMultiplexed(ExceptionTemplate): pass
+class MissingMuxSignal(ExceptionTemplate): pass
+class DecodingComplexMultiplexed(ExceptionTemplate): pass
 
 @attr.s
 class BoardUnit(object):
@@ -273,7 +281,7 @@ class Signal(object):
         if startBit < 0:
             print("wrong startBit found Signal: %s Startbit: %d" %
                   (self.name, startBit))
-            raise Exception("startBit lower zero")
+            raise StarbitLowerZero
         self.startBit = startBit
 
     def getStartbit(self, bitNumbering=None, startLittle=None):
@@ -440,7 +448,7 @@ class SignalGroup(object):
 
 @attr.s
 class decodedSignal(object):
-    rawValue = attr.ib()
+    raw_value = attr.ib()
     signal = attr.ib()
     """
     Contains a decoded signal (frame decoding)
@@ -450,19 +458,19 @@ class decodedSignal(object):
     * namedValue: value of Valuetable
     * signal: pointer signal (object) which was decoded
     """
-    def __init__(self, rawValue, signal):
-        self.rawValue = rawValue
+    def __init__(self, raw_value, signal):
+        self.raw_value = raw_value
         self.signal = signal
 
     @property
-    def physValue(self):
+    def phys_value(self):
         """
         :return: physical Value (the scaled value)
         """
         return self.signal.raw2phys(self.rawValue)
 
     @property
-    def namedValue(self):
+    def named_value(self):
         """
         :return: value of Valuetable
         """
@@ -902,20 +910,19 @@ class Frame(object):
         :return: A byte string of the packed values.
         """
 
-
         data = dict() if data is None else data
 
         if self.is_complex_multiplexed:
-            # TODO
-            Exception("encoding complex multiplexed frames not yet implemented")
+            raise EncodingComplexMultiplexed
         elif self.is_multiplexed:
             # search for mulitplexer-signal
-            muxSignal = None
             for signal in self.signals:
                 if signal.is_multiplexer:
                     muxSignal = signal
                     muxVal = data.get(signal.name)
                     break
+            else:
+                raise MissingMuxSignal
             # create list of signals which belong to muxgroup
             encodeSignals = [muxSignal.name]
             for signal in self.signals:
@@ -932,8 +939,8 @@ class Frame(object):
     def bytes_to_bitstrings(self, data):
         """Return two arrays big and little containing bits of given data (bytearray)
 
-        :param data: bytearray of bits (little endian). Iterable or bytes.
-            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :param data: bytearray of bits (little endian).
+            i.e. bytearray([0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8])
         :return: bit arrays in big and little byteorder
         """
         b = tuple('{:08b}'.format(b) for b in data)
@@ -969,9 +976,10 @@ class Frame(object):
 
     def unpack(self, data, report_error=True):
         """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
+        decodes every signal in signal-list.
 
-        :param data: Iterable or bytes.
-            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :param data: bytearray
+            i.e. bytearray([0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8])
         :return: OrderedDictionary
         """
 
@@ -980,10 +988,7 @@ class Frame(object):
             print(
                 'Received message 0x{self.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
         else:
-            if sys.version_info > (3,):
-                little, big = self.bytes_to_bitstrings(bytes(data))
-            else:
-                little, big = self.bytes_to_bitstrings(data)
+            little, big = self.bytes_to_bitstrings(data)
 
             unpacked = self.bitstring_to_signal_list(self.signals, big, little)
 
@@ -996,23 +1001,24 @@ class Frame(object):
 
     def decode(self, data):
         """Return OrderedDictionary with Signal Name: object decodedSignal (support for multiplexed frames)
+        decodes only signals matching to muxgroup
 
-        :param data: Iterable or bytes.
-            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
+        :param data: bytearray .
+            i.e. bytearray([0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8])
         :return: OrderedDictionary
         """
         decoded = self.unpack(data)
 
         if self.is_complex_multiplexed:
             # TODO
-            raise Exception("decoding complex multiplexed frames not implemented")
+            raise DecodingComplexMultiplexed
         elif self.is_multiplexed:
             returnDict = dict()
             # find multiplexer and decode only its value:
 
             for signal in self.signals:
                 if signal.is_multiplexer:
-                    muxVal = decoded[signal.name].rawValue
+                    muxVal = decoded[signal.name].raw_value
 
             # find all signals with the identified multiplexer-value
             for signal in self.signals:
