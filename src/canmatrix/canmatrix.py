@@ -46,7 +46,7 @@ defaultFloatFactory = decimal.Decimal
 logger = logging.getLogger('root')
 try:
     from itertools import zip_longest as zip_longest
-except:
+except ImportError:
     from itertools import izip_longest as zip_longest
 from itertools import chain
 import struct
@@ -438,7 +438,10 @@ class SignalGroup(object):
 
 
 
+@attr.s
 class decodedSignal(object):
+    rawValue = attr.ib()
+    signal = attr.ib()
     """
     Contains a decoded signal (frame decoding)
 
