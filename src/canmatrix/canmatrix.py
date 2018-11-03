@@ -46,7 +46,7 @@ defaultFloatFactory = decimal.Decimal
 logger = logging.getLogger('root')
 try:
     from itertools import zip_longest as zip_longest
-except:
+except ImportError:
     from itertools import izip_longest as zip_longest
 from itertools import chain
 import struct
