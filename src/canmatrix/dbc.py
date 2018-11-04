@@ -135,6 +135,12 @@ def dump(mydb, f, **options):
 
 
     for frame in db.frames:
+        for s in frame.signals:
+            if len(s.name) > 32:
+                s.addAttribute("SystemSignalLongSymbol",  s.name)
+                s.name = s.name[0:32]
+                db.addSignalDefines("SystemSignalLongSymbol", "STRING")
+
         normalized_names = collections.OrderedDict((
             (s, normalizeName(s.name, whitespaceReplacement))
             for s in frame.signals
@@ -873,6 +879,11 @@ def load(f, **options):
 
         if "VFrameFormat" in frame.attributes and "_FD" in frame.attributes["VFrameFormat"]:
             frame.is_fd = True
+
+        for signal in frame.signals:
+            if signal.attribute("SystemSignalLongSymbol") is not None:
+                signal.name = signal.attribute("SystemSignalLongSymbol")[1:-1]
+                signal.delAttribute("SystemSignalLongSymbol")
     for define in db.globalDefines:
         if db.globalDefines[define].type == "STRING":
             if define in db.attributes:
@@ -897,4 +908,5 @@ def load(f, **options):
     db.EnumAttribs2Values()
     db.updateEcuList()
     db.delEcu("Vector__XXX")
+
     return db
