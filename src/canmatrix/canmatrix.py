@@ -30,7 +30,7 @@
 from __future__ import division
 import math
 import attr
-
+import sys
 if attr.__version__ < '17.4.0':
     raise "need attrs >= 17.4.0"
 
@@ -38,17 +38,30 @@ from collections import OrderedDict
 
 import logging
 import fnmatch
-
 import decimal
 defaultFloatFactory = decimal.Decimal
 
 
 logger = logging.getLogger('root')
-import bitstruct
+try:
+    from itertools import zip_longest as zip_longest
+except ImportError:
+    from itertools import izip_longest as zip_longest
+from itertools import chain
+import struct
 
 from past.builtins import basestring
 import copy
 
+
+class ExceptionTemplate(Exception):
+    def __call__(self, *args):
+        return self.__class__(*(self.args + args))
+
+class StarbitLowerZero(ExceptionTemplate): pass
+class EncodingComplexMultiplexed(ExceptionTemplate): pass
+class MissingMuxSignal(ExceptionTemplate): pass
+class DecodingComplexMultiplexed(ExceptionTemplate): pass
 
 @attr.s
 class BoardUnit(object):
@@ -268,7 +281,7 @@ class Signal(object):
         if startBit < 0:
             print("wrong startBit found Signal: %s Startbit: %d" %
                   (self.name, startBit))
-            raise Exception("startBit lower zero")
+            raise StarbitLowerZero
         self.startBit = startBit
 
     def getStartbit(self, bitNumbering=None, startLittle=None):
@@ -328,19 +341,6 @@ class Signal(object):
 
         return self.offset + (rawMax * self.factor)
 
-    def bitstruct_format(self):
-        """Get the bit struct format for this signal.
-
-        :return: bitstruct representation of the Signal
-        :rtype: str
-        """
-        endian = '<' if self.is_little_endian else '>'
-        if self.is_float:
-            bit_type = 'f'
-        else:
-            bit_type = 's' if self.is_signed else 'u'
-
-        return endian + bit_type + str(self.size)
 
     def phys2raw(self, value=None):
         """Return the raw value (= as is on CAN).
@@ -444,6 +444,95 @@ class SignalGroup(object):
             return signal
         raise KeyError("Signal '{}' doesn't exist".format(name))
 
+
+
+@attr.s
+class decodedSignal(object):
+    raw_value = attr.ib()
+    signal = attr.ib()
+    """
+    Contains a decoded signal (frame decoding)
+
+    * rawValue : rawValue (value on the bus)
+    * physValue: physical Value (the scaled value)
+    * namedValue: value of Valuetable
+    * signal: pointer signal (object) which was decoded
+    """
+    def __init__(self, raw_value, signal):
+        self.raw_value = raw_value
+        self.signal = signal
+
+    @property
+    def phys_value(self):
+        """
+        :return: physical Value (the scaled value)
+        """
+        return self.signal.raw2phys(self.rawValue)
+
+    @property
+    def named_value(self):
+        """
+        :return: value of Valuetable
+        """
+        return self.signal.raw2phys(self.rawValue, decodeToStr=True)
+
+
+# https://docs.python.org/3/library/itertools.html
+def grouper(iterable, n, fillvalue=None):
+    "Collect data into fixed-length chunks or blocks"
+    # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"
+    args = [iter(iterable)] * n
+    return zip_longest(*args, fillvalue=fillvalue)
+
+def unpack_bitstring(length, is_float, is_signed, bits):
+    """
+    returns a value calculated from bits
+    :param length: length of signal in bits
+    :param is_float: value is float
+    :param bits: value as bits (array/iterable)
+    :param is_signed: value is signed
+    :return:
+    """
+
+    if is_float:
+        types = {
+            32: '>f',
+            64: '>d'
+        }
+
+        float_type = types[length]
+        value, = struct.unpack(float_type, bytearray(int(''.join(b), 2)  for b in grouper(bits, 8)))
+    else:
+        value = int(bits, 2)
+
+        if is_signed and bits[0] == '1':
+            value -= (1 << len(bits))
+
+    return value
+
+def pack_bitstring(length, is_float, value, signed):
+    """
+    returns a value in bits
+    :param length: length of signal in bits
+    :param is_float: value is float
+    :param value: value to encode
+    :param signed: value is signed
+    :return:
+    """
+    if is_float:
+        types = {
+            32: '>f',
+            64: '>d'
+        }
+
+        float_type = types[length]
+        x = bytearray(struct.pack(float_type, value))
+        bitstring = ''.join('{:08b}'.format(b) for b in x)
+    else:
+        b = '{:0{}b}'.format((2<<length )+ value, length)
+        bitstring = b[-length:]
+
+    return bitstring
 
 @attr.s(cmp=False)
 class Frame(object):
@@ -764,11 +853,6 @@ class Frame(object):
                 startBit = -1
                 sigCount +=1
 
-        # bitfield = self.findNotUsedBits()
-        # for i in range(0,8):
-        #    print (bitfield[(i)*8:(i+1)*8])
-
-
 
 
     def updateReceiver(self):
@@ -779,31 +863,44 @@ class Frame(object):
             for receiver in sig.receiver:
                 self.addReceiver(receiver)
 
-    def bitstruct_format(self, signalsToDecode = None):
-        """Returns the Bitstruct format string of this frame
 
-        :return: Bitstruct format string.
-        :rtype: str
+    def signals_to_bytes(self, data):
+        """Return a byte string containing the values from data packed
+        according to the frame format.
+
+        :param data: data dictionary of signal : rawValue
+        :return: A byte string of the packed values.
         """
-        fmt = []
-        frame_size = self.size * 8
-        end = frame_size
-        if signalsToDecode is None:
-            signals = sorted(self.signals, key=lambda s: s.getStartbit())
-        else:
-            signals = sorted(signalsToDecode, key=lambda s: s.getStartbit())
 
-        for signal in signals:
-            start = frame_size - signal.getStartbit() - signal.size
-            padding = end - (start + signal.size)
-            if padding > 0:
-                fmt.append('p' + str(padding))
-            fmt.append(signal.bitstruct_format())
-            end = start
-        if end != 0:
-            fmt.append('p' + str(end))
-        # assert bitstruct.calcsize(''.join(fmt)) == frame_size
-        return ''.join(fmt)
+        little_bits = [None] * (self.size * 8)
+        big_bits = list(little_bits)
+        for signal in self.signals:
+            if signal.name in data:
+                value = data.get(signal.name)
+                bits = pack_bitstring(signal.size, signal.is_float, value, signal.is_signed)
+
+                if signal.is_little_endian:
+                    least = self.size * 8 - signal.startBit
+                    most = least - signal.size
+
+                    little_bits[most:least] = bits
+                else:
+                    most = signal.startBit
+                    least = most + signal.size
+
+                    big_bits[most:least] = bits
+        little_bits = reversed(tuple(grouper(little_bits, 8)))
+        little_bits = tuple(chain(*little_bits))
+        bitstring = ''.join(
+            next(x for x in (l, b, '0') if x is not None)
+            # l if l != ' ' else (b if b != ' ' else '0')
+            for l, b in zip(little_bits, big_bits)
+        )
+        return bytearray(
+            int(''.join(b), 2)
+            for b in grouper(bitstring, 8)
+        )
+
 
     def encode(self, data=None):
         """Return a byte string containing the values from data packed
@@ -811,76 +908,125 @@ class Frame(object):
 
         :param dict data: data dictionary
         :return: A byte string of the packed values.
-        :rtype: bitstruct
         """
+
         data = dict() if data is None else data
 
         if self.is_complex_multiplexed:
-            # TODO
-            pass
+            raise EncodingComplexMultiplexed
         elif self.is_multiplexed:
             # search for mulitplexer-signal
-            muxSignal = None
             for signal in self.signals:
                 if signal.is_multiplexer:
                     muxSignal = signal
                     muxVal = data.get(signal.name)
+                    break
+            else:
+                raise MissingMuxSignal
             # create list of signals which belong to muxgroup
-            encodeSignals = [muxSignal]
+            encodeSignals = [muxSignal.name]
             for signal in self.signals:
                 if signal.mux_val == muxVal or signal.mux_val is None:
-                    encodeSignals.append(signal)
-            fmt = self.bitstruct_format(encodeSignals)
-            signals = sorted(encodeSignals, key=lambda s: s.getStartbit())
-        else:
-            fmt = self.bitstruct_format()
-            signals = sorted(self.signals, key=lambda s: s.getStartbit())
-        signal_value = []
+                    encodeSignals.append(signal.name)
+            newData = dict()
+            # kick out signals, which do not belong to this mux-id
+            for signalName in data:
+                if signalName in encodeSignals:
+                    newData[signalName] = data[signalName]
+            data = newData
+        return self.signals_to_bytes(data)
+
+    def bytes_to_bitstrings(self, data):
+        """Return two arrays big and little containing bits of given data (bytearray)
+
+        :param data: bytearray of bits (little endian).
+            i.e. bytearray([0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8])
+        :return: bit arrays in big and little byteorder
+        """
+        b = tuple('{:08b}'.format(b) for b in data)
+        little = ''.join(reversed(b))
+        big = ''.join(b)
+
+        return little, big
+
+    def bitstring_to_signal_list(self, signals, big, little):
+        """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
+
+        :param signals: Iterable of signals (class signal) to decode from frame.
+        :param big: bytearray of bits (big endian).
+        :param little: bytearray of bits (little endian).
+        :return: array with raw values (same order like signals)
+        """
+        unpacked = []
         for signal in signals:
-            signal_value.append(
-                signal.phys2raw(data.get(signal.name))
-            )
+            if signal.is_little_endian:
+                least = self.size * 8 - signal.startBit
+                most = least - signal.size
 
-        return bitstruct.pack(fmt, *signal_value)
+                bits = little[most:least]
+            else:
+                most = signal.startBit
+                least = most + signal.size
 
-    def decode(self, data, decodeToStr=False):
-        """Return OrderedDictionary with Signal Name: Signal Value
+                bits = big[most:least]
 
-        :param data: Iterable or bytes.
-            i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
-        :param bool decodeToStr: If True, try to get value representation as *string* ('Init' etc.)
+            unpacked.append(unpack_bitstring(signal.size, signal.is_float, signal.is_signed, bits))
+
+        return unpacked
+
+    def unpack(self, data, report_error=True):
+        """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
+        decodes every signal in signal-list.
+
+        :param data: bytearray
+            i.e. bytearray([0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8])
         :return: OrderedDictionary
         """
+
+        rx_length = len(data)
+        if rx_length != self.size and report_error:
+            print(
+                'Received message 0x{self.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
+        else:
+            little, big = self.bytes_to_bitstrings(data)
+
+            unpacked = self.bitstring_to_signal_list(self.signals, big, little)
+
+            returnDict= dict()
+
+            for s, v in zip(self.signals, unpacked):
+                returnDict[s.name] = decodedSignal(v, s)
+
+            return returnDict
+
+    def decode(self, data):
+        """Return OrderedDictionary with Signal Name: object decodedSignal (support for multiplexed frames)
+        decodes only signals matching to muxgroup
+
+        :param data: bytearray .
+            i.e. bytearray([0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8])
+        :return: OrderedDictionary
+        """
+        decoded = self.unpack(data)
+
         if self.is_complex_multiplexed:
             # TODO
-            pass
+            raise DecodingComplexMultiplexed
         elif self.is_multiplexed:
+            returnDict = dict()
             # find multiplexer and decode only its value:
+
             for signal in self.signals:
                 if signal.is_multiplexer:
-                    fmt = self.bitstruct_format([signal])
-                    signals = sorted(self.signals, key=lambda s: s.getStartbit())
-                    signals_values = OrderedDict()
-                    for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
-                        signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
-                muxVal = int(list(signals_values.values())[0])
+                    muxVal = decoded[signal.name].raw_value
+
             # find all signals with the identified multiplexer-value
-            muxedSignals = []
             for signal in self.signals:
                 if signal.mux_val == muxVal or signal.mux_val is None:
-                    muxedSignals.append(signal)
-            fmt = self.bitstruct_format(muxedSignals)
-            signals = sorted(muxedSignals, key=lambda s: s.getStartbit())
+                    returnDict[signal.name] = decoded[signal.name]
+            return returnDict
         else:
-            fmt = self.bitstruct_format()
-            signals = sorted(self.signals, key=lambda s: s.getStartbit())
-
-        # decode
-        signals_values = OrderedDict()
-        for signal, value in zip(signals, bitstruct.unpack(fmt, data)):
-            signals_values[signal.name] = signal.raw2phys(value, decodeToStr)
-
-        return signals_values
+            return decoded
 
 
     def __str__(self):
@@ -1509,15 +1655,15 @@ class CanMatrix(object):
         """
         return self.frameById(frame_id).encode(data)
 
-    def decode(self, frame_id, data, decodeToStr=False):
-        """Return OrderedDictionary with Signal Name: Signal Value
+    def decode(self, frame_id, data):
+        """Return OrderedDictionary with Signal Name: object decodedSignal
 
         :param frame_id: frame id
         :param data: Iterable or bytes.
             i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
         :return: OrderedDictionary
         """
-        return self.frameById(frame_id).decode(data, decodeToStr)
+        return self.frameById(frame_id).decode(data)
 
     def EnumAttribs2Values(self):
         for define in self.buDefines:
@@ -1561,53 +1707,6 @@ class CanMatrix(object):
                         if define in signal.attributes:
                             signal.attributes[define] = self.signalDefines[define].values.index(signal.attributes[define])
                             signal.attributes[define] = str(signal.attributes[define])
-
-
-def computeSignalValueInFrame(startBit, ln, fmt, value):
-    """
-    Compute the Signal value in the Frame.
-
-    :param int startBit: signal start bit
-    :param int ln: signal length
-    :param int fmt: byte order, 1 for Little Endian (Intel), else Big Endian (Motorola)
-    :param int value: signal value
-    :return: data frame with signal set to value
-    :rtype: int
-    """
-
-    frame = 0
-    if fmt == 1:  # Intel
-        # using "sawtooth bit counting policy" here
-        pos = ((7 - (startBit % 8)) + 8*(int(startBit/8)))
-        while ln > 0:
-            # How many bits can we stuff in current byte?
-            # (Should be 8 for anything but the first loop)
-            availbitsInByte = 1 + (pos % 8)
-            # extract relevant bits from value
-            valueInByte = value & ((1<<availbitsInByte)-1)
-            # stuff relevant bits into frame at the "corresponding inverted bit"
-            posInFrame = ((7 - (pos % 8)) + 8*(int(pos/8)))
-            frame |= valueInByte << posInFrame
-            # move to the next byte
-            pos += 0xf
-            # discard used bytes
-            value = value >> availbitsInByte
-            # reduce length by how many bits we consumed
-            ln -= availbitsInByte
-
-    else:  # Motorola
-        # Work this out in "sequential bit counting policy"
-        # Compute the LSB position in "sequential"
-        lsbpos = ((7 - (startBit % 8)) + 8*(int(startBit/8)))
-        # deduce the MSB position
-        msbpos = 1 + lsbpos - ln
-        # "reverse" the value
-        cvalue = int(format(value, 'b')[::-1],2)
-        # shift the value to the proper position in the frame
-        frame = cvalue << msbpos
-
-    # Return frame, to be accumulated by caller
-    return frame
 
 
 class CanId(object):

@@ -5,6 +5,7 @@ bitstruct==4.0.0
 coverage==4.5.1
 future==0.16.0
 more-itertools==4.3.0
+pathlib2==2.3.2
 pluggy==0.7.1
 py==1.5.4
 pytest==3.7.2
