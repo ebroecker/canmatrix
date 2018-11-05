@@ -1029,7 +1029,11 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                 Bo.name,arGetChild(signal,"SHORT-NAME",xmlRoot,ns).text)
 
         baseType = arGetChild(isignal,"BASE-TYPE", xmlRoot, ns)
-
+        sig_long_name = arGetChild(isignal, "LONG-NAME", xmlRoot, ns)
+        if sig_long_name is not None:
+            sig_long_name = arGetChild(sig_long_name, "L-4", xmlRoot, ns)
+            if sig_long_name is not None:
+                sig_long_name = sig_long_name.text
         syssignal = arGetChild(isignal, "SYSTEM-SIGNAL", xmlRoot, ns)
         if syssignal is None:
             logger.debug('Frame %s, signal %s has no systemsignal',isignal.tag,Bo.name)
@@ -1223,6 +1227,8 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
 
             for key, value in list(values.items()):
                 newSig.addValues(key, value)
+            if sig_long_name is not None:
+                newSig.addAttribute("LongName", sig_long_name)
             Bo.addSignal(newSig)
 
 
@@ -1405,7 +1411,6 @@ def getDesc(element, arDict, ns):
     else:
         return ""
 
-
 def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     global pduFrameMapping
     connectors = arGetChild(ecu, "CONNECTORS", arDict, ns)
@@ -1567,6 +1572,7 @@ def load(file, **options):
 # Defines not jet imported...
         db.addBUDefines("NWM-Stationsadresse", 'HEX 0 63')
         db.addBUDefines("NWM-Knoten", 'ENUM  "nein","ja"')
+        db.addSignalDefines("LongName", 'STRING')
         db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
         db.addFrameDefines("GenMsgDelayTime", 'INT 0 65535')
         db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
