@@ -1200,12 +1200,22 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                     newSig.addValues(1, "TRUE")
                     newSig.addValues(0, "FALSE")
 
+            def guessValue(textValue):
+                """
+                returns a numerical value for common strings.
+                method is far from complete but helping with odd arxmls
+                :param textValue: value in text like "true"
+                :return: string for value like "1"
+                """
+                textValue = textValue.lower()
+                if textValue in ["false", "off"]:
+                    return "0"
+                elif textValue in ["true", "on"]:
+                    return "1"
+                return textValue
 
             if initvalue is not None and initvalue.text is not None:
-                if initvalue.text == "false":
-                    initvalue.text = "0"
-                elif initvalue.text == "true":
-                    initvalue.text = "1"
+                initvalue.text = guessValue(initvalue.text)
                 newSig._initValue = int(initvalue.text)
                 newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
             else:
@@ -1646,19 +1656,11 @@ def load(file, **options):
 
             db.addEcu(bu)
 
-        for bo in db.frames:
-            frame = 0
-            for sig in bo.signals:
-                if sig._initValue != 0:
-                    stbit = sig.getStartbit(bitNumbering=1, startLittle=True)
-                    frame |= computeSignalValueInFrame(
-                        sig.getStartbit(
-                            bitNumbering=1,
-                            startLittle=True),
-                        sig.size,
-                        sig.is_little_endian,
-                        sig._initValue)
-            fmt = "%0" + "%d" % bo.size + "X"
-            bo.addAttribute("GenMsgStartValue", fmt % frame)
+        for frame in db.frames:
+            sig_value_hash = dict()
+            for sig in frame.signals:
+                sig_value_hash[sig.name] = sig._initValue
+            frameData = frame.encode(sig_value_hash)
+            frame.addAttribute("GenMsgStartValue", "".join(["%02x" % x for x in frameData]))
         result[busname] = db
     return result
