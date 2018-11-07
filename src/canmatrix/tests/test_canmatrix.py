@@ -386,11 +386,11 @@ def test_define_for_int():
     assert define.max == 10
 
 
-# def test_define_for_hex():
-#     define = canmatrix.canmatrix.Define("HEX ? ?")
-#     assert define.type == "HEX"
-#     assert define.min == ?
-#     assert define.max == ?
+def test_define_for_hex():
+    define = canmatrix.canmatrix.Define("HEX 0 255")
+    assert define.type == "HEX"
+    assert define.min == 0
+    assert define.max == 255
 
 
 def test_define_for_string():
@@ -401,9 +401,15 @@ def test_define_for_string():
 
 
 def test_define_for_enum():
-    define = canmatrix.canmatrix.Define('ENUM "red","green", blue')
+    define = canmatrix.canmatrix.Define('ENUM red, green')
     assert define.type == "ENUM"
-    assert define.values == ["red", "green", "blue"]
+    assert define.values == ["red", "green"]
+
+
+def test_define_for_enum_strip_quotes():
+    define = canmatrix.canmatrix.Define('ENUM "red", "green"')
+    assert define.type == "ENUM"
+    assert define.values == ["red", "green"]
 
 
 def test_define_for_float():
