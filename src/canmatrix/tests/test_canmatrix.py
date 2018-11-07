@@ -355,6 +355,201 @@ def test_encode_decode_frame():
     assert decoded_data['signal'].raw_value == float(input_data['signal'])
 
 
+# Frame tests
+@pytest.fixture
+def empty_frame():
+    return canmatrix.canmatrix.Frame(name="test_frame")
+
+
+def test_frame_has_comment(empty_frame):
+    empty_frame.addComment("comm")
+    assert empty_frame.comment == "comm"
+
+
+def test_frame_compute_dlc():
+    frame = canmatrix.canmatrix.Frame()
+    frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=2))
+    frame.addSignal(canmatrix.canmatrix.Signal(startBit=8, size=1))
+    frame.addSignal(canmatrix.canmatrix.Signal(startBit=2, size=2))
+    frame.calcDLC()
+    assert frame.size == 2
+
+
+def test_frame_find_unused_bits():
+    frame = canmatrix.canmatrix.Frame(size=1)
+    frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=3))
+    frame.addSignal(canmatrix.canmatrix.Signal(startBit=4, size=2))
+    bit_usage = frame.findNotUsedBits()
+    assert bit_usage.count(0) == 64 - 3 - 2
+    assert bit_usage[:8] == [0, 0, 2, 2, 0, 1, 1, 1]
+
+
+def test_frame_create_dummy_signals_covers_all_bits():
+    frame = canmatrix.canmatrix.Frame(size=1)
+    frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=3))
+    frame.addSignal(canmatrix.canmatrix.Signal(startBit=4, size=2))
+    frame.createDummySignals()
+    assert len(frame.signals) == 2 + 3
+    assert frame.findNotUsedBits().count(0) == 0
+
+
+def test_frame_update_receivers():
+    frame = canmatrix.canmatrix.Frame(size=1)
+    frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=3, receiver=["GW", "Keyboard"]))
+    frame.addSignal(canmatrix.canmatrix.Signal(startBit=4, size=2, receiver=["GW", "Display"]))
+    frame.updateReceiver()
+    assert frame.receiver == ["GW", "Keyboard", "Display"]
+
+
+def test_frame_to_str():
+    frame = canmatrix.canmatrix.Frame(size=1, name="tank_level")
+    assert str(frame) == "tank_level"
+
+
+def test_frame_is_multiplexed():
+    frame = canmatrix.canmatrix.Frame(name="multiplexed_frame")
+    signal = canmatrix.canmatrix.Signal(name="mx")
+    signal.multiplexSetter("Multiplexor")
+    frame.addSignal(signal)
+    assert frame.is_multiplexed
+
+
+def test_frame_not_multiplexed():
+    frame = canmatrix.canmatrix.Frame(name="not_multiplexed_frame")
+    assert not frame.is_multiplexed
+    frame.addSignal(canmatrix.canmatrix.Signal(name="some"))
+    assert not frame.is_multiplexed
+
+
+def test_frame_calc_j1939_id():
+    # we have to set all j1939 properties in the __init__ otherwise the setters crash
+    frame = canmatrix.canmatrix.Frame(j1939_source=0x11, j1939_pgn=0xFFFF, j1939_prio=0)
+    frame.source = 0x22
+    frame.pgn = 0xAAAA
+    frame.priority = 3
+    assert hex(frame.id) == hex(0x0CAAAA22)
+
+
+def test_frame_get_j1939_properties():
+    frame = canmatrix.canmatrix.Frame(j1939_source=0x11, j1939_pgn=0xFFFF, j1939_prio=1)
+    frame.recalcJ1939Id()  # pgn property is computed from id!
+    assert frame.pgn == frame.j1939_pgn
+    assert frame.source == frame.j1939_source
+    assert frame.priority == frame.j1939_prio
+
+
+def test_frame_add_transmitter(empty_frame):
+    empty_frame.addTransmitter("BCM")
+    assert empty_frame.transmitters == ["BCM"]
+
+
+def test_frame_add_transmitter_no_duplicities(empty_frame):
+    empty_frame.addTransmitter("BCM")
+    empty_frame.addTransmitter("BCM")
+    assert empty_frame.transmitters == ["BCM"]
+
+
+def test_frame_delete_transmitter(empty_frame):
+    empty_frame.addTransmitter("MFL")
+    empty_frame.addTransmitter("BCM")
+    empty_frame.delTransmitter("MFL")
+    assert empty_frame.transmitters == ["BCM"]
+
+
+def test_frame_delete_wrong_transmitter_doesnt_raise(empty_frame):
+    empty_frame.delTransmitter("wrong")
+
+
+def test_frame_find_signal(empty_frame):
+    empty_frame.addSignal(canmatrix.canmatrix.Signal("first"))
+    second_signal = canmatrix.canmatrix.Signal("second")
+    empty_frame.addSignal(second_signal)
+    empty_frame.addSignal(canmatrix.canmatrix.Signal("third"))
+    assert empty_frame.signalByName("second") == second_signal
+
+
+def test_frame_find_missing_signal(empty_frame):
+    assert empty_frame.signalByName("wrong") is None
+
+
+def test_frame_glob_signals(empty_frame):
+    audio_signal = canmatrix.canmatrix.Signal(name="front_audio_volume")
+    empty_frame.addSignal(audio_signal)
+    empty_frame.addSignal(canmatrix.canmatrix.Signal(name="display_dimming"))
+    assert empty_frame.globSignals("*audio*") == [audio_signal]
+
+
+def test_frame_add_attribute(empty_frame):
+    empty_frame.addAttribute("attr1", "value1")
+    assert empty_frame.attributes == {"attr1": "value1"}
+
+
+def test_frame_del_attribute(empty_frame):
+    empty_frame.addAttribute("attr1", "value1")
+    empty_frame.delAttribute("attr1")
+    assert "attr1" not in empty_frame.attributes
+
+
+def test_frame_del_missing_attribute_doesnt_raise(empty_frame):
+    empty_frame.delAttribute("wrong")
+
+
+def test_frame_is_iterable(empty_frame, some_signal):
+    empty_frame.addSignal(some_signal)
+    assert [s for s in empty_frame] == [some_signal]
+
+
+def test_frame_find_mandatory_attribute(empty_frame):
+    assert empty_frame.attribute("id") == empty_frame.id
+
+
+def test_frame_find_optional_attribute(empty_frame):
+    empty_frame.addAttribute("attr1", "str1")
+    assert empty_frame.attribute("attr1") == "str1"
+
+
+def test_frame_no_attribute(empty_frame):
+    assert empty_frame.attribute("wrong") is None
+
+
+def test_frame_no_attribute_with_default(empty_frame):
+    assert empty_frame.attribute("wrong", default=0) == 0
+
+
+def test_frame_default_attr_from_db(empty_frame):
+    define = canmatrix.canmatrix.Define("INT 0 255")
+    define.defaultValue = 33
+    matrix = canmatrix.canmatrix.CanMatrix(frameDefines={"from_db": define})
+    assert empty_frame.attribute("from_db", db=matrix, default=2) == 33
+    assert empty_frame.attribute("wrong", db=matrix, default=2) == 2
+
+
+def test_frame_add_signal_group(empty_frame):
+    signal_a = canmatrix.canmatrix.Signal(name="A")
+    signal_b = canmatrix.canmatrix.Signal(name="B")
+    signal_c = canmatrix.canmatrix.Signal(name="C")
+    empty_frame.signals = [signal_a, signal_b, signal_c]
+    empty_frame.addSignalGroup("AB", 0, ["A", "B"])
+    assert empty_frame.signalGroups[0].signals == [signal_a, signal_b]
+
+
+def test_frame_add_signal_group_wrong_signal(empty_frame):
+    signal_a = canmatrix.canmatrix.Signal(name="A")
+    empty_frame.signals = [signal_a]
+    empty_frame.addSignalGroup("Aw", 0, ["A", "wrong", "\t"])
+    assert empty_frame.signalGroups[0].signals == [signal_a]
+
+
+def test_frame_find_signal_group(empty_frame):
+    empty_frame.addSignalGroup("G1", 1, [])
+    assert empty_frame.signalGroupByName("G1") is not None
+
+
+def test_frame_find_wrong_signal_group(empty_frame):
+    empty_frame.addSignalGroup("G1", 1, [])
+    assert empty_frame.signalGroupByName("wrong") is None
+
+
 # Define tests
 def test_define_set_default():
     define = canmatrix.canmatrix.Define("")
