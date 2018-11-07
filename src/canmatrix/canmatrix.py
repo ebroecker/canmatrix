@@ -51,7 +51,7 @@ from itertools import chain
 import struct
 
 from past.builtins import basestring
-import canmatrix.copy as copy
+import copy
 
 
 class ExceptionTemplate(Exception):
