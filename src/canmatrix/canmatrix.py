@@ -1092,9 +1092,10 @@ class Define(object):
                 self.values.append(value)
 
         elif definition[0:3] == 'HEX':
+            # parse like INT but HEX indicates different display format
             self.type = 'HEX'
             min, max = definition[4:].split(' ', 2)
-            self.min = safeConvertStrToInt(min)  # TODO check: the same for INT and HEX?
+            self.min = safeConvertStrToInt(min)
             self.max = safeConvertStrToInt(max)
 
         elif definition[0:5] == 'FLOAT':
