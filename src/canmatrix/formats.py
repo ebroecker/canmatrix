@@ -2,7 +2,6 @@
 from importlib import import_module
 import sys
 import logging
-logger = logging.getLogger('root')
 import canmatrix
 import os
 if sys.version_info > (3, 0):
@@ -10,6 +9,7 @@ if sys.version_info > (3, 0):
 else:
     import StringIO
 
+logger = logging.getLogger(__name__)
 moduleList = ["arxml", "cmcsv", "dbc", "dbf", "cmjson",
               "kcd", "fibex", "sym", "xls", "xlsx", "yaml"]
 loadedFormats = []

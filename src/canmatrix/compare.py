@@ -22,12 +22,12 @@
 
 from __future__ import print_function
 from __future__ import absolute_import
-
+import logging
 
 from .log import setup_logger, set_log_level
-logger = setup_logger('root')
-import types
 import sys
+
+logger = logging.getLogger(__name__)
 
 
 class compareResult(object):
@@ -479,7 +479,7 @@ def dumpResult(res, depth=0):
 
 
 def main():
-
+    setup_logger()
     from optparse import OptionParser
 
     usage = """

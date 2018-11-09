@@ -27,8 +27,8 @@ from __future__ import absolute_import
 import logging
 
 
-def setup_logger(name):
-    """Setup a project wide logger singleton"""
+def setup_logger(name='canmatrix'):
+    """Setup the module logger for canmatrix module. Return logger instance for possible further setting."""
     formatter = logging.Formatter(
         fmt='%(levelname)s - %(module)s - %(message)s')
 

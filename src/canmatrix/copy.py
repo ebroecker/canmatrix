@@ -21,9 +21,13 @@
 # DAMAGE.
 
 from __future__ import absolute_import
+import logging
 
 from .canmatrix import *
 from copy import deepcopy
+
+logger = logging.getLogger(__name__)
+
 
 def copyBU(buId, sourceDb, targetDb):
     """

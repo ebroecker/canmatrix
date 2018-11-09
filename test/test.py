@@ -21,7 +21,7 @@ if sys.version_info > (3, 2):
         sys.exit()
 
 from canmatrix.log import setup_logger, set_log_level
-logger = setup_logger('root')
+logger = setup_logger()
 set_log_level(logger, -1)
 
 export_types = []

@@ -30,7 +30,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 import logging
-logger = logging.getLogger('root')
 
 from builtins import *
 from lxml import etree
@@ -38,6 +37,8 @@ from lxml import etree
 from .canmatrix import *
 
 import decimal
+
+logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
 
 
