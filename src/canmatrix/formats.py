@@ -84,7 +84,7 @@ def load(fileObject, importType, key="", flatImport=None, **options):
 
 def dump(canMatrixOrCluster, fileObject, exportType, **options):
     moduleInstance = sys.modules["canmatrix." + exportType]
-    if isinstance(canmatrixOrCluster, canmatrix.CanMatrix):
+    if isinstance(canMatrixOrCluster, canmatrix.CanMatrix):
         moduleInstance.dump(canMatrixOrCluster, fileObject, **options)
     elif "clusterExporter" in supportedFormats[exportType]:
         moduleInstance.dump(canMatrixOrCluster, fileObject, **options)
