@@ -112,11 +112,11 @@
       <ho:UNIT-SPEC>
         <ho:UNIT ID="UNIT_someTestSignal">
           <ho:SHORT-NAME>someTestSignal</ho:SHORT-NAME>
-          <ho:DISPLAY-NAME></ho:DISPLAY-NAME>
+          <ho:DISPLAY-NAME>specialCharUnit&#176;$</ho:DISPLAY-NAME>
         </ho:UNIT>
         <ho:UNIT ID="UNIT_Signal">
           <ho:SHORT-NAME>Signal</ho:SHORT-NAME>
-          <ho:DISPLAY-NAME></ho:DISPLAY-NAME>
+          <ho:DISPLAY-NAME>someUnit</ho:DISPLAY-NAME>
         </ho:UNIT>
       </ho:UNIT-SPEC>
       <fx:CODINGS>

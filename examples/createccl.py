@@ -95,7 +95,7 @@ def main():
             receiveDict[frame] = receiveIndex
             receiveIndex += 1
 
-        if ecu in frame.transmitter:
+        if ecu in frame.transmitters:
             txDict[frame] = sendIndex
             sendIndex += 1
 #            print frame.name

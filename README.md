@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ebroecker/canmatrix.svg?branch=master)](https://travis-ci.org/ebroecker/canmatrix)
+[![Build Status](https://travis-ci.org/ebroecker/canmatrix.svg?branch=development)](https://travis-ci.org/ebroecker/canmatrix)
 
 ## **Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats. ##
 
@@ -39,6 +39,11 @@ Install *canmatrix* with either "pip install canmatrix" or  "python setup.py ins
 This installs the *canmatrix* package into your python installation.
 
 In addition to the *canmatrix* package there are 2 scripts installed with this package:
+
+
+for additional formats [arxml, kcd, fibex, xls, xlsx] use syntax like:
+`pip install git+https://github.com/ebroecker/canmatrix#egg=canmatrix[kcd]`
+
 
 1. **canconvert**: 
 

@@ -755,8 +755,15 @@
 [START_PARAM_NODE]
 [END_PARAM_NODE]
 [START_PARAM_MSG]
+"GenMsgCycleTime",INT,0,65535,0
+"Receivable",BOOL,False,True,0
+"Sendable",BOOL,False,True,0
 [END_PARAM_MSG]
 [START_PARAM_SIG]
+"GenSigStartValue",FLOAT,-3.4E+038,3.4E+038,0
+"HexadecimalOutput",BOOL,False,True,0
+"DisplayDecimalPlaces",INT,0,65535,0
+"LongName",STR,0
 [END_PARAM_SIG]
 [START_PARAM_VAL]
 [START_PARAM_NODE_VAL]

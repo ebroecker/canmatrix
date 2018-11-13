@@ -7,26 +7,26 @@ BS_:
 
 BU_: 
 
+VAL_TABLE_ Baudrate 0 "125K" 1 "250K" 2 "500K" 3 "1M";
+VAL_TABLE_ BridgeFlt 0 "Normal" 1 "FLT_A" 2 "N/A" 3 "FLT_C" 4 "OverVoltage" 5 "FLT_B" 6 "Overcurrent" 7 "5V";
+VAL_TABLE_ CANStatus 0 "Normal" 1 "Warning" 3 "ErrorPassive" 4 "N/A";
+VAL_TABLE_ Enable 0 "Disable" 1 "Enable" 2 "Error" 3 "N/A";
 VAL_TABLE_ EnableSplitPhase 0 "Normal - Three Phase Mode" 1 "Enable Split Phase Mode" 2 "Error" 3 "N/A";
 VAL_TABLE_ EnableUPSMode 0 "Disable" 1 "Enable" 2 "Error" 3 "N/A";
-VAL_TABLE_ BridgeFlt 0 "Normal" 1 "FLT_A" 2 "N/A" 3 "FLT_C" 4 "OverVoltage" 5 "FLT_B" 6 "Overcurrent" 7 "5V";
-VAL_TABLE_ Enable 0 "Disable" 1 "Enable" 2 "Error" 3 "N/A";
-VAL_TABLE_ IGBTsEnabled 0 "Disabled" 1 "Enabled" 2 "Error" 3 "N/A";
-VAL_TABLE_ Relay 0 "Open" 1 "Closed" 2 "Error" 3 "N/A";
-VAL_TABLE_ WakeUpSignal 0 "Not Active" 1 "Active" 2 "Error" 3 "N/A";
-VAL_TABLE_ InvertHwEnable 0 "No invert" 1 "Invert" 2 "Error" 3 "N/A";
 VAL_TABLE_ Fault 0 "Normal" 1 "Fault Active" 2 "Error" 3 "N/A";
-VAL_TABLE_ MessageValid 0 "Invalid" 1 "Valid" 2 "Error" 3 "N/A";
-VAL_TABLE_ RelayCommand 0 "Normal" 1 "Force On" 2 "Error" 3 "N/A";
-VAL_TABLE_ FaultConfig 0 "Warning" 1 "Fault" 2 "Error" 3 "N/A";
-VAL_TABLE_ State 0 "Power On Reset, and a quoted comma" 1 "Ready" 2 "Following" 3 "Fault" 4 "Forming" 5 "N/A" 6 "N/A" 7 "N/A" 8 "N/A" 9 "N/A" 10 "N/A" 11 "N/A" 12 "N/A" 13 "N/A" 14 "N/A" 15 "N/A";
-VAL_TABLE_ LineVoltagePresent 0 "No_Voltage" 1 "Voltage_Detected" 2 "Error" 3 "N/A";
-VAL_TABLE_ PhaseRotation 0 "Negative" 1 "Positive" 2 "Error" 3 "N/A";
-VAL_TABLE_ MasterFollower 0 "Master" 1 "Follower" 2 "Error" 3 "N/A";
 VAL_TABLE_ FaultClear 0 "Normal" 1 "Clear Faults" 2 "Error" 3 "N/A";
-VAL_TABLE_ Baudrate 0 "125K" 1 "250K" 2 "500K" 3 "1M";
-VAL_TABLE_ CANStatus 0 "Normal" 1 "Warning" 3 "ErrorPassive" 4 "N/A";
+VAL_TABLE_ FaultConfig 0 "Warning" 1 "Fault" 2 "Error" 3 "N/A";
+VAL_TABLE_ IGBTsEnabled 0 "Disabled" 1 "Enabled" 2 "Error" 3 "N/A";
+VAL_TABLE_ InvertHwEnable 0 "No invert" 1 "Invert" 2 "Error" 3 "N/A";
+VAL_TABLE_ LineVoltagePresent 0 "No_Voltage" 1 "Voltage_Detected" 2 "Error" 3 "N/A";
+VAL_TABLE_ MasterFollower 0 "Master" 1 "Follower" 2 "Error" 3 "N/A";
+VAL_TABLE_ MessageValid 0 "Invalid" 1 "Valid" 2 "Error" 3 "N/A";
+VAL_TABLE_ PhaseRotation 0 "Negative" 1 "Positive" 2 "Error" 3 "N/A";
 VAL_TABLE_ PowerAvail 0 "None" 1 "Available" 2 "Error" 3 "N/A";
+VAL_TABLE_ Relay 0 "Open" 1 "Closed" 2 "Error" 3 "N/A";
+VAL_TABLE_ RelayCommand 0 "Normal" 1 "Force On" 2 "Error" 3 "N/A";
+VAL_TABLE_ State 0 "Power On Reset, and a quoted comma" 1 "Ready" 2 "Following" 3 "Fault" 4 "Forming" 5 "N/A" 6 "N/A" 7 "N/A" 8 "N/A" 9 "N/A" 10 "N/A" 11 "N/A" 12 "N/A" 13 "N/A" 14 "N/A" 15 "N/A";
+VAL_TABLE_ WakeUpSignal 0 "Not Active" 1 "Active" 2 "Error" 3 "N/A";
 
 BO_ 2164239169 CommandModeControl: 8 Vector__XXX
  SG_ Enable_command : 1|2@0+ (1,0) [0|1] "" Vector__XXX
@@ -59,30 +59,30 @@ BO_ 2365566785 CommandFactoryControl: 8 Vector__XXX
  SG_ FactoryAccess : 23|16@0+ (1,0) [0|65535] "" Vector__XXX
 
 BO_ 2365565505 CommandSetNVParam: 8 Vector__XXX
- SG_ CommandSetNVParam_MUX M  : 7|16@0- (1,0) [-32768|32767] "" Vector__XXX
- SG_ Dummy m0  : 23|16@0+ (1,0) [0|65535] "" Vector__XXX
- SG_ VUnder50pct m1  : 23|16@0+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ V50to88pct m1  : 39|16@0+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ V110to120pct m1  : 55|16@0+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ VOver120 m2  : 23|16@0+ (1,0) [1|30000] "" Vector__XXX
- SG_ FreqHi0 m3  : 23|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqLo0 m3  : 39|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqVeryLo0 m3  : 55|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqVeryLo1 m4  : 23|16@0+ (1,0) [160|160] "ms" Vector__XXX
- SG_ FreqLo1 m4  : 39|16@0+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ FreqHi1 m4  : 55|16@0+ (1,0) [160|160] "ms" Vector__XXX
- SG_ NodeID m5  : 23|8@0+ (1,0) [0|247] "" Vector__XXX
- SG_ SA_Mask m5  : 31|8@0+ (1,0) [0|255] "" Vector__XXX
- SG_ Baudrate m5  : 39|4@0+ (1,0) [0|3] "" Vector__XXX
- SG_ ThermalOverload m6  : 17|2@0+ (1,0) [0|1] "" Vector__XXX
- SG_ MX1Open m7  : 23|16@0+ (1,0) [0|5000] "ms" Vector__XXX
- SG_ MX1Close m7  : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ MX2Open m7  : 55|16@0+ (1,0) [0|1] "ms" Vector__XXX
- SG_ MX2Close m8  : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K1Open m8  : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K1Close m8  : 55|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K2Open m10  : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ K2Close m10  : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ CommandSetNVParam_MUX M : 7|16@0- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Dummy m0 : 23|16@0+ (1,0) [0|65535] "" Vector__XXX
+ SG_ VUnder50pct m1 : 23|16@0+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ V50to88pct m1 : 39|16@0+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ V110to120pct m1 : 55|16@0+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ VOver120 m2 : 23|16@0+ (1,0) [1|30000] "" Vector__XXX
+ SG_ FreqHi0 m3 : 23|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqLo0 m3 : 39|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqVeryLo0 m3 : 55|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqVeryLo1 m4 : 23|16@0+ (1,0) [160|160] "ms" Vector__XXX
+ SG_ FreqLo1 m4 : 39|16@0+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ FreqHi1 m4 : 55|16@0+ (1,0) [160|160] "ms" Vector__XXX
+ SG_ NodeID m5 : 23|8@0+ (1,0) [0|247] "" Vector__XXX
+ SG_ SA_Mask m5 : 31|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ Baudrate m5 : 39|4@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ ThermalOverload m6 : 17|2@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ MX1Open m7 : 23|16@0+ (1,0) [0|5000] "ms" Vector__XXX
+ SG_ MX1Close m7 : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ MX2Open m7 : 55|16@0+ (1,0) [0|1] "ms" Vector__XXX
+ SG_ MX2Close m8 : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K1Open m8 : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K1Close m8 : 55|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K2Open m10 : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ K2Close m10 : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
 
 BO_ 2164235073 CommandModeControlAPU2: 8 Vector__XXX
  SG_ Enable_command : 1|2@0+ (1,0) [0|1] "" Vector__XXX
@@ -151,8 +151,8 @@ BO_ 2634008055 StatusControlVoltage: 8 Vector__XXX
  SG_ v15_Supply : 55|16@0- (0.01,0) [-327.68|327.67] "V" Vector__XXX
 
 BO_ 2566900727 StatusTemps: 8 Vector__XXX
- SG_ TempInlet_measured : 7|16@0- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
- SG_ TempInternal_measured : 23|16@0- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ TempInlet_measured : 7|16@0- (0.1,0) [-3276.8|3276.7000000000003] "C" Vector__XXX
+ SG_ TempInternal_measured : 23|16@0- (0.1,0) [-3276.8|3276.7000000000003] "C" Vector__XXX
  SG_ ConverterLosses : 39|16@0+ (1,0) [0|1] "W" Vector__XXX
 
 BO_ 2365573367 StatusFaults: 8 Vector__XXX
@@ -177,9 +177,9 @@ BO_ 2365573367 StatusFaults: 8 Vector__XXX
  SG_ ThermalOverload : 33|2@0+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 2365571831 StatusACParameters: 8 Vector__XXX
- SG_ VoltageAC_measured : 7|16@0- (0.1,0) [-3276.8|3276.7] "V" Vector__XXX
+ SG_ VoltageAC_measured : 7|16@0- (0.1,0) [-3276.8|3276.7000000000003] "V" Vector__XXX
  SG_ CurrentAC_measured : 23|16@0- (1,0) [-32768|32767] "A" Vector__XXX
- SG_ Frequency_measured : 39|16@0- (0.1,0) [-3276.8|3276.7] "Hz" Vector__XXX
+ SG_ Frequency_measured : 39|16@0- (0.1,0) [-3276.8|3276.7000000000003] "Hz" Vector__XXX
 
 BO_ 2634008567 StatusDCParameters: 8 Vector__XXX
  SG_ VoltageDCBus : 23|16@0- (1,0) [-32768|32767] "V" Vector__XXX
@@ -207,30 +207,30 @@ BO_ 2634010103 softwareRevHash: 8 Vector__XXX
  SG_ Hash : 7|28@0+ (1,0) [0|268435455] "" Vector__XXX
 
 BO_ 2634000887 StatusNVParam: 8 Vector__XXX
- SG_ StatusNVParam_MUX M  : 7|16@0- (1,0) [-32768|32767] "" Vector__XXX
- SG_ Dummy m0  : 23|16@0+ (1,0) [5|10] "" Vector__XXX
- SG_ VUnder50pct m1  : 23|16@0+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ V50to88pct m1  : 39|16@0+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ V110to120pct m1  : 55|16@0+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ VOver120 m2  : 23|16@0+ (1,0) [1|30000] "" Vector__XXX
- SG_ FreqHi0 m3  : 23|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqLo0 m3  : 39|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqVeryLo0 m3  : 55|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
- SG_ FreqVeryLo1 m4  : 23|16@0+ (1,0) [160|160] "ms" Vector__XXX
- SG_ FreqLo1 m4  : 39|16@0+ (1,0) [1|30000] "ms" Vector__XXX
- SG_ FreqHi1 m4  : 55|16@0+ (1,0) [160|160] "ms" Vector__XXX
- SG_ StatusNodeID m5  : 23|8@0+ (1,0) [0|247] "" Vector__XXX
- SG_ StatusSA_Mask m5  : 31|8@0+ (1,0) [0|255] "" Vector__XXX
- SG_ StatusBaudrate m5  : 39|4@0+ (1,0) [0|3] "" Vector__XXX
- SG_ StatusThermalOverload m6  : 17|2@0+ (1,0) [0|1] "" Vector__XXX
- SG_ StatusMX1Open m7  : 23|16@0+ (1,0) [0|5000] "ms" Vector__XXX
- SG_ StatusMX1Close m7  : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusMX2Open m7  : 55|16@0+ (1,0) [0|1] "ms" Vector__XXX
- SG_ StatusMX2Close m8  : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusK1Open m8  : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusK1Close m8  : 55|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusK2Open m9  : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
- SG_ StatusK2Close m9  : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusNVParam_MUX M : 7|16@0- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Dummy m0 : 23|16@0+ (1,0) [5|10] "" Vector__XXX
+ SG_ VUnder50pct m1 : 23|16@0+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ V50to88pct m1 : 39|16@0+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ V110to120pct m1 : 55|16@0+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ VOver120 m2 : 23|16@0+ (1,0) [1|30000] "" Vector__XXX
+ SG_ FreqHi0 m3 : 23|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqLo0 m3 : 39|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqVeryLo0 m3 : 55|16@0+ (0.1,0) [40|70] "Hz" Vector__XXX
+ SG_ FreqVeryLo1 m4 : 23|16@0+ (1,0) [160|160] "ms" Vector__XXX
+ SG_ FreqLo1 m4 : 39|16@0+ (1,0) [1|30000] "ms" Vector__XXX
+ SG_ FreqHi1 m4 : 55|16@0+ (1,0) [160|160] "ms" Vector__XXX
+ SG_ StatusNodeID m5 : 23|8@0+ (1,0) [0|247] "" Vector__XXX
+ SG_ StatusSA_Mask m5 : 31|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ StatusBaudrate m5 : 39|4@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ StatusThermalOverload m6 : 17|2@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ StatusMX1Open m7 : 23|16@0+ (1,0) [0|5000] "ms" Vector__XXX
+ SG_ StatusMX1Close m7 : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusMX2Open m7 : 55|16@0+ (1,0) [0|1] "ms" Vector__XXX
+ SG_ StatusMX2Close m8 : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusK1Open m8 : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusK1Close m8 : 55|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusK2Open m9 : 23|16@0+ (1,0) [0|2000] "ms" Vector__XXX
+ SG_ StatusK2Close m9 : 39|16@0+ (1,0) [0|2000] "ms" Vector__XXX
 
 BO_ 2566902007 StatusLineCurrents: 8 Vector__XXX
  SG_ L1Current_measured : 7|16@0+ (1,0) [0|1] "A" Vector__XXX

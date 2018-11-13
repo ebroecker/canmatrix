@@ -1,6 +1,6 @@
 <NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:schemaLocation="Definition.xsd">
   <Document name="Some Document Name">some text</Document>
-  <Bus>
+  <Bus name="converted/from_xlsx/test">
     <Message id="0xFF9B41" length="9" name="CommandModeControlAPU2">
       <Signal name="Enable_command" offset="1" length="2" endianess="big">
         <Notes></Notes>
