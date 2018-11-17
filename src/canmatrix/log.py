@@ -27,15 +27,18 @@ from __future__ import absolute_import
 import logging
 
 
-def setup_logger(name='canmatrix'):
-    """Setup the module logger for canmatrix module. Return logger instance for possible further setting."""
+def setup_logger():
+    """Setup the root logger. Return the logger instance for possible further setting and use.
+
+    To be used from CLI scripts only.
+    """
     formatter = logging.Formatter(
         fmt='%(levelname)s - %(module)s - %(message)s')
 
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
 
-    logger = logging.getLogger(name)
+    logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     logger.addHandler(handler)
     return logger
