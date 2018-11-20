@@ -46,3 +46,27 @@ def test_colliding_mux_values():
 
     assert 'FirstMux' in error_string
     assert 'SecondMux' in error_string
+
+
+def test_parse_longname():
+    f = io.BytesIO(
+        textwrap.dedent(
+            '''\
+            FormatVersion=5.0 // Do not edit this line!
+            Title="a file"
+
+            {SEND}
+
+            [pass]
+            DLC=8
+            Var=Password unsigned 16,16 /ln:"Access Level : Password"
+            ''',
+        ).encode('utf-8'),
+    )
+
+    matrix = canmatrix.sym.load(f)
+    for frame in matrix.frames:
+        for s in frame.signals:
+            ln = s.attributes.get('LongName')
+            if ln:
+                assert ln == 'Access Level : Password'

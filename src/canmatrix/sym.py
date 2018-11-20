@@ -492,7 +492,7 @@ def load(f, **options):
                         elif switch == "-h":
                             hexadecimal_output = True
                         elif switch.startswith('/'):
-                            s = switch[1:].split(':')
+                            s = switch[1:].split(':', 1)
                             if s[0] == 'u':
                                 unit = s[1]
                             elif s[0] == 'f':
