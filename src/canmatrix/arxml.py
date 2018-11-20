@@ -1204,14 +1204,14 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                     newSig.addValues(1, "TRUE")
                     newSig.addValues(0, "FALSE")
 
-            def guessValue(textValue):
+            def guess_value(textValue):
                 """
-                returns a numerical value for common strings.
+                returns a string value for common strings.
                 method is far from complete but helping with odd arxmls
                 :param textValue: value in text like "true"
                 :return: string for value like "1"
                 """
-                textValue = textValue.lower()
+                textValue = textValue.casefold()
                 if textValue in ["false", "off"]:
                     return "0"
                 elif textValue in ["true", "on"]:
@@ -1219,7 +1219,7 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                 return textValue
 
             if initvalue is not None and initvalue.text is not None:
-                initvalue.text = guessValue(initvalue.text)
+                initvalue.text = guess_value(initvalue.text)
                 newSig._initValue = int(initvalue.text)
                 newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
             else:
