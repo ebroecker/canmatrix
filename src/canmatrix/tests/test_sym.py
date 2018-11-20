@@ -48,7 +48,7 @@ def test_colliding_mux_values():
     assert 'SecondMux' in error_string
 
 
-def test_parse_longname():
+def test_parse_longname_with_colon():
     f = io.BytesIO(
         textwrap.dedent(
             '''\
@@ -65,8 +65,6 @@ def test_parse_longname():
     )
 
     matrix = canmatrix.sym.load(f)
-    for frame in matrix.frames:
-        for s in frame.signals:
-            ln = s.attributes.get('LongName')
-            if ln:
-                assert ln == 'Access Level : Password'
+    frame = matrix.frames[0]
+    signal = frame.signals[0]
+    assert signal.attributes['LongName'] == 'Access Level : Password'
