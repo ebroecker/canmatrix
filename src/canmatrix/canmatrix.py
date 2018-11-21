@@ -51,7 +51,7 @@ from itertools import chain
 import struct
 
 from past.builtins import basestring
-import copy
+import copy 
 
 
 class ExceptionTemplate(Exception):
