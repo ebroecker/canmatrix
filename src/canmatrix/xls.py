@@ -501,7 +501,8 @@ def load(file, **options):
                         commandStr = additionalInputs[additionalIndex].replace("signal", "newSig")
                         commandStr += "="
                         commandStr += str(sh.cell(rownum, additionalIndex).value)
-                        exec (commandStr)
+                        if(len(str(sh.cell(rownum, additionalIndex).value)) > 0):
+                            exec (commandStr)
 
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
@@ -547,18 +548,23 @@ def load(file, **options):
             unit = ""
             mini = float_factory(mini)
             maxi = float_factory(maxi)
-            newSig.min = mini
-            newSig.max = maxi
-            newSig.offset = mini
+            if newSig.min is None:
+                newSig.min = mini
+            if newSig.max is None:
+                newSig.max = maxi
+            if newSig.offset is None:
+                newSig.offset = mini
 
         elif valueName.__len__() > 0:
             if value.strip().__len__() > 0:
                 value = int(float(value))
                 newSig.addValues(value, valueName)
             maxi = pow(2, signalLength) - 1
-            newSig.max = float_factory(maxi)
+            if newSig.max is None:
+                newSig.max = float_factory(maxi)
         else:
-            newSig.offset = 0
+            if newSig.offset is None:
+                newSig.offset = 0
 
     for frame in db.frames:
         frame.updateReceiver()
