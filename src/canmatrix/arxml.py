@@ -1030,7 +1030,11 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                 Bo.name,arGetChild(signal,"SHORT-NAME",xmlRoot,ns).text)
 
         baseType = arGetChild(isignal,"BASE-TYPE", xmlRoot, ns)
-
+        sig_long_name = arGetChild(isignal, "LONG-NAME", xmlRoot, ns)
+        if sig_long_name is not None:
+            sig_long_name = arGetChild(sig_long_name, "L-4", xmlRoot, ns)
+            if sig_long_name is not None:
+                sig_long_name = sig_long_name.text
         syssignal = arGetChild(isignal, "SYSTEM-SIGNAL", xmlRoot, ns)
         if syssignal is None:
             logger.debug('Frame %s, signal %s has no systemsignal',isignal.tag,Bo.name)
@@ -1201,12 +1205,22 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                     newSig.addValues(1, "TRUE")
                     newSig.addValues(0, "FALSE")
 
+            def guess_value(textValue):
+                """
+                returns a string value for common strings.
+                method is far from complete but helping with odd arxmls
+                :param textValue: value in text like "true"
+                :return: string for value like "1"
+                """
+                textValue = textValue.casefold()
+                if textValue in ["false", "off"]:
+                    return "0"
+                elif textValue in ["true", "on"]:
+                    return "1"
+                return textValue
 
             if initvalue is not None and initvalue.text is not None:
-                if initvalue.text == "false":
-                    initvalue.text = "0"
-                elif initvalue.text == "true":
-                    initvalue.text = "1"
+                initvalue.text = guess_value(initvalue.text)
                 newSig._initValue = int(initvalue.text)
                 newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
             else:
@@ -1214,6 +1228,8 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
 
             for key, value in list(values.items()):
                 newSig.addValues(key, value)
+            if sig_long_name is not None:
+                newSig.addAttribute("LongName", sig_long_name)
             Bo.addSignal(newSig)
 
 
@@ -1396,7 +1412,6 @@ def getDesc(element, arDict, ns):
     else:
         return ""
 
-
 def processEcu(ecu, db, arDict, multiplexTranslation, ns):
     global pduFrameMapping
     connectors = arGetChild(ecu, "CONNECTORS", arDict, ns)
@@ -1558,6 +1573,7 @@ def load(file, **options):
 # Defines not jet imported...
         db.addBUDefines("NWM-Stationsadresse", 'HEX 0 63')
         db.addBUDefines("NWM-Knoten", 'ENUM  "nein","ja"')
+        db.addSignalDefines("LongName", 'STRING')
         db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
         db.addFrameDefines("GenMsgDelayTime", 'INT 0 65535')
         db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
@@ -1647,19 +1663,11 @@ def load(file, **options):
 
             db.addEcu(bu)
 
-        for bo in db.frames:
-            frame = 0
-            for sig in bo.signals:
-                if sig._initValue != 0:
-                    stbit = sig.getStartbit(bitNumbering=1, startLittle=True)
-                    frame |= computeSignalValueInFrame(
-                        sig.getStartbit(
-                            bitNumbering=1,
-                            startLittle=True),
-                        sig.size,
-                        sig.is_little_endian,
-                        sig._initValue)
-            fmt = "%0" + "%d" % bo.size + "X"
-            bo.addAttribute("GenMsgStartValue", fmt % frame)
+        for frame in db.frames:
+            sig_value_hash = dict()
+            for sig in frame.signals:
+                sig_value_hash[sig.name] = sig._initValue
+            frameData = frame.encode(sig_value_hash)
+            frame.addAttribute("GenMsgStartValue", "".join(["%02x" % x for x in frameData]))
         result[busname] = db
     return result

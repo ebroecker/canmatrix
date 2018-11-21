@@ -48,7 +48,7 @@ from itertools import chain
 import struct
 
 from past.builtins import basestring
-import copy
+import copy 
 
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal
