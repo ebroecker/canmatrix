@@ -34,7 +34,7 @@ import os.path
 import xlsxwriter
 from canmatrix.xls_common import *
 
-
+logger = logging.getLogger(__name__)
 
 # Font Size : 8pt * 20 = 160
 #font = 'font: name Arial Narrow, height 160'

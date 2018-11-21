@@ -25,13 +25,15 @@ from __future__ import absolute_import
 
 #from .log import setup_logger, set_log_level
 from canmatrix.log import setup_logger, set_log_level
-logger = setup_logger('root')
 import sys
 import os
+import logging
 sys.path.append('..')
 import canmatrix.formats
 import canmatrix.canmatrix as cm
 import canmatrix.copy as cmcp
+
+logger = logging.getLogger(__name__)
 
 
 def convert(infile, outfileName, **options):
@@ -201,6 +203,7 @@ def convert(infile, outfileName, **options):
 
 
 def main():
+    setup_logger()
     from optparse import OptionParser
 
     usage = """

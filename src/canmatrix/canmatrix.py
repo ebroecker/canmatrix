@@ -39,10 +39,7 @@ from collections import OrderedDict
 import logging
 import fnmatch
 import decimal
-defaultFloatFactory = decimal.Decimal
 
-
-logger = logging.getLogger('root')
 try:
     from itertools import zip_longest as zip_longest
 except ImportError:
@@ -53,6 +50,8 @@ import struct
 from past.builtins import basestring
 import copy 
 
+logger = logging.getLogger(__name__)
+defaultFloatFactory = decimal.Decimal
 
 class ExceptionTemplate(Exception):
     def __call__(self, *args):
