@@ -26,7 +26,6 @@ from __future__ import division
 from __future__ import absolute_import
 
 import logging
-logger = logging.getLogger('root')
 
 from builtins import *
 import collections
@@ -34,6 +33,8 @@ import shlex
 from .canmatrix import *
 import sys
 import decimal
+
+logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
 
 
@@ -492,7 +493,7 @@ def load(f, **options):
                         elif switch == "-h":
                             hexadecimal_output = True
                         elif switch.startswith('/'):
-                            s = switch[1:].split(':')
+                            s = switch[1:].split(':', 1)
                             if s[0] == 'u':
                                 unit = s[1]
                             elif s[0] == 'f':

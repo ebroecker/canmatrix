@@ -30,11 +30,12 @@ from __future__ import print_function
 from copy import deepcopy
 
 import logging
-logger = logging.getLogger('root')
 
 from .canmatrix import *
 import re
 import decimal
+
+logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
 
 

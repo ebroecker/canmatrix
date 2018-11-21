@@ -35,14 +35,11 @@ import xlwt
 import logging
 from canmatrix.xls_common import *
 import decimal
-default_float_factory = decimal.Decimal
-
-
-logger = logging.getLogger('root')
-
-
 from .canmatrix import *
 import xlrd
+
+logger = logging.getLogger(__name__)
+default_float_factory = decimal.Decimal
 
 
 # Font Size : 8pt * 20 = 160

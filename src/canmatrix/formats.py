@@ -2,7 +2,6 @@
 from importlib import import_module
 import sys
 import logging
-logger = logging.getLogger('root')
 import canmatrix
 import os
 if sys.version_info > (3, 0):
@@ -10,6 +9,7 @@ if sys.version_info > (3, 0):
 else:
     import StringIO
 
+logger = logging.getLogger(__name__)
 moduleList = ["arxml", "cmcsv", "dbc", "dbf", "cmjson",
               "kcd", "fibex", "sym", "xls", "xlsx", "yaml"]
 loadedFormats = []
@@ -84,8 +84,7 @@ def load(fileObject, importType, key="", flatImport=None, **options):
 
 def dump(canMatrixOrCluster, fileObject, exportType, **options):
     moduleInstance = sys.modules["canmatrix." + exportType]
-    if (sys.version_info > (3, 0) and type(canmatrix.canmatrix.CanMatrix()) == type(canMatrixOrCluster)) or \
-       (sys.version_info < (3, 0) and type(canmatrix.CanMatrix()) == type(canMatrixOrCluster)):
+    if isinstance(canMatrixOrCluster, canmatrix.CanMatrix):
         moduleInstance.dump(canMatrixOrCluster, fileObject, **options)
     elif "clusterExporter" in supportedFormats[exportType]:
         moduleInstance.dump(canMatrixOrCluster, fileObject, **options)

@@ -39,10 +39,7 @@ from collections import OrderedDict
 import logging
 import fnmatch
 import decimal
-defaultFloatFactory = decimal.Decimal
 
-
-logger = logging.getLogger('root')
 try:
     from itertools import zip_longest as zip_longest
 except ImportError:
@@ -53,6 +50,8 @@ import struct
 from past.builtins import basestring
 import copy 
 
+logger = logging.getLogger(__name__)
+defaultFloatFactory = decimal.Decimal
 
 class ExceptionTemplate(Exception):
     def __call__(self, *args):
@@ -1091,10 +1090,10 @@ class Define(object):
                     value = value[:-1]
                 self.values.append(value)
 
-        elif definition[0:3] == 'HEX':
+        elif definition[0:3] == 'HEX':  # differently rendered in DBC editor, but values are saved like for an INT
             self.type = 'HEX'
             min, max = definition[4:].split(' ', 2)
-            self.min = safeConvertStrToInt(min)  # TODO check: the same for INT and HEX?
+            self.min = safeConvertStrToInt(min)
             self.max = safeConvertStrToInt(max)
 
         elif definition[0:5] == 'FLOAT':
