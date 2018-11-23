@@ -336,7 +336,7 @@ def test_signal_range_type_int():
     assert (min_is, max_is) == (True, True), str((type(min), type(max)))
 
 
-def atest_signal_range_type_int():
+def test_signal_range_type_float():
     signal = canmatrix.Signal(is_float=True)
     min, max = signal.calculateRawRange()
 
