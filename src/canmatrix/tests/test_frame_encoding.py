@@ -12,7 +12,7 @@ def loadDbc():
     return canmatrix.formats.loadp(os.path.join(here ,"test_frame_decoding.dbc"), flatImport = True)
 
 
-def test_encode_with_dbc_little_endian():
+def test_encode_with_dbc_big_endian():
     cm = loadDbc()
     # 002#0C00057003CD1F83
     frame = cm.frameById(1)

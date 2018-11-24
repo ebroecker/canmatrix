@@ -138,16 +138,30 @@ class Signal(object):
     factor = attr.ib(converter = float_factory, default = float_factory(1.0))
 
     # offset = attr.ib(converter = float_factory, default = 0.0)
-
-    min  = attr.ib(converter=float_factory)
+    calc_min_for_none = attr.ib(type=bool, default = True)
+    calc_max_for_none = attr.ib(type=bool, default = True)
+    
+    min  = attr.ib(
+        converter=lambda value, float_factory=float_factory: (
+            float_factory(value) 
+            if value is not None 
+            else value
+        )
+    )
     @min.default
     def setDefaultMin(self):
-        return  self.calcMin()
+        return  self.setMin()
 
-    max =  attr.ib(converter = float_factory)
+    max =  attr.ib(
+        converter=lambda value, float_factory=float_factory: (
+            float_factory(value) 
+            if value is not None 
+            else value
+        )
+    )
     @max.default
     def setDefaultMax(self):
-        return  self.calcMax()
+        return  self.setMax()
 
     unit = attr.ib(type=str, default ="")
     receiver = attr.ib(default = attr.Factory(list))
@@ -160,8 +174,6 @@ class Signal(object):
     comments = attr.ib(type=dict, default = attr.Factory(dict))
     attributes = attr.ib(type=dict, default = attr.Factory(dict))
     values = attr.ib(type=dict, converter=normalizeValueTable, default = attr.Factory(dict))
-    calc_min_for_none = attr.ib(type=bool, default = True)
-    calc_max_for_none = attr.ib(type=bool, default = True)
     muxValMax = attr.ib(default = 0)
     muxValMin = attr.ib(default = 0)
     muxerForSignal= attr.ib(type=str, default = None)

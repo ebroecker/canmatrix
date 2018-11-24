@@ -286,6 +286,46 @@ def test_signal_encode_invalid_named_value(some_signal):
         some_signal.phys2raw("wrong")
 
 
+def test_signal_min_unspecified_respects_calc_for_min_none_false():
+    signal = canmatrix.Signal(calc_min_for_none=False)
+    assert signal.min is None
+
+
+def test_signal_min_unspecified_respects_calc_for_min_none_true():
+    signal = canmatrix.Signal(size=8, is_signed=True, calc_min_for_none=True)
+    assert signal.min == -128
+
+
+def test_signal_min_specified_respects_calc_for_min_none_false():
+    signal = canmatrix.Signal(min=42, calc_min_for_none=False)
+    assert signal.min == 42
+
+
+def test_signal_min_specified_respects_calc_for_min_none_true():
+    signal = canmatrix.Signal(min=42, calc_min_for_none=True)
+    assert signal.min == 42
+
+
+def test_signal_max_unspecified_respects_calc_for_max_none_false():
+    signal = canmatrix.Signal(calc_max_for_none=False)
+    assert signal.max is None
+
+
+def test_signal_max_unspecified_respects_calc_for_max_none_true():
+    signal = canmatrix.Signal(size=8, is_signed=True, calc_max_for_none=True)
+    assert signal.max == 127
+
+
+def test_signal_max_specified_respects_calc_for_max_none_false():
+    signal = canmatrix.Signal(max=42, calc_max_for_none=False)
+    assert signal.max == 42
+
+
+def test_signal_max_specified_respects_calc_for_max_none_true():
+    signal = canmatrix.Signal(max=42, calc_max_for_none=True)
+    assert signal.max == 42
+
+
 # SignalGroup
 @pytest.fixture
 def the_group():
