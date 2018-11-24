@@ -1,6 +1,9 @@
 import io
 import textwrap
 
+import pytest
+
+import canmatrix.canmatrix
 import canmatrix.sym
 
 
@@ -68,3 +71,40 @@ def test_parse_longname_with_colon():
     frame = matrix.frames[0]
     signal = frame.signals[0]
     assert signal.attributes['LongName'] == 'Access Level : Password'
+
+
+@pytest.mark.parametrize(
+    'is_float, value, expected',
+    (
+        (False, '37', '37'),
+        (True, '37.1', '37.1'),
+    ),
+)
+def test_export_default_decimal_places(is_float, value, expected):
+    matrix = canmatrix.canmatrix.CanMatrix()
+    # the `FLOAT` type here is irrelevant at the moment...  at least for this
+    matrix.addSignalDefines('GenSigStartValue', 'FLOAT -3.4E+038 3.4E+038')
+
+    frame = canmatrix.canmatrix.Frame()
+    matrix.addFrame(frame)
+
+    signal = canmatrix.canmatrix.Signal(
+        size=32,
+        is_float=is_float,
+        is_signed=False,
+    )
+    signal.addAttribute('GenSigStartValue', value)
+    frame.addSignal(signal)
+
+    s = canmatrix.sym.createSignal(db=matrix, signal=signal)
+
+    start = '/d:'
+
+    d, = (
+        segment
+        for segment in s.split()
+        if segment.startswith(start)
+    )
+    d = d[len(start):]
+
+    assert d == expected
