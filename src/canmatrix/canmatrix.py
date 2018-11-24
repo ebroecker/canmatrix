@@ -137,18 +137,6 @@ class Signal(object):
     offset = attr.ib(converter = float_factory, default = float_factory(0.0))
     factor = attr.ib(converter = float_factory, default = float_factory(1.0))
 
-    # offset = attr.ib(converter = float_factory, default = 0.0)
-
-    min  = attr.ib(converter=float_factory)
-    @min.default
-    def setDefaultMin(self):
-        return  self.calcMin()
-
-    max =  attr.ib(converter = float_factory)
-    @max.default
-    def setDefaultMax(self):
-        return  self.calcMax()
-
     unit = attr.ib(type=str, default ="")
     receiver = attr.ib(default = attr.Factory(list))
     comment = attr.ib(default = None)
@@ -160,11 +148,37 @@ class Signal(object):
     comments = attr.ib(type=dict, default = attr.Factory(dict))
     attributes = attr.ib(type=dict, default = attr.Factory(dict))
     values = attr.ib(type=dict, converter=normalizeValueTable, default = attr.Factory(dict))
-    calc_min_for_none = attr.ib(type=bool, default = True)
-    calc_max_for_none = attr.ib(type=bool, default = True)
     muxValMax = attr.ib(default = 0)
     muxValMin = attr.ib(default = 0)
     muxerForSignal= attr.ib(type=str, default = None)
+
+    # offset = attr.ib(converter = float_factory, default = 0.0)
+    calc_min_for_none = attr.ib(type=bool, default=True)
+    calc_max_for_none = attr.ib(type=bool, default=True)
+
+    min = attr.ib(
+        converter=lambda value, float_factory=float_factory: (
+            float_factory(value)
+            if value is not None
+            else value
+        )
+    )
+
+    @min.default
+    def setDefaultMin(self):
+        return self.setMin()
+
+    max = attr.ib(
+        converter=lambda value, float_factory=float_factory: (
+            float_factory(value)
+            if value is not None
+            else value
+        )
+    )
+
+    @max.default
+    def setDefaultMax(self):
+        return self.setMax()
 
     def __attrs_post_init__(self):
         self.multiplex = self.multiplexSetter(self.multiplex)
@@ -301,9 +315,16 @@ class Signal(object):
         :return: Signal range, i.e. (0, 15) for unsigned 4 bit Signal or (-8, 7) for signed one.
         :rtype: tuple
         """
+        factory = (
+            self.float_factory
+            if self.is_float
+            else int
+        )
         rawRange = 2 ** (self.size - (1 if self.is_signed else 0))
-        return (self.float_factory(-rawRange if self.is_signed else 0),
-                self.float_factory(rawRange - 1))
+        return (
+            factory(-rawRange if self.is_signed else 0),
+            factory(rawRange - 1),
+        )
 
     def setMin(self, min=None):
         """Set minimal physical Signal value.
@@ -320,7 +341,7 @@ class Signal(object):
         """Compute minimal physical Signal value based on offset and factor and `calculateRawRange`."""
         rawMin = self.calculateRawRange()[0]
 
-        return self.offset + (rawMin * self.factor)
+        return self.offset + (self.float_factory(rawMin) * self.factor)
 
     def setMax(self, max=None):
         """Set maximal signal value.
@@ -338,7 +359,7 @@ class Signal(object):
         """Compute maximal physical Signal value based on offset, factor and `calculateRawRange`."""
         rawMax = self.calculateRawRange()[1]
 
-        return self.offset + (rawMax * self.factor)
+        return self.offset + (self.float_factory(rawMax) * self.factor)
 
 
     def phys2raw(self, value=None):
