@@ -151,11 +151,16 @@ def createSignal(db, signal):
     if "GenSigStartValue" in db.signalDefines:
         genSigStartVal = signal.attribute("GenSigStartValue", db=db)
         if genSigStartVal is not None:
-            default = float(genSigStartVal) * float(signal.factor)
-            min_ok = signal.min is None or default >= float(signal.min)
-            max_ok = signal.max is None or default <= float(signal.max)
+            factory = (
+                signal.float_factory
+                if signal.is_float
+                else int
+            )
+            default = factory(genSigStartVal) * signal.factor
+            min_ok = signal.min is None or default >= signal.min
+            max_ok = signal.max is None or default <= signal.max
             if min_ok and max_ok:
-                output += "/d:%f " % (default)
+                output += "/d:{} ".format(default)
 
     long_name = signal.attributes.get('LongName')
     if long_name is not None:
