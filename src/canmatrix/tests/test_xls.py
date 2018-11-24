@@ -10,7 +10,6 @@ def test_parse_value_name_collumn():
     assert offset == 1
     assert value_table == dict()
 
-def test_parse_value_name_collumn():
     value_collumn = "LabelX"
     (mini, maxi, offset, value_table) = canmatrix.xls.parse_value_name_collumn(value_collumn, "5", 4, decimal.Decimal)
     assert maxi == 15
