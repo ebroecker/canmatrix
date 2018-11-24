@@ -309,6 +309,29 @@ def dump(db, file, **options):
     # save file
     workbook.save(file)
 
+############################ load ###############################
+
+def parse_value_name_collumn(value_name, value, signal_size, float_factory):
+    mini = maxi = offset = None
+    value_table = dict()
+    if ".." in value_name:
+        (mini, maxi) = value_name.strip().split("..", 2)
+        mini = float_factory(mini)
+        maxi = float_factory(maxi)
+        offset = mini
+
+    elif value_name.__len__() > 0:
+        if value.strip().__len__() > 0:
+            # Value Table
+            value = int(float(value))
+            value_table[value] = value_name
+        maxi = pow(2, signal_size) - 1
+        maxi = float_factory(maxi)
+    else:
+        if offset is None:
+            offset = 0
+    return mini, maxi, offset, value_table
+
 
 def load(file, **options):
     motorolaBitFormat = options.get("xlsMotorolaBitFormat","msbreverse")
@@ -389,7 +412,7 @@ def load(file, **options):
     for rownum in range(1, sh.nrows):
         # ignore empty row
         if sh.cell(rownum, index['ID']).value.__len__() == 0:
-            break
+            breakparse_value_name_collumn
         # new frame detected
         if sh.cell(rownum, index['ID']).value != frameId:
             sender = []
@@ -513,7 +536,6 @@ def load(file, **options):
             valueName = "0"
         elif valueName == 1:
             valueName = "1"
-        test = valueName
         #.encode('utf-8')
 
         factor = 0
@@ -540,28 +562,17 @@ def load(file, **options):
                 newSig.unit = unit
                 newSig.factor = 1
 
-        if ".." in test:
-            (mini, maxi) = test.strip().split("..", 2)
-            unit = ""
-            mini = float_factory(mini)
-            maxi = float_factory(maxi)
-            if newSig.min is None:
-                newSig.min = mini
-            if newSig.max is None:
-                newSig.max = maxi
-            if newSig.offset is None:
-                newSig.offset = mini
 
-        elif valueName.__len__() > 0:
-            if value.strip().__len__() > 0:
-                value = int(float(value))
-                newSig.addValues(value, valueName)
-            maxi = pow(2, signalLength) - 1
-            if newSig.max is None:
-                newSig.max = float_factory(maxi)
-        else:
-            if newSig.offset is None:
-                newSig.offset = 0
+        (mini, maxi, offset, value_table) = parse_value_name_collumn(valueName, value, newSig.size, float_factory)
+        if newSig.min is None:
+            newSig.min = mini
+        if newSig.max is None:
+            newSig.max = maxi
+        if newSig.offset is None:
+            newSig.offset = offset
+        if value_table is not None:
+            for val in value_table:
+                newSig.addValues(val, value_table[val])
 
     for frame in db.frames:
         frame.updateReceiver()
