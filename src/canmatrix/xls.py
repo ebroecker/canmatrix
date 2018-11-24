@@ -327,9 +327,8 @@ def parse_value_name_collumn(value_name, value, signal_size, float_factory):
             value_table[value] = value_name
         maxi = pow(2, signal_size) - 1
         maxi = float_factory(maxi)
-    else:
-        if offset is None:
-            offset = 0
+        mini = 0
+        offset = 1
     return mini, maxi, offset, value_table
 
 
