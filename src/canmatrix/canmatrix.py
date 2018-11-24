@@ -837,7 +837,7 @@ class Frame(object):
 
         return returnArray
 
-    def createDummySignals(self):
+    def create_dummy_signals(self):
         """Create big-endian dummy signals for unused bits.
 
         Names of dummy signals are *_Dummy_<frame.name>_<index>*

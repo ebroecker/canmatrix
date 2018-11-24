@@ -388,7 +388,7 @@ def test_frame_create_dummy_signals_covers_all_bits():
     frame = canmatrix.canmatrix.Frame(size=1)
     frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=3))
     frame.addSignal(canmatrix.canmatrix.Signal(startBit=4, size=2))
-    frame.createDummySignals()
+    frame.create_dummy_signals()
     assert len(frame.signals) == 2 + 2
     assert frame.get_frame_layout().count(None) == 0
 
@@ -626,4 +626,3 @@ def test_canid_parse_values():
 def test_canid_repr():
     can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
     assert str(can_id) == "DA:0x01 PGN:0xABCD SA:0x02"
-    
