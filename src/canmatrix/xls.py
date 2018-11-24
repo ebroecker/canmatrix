@@ -411,7 +411,7 @@ def load(file, **options):
     for rownum in range(1, sh.nrows):
         # ignore empty row
         if sh.cell(rownum, index['ID']).value.__len__() == 0:
-            breakparse_value_name_collumn
+            break
         # new frame detected
         if sh.cell(rownum, index['ID']).value != frameId:
             sender = []
