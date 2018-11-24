@@ -690,3 +690,16 @@ def test_canid_parse_values():
 def test_canid_repr():
     can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
     assert str(can_id) == "DA:0x01 PGN:0xABCD SA:0x02"
+
+
+# DecodedSignal tests
+def test_decoded_signal_phys_value(some_signal):
+    signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
+    assert decoded.phys_value == decimal.Decimal("10")
+
+
+def test_decoded_signal_named_value():
+    signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
+    assert decoded.named_value == "Init"
