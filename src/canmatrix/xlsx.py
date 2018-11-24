@@ -26,11 +26,11 @@
 
 from __future__ import division
 from __future__ import absolute_import
-from builtins import *
-import math
-import sys
+#from builtins import *
+#import math
+#import sys
 from .canmatrix import *
-import os.path
+#import os.path
 import xlsxwriter
 from canmatrix.xls_common import *
 
