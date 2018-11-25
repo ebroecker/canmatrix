@@ -321,7 +321,7 @@ def parse_value_name_column(value_name, value, signal_size, float_factory):
         offset = mini
 
     elif len(value_name) > 0:
-        if value.strip().__len__() > 0:
+        if len(value.strip()) > 0:
             # Value Table
             value = int(float(value))
             value_table[value] = value_name
