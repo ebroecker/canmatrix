@@ -443,7 +443,9 @@ def test_frame_find_unused_bits():
     frame.addSignal(canmatrix.canmatrix.Signal(name="sig2",startBit=4, size=2))
     bit_usage = frame.get_frame_layout()
     assert bit_usage.count([]) == frame.size*8 - 3 - 2
-    assert bit_usage == [[], [], ['sig2'], ['sig2'], [], ['sig1'], ['sig1'], ['sig1']]
+    sig1 = frame.signalByName("sig1")
+    sig2 = frame.signalByName("sig2")
+    assert bit_usage == [[], [], [sig2], [sig2], [], [sig1], [sig1], [sig1]]
 
 
 def test_frame_create_dummy_signals_covers_all_bits():

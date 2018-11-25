@@ -820,10 +820,10 @@ class Frame(object):
         get layout of frame.
 
         Represents the bit usage in the frame by means of a list with n items (n bits of frame length).
-        Every item represents one bit and contains a list of signal-names with each signal, occupying that bit.
+        Every item represents one bit and contains a list of signals (object refs) with each signal, occupying that bit.
         Bits with empty list are unused.
 
-        Example: [[], [], [], ["sig1"], ["sig1"], ["sig1", "sig5"], ["sig2", "sig5"], ["sig2"], []]
+        Example: [[], [], [], [sig1], [sig1], [sig1, sig5], [sig2, sig5], [sig2], []]
         :return: list of lists with signalnames
         :rtype: list of lists
         """
@@ -834,12 +834,12 @@ class Frame(object):
                 least = self.size * 8 - signal.startBit
                 most = least - signal.size
                 for i in range(most, least):
-                    little_bits[i].append(signal.name)
+                    little_bits[i].append(signal)
             else:
                 most = signal.startBit
                 least = most + signal.size
                 for i in range(most, least):
-                    little_bits[i].append(signal.name)
+                    little_bits[i].append(signal)
 
         little_bits = reversed(tuple(grouper(little_bits, 8)))
         little_bits = tuple(chain(*little_bits))
