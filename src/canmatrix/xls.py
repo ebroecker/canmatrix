@@ -311,7 +311,7 @@ def dump(db, file, **options):
 
 ############################ load ###############################
 
-def parse_value_name_collumn(value_name, value, signal_size, float_factory):
+def parse_value_name_column(value_name, value, signal_size, float_factory):
     mini = maxi = offset = None
     value_table = dict()
     if ".." in value_name:
