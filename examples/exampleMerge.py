@@ -4,7 +4,7 @@ import sys
 sys.path.append('..')
 
 # importany loads all import filter
-from canmatrix.copy import *
+from canmatrix.cmcopy import *
 import canmatrix.formats
 # fuer Fileio:
 import sys

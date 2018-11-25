@@ -31,7 +31,7 @@ import logging
 sys.path.append('..')
 import canmatrix.formats
 import canmatrix.canmatrix as cm
-import canmatrix.copy as cmcp
+import canmatrix.cmcopy as cmcp
 
 logger = logging.getLogger(__name__)
 

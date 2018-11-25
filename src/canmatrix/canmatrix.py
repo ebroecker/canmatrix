@@ -30,11 +30,8 @@
 from __future__ import division
 import math
 import attr
-import sys
 if attr.__version__ < '17.4.0':
     raise "need attrs >= 17.4.0"
-
-from collections import OrderedDict
 
 import logging
 import fnmatch
@@ -44,11 +41,12 @@ try:
     from itertools import zip_longest as zip_longest
 except ImportError:
     from itertools import izip_longest as zip_longest
+
 from itertools import chain
 import struct
 
 from past.builtins import basestring
-import copy 
+import canmatrix.cmcopy as cmcopy
 
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal
@@ -1651,7 +1649,7 @@ class CanMatrix(object):
         """
         for dbTemp in mergeArray:
             for frame in dbTemp.frames:
-                copyResult = copy.copyFrame(frame.id, dbTemp, self)
+                copyResult = cmcopy.copyFrame(frame.id, dbTemp, self)
                 if copyResult == False:
                     logger.error(
                         "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + self.frameById(frame.id).name)
