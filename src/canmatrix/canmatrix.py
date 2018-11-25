@@ -46,7 +46,7 @@ from itertools import chain
 import struct
 
 from past.builtins import basestring
-import canmatrix.cmcopy as cmcopy
+import cmcopy
 
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal
