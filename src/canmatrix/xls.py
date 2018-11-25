@@ -27,14 +27,8 @@ from __future__ import division
 from __future__ import absolute_import
 from __future__ import print_function
 
-#from builtins import *
-#import sys
-#import os.path
-#import codecs
 import xlwt
-#import logging
 from canmatrix.xls_common import *
-#import decimal
 from .canmatrix import *
 import xlrd
 
