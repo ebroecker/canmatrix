@@ -27,7 +27,7 @@
 
 # TODO: Definitions should be disassembled
 
-from __future__ import division
+from __future__ import division, absolute_import
 import math
 import attr
 if attr.__version__ < '17.4.0':
@@ -46,7 +46,7 @@ from itertools import chain
 import struct
 
 from past.builtins import basestring
-import cmcopy
+from . import cmcopy
 
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal
