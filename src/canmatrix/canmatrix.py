@@ -820,7 +820,7 @@ class Frame(object):
         get layout of frame.
 
         Represents the bit usage in the frame by means of a list with n items (n bits of frame length).
-        Every item represents one bit and contains an array of signal-names with each signal, occupying that bit.
+        Every item represents one bit and contains a list of signal-names with each signal, occupying that bit.
         Bits with None instead of array are unused.
 
         Example: [None, None, None, ["sig1"], ["sig1"], ["sig1", "sig5"], ["sig2", "sig5"], ["sig2"], None]
