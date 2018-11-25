@@ -311,7 +311,7 @@ def dump(db, file, **options):
 
 ############################ load ###############################
 
-def parse_value_name_collumn(value_name, value, signal_size, float_factory):
+def parse_value_name_column(value_name, value, signal_size, float_factory):
     mini = maxi = offset = None
     value_table = dict()
     if ".." in value_name:
@@ -320,8 +320,8 @@ def parse_value_name_collumn(value_name, value, signal_size, float_factory):
         maxi = float_factory(maxi)
         offset = mini
 
-    elif value_name.__len__() > 0:
-        if value.strip().__len__() > 0:
+    elif len(value_name) > 0:
+        if len(value.strip()) > 0:
             # Value Table
             value = int(float(value))
             value_table[value] = value_name
