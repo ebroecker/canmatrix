@@ -821,42 +821,34 @@ class Frame(object):
 
         Represents the bit usage in the frame by means of a list with n items (n bits of frame length).
         Every item represents one bit and contains a list of signal-names with each signal, occupying that bit.
-        Bits with None instead of array are unused.
+        Bits with empty list are unused.
 
-        Example: [None, None, None, ["sig1"], ["sig1"], ["sig1", "sig5"], ["sig2", "sig5"], ["sig2"], None]
+        Example: [[], [], [], ["sig1"], ["sig1"], ["sig1", "sig5"], ["sig2", "sig5"], ["sig2"], []]
         :return: list of lists with signalnames
         :rtype: list of lists
         """
-        little_bits = [None] * (self.size * 8)
-        big_bits = list(little_bits)
+        little_bits = [[] for _dummy in range(0, (self.size * 8))]
+        big_bits = [[] for _dummy in range(0, (self.size * 8))]
         for signal in self.signals:
-
             if signal.is_little_endian:
                 least = self.size * 8 - signal.startBit
                 most = least - signal.size
                 for i in range(most, least):
-                    little_bits[i] = [signal.name] if little_bits[i] is None else little_bits[i] + [signal.name]
+                    little_bits[i].append(signal.name)
             else:
                 most = signal.startBit
                 least = most + signal.size
                 for i in range(most, least):
-                    big_bits[i] = [signal.name] if little_bits[i] is None else little_bits[i] + [signal.name]
+                    little_bits[i].append(signal.name)
 
         little_bits = reversed(tuple(grouper(little_bits, 8)))
         little_bits = tuple(chain(*little_bits))
 
-        returnArray = list()
+        returnList = list()
         for i in range(0,self.size * 8):
-            if little_bits[i] is None and big_bits[i] is None:
-                returnArray.append(None)
-            elif little_bits[i] is None:
-                returnArray.append(big_bits[i])
-            elif big_bits[i] is None:
-                returnArray.append(little_bits[i])
-            else:
-                returnArray.append(little_bits[i] + big_bits[i])
+            returnList.append(little_bits[i] + big_bits[i])
 
-        return returnArray
+        return returnList
 
     def create_dummy_signals(self):
         """Create big-endian dummy signals for unused bits.
@@ -864,14 +856,12 @@ class Frame(object):
         Names of dummy signals are *_Dummy_<frame.name>_<index>*
         """
         bitfield = self.get_frame_layout()
-        # for i in range(0,8):
-        #    print (bitfield[(i)*8:(i+1)*8])
         startBit = -1
         sigCount = 0
         for i in range(0,self.size * 8):
-            if bitfield[i] == None and startBit == -1:
+            if bitfield[i] == [] and startBit == -1:
                 startBit = i
-            if (i == (self.size*8-1) or bitfield[i] != None) and startBit != -1:
+            if (i == (self.size*8-1) or bitfield[i] != []) and startBit != -1:
                 if i == (self.size*8-1):
                     i = (self.size*8)
                 self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=i-startBit, startBit=startBit, is_little_endian = False))
