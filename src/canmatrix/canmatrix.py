@@ -845,7 +845,7 @@ class Frame(object):
         little_bits = tuple(chain(*little_bits))
 
         returnList = list()
-        for i in range(0,self.size * 8):
+        for i in range(self.size * 8):
             returnList.append(little_bits[i] + big_bits[i])
 
         return returnList
