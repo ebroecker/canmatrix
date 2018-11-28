@@ -67,7 +67,7 @@ class BoardUnit(object):
 
     name = attr.ib(type=str)
     comment = attr.ib(default=None)
-    attributes = attr.ib(factory=dict, repr=False)
+    attributes = attr.ib(type=dict, factory=dict, repr=False)
 
     def attribute(self, attributeName, db=None, default=None):
         """Get Board unit attribute by its name.
@@ -135,16 +135,16 @@ class Signal(object):
     factor = attr.ib(converter = float_factory, default = float_factory(1.0))
 
     unit = attr.ib(type=str, default ="")
-    receiver = attr.ib(default = attr.Factory(list))
+    receiver = attr.ib(type=list, factory=list)
     comment = attr.ib(default = None)
     multiplex  = attr.ib(default = None)
 
     mux_value = attr.ib(default = None)
     is_float = attr.ib(type=bool, default=False)
     enumeration = attr.ib(type=str, default = None)
-    comments = attr.ib(type=dict, default = attr.Factory(dict))
-    attributes = attr.ib(type=dict, default = attr.Factory(dict))
-    values = attr.ib(type=dict, converter=normalizeValueTable, default = attr.Factory(dict))
+    comments = attr.ib(type=dict, factory=dict)
+    attributes = attr.ib(type=dict, factory=dict)
+    values = attr.ib(type=dict, converter=normalizeValueTable, factory=dict)
     muxValMax = attr.ib(default = 0)
     muxValMin = attr.ib(default = 0)
     muxerForSignal= attr.ib(type=str, default = None)
@@ -160,7 +160,6 @@ class Signal(object):
             else value
         )
     )
-
     @min.default
     def setDefaultMin(self):
         return self.setMin()
@@ -172,7 +171,6 @@ class Signal(object):
             else value
         )
     )
-
     @max.default
     def setDefaultMax(self):
         return self.setMax()
@@ -420,7 +418,7 @@ class SignalGroup(object):
     """
     name = attr.ib(type=str)
     id = attr.ib(type=int)
-    signals = attr.ib(factory=list, repr=False)
+    signals = attr.ib(type=list, factory=list, repr=False)
 
     def addSignal(self, signal):
         """Add a Signal to SignalGroup.
@@ -576,16 +574,16 @@ class Frame(object):
     name = attr.ib(default="")
     id = attr.ib(type=int, default = 0)
     size = attr.ib(default = 0)
-    transmitters = attr.ib(default = attr.Factory(list))
+    transmitters = attr.ib(type=list, factory=list)
     extended = attr.ib(type=bool, default = False)
     is_complex_multiplexed = attr.ib(type=bool, default = False)
     is_fd = attr.ib(type=bool, default = False)
     comment = attr.ib(default="")
-    signals = attr.ib(default = attr.Factory(list))
-    mux_names = attr.ib(type=dict, default = attr.Factory(dict))
-    attributes = attr.ib(type=dict, default = attr.Factory(dict))
-    receiver = attr.ib(default = attr.Factory(list))
-    signalGroups = attr.ib(default = attr.Factory(list))
+    signals = attr.ib(type=list, factory=list)
+    mux_names = attr.ib(type=dict, factory=dict)
+    attributes = attr.ib(type=dict, factory=dict)
+    receiver = attr.ib(type=list, factory=list)
+    signalGroups = attr.ib(type=list, factory=list)
 
     j1939_pgn = attr.ib(default = None)
     j1939_source = attr.ib(default = 0)
@@ -1154,18 +1152,18 @@ class CanMatrix(object):
     valueTables (global defined values)
     """
 
-    attributes = attr.ib(type=dict, default= attr.Factory(dict))
-    boardUnits = attr.ib(default = attr.Factory(list))
-    frames = attr.ib(default = attr.Factory(list))
+    attributes = attr.ib(type=dict, factory=dict)
+    boardUnits = attr.ib(type=list, factory=list)
+    frames = attr.ib(type=list, factory=list)
 
-    signalDefines = attr.ib(default = attr.Factory(dict))
-    frameDefines = attr.ib(default = attr.Factory(dict))
-    globalDefines = attr.ib(default = attr.Factory(dict))
-    buDefines = attr.ib(default = attr.Factory(dict))
-    valueTables = attr.ib(default = attr.Factory(dict))
-    envVars = attr.ib(default = attr.Factory(dict))
+    signalDefines = attr.ib(type=dict, factory=dict)
+    frameDefines = attr.ib(type=dict, factory=dict)
+    globalDefines = attr.ib(type=dict, factory=dict)
+    buDefines = attr.ib(type=dict, factory=dict)
+    valueTables = attr.ib(type=dict, factory=dict)
+    envVars = attr.ib(type=dict, factory=dict)
 
-    load_errors = attr.ib(factory=list)
+    load_errors = attr.ib(type=list, factory=list)
 
     def __iter__(self):
         """Matrix iterates over Frames (Messages)."""
