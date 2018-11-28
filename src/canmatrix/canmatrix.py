@@ -858,7 +858,7 @@ class Frame(object):
         bitfield = self.get_frame_layout()
         startBit = -1
         sigCount = 0
-        for i in range(0,self.size * 8):
+        for i in range(self.size * 8):
             if bitfield[i] == [] and startBit == -1:
                 startBit = i
             if (i == (self.size*8-1) or bitfield[i] != []) and startBit != -1:
