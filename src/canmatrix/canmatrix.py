@@ -827,7 +827,7 @@ class Frame(object):
         :return: list of lists with signalnames
         :rtype: list of lists
         """
-        little_bits = [[] for _dummy in range(0, (self.size * 8))]
+        little_bits = [[] for _dummy in range((self.size * 8))]
         big_bits = [[] for _dummy in range((self.size * 8))]
         for signal in self.signals:
             if signal.is_little_endian:
