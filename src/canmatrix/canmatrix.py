@@ -828,7 +828,7 @@ class Frame(object):
         :rtype: list of lists
         """
         little_bits = [[] for _dummy in range(0, (self.size * 8))]
-        big_bits = [[] for _dummy in range(0, (self.size * 8))]
+        big_bits = [[] for _dummy in range((self.size * 8))]
         for signal in self.signals:
             if signal.is_little_endian:
                 least = self.size * 8 - signal.startBit
