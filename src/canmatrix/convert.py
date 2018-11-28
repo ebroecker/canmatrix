@@ -31,7 +31,7 @@ import logging
 sys.path.append('..')
 import canmatrix.formats
 import canmatrix.canmatrix as cm
-import canmatrix.cmcopy as cmcp
+import canmatrix.copy
 
 logger = logging.getLogger(__name__)
 
@@ -53,12 +53,12 @@ def convert(infile, outfileName, **options):
             ecuList = options['ecus'].split(',')
             db = cm.CanMatrix()
             for ecu in ecuList:
-                cmcp.copyBUwithFrames(ecu, dbs[name], db)
+                canmatrix.copy.copyBUwithFrames(ecu, dbs[name], db)
         if 'frames' in options and options['frames'] is not None:
             frameList = options['frames'].split(',')
             db = cm.CanMatrix()
             for frame in frameList:
-                cmcp.copyFrame(frame, dbs[name], db)
+                canmatrix.copy.copyFrame(frame, dbs[name], db)
         if db is None:
             db = dbs[name]
 
@@ -72,15 +72,15 @@ def convert(infile, outfileName, **options):
                         print ("merge complete: " + mergeString[0])
                         db.merge([dbTempList[dbTemp]])
 #                        for frame in dbTempList[dbTemp].frames:
-#                            copyResult = cmcp.copyFrame(frame.id, dbTempList[dbTemp], db)
+#                            copyResult = canmatrix.copy.copyFrame(frame.id, dbTempList[dbTemp], db)
 #                            if copyResult == False:
 #                                logger.error("ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + database)
                     for mergeOpt in mergeString[1:]:
                         if mergeOpt.split('=')[0] == "ecu":
-                            cmcp.copyBUwithFrames(
+                            canmatrix.copy.copyBUwithFrames(
                                 mergeOpt.split('=')[1], dbTempList[dbTemp], db)
                         if mergeOpt.split('=')[0] == "frame":
-                            cmcp.copyFrame(
+                            canmatrix.copy.copyFrame(
                                 mergeOpt.split('=')[1], dbTempList[dbTemp], db)
 
         if 'renameEcu' in options and options['renameEcu'] is not None:

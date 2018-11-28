@@ -46,8 +46,7 @@ from itertools import chain
 import struct
 
 from past.builtins import basestring
-from . import cmcopy
-
+import canmatrix.copy
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal
 
@@ -1649,7 +1648,7 @@ class CanMatrix(object):
         """
         for dbTemp in mergeArray:
             for frame in dbTemp.frames:
-                copyResult = cmcopy.copyFrame(frame.id, dbTemp, self)
+                copyResult = canmatrix.copy.copyFrame(frame.id, dbTemp, self)
                 if copyResult == False:
                     logger.error(
                         "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + self.frameById(frame.id).name)
