@@ -20,11 +20,13 @@ def mySplit2(string):
         if char == '"':
             if inPhar:
                 inPhar = False
-                splitted.append(current)
-                current = ""
             else:
                 inPhar = True
-        elif inPhar:
+        if inPhar is False and char == ",":
+            splitted.append(current)
+            current = ""
+        else:
             current += char
 
+    splitted.append(current)
     return splitted
