@@ -1056,8 +1056,6 @@ class Frame(object):
         """Represent the frame by its name only."""
         return self.name  # add more details than the name only?
 
-import csv
-
 class Define(object):
     """
     Hold the defines and default-values.
