@@ -47,6 +47,7 @@ import struct
 
 from past.builtins import basestring
 import canmatrix.copy
+import canmatrix.utils
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal
 
@@ -1055,6 +1056,7 @@ class Frame(object):
         """Represent the frame by its name only."""
         return self.name  # add more details than the name only?
 
+import csv
 
 class Define(object):
     """
@@ -1096,7 +1098,7 @@ class Define(object):
 
         elif definition[0:4] == 'ENUM':
             self.type = 'ENUM'
-            tempValues = definition[5:].split(',')
+            tempValues = canmatrix.utils.mySplit2(definition[5:])
             self.values = []
             for value in tempValues:
                 value = value.strip()
