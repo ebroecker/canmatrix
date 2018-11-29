@@ -124,32 +124,32 @@ class Signal(object):
     * _multiplex ('Multiplexor' or Number of Multiplex)
     """
 
-    name = attr.ib(default = "")
+    name = attr.ib(default="")
     # float_factory = attr.ib(default=defaultFloatFactory)
     float_factory = defaultFloatFactory
     startBit = attr.ib(type=int, default=0)
-    size = attr.ib(type=int, default = 0)
-    is_little_endian = attr.ib(type=bool, default = True)
-    is_signed = attr.ib(type=bool, default = True)
-    offset = attr.ib(converter = float_factory, default = float_factory(0.0))
-    factor = attr.ib(converter = float_factory, default = float_factory(1.0))
+    size = attr.ib(type=int, default=0)
+    is_little_endian = attr.ib(type=bool, default=True)
+    is_signed = attr.ib(type=bool, default=True)
+    offset = attr.ib(converter=float_factory, default=float_factory(0.0))
+    factor = attr.ib(converter=float_factory, default=float_factory(1.0))
 
-    unit = attr.ib(type=str, default ="")
+    unit = attr.ib(type=str, default="")
     receiver = attr.ib(type=list, factory=list)
-    comment = attr.ib(default = None)
-    multiplex  = attr.ib(default = None)
+    comment = attr.ib(default=None)
+    multiplex = attr.ib(default=None)
 
-    mux_value = attr.ib(default = None)
+    mux_value = attr.ib(default=None)
     is_float = attr.ib(type=bool, default=False)
-    enumeration = attr.ib(type=str, default = None)
+    enumeration = attr.ib(type=str, default=None)
     comments = attr.ib(type=dict, factory=dict)
     attributes = attr.ib(type=dict, factory=dict)
     values = attr.ib(type=dict, converter=normalizeValueTable, factory=dict)
-    muxValMax = attr.ib(default = 0)
-    muxValMin = attr.ib(default = 0)
-    muxerForSignal= attr.ib(type=str, default = None)
+    muxValMax = attr.ib(default=0)
+    muxValMin = attr.ib(default=0)
+    muxerForSignal = attr.ib(type=str, default=None)
 
-    # offset = attr.ib(converter = float_factory, default = 0.0)
+    # offset = attr.ib(converter=float_factory, default=0.0)
     calc_min_for_none = attr.ib(type=bool, default=True)
     calc_max_for_none = attr.ib(type=bool, default=True)
 
@@ -460,7 +460,6 @@ class SignalGroup(object):
         raise KeyError("Signal '{}' doesn't exist".format(name))
 
 
-
 @attr.s
 class decodedSignal(object):
     raw_value = attr.ib()
@@ -572,12 +571,12 @@ class Frame(object):
     """
 
     name = attr.ib(default="")
-    id = attr.ib(type=int, default = 0)
-    size = attr.ib(default = 0)
+    id = attr.ib(type=int, default=0)
+    size = attr.ib(default=0)
     transmitters = attr.ib(type=list, factory=list)
-    extended = attr.ib(type=bool, default = False)
-    is_complex_multiplexed = attr.ib(type=bool, default = False)
-    is_fd = attr.ib(type=bool, default = False)
+    extended = attr.ib(type=bool, default=False)
+    is_complex_multiplexed = attr.ib(type=bool, default=False)
+    is_fd = attr.ib(type=bool, default=False)
     comment = attr.ib(default="")
     signals = attr.ib(type=list, factory=list)
     mux_names = attr.ib(type=dict, factory=dict)
@@ -585,10 +584,10 @@ class Frame(object):
     receiver = attr.ib(type=list, factory=list)
     signalGroups = attr.ib(type=list, factory=list)
 
-    j1939_pgn = attr.ib(default = None)
-    j1939_source = attr.ib(default = 0)
-    j1939_prio  = attr.ib(default = 0)
-    is_j1939  = attr.ib(type=bool, default = False)
+    j1939_pgn = attr.ib(default=None)
+    j1939_source = attr.ib(default=0)
+    j1939_prio = attr.ib(default=0)
+    is_j1939 = attr.ib(type=bool, default=False)
     # ('cycleTime', '_cycleTime', int, None),
     # ('sendType', '_sendType', str, None),
 
@@ -1124,7 +1123,7 @@ class Define(object):
 
         :param default: default value; number, str or quoted str ("value")
         """
-        if default is not None and len(default) > 1 and default[0] == '"' and default[-1] =='"':
+        if default is not None and len(default) > 1 and default[0] == '"' and default[-1] == '"':
             default = default[1:-1]
         self.defaultValue = default
 
