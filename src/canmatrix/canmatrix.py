@@ -838,9 +838,10 @@ class Frame(object):
         little_bits = reversed(tuple(grouper(little_bits, 8)))
         little_bits = tuple(chain(*little_bits))
 
-        returnList = list()
-        for i in range(len(big_bits)):
-            returnList.append(little_bits[i] + big_bits[i])
+        returnList = [
+            little + big
+            for little, big in zip(little_bits, big_bits)
+        ]
 
         return returnList
 
