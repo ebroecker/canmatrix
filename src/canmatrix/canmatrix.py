@@ -827,13 +827,14 @@ class Frame(object):
             if signal.is_little_endian:
                 least = len(little_bits) - signal.startBit
                 most = least - signal.size
-                for i in range(most, least):
-                    little_bits[i].append(signal)
+                for little_bit_signals in little_bits[most:least]:
+                    little_bit_signals.append(signal)
+
             else:
                 most = signal.startBit
                 least = most + signal.size
-                for i in range(most, least):
-                    big_bits[i].append(signal)
+                for big_bit_signals in big_bits[most:least]:
+                    big_bit_signals.append(signal)
 
         little_bits = reversed(tuple(grouper(little_bits, 8)))
         little_bits = tuple(chain(*little_bits))
@@ -853,13 +854,13 @@ class Frame(object):
         bitfield = self.get_frame_layout()
         startBit = -1
         sigCount = 0
-        for i in range(len(bitfield)):
-            if bitfield[i] == [] and startBit == -1:
-                startBit = i
-            if (i == (len(bitfield)-1) or bitfield[i] != []) and startBit != -1:
-                if i == (len(bitfield)-1):
-                    i = len(bitfield)
-                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=i-startBit, startBit=startBit, is_little_endian = False))
+        for index, bit_signals in enumerate(bitfield):
+            if bit_signals == [] and startBit == -1:
+                startBit = index
+            if (index == (len(bitfield)-1) or bit_signals != []) and startBit != -1:
+                if index == (len(bitfield)-1):
+                    index = len(bitfield)
+                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=index-startBit, startBit=startBit, is_little_endian = False))
                 startBit = -1
                 sigCount += 1
 
