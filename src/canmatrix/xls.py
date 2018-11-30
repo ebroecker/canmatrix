@@ -309,7 +309,7 @@ def parse_value_name_collumn(value_name, value, signal_size, float_factory):
     mini = maxi = offset = None
     value_table = dict()
     if ".." in value_name:
-        (mini, maxi) = value_name.strip().split("..", 2)
+        (mini, maxi) = value_name.strip().split("..")
         mini = float_factory(mini)
         maxi = float_factory(maxi)
         offset = mini
