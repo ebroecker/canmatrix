@@ -14,6 +14,6 @@ def test_parse_value_name_collumn():
     (mini, maxi, offset, value_table) = canmatrix.xls.parse_value_name_column(value_column, "5", 4, decimal.Decimal)
     assert maxi == 15
     assert mini == 0
-    assert offset == 1
+    assert offset == 0
     assert value_table == {5 : "LabelX"}
 
