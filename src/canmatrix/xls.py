@@ -322,7 +322,7 @@ def parse_value_name_column(value_name, value, signal_size, float_factory):
         maxi = pow(2, signal_size) - 1
         maxi = float_factory(maxi)
         mini = 0
-        offset = 1
+        offset = 0
     return mini, maxi, offset, value_table
 
 
