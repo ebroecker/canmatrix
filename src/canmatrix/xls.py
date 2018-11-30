@@ -564,8 +564,8 @@ def load(file, **options):
         if newSig.offset is None:
             newSig.offset = offset
         if value_table is not None:
-            for val, name in value_table.items():
-                newSig.addValues(val, name)
+            for value, name in value_table.items():
+                newSig.addValues(value, name)
 
     for frame in db.frames:
         frame.updateReceiver()
