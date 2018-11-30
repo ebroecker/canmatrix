@@ -112,14 +112,14 @@ def dump(db, file, **options):
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 
     if "additionalAttributes" in options  and len(options["additionalAttributes"]) > 0:
-        additionalSignalCollums = options["additionalAttributes"].split(",")
+        additional_signal_colums = options["additionalAttributes"].split(",")
     else:
-        additionalSignalCollums = []#["attributes['DisplayDecimalPlaces']"]
+        additional_signal_colums = []#["attributes['DisplayDecimalPlaces']"]
 
     if "additionalFrameAttributes" in options  and len(options["additionalFrameAttributes"]) > 0:
-        additionalFrameCollums = options["additionalFrameAttributes"].split(",")
+        additional_frame_colums = options["additionalFrameAttributes"].split(",")
     else:
-        additionalFrameCollums = []#["attributes['DisplayDecimalPlaces']"]
+        additional_frame_colums = []#["attributes['DisplayDecimalPlaces']"]
 
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
@@ -153,11 +153,11 @@ def dump(db, file, **options):
     for col in range(tail_start, len(rowArray)):
         worksheet.col(col).width = 3333
 
-    for additionalCol in additionalFrameCollums:
+    for additionalCol in additional_frame_colums:
         rowArray.append("frame." + additionalCol)
         col += 1
 
-    for additionalCol in additionalSignalCollums:
+    for additionalCol in additional_signal_colums:
         rowArray.append("signal." + additionalCol)
         col += 1
 
@@ -197,7 +197,7 @@ def dump(db, file, **options):
         sigstyle = sty_first_frame
 
         additionalFrameInfo = []
-        for frameInfo in additionalFrameCollums:
+        for frameInfo in additional_frame_colums:
             temp = frame.attribute(frameInfo, default="")
             additionalFrameInfo.append(temp)
 
@@ -214,7 +214,7 @@ def dump(db, file, **options):
             for col in range(tempCol, additionalFrame_start):
                 rowArray.append("")
             rowArray += additionalFrameInfo
-            for i in additionalSignalCollums:
+            for i in additional_signal_colums:
                 rowArray.append("")
             writeExcelLine(worksheet, row, tempCol, rowArray, framestyle)
             row += 1
@@ -244,7 +244,7 @@ def dump(db, file, **options):
                     (frontRow, backRow) = getSignal(db, sig, motorolaBitFormat)
                     writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
                     backRow += additionalFrameInfo
-                    for item in additionalSignalCollums:
+                    for item in additional_signal_colums:
                         temp = getattr(sig, item, "")
                         backRow.append(temp)
 
@@ -279,7 +279,7 @@ def dump(db, file, **options):
                 backRow.insert(0,"")
 
                 backRow += additionalFrameInfo
-                for item in additionalSignalCollums:
+                for item in additional_signal_colums:
                     temp = getattr(sig, item, "")
                     backRow.append(temp)
 
@@ -305,7 +305,7 @@ def dump(db, file, **options):
 
 ############################ load ###############################
 
-def parse_value_name_collumn(value_name, value, signal_size, float_factory):
+def parse_value_name_column(value_name, value, signal_size, float_factory):
     mini = maxi = offset = None
     value_table = dict()
     if ".." in value_name:
@@ -347,7 +347,7 @@ def load(file, **options):
 #       db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
     db.addSignalDefines("GenSigSNA", 'STRING')
 
-    # eval search for correct collums:
+    # eval search for correct columns:
     index = {}
     for i in range(sh.ncols):
         value = sh.cell(0, i).value
@@ -556,7 +556,7 @@ def load(file, **options):
                 newSig.factor = 1
 
 
-        (mini, maxi, offset, value_table) = parse_value_name_collumn(valueName, value, newSig.size, float_factory)
+        (mini, maxi, offset, value_table) = parse_value_name_column(valueName, value, newSig.size, float_factory)
         if newSig.min is None:
             newSig.min = mini
         if newSig.max is None:
