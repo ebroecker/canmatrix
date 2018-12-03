@@ -26,10 +26,11 @@ def test_long_signal_name_imports():
         if line.strip().startswith("BA_ "):
             assert line.split()[5][1:-2] == long_signal_name
 
+
 def test_enum_with_comma():
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BA_DEF_ "example0" ENUM "Val1",",";
-    BA_DEF_ BO_ "example1" ENUM "Val1",",","\","´",";";
+    BA_DEF_ BO_ "example1" ENUM "Val1",",","\\","´",";";
     BA_DEF_ SG_ "example2" ENUM "Val1",",";
     BA_DEF_ EV_ "example3" ENUM "Val1",",";
     BA_DEF_ BU_ "example4" ENUM "Val1",",";
@@ -38,7 +39,7 @@ def test_enum_with_comma():
     BA_DEF_DEF_ "example2" ",";
     BA_DEF_DEF_ "example3" ",";
     BA_DEF_DEF_ "example4" ",";''').encode('utf-8'))
-    matrix = canmatrix.dbc.load(dbc)
+    matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
 
     assert matrix.frameDefines[u'example1'].values == ['Val1', ',','\\','´',';']
     assert matrix.signalDefines[u'example2'].values == ['Val1', ',']

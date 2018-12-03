@@ -1,5 +1,6 @@
 import sys
 import shlex
+import csv
 
 def mySplit(inLine):
     if sys.version_info > (3, 0):  # is there a clean way to to it?
@@ -12,21 +13,6 @@ def mySplit(inLine):
         return newArray
 
 
-def mySplit2(string):
-    inPhar = False
-    splitted = []
-    current = ""
-    for char in string:
-        if char == '"':
-            if inPhar:
-                inPhar = False
-            else:
-                inPhar = True
-        if inPhar is False and char == ",":
-            splitted.append(current)
-            current = ""
-        else:
-            current += char
-
-    splitted.append(current)
-    return splitted
+def myCommaSplitter(string):
+    temp = list(csv.reader([string], skipinitialspace = True))
+    return temp[0]
