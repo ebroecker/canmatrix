@@ -1096,7 +1096,7 @@ class Define(object):
 
         elif definition[0:4] == 'ENUM':
             self.type = 'ENUM'
-            tempValues = canmatrix.utils.myCommaSplitter(definition[5:])
+            tempValues = canmatrix.utils.my_comma_splitter(definition[5:])
             self.values = []
             for value in tempValues:
                 value = value.strip()

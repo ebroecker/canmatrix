@@ -2,7 +2,7 @@ import sys
 import shlex
 import csv
 
-def mySplit(inLine):
+def my_split(inLine):
     if sys.version_info > (3, 0):  # is there a clean way to to it?
         return shlex.split(inLine.strip())
     else:
@@ -13,6 +13,6 @@ def mySplit(inLine):
         return newArray
 
 
-def myCommaSplitter(string):
+def my_comma_splitter(string):
     temp = list(csv.reader([string], skipinitialspace = True))
     return temp[0]
