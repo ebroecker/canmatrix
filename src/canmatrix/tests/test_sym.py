@@ -108,3 +108,37 @@ def test_export_default_decimal_places(is_float, value, expected):
     d = d[len(start):]
 
     assert d == expected
+
+
+@pytest.mark.parametrize(
+    'variable_type, bit_length',
+    (
+        ('float', 32),
+        ('double', 64),
+    )
+)
+def tests_parse_float(variable_type, bit_length):
+    f = io.BytesIO(
+        textwrap.dedent(
+            '''\
+            FormatVersion=5.0 // Do not edit this line!
+            Title="Untitled"
+
+            {{SENDRECEIVE}}
+
+            [Symbol1]
+            ID=000h
+            DLC=8
+            Var=a_signal {variable_type} 0,{bit_length}
+            '''.format(
+                variable_type=variable_type,
+                bit_length=bit_length,
+            ),
+        ).encode('utf-8'),
+    )
+
+    matrix = canmatrix.sym.load(f)
+    assert matrix.load_errors == []
+    frame = matrix.frames[0]
+    signal = frame.signals[0]
+    assert signal.is_float
