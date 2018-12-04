@@ -810,70 +810,60 @@ class Frame(object):
                 maxBit = sig.getStartbit() + int(sig.size)
         self.size = max(self.size, int(math.ceil(maxBit / 8)))
 
-    def findNotUsedBits(self):
+    def get_frame_layout(self):
         """
-        Find unused bits in frame.
+        get layout of frame.
 
-        Represents the bit usage in the frame by means of a list with 64 items.
-        Every item represents one bit and contains unique number for each signal, occupying that bit.
-        Numbering starts from one.
+        Represents the bit usage in the frame by means of a list with n items (n bits of frame length).
+        Every item represents one bit and contains a list of signals (object refs) with each signal, occupying that bit.
+        Bits with empty list are unused.
 
-        Bits with "zero" index are unused.
-
-        Example: [2, 2, 2, 1, 1, 0, 0, 3, 3, 3, 3, 0, 0, ...]
-
-        :return: list with signal "index plus one" in every bit. Zeros mean 'unused'.
-        :rtype: list of int
+        Example: [[], [], [], [sig1], [sig1], [sig1, sig5], [sig2, sig5], [sig2], []]
+        :return: list of lists with signalnames
+        :rtype: list of lists
         """
-        bitfield = []
-        bitfieldLe = []
-        bitfieldBe = []
+        little_bits = [[] for _dummy in range((self.size * 8))]
+        big_bits = [[] for _dummy in range((self.size * 8))]
+        for signal in self.signals:
+            if signal.is_little_endian:
+                least = len(little_bits) - signal.startBit
+                most = least - signal.size
+                for little_bit_signals in little_bits[most:least]:
+                    little_bit_signals.append(signal)
 
-        for i in range(0,64):
-            bitfieldBe.append(0)
-            bitfieldLe.append(0)
-            bitfield.append(0)
-        i = 0
+            else:
+                most = signal.startBit
+                least = most + signal.size
+                for big_bit_signals in big_bits[most:least]:
+                    big_bit_signals.append(signal)
 
-        for sig in self.signals:
-            i += 1
-            for bit in range(sig.getStartbit(),  sig.getStartbit() + int(sig.size)):
-                if sig.is_little_endian:
-                    bitfieldLe[bit] = i
-                else:
-                    bitfieldBe[bit] = i
+        little_bits = reversed(tuple(grouper(little_bits, 8)))
+        little_bits = tuple(chain(*little_bits))
 
-        for i in range(0,8):
-            for j in range(0,8):
-                bitfield[i*8+j] = bitfieldLe[i*8+(7-j)]
+        returnList = [
+            little + big
+            for little, big in zip(little_bits, big_bits)
+        ]
 
-        for i in range(0,8):
-            for j in range(0,8):
-                if bitfield[i*8+j] == 0:
-                    bitfield[i*8+j] = bitfieldBe[i*8+j]
+        return returnList
 
-
-        return bitfield
-
-    def createDummySignals(self):
+    def create_dummy_signals(self):
         """Create big-endian dummy signals for unused bits.
 
         Names of dummy signals are *_Dummy_<frame.name>_<index>*
         """
-        bitfield = self.findNotUsedBits()
-        # for i in range(0,8):
-        #    print (bitfield[(i)*8:(i+1)*8])
+        bitfield = self.get_frame_layout()
         startBit = -1
         sigCount = 0
-        for i in range(0,64):
-            if bitfield[i] == 0 and startBit == -1:
-                startBit = i
-            if (i == 63 or bitfield[i] != 0) and startBit != -1:
-                if i == 63:
-                    i = 64
-                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=i-startBit, startBit=startBit, is_little_endian = False))
+        for index, bit_signals in enumerate(bitfield):
+            if bit_signals == [] and startBit == -1:
+                startBit = index
+            if (index == (len(bitfield)-1) or bit_signals != []) and startBit != -1:
+                if index == (len(bitfield)-1):
+                    index = len(bitfield)
+                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=index-startBit, startBit=startBit, is_little_endian = False))
                 startBit = -1
-                sigCount +=1
+                sigCount += 1
 
 
 
