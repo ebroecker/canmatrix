@@ -437,7 +437,7 @@ def load(f, **options):
                             pass
                         elif tempArray[1] == 'signed':
                             is_signed = True
-                        elif tempArray[1] == 'float':
+                        elif tempArray[1] in ['float', 'double']:
                             is_float = True
                         elif tempArray[1] in ['string']:
                             # TODO: actually support these variable types instead
