@@ -439,20 +439,22 @@ def test_frame_compute_dlc():
 
 def test_frame_find_unused_bits():
     frame = canmatrix.canmatrix.Frame(size=1)
-    frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=3))
-    frame.addSignal(canmatrix.canmatrix.Signal(startBit=4, size=2))
-    bit_usage = frame.findNotUsedBits()
-    assert bit_usage.count(0) == 64 - 3 - 2
-    assert bit_usage[:8] == [0, 0, 2, 2, 0, 1, 1, 1]
+    frame.addSignal(canmatrix.canmatrix.Signal(name="sig1",startBit=0, size=3))
+    frame.addSignal(canmatrix.canmatrix.Signal(name="sig2",startBit=4, size=2))
+    bit_usage = frame.get_frame_layout()
+    assert bit_usage.count([]) == frame.size*8 - 3 - 2
+    sig1 = frame.signalByName("sig1")
+    sig2 = frame.signalByName("sig2")
+    assert bit_usage == [[], [], [sig2], [sig2], [], [sig1], [sig1], [sig1]]
 
 
 def test_frame_create_dummy_signals_covers_all_bits():
     frame = canmatrix.canmatrix.Frame(size=1)
     frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=3))
     frame.addSignal(canmatrix.canmatrix.Signal(startBit=4, size=2))
-    frame.createDummySignals()
-    assert len(frame.signals) == 2 + 3
-    assert frame.findNotUsedBits().count(0) == 0
+    frame.create_dummy_signals()
+    assert len(frame.signals) == 2 + 2
+    assert frame.get_frame_layout().count([]) == 0
 
 
 def test_frame_update_receivers():
