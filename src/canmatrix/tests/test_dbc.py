@@ -39,7 +39,8 @@ def test_enum_with_comma():
     BA_DEF_DEF_ "example1" ",";
     BA_DEF_DEF_ "example2" ",";
     BA_DEF_DEF_ "example3" ",";
-    BA_DEF_DEF_ "example4" ",";''').encode('utf-8'))
+    BA_DEF_DEF_ "example4" ",";
+    ''').encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
 
     assert matrix.frameDefines[u'example1'].values == ["Val 1"," ",""," ","'","(",")","[","]","/","-","|","{","}",";",":","<",">",".","?","!","@","#","$","%","^","&","=","`","~"]
