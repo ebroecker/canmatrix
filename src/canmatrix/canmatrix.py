@@ -461,9 +461,7 @@ class SignalGroup(object):
 
 
 @attr.s
-class decodedSignal(object):
-    raw_value = attr.ib()
-    signal = attr.ib()
+class DecodedSignal(object):
     """
     Contains a decoded signal (frame decoding)
 
@@ -472,28 +470,27 @@ class decodedSignal(object):
     * namedValue: value of Valuetable
     * signal: pointer signal (object) which was decoded
     """
-    def __init__(self, raw_value, signal):
-        self.raw_value = raw_value
-        self.signal = signal
+    raw_value = attr.ib()
+    signal = attr.ib()
 
     @property
     def phys_value(self):
         """
         :return: physical Value (the scaled value)
         """
-        return self.signal.raw2phys(self.rawValue)
+        return self.signal.raw2phys(self.raw_value)
 
     @property
     def named_value(self):
         """
         :return: value of Valuetable
         """
-        return self.signal.raw2phys(self.rawValue, decodeToStr=True)
+        return self.signal.raw2phys(self.raw_value, decodeToStr=True)
 
 
 # https://docs.python.org/3/library/itertools.html
 def grouper(iterable, n, fillvalue=None):
-    "Collect data into fixed-length chunks or blocks"
+    """Collect data into fixed-length chunks or blocks."""
     # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"
     args = [iter(iterable)] * n
     return zip_longest(*args, fillvalue=fillvalue)
@@ -1006,7 +1003,7 @@ class Frame(object):
             returnDict= dict()
 
             for s, v in zip(self.signals, unpacked):
-                returnDict[s.name] = decodedSignal(v, s)
+                returnDict[s.name] = DecodedSignal(v, s)
 
             return returnDict
 
