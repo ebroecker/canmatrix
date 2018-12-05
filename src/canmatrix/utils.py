@@ -3,7 +3,7 @@ import shlex
 import csv
 
 def my_split(inLine):
-    if sys.version_info > (3, 0):  # is there a clean way to to it?
+    if sys.version_info >= (3, 0):
         return shlex.split(inLine.strip())
     else:
         tempArray = shlex.split(inLine.strip().encode('utf-8'))
