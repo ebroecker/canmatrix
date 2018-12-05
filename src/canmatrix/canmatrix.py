@@ -1088,11 +1088,12 @@ class Define(object):
             tempValues = canmatrix.utils.my_comma_splitter(definition[5:])
             self.values = []
             for value in tempValues:
-                value = value.strip()
-                if value[0] == '"':
-                    value = value[1:]
-                if value[-1] == '"':
-                    value = value[:-1]
+                value = value.replace("vector_leerstring", " ")
+#                if len(value) > 0:
+#                    if value[0] == '"':
+#                        value = value[1:]
+#                    if value[-1] == '"':
+#                        value = value[:-1]
                 self.values.append(value)
 
         elif definition[0:3] == 'HEX':  # differently rendered in DBC editor, but values are saved like for an INT
