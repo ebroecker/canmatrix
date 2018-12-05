@@ -2,8 +2,8 @@ import sys
 import shlex
 import csv
 
-def my_split(inLine):
-    if sys.version_info > (3, 0):  # is there a clean way to to it?
+def quote_aware_space_split(inLine):
+    if sys.version_info >= (3, 0):  # is there a clean way to to it?
         return shlex.split(inLine.strip())
     else:
         tempArray = shlex.split(inLine.strip().encode('utf-8'))
@@ -13,9 +13,9 @@ def my_split(inLine):
         return newArray
 
 
-def my_comma_splitter(string):
-    if sys.version_info > (3, 0):  # is there a clean way to to it?
-        temp = list(csv.reader([string], skipinitialspace = True))
+def quote_aware_comma_split(string):
+    if sys.version_info >= (3, 0):  # is there a clean way to to it?
+        temp = list(csv.reader([string], skipinitialspace=True))
     else:
-        temp = list(csv.reader([string.encode("utf8")], skipinitialspace = True))
+        temp = list(csv.reader([string.encode("utf8")], skipinitialspace=True))
     return temp[0]

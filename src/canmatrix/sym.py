@@ -373,7 +373,7 @@ def load(f, **options):
                     line = line.split('//')[0]
                     tempArray = line[5:].strip().rstrip(')').split('(', 1)
                     valtabName = tempArray[0]
-                    split = canmatrix.utils.my_split(tempArray[1])
+                    split = canmatrix.utils.quote_aware_space_split(tempArray[1])
                     tempArray = [s.rstrip(',') for s in split]
                     tempValTable = {}
                     for entry in tempArray:
@@ -420,7 +420,7 @@ def load(f, **options):
                         line = split[0].strip()
                     line = line.replace('  ', ' "" ')
 
-                    tempArray = canmatrix.utils.my_split(line)
+                    tempArray = canmatrix.utils.quote_aware_space_split(line)
                     sigName = tempArray[0]
 
                     is_float = False
