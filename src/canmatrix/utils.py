@@ -14,7 +14,7 @@ def my_split(inLine):
 
 
 def my_comma_splitter(string):
-    if sys.version_info > (3, 0):  # is there a clean way to to it?
+    if sys.version_info >= (3, 0):
         temp = list(csv.reader([string], skipinitialspace = True))
     else:
         temp = list(csv.reader([string.encode("utf8")], skipinitialspace = True))
