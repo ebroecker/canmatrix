@@ -29,10 +29,10 @@ import logging
 
 from builtins import *
 import collections
-import shlex
 from .canmatrix import *
 import sys
 import decimal
+import canmatrix.utils
 
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
@@ -311,17 +311,6 @@ Title=\"canmatrix-Export\"
     f.write(output.encode(symEncoding))
 
 
-def mySplit(inLine):
-    if sys.version_info > (3, 0):  # is there a clean way to to it?
-        return shlex.split(inLine.strip())
-    else:
-        tempArray = shlex.split(inLine.strip().encode('utf-8'))
-        newArray = []
-        for item in tempArray:
-            newArray.append(item.decode('utf-8'))
-        return newArray
-
-
 def load(f, **options):
     if 'symImportEncoding' in options:
         symImportEncoding = options["symImportEncoding"]
@@ -384,7 +373,7 @@ def load(f, **options):
                     line = line.split('//')[0]
                     tempArray = line[5:].strip().rstrip(')').split('(', 1)
                     valtabName = tempArray[0]
-                    split = mySplit(tempArray[1])
+                    split = canmatrix.utils.quote_aware_space_split(tempArray[1])
                     tempArray = [s.rstrip(',') for s in split]
                     tempValTable = {}
                     for entry in tempArray:
@@ -431,7 +420,7 @@ def load(f, **options):
                         line = split[0].strip()
                     line = line.replace('  ', ' "" ')
 
-                    tempArray = mySplit(line)
+                    tempArray = canmatrix.utils.quote_aware_space_split(line)
                     sigName = tempArray[0]
 
                     is_float = False

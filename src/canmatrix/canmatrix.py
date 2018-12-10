@@ -47,6 +47,7 @@ import struct
 
 from past.builtins import basestring
 import canmatrix.copy
+import canmatrix.utils
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal
 
@@ -1041,7 +1042,6 @@ class Frame(object):
         """Represent the frame by its name only."""
         return self.name  # add more details than the name only?
 
-
 class Define(object):
     """
     Hold the defines and default-values.
@@ -1082,14 +1082,10 @@ class Define(object):
 
         elif definition[0:4] == 'ENUM':
             self.type = 'ENUM'
-            tempValues = definition[5:].split(',')
+            tempValues = canmatrix.utils.quote_aware_comma_split(definition[5:])
             self.values = []
             for value in tempValues:
-                value = value.strip()
-                if value[0] == '"':
-                    value = value[1:]
-                if value[-1] == '"':
-                    value = value[:-1]
+                value = value.replace("vector_leerstring", "")
                 self.values.append(value)
 
         elif definition[0:3] == 'HEX':  # differently rendered in DBC editor, but values are saved like for an INT
