@@ -1085,7 +1085,7 @@ class Define(object):
             tempValues = canmatrix.utils.quote_aware_comma_split(definition[5:])
             self.values = []
             for value in tempValues:
-                value = value.replace("vector_leerstring", " ")
+                value = value.replace("vector_leerstring", "")
                 self.values.append(value)
 
         elif definition[0:3] == 'HEX':  # differently rendered in DBC editor, but values are saved like for an INT

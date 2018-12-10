@@ -45,7 +45,7 @@ def test_enum_with_comma():
     ''').encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
 
-    assert matrix.frameDefines[u'example1'].values == ["Val 1"," ",""," ","'","(",")","[","]","/","-","|","{","}",";",":","<",">",".","?","!","@","#","$","%","^","&","=","`","~"]
+    assert matrix.frameDefines[u'example1'].values == ["Val 1","",""," ","'","(",")","[","]","/","-","|","{","}",";",":","<",">",".","?","!","@","#","$","%","^","&","=","`","~"]
     assert matrix.signalDefines[u'example2'].values == ['Val1', ',']
     assert matrix.buDefines[u'example4'].values == ['Val1', ',']
 
