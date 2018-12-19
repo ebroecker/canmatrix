@@ -36,6 +36,7 @@ if attr.__version__ < '17.4.0':
 import logging
 import fnmatch
 import decimal
+import typing
 
 try:
     from itertools import zip_longest as zip_longest
@@ -66,9 +67,9 @@ class BoardUnit(object):
     Contains one Boardunit/ECU
     """
 
-    name = attr.ib(type=str)
-    comment = attr.ib(default=None)
-    attributes = attr.ib(type=dict, factory=dict, repr=False)
+    name = attr.ib()  # type: str
+    comment = attr.ib(default=None)  # type: typing.Optional[str]
+    attributes = attr.ib(factory=dict, repr=False)  # type: typing.MutableMapping[str, typing.Any]
 
     def attribute(self, attributeName, db=None, default=None):
         """Get Board unit attribute by its name.
@@ -125,34 +126,34 @@ class Signal(object):
     * _multiplex ('Multiplexor' or Number of Multiplex)
     """
 
-    name = attr.ib(default="")
+    name = attr.ib(default="")  # type: str
     # float_factory = attr.ib(default=defaultFloatFactory)
-    float_factory = defaultFloatFactory
-    startBit = attr.ib(type=int, default=0)
-    size = attr.ib(type=int, default=0)
-    is_little_endian = attr.ib(type=bool, default=True)
-    is_signed = attr.ib(type=bool, default=True)
-    offset = attr.ib(converter=float_factory, default=float_factory(0.0))
-    factor = attr.ib(converter=float_factory, default=float_factory(1.0))
+    float_factory = defaultFloatFactory  # type: typing.Callable
+    startBit = attr.ib( default=0)  # type: int
+    size = attr.ib(default=0)  # type: int
+    is_little_endian = attr.ib(default=True)  # type: bool
+    is_signed = attr.ib(default=True)  # type: bool
+    offset = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: decimal.Decimal
+    factor = attr.ib(converter=float_factory, default=float_factory(1.0))  # type: decimal.Decimal
 
-    unit = attr.ib(type=str, default="")
-    receiver = attr.ib(type=list, factory=list)
-    comment = attr.ib(default=None)
+    unit = attr.ib(default="")  # type: str
+    receiver = attr.ib(factory=list)  # type: typing.MutableSequence[str]
+    comment = attr.ib(default=None)  # type: typing.Optional[str]
     multiplex = attr.ib(default=None)
 
     mux_value = attr.ib(default=None)
-    is_float = attr.ib(type=bool, default=False)
-    enumeration = attr.ib(type=str, default=None)
-    comments = attr.ib(type=dict, factory=dict)
-    attributes = attr.ib(type=dict, factory=dict)
-    values = attr.ib(type=dict, converter=normalizeValueTable, factory=dict)
-    muxValMax = attr.ib(default=0)
-    muxValMin = attr.ib(default=0)
-    muxerForSignal = attr.ib(type=str, default=None)
+    is_float = attr.ib(default=False)  # type: bool
+    enumeration = attr.ib(default=None)  # type: str
+    comments = attr.ib(factory=dict)  # type: typing.MutableMapping[str, str]
+    attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
+    values = attr.ib(converter=normalizeValueTable, factory=dict)  # type: typing.MutableMapping[int, str]
+    muxValMax = attr.ib(default=0)  # type: int
+    muxValMin = attr.ib(default=0)  # type: int
+    muxerForSignal = attr.ib(default=None)  # type: str
 
-    # offset = attr.ib(converter=float_factory, default=0.0)
-    calc_min_for_none = attr.ib(type=bool, default=True)
-    calc_max_for_none = attr.ib(type=bool, default=True)
+    # offset = attr.ib(converter=float_factory, default=0.0)  # type: float # ??
+    calc_min_for_none = attr.ib(default=True)  # type: bool
+    calc_max_for_none = attr.ib(default=True)  # type: bool
 
     min = attr.ib(
         converter=lambda value, float_factory=float_factory: (
@@ -160,7 +161,7 @@ class Signal(object):
             if value is not None
             else value
         )
-    )
+    )  # type: decimal.Decimal
     @min.default
     def setDefaultMin(self):
         return self.setMin()
@@ -171,7 +172,7 @@ class Signal(object):
             if value is not None
             else value
         )
-    )
+    )  # type: decimal.Decimal
     @max.default
     def setDefaultMax(self):
         return self.setMax()
@@ -182,7 +183,9 @@ class Signal(object):
 
     @property
     def spn(self):
-        """Get signal J1939 SPN or None if not defined."""
+        """Get signal J1939 SPN or None if not defined.
+
+        :rtype: typing.Union[int, None]"""
         return self.attributes.get("SPN", None)
 
     def multiplexSetter(self, value):
@@ -417,9 +420,9 @@ class SignalGroup(object):
     """
     Represents signal-group, containing multiple Signals.
     """
-    name = attr.ib(type=str)
-    id = attr.ib(type=int)
-    signals = attr.ib(type=list, factory=list, repr=False)
+    name = attr.ib()  # type: str
+    id = attr.ib()  # type: int
+    signals = attr.ib(factory=list, repr=False)  # type: typing.MutableSequence[Signal]
 
     def addSignal(self, signal):
         """Add a Signal to SignalGroup.
@@ -471,13 +474,14 @@ class DecodedSignal(object):
     * namedValue: value of Valuetable
     * signal: pointer signal (object) which was decoded
     """
-    raw_value = attr.ib()
-    signal = attr.ib()
+    raw_value = attr.ib()  # type: int
+    signal = attr.ib()  # type: Signal
 
     @property
     def phys_value(self):
         """
         :return: physical Value (the scaled value)
+        :rtype: typing.Union[int, decimal.Decimal]
         """
         return self.signal.raw2phys(self.raw_value)
 
@@ -485,6 +489,7 @@ class DecodedSignal(object):
     def named_value(self):
         """
         :return: value of Valuetable
+        :rtype: typing.Union[str, int, decimal.Decimal]
         """
         return self.signal.raw2phys(self.raw_value, decodeToStr=True)
 
@@ -568,24 +573,24 @@ class Frame(object):
     Frame signals can be accessed using the iterator.
     """
 
-    name = attr.ib(default="")
-    id = attr.ib(type=int, default=0)
-    size = attr.ib(default=0)
-    transmitters = attr.ib(type=list, factory=list)
-    extended = attr.ib(type=bool, default=False)
-    is_complex_multiplexed = attr.ib(type=bool, default=False)
-    is_fd = attr.ib(type=bool, default=False)
-    comment = attr.ib(default="")
-    signals = attr.ib(type=list, factory=list)
-    mux_names = attr.ib(type=dict, factory=dict)
-    attributes = attr.ib(type=dict, factory=dict)
-    receiver = attr.ib(type=list, factory=list)
-    signalGroups = attr.ib(type=list, factory=list)
+    name = attr.ib(default="")  # type: str
+    id = attr.ib(default=0)  # type: int
+    size = attr.ib(default=0)  # type: int
+    transmitters = attr.ib(factory=list)  # type: typing.MutableSequence[BoardUnit]
+    extended = attr.ib(default=False)  # type: bool
+    is_complex_multiplexed = attr.ib(default=False)  # type: bool
+    is_fd = attr.ib(default=False)  # type: bool
+    comment = attr.ib(default="")  # type: str
+    signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
+    mux_names = attr.ib(factory=dict)  # type: typing.MutableMapping[typing.Any, typing.Any]  # I don't know
+    attributes = attr.ib(factory=dict)  # type: typing.MutableMapping
+    receiver = attr.ib(factory=list)  # type: typing.MutableSequence[BoardUnit]
+    signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
 
-    j1939_pgn = attr.ib(default=None)
-    j1939_source = attr.ib(default=0)
-    j1939_prio = attr.ib(default=0)
-    is_j1939 = attr.ib(type=bool, default=False)
+    j1939_pgn = attr.ib(default=None)  # type: typing.Optional[int]
+    j1939_source = attr.ib(default=0)  # type: int
+    j1939_prio = attr.ib(default=0)  # type: int
+    is_j1939 = attr.ib(default=False)  # type: bool
     # ('cycleTime', '_cycleTime', int, None),
     # ('sendType', '_sendType', str, None),
 
