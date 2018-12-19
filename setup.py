@@ -67,7 +67,13 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-    install_requires = ["future", "attrs>=17.4.0", "bitstruct", "pathlib2"],
+    install_requires = [
+        "attrs>=17.4.0",
+        "bitstruct",
+        "future",
+        "pathlib2",
+        "typing; python_version < '3.5'",
+    ],
     extras_require = {
         "arxml": ["lxml"],
         "kcd": ["lxml"],
