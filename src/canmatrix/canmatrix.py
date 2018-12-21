@@ -48,7 +48,9 @@ import struct
 
 from past.builtins import basestring
 import canmatrix.copy
+import canmatrix.types
 import canmatrix.utils
+import canmatrix.types
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal
 
@@ -71,7 +73,7 @@ class BoardUnit(object):
     comment = attr.ib(default=None)  # type: typing.Optional[str]
     attributes = attr.ib(factory=dict, repr=False)  # type: typing.MutableMapping[str, typing.Any]
 
-    def attribute(self, attributeName, db=None, default=None):
+    def attribute(self, attributeName, db=None, default=None):  # type: (str, CanMatrix, typing.Any) -> typing.Any
         """Get Board unit attribute by its name.
 
         :param str attributeName: attribute name.
@@ -87,7 +89,7 @@ class BoardUnit(object):
                 return define.defaultValue
         return default
 
-    def addAttribute(self, attribute, value):
+    def addAttribute(self, attribute, value):  # type (attribute: str, value: typing.Any) -> None
         """
         Add the Attribute to current Boardunit/ECU. If the attribute already exists, update the value.
 
@@ -96,7 +98,7 @@ class BoardUnit(object):
         """
         self.attributes[attribute] = value
 
-    def addComment(self, comment):
+    def addComment(self, comment):  # type: (str) -> None
         """
         Set Board unit comment.
 
@@ -105,7 +107,7 @@ class BoardUnit(object):
         self.comment = comment
 
 
-def normalizeValueTable(table):
+def normalizeValueTable(table):  # type: (typing.Mapping) -> typing.Mapping
     return {int(k): v for k, v in table.items()}
 
 
@@ -143,13 +145,13 @@ class Signal(object):
 
     mux_value = attr.ib(default=None)
     is_float = attr.ib(default=False)  # type: bool
-    enumeration = attr.ib(default=None)  # type: str
+    enumeration = attr.ib(default=None)  # type: typing.Optional[str]
     comments = attr.ib(factory=dict)  # type: typing.MutableMapping[str, str]
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
     values = attr.ib(converter=normalizeValueTable, factory=dict)  # type: typing.MutableMapping[int, str]
     muxValMax = attr.ib(default=0)  # type: int
     muxValMin = attr.ib(default=0)  # type: int
-    muxerForSignal = attr.ib(default=None)  # type: str
+    muxerForSignal = attr.ib(default=None)  # type: typing.Optional[str]
 
     # offset = attr.ib(converter=float_factory, default=0.0)  # type: float # ??
     calc_min_for_none = attr.ib(default=True)  # type: bool
@@ -161,9 +163,9 @@ class Signal(object):
             if value is not None
             else value
         )
-    )  # type: decimal.Decimal
+    )  # type: typing.Union[int, decimal.Decimal, None]
     @min.default
-    def setDefaultMin(self):
+    def setDefaultMin(self):  # type: () -> canmatrix.types.OptionalPhysicalValue
         return self.setMin()
 
     max = attr.ib(
@@ -172,7 +174,7 @@ class Signal(object):
             if value is not None
             else value
         )
-    )  # type: decimal.Decimal
+    )  # type: canmatrix.types.OptionalPhysicalValue
     @max.default
     def setDefaultMax(self):
         return self.setMax()
@@ -182,10 +184,10 @@ class Signal(object):
 
 
     @property
-    def spn(self):
+    def spn(self):  # type: () -> typing.Optional[int]
         """Get signal J1939 SPN or None if not defined.
 
-        :rtype: typing.Union[int, None]"""
+        :rtype: typing.Optional[int]"""
         return self.attributes.get("SPN", None)
 
     def multiplexSetter(self, value):
@@ -201,6 +203,7 @@ class Signal(object):
         return ret_multiplex
 
     def attribute(self, attributeName, db=None, default=None):
+        # type: (str, CanMatrix, typing.Any) -> typing.Any
         """Get any Signal attribute by its name.
 
         :param str attributeName: attribute name, can be mandatory (ex: startBit, size) or optional (customer) attribute.
@@ -326,9 +329,10 @@ class Signal(object):
         )
 
     def setMin(self, min=None):
+        # type: (canmatrix.types.OptionalPhysicalValue) -> canmatrix.types.OptionalPhysicalValue
         """Set minimal physical Signal value.
 
-        :param float or None min: minimal physical value. If None, compute using `calcMin`
+        :param min: minimal physical value. If None and enabled (`calc_min_for_none`), compute using `calcMin`
         """
         self.min = min
         if self.calc_min_for_none and self.min is None:
@@ -336,16 +340,17 @@ class Signal(object):
 
         return self.min
 
-    def calcMin(self):
+    def calcMin(self):  # type: () -> canmatrix.types.PhysicalValue
         """Compute minimal physical Signal value based on offset and factor and `calculateRawRange`."""
         rawMin = self.calculateRawRange()[0]
 
         return self.offset + (self.float_factory(rawMin) * self.factor)
 
     def setMax(self, max=None):
+        # type: (canmatrix.types.OptionalPhysicalValue) -> canmatrix.types.OptionalPhysicalValue
         """Set maximal signal value.
 
-        :param float or None max: minimal physical value. If None, compute using `calcMax`
+        :param max: minimal physical value. If None and enabled (`calc_max_for_none`), compute using `calcMax`
         """
         self.max = max
 
@@ -354,7 +359,7 @@ class Signal(object):
 
         return self.max
 
-    def calcMax(self):
+    def calcMax(self):  # type: () -> canmatrix.types.PhysicalValue
         """Compute maximal physical Signal value based on offset, factor and `calculateRawRange`."""
         rawMax = self.calculateRawRange()[1]
 
@@ -362,6 +367,7 @@ class Signal(object):
 
 
     def phys2raw(self, value=None):
+        # type: (canmatrix.types.OptionalPhysicalValue) -> canmatrix.types.RawValue
         """Return the raw value (= as is on CAN).
 
         :param value: (scaled) value compatible with `decimal` or value choice to encode
@@ -393,6 +399,7 @@ class Signal(object):
         return raw_value
 
     def raw2phys(self, value, decodeToStr=False):
+        # type: (canmatrix.types.RawValue, bool) -> canmatrix.types.PhysicalValue
         """Decode the given raw value (= as is on CAN).
 
         :param value: raw value compatible with `decimal`.
@@ -411,7 +418,7 @@ class Signal(object):
 
         return value
 
-    def __str__(self):
+    def __str__(self):  # type: () -> str
         return self.name
 
 
@@ -424,7 +431,7 @@ class SignalGroup(object):
     id = attr.ib()  # type: int
     signals = attr.ib(factory=list, repr=False)  # type: typing.MutableSequence[Signal]
 
-    def addSignal(self, signal):
+    def addSignal(self, signal):  # type: (Signal) -> None
         """Add a Signal to SignalGroup.
 
         :param Signal signal: signal to add
@@ -432,7 +439,7 @@ class SignalGroup(object):
         if signal not in self.signals:
             self.signals.append(signal)
 
-    def delSignal(self, signal):
+    def delSignal(self, signal):  # type: (Signal) -> None
         """Remove Signal from SignalGroup.
 
         :param Signal signal: signal to remove
@@ -440,7 +447,7 @@ class SignalGroup(object):
         if signal in self.signals:
             self.signals.remove(signal)
 
-    def byName(self, name):
+    def byName(self, name):  # type: (str) -> typing.Union[Signal, None]
         """
         Find a Signal in the group by Signal name.
 
@@ -453,11 +460,11 @@ class SignalGroup(object):
                 return test
         return None
 
-    def __iter__(self):
+    def __iter__(self):  # type: () -> typing.Iterable[Signal]
         """Iterate over all contained signals."""
         return iter(self.signals)
 
-    def __getitem__(self, name):
+    def __getitem__(self, name):  # type: (str) -> Signal
         signal = self.byName(name)
         if signal:
             return signal
@@ -478,7 +485,7 @@ class DecodedSignal(object):
     signal = attr.ib()  # type: Signal
 
     @property
-    def phys_value(self):
+    def phys_value(self):  # type: () -> canmatrix.types.PhysicalValue
         """
         :return: physical Value (the scaled value)
         :rtype: typing.Union[int, decimal.Decimal]
@@ -582,8 +589,8 @@ class Frame(object):
     is_fd = attr.ib(default=False)  # type: bool
     comment = attr.ib(default="")  # type: str
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
-    mux_names = attr.ib(factory=dict)  # type: typing.MutableMapping[typing.Any, typing.Any]  # I don't know
-    attributes = attr.ib(factory=dict)  # type: typing.MutableMapping
+    mux_names = attr.ib(factory=dict)  # type: typing.MutableMapping[int, str]
+    attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
     receiver = attr.ib(factory=list)  # type: typing.MutableSequence[BoardUnit]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
 
@@ -595,7 +602,7 @@ class Frame(object):
     # ('sendType', '_sendType', str, None),
 
     @property
-    def is_multiplexed(self):
+    def is_multiplexed(self):  # type: () -> bool
         """Frame is multiplexed if at least one of its signals is a multiplexer."""
         for sig in self.signals:
             if sig.is_multiplexer:
@@ -603,32 +610,32 @@ class Frame(object):
         return False
 
     @property
-    def pgn(self):
+    def pgn(self):  # type: () -> int
         return CanId(self.id).pgn
 
     @pgn.setter
-    def pgn(self, value):
+    def pgn(self, value):  # type: (int) -> None
         self.j1939_pgn = value
         self.recalcJ1939Id()
 
     @property
-    def priority(self):
+    def priority(self):  # type: () -> int
         """Get J1939 priority."""
         return self.j1939_prio
 
     @priority.setter
-    def priority(self, value):
+    def priority(self, value):  # type: (int) -> None
         """Set J1939 priority."""
         self.j1939_prio = value
         self.recalcJ1939Id()
 
     @property
-    def source(self):
+    def source(self):  # type: () -> int
         """Get J1939 source."""
         return self.j1939_source
 
     @source.setter
-    def source(self, value):
+    def source(self, value):  # type: (int) -> None
         """Set J1939 source."""
         self.j1939_source = value
         self.recalcJ1939Id()

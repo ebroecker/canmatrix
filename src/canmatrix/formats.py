@@ -43,7 +43,7 @@ for loadedModule in loadedFormats:
         extensionMapping[loadedModule] = loadedModule
 
 
-def loads(string, importType=None, key="", flatImport=None, encoding="utf-8",**options):
+def loads(string, importType=None, key="", flatImport=None, encoding="utf-8", **options):
     if sys.version_info > (3, 0):
         if type(string) == str:
             string = bytes(string, encoding)
