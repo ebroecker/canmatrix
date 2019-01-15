@@ -25,11 +25,11 @@
 # (https://github.com/ericevenchick/CANard)
 
 from builtins import *
-from .canmatrix import *
+import canmatrix
 import codecs
 import json
 import sys
-
+import decimal
 
 
 extension = 'json'
@@ -178,7 +178,7 @@ def dump(db, f, **options):
 
 
 def load(f, **options):
-    db = CanMatrix()
+    db = canmatrix.CanMatrix()
 
     if (sys.version_info > (3, 0)):
         import io
@@ -189,7 +189,7 @@ def load(f, **options):
     if "messages" in jsonData:
         for frame in jsonData["messages"]:
             #            newframe = Frame(frame["id"],frame["name"],8,None)
-            newframe = Frame(frame["name"],
+            newframe = canmatrix.Frame(frame["name"],
                              id=frame["id"],
                              size=8)
             if "length" in frame:
@@ -213,13 +213,20 @@ def load(f, **options):
                     is_signed = True
                 else:
                     is_signed = False
-                newsignal = Signal(signal["name"],
+                newsignal = canmatrix.Signal(signal["name"],
                                    startBit=signal["start_bit"],
                                    size=signal["bit_length"],
                                    is_little_endian=is_little_endian,
                                    is_signed=is_signed,
                                    factor=signal["factor"],
                                    offset=signal["offset"])
+
+                if "min" in signal and signal["min"]:
+                    newsignal.min = decimal.Decimal(signal["min"])
+
+                if "max" in signal and signal["max"]:
+                    newsignal.max = decimal.Decimal(signal["max"])
+
                 if "unit" in signal and signal["unit"]:
                     newsignal.unit = signal["unit"]
 

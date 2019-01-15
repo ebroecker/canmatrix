@@ -74,3 +74,37 @@ def test_export_min_max():
     data['messages'][0]['signals'][0]['min'] == -5
     data['messages'][0]['signals'][0]['max'] == 42
 
+def test_import_min_max():
+    jsonInput = """{
+        "messages": [
+            {
+                "attributes": {},
+                "comment": "",
+                "id": 10,
+                "is_extended_frame": false,
+                "length": 6,
+                "name": "test_frame",
+                "signals": [
+                    {
+                        "attributes": {},
+                        "bit_length": 40,
+                        "comment": null,
+                        "factor": "1",
+                        "is_big_endian": false,
+                        "is_float": false,
+                        "is_signed": true,
+                        "max": "42",
+                        "min": "-5",
+                        "name": "someSigName",
+                        "offset": "0",
+                        "start_bit": 0,
+                        "values": {}
+                    }
+                ]
+            }
+        ]
+    }"""
+    matrix = canmatrix.formats.loads(jsonInput, "cmjson", flatImport=True, jsonAll=True)
+    print(matrix)
+    assert matrix.frames[0].signals[0].min == -5
+    assert matrix.frames[0].signals[0].max == 42
