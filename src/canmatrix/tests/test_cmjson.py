@@ -61,3 +61,16 @@ def test_export_long_signal_names():
     data = json.loads(out_file.getvalue().decode("utf-8"))
 
     assert data['messages'][0]['signals'][0]['name'] == long_signal_name
+
+def test_export_min_max():
+    matrix = canmatrix.canmatrix.CanMatrix()
+    frame = canmatrix.canmatrix.Frame(name="test_frame", size=6, id=10)
+    signal = canmatrix.Signal(name="someSigName", size=40, min=-5, max=42)
+    frame.addSignal(signal)
+    matrix.addFrame(frame)
+    out_file = io.BytesIO()
+    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonAll=True)
+    data = json.loads(out_file.getvalue().decode("utf-8"))
+    data['messages'][0]['signals'][0]['min'] == -5
+    data['messages'][0]['signals'][0]['max'] == 42
+
