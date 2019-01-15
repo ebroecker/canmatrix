@@ -105,6 +105,5 @@ def test_import_min_max():
         ]
     }"""
     matrix = canmatrix.formats.loads(jsonInput, "cmjson", flatImport=True, jsonAll=True)
-    print(matrix)
     assert matrix.frames[0].signals[0].min == -5
     assert matrix.frames[0].signals[0].max == 42
