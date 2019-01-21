@@ -201,15 +201,17 @@ def load(f, **options):
                 newframe.extended = 0
 
             for signal in frame["signals"]:
-                if "is_big_endian" in signal and signal["is_big_endian"]:
+                if signal.get("is_big_endian", False):
                     is_little_endian = False
                 else:
                     is_little_endian = True
-                if "is_float" in signal and signal["is_float"]:
+
+                if signal.get("is_float", False):
                     is_float = True
                 else:
                     is_float = False
-                if "is_signed" in signal and signal["is_signed"]:
+
+                if signal.get("is_signed", False):
                     is_signed = True
                 else:
                     is_signed = False
@@ -218,22 +220,23 @@ def load(f, **options):
                                    size=signal["bit_length"],
                                    is_little_endian=is_little_endian,
                                    is_signed=is_signed,
+                                   is_float = is_float,
                                    factor=signal["factor"],
                                    offset=signal["offset"])
 
                 if signal.get("min", False):
                     newsignal.min = newsignal.float_factory(signal["min"])
 
-                if "max" in signal and signal["max"]:
-                    newsignal.max = decimal.Decimal(signal["max"])
+                if signal.get("max", False):
+                    newsignal.max = newsignal.float_factory(signal["max"])
 
-                if "unit" in signal and signal["unit"]:
+                if signal.get("unit", False):
                     newsignal.unit = signal["unit"]
 
-                if "multiplex" in signal and signal["multiplex"]:
+                if signal.get("multiplex", False):
                     newsignal.unit = signal["multiplex"]
 
-                if "values" in signal and signal["values"]:
+                if signal.get("values", False):
                     for key in signal["values"]:
                         newsignal.addValues(key, signal["values"][key])
                 if newsignal.is_little_endian == False:
