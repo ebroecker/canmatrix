@@ -222,7 +222,7 @@ def load(f, **options):
                                    offset=signal["offset"])
 
                 if "min" in signal and signal["min"]:
-                    newsignal.min = decimal.Decimal(signal["min"])
+                    newsignal.min = newsignal.float_factory(signal["min"])
 
                 if "max" in signal and signal["max"]:
                     newsignal.max = decimal.Decimal(signal["max"])
