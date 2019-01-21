@@ -221,7 +221,7 @@ def load(f, **options):
                                    factor=signal["factor"],
                                    offset=signal["offset"])
 
-                if "min" in signal and signal["min"]:
+                if signal.get("min", False):
                     newsignal.min = newsignal.float_factory(signal["min"])
 
                 if "max" in signal and signal["max"]:
