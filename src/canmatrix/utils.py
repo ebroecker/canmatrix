@@ -14,3 +14,21 @@ def quote_aware_comma_split(string):
     else:
         temp = list(csv.reader([string.encode("utf8")], skipinitialspace=True))
     return temp[0]
+
+
+def guess_value(textValue):
+    """
+    returns a string value for common strings.
+    method is far from complete but helping with odd arxmls
+    :param textValue: value in text like "true"
+    :return: string for value like "1"
+    """
+    if sys.version_info >= (3, 0):
+        textValue = textValue.casefold()
+    else:
+        textValue = textValue.lower()
+    if textValue in ["false", "off"]:
+        return "0"
+    elif textValue in ["true", "on"]:
+        return "1"
+    return textValue
