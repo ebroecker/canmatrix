@@ -29,7 +29,6 @@ import canmatrix
 import codecs
 import json
 import sys
-import decimal
 
 
 extension = 'json'
