@@ -350,15 +350,15 @@ def compareSignal(s1, s2, ignore=None):
             compareResult(
                 "changed", "startbit", s1, [
                     " %d" %
-                    s1.startbit, " %d" %
-                    s2.startbit]))
+                    s1.startBit, " %d" %
+                    s2.startBit]))
     if s1.size != s2.size:
         result.addChild(
             compareResult(
                 "changed", "signalsize", s1, [
                     " %d" %
-                    s1.signalsize, " %d" %
-                    s2.signalsize]))
+                    s1.size, " %d" %
+                    s2.size]))
     if float(s1.factor) != float(s2.factor):
         result.addChild(
             compareResult(
