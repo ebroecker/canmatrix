@@ -1229,7 +1229,9 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
 
     sn = arGetChild(frameTriggering, "SHORT-NAME", xmlRoot, ns)
     logger.debug("processing Frame: %s", sn.text)
-
+    if idele is None:
+        logger.info("found Frame %s without arbitration id %s", sn.text)
+        return None
     idNum = int(idele.text)
 
     if None != frameR:
@@ -1607,8 +1609,10 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            db.addFrame(getFrame(frameTrig,searchPoint,multiplexTranslation,ns, float_factory))
-
+            frameObject = getFrame(frameTrig,searchPoint,multiplexTranslation,ns, float_factory)
+            if frameObject is not None:
+                db.addFrame(frameObject)
+                
         if ignoreClusterInfo == True:
             pass
             # no support for signal direction
