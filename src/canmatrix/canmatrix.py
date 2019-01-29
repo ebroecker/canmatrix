@@ -27,32 +27,29 @@
 
 # TODO: Definitions should be disassembled
 
-from __future__ import division
+from __future__ import division, absolute_import
 import math
 import attr
-import sys
 if attr.__version__ < '17.4.0':
     raise "need attrs >= 17.4.0"
-
-from collections import OrderedDict
 
 import logging
 import fnmatch
 import decimal
-defaultFloatFactory = decimal.Decimal
 
-
-logger = logging.getLogger('root')
 try:
     from itertools import zip_longest as zip_longest
 except ImportError:
     from itertools import izip_longest as zip_longest
+
 from itertools import chain
 import struct
 
 from past.builtins import basestring
-import copy
-
+import canmatrix.copy
+import canmatrix.utils
+logger = logging.getLogger(__name__)
+defaultFloatFactory = decimal.Decimal
 
 class ExceptionTemplate(Exception):
     def __call__(self, *args):
@@ -71,7 +68,7 @@ class BoardUnit(object):
 
     name = attr.ib(type=str)
     comment = attr.ib(default=None)
-    attributes = attr.ib(factory=dict, repr=False)
+    attributes = attr.ib(type=dict, factory=dict, repr=False)
 
     def attribute(self, attributeName, db=None, default=None):
         """Get Board unit attribute by its name.
@@ -128,44 +125,56 @@ class Signal(object):
     * _multiplex ('Multiplexor' or Number of Multiplex)
     """
 
-    name = attr.ib(default = "")
+    name = attr.ib(default="")
     # float_factory = attr.ib(default=defaultFloatFactory)
     float_factory = defaultFloatFactory
     startBit = attr.ib(type=int, default=0)
-    size = attr.ib(type=int, default = 0)
-    is_little_endian = attr.ib(type=bool, default = True)
-    is_signed = attr.ib(type=bool, default = True)
-    offset = attr.ib(converter = float_factory, default = float_factory(0.0))
-    factor = attr.ib(converter = float_factory, default = float_factory(1.0))
+    size = attr.ib(type=int, default=0)
+    is_little_endian = attr.ib(type=bool, default=True)
+    is_signed = attr.ib(type=bool, default=True)
+    offset = attr.ib(converter=float_factory, default=float_factory(0.0))
+    factor = attr.ib(converter=float_factory, default=float_factory(1.0))
 
-    # offset = attr.ib(converter = float_factory, default = 0.0)
+    unit = attr.ib(type=str, default="")
+    receiver = attr.ib(type=list, factory=list)
+    comment = attr.ib(default=None)
+    multiplex = attr.ib(default=None)
 
-    min  = attr.ib(converter=float_factory)
+    mux_value = attr.ib(default=None)
+    is_float = attr.ib(type=bool, default=False)
+    enumeration = attr.ib(type=str, default=None)
+    comments = attr.ib(type=dict, factory=dict)
+    attributes = attr.ib(type=dict, factory=dict)
+    values = attr.ib(type=dict, converter=normalizeValueTable, factory=dict)
+    muxValMax = attr.ib(default=0)
+    muxValMin = attr.ib(default=0)
+    muxerForSignal = attr.ib(type=str, default=None)
+
+    # offset = attr.ib(converter=float_factory, default=0.0)
+    calc_min_for_none = attr.ib(type=bool, default=True)
+    calc_max_for_none = attr.ib(type=bool, default=True)
+
+    min = attr.ib(
+        converter=lambda value, float_factory=float_factory: (
+            float_factory(value)
+            if value is not None
+            else value
+        )
+    )
     @min.default
     def setDefaultMin(self):
-        return  self.calcMin()
+        return self.setMin()
 
-    max =  attr.ib(converter = float_factory)
+    max = attr.ib(
+        converter=lambda value, float_factory=float_factory: (
+            float_factory(value)
+            if value is not None
+            else value
+        )
+    )
     @max.default
     def setDefaultMax(self):
-        return  self.calcMax()
-
-    unit = attr.ib(type=str, default ="")
-    receiver = attr.ib(default = attr.Factory(list))
-    comment = attr.ib(default = None)
-    multiplex  = attr.ib(default = None)
-
-    mux_value = attr.ib(default = None)
-    is_float = attr.ib(type=bool, default=False)
-    enumeration = attr.ib(type=str, default = None)
-    comments = attr.ib(type=dict, default = attr.Factory(dict))
-    attributes = attr.ib(type=dict, default = attr.Factory(dict))
-    values = attr.ib(type=dict, converter=normalizeValueTable, default = attr.Factory(dict))
-    calc_min_for_none = attr.ib(type=bool, default = True)
-    calc_max_for_none = attr.ib(type=bool, default = True)
-    muxValMax = attr.ib(default = 0)
-    muxValMin = attr.ib(default = 0)
-    muxerForSignal= attr.ib(type=str, default = None)
+        return self.setMax()
 
     def __attrs_post_init__(self):
         self.multiplex = self.multiplexSetter(self.multiplex)
@@ -302,9 +311,16 @@ class Signal(object):
         :return: Signal range, i.e. (0, 15) for unsigned 4 bit Signal or (-8, 7) for signed one.
         :rtype: tuple
         """
+        factory = (
+            self.float_factory
+            if self.is_float
+            else int
+        )
         rawRange = 2 ** (self.size - (1 if self.is_signed else 0))
-        return (self.float_factory(-rawRange if self.is_signed else 0),
-                self.float_factory(rawRange - 1))
+        return (
+            factory(-rawRange if self.is_signed else 0),
+            factory(rawRange - 1),
+        )
 
     def setMin(self, min=None):
         """Set minimal physical Signal value.
@@ -321,7 +337,7 @@ class Signal(object):
         """Compute minimal physical Signal value based on offset and factor and `calculateRawRange`."""
         rawMin = self.calculateRawRange()[0]
 
-        return self.offset + (rawMin * self.factor)
+        return self.offset + (self.float_factory(rawMin) * self.factor)
 
     def setMax(self, max=None):
         """Set maximal signal value.
@@ -339,7 +355,7 @@ class Signal(object):
         """Compute maximal physical Signal value based on offset, factor and `calculateRawRange`."""
         rawMax = self.calculateRawRange()[1]
 
-        return self.offset + (rawMax * self.factor)
+        return self.offset + (self.float_factory(rawMax) * self.factor)
 
 
     def phys2raw(self, value=None):
@@ -403,7 +419,7 @@ class SignalGroup(object):
     """
     name = attr.ib(type=str)
     id = attr.ib(type=int)
-    signals = attr.ib(factory=list, repr=False)
+    signals = attr.ib(type=list, factory=list, repr=False)
 
     def addSignal(self, signal):
         """Add a Signal to SignalGroup.
@@ -445,11 +461,8 @@ class SignalGroup(object):
         raise KeyError("Signal '{}' doesn't exist".format(name))
 
 
-
 @attr.s
-class decodedSignal(object):
-    raw_value = attr.ib()
-    signal = attr.ib()
+class DecodedSignal(object):
     """
     Contains a decoded signal (frame decoding)
 
@@ -458,28 +471,27 @@ class decodedSignal(object):
     * namedValue: value of Valuetable
     * signal: pointer signal (object) which was decoded
     """
-    def __init__(self, raw_value, signal):
-        self.raw_value = raw_value
-        self.signal = signal
+    raw_value = attr.ib()
+    signal = attr.ib()
 
     @property
     def phys_value(self):
         """
         :return: physical Value (the scaled value)
         """
-        return self.signal.raw2phys(self.rawValue)
+        return self.signal.raw2phys(self.raw_value)
 
     @property
     def named_value(self):
         """
         :return: value of Valuetable
         """
-        return self.signal.raw2phys(self.rawValue, decodeToStr=True)
+        return self.signal.raw2phys(self.raw_value, decodeToStr=True)
 
 
 # https://docs.python.org/3/library/itertools.html
 def grouper(iterable, n, fillvalue=None):
-    "Collect data into fixed-length chunks or blocks"
+    """Collect data into fixed-length chunks or blocks."""
     # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"
     args = [iter(iterable)] * n
     return zip_longest(*args, fillvalue=fillvalue)
@@ -557,23 +569,23 @@ class Frame(object):
     """
 
     name = attr.ib(default="")
-    id = attr.ib(type=int, default = 0)
-    size = attr.ib(default = 0)
-    transmitters = attr.ib(default = attr.Factory(list))
-    extended = attr.ib(type=bool, default = False)
-    is_complex_multiplexed = attr.ib(type=bool, default = False)
-    is_fd = attr.ib(type=bool, default = False)
+    id = attr.ib(type=int, default=0)
+    size = attr.ib(default=0)
+    transmitters = attr.ib(type=list, factory=list)
+    extended = attr.ib(type=bool, default=False)
+    is_complex_multiplexed = attr.ib(type=bool, default=False)
+    is_fd = attr.ib(type=bool, default=False)
     comment = attr.ib(default="")
-    signals = attr.ib(default = attr.Factory(list))
-    mux_names = attr.ib(type=dict, default = attr.Factory(dict))
-    attributes = attr.ib(type=dict, default = attr.Factory(dict))
-    receiver = attr.ib(default = attr.Factory(list))
-    signalGroups = attr.ib(default = attr.Factory(list))
+    signals = attr.ib(type=list, factory=list)
+    mux_names = attr.ib(type=dict, factory=dict)
+    attributes = attr.ib(type=dict, factory=dict)
+    receiver = attr.ib(type=list, factory=list)
+    signalGroups = attr.ib(type=list, factory=list)
 
-    j1939_pgn = attr.ib(default = None)
-    j1939_source = attr.ib(default = 0)
-    j1939_prio  = attr.ib(default = 0)
-    is_j1939  = attr.ib(type=bool, default = False)
+    j1939_pgn = attr.ib(default=None)
+    j1939_source = attr.ib(default=0)
+    j1939_prio = attr.ib(default=0)
+    is_j1939 = attr.ib(type=bool, default=False)
     # ('cycleTime', '_cycleTime', int, None),
     # ('sendType', '_sendType', str, None),
 
@@ -795,70 +807,60 @@ class Frame(object):
                 maxBit = sig.getStartbit() + int(sig.size)
         self.size = max(self.size, int(math.ceil(maxBit / 8)))
 
-    def findNotUsedBits(self):
+    def get_frame_layout(self):
         """
-        Find unused bits in frame.
+        get layout of frame.
 
-        Represents the bit usage in the frame by means of a list with 64 items.
-        Every item represents one bit and contains unique number for each signal, occupying that bit.
-        Numbering starts from one.
+        Represents the bit usage in the frame by means of a list with n items (n bits of frame length).
+        Every item represents one bit and contains a list of signals (object refs) with each signal, occupying that bit.
+        Bits with empty list are unused.
 
-        Bits with "zero" index are unused.
-
-        Example: [2, 2, 2, 1, 1, 0, 0, 3, 3, 3, 3, 0, 0, ...]
-
-        :return: list with signal "index plus one" in every bit. Zeros mean 'unused'.
-        :rtype: list of int
+        Example: [[], [], [], [sig1], [sig1], [sig1, sig5], [sig2, sig5], [sig2], []]
+        :return: list of lists with signalnames
+        :rtype: list of lists
         """
-        bitfield = []
-        bitfieldLe = []
-        bitfieldBe = []
+        little_bits = [[] for _dummy in range((self.size * 8))]
+        big_bits = [[] for _dummy in range((self.size * 8))]
+        for signal in self.signals:
+            if signal.is_little_endian:
+                least = len(little_bits) - signal.startBit
+                most = least - signal.size
+                for little_bit_signals in little_bits[most:least]:
+                    little_bit_signals.append(signal)
 
-        for i in range(0,64):
-            bitfieldBe.append(0)
-            bitfieldLe.append(0)
-            bitfield.append(0)
-        i = 0
+            else:
+                most = signal.startBit
+                least = most + signal.size
+                for big_bit_signals in big_bits[most:least]:
+                    big_bit_signals.append(signal)
 
-        for sig in self.signals:
-            i += 1
-            for bit in range(sig.getStartbit(),  sig.getStartbit() + int(sig.size)):
-                if sig.is_little_endian:
-                    bitfieldLe[bit] = i
-                else:
-                    bitfieldBe[bit] = i
+        little_bits = reversed(tuple(grouper(little_bits, 8)))
+        little_bits = tuple(chain(*little_bits))
 
-        for i in range(0,8):
-            for j in range(0,8):
-                bitfield[i*8+j] = bitfieldLe[i*8+(7-j)]
+        returnList = [
+            little + big
+            for little, big in zip(little_bits, big_bits)
+        ]
 
-        for i in range(0,8):
-            for j in range(0,8):
-                if bitfield[i*8+j] == 0:
-                    bitfield[i*8+j] = bitfieldBe[i*8+j]
+        return returnList
 
-
-        return bitfield
-
-    def createDummySignals(self):
+    def create_dummy_signals(self):
         """Create big-endian dummy signals for unused bits.
 
         Names of dummy signals are *_Dummy_<frame.name>_<index>*
         """
-        bitfield = self.findNotUsedBits()
-        # for i in range(0,8):
-        #    print (bitfield[(i)*8:(i+1)*8])
+        bitfield = self.get_frame_layout()
         startBit = -1
         sigCount = 0
-        for i in range(0,64):
-            if bitfield[i] == 0 and startBit == -1:
-                startBit = i
-            if (i == 63 or bitfield[i] != 0) and startBit != -1:
-                if i == 63:
-                    i = 64
-                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=i-startBit, startBit=startBit, is_little_endian = False))
+        for index, bit_signals in enumerate(bitfield):
+            if bit_signals == [] and startBit == -1:
+                startBit = index
+            if (index == (len(bitfield)-1) or bit_signals != []) and startBit != -1:
+                if index == (len(bitfield)-1):
+                    index = len(bitfield)
+                self.addSignal(Signal("_Dummy_%s_%d" % (self.name,sigCount),size=index-startBit, startBit=startBit, is_little_endian = False))
                 startBit = -1
-                sigCount +=1
+                sigCount += 1
 
 
 
@@ -1002,7 +1004,7 @@ class Frame(object):
             returnDict= dict()
 
             for s, v in zip(self.signals, unpacked):
-                returnDict[s.name] = decodedSignal(v, s)
+                returnDict[s.name] = DecodedSignal(v, s)
 
             return returnDict
 
@@ -1039,7 +1041,6 @@ class Frame(object):
     def __str__(self):
         """Represent the frame by its name only."""
         return self.name  # add more details than the name only?
-
 
 class Define(object):
     """
@@ -1081,14 +1082,10 @@ class Define(object):
 
         elif definition[0:4] == 'ENUM':
             self.type = 'ENUM'
-            tempValues = definition[5:].split(',')
+            tempValues = canmatrix.utils.quote_aware_comma_split(definition[5:])
             self.values = []
             for value in tempValues:
-                value = value.strip()
-                if value[0] == '"':
-                    value = value[1:]
-                if value[-1] == '"':
-                    value = value[:-1]
+                value = value.replace("vector_leerstring", "")
                 self.values.append(value)
 
         elif definition[0:3] == 'HEX':  # differently rendered in DBC editor, but values are saved like for an INT
@@ -1109,7 +1106,7 @@ class Define(object):
 
         :param default: default value; number, str or quoted str ("value")
         """
-        if default is not None and len(default) > 1 and default[0] == '"' and default[-1] =='"':
+        if default is not None and len(default) > 1 and default[0] == '"' and default[-1] == '"':
             default = default[1:-1]
         self.defaultValue = default
 
@@ -1137,18 +1134,18 @@ class CanMatrix(object):
     valueTables (global defined values)
     """
 
-    attributes = attr.ib(type=dict, default= attr.Factory(dict))
-    boardUnits = attr.ib(default = attr.Factory(list))
-    frames = attr.ib(default = attr.Factory(list))
+    attributes = attr.ib(type=dict, factory=dict)
+    boardUnits = attr.ib(type=list, factory=list)
+    frames = attr.ib(type=list, factory=list)
 
-    signalDefines = attr.ib(default = attr.Factory(dict))
-    frameDefines = attr.ib(default = attr.Factory(dict))
-    globalDefines = attr.ib(default = attr.Factory(dict))
-    buDefines = attr.ib(default = attr.Factory(dict))
-    valueTables = attr.ib(default = attr.Factory(dict))
-    envVars = attr.ib(default = attr.Factory(dict))
+    signalDefines = attr.ib(type=dict, factory=dict)
+    frameDefines = attr.ib(type=dict, factory=dict)
+    globalDefines = attr.ib(type=dict, factory=dict)
+    buDefines = attr.ib(type=dict, factory=dict)
+    valueTables = attr.ib(type=dict, factory=dict)
+    envVars = attr.ib(type=dict, factory=dict)
 
-    load_errors = attr.ib(factory=list)
+    load_errors = attr.ib(type=list, factory=list)
 
     def __iter__(self):
         """Matrix iterates over Frames (Messages)."""
@@ -1631,7 +1628,7 @@ class CanMatrix(object):
         """
         for dbTemp in mergeArray:
             for frame in dbTemp.frames:
-                copyResult = copy.copyFrame(frame.id, dbTemp, self)
+                copyResult = canmatrix.copy.copyFrame(frame.id, dbTemp, self)
                 if copyResult == False:
                     logger.error(
                         "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + self.frameById(frame.id).name)

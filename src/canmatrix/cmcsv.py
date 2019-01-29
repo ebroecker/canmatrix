@@ -30,7 +30,7 @@ import csv
 import logging
 from canmatrix.xls_common import *
 
-logger = logging.getLogger('root')
+logger = logging.getLogger(__name__)
 
 if (sys.version_info > (3, 0)):
     import codecs

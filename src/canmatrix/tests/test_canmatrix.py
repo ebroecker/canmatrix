@@ -286,6 +286,68 @@ def test_signal_encode_invalid_named_value(some_signal):
         some_signal.phys2raw("wrong")
 
 
+def test_signal_min_unspecified_respects_calc_for_min_none_false():
+    signal = canmatrix.Signal(calc_min_for_none=False)
+    assert signal.min is None
+
+
+def test_signal_min_unspecified_respects_calc_for_min_none_true():
+    signal = canmatrix.Signal(size=8, is_signed=True, calc_min_for_none=True)
+    assert signal.min == -128
+
+
+def test_signal_min_specified_respects_calc_for_min_none_false():
+    signal = canmatrix.Signal(min=42, calc_min_for_none=False)
+    assert signal.min == 42
+
+
+def test_signal_min_specified_respects_calc_for_min_none_true():
+    signal = canmatrix.Signal(min=42, calc_min_for_none=True)
+    assert signal.min == 42
+
+
+def test_signal_max_unspecified_respects_calc_for_max_none_false():
+    signal = canmatrix.Signal(calc_max_for_none=False)
+    assert signal.max is None
+
+
+def test_signal_max_unspecified_respects_calc_for_max_none_true():
+    signal = canmatrix.Signal(size=8, is_signed=True, calc_max_for_none=True)
+    assert signal.max == 127
+
+
+def test_signal_max_specified_respects_calc_for_max_none_false():
+    signal = canmatrix.Signal(max=42, calc_max_for_none=False)
+    assert signal.max == 42
+
+
+def test_signal_max_specified_respects_calc_for_max_none_true():
+    signal = canmatrix.Signal(max=42, calc_max_for_none=True)
+    assert signal.max == 42
+
+
+def test_signal_range_type_int():
+    signal = canmatrix.Signal(is_float=False)
+    min, max = signal.calculateRawRange()
+
+    min_is = isinstance(min, int)
+    max_is = isinstance(max, int)
+
+    assert (min_is, max_is) == (True, True), str((type(min), type(max)))
+
+
+def test_signal_range_type_float():
+    signal = canmatrix.Signal(is_float=True)
+    min, max = signal.calculateRawRange()
+
+    factory_type = type(signal.float_factory())
+
+    min_is = isinstance(min, factory_type)
+    max_is = isinstance(max, factory_type)
+
+    assert (min_is, max_is) == (True, True), str((type(min), type(max)))
+
+
 # SignalGroup
 @pytest.fixture
 def the_group():
@@ -377,20 +439,22 @@ def test_frame_compute_dlc():
 
 def test_frame_find_unused_bits():
     frame = canmatrix.canmatrix.Frame(size=1)
-    frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=3))
-    frame.addSignal(canmatrix.canmatrix.Signal(startBit=4, size=2))
-    bit_usage = frame.findNotUsedBits()
-    assert bit_usage.count(0) == 64 - 3 - 2
-    assert bit_usage[:8] == [0, 0, 2, 2, 0, 1, 1, 1]
+    frame.addSignal(canmatrix.canmatrix.Signal(name="sig1",startBit=0, size=3))
+    frame.addSignal(canmatrix.canmatrix.Signal(name="sig2",startBit=4, size=2))
+    bit_usage = frame.get_frame_layout()
+    assert bit_usage.count([]) == frame.size*8 - 3 - 2
+    sig1 = frame.signalByName("sig1")
+    sig2 = frame.signalByName("sig2")
+    assert bit_usage == [[], [], [sig2], [sig2], [], [sig1], [sig1], [sig1]]
 
 
 def test_frame_create_dummy_signals_covers_all_bits():
     frame = canmatrix.canmatrix.Frame(size=1)
     frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=3))
     frame.addSignal(canmatrix.canmatrix.Signal(startBit=4, size=2))
-    frame.createDummySignals()
-    assert len(frame.signals) == 2 + 3
-    assert frame.findNotUsedBits().count(0) == 0
+    frame.create_dummy_signals()
+    assert len(frame.signals) == 2 + 2
+    assert frame.get_frame_layout().count([]) == 0
 
 
 def test_frame_update_receivers():
@@ -626,3 +690,16 @@ def test_canid_parse_values():
 def test_canid_repr():
     can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
     assert str(can_id) == "DA:0x01 PGN:0xABCD SA:0x02"
+
+
+# DecodedSignal tests
+def test_decoded_signal_phys_value(some_signal):
+    signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
+    assert decoded.phys_value == decimal.Decimal("10")
+
+
+def test_decoded_signal_named_value():
+    signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
+    assert decoded.named_value == "Init"

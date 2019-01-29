@@ -30,13 +30,13 @@ import collections
 import logging
 import decimal
 
-logger = logging.getLogger('root')
-default_float_factory = decimal.Decimal
 
 from builtins import *
 from .canmatrix import *
 import re
 
+logger = logging.getLogger(__name__)
+default_float_factory = decimal.Decimal
 
 #dbcExportEncoding = 'iso-8859-1'
 # CP1253

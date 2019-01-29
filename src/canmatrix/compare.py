@@ -22,12 +22,12 @@
 
 from __future__ import print_function
 from __future__ import absolute_import
-
+import logging
 
 from .log import setup_logger, set_log_level
-logger = setup_logger('root')
-import types
 import sys
+
+logger = logging.getLogger(__name__)
 
 
 class compareResult(object):
@@ -461,9 +461,9 @@ def dumpResult(res, depth=0):
                 print(" ", end=' ')
             print (type(res._changes[0]))
             if sys.version_info[0] < 3:
-                if type(res._changes[0]) == types.UnicodeType:
+                if isinstance(res._changes[0], type(u'')):
                     res._changes[0] = res._changes[0].encode('ascii', 'ignore')
-                if type(res._changes[1]) == types.UnicodeType:
+                if isinstance(res._changes[1], type(u'')):
                     res._changes[1] = res._changes[1].encode('ascii', 'ignore')
             else:
                 if type(res._changes[0]) == str:
@@ -479,7 +479,7 @@ def dumpResult(res, depth=0):
 
 
 def main():
-
+    setup_logger()
     from optparse import OptionParser
 
     usage = """

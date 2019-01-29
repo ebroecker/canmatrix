@@ -27,22 +27,13 @@ from __future__ import division
 from __future__ import absolute_import
 from __future__ import print_function
 
-from builtins import *
-import sys
-import os.path
-import codecs
 import xlwt
-import logging
 from canmatrix.xls_common import *
-import decimal
-default_float_factory = decimal.Decimal
-
-
-logger = logging.getLogger('root')
-
-
 from .canmatrix import *
 import xlrd
+
+logger = logging.getLogger(__name__)
+default_float_factory = decimal.Decimal
 
 
 # Font Size : 8pt * 20 = 160
@@ -121,14 +112,14 @@ def dump(db, file, **options):
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 
     if "additionalAttributes" in options  and len(options["additionalAttributes"]) > 0:
-        additionalSignalCollums = options["additionalAttributes"].split(",")
+        additional_signal_colums = options["additionalAttributes"].split(",")
     else:
-        additionalSignalCollums = []#["attributes['DisplayDecimalPlaces']"]
+        additional_signal_colums = []#["attributes['DisplayDecimalPlaces']"]
 
     if "additionalFrameAttributes" in options  and len(options["additionalFrameAttributes"]) > 0:
-        additionalFrameCollums = options["additionalFrameAttributes"].split(",")
+        additional_frame_colums = options["additionalFrameAttributes"].split(",")
     else:
-        additionalFrameCollums = []#["attributes['DisplayDecimalPlaces']"]
+        additional_frame_colums = []#["attributes['DisplayDecimalPlaces']"]
 
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
@@ -162,11 +153,11 @@ def dump(db, file, **options):
     for col in range(tail_start, len(rowArray)):
         worksheet.col(col).width = 3333
 
-    for additionalCol in additionalFrameCollums:
+    for additionalCol in additional_frame_colums:
         rowArray.append("frame." + additionalCol)
         col += 1
 
-    for additionalCol in additionalSignalCollums:
+    for additionalCol in additional_signal_colums:
         rowArray.append("signal." + additionalCol)
         col += 1
 
@@ -206,7 +197,7 @@ def dump(db, file, **options):
         sigstyle = sty_first_frame
 
         additionalFrameInfo = []
-        for frameInfo in additionalFrameCollums:
+        for frameInfo in additional_frame_colums:
             temp = frame.attribute(frameInfo, default="")
             additionalFrameInfo.append(temp)
 
@@ -223,7 +214,7 @@ def dump(db, file, **options):
             for col in range(tempCol, additionalFrame_start):
                 rowArray.append("")
             rowArray += additionalFrameInfo
-            for i in additionalSignalCollums:
+            for i in additional_signal_colums:
                 rowArray.append("")
             writeExcelLine(worksheet, row, tempCol, rowArray, framestyle)
             row += 1
@@ -253,7 +244,7 @@ def dump(db, file, **options):
                     (frontRow, backRow) = getSignal(db, sig, motorolaBitFormat)
                     writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
                     backRow += additionalFrameInfo
-                    for item in additionalSignalCollums:
+                    for item in additional_signal_colums:
                         temp = getattr(sig, item, "")
                         backRow.append(temp)
 
@@ -288,7 +279,7 @@ def dump(db, file, **options):
                 backRow.insert(0,"")
 
                 backRow += additionalFrameInfo
-                for item in additionalSignalCollums:
+                for item in additional_signal_colums:
                     temp = getattr(sig, item, "")
                     backRow.append(temp)
 
@@ -312,6 +303,28 @@ def dump(db, file, **options):
     # save file
     workbook.save(file)
 
+############################ load ###############################
+
+def parse_value_name_column(value_name, value, signal_size, float_factory):
+    mini = maxi = offset = None
+    value_table = dict()
+    if ".." in value_name:
+        (mini, maxi) = value_name.strip().split("..")
+        mini = float_factory(mini)
+        maxi = float_factory(maxi)
+        offset = mini
+
+    elif len(value_name) > 0:
+        if len(value.strip()) > 0:
+            # Value Table
+            value = int(float(value))
+            value_table[value] = value_name
+        maxi = pow(2, signal_size) - 1
+        maxi = float_factory(maxi)
+        mini = 0
+        offset = 0
+    return mini, maxi, offset, value_table
+
 
 def load(file, **options):
     motorolaBitFormat = options.get("xlsMotorolaBitFormat","msbreverse")
@@ -334,7 +347,7 @@ def load(file, **options):
 #       db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
     db.addSignalDefines("GenSigSNA", 'STRING')
 
-    # eval search for correct collums:
+    # eval search for correct columns:
     index = {}
     for i in range(sh.ncols):
         value = sh.cell(0, i).value
@@ -501,7 +514,8 @@ def load(file, **options):
                         commandStr = additionalInputs[additionalIndex].replace("signal", "newSig")
                         commandStr += "="
                         commandStr += str(sh.cell(rownum, additionalIndex).value)
-                        exec (commandStr)
+                        if(len(str(sh.cell(rownum, additionalIndex).value)) > 0):
+                            exec (commandStr)
 
                 newBo.addSignal(newSig)
                 newSig.addComment(signalComment)
@@ -515,7 +529,6 @@ def load(file, **options):
             valueName = "0"
         elif valueName == 1:
             valueName = "1"
-        test = valueName
         #.encode('utf-8')
 
         factor = 0
@@ -542,23 +555,17 @@ def load(file, **options):
                 newSig.unit = unit
                 newSig.factor = 1
 
-        if ".." in test:
-            (mini, maxi) = test.strip().split("..", 2)
-            unit = ""
-            mini = float_factory(mini)
-            maxi = float_factory(maxi)
-            newSig.min = mini
-            newSig.max = maxi
-            newSig.offset = mini
 
-        elif valueName.__len__() > 0:
-            if value.strip().__len__() > 0:
-                value = int(float(value))
-                newSig.addValues(value, valueName)
-            maxi = pow(2, signalLength) - 1
-            newSig.max = float_factory(maxi)
-        else:
-            newSig.offset = 0
+        (mini, maxi, offset, value_table) = parse_value_name_column(valueName, value, newSig.size, float_factory)
+        if newSig.min is None:
+            newSig.min = mini
+        if newSig.max is None:
+            newSig.max = maxi
+        if newSig.offset is None:
+            newSig.offset = offset
+        if value_table is not None:
+            for value, name in value_table.items():
+                newSig.addValues(value, name)
 
     for frame in db.frames:
         frame.updateReceiver()
