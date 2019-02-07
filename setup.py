@@ -67,8 +67,8 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-    install_requires = [
-        "attrs>=17.4.0",
+      install_requires = [
+        "attrs>=18.1.0",
         "bitstruct",
         "future",
         "pathlib2",
