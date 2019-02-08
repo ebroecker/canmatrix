@@ -200,10 +200,7 @@ def load(f, **options):
                 newframe.extended = 0
 
             for signal in frame["signals"]:
-                is_little_endian = signal.get("is_big_endian", False)
-                    is_little_endian = False
-                else:
-                    is_little_endian = True
+                is_little_endian = not signal.get("is_big_endian", False)
 
                 if signal.get("is_float", False):
                     is_float = True
@@ -239,7 +236,6 @@ def load(f, **options):
                     for key in signal["values"]:
                         newsignal.addValues(key, signal["values"][key])
                 if newsignal.is_little_endian == False:
-
                     newsignal.setStartbit(
                         newsignal.startBit, bitNumbering=1, startLittle=True)
                 newframe.addSignal(newsignal)
