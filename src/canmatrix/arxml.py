@@ -1494,6 +1494,51 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
         bu.addAttribute("NWM-Knoten", "nein")
     return bu
 
+def ecuc_extract_signal(signal_node, ns):
+    attributes = signal_node.findall(".//" + ns + "DEFINITION-REF")
+    start_bit = None
+    size = 0
+    endianness = None
+    init_value = 0
+    signal_type = None
+    timeout = 0
+    for attribute in attributes:
+        if attribute.text.endswith("ComBitPosition"):
+            start_bit = int(attribute.getparent().find(".//" +ns + "VALUE").text)
+        if attribute.text.endswith("ComBitSize"):
+            size = int(attribute.getparent().find(".//" +ns + "VALUE").text)
+        if attribute.text.endswith("ComSignalEndianness"):
+            endianness = (attribute.getparent().find(".//" +ns + "VALUE").text)
+            if "LITTLE_ENDIAN" in endianness:
+                is_little = True
+            else:
+                is_little = False
+        if attribute.text.endswith("ComSignalInitValue"):
+            init_value = int(attribute.getparent().find(".//" +ns + "VALUE").text)
+        if attribute.text.endswith("ComSignalType"):
+            signal_type = (attribute.getparent().find(".//" +ns + "VALUE").text)
+        if attribute.text.endswith("ComTimeout"):
+            timeout = int(attribute.getparent().find(".//" +ns + "VALUE").text)
+    return canmatrix.Signal(arGetName(signal_node,ns), startBit = start_bit, size=size, is_little_endian = is_little)
+
+def extract_cm_from_ecuc(com_module, search_point, ns):
+    db = CanMatrix()
+    definitions = com_module.findall('.//' + ns + "DEFINITION-REF")
+    for definition in definitions:
+        if definition.text.endswith("ComIPdu"):
+            container = definition.getparent()
+            frame = canmatrix.Frame(arGetName(container, ns))
+            db.addFrame(frame)
+            allReferences = arGetChildren(container,"ECUC-REFERENCE-VALUE",search_point,ns)
+            for reference in allReferences:
+                value = arGetChild(reference,"VALUE",search_point,ns)
+                if value is not None:
+                    signal_definition = value.find('./' + ns + "DEFINITION-REF")
+                    if signal_definition.text.endswith("ComSignal"):
+                        signal = ecuc_extract_signal(value,ns)
+                        frame.addSignal(signal)
+    db.recalcDLC(strategy = "max")
+    return {"": db}
 
 def load(file, **options):
     global ArCache
@@ -1517,6 +1562,7 @@ def load(file, **options):
     ns = "{" + tree.xpath('namespace-uri(.)') + "}"
     nsp = tree.xpath('namespace-uri(.)')
 
+
     topLevelPackages = root.find('./' + ns + 'TOP-LEVEL-PACKAGES')
 
     if None == topLevelPackages:
@@ -1533,6 +1579,11 @@ def load(file, **options):
         searchPoint = arDict
 
     logger.debug(" Done\n")
+
+    com_module = arGetPath(searchPoint, "ActiveEcuC/Com")
+    if com_module is not None:
+        logger.info("seems to be a ECUC arxml. Very limited support for extracting canmatrix." )
+        return extract_cm_from_ecuc(com_module, searchPoint, ns)
 
     frames = root.findall('.//' + ns + 'CAN-FRAME')  ## AR4.2
     if frames is None:
