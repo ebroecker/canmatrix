@@ -200,7 +200,7 @@ def load(f, **options):
                 newframe.extended = 0
 
             for signal in frame["signals"]:
-                if signal.get("is_big_endian", False):
+                is_little_endian = signal.get("is_big_endian", False)
                     is_little_endian = False
                 else:
                     is_little_endian = True
