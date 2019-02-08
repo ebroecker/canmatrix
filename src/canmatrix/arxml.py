@@ -29,6 +29,7 @@
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
+import canmatrix.utils
 import logging
 
 from builtins import *
@@ -1205,22 +1206,9 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                     newSig.addValues(1, "TRUE")
                     newSig.addValues(0, "FALSE")
 
-            def guess_value(textValue):
-                """
-                returns a string value for common strings.
-                method is far from complete but helping with odd arxmls
-                :param textValue: value in text like "true"
-                :return: string for value like "1"
-                """
-                textValue = textValue.casefold()
-                if textValue in ["false", "off"]:
-                    return "0"
-                elif textValue in ["true", "on"]:
-                    return "1"
-                return textValue
 
             if initvalue is not None and initvalue.text is not None:
-                initvalue.text = guess_value(initvalue.text)
+                initvalue.text = canmatrix.utils.guess_value(initvalue.text)
                 newSig._initValue = int(initvalue.text)
                 newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
             else:
@@ -1241,7 +1229,9 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
 
     sn = arGetChild(frameTriggering, "SHORT-NAME", xmlRoot, ns)
     logger.debug("processing Frame: %s", sn.text)
-
+    if idele is None:
+        logger.info("found Frame %s without arbitration id %s", sn.text)
+        return None
     idNum = int(idele.text)
 
     if None != frameR:
@@ -1619,8 +1609,10 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            db.addFrame(getFrame(frameTrig,searchPoint,multiplexTranslation,ns, float_factory))
-
+            frameObject = getFrame(frameTrig,searchPoint,multiplexTranslation,ns, float_factory)
+            if frameObject is not None:
+                db.addFrame(frameObject)
+                
         if ignoreClusterInfo == True:
             pass
             # no support for signal direction
