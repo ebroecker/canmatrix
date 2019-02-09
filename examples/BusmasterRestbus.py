@@ -180,7 +180,7 @@ def tickerBoardUnits(db, dbcname):
                             bu._cycles[cycleTime].append(botsch.id)
                         else:
                             bu._cycles[cycleTime] = [botsch.id]
-        nodeList[bu._name] = bu.name + ".cpp"
+        nodeList[bu.name] = bu.name + ".cpp"
 
         timedPrototypes = ""
         timedCallbacks = ""
