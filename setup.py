@@ -59,7 +59,7 @@ setup(
     version = versioneer.get_version(),
     cmdclass = versioneer.get_cmdclass(),
     maintainer = "Eduard Broecker",
-    maintainer_email = "eduard at gmx dot de",
+    maintainer_email = "eduard@gmx.de",
     url = "http://github.com/ebroecker/canmatrix",
     classifiers = filter(None, classifiers.split("\n")),
     description = doclines[0],
