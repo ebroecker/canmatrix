@@ -838,11 +838,11 @@ class arTree(object):
         self._array = []
     def new(self, name, child):
         temp = arTree(name, child)
-        self.array.append(temp)
+        self._array.append(temp)
         return temp
     def getChild(self, path):
-        for tem in self.array:
-            if tem.name == path:
+        for tem in self._array:
+            if tem._name == path:
                 return tem
 
 def arParseTree(tag, ardict, namespace):
@@ -909,7 +909,7 @@ def arGetPath(ardict, path):
             else:
                 return None
     if ptr is not None:
-        return ptr.ref
+        return ptr._ref
     else:
         return None
 
