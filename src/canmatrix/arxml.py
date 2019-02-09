@@ -1212,7 +1212,7 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                 newSig._initValue = int(initvalue.text)
                 newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
             else:
-                newSig.initValue = 0
+                newSig._initValue = 0
 
             for key, value in list(values.items()):
                 newSig.addValues(key, value)
@@ -1276,7 +1276,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         multiplexor = Signal("Multiplexor",startBit=selectorStart.text,size=int(selectorLen.text),
                              is_little_endian=is_little_endian,multiplex="Multiplexor")
 
-        multiplexor.initValue = 0
+        multiplexor._initValue = 0
         newFrame.addSignal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", xmlRoot, ns)
         ipdu = arGetChild(staticPart, "I-PDU", xmlRoot, ns)

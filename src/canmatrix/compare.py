@@ -447,7 +447,7 @@ def compareSignal(s1, s2, ignore=None):
 
 
 def dumpResult(res, depth=0):
-    if res.type is not None and res.result != "equal":
+    if res._type is not None and res._result != "equal":
         for _ in range(0, depth):
             print(" ", end=' ')
         print(res._type + " " + res._result + " ", end=' ')
