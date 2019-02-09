@@ -3,3 +3,5 @@ xlwt
 xlrd
 xlsxwriter
 pyyaml
+future
+attrs>=18.1.0

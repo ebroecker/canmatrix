@@ -1,6 +1,31 @@
 language: python
-python:
-  - "2.7"
-  - "3.5"
-# command to run tests
-script: source ./test.sh
+
+matrix:
+  include:
+    - python: 3.7
+      dist: xenial
+      sudo: true
+      env: TOXENV=dist
+    - python: 2.7
+    - python: pypy
+    - python: 3.4
+    - python: 3.5
+    - python: pypy3.5
+    - python: 3.6
+    - python: 3.7
+      dist: xenial
+      sudo: true
+    - python: 2.7
+      env: TOXENV=old_tests
+    - python: 3.7
+      dist: xenial
+      sudo: true
+      env: TOXENV=old_tests
+
+install:
+  - pip install tox-travis
+  - pip install -r requirements.tox.txt
+
+script:
+  - tox
+  - tox -e codecov

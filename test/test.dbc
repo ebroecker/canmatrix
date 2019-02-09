@@ -32,6 +32,7 @@ BA_ "NetworkNode" BU_ testBU 273;
 
 
 BA_ "GenMsgCycleTime" BO_ 291 100;
+BA_ "UserFrameAttr" BO_ 291 "UserFrameValue";
 
 
 VAL_ 291 Signal 1 "one" 2 "two" 3 "three";
