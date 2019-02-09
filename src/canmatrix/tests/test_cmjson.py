@@ -61,3 +61,49 @@ def test_export_long_signal_names():
     data = json.loads(out_file.getvalue().decode("utf-8"))
 
     assert data['messages'][0]['signals'][0]['name'] == long_signal_name
+
+def test_export_min_max():
+    matrix = canmatrix.canmatrix.CanMatrix()
+    frame = canmatrix.canmatrix.Frame(name="test_frame", size=6, id=10)
+    signal = canmatrix.Signal(name="someSigName", size=40, min=-5, max=42)
+    frame.addSignal(signal)
+    matrix.addFrame(frame)
+    out_file = io.BytesIO()
+    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonAll=True)
+    data = json.loads(out_file.getvalue().decode("utf-8"))
+    data['messages'][0]['signals'][0]['min'] == -5
+    data['messages'][0]['signals'][0]['max'] == 42
+
+def test_import_min_max():
+    jsonInput = """{
+        "messages": [
+            {
+                "attributes": {},
+                "comment": "",
+                "id": 10,
+                "is_extended_frame": false,
+                "length": 6,
+                "name": "test_frame",
+                "signals": [
+                    {
+                        "attributes": {},
+                        "bit_length": 40,
+                        "comment": null,
+                        "factor": "1",
+                        "is_big_endian": false,
+                        "is_float": false,
+                        "is_signed": true,
+                        "max": "42",
+                        "min": "-5",
+                        "name": "someSigName",
+                        "offset": "0",
+                        "start_bit": 0,
+                        "values": {}
+                    }
+                ]
+            }
+        ]
+    }"""
+    matrix = canmatrix.formats.loads(jsonInput, "cmjson", flatImport=True, jsonAll=True)
+    assert matrix.frames[0].signals[0].min == -5
+    assert matrix.frames[0].signals[0].max == 42
