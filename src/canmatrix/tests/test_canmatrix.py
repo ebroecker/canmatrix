@@ -462,7 +462,7 @@ def test_frame_update_receivers():
     frame.addSignal(canmatrix.canmatrix.Signal(startBit=0, size=3, receiver=["GW", "Keyboard"]))
     frame.addSignal(canmatrix.canmatrix.Signal(startBit=4, size=2, receiver=["GW", "Display"]))
     frame.updateReceiver()
-    assert frame.receiver == ["GW", "Keyboard", "Display"]
+    assert frame.receivers == ["GW", "Keyboard", "Display"]
 
 
 def test_frame_to_str():
