@@ -1273,7 +1273,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
         is_signed = False  # unsigned
-        multiplexor = Signal("Multiplexor",startBit=selectorStart.text,size=int(selectorLen.text),
+        multiplexor = Signal("Multiplexor",startBit=int(selectorStart.text),size=int(selectorLen.text),
                              is_little_endian=is_little_endian,multiplex="Multiplexor")
 
         multiplexor._initValue = 0
