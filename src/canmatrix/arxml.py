@@ -1505,7 +1505,7 @@ def load(file, **options):
 
     float_factory = options.get("float_factory", default_float_factory)
     ignoreClusterInfo = options.get("arxmlIgnoreClusterInfo", False)
-    useArXPath = options.get("arxmlUseXpath", True)
+    useArXPath = options.get("arxmlUseXpath", False)
 
     result = {}
     logger.debug("Read arxml ...")
