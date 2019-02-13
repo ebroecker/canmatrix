@@ -63,3 +63,31 @@ def test_enum_with_special_character(character):
     ''').format(character[0]).encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frameDefines[u'example1'].values == ["Val 1",character[0]]
+
+def test_export_of_unknown_defines():
+    db = canmatrix.CanMatrix()
+
+    db.addFrameDefines("Receivable", 'BOOL False True')
+    db.addFrameDefines("Sendable", 'BOOL False True')
+    for (dataType, define) in db.frameDefines.items():
+        orig_definition = define.definition
+        canmatrix.dbc.check_define(define)
+        assert orig_definition != define.definition
+
+    db.addSignalDefines("LongName", 'STR')
+    for (dataType, define) in db.signalDefines.items():
+        orig_definition = define.definition
+        canmatrix.dbc.check_define(define)
+        assert orig_definition != define.definition
+
+    db.addBUDefines("someName", 'STRING')
+    for (dataType, define) in db.buDefines.items():
+        orig_definition = define.definition
+        canmatrix.dbc.check_define(define)
+        assert orig_definition == define.definition
+
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(db, outdbc, "dbc")
+    for line in outdbc.getvalue().decode('utf8').split('\n'):
+        if line.startswith("BA_DEF_ "):
+            assert line.endswith("STRING;")
