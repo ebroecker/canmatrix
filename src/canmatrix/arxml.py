@@ -177,7 +177,7 @@ def dump(dbs, f, **options):
                 framePortRef.set('DEST', 'FRAME-PORT')
                 framePortRef.text = "/ECU/" + transmitter + \
                     "/CN_" + transmitter + "/" + frame.name
-            for rec in frame.receiver:
+            for rec in frame.receivers:
                 framePortRef = createSubElement(
                     framePortRefs, 'FRAME-PORT-REF')
                 framePortRef.set('DEST', 'FRAME-PORT')
@@ -719,7 +719,7 @@ def dump(dbs, f, **options):
                         createSubElement(signalPort, 'SHORT-NAME', signal.name)
                         createSubElement(
                             signalPort, 'COMMUNICATION-DIRECTION', 'OUT')
-                if ecu.name in frame.receiver:
+                if ecu.name in frame.receivers:
                     frameport = createSubElement(
                         ecuCommPortInstances, 'FRAME-PORT')
                     createSubElement(frameport, 'SHORT-NAME', frame.name)
