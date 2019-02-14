@@ -86,6 +86,12 @@ def test_export_of_unknown_defines():
         canmatrix.dbc.check_define(define)
         assert orig_definition == define.definition
 
+    db.addGlobalDefines("someGlobaName", 'BOOL')
+    for (dataType, define) in db.globalDefines.items():
+        orig_definition = define.definition
+        canmatrix.dbc.check_define(define)
+        assert orig_definition == define.definition
+
     outdbc = io.BytesIO()
     canmatrix.formats.dump(db, outdbc, "dbc")
     for line in outdbc.getvalue().decode('utf8').split('\n'):
