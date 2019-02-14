@@ -97,8 +97,8 @@ def dump(dbs, f, **options):
         for frame in db.frames:
             for signal in frame.signals:
                 for rec in signal.receiver:
-                    if rec.strip() not in frame.receiver:
-                        frame.receiver.append(rec.strip())
+                    if rec.strip() not in frame.receivers:
+                        frame.receivers.append(rec.strip())
 
     if arVersion[0] == "3":
         xsi = 'http://www.w3.org/2001/XMLSchema-instance'
