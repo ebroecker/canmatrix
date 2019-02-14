@@ -559,7 +559,7 @@ class Frame(object):
     * size (= DLC),
     * signals (list of signal-objects),
     * attributes (list of attributes),
-    * receiver (list of boardunits/ECU-names),
+    * receivers (list of boardunits/ECU-names),
     * extended (Extended Frame = 1),
     * comment
 
@@ -579,7 +579,7 @@ class Frame(object):
     signals = attr.ib(type=list, factory=list)
     mux_names = attr.ib(type=dict, factory=dict)
     attributes = attr.ib(type=dict, factory=dict)
-    receiver = attr.ib(type=list, factory=list)
+    receivers = attr.ib(type=list, factory=list)
     signalGroups = attr.ib(type=list, factory=list)
 
     j1939_pgn = attr.ib(default=None)
@@ -739,8 +739,8 @@ class Frame(object):
 
         :param str receiver: receiver name
         """
-        if receiver not in self.receiver:
-            self.receiver.append(receiver)
+        if receiver not in self.receivers:
+            self.receivers.append(receiver)
 
     def signalByName(self, name):
         """
