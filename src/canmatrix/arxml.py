@@ -905,7 +905,10 @@ def arGetPath(ardict, path):
     for p in path.split('/'):
         if p.strip():
             if ptr is not None:
-                ptr = ptr.getChild(p)
+                try:
+                    ptr = ptr.getChild(p)
+                except:
+                    return None
             else:
                 return None
     if ptr is not None:
@@ -1579,6 +1582,7 @@ def load(file, **options):
         searchPoint = arDict
 
     logger.debug(" Done\n")
+
 
     com_module = arGetPath(searchPoint, "ActiveEcuC/Com")
     if com_module is not None:
