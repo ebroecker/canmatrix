@@ -79,6 +79,11 @@ def test_export_of_unknown_defines():
         orig_definition = define.definition
         canmatrix.dbc.check_define(define)
         assert orig_definition != define.definition
+    frame = canmatrix.Frame("someFrame")
+    signal = canmatrix.Signal("SomeSignal")
+    signal.addAttribute("LongName", "EnableCalcIDCTrip Calc. IDC trip")
+    frame.addSignal(signal)
+    db.addFrame(frame)
 
     db.addBUDefines("someName", 'STRING')
     for (dataType, define) in db.buDefines.items():
@@ -97,3 +102,5 @@ def test_export_of_unknown_defines():
     for line in outdbc.getvalue().decode('utf8').split('\n'):
         if line.startswith("BA_DEF_ "):
             assert line.endswith("STRING;")
+        if line.startswith("BA_ "):
+            assert line.endswith('";')

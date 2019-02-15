@@ -68,6 +68,7 @@ def check_define(define):
     if define.type not in ["ENUM", "STRING", "INT", "HEX", "FLOAT"]:
         logger.warn("dbc export of attribute type {} not supported; replaced by STRING".format(define.type))
         define.definition = "STRING"
+        define.type = "STRING"
 
 
 def dump(mydb, f, **options):
