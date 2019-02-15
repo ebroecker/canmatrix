@@ -97,8 +97,8 @@ def dump(dbs, f, **options):
         for frame in db.frames:
             for signal in frame.signals:
                 for rec in signal.receiver:
-                    if rec.strip() not in frame.receiver:
-                        frame.receiver.append(rec.strip())
+                    if rec.strip() not in frame.receivers:
+                        frame.receivers.append(rec.strip())
 
     if arVersion[0] == "3":
         xsi = 'http://www.w3.org/2001/XMLSchema-instance'
@@ -177,7 +177,7 @@ def dump(dbs, f, **options):
                 framePortRef.set('DEST', 'FRAME-PORT')
                 framePortRef.text = "/ECU/" + transmitter + \
                     "/CN_" + transmitter + "/" + frame.name
-            for rec in frame.receiver:
+            for rec in frame.receivers:
                 framePortRef = createSubElement(
                     framePortRefs, 'FRAME-PORT-REF')
                 framePortRef.set('DEST', 'FRAME-PORT')
@@ -719,7 +719,7 @@ def dump(dbs, f, **options):
                         createSubElement(signalPort, 'SHORT-NAME', signal.name)
                         createSubElement(
                             signalPort, 'COMMUNICATION-DIRECTION', 'OUT')
-                if ecu.name in frame.receiver:
+                if ecu.name in frame.receivers:
                     frameport = createSubElement(
                         ecuCommPortInstances, 'FRAME-PORT')
                     createSubElement(frameport, 'SHORT-NAME', frame.name)
@@ -1273,7 +1273,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
         is_signed = False  # unsigned
-        multiplexor = Signal("Multiplexor",startBit=selectorStart.text,size=int(selectorLen.text),
+        multiplexor = Signal("Multiplexor",startBit=int(selectorStart.text),size=int(selectorLen.text),
                              is_little_endian=is_little_endian,multiplex="Multiplexor")
 
         multiplexor._initValue = 0
@@ -1550,7 +1550,7 @@ def load(file, **options):
 
     float_factory = options.get("float_factory", default_float_factory)
     ignoreClusterInfo = options.get("arxmlIgnoreClusterInfo", False)
-    useArXPath = options.get("arxmlUseXpath", True)
+    useArXPath = options.get("arxmlUseXpath", False)
 
     result = {}
     logger.debug("Read arxml ...")

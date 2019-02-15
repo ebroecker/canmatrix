@@ -25,11 +25,10 @@
 # (https://github.com/ericevenchick/CANard)
 
 from builtins import *
-from .canmatrix import *
+import canmatrix
 import codecs
 import json
 import sys
-
 
 
 extension = 'json'
@@ -137,12 +136,14 @@ def dump(db, f, **options):
                     "bit_length": signal.size,
                     "factor": str(signal.factor),
                     "offset": str(signal.offset),
+                    "min": str(signal.min),
+                    "max": str(signal.max),
                     "is_big_endian": signal.is_little_endian == 0,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
                     "comment": signal.comment,
                     "attributes": attribs,
-                    "values": values    
+                    "values": values
                 }
                 if signal.multiplex is not None:
                     signalDict["multiplex"] = signal.multiplex
@@ -176,7 +177,7 @@ def dump(db, f, **options):
 
 
 def load(f, **options):
-    db = CanMatrix()
+    db = canmatrix.CanMatrix()
 
     if (sys.version_info > (3, 0)):
         import io
@@ -187,7 +188,7 @@ def load(f, **options):
     if "messages" in jsonData:
         for frame in jsonData["messages"]:
             #            newframe = Frame(frame["id"],frame["name"],8,None)
-            newframe = Frame(frame["name"],
+            newframe = canmatrix.Frame(frame["name"],
                              id=frame["id"],
                              size=8)
             if "length" in frame:
@@ -199,36 +200,42 @@ def load(f, **options):
                 newframe.extended = 0
 
             for signal in frame["signals"]:
-                if "is_big_endian" in signal and signal["is_big_endian"]:
-                    is_little_endian = False
-                else:
-                    is_little_endian = True
-                if "is_float" in signal and signal["is_float"]:
+                is_little_endian = not signal.get("is_big_endian", False)
+
+                if signal.get("is_float", False):
                     is_float = True
                 else:
                     is_float = False
-                if "is_signed" in signal and signal["is_signed"]:
+
+                if signal.get("is_signed", False):
                     is_signed = True
                 else:
                     is_signed = False
-                newsignal = Signal(signal["name"],
+                newsignal = canmatrix.Signal(signal["name"],
                                    startBit=signal["start_bit"],
                                    size=signal["bit_length"],
                                    is_little_endian=is_little_endian,
                                    is_signed=is_signed,
+                                   is_float = is_float,
                                    factor=signal["factor"],
                                    offset=signal["offset"])
-                if "unit" in signal and signal["unit"]:
+
+                if signal.get("min") is not None:
+                    newsignal.min = newsignal.float_factory(signal["min"])
+
+                if signal.get("max", False):
+                    newsignal.max = newsignal.float_factory(signal["max"])
+
+                if signal.get("unit", False):
                     newsignal.unit = signal["unit"]
 
-                if "multiplex" in signal and signal["multiplex"]:
+                if signal.get("multiplex", False):
                     newsignal.unit = signal["multiplex"]
 
-                if "values" in signal and signal["values"]:
+                if signal.get("values", False):
                     for key in signal["values"]:
                         newsignal.addValues(key, signal["values"][key])
                 if newsignal.is_little_endian == False:
-
                     newsignal.setStartbit(
                         newsignal.startBit, bitNumbering=1, startLittle=True)
                 newframe.addSignal(newsignal)
