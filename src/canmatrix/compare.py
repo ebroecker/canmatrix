@@ -61,13 +61,13 @@ def propagateChanges(res):
 def compareDb(db1, db2, ignore=None):
     result = compareResult()
     for f1 in db1.frames:
-        f2 = db2.frameById(f1.id)
+        f2 = db2.frame_by_id(f1.id)
         if f2 is None:
             result.addChild(compareResult("deleted", "FRAME", f1))
         else:
             result.addChild(compareFrame(f1, f2, ignore))
     for f2 in db2.frames:
-        f1 = db1.frameById(f2.id)
+        f1 = db1.frame_by_id(f2.id)
         if f1 is None:
             result.addChild(compareResult("added", "FRAME", f2))
 
@@ -78,13 +78,13 @@ def compareDb(db1, db2, ignore=None):
         result.addChild(compareAttributes(db1, db2, ignore))
 
     for bu1 in db1.boardUnits:
-        bu2 = db2.boardUnitByName(bu1.name)
+        bu2 = db2.ecu_by_name(bu1.name)
         if bu2 is None:
             result.addChild(compareResult("deleted", "ecu", bu1))
         else:
             result.addChild(compareBu(bu1, bu2, ignore))
     for bu2 in db2.boardUnits:
-        bu1 = db1.boardUnitByName(bu2.name)
+        bu1 = db1.ecu_by_name(bu2.name)
         if bu1 is None:
             result.addChild(compareResult("added", "ecu", bu2))
 
@@ -179,10 +179,10 @@ def compareSignalGroup(sg1, sg2):
         logger.debug("Strange - sg wo members???")
         return result
     for member in sg1.signals:
-        if sg2.byName(member.name) is None:
+        if sg2.by_name(member.name) is None:
             result.addChild(compareResult("deleted", str(member.name), member))
     for member in sg2.signals:
-        if sg1.byName(member.name) is None:
+        if sg1.by_name(member.name) is None:
             result.addChild(compareResult("added", str(member.name), member))
     return result
 
@@ -272,7 +272,7 @@ def compareFrame(f1, f2, ignore=None):
     result = compareResult("equal", "FRAME", f1)
 
     for s1 in f1:
-        s2 = f2.signalByName(s1.name)
+        s2 = f2.signal_by_name(s1.name)
         if not s2:
             result.addChild(compareResult("deleted", "SIGNAL", s1))
         else:
@@ -299,9 +299,9 @@ def compareFrame(f1, f2, ignore=None):
                     f2.extended]))
     if not "comment" in ignore:
         if f2.comment is None:
-            f2.addComment("")
+            f2.add_comment("")
         if f1.comment is None:
-            f1.addComment("")
+            f1.add_comment("")
         if f1.comment != f2.comment:
             result.addChild(
                 compareResult(
@@ -309,7 +309,7 @@ def compareFrame(f1, f2, ignore=None):
                         "comment: " + f1.comment, "comment: " + f2.comment]))
 
     for s2 in f2.signals:
-        s1 = f1.signalByName(s2.name)
+        s1 = f1.signal_by_name(s2.name)
         if not s1:
             result.addChild(compareResult("added", "SIGNAL", s2))
 
@@ -330,14 +330,14 @@ def compareFrame(f1, f2, ignore=None):
             result.addChild(compareResult("added", "Frame-Transmitter",  f2))
 
     for sg1 in f1.signalGroups:
-        sg2 = f2.signalGroupByName(sg1.name)
+        sg2 = f2.signal_group_by_name(sg1.name)
         if sg2 is None:
             result.addChild(compareResult("removed", "Signalgroup", sg1))
         else:
             result.addChild(compareSignalGroup(sg1, sg2))
 
     for sg2 in f2.signalGroups:
-        if f1.signalGroupByName(sg2.name) is None:
+        if f1.signal_group_by_name(sg2.name) is None:
             result.addChild(compareResult("added", "Signalgroup", sg2))
     return result
 
@@ -569,10 +569,10 @@ def main():
         onlyInMatrix1 = []
         onlyInMatrix2 = []
         for frame in db1.frames:
-            if db2.frameByName(frame.name) is None:
+            if db2.frame_by_name(frame.name) is None:
                 onlyInMatrix1.append(frame.name)
         for frame in db2.frames:
-            if db1.frameByName(frame.name) is None:
+            if db1.frame_by_name(frame.name) is None:
                 onlyInMatrix2.append(frame.name)
         print ("Frames only in " + matrix1 + ": " + " ".join(onlyInMatrix1))
         print ("Frames only in " + matrix2 + ": " + " ".join(onlyInMatrix2))

@@ -12,8 +12,8 @@ from canmatrix.canmatrix import *
 
 db = CanMatrix()
 
-db.boardUnits.add(BoardUnit("testBU"))
-db.boardUnits.add(BoardUnit("recBU"))
+db.ecus.add(ecu("testBU"))
+db.ecus.add(ecu("recBU"))
 
 myFrame = Frame("testFrame1", Id=0x123, dlc=8, transmitter="testBU")
 
@@ -34,7 +34,7 @@ mySignal = Signal("someTestSignal",
                   max=500,
                   unit=u"specialCharUnit°$", #.decode("utf-8"),
                   receiver=["recBU"])
-mySignal.setStartbit(9, bitNumbering=1, startLittle=True)
+mySignal.set_startbit(9, bitNumbering=1, startLittle=True)
 mySignal2 = Signal("Signal",
                    startBit=20,
                    signalSize=3,
@@ -47,30 +47,30 @@ mySignal2 = Signal("Signal",
                    unit="someUnit",
                    receiver=["recBU"])
 
-mySignal2.addValues(1, "one")
-mySignal2.addValues(2, "two")
-mySignal2.addValues(3, "three")
+mySignal2.add_values(1, "one")
+mySignal2.add_values(2, "two")
+mySignal2.add_values(3, "three")
 
-mySignal.addComment(comment )
-myFrame.addComment("Multi \n Line \n Frame comment")
+mySignal.add_comment(comment)
+myFrame.add_comment("Multi \n Line \n Frame comment")
 
-myFrame.addSignal(mySignal)
-myFrame.addSignal(mySignal2)
+myFrame.add_signal(mySignal)
+myFrame.add_signal(mySignal2)
 
 myFrame2 = Frame("extendedFrame", Id=0x12,  dlc=8, transmitter="testBU")
 myFrame2.extended = 1
 
-db.frames.addFrame(myFrame)
-db.frames.addFrame(myFrame2)
+db.frames.add_frame(myFrame)
+db.frames.add_frame(myFrame2)
 
-db.boardUnitByName("testBU").addComment("sender ECU")
-db.boardUnitByName("testBU").addAttribute("NetworkNode", 0x111)
-db.boardUnitByName("recBU").addComment("receiver ECU")
+db.ecu_by_name("testBU").add_comment("sender ECU")
+db.ecu_by_name("testBU").add_attribute("NetworkNode", 0x111)
+db.ecu_by_name("recBU").add_comment("receiver ECU")
 
-db.frameByName("testFrame1").addAttribute("GenMsgCycleTime", 100)
+db.frame_by_name("testFrame1").add_attribute("GenMsgCycleTime", 100)
 
-db.addFrameDefines("GenMsgCycleTime",  'INT 0 65535')
-db.addBUDefines("NetworkNode", 'INT 0 65535')
+db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+db.add_ecu_defines("NetworkNode", 'INT 0 65535')
 
 
 #

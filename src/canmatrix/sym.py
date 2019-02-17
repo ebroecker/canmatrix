@@ -105,7 +105,7 @@ def createSignal(db, signal):
         output += "unsigned "
     else:
         output += "signed "
-    startBit = signal.getStartbit()
+    startBit = signal.get_startbit()
     if signal.is_little_endian == 0:
         # Motorola
         output += "%d,%d -m " % (startBit, signal.size)
@@ -148,7 +148,7 @@ def createSignal(db, signal):
                     key, val) in sorted(
                     signal.values.items())) + ")"
 
-    if "GenSigStartValue" in db.signalDefines:
+    if "GenSigStartValue" in db.signal_defines:
         genSigStartVal = signal.attribute("GenSigStartValue", db=db)
         if genSigStartVal is not None:
             factory = (
@@ -263,11 +263,11 @@ Title=\"canmatrix-Export\"
                                 i, muxSignal.name + "%d" % i)
 
                             muxOut += "Mux=" + muxName
-                            startBit = muxSignal.getStartbit()
+                            startBit = muxSignal.get_startbit()
                             s = str(i)
                             if len(s) > 1:
                                 length = len(
-                                    '{:X}'.format(int(muxSignal.calcMax()))
+                                    '{:X}'.format(int(muxSignal.calc_max()))
                                 )
                                 s = '{:0{}X}h'.format(i, length)
                             if signal.is_little_endian == 0:
@@ -329,13 +329,13 @@ def load(f, **options):
     frame = None
 
     db = CanMatrix()
-    db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
-    db.addFrameDefines("Receivable", 'BOOL False True')
-    db.addFrameDefines("Sendable", 'BOOL False True')
-    db.addSignalDefines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
-    db.addSignalDefines("HexadecimalOutput", 'BOOL False True')
-    db.addSignalDefines("DisplayDecimalPlaces", 'INT 0 65535')
-    db.addSignalDefines("LongName", 'STR')
+    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+    db.add_frame_defines("Receivable", 'BOOL False True')
+    db.add_frame_defines("Sendable", 'BOOL False True')
+    db.add_signal_defines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
+    db.add_signal_defines("HexadecimalOutput", 'BOOL False True')
+    db.add_signal_defines("DisplayDecimalPlaces", 'INT 0 65535')
+    db.add_signal_defines("LongName", 'STR')
 
     for linecount, line in enumerate(f, 1):
         try:
@@ -379,7 +379,7 @@ def load(f, **options):
                     for entry in tempArray:
                         tempValTable[entry.split('=')[0].strip()] = entry.split('=')[
                             1].replace('"', '').strip()
-                    db.addValueTable(valtabName, tempValTable)
+                    db.add_value_table(valtabName, tempValTable)
 
             elif mode in {Mode.send, Mode.sendReceive, Mode.receive}:
                 if line.startswith('['):
@@ -390,17 +390,17 @@ def load(f, **options):
                         # TODO: CAMPid 939921818394902983238
                         if frame is not None:
                             if len(frame.mux_names) > 0:
-                                frame.signalByName(
+                                frame.signal_by_name(
                                     frame.name + "_MUX").values = frame.mux_names
-                            db.addFrame(frame)
+                            db.add_frame(frame)
 
                         frame = Frame(frameName)
 
-                        frame.addAttribute(
+                        frame.add_attribute(
                             'Receivable',
                             mode in {Mode.receive, Mode.sendReceive}
                         )
-                        frame.addAttribute(
+                        frame.add_attribute(
                             'Sendable',
                             mode in {Mode.send, Mode.sendReceive}
                         )
@@ -511,7 +511,7 @@ def load(f, **options):
     #                                       else:
     #                                               print switch
                     if tmpMux == "Mux":
-                        signal = frame.signalByName(frameName + "_MUX")
+                        signal = frame.signal_by_name(frameName + "_MUX")
                         if signal is None:
                             extras = {}
                             if calc_min_for_none is not None:
@@ -522,7 +522,7 @@ def load(f, **options):
 #                                extras['float_factory'] = float_factory
 
                             signal = Signal(frameName + "_MUX",
-                                            startBit=int(startBit),
+                                            start_bit=int(startBit),
                                             size=int(signalLength),
                                             is_little_endian=intel,
                                             is_signed=is_signed,
@@ -537,11 +537,11 @@ def load(f, **options):
                                 signal.min = float_factory(min)
                             if max is not None:
                                 signal.max = float_factory(max)
-    #                        signal.addComment(comment)
+    #                        signal.add_comment(comment)
                             if intel == 0:
                                 # motorola set/convert startbit
-                                signal.setStartbit(startBit)
-                            frame.addSignal(signal)
+                                signal.set_startbit(startBit)
+                            frame.add_signal(signal)
                         signal.comments[multiplexor] = comment
 
                     else:
@@ -555,7 +555,7 @@ def load(f, **options):
 #                            extras['float_factory'] = float_factory
 
                         signal = Signal(sigName,
-                                        startBit=int(startBit),
+                                        start_bit=int(startBit),
                                         size=int(signalLength),
                                         is_little_endian=intel,
                                         is_signed=is_signed,
@@ -573,22 +573,22 @@ def load(f, **options):
     #
                         if intel == 0:
                             # motorola set/convert startbit
-                            signal.setStartbit(startBit)
+                            signal.set_startbit(startBit)
                         if valueTableName is not None:
-                            signal.values = db.valueTables[valueTableName]
+                            signal.values = db.value_tables[valueTableName]
                             signal.enumeration = valueTableName
-      #                  signal.addComment(comment)
+      #                  signal.add_comment(comment)
                         # ... (1 / ...) because this somehow made 59.8/0.1 be 598.0 rather than 597.9999999999999
                         if startValue is not None:
                             startValue = float_factory(startValue) * (1 / float_factory(factor))
-                            signal.addAttribute("GenSigStartValue", str(startValue))
-                        frame.addSignal(signal)
+                            signal.add_attribute("GenSigStartValue", str(startValue))
+                        frame.add_signal(signal)
                     if longName is not None:
-                        signal.addAttribute("LongName", longName)
+                        signal.add_attribute("LongName", longName)
                     if hexadecimal_output:
-                        signal.addAttribute("HexadecimalOutput", str(True))
+                        signal.add_attribute("HexadecimalOutput", str(True))
                     if displayDecimalPlaces is not None:
-                        signal.addAttribute(
+                        signal.add_attribute(
                             "DisplayDecimalPlaces", displayDecimalPlaces)
                     # variable processing
                 elif line.startswith('ID'):
@@ -598,7 +598,7 @@ def load(f, **options):
                         comment = split[1].strip()
                         line = split[0].strip()
                     frame.id = int(line.split('=')[1].strip()[:-1], 16)
-                    frame.addComment(comment)
+                    frame.add_comment(comment)
                 elif line.startswith('Type'):
                     if line.split('=')[1][:8] == "Extended":
                         frame.extended = 1
@@ -606,7 +606,7 @@ def load(f, **options):
                     frame.size = int(line.split('=')[1])
 
                 elif line.startswith('CycleTime'):
-                    frame.addAttribute(
+                    frame.add_attribute(
                         "GenMsgCycleTime",
                         line.split('=')[1].strip())
 #                       else:
@@ -629,7 +629,7 @@ def load(f, **options):
     # TODO: CAMPid 939921818394902983238
     if frame is not None:
         if len(frame.mux_names) > 0:
-            frame.signalByName(frame.name + "_MUX").values = frame.mux_names
-        db.addFrame(frame)
+            frame.signal_by_name(frame.name + "_MUX").values = frame.mux_names
+        db.add_frame(frame)
 
     return db

@@ -45,9 +45,9 @@ def test_enum_with_comma():
     ''').encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
 
-    assert matrix.frameDefines[u'example1'].values == ["Val 1","",""," ","'","(",")","[","]","/","-","|","{","}",";",":","<",">",".","?","!","@","#","$","%","^","&","=","`","~"]
-    assert matrix.signalDefines[u'example2'].values == ['Val1', ',']
-    assert matrix.buDefines[u'example4'].values == ['Val1', ',']
+    assert matrix.frame_defines[u'example1'].values == ["Val 1","",""," ","'","(",")","[","]","/","-","|","{","}",";",":","<",">",".","?","!","@","#","$","%","^","&","=","`","~"]
+    assert matrix.signal_defines[u'example2'].values == ['Val1', ',']
+    assert matrix.ecu_defines[u'example4'].values == ['Val1', ',']
 
 @pytest.mark.parametrize(
     'character',
@@ -62,4 +62,4 @@ def test_enum_with_special_character(character):
     BA_DEF_ BO_ "example1" ENUM "Val 1","{}";
     ''').format(character[0]).encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
-    assert matrix.frameDefines[u'example1'].values == ["Val 1",character[0]]
+    assert matrix.frame_defines[u'example1'].values == ["Val 1",character[0]]

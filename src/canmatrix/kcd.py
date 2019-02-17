@@ -45,7 +45,7 @@ def createSignal(signal, nodeList, typeEnums):
         'Signal',
         name=signal.name,
         offset=str(
-            signal.getStartbit()))
+            signal.get_startbit()))
     if signal.size > 1:
         sig.set("length", str(signal.size))
     if signal.is_little_endian == 0:
@@ -203,7 +203,7 @@ def dump(dbs, f, **options):
             for signal in frame.signals:
                 if signal.multiplex is not None and signal.multiplex == 'Multiplexor':
                     multiplexor = etree.Element('Multiplex', name=signal.name, offset=str(
-                        signal.getStartbit()), length=str(int(signal.size)))
+                        signal.get_startbit()), length=str(int(signal.size)))
                     value = etree.Element('Value')
                     if float(signal.min) != 0:
                         value.set('min', "%g" % signal.min)
@@ -314,14 +314,14 @@ def parseSignal(signal, mux, namespace, nodelist, float_factory):
     if max is not None:
         newSig.max = float_factory(max)
 
-    newSig.setStartbit(int(startbit))
+    newSig.set_startbit(int(startbit))
 
     notes = signal.findall('./' + namespace + 'Notes')
     comment = ""
     for note in notes:
         if note.text is not None:
             comment += note.text
-            newSig.addComment(comment)
+            newSig.add_comment(comment)
 
     labelsets = signal.findall('./' + namespace + 'LabelSet')
     for labelset in labelsets:
@@ -329,7 +329,7 @@ def parseSignal(signal, mux, namespace, nodelist, float_factory):
         for label in labels:
             name = label.get('name')
             value = label.get('value')
-            newSig.addValues(value, name)
+            newSig.add_values(value, name)
 
     return newSig
 def load(f, **options):
@@ -347,9 +347,9 @@ def load(f, **options):
     counter = 0
     for bus in busses:
         db = CanMatrix()
-        db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
+        db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
         for node in nodes:
-            db.BUs.add(BoardUnit(node.get('name')))
+            db.BUs.add(ecu(node.get('name')))
             nodelist[node.get('id')] = node.get('name')
 
         messages = bus.findall('./' + namespace + 'Message')
@@ -360,7 +360,7 @@ def load(f, **options):
             newBo = Frame(message.get('name'), id=int(message.get('id'), 16))
 
             if 'triggered' in message.attrib:
-                newBo.addAttribute("GenMsgCycleTime", message.get('interval'))
+                newBo.add_attribute("GenMsgCycleTime", message.get('interval'))
 
             if 'length' in message.attrib:
                 dlc = int(message.get('length'))
@@ -423,12 +423,12 @@ def load(f, **options):
 
                 if is_little_endian == False:
                     # motorola/big_endian set/convert startbit
-                    newSig.setStartbit(startbit)
+                    newSig.set_startbit(startbit)
                 notes = multiplex.findall('./' + namespace + 'Notes')
                 comment = ""
                 for note in notes:
                     comment += note.text
-                newSig.addComment(comment)
+                newSig.add_comment(comment)
 
                 labelsets = multiplex.findall('./' + namespace + 'LabelSet')
                 for labelset in labelsets:
@@ -436,9 +436,9 @@ def load(f, **options):
                     for label in labels:
                         name = label.get('name')
                         value = label.get('value')
-                        newSig.addValues(value, name)
+                        newSig.add_values(value, name)
 
-                newBo.addSignal(newSig)
+                newBo.add_signal(newSig)
 
                 muxgroups = multiplex.findall('./' + namespace + 'MuxGroup')
                 for muxgroup in muxgroups:
@@ -446,7 +446,7 @@ def load(f, **options):
                     signales = muxgroup.findall('./' + namespace + 'Signal')
                     for signal in signales:
                         newSig = parseSignal(signal, mux, namespace, nodelist, float_factory)
-                        newBo.addSignal(newSig)
+                        newBo.add_signal(newSig)
 
             signales = message.findall('./' + namespace + 'Signal')
 
@@ -454,25 +454,25 @@ def load(f, **options):
             for producer in producers:
                 noderefs = producer.findall('./' + namespace + 'NodeRef')
                 for noderef in noderefs:
-                    newBo.addTransmitter(nodelist[noderef.get('id')])
+                    newBo.add_transmitter(nodelist[noderef.get('id')])
             for signal in signales:
                 newSig = parseSignal(signal, None, namespace, nodelist, float_factory)
-                newBo.addSignal(newSig)
+                newBo.add_signal(newSig)
 
             notes = message.findall('./' + namespace + 'Notes')
             comment = ""
             for note in notes:
                 if note.text is not None:
                     comment += note.text
-            newBo.addComment(comment)
+            newBo.add_comment(comment)
 
             if dlc is None:
-                newBo.calcDLC()
+                newBo.calc_dlc()
             else:
                 newBo.size = dlc
 
-            newBo.updateReceiver()
-            db.addFrame(newBo)
+            newBo.update_receiver()
+            db.add_frame(newBo)
         name = bus.get('name')
         if not name:
             name = "CAN%d" % counter

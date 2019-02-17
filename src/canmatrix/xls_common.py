@@ -51,11 +51,11 @@ def getSignal(db, sig, motorolaBitFormat):
     frontArray = []
     backArray = []
     if motorolaBitFormat == "msb":
-        startBit = sig.getStartbit(bitNumbering=1)
+        startBit = sig.get_startbit(bit_numbering=1)
     elif motorolaBitFormat == "msbreverse":
-        startBit = sig.getStartbit()
+        startBit = sig.get_startbit()
     else:  # motorolaBitFormat == "lsb"
-        startBit = sig.getStartbit(bitNumbering=1, startLittle=True)
+        startBit = sig.get_startbit(bit_numbering=1, start_little=True)
 
     # startbyte
     frontArray.append(int(startBit / 8) + 1)
