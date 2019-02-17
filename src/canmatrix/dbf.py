@@ -268,7 +268,7 @@ def load(f, **options):
                 startbit += (int(startbyte) - 1) * 8
 
                 newSig = newBo.add_signal(Signal(name,
-                                                 startBit=int(startbit),
+                                                 start_bit=int(startbit),
                                                  size=int(size),
                                                  is_little_endian=(
                                                     int(byteorder) == 1),
@@ -397,9 +397,9 @@ def dump(mydb, f, **options):
     # Boardunits
     outstr += "[NODE] "
     count = 1
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         outstr += bu.name
-        if count < len(db.boardUnits):
+        if count < len(db.ecus):
             outstr += ","
         count += 1
     outstr += "\n"
@@ -417,7 +417,7 @@ def dump(mydb, f, **options):
 
     # Frame descriptions
     outstr += "[START_DESC_NODE]\n"
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         if bu.comment is not None:
             comment = bu.comment.replace("\n", " ")
             outstr += bu.name + ' "' + comment + '";\n'
@@ -442,7 +442,7 @@ def dump(mydb, f, **options):
 
     # db-parameter
     outstr += "[START_PARAM_NET]\n"
-    for (type, define) in sorted(list(db.globalDefines.items())):
+    for (type, define) in sorted(list(db.global_defines.items())):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -451,7 +451,7 @@ def dump(mydb, f, **options):
 
     # bu-parameter
     outstr += "[START_PARAM_NODE]\n"
-    for (type, define) in sorted(list(db.buDefines.items())):
+    for (type, define) in sorted(list(db.ecu_defines.items())):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -460,7 +460,7 @@ def dump(mydb, f, **options):
 
     # frame-parameter
     outstr += "[START_PARAM_MSG]\n"
-    for (type, define) in sorted(list(db.frameDefines.items())):
+    for (type, define) in sorted(list(db.frame_defines.items())):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -470,7 +470,7 @@ def dump(mydb, f, **options):
 
     # signal-parameter
     outstr += "[START_PARAM_SIG]\n"
-    for (type, define) in list(db.signalDefines.items()):
+    for (type, define) in list(db.signal_defines.items()):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -480,7 +480,7 @@ def dump(mydb, f, **options):
     outstr += "[START_PARAM_VAL]\n"
     # boardunit-attributes:
     outstr += "[START_PARAM_NODE_VAL]\n"
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         for attrib, val in sorted(list(bu.attributes.items())):
             outstr += bu.name + ',"' + attrib + '","' + val + '"\n'
     outstr += "[END_PARAM_NODE_VAL]\n"

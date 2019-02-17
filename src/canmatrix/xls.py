@@ -136,7 +136,7 @@ def dump(db, file, **options):
 
     # write frameardunits in first row:
     buList = []
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         buList.append(bu.name)
 
     rowArray += head_top
@@ -488,7 +488,7 @@ def load(file, **options):
                         receiver.append(sh.cell(0, x).value.strip())
 #                if signalLength > 8:
                 newSig = Signal(signalName,
-                                startBit=(startbyte - 1) * 8 + startbit,
+                                start_bit=(startbyte - 1) * 8 + startbit,
                                 size=int(signalLength),
                                 is_little_endian=is_little_endian,
                                 is_signed=is_signed,

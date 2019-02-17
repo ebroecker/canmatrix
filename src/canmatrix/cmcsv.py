@@ -141,7 +141,7 @@ def dump(db, thefile, delimiter=',', **options):
 
     # write frameardunits in first row:
     buList = []
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         headerrow.write(col, bu.name)
         buList.append(bu.name)
         col += 1

@@ -40,7 +40,7 @@ class canCluster(dict):
         ECUArray = []
         ECUArrayName = []
         for matrixName in self:
-            for ecu in self[matrixName].boardUnits:
+            for ecu in self[matrixName].ecus:
                 if ecu.name not in ECUArrayName:
                     ECUArrayName.append(ecu.name)
                     ECUArray.append(ecu)

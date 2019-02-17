@@ -663,7 +663,7 @@ def dump(dbs, f, **options):
     elements = createSubElement(arPackage, 'ELEMENTS')
     for name in dbs:
         db = dbs[name]
-        for ecu in db.boardUnits:
+        for ecu in db.ecus:
             ecuInstance = createSubElement(elements, 'ECU-INSTANCE')
             createSubElement(ecuInstance, 'SHORT-NAME', ecu.name)
             if ecu.comment:
@@ -1176,7 +1176,7 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
 
         if startBit is not None:
             newSig = Signal(name.text,
-                            startBit=int(startBit.text),
+                            start_bit=int(startBit.text),
                             size=int(length.text),
                             is_little_endian=is_little_endian,
                             is_signed=is_signed,

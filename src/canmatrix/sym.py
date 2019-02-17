@@ -254,7 +254,7 @@ Title=\"canmatrix-Export\"
                                 muxOut += idType
                                 first = 1
                             muxOut += "DLC=%d\n" % (frame.size)
-                            if "GenMsgCycleTime" in db.frameDefines:
+                            if "GenMsgCycleTime" in db.frame_defines:
                                 cycleTime = frame.attribute("GenMsgCycleTime", db=db)
                                 if cycleTime is not None:
                                     muxOut += "CycleTime=" + str(cycleTime) + "\n"
@@ -298,7 +298,7 @@ Title=\"canmatrix-Export\"
                 output += name
                 output += idType
                 output += "DLC=%d\n" % (frame.size)
-                if "GenMsgCycleTime" in db.frameDefines:
+                if "GenMsgCycleTime" in db.frame_defines:
                     cycleTime = frame.attribute("GenMsgCycleTime", db=db)
                     if cycleTime is not None:
                         output += "CycleTime=" + str(cycleTime) + "\n"

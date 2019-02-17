@@ -177,7 +177,7 @@ def dump(db, filename, **options):
 
     # write frameardunits in first row:
     buList = []
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         buList.append(bu.name)
 
     rowArray += buList
@@ -333,7 +333,7 @@ def dump(db, filename, **options):
     # loop over frames ends here
 
     worksheet.autofilter(0, 0, row, len(head_top) +
-                         len(head_tail) + len(db.boardUnits))
+                         len(head_tail) + len(db.ecus))
     worksheet.freeze_panes(1, 0)
     # save file
     workbook.close()

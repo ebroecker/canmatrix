@@ -34,6 +34,7 @@ import decimal
 from builtins import *
 import canmatrix
 import re
+import math
 
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
@@ -121,12 +122,12 @@ def dump(mydb, f, **options):
         # ValueTables
         for table in sorted(db.value_tables):
             f.write(("VAL_TABLE_ " + table).encode(dbcExportEncoding))
-            for row in db.valueTables[table]:
+            for row in db.value_tables[table]:
                 f.write(
                     (' ' +
                      str(row) +
                      ' "' +
-                     db.valueTables[table][row] +
+                     db.value_tables[table][row] +
                      '"').encode(dbcExportEncoding))
             f.write(";\n".encode(dbcExportEncoding))
         f.write("\n".encode(dbcExportEncoding))
@@ -331,7 +332,7 @@ def dump(mydb, f, **options):
     # boardunit-attributes:
     for bu in db.ecus:
         for attrib, val in sorted(bu.attributes.items()):
-            if db.buDefines[attrib].type == "STRING":
+            if db.ecu_defines[attrib].type == "STRING":
                 val = '"' + val + '"'
             elif not val:
                 val = '""'
@@ -340,7 +341,7 @@ def dump(mydb, f, **options):
 
     # global-attributes:
     for attrib, val in sorted(db.attributes.items()):
-        if db.globalDefines[attrib].type == "STRING":
+        if db.global_defines[attrib].type == "STRING":
             val = '"' + val + '"'
         elif not val:
             val = '""'
@@ -351,7 +352,7 @@ def dump(mydb, f, **options):
     # messages-attributes:
     for frame in db.frames:
         for attrib, val in sorted(frame.attributes.items()):
-            if db.frameDefines[attrib].type == "STRING":
+            if db.frame_defines[attrib].type == "STRING":
                val = '"' + val + '"'
             elif not val:
                 val = '""'
@@ -458,7 +459,7 @@ def load(f, **options):
                 if l.endswith(b'";'):
                     followUp = FollowUps.nothing
                     if signal is not None:
-                        signal.addComment(comment[0:-2])
+                        signal.add_comment(comment[0:-2])
                 continue
             elif followUp == FollowUps.frameComment:
                 try:
@@ -864,8 +865,6 @@ def load(f, **options):
         except:
             print ("error with line no: %d" % i)
             print (line)
-        #        else:
-#            print("Unrecocniced line: " + l + " (%d) " % i)
 # Backtracking
 
     for frame in db.frames:

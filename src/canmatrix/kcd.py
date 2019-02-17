@@ -119,7 +119,7 @@ def dump(dbs, f, **options):
     canClust = canCluster(dbs)
     for name in canClust:
         db = canClust[name]
-        for (typename, define) in list(db.signalDefines.items()):
+        for (typename, define) in list(db.signal_defines.items()):
             defines = re.split(r"\s+", define.definition)
             define_type = defines[0]
             if define_type != 'ENUM':
@@ -173,7 +173,7 @@ def dump(dbs, f, **options):
 
             if frame.extended == 1:
                 message.set("format", "extended")
-            if "GenMsgCycleTime" in db.frameDefines:
+            if "GenMsgCycleTime" in db.frame_defines:
                 cycleTime = frame.attribute("GenMsgCycleTime", db=db)
                 if cycleTime is not None and int(cycleTime) > 0:
                     message.set("triggered", "true")
@@ -298,7 +298,7 @@ def parseSignal(signal, mux, namespace, nodelist, float_factory):
             receiver.append(nodelist[noderef.get('id')])
 
     newSig = Signal(signal.get('name'),
-                    startBit=int(startbit),
+                    start_bit=int(startbit),
                     size=int(signalsize),
                     is_little_endian=is_little_endian,
                     is_signed=is_signed,
@@ -406,7 +406,7 @@ def load(f, **options):
                     for noderef in noderefs:
                         receiver.append(nodelist[noderef.get('id')])
                 newSig = Signal(multiplex.get('name'),
-                                startBit=int(startbit),
+                                start_bit=int(startbit),
                                 size=int(signalsize),
                                 is_little_endian=is_little_endian,
                                 is_signed=is_signed,
