@@ -100,7 +100,14 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
                     targetDb.buDefines[attribute].values.append(deepcopy(tempAttr))
                     targetDb.buDefines[attribute].update()
 
-
+def copy_signal(signal_name, source_db, target_db):
+    """
+    This function copys a signal identified by name from soruce-Canmatrix to target-Canmatrix
+    In target canmatrix the signal is put without frame, just toplevel
+    """
+    for frame in source_db.frames:
+        for signal in frame.globSignals(signal_name):
+            target_db.addSignal(signal)
 
 def copyFrame(frameId, sourceDb, targetDb):
     """

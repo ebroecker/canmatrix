@@ -63,3 +63,44 @@ def test_enum_with_special_character(character):
     ''').format(character[0]).encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frame_defines[u'example1'].values == ["Val 1",character[0]]
+
+def test_export_of_unknown_defines():
+    db = canmatrix.CanMatrix()
+
+    db.add_frame_defines("Receivable", 'BOOL False True')
+    db.add_frame_defines("Sendable", 'BOOL False True')
+    for (dataType, define) in db.frame_defines.items():
+        orig_definition = define.definition
+        canmatrix.dbc.check_define(define)
+        assert orig_definition != define.definition
+
+    db.add_signal_defines("LongName", 'STR')
+    for (dataType, define) in db.signal_defines.items():
+        orig_definition = define.definition
+        canmatrix.dbc.check_define(define)
+        assert orig_definition != define.definition
+    frame = canmatrix.Frame("someFrame")
+    signal = canmatrix.Signal("SomeSignal")
+    signal.add_attribute("LongName", "EnableCalcIDCTrip Calc. IDC trip")
+    frame.add_signal(signal)
+    db.add_frame(frame)
+
+    db.add_ecu_defines("someName", 'STRING')
+    for (dataType, define) in db.ecu_defines.items():
+        orig_definition = define.definition
+        canmatrix.dbc.check_define(define)
+        assert orig_definition == define.definition
+
+    db.add_global_defines("someGlobaName", 'BOOL')
+    for (dataType, define) in db.global_defines.items():
+        orig_definition = define.definition
+        canmatrix.dbc.check_define(define)
+        assert orig_definition != define.definition
+
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(db, outdbc, "dbc")
+    for line in outdbc.getvalue().decode('utf8').split('\n'):
+        if line.startswith("BA_DEF_ "):
+            assert line.endswith("STRING;")
+        if line.startswith("BA_ "):
+            assert line.endswith('";')

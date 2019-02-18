@@ -302,7 +302,11 @@ def load(f, **options):
             # receiver is only given in the signals, so do propagate the
             # receiver to the frame:
             frame.update_receiver()
-        db.enum_attribs_to_values()
+    db.enum_attribs_to_values()
+    free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
+    if free_signals_dummy_frame is not None and free_signals_dummy_frame.id == 0x40000000:
+        db.signals = free_signals_dummy_frame.signals
+        db.delFrame(free_signals_dummy_frame)
     return db
 
 
@@ -311,6 +315,10 @@ def dump(mydb, f, **options):
     db = deepcopy(mydb)
     dbfExportEncoding = options.get("dbfExportEncoding", 'iso-8859-1')
     db.enum_attribs_to_keys()
+    if len(db.signals) > 0:
+        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG",  id = 0x40000000, extended=True)
+        free_signals_dummy_frame.signals = db.signals
+        db.addFrame(free_signals_dummy_frame)
 
     outstr =  """//******************************BUSMASTER Messages and signals Database ******************************//
 
