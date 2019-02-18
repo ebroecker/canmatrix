@@ -110,6 +110,12 @@ def dump(mydb, f, **options):
 
     db.EnumAttribs2Keys()
 
+    if len(db.signals) > 0:
+        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG", id = 0x40000000, extended=True)
+        free_signals_dummy_frame.signals = db.signals
+        db.addFrame(free_signals_dummy_frame)
+
+
 
     f.write("VERSION \"created by canmatrix\"\n\n".encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
@@ -921,5 +927,9 @@ def load(f, **options):
     db.EnumAttribs2Values()
     db.updateEcuList()
     db.delEcu("Vector__XXX")
+    free_signals_dummy_frame = db.frameByName("VECTOR__INDEPENDENT_SIG_MSG")
+    if free_signals_dummy_frame is not None and free_signals_dummy_frame.id == 0x40000000:
+        db.signals = free_signals_dummy_frame.signals
+        db.delFrame(free_signals_dummy_frame)
 
     return db
