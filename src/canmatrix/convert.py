@@ -59,6 +59,13 @@ def convert(infile, outfileName, **options):
             db = cm.CanMatrix()
             for frame in frameList:
                 canmatrix.copy.copyFrame(frame, dbs[name], db)
+        if options.get('signals', False):
+            signal_list = options['signals'].split(',')
+            db = cm.CanMatrix()
+            for signal in signal_list:
+                canmatrix.copy.copy_signal(signal, dbs[name], db)
+
+
         if db is None:
             db = dbs[name]
 
@@ -337,6 +344,10 @@ def main():
     parser.add_option("", "--frames",
                       dest="frames", default=None,
                       help="Copy only given Frames (comma separated list) to target matrix")
+
+    parser.add_option("", "--signals",
+                      dest="signals", default=None,
+                      help="Copy only given Signals (comma separated list) to target matrix just as 'free' signals without containing frame")
 
     parser.add_option("", "--merge",
                       dest="merge", default=None,

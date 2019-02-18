@@ -1146,6 +1146,7 @@ class CanMatrix(object):
     buDefines = attr.ib(type=dict, factory=dict)
     valueTables = attr.ib(type=dict, factory=dict)
     envVars = attr.ib(type=dict, factory=dict)
+    signals = attr.ib(type=list, factory=list)
 
     load_errors = attr.ib(type=list, factory=list)
 
@@ -1385,6 +1386,23 @@ class CanMatrix(object):
         :param Frame frame: frame to remove from CAN Matrix
         """
         self.frames.remove(frame)
+
+    def addSignal(self, signal):
+        """
+        Add Signal to Frame.
+
+        :param Signal signal: Signal to be added.
+        :return: the signal added.
+        """
+        self.signals.append(signal)
+        return self.signals[len(self.signals) - 1]
+
+    def removeSignal(self, signal):
+        """Remove the Frame from Matrix.
+
+        :param Frame frame: frame to remove from CAN Matrix
+        """
+        self.signals.remove(signal)
 
     def deleteZeroSignals(self):
         """Delete all signals with zero bit width from all Frames."""
