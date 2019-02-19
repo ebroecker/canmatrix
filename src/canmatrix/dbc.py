@@ -63,6 +63,14 @@ def format_float(f):
     return s.upper()
 
 
+def check_define(define):
+    # check if define is compatible with dbc. else repace by STRING
+    if define.type not in ["ENUM", "STRING", "INT", "HEX", "FLOAT"]:
+        logger.warn("dbc export of attribute type {} not supported; replaced by STRING".format(define.type))
+        define.definition = "STRING"
+        define.type = "STRING"
+
+
 def dump(mydb, f, **options):
     # create copy because export changes database
     db = deepcopy(mydb)
@@ -101,6 +109,12 @@ def dump(mydb, f, **options):
                     frame.addAttribute("VFrameFormat", "StandardCAN")
 
     db.EnumAttribs2Keys()
+
+    if len(db.signals) > 0:
+        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG", id = 0x40000000, extended=True)
+        free_signals_dummy_frame.signals = db.signals
+        db.addFrame(free_signals_dummy_frame)
+
 
 
     f.write("VERSION \"created by canmatrix\"\n\n".encode(dbcExportEncoding))
@@ -289,7 +303,9 @@ def dump(mydb, f, **options):
     f.write("\n".encode(dbcExportEncoding))
 
     defaults = {}
+
     for (dataType, define) in sorted(list(db.frameDefines.items())):
+        check_define(define)
         f.write(
             ('BA_DEF_ BO_ "' +  dataType + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
         if dataType not in defaults and define.defaultValue is not None:
@@ -299,6 +315,7 @@ def dump(mydb, f, **options):
                 defaults[dataType] = define.defaultValue
 
     for (dataType, define) in sorted(list(db.signalDefines.items())):
+        check_define(define)
         f.write(
             ('BA_DEF_ SG_ "' + dataType + '" ').encode(dbcExportEncoding) +
             define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
@@ -308,6 +325,7 @@ def dump(mydb, f, **options):
             else:
                 defaults[dataType] = define.defaultValue
     for (dataType, define) in sorted(list(db.buDefines.items())):
+        check_define(define)
         f.write(
             ('BA_DEF_ BU_ "' + dataType + '" ').encode(dbcExportEncoding) +
             define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
@@ -317,6 +335,7 @@ def dump(mydb, f, **options):
             else:
                 defaults[dataType] = define.defaultValue
     for (dataType, define) in sorted(list(db.globalDefines.items())):
+        check_define(define)
         f.write(('BA_DEF_ "' + dataType + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
         if dataType not in defaults and define.defaultValue is not None:
             if define.type == "ENUM" or define.type == "STRING":
@@ -908,5 +927,9 @@ def load(f, **options):
     db.EnumAttribs2Values()
     db.updateEcuList()
     db.delEcu("Vector__XXX")
+    free_signals_dummy_frame = db.frameByName("VECTOR__INDEPENDENT_SIG_MSG")
+    if free_signals_dummy_frame is not None and free_signals_dummy_frame.id == 0x40000000:
+        db.signals = free_signals_dummy_frame.signals
+        db.delFrame(free_signals_dummy_frame)
 
     return db
