@@ -77,13 +77,13 @@ def compareDb(db1, db2, ignore=None):
     else:
         result.addChild(compareAttributes(db1, db2, ignore))
 
-    for bu1 in db1.boardUnits:
+    for bu1 in db1.ecus:
         bu2 = db2.ecu_by_name(bu1.name)
         if bu2 is None:
             result.addChild(compareResult("deleted", "ecu", bu1))
         else:
             result.addChild(compareBu(bu1, bu2, ignore))
-    for bu2 in db2.boardUnits:
+    for bu2 in db2.ecus:
         bu1 = db1.ecu_by_name(bu2.name)
         if bu1 is None:
             result.addChild(compareResult("added", "ecu", bu2))
