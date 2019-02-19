@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import canmatrix.arxml
-import pathlib
+import pathlib2
 
 def test_ecu_extract():
-    here = pathlib.Path(__file__).parent
+    here = pathlib2.Path(__file__).parent
     
     db = canmatrix.arxml.load(str(here / "MyECU.ecuc.arxml"))['']
     assert db.frames != None
