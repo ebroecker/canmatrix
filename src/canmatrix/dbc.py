@@ -128,7 +128,14 @@ def dump(mydb, f, **options):
     id = 1
     nodeList = {}
     for bu in db.boardUnits:
+        if len(bu.name) > 32:
+            bu.addAttribute("SystemNodeLongSymbol",  bu.name)
+            bu.name = bu.name[0:32]
+            db.addBUDefines("SystemNodeLongSymbol", "STRING")
+
         f.write((bu.name + " ").encode(dbcExportEncoding))
+
+
     f.write("\n\n".encode(dbcExportEncoding))
 
     if writeValTable:
@@ -887,6 +894,10 @@ def load(f, **options):
 #            print("Unrecocniced line: " + l + " (%d) " % i)
 # Backtracking
 
+    for ecu in db.boardUnits:
+        if ecu.attributes.get("SystemNodeLongSymbol", None) is not None:
+            ecu.name = ecu.attributes.get("SystemNodeLongSymbol")[1:-1]
+            ecu.delAttribute("SystemNodeLongSymbol")
     for frame in db.frames:
         # receiver is only given in the signals, so do propagate the receiver
         # to the frame:

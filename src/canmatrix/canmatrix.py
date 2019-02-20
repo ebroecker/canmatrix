@@ -96,6 +96,10 @@ class BoardUnit(object):
         """
         self.attributes[attribute] = value
 
+    def delAttribute(self, attribute):
+        if attribute in self.attributes:
+            del self.attributes[attribute]
+
     def addComment(self, comment):
         """
         Set Board unit comment.
