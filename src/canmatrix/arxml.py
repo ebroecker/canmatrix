@@ -1276,7 +1276,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
         is_signed = False  # unsigned
-        multiplexor = Signal("Multiplexor",startBit=int(selectorStart.text),size=int(selectorLen.text),
+        multiplexor = Signal("Multiplexor",start_bit=int(selectorStart.text),size=int(selectorLen.text),
                              is_little_endian=is_little_endian,multiplex="Multiplexor")
 
         multiplexor._initValue = 0
@@ -1522,7 +1522,7 @@ def ecuc_extract_signal(signal_node, ns):
             signal_type = (attribute.getparent().find(".//" +ns + "VALUE").text)
         if attribute.text.endswith("ComTimeout"):
             timeout = int(attribute.getparent().find(".//" +ns + "VALUE").text)
-    return canmatrix.Signal(arGetName(signal_node,ns), startBit = start_bit, size=size, is_little_endian = is_little)
+    return canmatrix.Signal(arGetName(signal_node,ns), start_bit = start_bit, size=size, is_little_endian = is_little)
 
 def extract_cm_from_ecuc(com_module, search_point, ns):
     db = CanMatrix()
@@ -1531,7 +1531,7 @@ def extract_cm_from_ecuc(com_module, search_point, ns):
         if definition.text.endswith("ComIPdu"):
             container = definition.getparent()
             frame = canmatrix.Frame(arGetName(container, ns))
-            db.addFrame(frame)
+            db.add_frame(frame)
             allReferences = arGetChildren(container,"ECUC-REFERENCE-VALUE",search_point,ns)
             for reference in allReferences:
                 value = arGetChild(reference,"VALUE",search_point,ns)
@@ -1539,8 +1539,8 @@ def extract_cm_from_ecuc(com_module, search_point, ns):
                     signal_definition = value.find('./' + ns + "DEFINITION-REF")
                     if signal_definition.text.endswith("ComSignal"):
                         signal = ecuc_extract_signal(value,ns)
-                        frame.addSignal(signal)
-    db.recalcDLC(strategy = "max")
+                        frame.add_signal(signal)
+    db.recalc_dlc(strategy = "max")
     return {"": db}
 
 def load(file, **options):
