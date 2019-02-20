@@ -59,6 +59,7 @@ class StarbitLowerZero(ExceptionTemplate): pass
 class EncodingComplexMultiplexed(ExceptionTemplate): pass
 class MissingMuxSignal(ExceptionTemplate): pass
 class DecodingComplexMultiplexed(ExceptionTemplate): pass
+class DecodingFrameLength(ExceptionTemplate): pass
 
 @attr.s
 class ecu(object):
@@ -996,6 +997,7 @@ class Frame(object):
         if rx_length != self.size and report_error:
             print(
                 'Received message 0x{self.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
+            raise DecodingFrameLength
         else:
             little, big = self.bytes_to_bitstrings(data)
 
