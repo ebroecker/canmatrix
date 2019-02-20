@@ -48,7 +48,7 @@ def test_decode_with_too_little_dlc():
     cm = loadDbc()
     # 002#0C00057003001F83
     frameData = bytearray([12, 0, 5, 112, 3, 0, 31])
-    frame = cm.frameById(2)
+    frame = cm.frame_by_id(2)
     try:
         decoded = frame.decode(frameData)
     except canmatrix.DecodingFrameLength:
@@ -58,7 +58,7 @@ def test_decode_with_too_little_dlc():
 def test_decode_with_too_big_dlc():
     cm = loadDbc()
     frameData1 = bytearray([0x38, 0x63, 0x8A, 0x7E, 0x00, 0x20, 0x00, 0x00])
-    frame = cm.frameById(4)
+    frame = cm.frame_by_id(4)
     try:
         decoded1 = frame.decode(frameData1)
     except canmatrix.DecodingFrameLength:
