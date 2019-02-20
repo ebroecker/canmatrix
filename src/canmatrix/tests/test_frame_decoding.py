@@ -44,6 +44,28 @@ def test_decode_with_dbc_little_endian():
     assert decoded["secSig11"].raw_value == -144
     assert decoded["secSig12"].raw_value == 12
 
+def test_decode_with_too_little_dlc():
+    cm = loadDbc()
+    # 002#0C00057003001F83
+    frameData = bytearray([12, 0, 5, 112, 3, 0, 31])
+    frame = cm.frameById(2)
+    try:
+        decoded = frame.decode(frameData)
+    except canmatrix.DecodingFrameLength:
+        return True
+    assert False
+
+def test_decode_with_too_big_dlc():
+    cm = loadDbc()
+    frameData1 = bytearray([0x38, 0x63, 0x8A, 0x7E, 0x00, 0x20, 0x00, 0x00])
+    frame = cm.frameById(4)
+    try:
+        decoded1 = frame.decode(frameData1)
+    except canmatrix.DecodingFrameLength:
+        return True
+    assert False
+
+
 def test_decode_with_dbc_float():
     cm = loadDbc()
     # 003#38638A7E58A8C540
