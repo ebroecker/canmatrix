@@ -1148,6 +1148,7 @@ class CanMatrix(object):
     frameDefines = attr.ib(type=dict, factory=dict)
     globalDefines = attr.ib(type=dict, factory=dict)
     buDefines = attr.ib(type=dict, factory=dict)
+    env_defines = attr.ib(type=dict, factory=dict)
     valueTables = attr.ib(type=dict, factory=dict)
     envVars = attr.ib(type=dict, factory=dict)
     signals = attr.ib(type=list, factory=list)
@@ -1160,6 +1161,12 @@ class CanMatrix(object):
 
     def addEnvVar(self, name, envVarDict):
         self.envVars[name] = envVarDict
+
+    def add_env_attribute(self, env_name, attribute_name, attribute_value):
+        if env_name in self.envVars:
+            if not "attributes" in self.envVars[env_name]:
+                self.envVars[env_name]["attributes"] = dict()
+            self.envVars[env_name]["attributes"][attribute_name] = attribute_value
 
     @property
     def contains_fd(self):
@@ -1237,6 +1244,16 @@ class CanMatrix(object):
         """
         if type not in self.buDefines:
             self.buDefines[type] = Define(definition)
+
+    def add_env_defines(self, type, definition):
+        """
+        Add enviroment variable-attribute definition to canmatrix.
+
+        :param str type: enviroment variable type
+        :param str definition: enviroment variable definition as string
+        """
+        if type not in self.env_defines:
+            self.env_defines[type] = Define(definition)
 
     def addGlobalDefines(self, type, definition):
         """
