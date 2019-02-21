@@ -34,6 +34,7 @@ import decimal
 from builtins import *
 import canmatrix
 import re
+import math
 
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
@@ -93,6 +94,12 @@ def create_attribute_string(attribute, attribute_class, name, value, is_string):
     attribute_string = 'BA_ "' + attribute + '" ' + attribute_class + ' ' + name + ' ' + str(value) + ';\n'
     return attribute_string
 
+def create_comment_string(comment_class, comment_ident, comment, dbcExportEncoding, dbcExportCommentEncoding):
+    comment_string = ("CM_ " + comment_class + " " + comment_ident + ' "').encode(dbcExportEncoding, 'ignore')
+    comment_string += comment.replace('"', '\\"').encode(dbcExportCommentEncoding, 'ignore')
+    comment_string += '";\n'.encode(dbcExportEncoding)
+    return comment_string
+
 
 def dump(mydb, f, **options):
     # create copy because export changes database
@@ -133,6 +140,7 @@ def dump(mydb, f, **options):
 
     db.EnumAttribs2Keys()
 
+    # free signals are in special frame in dbc...
     if len(db.signals) > 0:
         free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG", id = 0x40000000, extended=True)
         free_signals_dummy_frame.signals = db.signals
@@ -146,24 +154,21 @@ def dump(mydb, f, **options):
             db.add_env_defines("SystemEnvVarLongSymbol", "STRING")
 
 
-    f.write("VERSION \"created by canmatrix\"\n\n".encode(dbcExportEncoding))
-    f.write("\n".encode(dbcExportEncoding))
+    header = "VERSION \"created by canmatrix\"\n\n\nNS_ :\n\nBS_:\n\n"
+    f.write(header.encode(dbcExportEncoding))
 
-    f.write("NS_ :\n\nBS_:\n\n".encode(dbcExportEncoding))
-
-
-    # Boardunits
+    # ECUs
     f.write("BU_: ".encode(dbcExportEncoding))
     id = 1
     nodeList = {}
-    for bu in db.boardUnits:
-        if len(bu.name) > 32:
-            bu.addAttribute("SystemNodeLongSymbol",  bu.name)
-            bu.name = bu.name[0:32]
+    for ecu in db.boardUnits:
+        # fix long ecu names:
+        if len(ecu.name) > 32:
+            ecu.addAttribute("SystemNodeLongSymbol",  ecu.name)
+            ecu.name = ecu.name[0:32]
             db.addBUDefines("SystemNodeLongSymbol", "STRING")
 
-        f.write((bu.name + " ").encode(dbcExportEncoding))
-
+        f.write((ecu.name + " ").encode(dbcExportEncoding))
 
     f.write("\n\n".encode(dbcExportEncoding))
 
@@ -185,11 +190,13 @@ def dump(mydb, f, **options):
 
 
     for frame in db.frames:
+        # fix long frame names
         if len(frame.name) > 32:
             frame.addAttribute("SystemMessageLongSymbol", frame.name)
             frame.name = frame.name[0:32]
             db.addFrameDefines("SystemMessageLongSymbol", "STRING")
 
+        # fix long signal names
         for s in frame.signals:
             if len(s.name) > 32:
                 s.addAttribute("SystemSignalLongSymbol",  s.name)
@@ -201,6 +208,7 @@ def dump(mydb, f, **options):
             for s in frame.signals
         ))
 
+        # remove "-" from frame names
         if compatibility and '-' in frame.name:
             frame.name = frame.name.replace("-", whitespaceReplacement)
 
@@ -217,7 +225,6 @@ def dump(mydb, f, **options):
             if duplicate_signal_totals[name] > 1:
                 # TODO: pad to 01 in case of 10+ instances, for example?
                 name += str(duplicate_signal_counter[name] - 1)
-
             output_names[frame][signal] = name
 
     # Frames
@@ -237,6 +244,7 @@ def dump(mydb, f, **options):
              frame.size +
              frame.transmitters[0] +
              "\n").encode(dbcExportEncoding))
+
         duplicate_signal_totals = collections.Counter(
             normalizeName(s.name, whitespaceReplacement) for s in frame.signals
         )
@@ -244,19 +252,16 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             if signal.multiplex == 'Multiplexor' and multiplex_written and not frame.is_complex_multiplexed:
                 continue
+            signal_line = " SG_ " + output_names[frame][signal] + " "
 
-            f.write((" SG_ " + output_names[frame][signal] + " ").encode(dbcExportEncoding))
             if signal.mux_val is not None:
-                f.write(("m%d" %
-                         int(signal.mux_val)).encode(dbcExportEncoding))
+                signal_line += "m{}".format(int(signal.mux_val))
                 if signal.multiplex != 'Multiplexor':
-                    f.write(' '.encode(dbcExportEncoding))
+                    signal_line += " "
 
             if signal.multiplex == 'Multiplexor':
-                f.write('M '.encode(dbcExportEncoding))
+                signal_line += "M "
                 multiplex_written = True
-
-
 
             startbit = signal.getStartbit(bitNumbering=1)
 
@@ -264,45 +269,39 @@ def dump(mydb, f, **options):
                 sign = '-'
             else:
                 sign = '+'
-            f.write(
-                (": %d|%d@%d%c" %
+            signal_line += (": %d|%d@%d%c" %
                  (startbit,
                   signal.size,
                   signal.is_little_endian,
-                  sign)).encode(dbcExportEncoding))
-            f.write(
-                (" (%s,%s)" %
-                 (format_float(signal.factor), format_float(signal.offset))).encode(dbcExportEncoding))
-            f.write(
-                (" [{}|{}]".format(
-                    format_float(signal.min),
-                    format_float(signal.max))).encode(dbcExportEncoding))
-            f.write(' "'.encode(dbcExportEncoding))
+                  sign))
+            signal_line += " (%s,%s)" % (format_float(signal.factor), format_float(signal.offset))
+            signal_line += " [{}|{}]".format(format_float(signal.min),format_float(signal.max))
+            signal_line += ' "'
 
             if signal.unit is None:
                 signal.unit = ""
-            f.write(signal.unit.encode(dbcExportEncoding))
-            f.write('" '.encode(dbcExportEncoding))
+            signal_line += signal.unit
+            signal_line += '" '
+
             if signal.receiver.__len__() == 0:
                 signal.addReceiver('Vector__XXX')
-            f.write((','.join(signal.receiver) + "\n").encode(dbcExportEncoding))
+            signal_line += ','.join(signal.receiver) + "\n"
+            f.write(signal_line.encode(dbcExportEncoding))
+
         f.write("\n".encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # second Sender:
     for frame in db.frames:
         if frame.transmitters.__len__() > 1:
-            f.write(
-                ("BO_TX_BU_ %d : %s;\n" %
-                 (frame.id, ','.join(
-                     frame.transmitters))).encode(dbcExportEncoding))
+            f.write(("BO_TX_BU_ %d : %s;\n" % (frame.id, ','.join(frame.transmitters))).encode(dbcExportEncoding))
+
+
 
     # frame comments
+    # wow, there are dbcs where comments are encoded with other coding than rest of dbc...
     for frame in db.frames:
-        if frame.comment is not None and frame.comment.__len__() > 0:
-            f.write(("CM_ BO_ " + "%d " % frame.id + ' "').encode(dbcExportEncoding))
-            f.write(frame.comment.replace('"','\\"').encode(dbcExportCommentEncoding, 'ignore'))
-            f.write('";\n'.encode(dbcExportEncoding))
+        f.write(create_comment_string("BO_", "%d " % frame.id, frame.comment, dbcExportEncoding, dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal comments
@@ -310,30 +309,15 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             if signal.comment is not None and signal.comment.__len__() > 0:
                 name = output_names[frame][signal]
-                f.write(
-                    ("CM_ SG_ " +
-                     "%d " %
-                     frame.id +
-                     name +
-                     ' "').encode(dbcExportEncoding, 'ignore'))
-                f.write(
-                        signal.comment.replace(
-                            '"', '\\"').encode(dbcExportCommentEncoding, 'ignore'))
-                f.write('";\n'.encode(dbcExportEncoding, 'ignore'))
-
+                f.write(create_comment_string("SG_", "%d " % frame.id + name, signal.comment, dbcExportEncoding,
+                                              dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
-    # boarUnit comments
-    for bu in db.boardUnits:
-        if bu.comment is not None and bu.comment.__len__() > 0:
-            f.write(
-                ("CM_ BU_ " +
-                 bu.name +
-                 ' "' +
-                 bu.comment.replace(
-                     '"',
-                     '\\"') +
-                    '";\n').encode(dbcExportCommentEncoding,'ignore'))
+    # ecu comments
+    for ecu in db.boardUnits:
+        if ecu.comment is not None and ecu.comment.__len__() > 0:
+            f.write(create_comment_string("BU_", ecu.name, ecu.comment, dbcExportEncoding,
+                                          dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     defaults = {}
@@ -362,9 +346,9 @@ def dump(mydb, f, **options):
 
 
     # boardunit-attributes:
-    for bu in db.boardUnits:
-        for attrib, val in sorted(bu.attributes.items()):
-            f.write(create_attribute_string(attrib, "BU_", bu.name, val, db.buDefines[attrib].type == "STRING").encode(dbcExportEncoding))
+    for ecu in db.boardUnits:
+        for attrib, val in sorted(ecu.attributes.items()):
+            f.write(create_attribute_string(attrib, "BU_", ecu.name, val, db.buDefines[attrib].type == "STRING").encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # global-attributes:
@@ -398,10 +382,6 @@ def dump(mydb, f, **options):
                 f.write(create_attribute_string(attribute, "EV_", "", value,
                                                 db.env_defines[attribute].type == "STRING").encode(dbcExportEncoding))
 
-   # TODO BA_ EV_
-   # BA_DEF_ EV_ "SystemEnvVarLongSymbol" STRING ;
-
-   # BA_ "SystemEnvVarLongSymbol" EV_ E12345678901234567890123456_0000 "E12345678901234567890123456789012";
 
     # signal-values:
     for frame in db.frames:
@@ -477,8 +457,7 @@ def load(f, **options):
         l = line.strip()
         if l.__len__() == 0:
             continue
-#        try:
-        if 1==1:
+        try:
             if followUp == FollowUps.signalComment:
                 try:
                     comment += "\n" + \
@@ -888,8 +867,8 @@ def load(f, **options):
                               "accessType" : accessType, "accessNodes" : accessNodes})
 
 
-        else:
-#        except:
+#        else:
+        except:
             print ("error with line no: %d" % i)
             print (line)
         #        else:
