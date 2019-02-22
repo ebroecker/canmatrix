@@ -11,7 +11,7 @@ def test_decode_with_dbc_big_endian():
     # 001#8d00100100820100
     frameData1 = bytearray([141, 0, 16, 1, 0, 130, 1, 0])
 
-    frame1 = cm.frameById(1)
+    frame1 = cm.frame_by_id(1)
     decoded1 = frame1.decode(frameData1)
     assert decoded1["sig0"].raw_value == 1
     assert decoded1["sig1"].raw_value == 35
@@ -29,7 +29,7 @@ def test_decode_with_dbc_little_endian():
     cm = loadDbc()
     # 002#0C00057003001F83
     frameData = bytearray([12, 0, 5, 112, 3, 0, 31, 131])
-    frame = cm.frameById(2)
+    frame = cm.frame_by_id(2)
     decoded = frame.decode(frameData)
     assert decoded["secSig1"].raw_value == 0
     assert decoded["secSig2"].raw_value == 0
@@ -44,11 +44,33 @@ def test_decode_with_dbc_little_endian():
     assert decoded["secSig11"].raw_value == -144
     assert decoded["secSig12"].raw_value == 12
 
+def test_decode_with_too_little_dlc():
+    cm = loadDbc()
+    # 002#0C00057003001F83
+    frameData = bytearray([12, 0, 5, 112, 3, 0, 31])
+    frame = cm.frame_by_id(2)
+    try:
+        decoded = frame.decode(frameData)
+    except canmatrix.DecodingFrameLength:
+        return True
+    assert False
+
+def test_decode_with_too_big_dlc():
+    cm = loadDbc()
+    frameData1 = bytearray([0x38, 0x63, 0x8A, 0x7E, 0x00, 0x20, 0x00, 0x00])
+    frame = cm.frame_by_id(4)
+    try:
+        decoded1 = frame.decode(frameData1)
+    except canmatrix.DecodingFrameLength:
+        return True
+    assert False
+
+
 def test_decode_with_dbc_float():
     cm = loadDbc()
     # 003#38638A7E58A8C540
     frameData = bytearray([0x38, 0x63, 0x8A, 0x7E, 0x58, 0xA8, 0xC5, 0x40])
-    frame = cm.frameById(3)
+    frame = cm.frame_by_id(3)
     decoded = frame.decode(frameData)
     assert decoded["floatSignal1"].raw_value == 5.424999835668132e-05
     assert decoded["floatSignal2"].raw_value ==  6.176799774169922
@@ -57,7 +79,7 @@ def test_decode_with_dbc_float():
 def test_decode_with_dbc_multiplex():
     cm = loadDbc()
     frameData1 = bytearray([0x38, 0x63, 0x8A, 0x7E, 0x00, 0x20, 0x00])
-    frame = cm.frameById(4)
+    frame = cm.frame_by_id(4)
     decoded1 = frame.decode(frameData1)
     assert decoded1["myMuxer"].raw_value == 0
     assert decoded1["muxSig9"].raw_value ==  0x20

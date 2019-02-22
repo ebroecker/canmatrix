@@ -79,8 +79,8 @@ def load(f, **options):
             else:
                 (boId, temS, SignalName, comment) = line.split(' ', 3)
                 comment = comment.replace('"', '').replace(';', '')
-                db.frameById(int(boId)).signalByName(
-                    SignalName).addComment(comment)
+                db.frame_by_id(int(boId)).signal_by_name(
+                    SignalName).add_comment(comment)
 
         if mode == 'BUDescription':
             if line.startswith(
@@ -89,7 +89,7 @@ def load(f, **options):
             else:
                 (BUName, comment) = line.split(' ', 1)
                 comment = comment.replace('"', '').replace(';', '')
-                db.boardUnitByName(BUName).addComment(comment)
+                db.ecu_by_name(BUName).add_comment(comment)
 
         if mode == 'FrameDescription':
             if line.startswith(
@@ -98,17 +98,17 @@ def load(f, **options):
             else:
                 (boId, temS, comment) = line.split(' ', 2)
                 comment = comment.replace('"', '').replace(';', '')
-                frame = db.frameById(int(boId))
+                frame = db.frame_by_id(int(boId))
                 if frame:
-                    frame.addComment(comment)
+                    frame.add_comment(comment)
 
         elif mode == 'ParamMsgVal':
             if line.startswith("[END_PARAM_MSG_VAL]"):
                 mode = ''
             else:
                 (boId, temS, attrib, value) = line.split(',', 3)
-                db.frameById(
-                    int(boId)).addAttribute(
+                db.frame_by_id(
+                    int(boId)).add_attribute(
                     attrib.replace(
                         '"',
                         ''),
@@ -121,7 +121,7 @@ def load(f, **options):
                 mode = ''
             else:
                 (bu, attrib, value) = line.split(',', 2)
-                db.boardUnitByName(bu).addAttribute(
+                db.ecu_by_name(bu).add_attribute(
                     attrib.replace('"', ''), value[1:-1])
 
         elif mode == 'ParamNetVal':
@@ -129,15 +129,15 @@ def load(f, **options):
                 mode = ''
             else:
                 (attrib, value) = line.split(',', 1)
-                db.addAttribute(attrib.replace('"', ''), value[1:-1])
+                db.add_attribute(attrib.replace('"', ''), value[1:-1])
 
         elif mode == 'ParamSigVal':
             if line.startswith("[END_PARAM_SIG_VAL]"):
                 mode = ''
             else:
                 (boId, temS, SignalName, attrib, value) = line.split(',', 4)
-                db.frameById(
-                    int(boId)).signalByName(SignalName).addAttribute(
+                db.frame_by_id(
+                    int(boId)).signal_by_name(SignalName).add_attribute(
                     attrib.replace(
                         '"', ''), value[
                         1:-1])
@@ -147,32 +147,32 @@ def load(f, **options):
                 mode = ''
             else:
                 (name, define, default) = decodeDefine(line)
-                db.addSignalDefines(name, define)
-                db.addDefineDefault(name, default)
+                db.add_signal_defines(name, define)
+                db.add_define_default(name, default)
 
         elif mode == 'ParamMsg':
             if line.startswith("[END_PARAM_MSG]"):
                 mode = ''
             else:
                 (name, define, default) = decodeDefine(line)
-                db.addFrameDefines(name, define)
-                db.addDefineDefault(name, default)
+                db.add_frame_defines(name, define)
+                db.add_define_default(name, default)
 
         elif mode == 'ParamNode':
             if line.startswith("[END_PARAM_NODE]"):
                 mode = ''
             else:
                 (name, define, default) = decodeDefine(line)
-                db.addBUDefines(name, define)
-                db.addDefineDefault(name, default)
+                db.add_ecu_defines(name, define)
+                db.add_define_default(name, default)
 
         elif mode == 'ParamNet':
             if line.startswith("[END_PARAM_NET]"):
                 mode = ''
             else:
                 (name, define, default) = decodeDefine(line)
-                db.addGlobalDefines(name, define)
-                db.addDefineDefault(name, default)
+                db.add_global_defines(name, define)
+                db.add_define_default(name, default)
 
         else:
             if line.startswith("[START_DESC_SIG]"):
@@ -217,7 +217,7 @@ def load(f, **options):
                     transmitters = temparray[6].split()
                 else:
                     transmitters = list()
-                newBo = db.addFrame(
+                newBo = db.add_frame(
                     Frame(name,
                           id=int(Id),
                           size=int(size),
@@ -231,7 +231,7 @@ def load(f, **options):
                 temstr = line.strip()[6:].strip()
                 boList = temstr.split(',')
                 for bo in boList:
-                    db.addEcu(BoardUnit(bo))
+                    db.add_ecu(ecu(bo))
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
@@ -267,25 +267,25 @@ def load(f, **options):
                 startbit = int(startbit)
                 startbit += (int(startbyte) - 1) * 8
 
-                newSig = newBo.addSignal(Signal(name,
-                                                startBit=int(startbit),
-                                                size=int(size),
-                                                is_little_endian=(
+                newSig = newBo.add_signal(Signal(name,
+                                                 start_bit=int(startbit),
+                                                 size=int(size),
+                                                 is_little_endian=(
                                                     int(byteorder) == 1),
-                                                is_signed=is_signed,
-                                                factor=factor,
-                                                offset=offset,
-                                                min=Min * factor,
-                                                max=Max * factor,
-                                                unit=unit,
-                                                receiver=receiver,
-                                                is_float=is_float,
-                                                multiplex=multiplex))
+                                                 is_signed=is_signed,
+                                                 factor=factor,
+                                                 offset=offset,
+                                                 min=Min * factor,
+                                                 max=Max * factor,
+                                                 unit=unit,
+                                                 receiver=receiver,
+                                                 is_float=is_float,
+                                                 multiplex=multiplex))
 
                 if int(byteorder) == 0:
                     # this is dummy here, because internal lsb is default - for
                     # now
-                    newSig.setStartbit(
+                    newSig.set_startbit(
                         startbit, bitNumbering=1, startLittle=True)
 
             if line.startswith("[VALUE_DESCRIPTION]"):
@@ -296,13 +296,17 @@ def load(f, **options):
                 if temp:
                     name = temp.group(1)
                     value = temp.group(2)
-                    newSig.addValues(value, name)
+                    newSig.add_values(value, name)
 
         for frame in db.frames:
             # receiver is only given in the signals, so do propagate the
             # receiver to the frame:
-            frame.updateReceiver()
-        db.EnumAttribs2Values()
+            frame.update_receiver()
+    db.enum_attribs_to_values()
+    free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
+    if free_signals_dummy_frame is not None and free_signals_dummy_frame.id == 0x40000000:
+        db.signals = free_signals_dummy_frame.signals
+        db.delFrame(free_signals_dummy_frame)
     return db
 
 
@@ -310,7 +314,11 @@ def dump(mydb, f, **options):
     # create copy because export changes database
     db = deepcopy(mydb)
     dbfExportEncoding = options.get("dbfExportEncoding", 'iso-8859-1')
-    db.EnumAttribs2Keys()
+    db.enum_attribs_to_keys()
+    if len(db.signals) > 0:
+        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG",  id = 0x40000000, extended=True)
+        free_signals_dummy_frame.signals = db.signals
+        db.addFrame(free_signals_dummy_frame)
 
     outstr =  """//******************************BUSMASTER Messages and signals Database ******************************//
 
@@ -339,7 +347,7 @@ def dump(mydb, f, **options):
             ",%d,%d,%d,1,%c," % (frame.id, frame.size,
                                  len(frame.signals), extended)
         if frame.transmitters.__len__() == 0:
-            frame.addTransmitter("Vector__XXX")
+            frame.add_transmitter("Vector__XXX")
 # DBF does not support multiple Transmitters
         outstr += frame.transmitters[0] + "\n"
 
@@ -349,9 +357,9 @@ def dump(mydb, f, **options):
             # m_ucDataFormat
             whichbyte = int(
                 math.floor(
-                    signal.getStartbit(
-                        bitNumbering=1,
-                        startLittle=True) /
+                    signal.get_startbit(
+                        bit_numbering=1,
+                        start_little=True) /
                     8) +
                 1)
             sign = 'I'
@@ -370,8 +378,8 @@ def dump(mydb, f, **options):
 
             outstr += "[START_SIGNALS] " + signal.name + ",%d,%d,%d,%c," % (signal.size,
                                                                             whichbyte,
-                                                                            int(signal.getStartbit(bitNumbering=1,
-                                                                                                   startLittle=True)) % 8,
+                                                                            int(signal.get_startbit(bit_numbering=1,
+                                                                                                    start_little=True)) % 8,
                                                                             sign) + '{},{}'.format(float(signal.max) / float(signal.factor),
                                                                                                    float(signal.min) / float(signal.factor))
 
@@ -397,9 +405,9 @@ def dump(mydb, f, **options):
     # Boardunits
     outstr += "[NODE] "
     count = 1
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         outstr += bu.name
-        if count < len(db.boardUnits):
+        if count < len(db.ecus):
             outstr += ","
         count += 1
     outstr += "\n"
@@ -417,7 +425,7 @@ def dump(mydb, f, **options):
 
     # Frame descriptions
     outstr += "[START_DESC_NODE]\n"
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         if bu.comment is not None:
             comment = bu.comment.replace("\n", " ")
             outstr += bu.name + ' "' + comment + '";\n'
@@ -442,7 +450,7 @@ def dump(mydb, f, **options):
 
     # db-parameter
     outstr += "[START_PARAM_NET]\n"
-    for (type, define) in sorted(list(db.globalDefines.items())):
+    for (type, define) in sorted(list(db.global_defines.items())):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -451,7 +459,7 @@ def dump(mydb, f, **options):
 
     # bu-parameter
     outstr += "[START_PARAM_NODE]\n"
-    for (type, define) in sorted(list(db.buDefines.items())):
+    for (type, define) in sorted(list(db.ecu_defines.items())):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -460,7 +468,7 @@ def dump(mydb, f, **options):
 
     # frame-parameter
     outstr += "[START_PARAM_MSG]\n"
-    for (type, define) in sorted(list(db.frameDefines.items())):
+    for (type, define) in sorted(list(db.frame_defines.items())):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -470,7 +478,7 @@ def dump(mydb, f, **options):
 
     # signal-parameter
     outstr += "[START_PARAM_SIG]\n"
-    for (type, define) in list(db.signalDefines.items()):
+    for (type, define) in list(db.signal_defines.items()):
         defaultVal = define.defaultValue
         if defaultVal is None:
             defaultVal = "0"
@@ -480,7 +488,7 @@ def dump(mydb, f, **options):
     outstr += "[START_PARAM_VAL]\n"
     # boardunit-attributes:
     outstr += "[START_PARAM_NODE_VAL]\n"
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         for attrib, val in sorted(list(bu.attributes.items())):
             outstr += bu.name + ',"' + attrib + '","' + val + '"\n'
     outstr += "[END_PARAM_NODE_VAL]\n"

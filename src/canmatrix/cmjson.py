@@ -60,9 +60,9 @@ def dump(db, f, **options):
             signals = {}
             for signal in frame.signals:
                 signals[
-                    signal.getStartbit(
-                        bitNumbering=1,
-                        startLittle=True)] = {
+                    signal.get_startbit(
+                        bit_numbering=1,
+                        start_little=True)] = {
                     "name": signal.name,
                     "bit_length": signal.signalsize,
                     "factor": signal.factor,
@@ -76,13 +76,13 @@ def dump(db, f, **options):
             for signal in frame.signals:
                 if not signal.is_little_endian:
                     if motorolaBitFormat == "msb":
-                        startBit = signal.getStartbit(bitNumbering=1)
+                        startBit = signal.get_startbit(bit_numbering=1)
                     elif motorolaBitFormat == "msbreverse":
-                        startBit = signal.getStartbit()
+                        startBit = signal.get_startbit()
                     else:  # motorolaBitFormat == "lsb"
-                        startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
+                        startBit = signal.get_startbit(bit_numbering=1, start_little=True)
                 else:
-                    startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
+                    startBit = signal.get_startbit(bit_numbering=1, start_little=True)
 
                 signals.append({
                     "name": signal.name,
@@ -108,12 +108,12 @@ def dump(db, f, **options):
     else:  # exportAll
         for frame in db.frames:
             frameattribs = {}
-            for attribute in db.frameDefines:
+            for attribute in db.frame_defines:
                 frameattribs[attribute] = frame.attribute(attribute, db=db)
             signals = []
             for signal in frame.signals:
                 attribs = {}
-                for attribute in db.signalDefines:
+                for attribute in db.signal_defines:
                     attribs[attribute] = signal.attribute(attribute, db=db)
 
                 values = {}
@@ -121,13 +121,13 @@ def dump(db, f, **options):
                     values[key] = signal.values[key]
                 if not signal.is_little_endian:
                     if motorolaBitFormat == "msb":
-                        startBit = signal.getStartbit(bitNumbering=1)
+                        startBit = signal.get_startbit(bit_numbering=1)
                     elif motorolaBitFormat == "msbreverse":
-                        startBit = signal.getStartbit()
+                        startBit = signal.get_startbit()
                     else:  # motorolaBitFormat == "lsb"
-                        startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
+                        startBit = signal.get_startbit(bit_numbering=1, start_little=True)
                 else:  # motorolaBitFormat == "lsb"
-                    startBit = signal.getStartbit(bitNumbering=1, startLittle=True)
+                    startBit = signal.get_startbit(bit_numbering=1, start_little=True)
 
 
                 signalDict = {
@@ -212,7 +212,7 @@ def load(f, **options):
                 else:
                     is_signed = False
                 newsignal = canmatrix.Signal(signal["name"],
-                                   startBit=signal["start_bit"],
+                                   start_bit=signal["start_bit"],
                                    size=signal["bit_length"],
                                    is_little_endian=is_little_endian,
                                    is_signed=is_signed,
@@ -234,11 +234,11 @@ def load(f, **options):
 
                 if signal.get("values", False):
                     for key in signal["values"]:
-                        newsignal.addValues(key, signal["values"][key])
+                        newsignal.add_values(key, signal["values"][key])
                 if newsignal.is_little_endian == False:
-                    newsignal.setStartbit(
-                        newsignal.startBit, bitNumbering=1, startLittle=True)
-                newframe.addSignal(newsignal)
-            db.addFrame(newframe)
+                    newsignal.set_startbit(
+                        newsignal.start_bit, bitNumbering=1, startLittle=True)
+                newframe.add_signal(newsignal)
+            db.add_frame(newframe)
     f.close()
     return db

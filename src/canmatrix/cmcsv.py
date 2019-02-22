@@ -141,7 +141,7 @@ def dump(db, thefile, delimiter=',', **options):
 
     # write frameardunits in first row:
     buList = []
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         headerrow.write(col, bu.name)
         buList.append(bu.name)
         col += 1
@@ -179,7 +179,7 @@ def dump(db, thefile, delimiter=',', **options):
         # sort signals:
         sigHash = {}
         for sig in frame.signals:
-            sigHash["%02d" % int(sig.getStartbit()) + sig.name] = sig
+            sigHash["%02d" % int(sig.get_startbit()) + sig.name] = sig
 
         additionalFrameInfo = []
         for frameInfo in additionalFrameCollums:

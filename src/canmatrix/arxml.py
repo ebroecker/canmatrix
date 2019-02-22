@@ -35,8 +35,7 @@ import logging
 from builtins import *
 from lxml import etree
 
-from .canmatrix import *
-
+import canmatrix
 import decimal
 
 logger = logging.getLogger(__name__)
@@ -429,7 +428,7 @@ def dump(dbs, f, **options):
                 signalRef.set('DEST', 'I-SIGNAL')
 
                 createSubElement(signalToPduMapping, 'START-POSITION',
-                                 str(signal.getStartbit(bitNumbering=1)))
+                                 str(signal.get_startbit(bit_numbering=1)))
                 # missing: TRANSFER-PROPERTY: PENDING/...
 
             for group in frame.signalGroups:
@@ -663,7 +662,7 @@ def dump(dbs, f, **options):
     elements = createSubElement(arPackage, 'ELEMENTS')
     for name in dbs:
         db = dbs[name]
-        for ecu in db.boardUnits:
+        for ecu in db.ecus:
             ecuInstance = createSubElement(elements, 'ECU-INSTANCE')
             createSubElement(ecuInstance, 'SHORT-NAME', ecu.name)
             if ecu.comment:
@@ -905,7 +904,10 @@ def arGetPath(ardict, path):
     for p in path.split('/'):
         if p.strip():
             if ptr is not None:
-                ptr = ptr.getChild(p)
+                try:
+                    ptr = ptr.getChild(p)
+                except:
+                    return None
             else:
                 return None
     if ptr is not None:
@@ -958,7 +960,7 @@ def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
     members = []
     for signal in syssignalarray:
         members.append(arGetName(signal, ns))
-    Bo.addSignalGroup(arGetName(syssignal, ns), 1, members)
+    Bo.add_signal_group(arGetName(syssignal, ns), 1, members)
 
 
 def decodeCompuMethod(compuMethod, arDict, ns, float_factory):
@@ -1175,8 +1177,8 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
             logger.debug('no length for signal given')
 
         if startBit is not None:
-            newSig = Signal(name.text,
-                            startBit=int(startBit.text),
+            newSig = canmatrix.Signal(name.text,
+                            start_bit=int(startBit.text),
                             size=int(length.text),
                             is_little_endian=is_little_endian,
                             is_signed=is_signed,
@@ -1195,7 +1197,7 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
 
             if newSig.is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
-                newSig.setStartbit(int(startBit.text), bitNumbering=1)
+                newSig.set_startbit(int(startBit.text), bitNumbering=1)
 
             # save signal, to determin receiver-ECUs for this signal later
             signalRxs[syssignal] = newSig
@@ -1203,22 +1205,22 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
             if baseType is not None:
                 temp = arGetChild(baseType, "SHORT-NAME", xmlRoot, ns)
                 if temp is not None and "boolean" == temp.text:
-                    newSig.addValues(1, "TRUE")
-                    newSig.addValues(0, "FALSE")
+                    newSig.add_values(1, "TRUE")
+                    newSig.add_values(0, "FALSE")
 
 
             if initvalue is not None and initvalue.text is not None:
                 initvalue.text = canmatrix.utils.guess_value(initvalue.text)
                 newSig._initValue = int(initvalue.text)
-                newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
+                newSig.add_attribute("GenSigStartValue", str(newSig._initValue))
             else:
                 newSig._initValue = 0
 
             for key, value in list(values.items()):
-                newSig.addValues(key, value)
+                newSig.add_values(key, value)
             if sig_long_name is not None:
-                newSig.addAttribute("LongName", sig_long_name)
-            Bo.addSignal(newSig)
+                newSig.add_attribute("LongName", sig_long_name)
+            Bo.add_signal(newSig)
 
 
 def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
@@ -1245,10 +1247,10 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
 
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
-        newFrame = Frame(arGetName(frameR, ns), id=idNum, size=int(dlc.text))
+        newFrame = canmatrix.Frame(arGetName(frameR, ns), id=idNum, size=int(dlc.text))
         comment = getDesc(frameR, xmlRoot, ns)
         if comment is not None:
-            newFrame.addComment(comment)
+            newFrame.add_comment(comment)
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF" % (sn))
@@ -1258,7 +1260,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         if pdu is None:
             pdu = arGetChild(ipduTriggering, "I-SIGNAL-I-PDU", xmlRoot, ns) ## AR4.2
         dlc = arGetChild(pdu, "LENGTH", xmlRoot, ns)
-        newFrame = Frame(sn.text,id=idNum,dlc=int(dlc.text) / 8)
+        newFrame = canmatrix.Frame(sn.text,id=idNum,dlc=int(dlc.text) / 8)
 
     if pdu is None:
         logger.error("ERROR: pdu")
@@ -1273,11 +1275,11 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
         is_signed = False  # unsigned
-        multiplexor = Signal("Multiplexor",startBit=int(selectorStart.text),size=int(selectorLen.text),
+        multiplexor = canmatrix.Signal("Multiplexor",start_bit=int(selectorStart.text),size=int(selectorLen.text),
                              is_little_endian=is_little_endian,multiplex="Multiplexor")
 
         multiplexor._initValue = 0
-        newFrame.addSignal(multiplexor)
+        newFrame.add_signal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", xmlRoot, ns)
         ipdu = arGetChild(staticPart, "I-PDU", xmlRoot, ns)
         if ipdu is not None:
@@ -1304,7 +1306,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
                 getSignals(pdusigmapping,newFrame,xmlRoot,ns,selectorId.text, float_factory)
 
     if newFrame.comment is None:
-        newFrame.addComment(getDesc(pdu, xmlRoot, ns))
+        newFrame.add_comment(getDesc(pdu, xmlRoot, ns))
 
     if extEle is not None:
         if extEle.text == 'EXTENDED':
@@ -1325,39 +1327,39 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
     timePeriod = arGetChild(cyclicTiming, "TIME-PERIOD", xmlRoot, ns)
 
     if cyclicTiming is not None and eventTiming is not None:
-        newFrame.addAttribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
+        newFrame.add_attribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
         if minimumDelay is not None:
-            newFrame.addAttribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
+            newFrame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
         if repeats is not None:
-            newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+            newFrame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
     elif cyclicTiming is not None:
-        newFrame.addAttribute("GenMsgSendType", "cyclicX")  # CycleX
+        newFrame.add_attribute("GenMsgSendType", "cyclicX")  # CycleX
         if minimumDelay is not None:
-            newFrame.addAttribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
+            newFrame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
         if repeats is not None:
-            newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+            newFrame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
     else:
-        newFrame.addAttribute("GenMsgSendType", "spontanX")  # Spontan
+        newFrame.add_attribute("GenMsgSendType", "spontanX")  # Spontan
         if minimumDelay is not None:
-            newFrame.addAttribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
+            newFrame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
         if repeats is not None:
-            newFrame.addAttribute("GenMsgNrOfRepetitions", repeats.text)
+            newFrame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
 
     if startingTime is not None:
         value = arGetChild(startingTime, "VALUE", xmlRoot, ns)
-        newFrame.addAttribute("GenMsgStartDelayTime",str(int(float_factory(value.text) * 1000)))
+        newFrame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
     elif cyclicTiming is not None:
         value = arGetChild(timeOffset, "VALUE", xmlRoot, ns)
         if value is not None:
-            newFrame.addAttribute("GenMsgStartDelayTime",str(int(float_factory(value.text) * 1000)))
+            newFrame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
 
     value = arGetChild(repeatingTime, "VALUE", xmlRoot, ns)
     if value is not None:
-        newFrame.addAttribute("GenMsgCycleTime",str(int(float_factory(value.text) * 1000)))
+        newFrame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
     elif cyclicTiming is not None:
         value = arGetChild(timePeriod, "VALUE", xmlRoot, ns)
         if value is not None:
-            newFrame.addAttribute("GenMsgCycleTime",str(int(float_factory(value.text) * 1000)))
+            newFrame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
 
 
 #    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
@@ -1468,9 +1470,9 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
         for out in outFrame:
             if out in multiplexTranslation:
                 out = multiplexTranslation[out]
-            frame = db.frameByName(out)
+            frame = db.frame_by_name(out)
             if frame is not None:
-                frame.addTransmitter(arGetName(ecu, ns))
+                frame.add_transmitter(arGetName(ecu, ns))
             else:
                 pass
 
@@ -1485,15 +1487,60 @@ def processEcu(ecu, db, arDict, multiplexTranslation, ns):
 #                                               signal.receiver.append(recname)
 #                       else:
 #                               print "in not found: " + inf
-    bu = BoardUnit(arGetName(ecu, ns))
+    bu = ecu(arGetName(ecu, ns))
     if nmAddress is not None:
-        bu.addAttribute("NWM-Stationsadresse", nmAddress.text)
-        bu.addAttribute("NWM-Knoten", "ja")
+        bu.add_attribute("NWM-Stationsadresse", nmAddress.text)
+        bu.add_attribute("NWM-Knoten", "ja")
     else:
-        bu.addAttribute("NWM-Stationsadresse", "0")
-        bu.addAttribute("NWM-Knoten", "nein")
+        bu.add_attribute("NWM-Stationsadresse", "0")
+        bu.add_attribute("NWM-Knoten", "nein")
     return bu
 
+def ecuc_extract_signal(signal_node, ns):
+    attributes = signal_node.findall(".//" + ns + "DEFINITION-REF")
+    start_bit = None
+    size = 0
+    endianness = None
+    init_value = 0
+    signal_type = None
+    timeout = 0
+    for attribute in attributes:
+        if attribute.text.endswith("ComBitPosition"):
+            start_bit = int(attribute.getparent().find(".//" +ns + "VALUE").text)
+        if attribute.text.endswith("ComBitSize"):
+            size = int(attribute.getparent().find(".//" +ns + "VALUE").text)
+        if attribute.text.endswith("ComSignalEndianness"):
+            endianness = (attribute.getparent().find(".//" +ns + "VALUE").text)
+            if "LITTLE_ENDIAN" in endianness:
+                is_little = True
+            else:
+                is_little = False
+        if attribute.text.endswith("ComSignalInitValue"):
+            init_value = int(attribute.getparent().find(".//" +ns + "VALUE").text)
+        if attribute.text.endswith("ComSignalType"):
+            signal_type = (attribute.getparent().find(".//" +ns + "VALUE").text)
+        if attribute.text.endswith("ComTimeout"):
+            timeout = int(attribute.getparent().find(".//" +ns + "VALUE").text)
+    return canmatrix.Signal(arGetName(signal_node,ns), start_bit = start_bit, size=size, is_little_endian = is_little)
+
+def extract_cm_from_ecuc(com_module, search_point, ns):
+    db = canmatrix.CanMatrix()
+    definitions = com_module.findall('.//' + ns + "DEFINITION-REF")
+    for definition in definitions:
+        if definition.text.endswith("ComIPdu"):
+            container = definition.getparent()
+            frame = canmatrix.Frame(arGetName(container, ns))
+            db.add_frame(frame)
+            allReferences = arGetChildren(container,"ECUC-REFERENCE-VALUE",search_point,ns)
+            for reference in allReferences:
+                value = arGetChild(reference,"VALUE",search_point,ns)
+                if value is not None:
+                    signal_definition = value.find('./' + ns + "DEFINITION-REF")
+                    if signal_definition.text.endswith("ComSignal"):
+                        signal = ecuc_extract_signal(value,ns)
+                        frame.add_signal(signal)
+    db.recalc_dlc(strategy = "max")
+    return {"": db}
 
 def load(file, **options):
     global ArCache
@@ -1517,6 +1564,7 @@ def load(file, **options):
     ns = "{" + tree.xpath('namespace-uri(.)') + "}"
     nsp = tree.xpath('namespace-uri(.)')
 
+
     topLevelPackages = root.find('./' + ns + 'TOP-LEVEL-PACKAGES')
 
     if None == topLevelPackages:
@@ -1533,6 +1581,12 @@ def load(file, **options):
         searchPoint = arDict
 
     logger.debug(" Done\n")
+
+
+    com_module = arGetPath(searchPoint, "ActiveEcuC/Com")
+    if com_module is not None:
+        logger.info("seems to be a ECUC arxml. Very limited support for extracting canmatrix." )
+        return extract_cm_from_ecuc(com_module, searchPoint, ns)
 
     frames = root.findall('.//' + ns + 'CAN-FRAME')  ## AR4.2
     if frames is None:
@@ -1559,20 +1613,20 @@ def load(file, **options):
     else:
         ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
     for cc in ccs:
-        db = CanMatrix()
+        db = canmatrix.CanMatrix()
 # Defines not jet imported...
-        db.addBUDefines("NWM-Stationsadresse", 'HEX 0 63')
-        db.addBUDefines("NWM-Knoten", 'ENUM  "nein","ja"')
-        db.addSignalDefines("LongName", 'STRING')
-        db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
-        db.addFrameDefines("GenMsgDelayTime", 'INT 0 65535')
-        db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
-        db.addFrameDefines("GenMsgStartValue", 'STRING')
-        db.addFrameDefines("GenMsgStartDelayTime", 'INT 0 65535')
-        db.addFrameDefines(
+        db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
+        db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
+        db.add_signal_defines("LongName", 'STRING')
+        db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+        db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
+        db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
+        db.add_frame_defines("GenMsgStartValue", 'STRING')
+        db.add_frame_defines("GenMsgStartDelayTime", 'INT 0 65535')
+        db.add_frame_defines(
             "GenMsgSendType",
             'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
-        db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
+        db.add_signal_defines("GenSigStartValue", 'HEX 0 4294967295')
 
         if ignoreClusterInfo == True:
             canframetrig = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
@@ -1611,7 +1665,7 @@ def load(file, **options):
         for frameTrig in canframetrig:
             frameObject = getFrame(frameTrig,searchPoint,multiplexTranslation,ns, float_factory)
             if frameObject is not None:
-                db.addFrame(frameObject)
+                db.add_frame(frameObject)
                 
         if ignoreClusterInfo == True:
             pass
@@ -1651,15 +1705,15 @@ def load(file, **options):
             desc = arGetChild(node, "DESC", searchPoint, ns)
             l2 = arGetChild(desc, "L-2", searchPoint, ns)
             if l2 is not None:
-                bu.addComment(l2.text)
+                bu.add_comment(l2.text)
 
-            db.addEcu(bu)
+            db.add_ecu(bu)
 
         for frame in db.frames:
             sig_value_hash = dict()
             for sig in frame.signals:
                 sig_value_hash[sig.name] = sig._initValue
             frameData = frame.encode(sig_value_hash)
-            frame.addAttribute("GenMsgStartValue", "".join(["%02x" % x for x in frameData]))
+            frame.add_attribute("GenMsgStartValue", "".join(["%02x" % x for x in frameData]))
         result[busname] = db
     return result
