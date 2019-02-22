@@ -355,7 +355,7 @@ def dump(mydb, f, **options):
 
     # global-attributes:
     for attrib, val in sorted(db.attributes.items()):
-        f.write(create_attribute_string(attrib, "", "", val, db.global_defines[attrib].type == "STRING").encode(
+        f.write(create_attribute_string(attrib, "", "", val, db.globaldefines[attrib].type == "STRING").encode(
             dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
