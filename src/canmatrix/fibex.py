@@ -126,7 +126,7 @@ def dump(db, f, **options):
     # ECUS
     #
     ecus = createSubElementFx(elements, "ECUS")
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         ecu = createSubElementFx(ecus, "ECU")
         ecu.set("ID", bu.name)
         createShortNameDesc(ecu, bu.name, bu.comment)
@@ -152,7 +152,7 @@ def dump(db, f, **options):
             signalInstance.set("ID", "PDUINST_" + signal.name)
             # startBit: TODO - find out correct BYTEORDER ...
             createSubElementFx(signalInstance, "BIT-POSITION",
-                               str(signal.startBit))
+                               str(signal.start_bit))
             if signal.is_little_endian:
                 createSubElementFx(
                     signalInstance,
@@ -185,7 +185,7 @@ def dump(db, f, **options):
     # FUNCTIONS
     #
     functions = createSubElementFx(elements, "FUNCTIONS")
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         function = createSubElementFx(functions, "FUNCTION")
         function.set("ID", "FCT_" + bu.name)
         createShortNameDesc(function, "FCT_" + bu.name, bu.comment)

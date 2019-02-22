@@ -33,8 +33,8 @@ def join_frame_by_signal_startbit(files):
 
         for idx, idy in same_pgn:
             # print("{0:#x} {1:#x}".format(idx, idy))
-            targetFr = targetDb.frameById(idx)
-            sourceFr = sourceDb.frameById(idy)
+            targetFr = targetDb.frame_by_id(idx)
+            sourceFr = sourceDb.frame_by_id(idy)
 
             to_add = []
             for sig_t in targetFr.signals:
@@ -44,7 +44,7 @@ def join_frame_by_signal_startbit(files):
                         # print("\t{0} {1}".format(sig_t.name, sig_s.name))
                         to_add.append(sig_s)
             for s in to_add:
-                targetFr.addSignal(s)
+                targetFr.add_signal(s)
 
     return targetDb
 
@@ -65,8 +65,8 @@ def renameFrameWithSAEacronyme(sourceDb, targetDb):
     same_pgn = ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y)
 
     for idx, idy in same_pgn:
-        targetFr = targetDb.frameById(idx)
-        sourceFr = sourceDb.frameById(idy)
+        targetFr = targetDb.frame_by_id(idx)
+        sourceFr = sourceDb.frame_by_id(idy)
 
         new_name = sourceFr.name + "__" + targetFr.name
         targetFr.name = new_name
@@ -85,8 +85,8 @@ def join_frame_for_manufacturer(db, files):
 
         for idx, idy in same_pgn:
             # print("{0:#x} {1:#x}".format(idx, idy))
-            targetFr = db.frameById(idx)
-            sourceFr = sourceDb.frameById(idy)
+            targetFr = db.frame_by_id(idx)
+            sourceFr = sourceDb.frame_by_id(idy)
 
             _, pgn, sa = CanId(targetFr.id).tuples()
             if(sa < 128):
@@ -98,4 +98,4 @@ def join_frame_for_manufacturer(db, files):
                     sig_s.name = new_name
                     to_add.append(sig_s)
                 for s in to_add:
-                    targetFr.addSignal(s)
+                    targetFr.add_signal(s)

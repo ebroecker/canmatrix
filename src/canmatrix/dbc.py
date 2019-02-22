@@ -32,8 +32,9 @@ import decimal
 
 
 from builtins import *
-from .canmatrix import *
+import canmatrix
 import re
+import math
 
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
@@ -88,27 +89,27 @@ def dump(mydb, f, **options):
 
     if db.contains_fd or db.contains_j1939:
         if db.contains_fd:
-            db.addGlobalDefines("BusType", "STRING")
-            db.addAttribute("BusType", "CAN FD")
+            db.add_global_defines("BusType", "STRING")
+            db.add_attribute("BusType", "CAN FD")
         elif db.contains_j1939:
-            db.addGlobalDefines("ProtocolType", "STRING")
-            db.addAttribute("ProtocolType", "J1939")
-        db.addFrameDefines("VFrameFormat",'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
+            db.add_global_defines("ProtocolType", "STRING")
+            db.add_attribute("ProtocolType", "J1939")
+        db.add_frame_defines("VFrameFormat", 'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
         for frame in db.frames:
             if frame.is_fd:
                 if frame.extended:
-                    frame.addAttribute("VFrameFormat", "ExtendedCAN_FD")
+                    frame.add_attribute("VFrameFormat", "ExtendedCAN_FD")
                 else:
-                    frame.addAttribute("VFrameFormat", "StandardCAN_FD")
+                    frame.add_attribute("VFrameFormat", "StandardCAN_FD")
             elif frame.is_j1939:
-                frame.addAttribute("VFrameFormat","J1939PG")
+                frame.add_attribute("VFrameFormat", "J1939PG")
             else:
                 if frame.extended:
-                    frame.addAttribute("VFrameFormat", "ExtendedCAN")
+                    frame.add_attribute("VFrameFormat", "ExtendedCAN")
                 else:
-                    frame.addAttribute("VFrameFormat", "StandardCAN")
+                    frame.add_attribute("VFrameFormat", "StandardCAN")
 
-    db.EnumAttribs2Keys()
+    db.enum_attribs_to_keys()
 
     if len(db.signals) > 0:
         free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG", id = 0x40000000, extended=True)
@@ -127,20 +128,20 @@ def dump(mydb, f, **options):
     f.write("BU_: ".encode(dbcExportEncoding))
     id = 1
     nodeList = {}
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         f.write((bu.name + " ").encode(dbcExportEncoding))
     f.write("\n\n".encode(dbcExportEncoding))
 
     if writeValTable:
         # ValueTables
-        for table in sorted(db.valueTables):
+        for table in sorted(db.value_tables):
             f.write(("VAL_TABLE_ " + table).encode(dbcExportEncoding))
-            for row in db.valueTables[table]:
+            for row in db.value_tables[table]:
                 f.write(
                     (' ' +
                      str(row) +
                      ' "' +
-                     db.valueTables[table][row] +
+                     db.value_tables[table][row] +
                      '"').encode(dbcExportEncoding))
             f.write(";\n".encode(dbcExportEncoding))
         f.write("\n".encode(dbcExportEncoding))
@@ -151,9 +152,9 @@ def dump(mydb, f, **options):
     for frame in db.frames:
         for s in frame.signals:
             if len(s.name) > 32:
-                s.addAttribute("SystemSignalLongSymbol",  s.name)
+                s.add_attribute("SystemSignalLongSymbol", s.name)
                 s.name = s.name[0:32]
-                db.addSignalDefines("SystemSignalLongSymbol", "STRING")
+                db.add_signal_defines("SystemSignalLongSymbol", "STRING")
 
         normalized_names = collections.OrderedDict((
             (s, normalizeName(s.name, whitespaceReplacement))
@@ -183,7 +184,7 @@ def dump(mydb, f, **options):
     for frame in db.frames:
         multiplex_written = False
         if frame.transmitters.__len__() == 0:
-            frame.addTransmitter("Vector__XXX")
+            frame.add_transmitter("Vector__XXX")
 
         if frame.extended == 1:
             frame.id += 0x80000000
@@ -217,7 +218,7 @@ def dump(mydb, f, **options):
 
 
 
-            startbit = signal.getStartbit(bitNumbering=1)
+            startbit = signal.get_startbit(bit_numbering=1)
 
             if signal.is_signed:
                 sign = '-'
@@ -243,7 +244,7 @@ def dump(mydb, f, **options):
             f.write(signal.unit.encode(dbcExportEncoding))
             f.write('" '.encode(dbcExportEncoding))
             if signal.receiver.__len__() == 0:
-                signal.addReceiver('Vector__XXX')
+                signal.add_receiver('Vector__XXX')
             f.write((','.join(signal.receiver) + "\n").encode(dbcExportEncoding))
         f.write("\n".encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
@@ -290,7 +291,7 @@ def dump(mydb, f, **options):
     f.write("\n".encode(dbcExportEncoding))
 
     # boarUnit comments
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         if bu.comment is not None and bu.comment.__len__() > 0:
             f.write(
                 ("CM_ BU_ " +
@@ -303,8 +304,7 @@ def dump(mydb, f, **options):
     f.write("\n".encode(dbcExportEncoding))
 
     defaults = {}
-
-    for (dataType, define) in sorted(list(db.frameDefines.items())):
+    for (dataType, define) in sorted(list(db.frame_defines.items())):
         check_define(define)
         f.write(
             ('BA_DEF_ BO_ "' +  dataType + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
@@ -314,7 +314,7 @@ def dump(mydb, f, **options):
             else:
                 defaults[dataType] = define.defaultValue
 
-    for (dataType, define) in sorted(list(db.signalDefines.items())):
+    for (dataType, define) in sorted(list(db.signal_defines.items())):
         check_define(define)
         f.write(
             ('BA_DEF_ SG_ "' + dataType + '" ').encode(dbcExportEncoding) +
@@ -324,7 +324,7 @@ def dump(mydb, f, **options):
                 defaults[dataType] = '"' + define.defaultValue + '"'
             else:
                 defaults[dataType] = define.defaultValue
-    for (dataType, define) in sorted(list(db.buDefines.items())):
+    for (dataType, define) in sorted(list(db.ecu_defines.items())):
         check_define(define)
         f.write(
             ('BA_DEF_ BU_ "' + dataType + '" ').encode(dbcExportEncoding) +
@@ -334,7 +334,7 @@ def dump(mydb, f, **options):
                 defaults[dataType] = '"' + define.defaultValue + '"'
             else:
                 defaults[dataType] = define.defaultValue
-    for (dataType, define) in sorted(list(db.globalDefines.items())):
+    for (dataType, define) in sorted(list(db.global_defines.items())):
         check_define(define)
         f.write(('BA_DEF_ "' + dataType + '" ').encode(dbcExportEncoding) + define.definition.encode(dbcExportEncoding, 'replace') + ';\n'.encode(dbcExportEncoding))
         if dataType not in defaults and define.defaultValue is not None:
@@ -348,9 +348,9 @@ def dump(mydb, f, **options):
             defaults[define].encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
 
     # boardunit-attributes:
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         for attrib, val in sorted(bu.attributes.items()):
-            if db.buDefines[attrib].type == "STRING":
+            if db.ecu_defines[attrib].type == "STRING":
                 val = '"' + val + '"'
             elif not val:
                 val = '""'
@@ -359,7 +359,7 @@ def dump(mydb, f, **options):
 
     # global-attributes:
     for attrib, val in sorted(db.attributes.items()):
-        if db.globalDefines[attrib].type == "STRING":
+        if db.global_defines[attrib].type == "STRING":
             val = '"' + val + '"'
         elif not val:
             val = '""'
@@ -370,7 +370,7 @@ def dump(mydb, f, **options):
     # messages-attributes:
     for frame in db.frames:
         for attrib, val in sorted(frame.attributes.items()):
-            if db.frameDefines[attrib].type == "STRING":
+            if db.frame_defines[attrib].type == "STRING":
                val = '"' + val + '"'
             elif not val:
                 val = '""'
@@ -382,7 +382,7 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             for attrib, val in sorted(signal.attributes.items()):
                 name = output_names[frame][signal]
-                if db.signalDefines[attrib].type == "STRING":
+                if db.signal_defines[attrib].type == "STRING":
                     val = '"' + val + '"'
                 elif not val:
                     val = '""'
@@ -439,7 +439,7 @@ def dump(mydb, f, **options):
                 if signal.muxerForSignal is not None:
                     f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
 
-    for envVarName in db.envVars:
+    for envVarName in db.env_vars:
         envVar = db.envVars[envVarName]
         f.write("EV_ {0} : {1} [{2}|{3}] \"{4}\" {5} {6} {7} {8};\n".format(envVarName, envVar["varType"], envVar["min"],
                                                                             envVar["max"], envVar["unit"],envVar["initialValue"],
@@ -461,7 +461,7 @@ def load(f, **options):
     signal = None
     frame = None
     boardUnit = None
-    db = CanMatrix()
+    db = canmatrix.CanMatrix()
     for line in f:
         i = i + 1
         l = line.strip()
@@ -477,7 +477,7 @@ def load(f, **options):
                 if l.endswith(b'";'):
                     followUp = FollowUps.nothing
                     if signal is not None:
-                        signal.addComment(comment[0:-2])
+                        signal.add_comment(comment[0:-2])
                 continue
             elif followUp == FollowUps.frameComment:
                 try:
@@ -488,7 +488,7 @@ def load(f, **options):
                 if l.endswith(b'";'):
                     followUp = FollowUps.nothing
                     if frame is not None:
-                        frame.addComment(comment[0:-2])
+                        frame.add_comment(comment[0:-2])
                 continue
             elif followUp == FollowUps.boardUnitComment:
                 try:
@@ -499,14 +499,14 @@ def load(f, **options):
                 if l.endswith(b'";'):
                     followUp = FollowUps.nothing
                     if boardUnit is not None:
-                        boardUnit.addComment(comment[0:-2])
+                        boardUnit.add_comment(comment[0:-2])
                 continue
             decoded = l.decode(dbcImportEncoding).strip()
             if decoded.startswith("BO_ "):
                 regexp = re.compile(r"^BO_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-                frame = Frame(temp.group(2), id=int(temp.group(1)), size=int(temp.group(3)), transmitters=temp.group(4).split())
+                frame = canmatrix.Frame(temp.group(2), id=int(temp.group(1)), size=int(temp.group(3)), transmitters=temp.group(4).split())
                 db.frames.append(frame)
             elif decoded.startswith("SG_ "):
                 pattern = r"^SG_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
@@ -521,9 +521,9 @@ def load(f, **options):
 #                    if float_factory is not None:
 #                        extras['float_factory'] = float_factory
 
-                    tempSig = Signal(
+                    tempSig = canmatrix.Signal(
                         temp.group(1),
-                        startBit=int(temp.group(2)),
+                        start_bit=int(temp.group(2)),
                         size=int(temp.group(3)),
                         is_little_endian=(int(temp.group(4)) == 1),
                         is_signed=(temp.group(5) == '-'),
@@ -537,8 +537,8 @@ def load(f, **options):
                     )
                     if not tempSig.is_little_endian:
                         # startbit of motorola coded signals are MSB in dbc
-                        tempSig.setStartbit(int(temp.group(2)), bitNumbering=1)
-                    frame.addSignal(tempSig)
+                        tempSig.set_startbit(int(temp.group(2)), bitNumbering=1)
+                    frame.add_signal(tempSig)
     #                db.frames.addSignalToLastFrame(tempSig)
                 else:
                     pattern = r"^SG_ +(\w+) +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
@@ -567,9 +567,9 @@ def load(f, **options):
 #                    if float_factory is not None:
 #                        extras['float_factory'] = float_factory
 
-                    tempSig = Signal(
+                    tempSig = canmatrix.Signal(
                         temp.group(1),
-                        startBit=int(temp.group(3)),
+                        start_bit=int(temp.group(3)),
                         size=int(temp.group(4)),
                         is_little_endian=(int(temp.group(5)) == 1),
                         is_signed=(temp.group(6) == '-'),
@@ -589,8 +589,8 @@ def load(f, **options):
 
                     if not tempSig.is_little_endian:
                         # startbit of motorola coded signals are MSB in dbc
-                        tempSig.setStartbit(int(temp.group(3)), bitNumbering=1)
-                    frame.addSignal(tempSig)
+                        tempSig.set_startbit(int(temp.group(3)), bitNumbering=1)
+                    frame.add_signal(tempSig)
 
                     if is_complex_multiplexed:
                         frame.is_complex_multiplexed = True
@@ -599,9 +599,9 @@ def load(f, **options):
             elif decoded.startswith("BO_TX_BU_ "):
                 regexp = re.compile(r"^BO_TX_BU_ ([0-9]+) *: *(.+);")
                 temp = regexp.match(decoded)
-                botschaft = db.frameById(temp.group(1))
+                botschaft = db.frame_by_id(temp.group(1))
                 for bu in temp.group(2).split(','):
-                    botschaft.addTransmitter(bu)
+                    botschaft.add_transmitter(bu)
             elif decoded.startswith("CM_ SG_ "):
                 pattern = r"^CM_ +SG_ +(\w+) +(\w+) +\"(.*)\";"
                 regexp = re.compile(pattern)
@@ -609,11 +609,11 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    botschaft = db.frameById(temp.group(1))
-                    signal = botschaft.signalByName(temp.group(2))
+                    botschaft = db.frame_by_id(temp.group(1))
+                    signal = botschaft.signal_by_name(temp.group(2))
                     if signal:
                         try:
-                            signal.addComment(temp_raw.group(3).decode(
+                            signal.add_comment(temp_raw.group(3).decode(
                                 dbcCommentEncoding).replace('\\"', '"'))
                         except:
                             logger.error(
@@ -626,8 +626,8 @@ def load(f, **options):
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     if temp:
-                        botschaft = db.frameById(temp.group(1))
-                        signal = botschaft.signalByName(temp.group(2))
+                        botschaft = db.frame_by_id(temp.group(1))
+                        signal = botschaft.signal_by_name(temp.group(2))
                         try:
                             comment = temp_raw.group(3).decode(
                                 dbcCommentEncoding).replace('\\"', '"')
@@ -644,10 +644,10 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    frame = db.frameById(temp.group(1))
+                    frame = db.frame_by_id(temp.group(1))
                     if frame:
                         try:
-                            frame.addComment(temp_raw.group(2).decode(
+                            frame.add_comment(temp_raw.group(2).decode(
                                 dbcCommentEncoding).replace('\\"', '"'))
                         except:
                             logger.error(
@@ -660,7 +660,7 @@ def load(f, **options):
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     if temp:
-                        frame = db.frameById(temp.group(1))
+                        frame = db.frame_by_id(temp.group(1))
                         try:
                             comment = temp_raw.group(2).decode(
                                 dbcCommentEncoding).replace('\\"', '"')
@@ -676,10 +676,10 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    boardUnit = db.boardUnitByName(temp.group(1))
+                    boardUnit = db.ecu_by_name(temp.group(1))
                     if boardUnit:
                         try:
-                            boardUnit.addComment(temp_raw.group(2).decode(
+                            boardUnit.add_comment(temp_raw.group(2).decode(
                                 dbcCommentEncoding).replace('\\"', '"'))
                         except:
                             logger.error(
@@ -692,7 +692,7 @@ def load(f, **options):
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     if temp:
-                        boardUnit = db.boardUnitByName(temp.group(1))
+                        boardUnit = db.ecu_by_name(temp.group(1))
                         if boardUnit:
                             try:
                                 comment = temp_raw.group(2).decode(
@@ -711,7 +711,7 @@ def load(f, **options):
                     myTempListe = temp.group(1).split(' ')
                     for ele in myTempListe:
                         if len(ele.strip()) > 1:
-                            db.boardUnits.append(BoardUnit(ele))
+                            db.ecus.append(canmatrix.ecu(ele))
 
             elif decoded.startswith("VAL_ "):
                 regexp = re.compile(r"^VAL_ +(\w+) +(\w+) +(.*);")
@@ -722,12 +722,12 @@ def load(f, **options):
                     tempList = temp.group(3).split('"')
                     if botschaftId.isnumeric(): # value for Frame
                         try:
-                            bo = db.frameById(botschaftId)
-                            sg = bo.signalByName(signal)
+                            bo = db.frame_by_id(botschaftId)
+                            sg = bo.signal_by_name(signal)
                             for i in range(math.floor(len(tempList) / 2)):
                                 val = tempList[i * 2 + 1]
                                 if sg:
-                                    sg.addValues(tempList[i * 2], val)
+                                    sg.add_values(tempList[i * 2], val)
                         except:
                             logger.error("Error with Line: " + str(tempList))
                     else:
@@ -746,7 +746,7 @@ def load(f, **options):
                             valHash[tempList[i * 2].strip()] = val.strip()
                     except:
                         logger.error("Error with Line: " + str(tempList))
-                    db.addValueTable(tableName, valHash)
+                    db.add_value_table(tableName, valHash)
                 else:
                     logger.debug(l)
 
@@ -757,8 +757,8 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    db.addSignalDefines(temp.group(1),
-                                        temp_raw.group(2).decode(dbcImportEncoding))
+                    db.add_signal_defines(temp.group(1),
+                                          temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("BA_DEF_ BO_ "):
                 pattern = r"^BA_DEF_ +BO_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
                 regexp = re.compile(pattern)
@@ -766,8 +766,8 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    db.addFrameDefines(temp.group(1),
-                                       temp_raw.group(2).decode(dbcImportEncoding))
+                    db.add_frame_defines(temp.group(1),
+                                         temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("BA_DEF_ BU_ "):
                 pattern = r"^BA_DEF_ +BU_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
                 regexp = re.compile(pattern)
@@ -775,8 +775,8 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    db.addBUDefines(temp.group(1),
-                                    temp_raw.group(2).decode(dbcImportEncoding))
+                    db.add_ecu_defines(temp.group(1),
+                                       temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("BA_DEF_ "):
                 pattern = r"^BA_DEF_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
                 regexp = re.compile(pattern)
@@ -784,8 +784,8 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    db.addGlobalDefines(temp.group(1),
-                                        temp_raw.group(2).decode(dbcImportEncoding))
+                    db.add_global_defines(temp.group(1),
+                                          temp_raw.group(2).decode(dbcImportEncoding))
 
             elif decoded.startswith("BA_ "):
                 regexp = re.compile(r"^BA_ +\"[A-Za-z0-9[\-_ .]+\" +(.+)")
@@ -794,19 +794,19 @@ def load(f, **options):
                 if tempba.group(1).strip().startswith("BO_ "):
                     regexp = re.compile(r"^BA_ +\"(.*)\" +BO_ +(\w+) +(.+);")
                     temp = regexp.match(decoded)
-                    db.frameById(int(temp.group(2))).addAttribute(
+                    db.frame_by_id(int(temp.group(2))).add_attribute(
                         temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("SG_ "):
                     regexp = re.compile(r"^BA_ +\"(.*)\" +SG_ +(\w+) +(\w+) +(.+);")
                     temp = regexp.match(decoded)
                     if temp!=None:
-                        db.frameById(int(temp.group(2))).signalByName(
-                            temp.group(3)).addAttribute(temp.group(1), temp.group(4))
+                        db.frame_by_id(int(temp.group(2))).signal_by_name(
+                            temp.group(3)).add_attribute(temp.group(1), temp.group(4))
                 elif tempba.group(1).strip().startswith("BU_ "):
                     regexp = re.compile(r"^BA_ +\"(.*)\" +BU_ +(\w+) +(.+);")
                     temp = regexp.match(decoded)
-                    db.boardUnitByName(
-                        temp.group(2)).addAttribute(
+                    db.ecu_by_name(
+                        temp.group(2)).add_attribute(
                         temp.group(1),
                         temp.group(3))
                 else:
@@ -814,22 +814,22 @@ def load(f, **options):
                         r"^BA_ +\"([A-Za-z0-9\-_]+)\" +([\"A-Za-z0-9\-_\.]+);")
                     temp = regexp.match(decoded)
                     if temp:
-                        db.addAttribute(temp.group(1), temp.group(2))
+                        db.add_attribute(temp.group(1), temp.group(2))
 
             elif decoded.startswith("SIG_GROUP_ "):
                 regexp = re.compile(r"^SIG_GROUP_ +(\w+) +(\w+) +(\w+) +\:(.*);")
                 temp = regexp.match(decoded)
-                frame = db.frameById(temp.group(1))
+                frame = db.frame_by_id(temp.group(1))
                 if frame is not None:
                     signalArray = temp.group(4).split(' ')
-                    frame.addSignalGroup(temp.group(2), temp.group(3), signalArray)
+                    frame.add_signal_group(temp.group(2), temp.group(3), signalArray)
 
             elif decoded.startswith("SIG_VALTYPE_ "):
                 regexp = re.compile(r"^SIG_VALTYPE_ +(\w+) +(\w+)\s*\:(.*);")
                 temp = regexp.match(decoded)
-                frame = db.frameById(temp.group(1))
+                frame = db.frame_by_id(temp.group(1))
                 if frame:
-                    signal = frame.signalByName(temp.group(2))
+                    signal = frame.signal_by_name(temp.group(2))
                     signal.is_float = True
     #                SIG_VALTYPE_ 0 float : 1;
 
@@ -840,8 +840,8 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    db.addDefineDefault(temp.group(1),
-                                        temp_raw.group(2).decode(dbcImportEncoding))
+                    db.add_define_default(temp.group(1),
+                                          temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("SG_MUL_VAL_ "):
                 pattern = r"^SG_MUL_VAL_ +([0-9]+) +([A-Za-z0-9\-_]+) +([A-Za-z0-9\-_]+) +([0-9]+)\-([0-9]+) *;"
                 regexp = re.compile(pattern)
@@ -854,9 +854,9 @@ def load(f, **options):
                     muxerForSignal = temp.group(3)
                     muxValMin = int(temp.group(4))
                     muxValMax = int(temp.group(4))
-                    frame  = db.frameById(frameId)
+                    frame  = db.frame_by_id(frameId)
                     if frame is not None:
-                        signal = frame.signalByName(signalName)
+                        signal = frame.signal_by_name(signalName)
                         frame.is_complex_multiplexed = True
                         signal.muxerForSignal = muxerForSignal
                         signal.muxValMin = muxValMin
@@ -875,7 +875,7 @@ def load(f, **options):
                 evId  = temp.group(7)
                 accessType  = temp.group(8)
                 accessNodes = temp.group(9).split(",")
-                db.addEnvVar( varName, {"varType": varType, "min" : min, "max" : max,
+                db.add_env_var(varName, {"varType": varType, "min" : min, "max" : max,
                               "unit" : unit, "initialValue" : initialValue, "evId" : evId,
                               "accessType" : accessType, "accessNodes" : accessNodes})
 
@@ -883,14 +883,12 @@ def load(f, **options):
         except:
             print ("error with line no: %d" % i)
             print (line)
-        #        else:
-#            print("Unrecocniced line: " + l + " (%d) " % i)
 # Backtracking
 
     for frame in db.frames:
         # receiver is only given in the signals, so do propagate the receiver
         # to the frame:
-        frame.updateReceiver()
+        frame.update_receiver()
         # extended-flag is implicite in canid, thus repair this:
         if frame.id > 0x80000000:
             frame.id -= 0x80000000
@@ -902,34 +900,34 @@ def load(f, **options):
         for signal in frame.signals:
             if signal.attribute("SystemSignalLongSymbol") is not None:
                 signal.name = signal.attribute("SystemSignalLongSymbol")[1:-1]
-                signal.delAttribute("SystemSignalLongSymbol")
-    for define in db.globalDefines:
-        if db.globalDefines[define].type == "STRING":
+                signal.del_attribute("SystemSignalLongSymbol")
+    for define in db.global_defines:
+        if db.global_defines[define].type == "STRING":
             if define in db.attributes:
                 db.attributes[define] = db.attributes[define][1:-1]
-    for define in db.buDefines:
-        if db.buDefines[define].type == "STRING":
-            for ecu in db.boardUnits:
+    for define in db.ecu_defines:
+        if db.ecu_defines[define].type == "STRING":
+            for ecu in db.ecus:
                 if define in ecu.attributes:
                     ecu.attributes[define] = ecu.attributes[define][1:-1]
-    for define in db.frameDefines:
-        if db.frameDefines[define].type == "STRING":
+    for define in db.frame_defines:
+        if db.frame_defines[define].type == "STRING":
             for frame in db.frames:
                 if define in frame.attributes:
                     frame.attributes[define] = frame.attributes[define][1:-1]
-    for define in db.signalDefines:
-        if db.signalDefines[define].type == "STRING":
+    for define in db.signal_defines:
+        if db.signal_defines[define].type == "STRING":
             for frame in db.frames:
                 for signal in frame.signals:
                     if define in signal.attributes:
                         signal.attributes[define] = signal.attributes[define][1:-1]
 
-    db.EnumAttribs2Values()
-    db.updateEcuList()
-    db.delEcu("Vector__XXX")
-    free_signals_dummy_frame = db.frameByName("VECTOR__INDEPENDENT_SIG_MSG")
+    db.enum_attribs_to_values()
+    db.update_ecu_list()
+    db.del_ecu("Vector__XXX")
+    free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
     if free_signals_dummy_frame is not None and free_signals_dummy_frame.id == 0x40000000:
         db.signals = free_signals_dummy_frame.signals
-        db.delFrame(free_signals_dummy_frame)
+        db.del_frame(free_signals_dummy_frame)
 
     return db

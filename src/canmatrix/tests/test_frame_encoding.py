@@ -15,7 +15,7 @@ def loadDbc():
 def test_encode_with_dbc_big_endian():
     cm = loadDbc()
     # 002#0C00057003CD1F83
-    frame = cm.frameById(1)
+    frame = cm.frame_by_id(1)
 
     toEncode = dict()
 
@@ -38,7 +38,7 @@ def test_encode_with_dbc_big_endian():
 def test_encode_with_dbc_little_endian():
     cm = loadDbc()
     # 002#0C00057003CD1F83
-    frame = cm.frameById(2)
+    frame = cm.frame_by_id(2)
 
     toEncode = dict()
     toEncode["secSig1"] = 0
@@ -61,7 +61,7 @@ def test_encode_with_dbc_little_endian():
 def test_encode_with_dbc_float():
     cm = loadDbc()
     # 003#38638A7E58A8C540
-    frame = cm.frameById(3)
+    frame = cm.frame_by_id(3)
 
     toEncode = dict()
     toEncode["floatSignal1"] = 5.424999835668132e-05
@@ -72,7 +72,7 @@ def test_encode_with_dbc_float():
 def test_encode_with_dbc_multiplex():
     cm = loadDbc()
 
-    frame = cm.frameById(4)
+    frame = cm.frame_by_id(4)
     toEncode1 = dict()
     toEncode1["myMuxer"] = 0
     toEncode1["muxSig9"] =  0x20
@@ -137,8 +137,8 @@ def test_sym():
     f = io.BytesIO(s.encode('utf-8'))
 
     matrix = canmatrix.formats.load(f, importType='sym', flatImport=True)
-    unsigned_frame = matrix.frameByName('Unsigned')
-    signed_frame = matrix.frameByName('Signed')
+    unsigned_frame = matrix.frame_by_name('Unsigned')
+    signed_frame = matrix.frame_by_name('Signed')
 
     @attr.s(frozen=True)
     class TestFrame(object):

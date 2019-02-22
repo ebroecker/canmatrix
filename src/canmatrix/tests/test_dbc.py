@@ -45,9 +45,9 @@ def test_enum_with_comma():
     ''').encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
 
-    assert matrix.frameDefines[u'example1'].values == ["Val 1","",""," ","'","(",")","[","]","/","-","|","{","}",";",":","<",">",".","?","!","@","#","$","%","^","&","=","`","~"]
-    assert matrix.signalDefines[u'example2'].values == ['Val1', ',']
-    assert matrix.buDefines[u'example4'].values == ['Val1', ',']
+    assert matrix.frame_defines[u'example1'].values == ["Val 1","",""," ","'","(",")","[","]","/","-","|","{","}",";",":","<",">",".","?","!","@","#","$","%","^","&","=","`","~"]
+    assert matrix.signal_defines[u'example2'].values == ['Val1', ',']
+    assert matrix.ecu_defines[u'example4'].values == ['Val1', ',']
 
 @pytest.mark.parametrize(
     'character',
@@ -62,37 +62,37 @@ def test_enum_with_special_character(character):
     BA_DEF_ BO_ "example1" ENUM "Val 1","{}";
     ''').format(character[0]).encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
-    assert matrix.frameDefines[u'example1'].values == ["Val 1",character[0]]
+    assert matrix.frame_defines[u'example1'].values == ["Val 1",character[0]]
 
 def test_export_of_unknown_defines():
     db = canmatrix.CanMatrix()
 
-    db.addFrameDefines("Receivable", 'BOOL False True')
-    db.addFrameDefines("Sendable", 'BOOL False True')
-    for (dataType, define) in db.frameDefines.items():
+    db.add_frame_defines("Receivable", 'BOOL False True')
+    db.add_frame_defines("Sendable", 'BOOL False True')
+    for (dataType, define) in db.frame_defines.items():
         orig_definition = define.definition
         canmatrix.dbc.check_define(define)
         assert orig_definition != define.definition
 
-    db.addSignalDefines("LongName", 'STR')
-    for (dataType, define) in db.signalDefines.items():
+    db.add_signal_defines("LongName", 'STR')
+    for (dataType, define) in db.signal_defines.items():
         orig_definition = define.definition
         canmatrix.dbc.check_define(define)
         assert orig_definition != define.definition
     frame = canmatrix.Frame("someFrame")
     signal = canmatrix.Signal("SomeSignal")
-    signal.addAttribute("LongName", "EnableCalcIDCTrip Calc. IDC trip")
-    frame.addSignal(signal)
-    db.addFrame(frame)
+    signal.add_attribute("LongName", "EnableCalcIDCTrip Calc. IDC trip")
+    frame.add_signal(signal)
+    db.add_frame(frame)
 
-    db.addBUDefines("someName", 'STRING')
-    for (dataType, define) in db.buDefines.items():
+    db.add_ecu_defines("someName", 'STRING')
+    for (dataType, define) in db.ecu_defines.items():
         orig_definition = define.definition
         canmatrix.dbc.check_define(define)
         assert orig_definition == define.definition
 
-    db.addGlobalDefines("someGlobaName", 'BOOL')
-    for (dataType, define) in db.globalDefines.items():
+    db.add_global_defines("someGlobaName", 'BOOL')
+    for (dataType, define) in db.global_defines.items():
         orig_definition = define.definition
         canmatrix.dbc.check_define(define)
         assert orig_definition != define.definition
