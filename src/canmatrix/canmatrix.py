@@ -96,6 +96,10 @@ class ecu(object):
         """
         self.attributes[attribute] = value
 
+    def del_attribute(self, attribute):
+        if attribute in self.attributes:
+            del self.attributes[attribute]
+
     def add_comment(self, comment):
         """
         Set Board unit comment.
@@ -1143,6 +1147,7 @@ class CanMatrix(object):
     signal_defines = attr.ib(type=dict, factory=dict)
     frame_defines = attr.ib(type=dict, factory=dict)
     global_defines = attr.ib(type=dict, factory=dict)
+    env_defines = attr.ib(type=dict, factory=dict)
     ecu_defines = attr.ib(type=dict, factory=dict)
     value_tables = attr.ib(type=dict, factory=dict)
     env_vars = attr.ib(type=dict, factory=dict)
@@ -1156,6 +1161,12 @@ class CanMatrix(object):
 
     def add_env_var(self, name, envVarDict):
         self.env_vars[name] = envVarDict
+
+    def add_env_attribute(self, env_name, attribute_name, attribute_value):
+        if env_name in self.env_vars:
+            if not "attributes" in self.env_vars[env_name]:
+                self.env_vars[env_name]["attributes"] = dict()
+            self.env_vars[env_name]["attributes"][attribute_name] = attribute_value
 
     @property
     def contains_fd(self):
@@ -1233,6 +1244,16 @@ class CanMatrix(object):
         """
         if type not in self.ecu_defines:
             self.ecu_defines[type] = Define(definition)
+
+    def add_env_defines(self, type, definition):
+        """
+        Add enviroment variable-attribute definition to canmatrix.
+
+        :param str type: enviroment variable type
+        :param str definition: enviroment variable definition as string
+        """
+        if type not in self.env_defines:
+            self.env_defines[type] = Define(definition)
 
     def add_global_defines(self, type, definition):
         """
