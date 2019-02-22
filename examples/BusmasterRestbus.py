@@ -163,7 +163,7 @@ def tickerBoardUnits(db, dbcname):
 
     MyBuList = []
 
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         if bu.name not in MyBuList:
             MyBuList.append(bu.name)  # no duplicate Nodes
         else:

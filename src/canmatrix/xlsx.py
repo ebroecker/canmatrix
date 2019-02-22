@@ -177,7 +177,7 @@ def dump(db, filename, **options):
 
     # write frameardunits in first row:
     buList = []
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         buList.append(bu.name)
 
     rowArray += buList
@@ -224,7 +224,7 @@ def dump(db, filename, **options):
         # sort signals:
         sigHash = {}
         for sig in frame.signals:
-            sigHash["%02d" % int(sig.getStartbit()) + sig.name] = sig
+            sigHash["%02d" % int(sig.get_startbit()) + sig.name] = sig
 
         # set style for first line with border
         sigstyle = sty_first_frame
@@ -333,7 +333,7 @@ def dump(db, filename, **options):
     # loop over frames ends here
 
     worksheet.autofilter(0, 0, row, len(head_top) +
-                         len(head_tail) + len(db.boardUnits))
+                         len(head_tail) + len(db.ecus))
     worksheet.freeze_panes(1, 0)
     # save file
     workbook.close()
@@ -443,13 +443,13 @@ def load(filename, **options):
             letterIndex.append("%s%s" % (a, b))
 
     # Defines not imported...
-    db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
-    db.addFrameDefines("GenMsgDelayTime", 'INT 0 65535')
-    db.addFrameDefines("GenMsgCycleTimeActive", 'INT 0 65535')
-    db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
+    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+    db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
+    db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
+    db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
     launchTypes = []
 
-    db.addSignalDefines("GenSigSNA", 'STRING')
+    db.add_signal_defines("GenSigSNA", 'STRING')
 
     if 'Byteorder' in list(sheet[0].values()):
         for key in sheet[0]:
@@ -467,7 +467,7 @@ def load(filename, **options):
 
     # BoardUnits:
     for x in range(_BUstart, _BUend):
-        db.addEcu(BoardUnit(sheet[0][letterIndex[x]]))
+        db.add_ecu(ecu(sheet[0][letterIndex[x]]))
 
     # initialize:
     frameId = None
@@ -497,18 +497,18 @@ def load(filename, **options):
             else:
                 newBo = Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
 
-            db.addFrame(newBo)
+            db.add_frame(newBo)
 
             # eval launchtype
             if launchType is not None:
-                newBo.addAttribute("GenMsgSendType", launchType)
+                newBo.add_attribute("GenMsgSendType", launchType)
                 if launchType not in launchTypes:
                     launchTypes.append(launchType)
 
 #                       #eval cycletime
             if type(cycleTime).__name__ != "float":
                 cycleTime = 0.0
-            newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
+            newBo.add_attribute("GenMsgCycleTime", str(int(cycleTime)))
 
         # new signal detected
         if 'Signal Name' in row and row['Signal Name'] != signalName:
@@ -547,7 +547,7 @@ def load(filename, **options):
                     buSenderReceiver = getIfPossible(row, buName)
                     if buSenderReceiver is not None:
                         if 's' in buSenderReceiver:
-                            newBo.addTransmitter(buName)
+                            newBo.add_transmitter(buName)
                         if 'r' in buSenderReceiver:
                             receiver.append(buName)
 #                if signalLength > 8:
@@ -565,18 +565,18 @@ def load(filename, **options):
                 if is_little_endian == False:
                     # motorola
                     if motorolaBitFormat == "msb":
-                        newSig.setStartbit(
+                        newSig.set_startbit(
                             (startbyte - 1) * 8 + startbit, bitNumbering=1)
                     elif motorolaBitFormat == "msbreverse":
-                        newSig.setStartbit((startbyte - 1) * 8 + startbit)
+                        newSig.set_startbit((startbyte - 1) * 8 + startbit)
                     else:  # motorolaBitFormat == "lsb"
-                        newSig.setStartbit(
+                        newSig.set_startbit(
                             (startbyte - 1) * 8 + startbit,
                             bitNumbering=1,
                             startLittle=True)
 
-                newBo.addSignal(newSig)
-                newSig.addComment(signalComment)
+                newBo.add_signal(newSig)
+                newSig.add_comment(signalComment)
                 function = getIfPossible(row, 'Function / Increment Unit')
         value = getIfPossible(row, 'Value')
         valueName = getIfPossible(row, 'Name / Phys. Range')
@@ -621,7 +621,7 @@ def load(filename, **options):
         elif valueName.__len__() > 0:
             if value is not None and value.strip().__len__() > 0:
                 value = int(float(value))
-                newSig.addValues(value, valueName)
+                newSig.add_values(value, valueName)
             maxi = pow(2, signalLength) - 1
             newSig.max = float(maxi)
         else:
@@ -631,14 +631,14 @@ def load(filename, **options):
 
     # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
     for frame in db.frames:
-        frame.updateReceiver()
-        frame.calcDLC()
+        frame.update_receiver()
+        frame.calc_dlc()
 
     launchTypeEnum = "ENUM"
     for launchType in launchTypes:
         if len(launchType) > 0:
             launchTypeEnum += ' "' + launchType + '",'
-    db.addFrameDefines("GenMsgSendType", launchTypeEnum[:-1])
+    db.add_frame_defines("GenMsgSendType", launchTypeEnum[:-1])
 
-    db.setFdType()
+    db.set_fd_type()
     return db
