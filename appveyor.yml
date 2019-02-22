@@ -29,7 +29,7 @@ install:
   - "%VENV%\\Scripts\\activate"
   - python -c "import sys; print(sys.version)"
   - pip install -r requirements.tox.txt
-  - ps: Update-AppveyorBuild -Version "v$(python get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
+ # - ps: Update-AppveyorBuild -Version "v$(python get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
 
 build_script:
   - tox

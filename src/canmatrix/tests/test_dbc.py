@@ -48,7 +48,7 @@ def test_create_attribute_string():
 
 def test_create_comment_string():
     test_string = canmatrix.dbc.create_comment_string("BO_","ident", "some comment","utf8","utf8")
-    assert test_string == u'CM_ BO_ ident "some comment";\n'
+    assert test_string == b'CM_ BO_ ident "some comment";\n'
 
 def test_long_frame_name_imports():
     long_frame_name = u'A_VERY_LONG_FRAME_NAME_WHICH_SHOULD_BE_SPLIT_SOMEHOW'
