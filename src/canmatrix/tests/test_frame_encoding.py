@@ -15,7 +15,7 @@ def loadDbc():
 def test_encode_with_dbc_big_endian():
     cm = loadDbc()
     # 002#0C00057003CD1F83
-    frame = cm.frame_by_id(1)
+    frame = cm.frame_by_id(canmatrix.Arbitration_Id(1))
 
     toEncode = dict()
 
@@ -38,7 +38,7 @@ def test_encode_with_dbc_big_endian():
 def test_encode_with_dbc_little_endian():
     cm = loadDbc()
     # 002#0C00057003CD1F83
-    frame = cm.frame_by_id(2)
+    frame = cm.frame_by_id(canmatrix.Arbitration_Id(2))
 
     toEncode = dict()
     toEncode["secSig1"] = 0
@@ -61,7 +61,7 @@ def test_encode_with_dbc_little_endian():
 def test_encode_with_dbc_float():
     cm = loadDbc()
     # 003#38638A7E58A8C540
-    frame = cm.frame_by_id(3)
+    frame = cm.frame_by_id(canmatrix.Arbitration_Id(3))
 
     toEncode = dict()
     toEncode["floatSignal1"] = 5.424999835668132e-05
@@ -72,7 +72,7 @@ def test_encode_with_dbc_float():
 def test_encode_with_dbc_multiplex():
     cm = loadDbc()
 
-    frame = cm.frame_by_id(4)
+    frame = cm.frame_by_id(canmatrix.Arbitration_Id(4))
     toEncode1 = dict()
     toEncode1["myMuxer"] = 0
     toEncode1["muxSig9"] =  0x20

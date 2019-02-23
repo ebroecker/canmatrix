@@ -1353,32 +1353,16 @@ class CanMatrix(object):
         for element in toBeDeleted:
             del self.signal_defines[element]
 
-    def frame_by_id(self, Id, extended=None):
+    def frame_by_id(self, arbitration_id):
         """Get Frame by its arbitration id.
 
-        :param Id: Frame id as str or int
-        :param extended: is it an extended id? None means "doesn't matter"
+        :param Id: Frame id as canmatrix.Arbitration_Id
         :rtype: Frame or None
         """
-        Id = int(Id)
-        extendedMarker = 0x80000000
         for test in self.frames:
-            if test.arbitration_id.id == Id:
-                if extended is None:
-                    # found ID while ignoring extended or standard
-                    return test
-                elif test.extended == extended:
-                    # found ID while checking extended or standard
-                    return test
-            else:
-                if extended is not None:
-                    # what to do if Id is not equal and extended is also provided ???
-                    pass
-                else:
-                    if test.arbitration_id.extended and Id & extendedMarker:
-                        # check regarding common used extended Bit 31
-                        if test.arbitration_id.id == Id - extendedMarker:
-                            return test
+            if test.arbitration_id == arbitration_id:
+                # found ID while ignoring extended or standard
+                return test
         return None
 
     def frame_by_name(self, name):
@@ -1706,10 +1690,10 @@ class CanMatrix(object):
         """
         for dbTemp in mergeArray:
             for frame in dbTemp.frames:
-                copyResult = canmatrix.copy.copy_frame(frame.arbitration_id.id, dbTemp, self)
+                copyResult = canmatrix.copy.copy_frame(frame.arbitration_id, dbTemp, self)
                 if copyResult == False:
                     logger.error(
-                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.arbitration_id.id + self.frame_by_id(frame.arbitration_id.id).name)
+                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.arbitration_id.id + self.frame_by_id(frame.arbitration_id).name)
             for envVar in dbTemp.env_vars:
                 if envVar not in self.env_vars:
                     self.add_env_var(envVar, dbTemp.envVars[envVar])

@@ -152,7 +152,7 @@ def main():
     if cmdlineOptions.exportframe is not None:
         for frameId in cmdlineOptions.exportframe.split(','):
             try:
-                frame = db.frame_by_id(int(frameId))
+                frame = db.frame_by_id(canmatrix.Arbitration_Id(frameId))
             except ValueError:
                 frame = db.frame_by_name(frameId)
             if frame is not None:

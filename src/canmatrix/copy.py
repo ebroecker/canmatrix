@@ -77,7 +77,7 @@ def copy_ecu_with_frames(buId, sourceDb, targetDb):
         # copy tx-frames
         for frame in sourceDb.frames:
             if bu.name in frame.transmitters:
-                copy_frame(frame, sourceDb, targetDb)
+                copy_frame(frame.arbitration_id, sourceDb, targetDb)
 
         # copy rx-frames
         for frame in sourceDb.frames:
@@ -111,21 +111,15 @@ def copy_signal(signal_name, source_db, target_db):
 
 def copy_frame(frameId, sourceDb, targetDb):
     """
-    This function copys a Frame identified by frameId from soruce-Canmatrix to target-Canmatrix
+    This function copys a Frame identified by Arbitration_Id from soruce-Canmatrix to target-Canmatrix
     while copying is easy, this function additionally copys all relevant Boardunits, and Defines
     """
-    # check wether frameId is object, id or symbolic name
-    if 'int' in type(frameId).__name__ or 'long' in type(frameId).__name__:
-        frameList = [sourceDb.frame_by_id(frameId)]
-    elif type(frameId).__name__ == 'Frame':
-        frameList = [frameId]
-    else:
-        frameList = sourceDb.glob_frames(frameId)
+    frameList = [sourceDb.frame_by_id(frameId)]
 
     for frame in frameList:
         logger.info("Copying Frame " + frame.name)
 
-        if targetDb.frame_by_id(frame.arbitration_id.id) is not None:
+        if targetDb.frame_by_id(frame.arbitration_id) is not None:
             # frame already in targetdb...
             return False
 
