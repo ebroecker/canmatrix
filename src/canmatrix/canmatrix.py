@@ -1669,7 +1669,7 @@ class CanMatrix(object):
         """
         for dbTemp in mergeArray:
             for frame in dbTemp.frames:
-                copyResult = canmatrix.copy.copyFrame(frame.id, dbTemp, self)
+                copyResult = canmatrix.copy.copy_frame(frame.id, dbTemp, self)
                 if copyResult == False:
                     logger.error(
                         "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + self.frame_by_id(frame.id).name)

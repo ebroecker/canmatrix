@@ -28,7 +28,7 @@ from copy import deepcopy
 logger = logging.getLogger(__name__)
 
 
-def copyBU(buId, sourceDb, targetDb):
+def copy_ecu(buId, sourceDb, targetDb):
     """
     This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
     while copying is easy, this function additionally copys all relevant Defines
@@ -58,7 +58,7 @@ def copyBU(buId, sourceDb, targetDb):
 
 
 
-def copyBUwithFrames(buId, sourceDb, targetDb):
+def copy_ecu_with_frames(buId, sourceDb, targetDb):
     """
     This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
     while copying is easy, this function additionally copys all relevant Frames and Defines
@@ -77,13 +77,13 @@ def copyBUwithFrames(buId, sourceDb, targetDb):
         # copy tx-frames
         for frame in sourceDb.frames:
             if bu.name in frame.transmitters:
-                copyFrame(frame, sourceDb, targetDb)
+                copy_frame(frame, sourceDb, targetDb)
 
         # copy rx-frames
         for frame in sourceDb.frames:
             for signal in frame.signals:
                 if bu.name in signal.receiver:
-                    copyFrame(frame, sourceDb, targetDb)
+                    copy_frame(frame, sourceDb, targetDb)
                     break
 
         # copy all bu-defines
@@ -109,7 +109,7 @@ def copy_signal(signal_name, source_db, target_db):
         for signal in frame.globSignals(signal_name):
             target_db.addSignal(signal)
 
-def copyFrame(frameId, sourceDb, targetDb):
+def copy_frame(frameId, sourceDb, targetDb):
     """
     This function copys a Frame identified by frameId from soruce-Canmatrix to target-Canmatrix
     while copying is easy, this function additionally copys all relevant Boardunits, and Defines
@@ -138,7 +138,7 @@ def copyFrame(frameId, sourceDb, targetDb):
             targetBU = targetDb.ecu_by_name(transmitter)
             sourceBU = sourceDb.ecu_by_name(transmitter)
             if sourceBU is not None and targetBU is None:
-                copyBU(sourceBU, sourceDb, targetDb)
+                copy_ecu(sourceBU, sourceDb, targetDb)
 
         # trigger all signals of Frame
         for sig in frame.signals:
@@ -147,7 +147,7 @@ def copyFrame(frameId, sourceDb, targetDb):
                 targetBU = targetDb.ecu_by_name(receiver)
                 sourceBU = sourceDb.ecu_by_name(receiver)
                 if sourceBU is not None and targetBU is None:
-                    copyBU(sourceBU, sourceDb, targetDb)
+                    copy_ecu(sourceBU, sourceDb, targetDb)
 
         # copy all frame-defines
         attributes = frame.attributes

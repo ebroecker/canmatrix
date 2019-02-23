@@ -28,7 +28,7 @@ from collections import defaultdict
 import sys
 import csv
 import logging
-from canmatrix.xls_common import *
+import canmatrix.xls_common
 
 logger = logging.getLogger(__name__)
 
@@ -196,9 +196,9 @@ def dump(db, thefile, delimiter=',', **options):
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
                     signalRow = csvRow()
-                    signalRow += get_frame_info(db, frame)
+                    signalRow += canmatrix.xls_common.get_frame_info(db, frame)
 
-                    (front, back) = get_signal(db, sig, motorolaBitFormat)
+                    (front, back) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
                     signalRow += front
                     signalRow += ("s" if sig.is_signed else "u")
 
@@ -220,9 +220,9 @@ def dump(db, thefile, delimiter=',', **options):
             # no value table available
             else:
                 signalRow = csvRow()
-                signalRow += get_frame_info(db, frame)
+                signalRow += canmatrix.xls_common.get_frame_info(db, frame)
 
-                (front, back) = get_signal(db, sig, motorolaBitFormat)
+                (front, back) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
                 signalRow += front
                 signalRow += ("s" if sig.is_signed else "u")
 

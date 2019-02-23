@@ -96,7 +96,7 @@ def test_export_default_decimal_places(is_float, value, expected):
     signal.add_attribute('GenSigStartValue', value)
     frame.add_signal(signal)
 
-    s = canmatrix.sym.createSignal(db=matrix, signal=signal)
+    s = canmatrix.sym.create_signal(db=matrix, signal=signal)
 
     start = '/d:'
 

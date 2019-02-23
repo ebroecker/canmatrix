@@ -29,11 +29,11 @@ import logging
 
 from builtins import *
 import collections
-from .canmatrix import *
+import canmatrix
 import sys
 import decimal
 import canmatrix.utils
-
+import attr
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
 
@@ -96,7 +96,7 @@ def format_float(f):
     return s.upper()
 
 
-def createSignal(db, signal):
+def create_signal(db, signal):
     global enums
     global enumDict
     output = ""
@@ -290,7 +290,7 @@ Title=\"canmatrix-Export\"
                     if found == 1:
                         for signal in frame.signals:
                             if signal.multiplex == i or signal.multiplex is None:
-                                muxOut += createSignal(db, signal)
+                                muxOut += create_signal(db, signal)
                         output += muxOut + "\n"
 
             else:
@@ -303,7 +303,7 @@ Title=\"canmatrix-Export\"
                     if cycleTime is not None:
                         output += "CycleTime=" + str(cycleTime) + "\n"
                 for signal in frame.signals:
-                    output += createSignal(db, signal)
+                    output += create_signal(db, signal)
                 output += "\n"
     enums += '\n'.join(sorted(enumDict.values()))
     # write outputfile
@@ -328,7 +328,7 @@ def load(f, **options):
     frameName = ""
     frame = None
 
-    db = CanMatrix()
+    db = canmatrix.CanMatrix()
     db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
     db.add_frame_defines("Receivable", 'BOOL False True')
     db.add_frame_defines("Sendable", 'BOOL False True')
@@ -394,7 +394,7 @@ def load(f, **options):
                                     frame.name + "_MUX").values = frame.mux_names
                             db.add_frame(frame)
 
-                        frame = Frame(frameName)
+                        frame = canmatrix.Frame(frameName)
 
                         frame.add_attribute(
                             'Receivable',
@@ -521,7 +521,7 @@ def load(f, **options):
 #                            if float_factory is not None:
 #                                extras['float_factory'] = float_factory
 
-                            signal = Signal(frameName + "_MUX",
+                            signal = canmatrix.Signal(frameName + "_MUX",
                                             start_bit=int(startBit),
                                             size=int(signalLength),
                                             is_little_endian=intel,
@@ -554,7 +554,7 @@ def load(f, **options):
 #                        if float_factory is not None:
 #                            extras['float_factory'] = float_factory
 
-                        signal = Signal(sigName,
+                        signal = canmatrix.Signal(sigName,
                                         start_bit=int(startBit),
                                         size=int(signalLength),
                                         is_little_endian=intel,
