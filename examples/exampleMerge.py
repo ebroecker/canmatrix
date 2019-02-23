@@ -31,13 +31,13 @@ db3 = canmatrix.CanMatrix()
 #
 
 # Copy Can-ID 1234 from second CAN-Matrix to target-Matrix
-canmatrix.copy.copyFrame(1234, db2, db3)
+canmatrix.copy.copy_frame(1234, db2, db3)
 
 # Copy frame "Engine_123" from first CAN-Matrix to target-Matrix
-canmatrix.copy.copyFrame("Engine_123", db1, db3)
+canmatrix.copy.copy_frame("Engine_123", db1, db3)
 
 # Copy ECU (with all Frames) "Gateway" from first CAN-Matrix to target-Matrix
-canmatrix.copy.copyBUwithFrames("Gateway", db1, db3)
+canmatrix.copy.copy_ecu_with_frames("Gateway", db1, db3)
 
 #
 # -----------------------------------------------------

@@ -28,7 +28,7 @@ def test_copy_ECU_with_frames():
     matrix2.add_frame(frame2)
     matrix2.update_ecu_list()
 
-    canmatrix.copy.copyBUwithFrames("ECU", matrix2, matrix1)
+    canmatrix.copy.copy_ecu_with_frames("ECU", matrix2, matrix1)
 
     assert len(matrix1.frames) == 2
     assert len(matrix1.ecus) == 1
@@ -46,7 +46,7 @@ def test_copy_ECU_without_frames():
     matrix2.add_ecu_defines("attrib", "STRING")
     matrix2.ecu_by_name("ECU").add_attribute("attrib", "attribValue")
 
-    canmatrix.copy.copyBU("ECU", matrix2, matrix1)
+    canmatrix.copy.copy_ecu("ECU", matrix2, matrix1)
 
     assert len(matrix1.frames) == 1
     assert len(matrix1.ecus) == 1

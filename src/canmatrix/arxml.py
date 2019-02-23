@@ -35,8 +35,7 @@ import logging
 from builtins import *
 from lxml import etree
 
-from .canmatrix import *
-
+import canmatrix
 import decimal
 
 logger = logging.getLogger(__name__)
@@ -96,7 +95,7 @@ def dump(dbs, f, **options):
         db = dbs[name]
         for frame in db.frames:
             for signal in frame.signals:
-                for rec in signal.receiver:
+                for rec in signal.receivers:
                     if rec.strip() not in frame.receivers:
                         frame.receivers.append(rec.strip())
 
@@ -247,7 +246,7 @@ def dump(dbs, f, **options):
                     iSignalPortRefs = createSubElement(
                         isignalTriggering, 'I-SIGNAL-PORT-REFS')
 
-                    for receiver in signal.receiver:
+                    for receiver in signal.receivers:
                         iSignalPortRef = createSubElement(
                             iSignalPortRefs,
                             'I-SIGNAL-PORT-REF',
@@ -732,7 +731,7 @@ def dump(dbs, f, **options):
 
                     # missing I-PDU-PORT
                     for signal in frame.signals:
-                        if ecu.name in signal.receiver:
+                        if ecu.name in signal.receivers:
                             if arVersion[0] == "3":
                                 signalPort = createSubElement(
                                     ecuCommPortInstances, 'SIGNAL-PORT')
@@ -957,11 +956,11 @@ pduFrameMapping = {}
 signalRxs = {}
 
 
-def getSysSignals(syssignal, syssignalarray, Bo, Id, ns):
+def getSysSignals(syssignal, syssignalarray, frame, Id, ns):
     members = []
     for signal in syssignalarray:
         members.append(arGetName(signal, ns))
-    Bo.add_signal_group(arGetName(syssignal, ns), 1, members)
+    frame.add_signal_group(arGetName(syssignal, ns), 1, members)
 
 
 def decodeCompuMethod(compuMethod, arDict, ns, float_factory):
@@ -976,7 +975,7 @@ def decodeCompuMethod(compuMethod, arDict, ns, float_factory):
         ul = arGetChild(compuscale, "UPPER-LIMIT", arDict, ns)
         sl = arGetChild(compuscale, "SHORT-LABEL", arDict, ns)
         if sl is None:
-            desc = getDesc(compuscale, arDict, ns)
+            desc = get_desc(compuscale, arDict, ns)
         else:
             desc = sl.text
         #####################################################################################################
@@ -988,7 +987,7 @@ def decodeCompuMethod(compuMethod, arDict, ns, float_factory):
             #####################################################################################################
             values[ll.text] = desc
 
-        scaleDesc = getDesc(compuscale, arDict, ns)
+        scaleDesc = get_desc(compuscale, arDict, ns)
         rational = arGetChild(compuscale, "COMPU-RATIONAL-COEFFS", arDict, ns)
         if rational is not None:
             numerator = arGetChild(rational, "COMPU-NUMERATOR", arDict, ns)
@@ -1006,7 +1005,7 @@ def decodeCompuMethod(compuMethod, arDict, ns, float_factory):
                     "unknown Compu-Method: at sourceline %d " % compuMethod.sourceline)
     return values, factor, offset, unit, const
 
-def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
+def get_signals(signalarray, frame, xmlRoot, ns, multiplex_id, float_factory):
     global signalRxs
     GroupId = 1
     if signalarray is None:  # Empty signalarray - nothing to do
@@ -1022,16 +1021,16 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
         if isignal is None:
             isignal = arGetChild(signal, "I-SIGNAL-GROUP", xmlRoot, ns)
             if isignal is not None:
-                logger.debug("getSignals: found I-SIGNAL-GROUP ")
+                logger.debug("get_signals: found I-SIGNAL-GROUP ")
 
                 isignalarray = arGetXchildren(isignal, "I-SIGNAL", xmlRoot, ns)
-                getSysSignals(isignal, isignalarray, Bo, GroupId, ns)
+                getSysSignals(isignal, isignalarray, frame, GroupId, ns)
                 GroupId = GroupId + 1
                 continue
         if isignal is None:
             logger.debug(
                 'Frame %s, no isignal for %s found',
-                Bo.name,arGetChild(signal,"SHORT-NAME",xmlRoot,ns).text)
+                frame.name,arGetChild(signal, "SHORT-NAME", xmlRoot, ns).text)
 
         baseType = arGetChild(isignal,"BASE-TYPE", xmlRoot, ns)
         sig_long_name = arGetChild(isignal, "LONG-NAME", xmlRoot, ns)
@@ -1041,11 +1040,11 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                 sig_long_name = sig_long_name.text
         syssignal = arGetChild(isignal, "SYSTEM-SIGNAL", xmlRoot, ns)
         if syssignal is None:
-            logger.debug('Frame %s, signal %s has no systemsignal',isignal.tag,Bo.name)
+            logger.debug('Frame %s, signal %s has no systemsignal', isignal.tag, frame.name)
 
         if "SYSTEM-SIGNAL-GROUP" in syssignal.tag:
             syssignalarray = arGetXchildren(syssignal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL", xmlRoot, ns)
-            getSysSignals(syssignal, syssignalarray, Bo, GroupId, ns)
+            getSysSignals(syssignal, syssignalarray, frame, GroupId, ns)
             GroupId = GroupId + 1
             continue
 
@@ -1065,7 +1064,7 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
         Max = None
         receiver = []
 
-        signalDescription = getDesc(syssignal, xmlRoot, ns)
+        signalDescription = get_desc(syssignal, xmlRoot, ns)
 
         datatype = arGetChild(syssignal, "DATA-TYPE", xmlRoot, ns)
         if datatype is None:  # AR4?
@@ -1178,23 +1177,23 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
             logger.debug('no length for signal given')
 
         if startBit is not None:
-            newSig = Signal(name.text,
-                            start_bit=int(startBit.text),
-                            size=int(length.text),
-                            is_little_endian=is_little_endian,
-                            is_signed=is_signed,
-                            factor=factor,
-                            offset=offset,
-                            unit=Unit,
-                            receiver=receiver,
-                            multiplex=multiplexId,
-                            comment=signalDescription,
-                            is_float=is_float)
+            newSig = canmatrix.Signal(name.text,
+                                      start_bit=int(startBit.text),
+                                      size=int(length.text),
+                                      is_little_endian=is_little_endian,
+                                      is_signed=is_signed,
+                                      factor=factor,
+                                      offset=offset,
+                                      unit=Unit,
+                                      receivers=receiver,
+                                      multiplex=multiplex_id,
+                                      comment=signalDescription,
+                                      is_float=is_float)
 
             if Min is not None:
-                Signal.min = Min
+                newSig.min = Min
             if Max is not None:
-                Signal.mex = Max
+                newSig.max = Max
 
             if newSig.is_little_endian == 0:
                 # startbit of motorola coded signals are MSB in arxml
@@ -1221,10 +1220,10 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                 newSig.add_values(key, value)
             if sig_long_name is not None:
                 newSig.add_attribute("LongName", sig_long_name)
-            Bo.add_signal(newSig)
+            frame.add_signal(newSig)
 
 
-def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
+def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
     global pduFrameMapping
     extEle = arGetChild(frameTriggering, "CAN-ADDRESSING-MODE", xmlRoot, ns)
     idele = arGetChild(frameTriggering, "IDENTIFIER", xmlRoot, ns)
@@ -1248,8 +1247,8 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
 
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
-        newFrame = Frame(arGetName(frameR, ns), id=idNum, size=int(dlc.text))
-        comment = getDesc(frameR, xmlRoot, ns)
+        newFrame = canmatrix.Frame(arGetName(frameR, ns), id=idNum, size=int(dlc.text))
+        comment = get_desc(frameR, xmlRoot, ns)
         if comment is not None:
             newFrame.add_comment(comment)
     else:
@@ -1261,7 +1260,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         if pdu is None:
             pdu = arGetChild(ipduTriggering, "I-SIGNAL-I-PDU", xmlRoot, ns) ## AR4.2
         dlc = arGetChild(pdu, "LENGTH", xmlRoot, ns)
-        newFrame = Frame(sn.text,id=idNum,dlc=int(dlc.text) / 8)
+        newFrame = canmatrix.Frame(sn.text,id=idNum,dlc=int(dlc.text) / 8)
 
     if pdu is None:
         logger.error("ERROR: pdu")
@@ -1276,7 +1275,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         if selectorByteOrder.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
         is_signed = False  # unsigned
-        multiplexor = Signal("Multiplexor",start_bit=int(selectorStart.text),size=int(selectorLen.text),
+        multiplexor = canmatrix.Signal("Multiplexor",start_bit=int(selectorStart.text),size=int(selectorLen.text),
                              is_little_endian=is_little_endian,multiplex="Multiplexor")
 
         multiplexor._initValue = 0
@@ -1286,7 +1285,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
         if ipdu is not None:
             pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", xmlRoot, ns)
             pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", xmlRoot, ns)
-            getSignals(pdusigmapping, newFrame, xmlRoot, ns, None, float_factory)
+            get_signals(pdusigmapping, newFrame, xmlRoot, ns, None, float_factory)
             multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu, ns)
 
         dynamicPart = arGetChild(pdu, "DYNAMIC-PART", xmlRoot, ns)
@@ -1304,10 +1303,10 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
             if ipdu is not None:
                 pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", xmlRoot, ns)
                 pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", xmlRoot, ns)
-                getSignals(pdusigmapping,newFrame,xmlRoot,ns,selectorId.text, float_factory)
+                get_signals(pdusigmapping, newFrame, xmlRoot, ns, selectorId.text, float_factory)
 
     if newFrame.comment is None:
-        newFrame.add_comment(getDesc(pdu, xmlRoot, ns))
+        newFrame.add_comment(get_desc(pdu, xmlRoot, ns))
 
     if extEle is not None:
         if extEle.text == 'EXTENDED':
@@ -1369,7 +1368,7 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
     pdusigmapping = arGetChildren(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", xmlRoot, ns)
 
     if pdusigmapping is not None and pdusigmapping.__len__() > 0:
-        getSignals(pdusigmapping, newFrame, xmlRoot, ns, None, float_factory)
+        get_signals(pdusigmapping, newFrame, xmlRoot, ns, None, float_factory)
 
     # Seen some pdusigmapping being [] and not None with some arxml 4.2
     else: ##AR 4.2
@@ -1387,13 +1386,13 @@ def getFrame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory):
                 if signaltopdumaps is None:
                     logger.debug("DEBUG: AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!" % (arGetName(ipdus, ns)))
 #                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                getSignals(signaltopdumaps, newFrame, xmlRoot, ns, None, float_factory)
+                get_signals(signaltopdumaps, newFrame, xmlRoot, ns, None, float_factory)
         else:
             logger.debug("DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found" % (newFrame.name))
     return newFrame
 
 
-def getDesc(element, arDict, ns):
+def get_desc(element, arDict, ns):
     desc = arGetChild(element, "DESC", arDict, ns)
     txt = arGetChild(desc, 'L-2[@L="DE"]', arDict, ns)
     if txt is None:
@@ -1405,7 +1404,7 @@ def getDesc(element, arDict, ns):
     else:
         return ""
 
-def processEcu(ecu, db, arDict, multiplexTranslation, ns):
+def process_ecu(ecu, db, arDict, multiplexTranslation, ns):
     global pduFrameMapping
     connectors = arGetChild(ecu, "CONNECTORS", arDict, ns)
     diagAddress = arGetChild(ecu, "DIAGNOSTIC-ADDRESS", arDict, ns)
@@ -1525,7 +1524,7 @@ def ecuc_extract_signal(signal_node, ns):
     return canmatrix.Signal(arGetName(signal_node,ns), start_bit = start_bit, size=size, is_little_endian = is_little)
 
 def extract_cm_from_ecuc(com_module, search_point, ns):
-    db = CanMatrix()
+    db = canmatrix.CanMatrix()
     definitions = com_module.findall('.//' + ns + "DEFINITION-REF")
     for definition in definitions:
         if definition.text.endswith("ComIPdu"):
@@ -1614,7 +1613,7 @@ def load(file, **options):
     else:
         ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
     for cc in ccs:
-        db = CanMatrix()
+        db = canmatrix.CanMatrix()
 # Defines not jet imported...
         db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
         db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
@@ -1664,7 +1663,7 @@ def load(file, **options):
 
         multiplexTranslation = {}
         for frameTrig in canframetrig:
-            frameObject = getFrame(frameTrig,searchPoint,multiplexTranslation,ns, float_factory)
+            frameObject = get_frame(frameTrig, searchPoint, multiplexTranslation, ns, float_factory)
             if frameObject is not None:
                 db.add_frame(frameObject)
                 
@@ -1698,17 +1697,17 @@ def load(file, **options):
                         # from each ECU than to go down in XML...
                         if sysSignal in signalRxs:
                             if ecuName not in signalRxs[sysSignal].receiver:
-                                signalRxs[sysSignal].receiver.append(ecuName)
+                                signalRxs[sysSignal].receivers.append(ecuName)
     # find ECUs:
         nodes = root.findall('.//' + ns + 'ECU-INSTANCE')
         for node in nodes:
-            bu = processEcu(node, db, searchPoint, multiplexTranslation, ns)
+            ecu = process_ecu(node, db, searchPoint, multiplexTranslation, ns)
             desc = arGetChild(node, "DESC", searchPoint, ns)
             l2 = arGetChild(desc, "L-2", searchPoint, ns)
             if l2 is not None:
-                bu.add_comment(l2.text)
+                ecu.add_comment(l2.text)
 
-            db.add_ecu(bu)
+            db.add_ecu(ecu)
 
         for frame in db.frames:
             sig_value_hash = dict()

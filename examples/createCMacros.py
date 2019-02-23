@@ -28,7 +28,7 @@ import canmatrix.formats
 def createStoreMacro(signal, prefix="", frame="frame"):
     startBit = signal.get_startbit(bit_numbering=1, start_little=1)
     byteOrder = signal.is_little_endian
-    length = signal.signalsize
+    length = signal.size
     startByte = int(startBit / 8)
     startBitInByte = startBit % 8
     currentTargetLength = (8 - startBitInByte)
@@ -67,7 +67,7 @@ def createDecodeMacro(
     startByte = int(startBit / 8)
     startBitInByte = startBit % 8
 
-    code = "#define getSignal%s%s(%s)  ((((%s[%d])>>%d" % (
+    code = "#define get_signal%s%s(%s)  ((((%s[%d])>>%d" % (
         prefix, signal.name, macrosource, source, startByte, startBitInByte)
     currentTargetLength = (8 - startBitInByte)
 

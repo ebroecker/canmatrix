@@ -90,7 +90,7 @@ def main():
     sendIndex = 0
     txDict = {}
     for frame in db.frames:
-        if ecu in frame.receiver:
+        if ecu in frame.receivers:
             receiveArray.append(frame.id)
             receiveDict[frame] = receiveIndex
             receiveIndex += 1
@@ -121,7 +121,7 @@ def main():
     ccl_h += "extern " + txMailboxStruct + "\n"
     for frame in receiveDict:
         for signal in frame.signals:
-            if ecu in signal.receiver:
+            if ecu in signal.receivers:
                 ccl_h += createDecodeMacro(signal, "_" +
                                            frame.name +
                                            "__", "", "RxCanMailboxes[%d].data" %

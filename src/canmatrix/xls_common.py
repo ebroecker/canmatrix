@@ -20,7 +20,7 @@
 # DAMAGE.
 
 
-def getFrameInfo(db, frame):
+def get_frame_info(db, frame):
     retArray = []
     # frame-id
     if frame.extended:
@@ -47,7 +47,7 @@ def getFrameInfo(db, frame):
     return retArray
 
 
-def getSignal(db, sig, motorolaBitFormat):
+def get_signal(db, sig, motorolaBitFormat):
     frontArray = []
     backArray = []
     if motorolaBitFormat == "msb":

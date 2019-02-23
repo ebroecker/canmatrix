@@ -28,7 +28,7 @@ from collections import defaultdict
 import sys
 import csv
 import logging
-from canmatrix.xls_common import *
+import canmatrix.xls_common
 
 logger = logging.getLogger(__name__)
 
@@ -83,9 +83,9 @@ def writeBuMatrixx(buList, sig, frame, row, col):
     for bu in buList:
         # write "s" "r" "r/s" if signal is sent, received or send and received
         # by boardunit
-        if bu in sig.receiver and bu in frame.transmitters:
+        if bu in sig.receivers and bu in frame.transmitters:
             row[col] = "r/s"
-        elif bu in sig.receiver:
+        elif bu in sig.receivers:
             row[col] = "r"
         elif bu in frame.transmitters:
             row[col] = "s"
@@ -196,9 +196,9 @@ def dump(db, thefile, delimiter=',', **options):
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
                     signalRow = csvRow()
-                    signalRow += getFrameInfo(db,frame)
+                    signalRow += canmatrix.xls_common.get_frame_info(db, frame)
 
-                    (front, back) = getSignal(db,sig,motorolaBitFormat)
+                    (front, back) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
                     signalRow += front
                     signalRow += ("s" if sig.is_signed else "u")
 
@@ -220,9 +220,9 @@ def dump(db, thefile, delimiter=',', **options):
             # no value table available
             else:
                 signalRow = csvRow()
-                signalRow += getFrameInfo(db, frame)
+                signalRow += canmatrix.xls_common.get_frame_info(db, frame)
 
-                (front, back) = getSignal(db, sig, motorolaBitFormat)
+                (front, back) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
                 signalRow += front
                 signalRow += ("s" if sig.is_signed else "u")
 
