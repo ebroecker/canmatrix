@@ -180,14 +180,14 @@ def test_signal_default_attr_from_db(some_signal):
 def test_signal_no_duplicate_receiver(some_signal):
     some_signal.add_receiver("GW01")
     some_signal.add_receiver("GW01")
-    assert some_signal.receiver == ["GW01"]
+    assert some_signal.receivers == ["GW01"]
 
 
 def test_signal_delete_receiver(some_signal):
     some_signal.add_receiver("GW01")
     some_signal.add_receiver("ESP")
     some_signal.del_receiver("GW01")
-    assert some_signal.receiver == ["ESP"]
+    assert some_signal.receivers == ["ESP"]
 
 
 def test_signal_delete_wrong_receiver_doesnt_raise(some_signal):
@@ -459,8 +459,8 @@ def test_frame_create_dummy_signals_covers_all_bits():
 
 def test_frame_update_receivers():
     frame = canmatrix.canmatrix.Frame(size=1)
-    frame.add_signal(canmatrix.canmatrix.Signal(start_bit=0, size=3, receiver=["GW", "Keyboard"]))
-    frame.add_signal(canmatrix.canmatrix.Signal(start_bit=4, size=2, receiver=["GW", "Display"]))
+    frame.add_signal(canmatrix.canmatrix.Signal(start_bit=0, size=3, receivers=["GW", "Keyboard"]))
+    frame.add_signal(canmatrix.canmatrix.Signal(start_bit=4, size=2, receivers=["GW", "Display"]))
     frame.update_receiver()
     assert frame.receivers == ["GW", "Keyboard", "Display"]
 

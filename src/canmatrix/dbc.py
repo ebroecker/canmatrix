@@ -285,9 +285,9 @@ def dump(mydb, f, **options):
             signal_line += signal.unit
             signal_line += '" '
 
-            if signal.receiver.__len__() == 0:
+            if signal.receivers.__len__() == 0:
                 signal.add_receiver('Vector__XXX')
-            signal_line += ','.join(signal.receiver) + "\n"
+            signal_line += ','.join(signal.receivers) + "\n"
             f.write(signal_line.encode(dbcExportEncoding))
 
         f.write("\n".encode(dbcExportEncoding))
@@ -523,7 +523,7 @@ def load(f, **options):
                         min=temp.group(8),
                         max=temp.group(9),
                         unit=temp_raw.group(10).decode(dbcImportEncoding),
-                        receiver=receiver,
+                        receivers=receiver,
                         **extras
                     )
                     if not tempSig.is_little_endian:
@@ -569,7 +569,7 @@ def load(f, **options):
                         min=temp.group(9),
                         max=temp.group(10),
                         unit=temp_raw.group(11).decode(dbcImportEncoding),
-                        receiver=receiver,
+                        receivers=receiver,
                         multiplex=multiplex,
                         **extras
                     )

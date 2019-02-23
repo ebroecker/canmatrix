@@ -95,7 +95,7 @@ def dump(dbs, f, **options):
         db = dbs[name]
         for frame in db.frames:
             for signal in frame.signals:
-                for rec in signal.receiver:
+                for rec in signal.receivers:
                     if rec.strip() not in frame.receivers:
                         frame.receivers.append(rec.strip())
 
@@ -246,7 +246,7 @@ def dump(dbs, f, **options):
                     iSignalPortRefs = createSubElement(
                         isignalTriggering, 'I-SIGNAL-PORT-REFS')
 
-                    for receiver in signal.receiver:
+                    for receiver in signal.receivers:
                         iSignalPortRef = createSubElement(
                             iSignalPortRefs,
                             'I-SIGNAL-PORT-REF',
@@ -731,7 +731,7 @@ def dump(dbs, f, **options):
 
                     # missing I-PDU-PORT
                     for signal in frame.signals:
-                        if ecu.name in signal.receiver:
+                        if ecu.name in signal.receivers:
                             if arVersion[0] == "3":
                                 signalPort = createSubElement(
                                     ecuCommPortInstances, 'SIGNAL-PORT')
@@ -1185,7 +1185,7 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
                             factor=factor,
                             offset=offset,
                             unit=Unit,
-                            receiver=receiver,
+                            receivers=receiver,
                             multiplex=multiplexId,
                             comment=signalDescription,
                             is_float=is_float)
@@ -1697,7 +1697,7 @@ def load(file, **options):
                         # from each ECU than to go down in XML...
                         if sysSignal in signalRxs:
                             if ecuName not in signalRxs[sysSignal].receiver:
-                                signalRxs[sysSignal].receiver.append(ecuName)
+                                signalRxs[sysSignal].receivers.append(ecuName)
     # find ECUs:
         nodes = root.findall('.//' + ns + 'ECU-INSTANCE')
         for node in nodes:

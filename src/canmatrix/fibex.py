@@ -192,7 +192,7 @@ def dump(db, f, **options):
         inputPorts = createSubElementFx(function, "INPUT-PORTS")
         for frame in db.frames:
             for signal in frame.signals:
-                if bu.name in signal.receiver:
+                if bu.name in signal.receivers:
                     inputPort = createSubElementFx(inputPorts, "INPUT-PORT")
                     inputPort.set("ID", "INP_" + signal.name)
                     desc = etree.SubElement(inputPort, ns_ho + "DESC")

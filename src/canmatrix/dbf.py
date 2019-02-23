@@ -278,7 +278,7 @@ def load(f, **options):
                                                  min=Min * factor,
                                                  max=Max * factor,
                                                  unit=unit,
-                                                 receiver=receiver,
+                                                 receivers=receiver,
                                                  is_float=is_float,
                                                  multiplex=multiplex))
 
@@ -393,7 +393,7 @@ def dump(mydb, f, **options):
                     multiplex = 'm' + str(signal.multiplex)
 
             outstr += "," + signal.unit + ",%s," % multiplex + \
-                ','.join(signal.receiver) + "\n"
+                ','.join(signal.receivers) + "\n"
 
             if len(signal.values) > 0:
                 for attrib, val in sorted(list(signal.values.items())):

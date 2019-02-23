@@ -73,7 +73,7 @@ def createSignal(signal, nodeList, typeEnums):
         sig.append(notes)
 
     consumer = etree.Element('Consumer')
-    for receiver in signal.receiver:
+    for receiver in signal.receivers:
         if receiver in nodeList and len(receiver) > 1:
             noderef = etree.Element('NodeRef', id=str(nodeList[receiver]))
             consumer.append(noderef)
@@ -305,7 +305,7 @@ def parseSignal(signal, mux, namespace, nodelist, float_factory):
                     factor=factor,
                     offset=offset,
                     unit=unit,
-                    receiver=receiver,
+                    receivers=receiver,
                     is_float = is_float,
                     multiplex=mux)
 
@@ -413,7 +413,7 @@ def load(f, **options):
                                 factor=factor,
                                 offset=offset,
                                 unit=unit,
-                                receiver=receiver,
+                                receivers=receiver,
                                 multiplex='Multiplexor')
 
                 if min is not None:

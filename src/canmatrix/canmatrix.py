@@ -141,7 +141,7 @@ class Signal(object):
     factor = attr.ib(converter=float_factory, default=float_factory(1.0))
 
     unit = attr.ib(type=str, default="")
-    receiver = attr.ib(type=list, factory=list)
+    receivers = attr.ib(type=list, factory=list)
     comment = attr.ib(default=None)
     multiplex = attr.ib(default=None)
 
@@ -233,8 +233,8 @@ class Signal(object):
 
         :param str receiver: ECU name.
         """
-        if receiver not in self.receiver:
-            self.receiver.append(receiver)
+        if receiver not in self.receivers:
+            self.receivers.append(receiver)
 
     def del_receiver(self, receiver):
         """
@@ -242,8 +242,8 @@ class Signal(object):
 
         :param str receiver: ECU name.
         """
-        if receiver in self.receiver:
-            self.receiver.remove(receiver)
+        if receiver in self.receivers:
+            self.receivers.remove(receiver)
 
     def add_attribute(self, attribute, value):
         """
@@ -874,7 +874,7 @@ class Frame(object):
         Collect Frame receivers out of receiver given in each signal. Add them to `self.receiver` list.
         """
         for sig in self.signals:
-            for receiver in sig.receiver:
+            for receiver in sig.receivers:
                 self.add_receiver(receiver)
 
 
@@ -1529,7 +1529,7 @@ class CanMatrix(object):
                 self.add_ecu(canmatrix.ecu(transmit_ecu))
             frame.update_receiver()
             for signal in frame.signals:
-                for receive_ecu in signal.receiver:
+                for receive_ecu in signal.receivers:
                     self.add_ecu(canmatrix.ecu(receive_ecu))
 
     def rename_frame(self, old, newName):

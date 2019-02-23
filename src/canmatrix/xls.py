@@ -88,9 +88,9 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
 
         # write "s" "r" "r/s" if signal is sent, recieved or send and recived
         # by boardunit
-        if sig and bu in sig.receiver and bu in frame.transmitters:
+        if sig and bu in sig.receivers and bu in frame.transmitters:
             worksheet.write(row, col, label="r/s", style=locStyleSender)
-        elif sig and bu in sig.receiver:
+        elif sig and bu in sig.receivers:
             worksheet.write(row, col, label="r", style=locStyle)
         elif bu in frame.transmitters:
             worksheet.write(row, col, label="s", style=locStyleSender)
@@ -492,7 +492,7 @@ def load(file, **options):
                                 size=int(signalLength),
                                 is_little_endian=is_little_endian,
                                 is_signed=is_signed,
-                                receiver=receiver,
+                                receivers=receiver,
                                 multiplex=multiplex)
 #               else:
 #                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
