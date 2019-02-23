@@ -28,11 +28,12 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import xlwt
-from canmatrix.xls_common import *
-from .canmatrix import *
+import canmatrix
+import canmatrix.xls_common
 import xlrd
+import decimal
 
-logger = logging.getLogger(__name__)
+logger = canmatrix.logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
 
 
@@ -204,7 +205,7 @@ def dump(db, file, **options):
         # iterate over signals
         rowArray = []
         if len(sigHash) == 0: # Frames without signals
-            rowArray += getFrameInfo(db, frame)
+            rowArray += canmatrix.xls_common.get_frame_info(db, frame)
             for item in range(5, head_start):
                 rowArray.append("")
             tempCol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
@@ -232,7 +233,7 @@ def dump(db, file, **options):
                 valstyle = sigstyle
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
-                    rowArray = getFrameInfo(db, frame)
+                    rowArray = canmatrix.xls_common.get_frame_info(db, frame)
                     frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                     if framestyle != sty_first_frame:
                         worksheet.row(row).level = 1
@@ -241,7 +242,7 @@ def dump(db, file, **options):
                     col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)
 
                     # write Value
-                    (frontRow, backRow) = getSignal(db, sig, motorolaBitFormat)
+                    (frontRow, backRow) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
                     writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
                     backRow += additionalFrameInfo
                     for item in additional_signal_colums:
@@ -261,7 +262,7 @@ def dump(db, file, **options):
                 # loop over values ends here
             # no valuetable available
             else:
-                rowArray = getFrameInfo(db, frame)
+                rowArray = canmatrix.xls_common.get_frame_info(db, frame)
                 frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                 if framestyle != sty_first_frame:
                     worksheet.row(row).level = 1
@@ -269,7 +270,7 @@ def dump(db, file, **options):
                 col = head_start
                 col = writeBuMatrix(
                     buList, sig, frame, worksheet, row, col, framestyle)
-                (frontRow,backRow)  = getSignal(db,sig,motorolaBitFormat)
+                (frontRow,backRow)  = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
                 writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
 
                 if float(sig.min) != 0 or float(sig.max) != 1.0:
@@ -333,7 +334,7 @@ def load(file, **options):
     additionalInputs = dict()
     wb = xlrd.open_workbook(file_contents=file.read())
     sh = wb.sheet_by_index(0)
-    db = CanMatrix()
+    db = canmatrix.CanMatrix()
 
     # Defines not imported...
 #       db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
@@ -395,7 +396,7 @@ def load(file, **options):
 
     # BoardUnits:
     for x in range(index['BUstart'], index['BUend']):
-        db.add_ecu(ecu(sh.cell(0, x).value))
+        db.add_ecu(canmatrix.ecu(sh.cell(0, x).value))
 
     # initialize:
     frameId = None
@@ -423,9 +424,9 @@ def load(file, **options):
                 launchParam = "0"
 
             if frameId.endswith("xh"):
-                newBo = Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended = True)
+                newBo = canmatrix.Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended = True)
             else:
-                newBo = Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
+                newBo = canmatrix.Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
             db.add_frame(newBo)
 
             # eval launctype
@@ -487,7 +488,7 @@ def load(file, **options):
                     if 'r' in sh.cell(rownum, x).value:
                         receiver.append(sh.cell(0, x).value.strip())
 #                if signalLength > 8:
-                newSig = Signal(signalName,
+                newSig = canmatrix.Signal(signalName,
                                 start_bit=(startbyte - 1) * 8 + startbit,
                                 size=int(signalLength),
                                 is_little_endian=is_little_endian,

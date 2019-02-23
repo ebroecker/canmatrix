@@ -67,7 +67,7 @@ def createDecodeMacro(
     startByte = int(startBit / 8)
     startBitInByte = startBit % 8
 
-    code = "#define getSignal%s%s(%s)  ((((%s[%d])>>%d" % (
+    code = "#define get_signal%s%s(%s)  ((((%s[%d])>>%d" % (
         prefix, signal.name, macrosource, source, startByte, startBitInByte)
     currentTargetLength = (8 - startBitInByte)
 
