@@ -126,14 +126,14 @@ def dump(mydb, f, **options):
         db.add_frame_defines("VFrameFormat", 'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
         for frame in db.frames:
             if frame.is_fd:
-                if frame.extended:
+                if frame.arbitration_id.extended:
                     frame.add_attribute("VFrameFormat", "ExtendedCAN_FD")
                 else:
                     frame.add_attribute("VFrameFormat", "StandardCAN_FD")
             elif frame.is_j1939:
                 frame.add_attribute("VFrameFormat", "J1939PG")
             else:
-                if frame.extended:
+                if frame.arbitration_id.extended:
                     frame.add_attribute("VFrameFormat", "ExtendedCAN")
                 else:
                     frame.add_attribute("VFrameFormat", "StandardCAN")
@@ -142,7 +142,7 @@ def dump(mydb, f, **options):
 
     # free signals are in special frame in dbc...
     if len(db.signals) > 0:
-        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG", id = 0x40000000, extended=True)
+        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG", id = canmatrix.Arbitration_Id(0x40000000, extended=True))
         free_signals_dummy_frame.signals = db.signals
         db.addFrame(free_signals_dummy_frame)
 
@@ -234,12 +234,12 @@ def dump(mydb, f, **options):
         if frame.transmitters.__len__() == 0:
             frame.add_transmitter("Vector__XXX")
 
-        if frame.extended == 1:
-            frame.id += 0x80000000
+        if frame.arbitration_id.extended == 1:
+            frame.arbitration_id.id += 0x80000000
         
         f.write(
             ("BO_ %d " %
-             frame.id +
+             frame.arbitration_id.id +
              frame.name +
              ": %d " %
              frame.size +
@@ -296,14 +296,14 @@ def dump(mydb, f, **options):
     # second Sender:
     for frame in db.frames:
         if frame.transmitters.__len__() > 1:
-            f.write(("BO_TX_BU_ %d : %s;\n" % (frame.id, ','.join(frame.transmitters))).encode(dbcExportEncoding))
+            f.write(("BO_TX_BU_ %d : %s;\n" % (frame.arbitration_id.id, ','.join(frame.transmitters))).encode(dbcExportEncoding))
 
 
 
     # frame comments
     # wow, there are dbcs where comments are encoded with other coding than rest of dbc...
     for frame in db.frames:
-        f.write(create_comment_string("BO_", "%d " % frame.id, frame.comment, dbcExportEncoding, dbcExportCommentEncoding))
+        f.write(create_comment_string("BO_", "%d " % frame.arbitration_id.id, frame.comment, dbcExportEncoding, dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal comments
@@ -311,7 +311,7 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             if signal.comment is not None and signal.comment.__len__() > 0:
                 name = output_names[frame][signal]
-                f.write(create_comment_string("SG_", "%d " % frame.id + name, signal.comment, dbcExportEncoding,
+                f.write(create_comment_string("SG_", "%d " % frame.arbitration_id.id + name, signal.comment, dbcExportEncoding,
                                               dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
@@ -362,7 +362,7 @@ def dump(mydb, f, **options):
     # messages-attributes:
     for frame in db.frames:
         for attrib, val in sorted(frame.attributes.items()):
-            f.write(create_attribute_string(attrib, "BO_", str(frame.id), val, db.frame_defines[attrib].type == "STRING").encode(dbcExportEncoding))
+            f.write(create_attribute_string(attrib, "BO_", str(frame.arbitration_id.id), val, db.frame_defines[attrib].type == "STRING").encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-attributes:
@@ -372,7 +372,7 @@ def dump(mydb, f, **options):
                 name = output_names[frame][signal]
                 if isinstance(val, float):
                     val = format_float(val)
-                f.write(create_attribute_string(attrib, "SG_", '%d ' % frame.id + name, val,
+                f.write(create_attribute_string(attrib, "SG_", '%d ' % frame.arbitration_id.id + name, val,
                                                 db.signal_defines[attrib].type == "STRING").encode(dbcExportEncoding))
 
     f.write("\n".encode(dbcExportEncoding))
@@ -396,7 +396,7 @@ def dump(mydb, f, **options):
             if signal.values:
                 f.write(
                     ('VAL_ %d ' %
-                     frame.id +
+                     frame.arbitration_id.id +
                      output_names[frame][signal]).encode(dbcExportEncoding))
                 for attrib, val in sorted(
                         signal.values.items(), key=lambda x: int(x[0])):
@@ -409,16 +409,16 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             if signal.is_float:
                 if int(signal.size) > 32:
-                    f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.id, output_names[frame][signal])).encode(
+                    f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.arbitration_id.id, output_names[frame][signal])).encode(
                         dbcExportEncoding))
                 else:
-                    f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.id, output_names[frame][signal])).encode(
+                    f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.arbitration_id.id, output_names[frame][signal])).encode(
                         dbcExportEncoding))
 
     # signal-groups:
     for frame in db.frames:
         for sigGroup in frame.signalGroups:
-            f.write(("SIG_GROUP_ " + str(frame.id) + " " + sigGroup.name +
+            f.write(("SIG_GROUP_ " + str(frame.arbitration_id.id) + " " + sigGroup.name +
                      " " + str(sigGroup.id) + " :").encode(dbcExportEncoding))
             for signal in sigGroup.signals:
                 f.write((" " + output_names[frame][signal]).encode(dbcExportEncoding))
@@ -428,7 +428,7 @@ def dump(mydb, f, **options):
         if frame.is_complex_multiplexed:
             for signal in frame.signals:
                 if signal.muxerForSignal is not None:
-                    f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
+                    f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.arbitration_id.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
 
     for envVarName in db.env_vars:
         envVar = db.env_vars[envVarName]
@@ -458,7 +458,8 @@ def load(f, **options):
         l = line.strip()
         if l.__len__() == 0:
             continue
-        try:
+        #try:
+        if 1==1:
             if followUp == FollowUps.signalComment:
                 try:
                     comment += "\n" + \
@@ -497,7 +498,9 @@ def load(f, **options):
                 regexp = re.compile(r"^BO_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-                frame = canmatrix.Frame(temp.group(2), id=int(temp.group(1)), size=int(temp.group(3)), transmitters=temp.group(4).split())
+                frame = canmatrix.Frame(temp.group(2),
+                                        size=int(temp.group(3)), transmitters=temp.group(4).split())
+                frame.arbitration_id = canmatrix.Arbitration_Id.from_compound_integer(int(temp.group(1)))
                 db.frames.append(frame)
             elif decoded.startswith("SG_ "):
                 pattern = r"^SG_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
@@ -869,8 +872,8 @@ def load(f, **options):
                               "accessType" : accessType, "accessNodes" : accessNodes})
 
 
-#        else:
-        except:
+        else:
+#        except:
             print ("error with line no: %d" % i)
             print (line)
 # Backtracking
@@ -892,9 +895,9 @@ def load(f, **options):
         # to the frame:
         frame.update_receiver()
         # extended-flag is implicite in canid, thus repair this:
-        if frame.id > 0x80000000:
-            frame.id -= 0x80000000
-            frame.extended = 1
+        #if frame.id > 0x80000000:
+        #    frame.id -= 0x80000000
+        #    frame.extended = 1
 
         if "VFrameFormat" in frame.attributes and "_FD" in frame.attributes["VFrameFormat"]:
             frame.is_fd = True
@@ -928,7 +931,7 @@ def load(f, **options):
     db.update_ecu_list()
     db.del_ecu("Vector__XXX")
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
-    if free_signals_dummy_frame is not None and free_signals_dummy_frame.id == 0x40000000:
+    if free_signals_dummy_frame is not None and free_signals_dummy_frame.arbitration_id.id == 0x40000000:
         db.signals = free_signals_dummy_frame.signals
         db.del_frame(free_signals_dummy_frame)
 

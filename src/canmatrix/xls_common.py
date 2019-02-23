@@ -23,10 +23,10 @@
 def get_frame_info(db, frame):
     retArray = []
     # frame-id
-    if frame.extended:
-        retArray.append("%3Xxh" % frame.id)
+    if frame.arbitration_id.extended:
+        retArray.append("%3Xxh" % frame.arbitration_id.id)
     else:
-        retArray.append("%3Xh" % frame.id)
+        retArray.append("%3Xh" % frame.arbitration_id.id)
     # frame-Name
     retArray.append(frame.name)
 

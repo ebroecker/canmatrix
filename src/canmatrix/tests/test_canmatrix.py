@@ -408,7 +408,7 @@ def test_encode_decode_frame():
     input_data = {'signal': decimal.Decimal('3.5')}
 
     s1 = canmatrix.canmatrix.Signal('signal', size=32, is_float=True)
-    f1 = canmatrix.canmatrix.Frame('frame', id=1, size=4)
+    f1 = canmatrix.canmatrix.Frame('frame', arbitration_id=1, size=4)
     f1.add_signal(s1)
 
     raw_bytes = f1.encode(input_data)
@@ -491,7 +491,7 @@ def test_frame_calc_j1939_id():
     frame.source = 0x22
     frame.pgn = 0xAAAA
     frame.priority = 3
-    assert hex(frame.id) == hex(0x0CAAAA22)
+    assert hex(frame.arbitration_id.id) == hex(0x0CAAAA22)
 
 
 def test_frame_get_j1939_properties():
@@ -564,7 +564,7 @@ def test_frame_is_iterable(empty_frame, some_signal):
 
 
 def test_frame_find_mandatory_attribute(empty_frame):
-    assert empty_frame.attribute("id") == empty_frame.id
+    assert empty_frame.attribute("arbitration_id") == empty_frame.arbitration_id
 
 
 def test_frame_find_optional_attribute(empty_frame):
@@ -703,3 +703,20 @@ def test_decoded_signal_named_value():
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
     decoded = canmatrix.canmatrix.decoded_signal(100, signal)
     assert decoded.named_value == "Init"
+
+def test_Arbitration_id():
+    arbitration_id_1 = canmatrix.Arbitration_Id(id = 0x1, extended= False)
+    arbitration_id_2 = canmatrix.Arbitration_Id(id = 0x1, extended= True)
+    arbitration_id_3 = canmatrix.Arbitration_Id(id = 0x1, extended= None)
+
+    arbitration_id_4 = canmatrix.Arbitration_Id.from_compound_integer(1)
+    arbitration_id_5 = canmatrix.Arbitration_Id.from_compound_integer(1 | 1 << 31)
+
+    assert arbitration_id_1.id == 1
+    assert arbitration_id_2.id == 1
+    assert arbitration_id_3.id == 1
+    assert arbitration_id_1 != arbitration_id_2
+    assert arbitration_id_1 == arbitration_id_3
+    assert arbitration_id_2 == arbitration_id_3
+    assert arbitration_id_4 == arbitration_id_1
+    assert arbitration_id_5 == arbitration_id_2

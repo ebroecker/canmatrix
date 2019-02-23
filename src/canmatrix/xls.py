@@ -178,7 +178,7 @@ def dump(db, file, **options):
         if frame.is_complex_multiplexed:
             logger.error("export complex multiplexers is not supported - ignoring frame " + frame.name)
             continue
-        frameHash[int(frame.id)] = frame
+        frameHash[int(frame.arbitration_id.id)] = frame
 
     # set row to first Frame (row = 0 is header)
     row = 1
@@ -424,9 +424,9 @@ def load(file, **options):
                 launchParam = "0"
 
             if frameId.endswith("xh"):
-                newBo = canmatrix.Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended = True)
+                newBo = canmatrix.Frame(frameName, arbitration_id=int(frameId[:-2], 16), size=dlc, extended = True)
             else:
-                newBo = canmatrix.Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
+                newBo = canmatrix.Frame(frameName, arbitration_id=int(frameId[:-1], 16), size=dlc)
             db.add_frame(newBo)
 
             # eval launctype

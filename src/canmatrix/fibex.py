@@ -118,7 +118,7 @@ def dump(db, f, **options):
             frameTriggerings, "FRAME-TRIGGERING")
         frameTriggering.set("ID", "FT_" + frame.name)
         identifier = createSubElementFx(frameTriggering, "IDENTIFIER")
-        createSubElementFx(identifier, "IDENTIFIER-VALUE", str(frame.id))
+        createSubElementFx(identifier, "IDENTIFIER-VALUE", str(frame.arbitration_id.id))
         frameRef = createSubElementFx(frameTriggering, "FRAME-REF")
         frameRef.set("ID-REF", "FRAME_" + frame.name)
 

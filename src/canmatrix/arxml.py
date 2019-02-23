@@ -201,7 +201,7 @@ def dump(dbs, f, **options):
                     pduTriggeringRefConditional, 'PDU-TRIGGERING-REF')
                 pduTriggeringRef.set('DEST', 'PDU-TRIGGERING')
 
-            if frame.extended == 0:
+            if frame.arbitration_id.extended == 0:
                 createSubElement(
                     canFrameTriggering,
                     'CAN-ADDRESSING-MODE',
@@ -211,7 +211,7 @@ def dump(dbs, f, **options):
                     canFrameTriggering,
                     'CAN-ADDRESSING-MODE',
                     'EXTENDED')
-            createSubElement(canFrameTriggering, 'IDENTIFIER', str(frame.id))
+            createSubElement(canFrameTriggering, 'IDENTIFIER', str(frame.arbitration_id.id))
 
             pduTriggeringRef.text = "/Cluster/CAN/IPDUTRIGG_" + frame.name
 
@@ -1247,7 +1247,7 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
 
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
-        newFrame = canmatrix.Frame(arGetName(frameR, ns), id=idNum, size=int(dlc.text))
+        newFrame = canmatrix.Frame(arGetName(frameR, ns), arbitration_id=idNum, size=int(dlc.text))
         comment = get_desc(frameR, xmlRoot, ns)
         if comment is not None:
             newFrame.add_comment(comment)
@@ -1310,7 +1310,7 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
 
     if extEle is not None:
         if extEle.text == 'EXTENDED':
-            newFrame.extended = 1
+            newFrame.arbitration_id.extended = 1
 
     timingSpec = arGetChild(pdu, "I-PDU-TIMING-SPECIFICATION", xmlRoot, ns)
     if timingSpec is None:

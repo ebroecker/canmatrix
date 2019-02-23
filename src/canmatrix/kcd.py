@@ -171,9 +171,9 @@ def dump(dbs, f, **options):
 
         for frame in db.frames:
             message = etree.Element('Message', id="0x%03X" %
-                                    frame.id, name=frame.name, length=str(int(frame.size)))
+                                    frame.arbitration_id.id, name=frame.name, length=str(int(frame.size)))
 
-            if frame.extended == 1:
+            if frame.arbitration_id.extended == 1:
                 message.set("format", "extended")
             if "GenMsgCycleTime" in db.frame_defines:
                 cycleTime = frame.attribute("GenMsgCycleTime", db=db)
@@ -359,7 +359,7 @@ def load(f, **options):
         for message in messages:
             dlc = None
             #new_frame = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
-            new_frame = canmatrix.Frame(message.get('name'), id=int(message.get('id'), 16))
+            new_frame = canmatrix.Frame(message.get('name'), arbitration_id=int(message.get('id'), 16))
 
             if 'triggered' in message.attrib:
                 new_frame.add_attribute("GenMsgCycleTime", message.get('interval'))
@@ -370,7 +370,7 @@ def load(f, **options):
 
             if 'format' in message.attrib:
                 if message.get('format') == "extended":
-                    new_frame.extended = 1
+                    new_frame.arbitration_id.extended = 1
 
             multiplex = message.find('./' + namespace + 'Multiplex')
             if multiplex is not None:

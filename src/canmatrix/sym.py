@@ -214,15 +214,15 @@ Title=\"canmatrix-Export\"
         for frame in frames:
             name = "[" + frame.name + "]\n"
 
-            if frame.extended == 1:
-                idType = "ID=%08Xh" % (frame.id)
+            if frame.arbitration_id.extended == 1:
+                idType = "ID=%08Xh" % (frame.arbitration_id.id)
             else:
-                idType = "ID=%03Xh" % (frame.id)
+                idType = "ID=%03Xh" % (frame.arbitration_id.id)
             if frame.comment is not None and len(frame.comment) > 0:
                 idType += "\t// " + \
                     frame.comment.replace('\n', ' ').replace('\r', ' ')
             idType += "\n"
-            if frame.extended == 1:
+            if frame.arbitration_id.extended == 1:
                 idType += "Type=Extended\n"
             else:
                 idType += "Type=Standard\n"
@@ -597,11 +597,11 @@ def load(f, **options):
                         split = line.split('//', 1)
                         comment = split[1].strip()
                         line = split[0].strip()
-                    frame.id = int(line.split('=')[1].strip()[:-1], 16)
+                    frame.arbitration_id.id  = int(line.split('=')[1].strip()[:-1], 16)
                     frame.add_comment(comment)
                 elif line.startswith('Type'):
                     if line.split('=')[1][:8] == "Extended":
-                        frame.extended = 1
+                        frame.arbitration_id.extended = 1
                 elif line.startswith('DLC'):
                     frame.size = int(line.split('=')[1])
 

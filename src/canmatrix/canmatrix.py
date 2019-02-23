@@ -60,6 +60,7 @@ class EncodingComplexMultiplexed(ExceptionTemplate): pass
 class MissingMuxSignal(ExceptionTemplate): pass
 class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
+class ArbitrationIdOutOfRange(ExceptionTemplate): pass
 
 @attr.s
 class ecu(object):
@@ -552,6 +553,42 @@ def pack_bitstring(length, is_float, value, signed):
     return bitstring
 
 @attr.s(cmp=False)
+class Arbitration_Id(object):
+    standard_id_mask = ((1 << 11) - 1)
+    extended_id_mask = ((1 << 29) - 1)
+    compound_extended_mask = (1 << 31)
+
+    id = attr.ib(default=None)
+    extended = attr.ib(default=None)
+
+    def __attrs_post_init__(self):
+        if self.extended is None or self.extended:
+            mask = self.extended_id_mask
+        else:
+            mask = self.standard_id_mask
+
+        if self.id != self.id & mask:
+            raise ArbitrationIdOutOfRange('ID out of range')
+
+    @classmethod
+    def from_compound_integer(cls, i):
+        return cls(
+            id=i & cls.extended_id_mask,
+            extended=(i & cls.compound_extended_mask) != 0,
+        )
+
+    def __eq__(self, other):
+        return (
+            self.id == other.id
+            and (
+                self.extended is None
+                or other.extended is None
+                or self.extended == other.extended
+            )
+        )
+
+
+@attr.s(cmp=False)
 class Frame(object):
     """
     Contains one CAN Frame.
@@ -574,10 +611,10 @@ class Frame(object):
     """
 
     name = attr.ib(default="")
-    id = attr.ib(type=int, default=0)
+    arbitration_id = attr.ib(converter=Arbitration_Id, default=0)
     size = attr.ib(default=0)
     transmitters = attr.ib(type=list, factory=list)
-    extended = attr.ib(type=bool, default=False)
+    # extended = attr.ib(type=bool, default=False)
     is_complex_multiplexed = attr.ib(type=bool, default=False)
     is_fd = attr.ib(type=bool, default=False)
     comment = attr.ib(default="")
@@ -604,7 +641,7 @@ class Frame(object):
 
     @property
     def pgn(self):
-        return CanId(self.id).pgn
+        return CanId(self.arbitration_id.id).pgn
 
     @pgn.setter
     def pgn(self, value):
@@ -635,8 +672,8 @@ class Frame(object):
 
     def recalc_J1939_id(self):
         """Recompute J1939 ID"""
-        self.id = (self.j1939_source & 0xff) + ((self.j1939_pgn & 0xffff) << 8) + ((self.j1939_prio & 0x7) << 26)
-        self.extended = True
+        self.arbitration_id.id = (self.j1939_source & 0xff) + ((self.j1939_pgn & 0xffff) << 8) + ((self.j1939_prio & 0x7) << 26)
+        self.arbitration_id.extended = True
         self.is_j1939 = True
 
     # @property
@@ -1000,7 +1037,7 @@ class Frame(object):
         rx_length = len(data)
         if rx_length != self.size and report_error:
             print(
-                'Received message 0x{self.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
+                'Received message 0x{self.arbitration_id.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
             raise DecodingFrameLength
         else:
             little, big = self.bytes_to_bitstrings(data)
@@ -1326,7 +1363,7 @@ class CanMatrix(object):
         Id = int(Id)
         extendedMarker = 0x80000000
         for test in self.frames:
-            if test.id == Id:
+            if test.arbitration_id.id == Id:
                 if extended is None:
                     # found ID while ignoring extended or standard
                     return test
@@ -1338,9 +1375,9 @@ class CanMatrix(object):
                     # what to do if Id is not equal and extended is also provided ???
                     pass
                 else:
-                    if test.extended and Id & extendedMarker:
+                    if test.arbitration_id.extended and Id & extendedMarker:
                         # check regarding common used extended Bit 31
-                        if test.id == Id - extendedMarker:
+                        if test.arbitration_id.id == Id - extendedMarker:
                             return test
         return None
 
@@ -1669,10 +1706,10 @@ class CanMatrix(object):
         """
         for dbTemp in mergeArray:
             for frame in dbTemp.frames:
-                copyResult = canmatrix.copy.copy_frame(frame.id, dbTemp, self)
+                copyResult = canmatrix.copy.copy_frame(frame.arbitration_id.id, dbTemp, self)
                 if copyResult == False:
                     logger.error(
-                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + self.frame_by_id(frame.id).name)
+                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.arbitration_id.id + self.frame_by_id(frame.arbitration_id.id).name)
             for envVar in dbTemp.env_vars:
                 if envVar not in self.env_vars:
                     self.add_env_var(envVar, dbTemp.envVars[envVar])

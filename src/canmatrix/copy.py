@@ -125,7 +125,7 @@ def copy_frame(frameId, sourceDb, targetDb):
     for frame in frameList:
         logger.info("Copying Frame " + frame.name)
 
-        if targetDb.frame_by_id(frame.id) is not None:
+        if targetDb.frame_by_id(frame.arbitration_id.id) is not None:
             # frame already in targetdb...
             return False
 
