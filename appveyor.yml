@@ -15,6 +15,7 @@ environment:
 
 matrix:
   allow_failures:
+    - TOXENV: pypy # until we get pypy in chocolatey
     - TOXENV: pypy3 # until we get pypy3 in chocolatey
 
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
@@ -25,7 +26,7 @@ init:
 install:
   - if "%TOXENV%"=="pypy" choco install python.pypy
   - if "%TOXENV%"=="pypy3" choco install python.pypy3
-  - py -3.7 -m venv "%VENV%"
+  - py -3.6 -m venv "%VENV%"
   - "%VENV%\\Scripts\\activate"
   - python -c "import sys; print(sys.version)"
   - pip install -r requirements.tox.txt
