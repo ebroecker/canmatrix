@@ -15,6 +15,7 @@ environment:
 
 matrix:
   allow_failures:
+    - TOXENV: pypy # until we get pypy in chocolatey
     - TOXENV: pypy3 # until we get pypy3 in chocolatey
 
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
