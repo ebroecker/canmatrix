@@ -724,5 +724,5 @@ def test_Arbitration_id():
     assert id_from_int_standard == id_standard
     assert id_from_int_standard != id_extended
     assert id_from_int_extended == id_extended
-    assert id_from_int_standard != id_standard
+    assert id_from_int_extended != id_standard
 
