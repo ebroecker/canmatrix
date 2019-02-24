@@ -705,18 +705,24 @@ def test_decoded_signal_named_value():
     assert decoded.named_value == "Init"
 
 def test_Arbitration_id():
-    arbitration_id_1 = canmatrix.Arbitration_Id(id = 0x1, extended= False)
-    arbitration_id_2 = canmatrix.Arbitration_Id(id = 0x1, extended= True)
-    arbitration_id_3 = canmatrix.Arbitration_Id(id = 0x1, extended= None)
+    id_standard = canmatrix.Arbitration_Id(id = 0x1, extended= False)
+    id_extended = canmatrix.Arbitration_Id(id = 0x1, extended= True)
+    id_unknown = canmatrix.Arbitration_Id(id = 0x1, extended= None)
 
-    arbitration_id_4 = canmatrix.Arbitration_Id.from_compound_integer(1)
-    arbitration_id_5 = canmatrix.Arbitration_Id.from_compound_integer(1 | 1 << 31)
+    id_from_int_standard = canmatrix.Arbitration_Id.from_compound_integer(1)
+    id_from_int_extended = canmatrix.Arbitration_Id.from_compound_integer(1 | 1 << 31)
 
-    assert arbitration_id_1.id == 1
-    assert arbitration_id_2.id == 1
-    assert arbitration_id_3.id == 1
-    assert arbitration_id_1 != arbitration_id_2
-    assert arbitration_id_1 == arbitration_id_3
-    assert arbitration_id_2 == arbitration_id_3
-    assert arbitration_id_4 == arbitration_id_1
-    assert arbitration_id_5 == arbitration_id_2
+    assert id_standard.to_compound_integer() == 1
+    assert id_extended.to_compound_integer() == (1 | 1 << 31)
+
+    assert id_standard.id == 1
+    assert id_extended.id == 1
+    assert id_unknown.id == 1
+    assert id_standard != id_extended
+    assert id_standard == id_unknown
+    assert id_extended == id_unknown
+    assert id_from_int_standard == id_standard
+    assert id_from_int_standard != id_extended
+    assert id_from_int_extended == id_extended
+    assert id_from_int_standard != id_standard
+

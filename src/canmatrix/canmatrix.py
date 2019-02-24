@@ -577,6 +577,12 @@ class Arbitration_Id(object):
             extended=(i & cls.compound_extended_mask) != 0,
         )
 
+    def to_compound_integer(self):
+        if self.extended:
+            return self.id | self.compound_extended_mask
+        else:
+            return self.id
+
     def __eq__(self, other):
         return (
             self.id == other.id
@@ -611,7 +617,7 @@ class Frame(object):
     """
 
     name = attr.ib(default="")
-    arbitration_id = attr.ib(converter=Arbitration_Id, default=0)
+    arbitration_id = attr.ib(converter=Arbitration_Id.from_compound_integer, default=0)
     size = attr.ib(default=0)
     transmitters = attr.ib(type=list, factory=list)
     # extended = attr.ib(type=bool, default=False)

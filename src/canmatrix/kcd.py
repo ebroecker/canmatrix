@@ -359,7 +359,7 @@ def load(f, **options):
         for message in messages:
             dlc = None
             #new_frame = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
-            new_frame = canmatrix.Frame(message.get('name'), arbitration_id=int(message.get('id'), 16))
+            new_frame = canmatrix.Frame(message.get('name'))
 
             if 'triggered' in message.attrib:
                 new_frame.add_attribute("GenMsgCycleTime", message.get('interval'))
@@ -368,9 +368,11 @@ def load(f, **options):
                 dlc = int(message.get('length'))
                 new_frame.size = dlc
 
-            if 'format' in message.attrib:
-                if message.get('format') == "extended":
-                    new_frame.arbitration_id.extended = 1
+            if 'format' in message.attrib and message.get('format') == "extended":
+                new_frame.arbitration_id = canmatrix.Arbitration_Id(int(message.get('id'), 16), extended = True)
+            else:
+                new_frame.arbitration_id = canmatrix.Arbitration_Id(int(message.get('id'), 16), extended = False)
+
 
             multiplex = message.find('./' + namespace + 'Multiplex')
             if multiplex is not None:
