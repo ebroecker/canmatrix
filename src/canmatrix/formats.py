@@ -1,9 +1,11 @@
 #!env python
-from importlib import import_module
-import sys
 import logging
-import canmatrix
 import os
+import sys
+from importlib import import_module
+
+import canmatrix
+
 if sys.version_info > (3, 0):
     import io
 else:
