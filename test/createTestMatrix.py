@@ -12,8 +12,8 @@ from canmatrix.canmatrix import *
 
 db = CanMatrix()
 
-db.ecus.add(ecu("testBU"))
-db.ecus.add(ecu("recBU"))
+db.ecus.add(Ecu("testBU"))
+db.ecus.add(Ecu("recBU"))
 
 myFrame = Frame("testFrame1", Id=0x123, dlc=8, transmitter="testBU")
 

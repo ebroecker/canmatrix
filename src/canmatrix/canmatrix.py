@@ -55,14 +55,14 @@ class ExceptionTemplate(Exception):
     def __call__(self, *args):
         return self.__class__(*(self.args + args))
 
-class StarbitLowerZero(ExceptionTemplate): pass
+class StartbitLowerZero(ExceptionTemplate): pass
 class EncodingComplexMultiplexed(ExceptionTemplate): pass
 class MissingMuxSignal(ExceptionTemplate): pass
 class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
 
 @attr.s
-class ecu(object):
+class Ecu(object):
     """
     Contains one Boardunit/ECU
     """
@@ -295,7 +295,7 @@ class Signal(object):
         if start_bit < 0:
             print("wrong start_bit found Signal: %s Startbit: %d" %
                   (self.name, start_bit))
-            raise StarbitLowerZero
+            raise StartbitLowerZero
         self.start_bit = start_bit
 
     def get_startbit(self, bit_numbering=None, start_little=None):
@@ -418,7 +418,7 @@ class Signal(object):
 
 
 @attr.s(cmp=False)
-class signal_group(object):
+class SignalGroup(object):
     """
     Represents signal-group, containing multiple Signals.
     """
@@ -467,7 +467,7 @@ class signal_group(object):
 
 
 @attr.s
-class decoded_signal(object):
+class DecodedSignal(object):
     """
     Contains a decoded signal (frame decoding)
 
@@ -691,7 +691,7 @@ class Frame(object):
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = signal_group(Name, Id)
+        newGroup = SignalGroup(Name, Id)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
@@ -706,7 +706,7 @@ class Frame(object):
 
         :param str name: group name
         :return: SignalGroup by name or None if not found.
-        :rtype: signal_group
+        :rtype: SignalGroup
         """
         for signalGroup in self.signalGroups:
             if signalGroup.name == name:
@@ -1010,7 +1010,7 @@ class Frame(object):
             returnDict= dict()
 
             for s, v in zip(self.signals, unpacked):
-                returnDict[s.name] = decoded_signal(v, s)
+                returnDict[s.name] = DecodedSignal(v, s)
 
             return returnDict
 
@@ -1372,7 +1372,7 @@ class CanMatrix(object):
         Returns Boardunit by Name.
 
         :param str name: BoardUnit name
-        :rtype: ecu or None
+        :rtype: Ecu or None
         """
         for test in self.ecus:
             if test.name == name:
@@ -1384,7 +1384,7 @@ class CanMatrix(object):
         Find ECUs by given glob pattern.
 
         :param globStr: glob pattern to filter BoardUnits. See `fnmatch.fnmatchcase`.
-        :rtype: list of ecu
+        :rtype: list of Ecu
         """
         returnArray = []
         for test in self.ecus:
@@ -1470,7 +1470,7 @@ class CanMatrix(object):
     def rename_ecu(self, old, newName):
         """Rename ECU in the Matrix. Update references in all Frames.
 
-        :param str or ecu old: old name or ECU instance
+        :param str or Ecu old: old name or ECU instance
         :param str newName: new name
         """
         if type(old).__name__ == 'instance':
@@ -1494,7 +1494,7 @@ class CanMatrix(object):
     def add_ecu(self, ecu):
         """Add new ECU to the Matrix. Do nothing if ecu with the same name already exists.
 
-        :param ecu ecu: ECU name to add
+        :param Ecu ecu: ECU name to add
         """
         for bu in self.ecus:
             if bu.name.strip() == ecu.name:
@@ -1504,7 +1504,7 @@ class CanMatrix(object):
     def del_ecu(self, ecu):
         """Remove ECU from Matrix and all Frames.
 
-        :param str or ecu ecu: ECU instance or glob pattern to remove from list
+        :param str or Ecu ecu: ECU instance or glob pattern to remove from list
         """
         if type(ecu).__name__ == 'instance':
             ecuList = [ecu]
@@ -1526,11 +1526,11 @@ class CanMatrix(object):
         """Check all Frames and add unknown ECUs to the Matrix ECU list."""
         for frame in self.frames:
             for transmit_ecu in frame.transmitters:
-                self.add_ecu(canmatrix.ecu(transmit_ecu))
+                self.add_ecu(canmatrix.Ecu(transmit_ecu))
             frame.update_receiver()
             for signal in frame.signals:
                 for receive_ecu in signal.receivers:
-                    self.add_ecu(canmatrix.ecu(receive_ecu))
+                    self.add_ecu(canmatrix.Ecu(receive_ecu))
 
     def rename_frame(self, old, newName):
         """Rename Frame.
