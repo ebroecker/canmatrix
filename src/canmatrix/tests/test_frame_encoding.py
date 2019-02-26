@@ -8,7 +8,7 @@ import canmatrix.formats
 
 def load_dbc():
     here = os.path.dirname(os.path.realpath(__file__))
-    return canmatrix.formats.loadp(os.path.join(here, "test_frame_decoding.dbc"), flatImport=True)
+    return canmatrix.formats.loadp(os.path.join(here, "test_frame_decoding.dbc"), flat_import=True)
 
 
 def test_encode_with_dbc_big_endian():
@@ -136,7 +136,7 @@ def test_sym():
     )
     f = io.BytesIO(s.encode('utf-8'))
 
-    matrix = canmatrix.formats.load(f, importType='sym', flatImport=True)
+    matrix = canmatrix.formats.load(f, import_type='sym', flat_import=True)
     unsigned_frame = matrix.frame_by_name('Unsigned')
     signed_frame = matrix.frame_by_name('Signed')
 

@@ -15,9 +15,9 @@ import sys
 #
 
 # import of one CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db1 = canmatrix.formats.loadp("first.dbc", flatImport=True)
+db1 = canmatrix.formats.loadp("first.dbc", flat_import=True)
 # import of a second CAN-Matrix (*.dbc, *.dbf, *.kcd, *.arxml)
-db2 = canmatrix.formats.loadp("second.dbc", flatImport=True)
+db2 = canmatrix.formats.loadp("second.dbc", flat_import=True)
 
 #
 # create target Matrix
