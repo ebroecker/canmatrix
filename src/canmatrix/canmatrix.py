@@ -50,7 +50,7 @@ from past.builtins import basestring
 import canmatrix.copy
 import canmatrix.types
 import canmatrix.utils
-import canmatrix.types
+
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal
 
@@ -588,7 +588,7 @@ class Frame(object):
     name = attr.ib(default="")  # type: str
     id = attr.ib(default=0)  # type: int
     size = attr.ib(default=0)  # type: int
-    transmitters = attr.ib(factory=list)  # type: typing.MutableSequence[BoardUnit]
+    transmitters = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     extended = attr.ib(default=False)  # type: bool
     is_complex_multiplexed = attr.ib(default=False)  # type: bool
     is_fd = attr.ib(default=False)  # type: bool
@@ -596,7 +596,7 @@ class Frame(object):
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
     mux_names = attr.ib(factory=dict)  # type: typing.MutableMapping[int, str]
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
-    receivers = attr.ib(factory=list)  # type: typing.MutableSequence[BoardUnit]
+    receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
 
     j1939_pgn = attr.ib(default=None)  # type: typing.Optional[int]
@@ -645,7 +645,7 @@ class Frame(object):
         self.j1939_source = value
         self.recalc_J1939_id()
 
-    def recalc_J1939_id(self):
+    def recalc_J1939_id(self):  # type: () -> None
         """Recompute J1939 ID"""
         self.id = (self.j1939_source & 0xff) + ((self.j1939_pgn & 0xffff) << 8) + ((self.j1939_prio & 0x7) << 26)
         self.extended = True
