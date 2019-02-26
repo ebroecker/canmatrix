@@ -83,20 +83,20 @@ def test_parse_longname_with_colon():
 def test_export_default_decimal_places(is_float, value, expected):
     matrix = canmatrix.canmatrix.CanMatrix()
     # the `FLOAT` type here is irrelevant at the moment...  at least for this
-    matrix.addSignalDefines('GenSigStartValue', 'FLOAT -3.4E+038 3.4E+038')
+    matrix.add_signal_defines('GenSigStartValue', 'FLOAT -3.4E+038 3.4E+038')
 
     frame = canmatrix.canmatrix.Frame()
-    matrix.addFrame(frame)
+    matrix.add_frame(frame)
 
     signal = canmatrix.canmatrix.Signal(
         size=32,
         is_float=is_float,
         is_signed=False,
     )
-    signal.addAttribute('GenSigStartValue', value)
-    frame.addSignal(signal)
+    signal.add_attribute('GenSigStartValue', value)
+    frame.add_signal(signal)
 
-    s = canmatrix.sym.createSignal(db=matrix, signal=signal)
+    s = canmatrix.sym.create_signal(db=matrix, signal=signal)
 
     start = '/d:'
 

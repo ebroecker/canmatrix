@@ -28,11 +28,12 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import xlwt
-from canmatrix.xls_common import *
-from .canmatrix import *
+import canmatrix
+import canmatrix.xls_common
 import xlrd
+import decimal
 
-logger = logging.getLogger(__name__)
+logger = canmatrix.logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
 
 
@@ -88,9 +89,9 @@ def writeBuMatrix(buList, sig, frame, worksheet, row, col, firstframe):
 
         # write "s" "r" "r/s" if signal is sent, recieved or send and recived
         # by boardunit
-        if sig and bu in sig.receiver and bu in frame.transmitters:
+        if sig and bu in sig.receivers and bu in frame.transmitters:
             worksheet.write(row, col, label="r/s", style=locStyleSender)
-        elif sig and bu in sig.receiver:
+        elif sig and bu in sig.receivers:
             worksheet.write(row, col, label="r", style=locStyle)
         elif bu in frame.transmitters:
             worksheet.write(row, col, label="s", style=locStyleSender)
@@ -136,7 +137,7 @@ def dump(db, file, **options):
 
     # write frameardunits in first row:
     buList = []
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         buList.append(bu.name)
 
     rowArray += head_top
@@ -191,7 +192,7 @@ def dump(db, file, **options):
         # sort signals:
         sigHash = {}
         for sig in frame.signals:
-            sigHash["%02d" % int(sig.getStartbit()) + sig.name] = sig
+            sigHash["%02d" % int(sig.get_startbit()) + sig.name] = sig
 
         # set style for first line with border
         sigstyle = sty_first_frame
@@ -204,7 +205,7 @@ def dump(db, file, **options):
         # iterate over signals
         rowArray = []
         if len(sigHash) == 0: # Frames without signals
-            rowArray += getFrameInfo(db, frame)
+            rowArray += canmatrix.xls_common.get_frame_info(db, frame)
             for item in range(5, head_start):
                 rowArray.append("")
             tempCol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
@@ -232,7 +233,7 @@ def dump(db, file, **options):
                 valstyle = sigstyle
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
-                    rowArray = getFrameInfo(db, frame)
+                    rowArray = canmatrix.xls_common.get_frame_info(db, frame)
                     frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                     if framestyle != sty_first_frame:
                         worksheet.row(row).level = 1
@@ -241,7 +242,7 @@ def dump(db, file, **options):
                     col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)
 
                     # write Value
-                    (frontRow, backRow) = getSignal(db, sig, motorolaBitFormat)
+                    (frontRow, backRow) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
                     writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
                     backRow += additionalFrameInfo
                     for item in additional_signal_colums:
@@ -261,7 +262,7 @@ def dump(db, file, **options):
                 # loop over values ends here
             # no valuetable available
             else:
-                rowArray = getFrameInfo(db, frame)
+                rowArray = canmatrix.xls_common.get_frame_info(db, frame)
                 frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                 if framestyle != sty_first_frame:
                     worksheet.row(row).level = 1
@@ -269,7 +270,7 @@ def dump(db, file, **options):
                 col = head_start
                 col = writeBuMatrix(
                     buList, sig, frame, worksheet, row, col, framestyle)
-                (frontRow,backRow)  = getSignal(db,sig,motorolaBitFormat)
+                (frontRow,backRow)  = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
                 writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
 
                 if float(sig.min) != 0 or float(sig.max) != 1.0:
@@ -333,19 +334,19 @@ def load(file, **options):
     additionalInputs = dict()
     wb = xlrd.open_workbook(file_contents=file.read())
     sh = wb.sheet_by_index(0)
-    db = CanMatrix()
+    db = canmatrix.CanMatrix()
 
     # Defines not imported...
 #       db.addBUDefines("NWM-Stationsadresse",  'HEX 0 63')
 #       db.addBUDefines("NWM-Knoten",  'ENUM  "nein","ja"')
-    db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
-    db.addFrameDefines("GenMsgDelayTime", 'INT 0 65535')
-    db.addFrameDefines("GenMsgCycleTimeActive", 'INT 0 65535')
-    db.addFrameDefines("GenMsgNrOfRepetitions", 'INT 0 65535')
+    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+    db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
+    db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
+    db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
 #       db.addFrameDefines("GenMsgStartValue",  'STRING')
     launchTypes = []
 #       db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
-    db.addSignalDefines("GenSigSNA", 'STRING')
+    db.add_signal_defines("GenSigSNA", 'STRING')
 
     # eval search for correct columns:
     index = {}
@@ -395,7 +396,7 @@ def load(file, **options):
 
     # BoardUnits:
     for x in range(index['BUstart'], index['BUend']):
-        db.addEcu(BoardUnit(sh.cell(0, x).value))
+        db.add_ecu(canmatrix.ecu(sh.cell(0, x).value))
 
     # initialize:
     frameId = None
@@ -423,14 +424,14 @@ def load(file, **options):
                 launchParam = "0"
 
             if frameId.endswith("xh"):
-                newBo = Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended = True)
+                newBo = canmatrix.Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended = True)
             else:
-                newBo = Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
-            db.addFrame(newBo)
+                newBo = canmatrix.Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
+            db.add_frame(newBo)
 
             # eval launctype
             if launchType is not None:
-                newBo.addAttribute("GenMsgSendType", launchType)
+                newBo.add_attribute("GenMsgSendType", launchType)
                 if launchType not in launchTypes:
                     launchTypes.append(launchType)
 
@@ -439,7 +440,7 @@ def load(file, **options):
                 cycleTime = int(cycleTime)
             except:
                 cycleTime = 0
-            newBo.addAttribute("GenMsgCycleTime", str(int(cycleTime)))
+            newBo.add_attribute("GenMsgCycleTime", str(int(cycleTime)))
 
             for additionalIndex in additionalInputs:
                 if "frame" in additionalInputs[additionalIndex]:
@@ -483,28 +484,28 @@ def load(file, **options):
             if signalName != "-":
                 for x in range(index['BUstart'], index['BUend']):
                     if 's' in sh.cell(rownum, x).value:
-                        newBo.addTransmitter(sh.cell(0, x).value.strip())
+                        newBo.add_transmitter(sh.cell(0, x).value.strip())
                     if 'r' in sh.cell(rownum, x).value:
                         receiver.append(sh.cell(0, x).value.strip())
 #                if signalLength > 8:
-                newSig = Signal(signalName,
-                                startBit=(startbyte - 1) * 8 + startbit,
+                newSig = canmatrix.Signal(signalName,
+                                start_bit=(startbyte - 1) * 8 + startbit,
                                 size=int(signalLength),
                                 is_little_endian=is_little_endian,
                                 is_signed=is_signed,
-                                receiver=receiver,
+                                receivers=receiver,
                                 multiplex=multiplex)
 #               else:
 #                    newSig = Signal(signalName, (startbyte-1)*8+startbit, signalLength, is_little_endian, is_signed, 1, 0, 0, 1, "", receiver, multiplex)
                 if not is_little_endian:
                     # motorola
                     if motorolaBitFormat == "msb":
-                        newSig.setStartbit(
+                        newSig.set_startbit(
                             (startbyte - 1) * 8 + startbit, bitNumbering=1)
                     elif motorolaBitFormat == "msbreverse":
-                        newSig.setStartbit((startbyte - 1) * 8 + startbit)
+                        newSig.set_startbit((startbyte - 1) * 8 + startbit)
                     else:  # motorolaBitFormat == "lsb"
-                        newSig.setStartbit(
+                        newSig.set_startbit(
                             (startbyte - 1) * 8 + startbit,
                             bitNumbering=1,
                             startLittle=True)
@@ -517,8 +518,8 @@ def load(file, **options):
                         if(len(str(sh.cell(rownum, additionalIndex).value)) > 0):
                             exec (commandStr)
 
-                newBo.addSignal(newSig)
-                newSig.addComment(signalComment)
+                newBo.add_signal(newSig)
+                newSig.add_comment(signalComment)
                 function = sh.cell(rownum, index['function']).value
 
 
@@ -565,17 +566,17 @@ def load(file, **options):
             newSig.offset = offset
         if value_table is not None:
             for value, name in value_table.items():
-                newSig.addValues(value, name)
+                newSig.add_values(value, name)
 
     for frame in db.frames:
-        frame.updateReceiver()
-        frame.calcDLC()
+        frame.update_receiver()
+        frame.calc_dlc()
 
     launchTypeEnum = "ENUM"
     for launchType in launchTypes:
         if len(launchType) > 0:
             launchTypeEnum += ' "' + launchType + '",'
-    db.addFrameDefines("GenMsgSendType", launchTypeEnum[:-1])
+    db.add_frame_defines("GenMsgSendType", launchTypeEnum[:-1])
 
-    db.setFdType()
+    db.set_fd_type()
     return db

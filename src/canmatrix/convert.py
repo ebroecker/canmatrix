@@ -53,12 +53,19 @@ def convert(infile, outfileName, **options):
             ecuList = options['ecus'].split(',')
             db = cm.CanMatrix()
             for ecu in ecuList:
-                canmatrix.copy.copyBUwithFrames(ecu, dbs[name], db)
+                canmatrix.copy.copy_ecu_with_frames(ecu, dbs[name], db)
         if 'frames' in options and options['frames'] is not None:
             frameList = options['frames'].split(',')
             db = cm.CanMatrix()
             for frame in frameList:
-                canmatrix.copy.copyFrame(frame, dbs[name], db)
+                canmatrix.copy.copy_frame(frame, dbs[name], db)
+        if options.get('signals', False):
+            signal_list = options['signals'].split(',')
+            db = cm.CanMatrix()
+            for signal in signal_list:
+                canmatrix.copy.copy_signal(signal, dbs[name], db)
+
+
         if db is None:
             db = dbs[name]
 
@@ -72,44 +79,44 @@ def convert(infile, outfileName, **options):
                         print ("merge complete: " + mergeString[0])
                         db.merge([dbTempList[dbTemp]])
 #                        for frame in dbTempList[dbTemp].frames:
-#                            copyResult = canmatrix.copy.copyFrame(frame.id, dbTempList[dbTemp], db)
+#                            copyResult = canmatrix.copy.copy_frame(frame.id, dbTempList[dbTemp], db)
 #                            if copyResult == False:
 #                                logger.error("ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + database)
                     for mergeOpt in mergeString[1:]:
                         if mergeOpt.split('=')[0] == "ecu":
-                            canmatrix.copy.copyBUwithFrames(
+                            canmatrix.copy.copy_ecu_with_frames(
                                 mergeOpt.split('=')[1], dbTempList[dbTemp], db)
                         if mergeOpt.split('=')[0] == "frame":
-                            canmatrix.copy.copyFrame(
+                            canmatrix.copy.copy_frame(
                                 mergeOpt.split('=')[1], dbTempList[dbTemp], db)
 
         if 'renameEcu' in options and options['renameEcu'] is not None:
             renameTuples = options['renameEcu'].split(',')
             for renameTuple in renameTuples:
                 old, new = renameTuple.split(':')
-                db.renameEcu(old, new)
+                db.rename_ecu(old, new)
         if 'deleteEcu' in options and options['deleteEcu'] is not None:
             deleteEcuList = options['deleteEcu'].split(',')
             for ecu in deleteEcuList:
-                db.delEcu(ecu)
+                db.del_ecu(ecu)
         if 'renameFrame' in options and options['renameFrame'] is not None:
             renameTuples = options['renameFrame'].split(',')
             for renameTuple in renameTuples:
                 old, new = renameTuple.split(':')
-                db.renameFrame(old, new)
+                db.rename_frame(old, new)
         if 'deleteFrame' in options and options['deleteFrame'] is not None:
             deleteFrameList = options['deleteFrame'].split(',')
             for frame in deleteFrameList:
-                db.delFrame(frame)
+                db.del_frame(frame)
         if 'addFrameReceiver' in options and options['addFrameReceiver'] is not None:
             touples = options['addFrameReceiver'].split(',')
             for touple in touples:
                 (frameName, ecu) = touple.split(':')
-                frames = db.globFrames(frameName)
+                frames = db.glob_frames(frameName)
                 for frame in frames:
                     for signal in frame.signals:
-                        signal.addReceiver(ecu)
-                    frame.updateReceiver()
+                        signal.add_receiver(ecu)
+                    frame.update_receiver()
 
         if 'frameIdIncrement' in options and options['frameIdIncrement'] is not None:
             idIncrement = int(options['frameIdIncrement'])
@@ -119,7 +126,7 @@ def convert(infile, outfileName, **options):
             changeTuples = options['changeFrameId'].split(',')
             for renameTuple in changeTuples:
                 old, new = renameTuple.split(':')
-                frame = db.frameById(int(old))
+                frame = db.frame_by_id(int(old))
                 if frame is not None:
                     frame.id = int(new)
                 else:
@@ -129,13 +136,13 @@ def convert(infile, outfileName, **options):
         if 'setFrameFd' in options and options['setFrameFd'] is not None:
             fdFrameList = options['setFrameFd'].split(',')
             for frame in fdFrameList:
-                framePtr = db.frameByName(frame)
+                framePtr = db.frame_by_name(frame)
                 if framePtr is not None:
                     framePtr.is_fd = True
         if 'unsetFrameFd' in options and options['unsetFrameFd'] is not None:
             fdFrameList = options['unsetFrameFd'].split(',')
             for frame in fdFrameList:
-                framePtr = db.frameByName(frame)
+                framePtr = db.frame_by_name(frame)
                 if framePtr is not None:
                     framePtr.is_fd = False
 
@@ -145,49 +152,49 @@ def convert(infile, outfileName, **options):
                 if frame.size > int(options['skipLongDlc']):
                     deleteFrameList.append(frame)
             for frame in deleteFrameList:
-                db.delFrame(frame)
+                db.del_frame(frame)
 
         if 'cutLongFrames' in options and options['cutLongFrames'] is not None:
             for frame in db.frames:
                 if frame.size > int(options['cutLongFrames']):
                     deleteSignalList = []
                     for sig in frame.signals:
-                        if sig.getStartbit() + int(sig.signalsize) > int(options['cutLongFrames'])*8:
+                        if sig.get_startbit() + int(sig.signalsize) > int(options['cutLongFrames'])*8:
                             deleteSignalList.append(sig)
                     for sig in deleteSignalList:
                         frame.signals.remove(sig)
                     frame.size = 0
-                    frame.calcDLC()
+                    frame.calc_dlc()
 
         if 'renameSignal' in options and options['renameSignal'] is not None:
             renameTuples = options['renameSignal'].split(',')
             for renameTuple in renameTuples:
                 old, new = renameTuple.split(':')
-                db.renameSignal(old, new)
+                db.rename_signal(old, new)
         if 'deleteSignal' in options and options['deleteSignal'] is not None:
             deleteSignalList = options['deleteSignal'].split(',')
             for signal in deleteSignalList:
-                db.delSignal(signal)
+                db.del_signal(signal)
 
         if 'deleteZeroSignals' in options and options['deleteZeroSignals']:
-            db.deleteZeroSignals()
+            db.delete_zero_signals()
 
         if 'deleteSignalAttributes' in options and options[
                 'deleteSignalAttributes']:
             unwantedAttributes = options['deleteSignalAttributes'].split(',')
-            db.delSignalAttributes(unwantedAttributes)
+            db.del_signal_attributes(unwantedAttributes)
 
         if 'deleteFrameAttributes' in options and options[
                 'deleteFrameAttributes']:
             unwantedAttributes = options['deleteFrameAttributes'].split(',')
-            db.delFrameAttributes(unwantedAttributes)
+            db.del_frame_attributes(unwantedAttributes)
 
         if 'deleteObsoleteDefines' in options and options[
                 'deleteObsoleteDefines']:
-            db.deleteObsoleteDefines()
+            db.delete_obsolete_defines()
 
         if 'recalcDLC' in options and options['recalcDLC']:
-            db.recalcDLC(options['recalcDLC'])
+            db.recalc_dlc(options['recalcDLC'])
 
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))
@@ -337,6 +344,10 @@ def main():
     parser.add_option("", "--frames",
                       dest="frames", default=None,
                       help="Copy only given Frames (comma separated list) to target matrix")
+
+    parser.add_option("", "--signals",
+                      dest="signals", default=None,
+                      help="Copy only given Signals (comma separated list) to target matrix just as 'free' signals without containing frame")
 
     parser.add_option("", "--merge",
                       dest="merge", default=None,

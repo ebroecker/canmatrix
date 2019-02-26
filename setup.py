@@ -90,7 +90,7 @@ setup(
 
     packages = find_packages("src"),
     package_dir = {"": "src"},
-    package_data = {"canmatrix" : ["tests/*.dbc"]},
+    package_data = {"canmatrix" : ["tests/*.dbc", "tests/*.arxml"]},
     entry_points={'console_scripts': ['cancompare = canmatrix.compare:main',
                                       'canconvert = canmatrix.convert:main']}
 )

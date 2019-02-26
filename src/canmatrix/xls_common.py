@@ -20,7 +20,7 @@
 # DAMAGE.
 
 
-def getFrameInfo(db, frame):
+def get_frame_info(db, frame):
     retArray = []
     # frame-id
     if frame.extended:
@@ -30,14 +30,14 @@ def getFrameInfo(db, frame):
     # frame-Name
     retArray.append(frame.name)
 
-    if "GenMsgCycleTime" in db.frameDefines:
+    if "GenMsgCycleTime" in db.frame_defines:
         # determin cycle-time
         retArray.append(frame.attribute("GenMsgCycleTime", db=db))
 
     # determin send-type
-    if "GenMsgSendType" in db.frameDefines:
+    if "GenMsgSendType" in db.frame_defines:
         retArray.append(frame.attribute("GenMsgSendType", db=db))
-        if "GenMsgDelayTime" in db.frameDefines:
+        if "GenMsgDelayTime" in db.frame_defines:
             retArray.append(frame.attribute("GenMsgDelayTime", db=db))
         else:
             retArray.append("")
@@ -47,15 +47,15 @@ def getFrameInfo(db, frame):
     return retArray
 
 
-def getSignal(db, sig, motorolaBitFormat):
+def get_signal(db, sig, motorolaBitFormat):
     frontArray = []
     backArray = []
     if motorolaBitFormat == "msb":
-        startBit = sig.getStartbit(bitNumbering=1)
+        startBit = sig.get_startbit(bit_numbering=1)
     elif motorolaBitFormat == "msbreverse":
-        startBit = sig.getStartbit()
+        startBit = sig.get_startbit()
     else:  # motorolaBitFormat == "lsb"
-        startBit = sig.getStartbit(bitNumbering=1, startLittle=True)
+        startBit = sig.get_startbit(bit_numbering=1, start_little=True)
 
     # startbyte
     frontArray.append(int(startBit / 8) + 1)
@@ -81,10 +81,10 @@ def getSignal(db, sig, motorolaBitFormat):
     frontArray.append(sig.size)
 
     # startvalue of signal available
-    if "GenSigStartValue" in db.signalDefines:
-        if db.signalDefines["GenSigStartValue"].definition == "STRING":
+    if "GenSigStartValue" in db.signal_defines:
+        if db.signal_defines["GenSigStartValue"].definition == "STRING":
             frontArray.append(sig.attribute("GenSigStartValue", db=db))
-        elif db.signalDefines["GenSigStartValue"].definition == "INT" or db.signalDefines["GenSigStartValue"].definition == "HEX":
+        elif db.signal_defines["GenSigStartValue"].definition == "INT" or db.signal_defines["GenSigStartValue"].definition == "HEX":
             frontArray.append("%Xh" % sig.attribute("GenSigStartValue", db=db))
         else:
             frontArray.append(" ")
@@ -92,7 +92,7 @@ def getSignal(db, sig, motorolaBitFormat):
         frontArray.append(" ")
 
     # SNA-value of signal available
-    if "GenSigSNA" in db.signalDefines:
+    if "GenSigSNA" in db.signal_defines:
         sna = sig.attribute("GenSigSNA", db=db)
         if sna is not None:
             sna = sna[1:-1]

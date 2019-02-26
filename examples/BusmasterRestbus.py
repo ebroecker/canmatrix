@@ -154,7 +154,7 @@ vSetGetFirstCANdbName
 """
 
 
-def tickerBoardUnits(db, dbcname):
+def ticker_ecus(db, dbcname):
     nodeList = {}
     zf = zipfile.ZipFile(dbcname + '_Simulation.zip',
                          mode='w',
@@ -163,33 +163,33 @@ def tickerBoardUnits(db, dbcname):
 
     MyBuList = []
 
-    for bu in db.boardUnits:
+    for bu in db.ecus:
         if bu.name not in MyBuList:
             MyBuList.append(bu.name)  # no duplicate Nodes
         else:
             continue
         bu._cycles = {}
-        for botsch in db.frames:
-            if bu.name in botsch.transmitters:
-                if "GenMsgCycleTime" in botsch.attributes:
-                    data = botsch.attributes["GenMsgStartValue"][1:-2]
+        for frame in db.frames:
+            if bu.name in frame.transmitters:
+                if "GenMsgCycleTime" in frame.attributes and "GenMsgStartValue" in frame.attributes:
+                    data = frame.attributes["GenMsgStartValue"][1:-2]
                     dlc = (math.floor(len(data) / 2))
-                    cycleTime = int(botsch.attributes["GenMsgCycleTime"])
+                    cycleTime = int(frame.attributes["GenMsgCycleTime"])
                     if float(cycleTime) > 0:
                         if cycleTime in bu._cycles:
-                            bu._cycles[cycleTime].append(botsch.id)
+                            bu._cycles[cycleTime].append(frame.id)
                         else:
-                            bu._cycles[cycleTime] = [botsch.id]
-        nodeList[bu._name] = bu.name + ".cpp"
+                            bu._cycles[cycleTime] = [frame.id]
+        nodeList[bu.name] = bu.name + ".cpp"
 
         timedPrototypes = ""
         timedCallbacks = ""
         structNames = ""
         exports = ""
         for cycle in bu._cycles:
-            for botsch in bu._cycles[cycle]:
+            for frame in bu._cycles[cycle]:
                 (tempstructNames, tempPrototypes, tempCallbacks,
-                 tempExports) = genCallbacks(cycle, botsch, db)
+                 tempExports) = genCallbacks(cycle, frame, db)
                 structNames += tempstructNames
                 timedPrototypes += tempPrototypes
                 timedCallbacks += tempCallbacks
@@ -214,6 +214,6 @@ def main():
     outfile = os.path.splitext(sys.argv[2])[0]
 
     db = next(iter(canmatrix.formats.loadp(infile).values()))
-    tickerBoardUnits(db, outfile)
+    ticker_ecus(db, outfile)
 
 main()
