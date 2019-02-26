@@ -1,6 +1,6 @@
-import pytest
 import canmatrix.canmatrix
 import canmatrix.copy
+
 
 def test_merge():
     matrix1 = canmatrix.canmatrix.CanMatrix()
@@ -12,12 +12,11 @@ def test_merge():
     frame2 = canmatrix.canmatrix.Frame("Frame2", arbitration_id=2)
     matrix2.add_frame(frame2)
 
-
     matrix1.merge([matrix2])
     assert len(matrix1.frames) == 2
 
 
-def test_copy_ECU_with_frames():
+def test_copy_ecu_with_frames():
     matrix1 = canmatrix.canmatrix.CanMatrix()
     frame1 = canmatrix.canmatrix.Frame("Frame1", arbitration_id=1)
     frame1.add_signal(canmatrix.canmatrix.Signal("SomeSignal"))
@@ -33,7 +32,8 @@ def test_copy_ECU_with_frames():
     assert len(matrix1.frames) == 2
     assert len(matrix1.ecus) == 1
 
-def test_copy_ECU_without_frames():
+
+def test_copy_ecu_without_frames():
     matrix1 = canmatrix.canmatrix.CanMatrix()
     frame1 = canmatrix.canmatrix.Frame("Frame1", arbitration_id=1)
     frame1.add_signal(canmatrix.canmatrix.Signal("SomeSignal"))

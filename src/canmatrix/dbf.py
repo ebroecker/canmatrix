@@ -231,7 +231,7 @@ def load(f, **options):
                 temstr = line.strip()[6:].strip()
                 boList = temstr.split(',')
                 for bo in boList:
-                    db.add_ecu(ecu(bo))
+                    db.add_ecu(Ecu(bo))
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()

@@ -701,7 +701,7 @@ def load(f, **options):
                     myTempListe = temp.group(1).split(' ')
                     for ele in myTempListe:
                         if len(ele.strip()) > 1:
-                            db.ecus.append(canmatrix.ecu(ele))
+                            db.ecus.append(canmatrix.Ecu(ele))
 
             elif decoded.startswith("VAL_ "):
                 regexp = re.compile(r"^VAL_ +(\w+) +(\w+) +(.*);")
