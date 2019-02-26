@@ -514,6 +514,7 @@ def grouper(iterable, n, fillvalue=None):
     return zip_longest(*args, fillvalue=fillvalue)
 
 def unpack_bitstring(length, is_float, is_signed, bits):
+    # type: (int, bool, bool, typing.Iterable) -> typing.Union[float, int]
     """
     returns a value calculated from bits
     :param length: length of signal in bits
@@ -1001,6 +1002,7 @@ class Frame(object):
         return unpacked
 
     def unpack(self, data, report_error=True):
+        # type: (typing.ByteString, bool) -> typing.Mapping[str, DecodedSignal]
         """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
         decodes every signal in signal-list.
 
