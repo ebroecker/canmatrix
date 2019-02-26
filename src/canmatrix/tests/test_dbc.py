@@ -4,7 +4,7 @@ import textwrap
 import string
 import pytest
 
-import canmatrix.dbc
+import canmatrix.formats.dbc
 
 
 def test_long_signal_name_imports():
@@ -17,7 +17,7 @@ def test_long_signal_name_imports():
     BA_ "SystemSignalLongSymbol" SG_ 1 someShortenedDummyName "{}";  
     ''').format(long_signal_name).encode('utf-8'))
 
-    matrix = canmatrix.dbc.load(dbc)
+    matrix = canmatrix.formats.dbc.load(dbc)
 
     assert matrix.frames[0].signals[0].name == long_signal_name
     outdbc = io.BytesIO()
@@ -38,19 +38,19 @@ def test_long_signal_name_imports():
 
 def test_create_define():
     defaults = {}
-    test_string = canmatrix.dbc.create_define("my_data_type", canmatrix.Define('ENUM "A","B"'), "BA_", defaults)
+    test_string = canmatrix.formats.dbc.create_define("my_data_type", canmatrix.Define('ENUM "A","B"'), "BA_", defaults)
     assert test_string == 'BA_DEF_ BA_ "my_data_type" ENUM "A","B";\n'
 
 
 def test_create_attribute_string():
-    test_string = canmatrix.dbc.create_attribute_string("my_attribute", "BO_", "name", "value", True)
+    test_string = canmatrix.formats.dbc.create_attribute_string("my_attribute", "BO_", "name", "value", True)
     assert test_string == 'BA_ "my_attribute" BO_ name "value";\n'
-    test_string = canmatrix.dbc.create_attribute_string("my_attribute", "BO_", "name", 1.23, False)
+    test_string = canmatrix.formats.dbc.create_attribute_string("my_attribute", "BO_", "name", 1.23, False)
     assert test_string == 'BA_ "my_attribute" BO_ name 1.23;\n'
 
 
 def test_create_comment_string():
-    test_string = canmatrix.dbc.create_comment_string("BO_", "ident", "some comment", "utf8", "utf8")
+    test_string = canmatrix.formats.dbc.create_comment_string("BO_", "ident", "some comment", "utf8", "utf8")
     assert test_string == b'CM_ BO_ ident "some comment";\n'
 
 
@@ -64,7 +64,7 @@ def test_long_frame_name_imports():
     BA_ "SystemMessageLongSymbol" BO_ 1 "{}";  
     ''').format(long_frame_name).encode('utf-8'))
 
-    matrix = canmatrix.dbc.load(dbc)
+    matrix = canmatrix.formats.dbc.load(dbc)
     long_name_found = False
     name_found = False
 
@@ -93,7 +93,7 @@ def test_long_ecu_name_imports():
     BA_ "SystemNodeLongSymbol" BU_ SoMEShortenedEcuName "{}";  
     ''').format(long_ecu_name).encode('utf-8'))
 
-    matrix = canmatrix.dbc.load(dbc)
+    matrix = canmatrix.formats.dbc.load(dbc)
     long_name_found = False
     name_found = False
 
@@ -123,7 +123,7 @@ def test_long_envvar_name_imports():
     BA_ "SystemEnvVarLongSymbol" EV_ someShortendEnvVar "{}";  
     ''').format(long_envvar_name).encode('utf-8'))
 
-    matrix = canmatrix.dbc.load(dbc)
+    matrix = canmatrix.formats.dbc.load(dbc)
 
     assert list(matrix.env_vars)[0] == long_envvar_name
     outdbc = io.BytesIO()
@@ -155,7 +155,7 @@ def test_enum_with_comma():
     BA_DEF_DEF_ "example3" ",";
     BA_DEF_DEF_ "example4" ",";
     ''').encode('utf-8'))
-    matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
 
     assert matrix.frame_defines[u'example1'].values == ["Val 1", "", ""] + list(" '()[]/-|{};:<>.?!@#$%^&=`~")
     assert matrix.signal_defines[u'example2'].values == ['Val1', ',']
@@ -173,7 +173,7 @@ def test_enum_with_special_character(character):
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BA_DEF_ BO_ "example1" ENUM "Val 1","{}";
     ''').format(character[0]).encode('utf-8'))
-    matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frame_defines[u'example1'].values == ["Val 1", character[0]]
 
 
@@ -184,13 +184,13 @@ def test_export_of_unknown_defines():
     db.add_frame_defines("Sendable", 'BOOL False True')
     for (dataType, define) in db.frame_defines.items():
         orig_definition = define.definition
-        canmatrix.dbc.check_define(define)
+        canmatrix.formats.dbc.check_define(define)
         assert orig_definition != define.definition
 
     db.add_signal_defines("LongName", 'STR')
     for (dataType, define) in db.signal_defines.items():
         orig_definition = define.definition
-        canmatrix.dbc.check_define(define)
+        canmatrix.formats.dbc.check_define(define)
         assert orig_definition != define.definition
     frame = canmatrix.Frame("someFrame")
     signal = canmatrix.Signal("SomeSignal")
@@ -201,13 +201,13 @@ def test_export_of_unknown_defines():
     db.add_ecu_defines("someName", 'STRING')
     for (dataType, define) in db.ecu_defines.items():
         orig_definition = define.definition
-        canmatrix.dbc.check_define(define)
+        canmatrix.formats.dbc.check_define(define)
         assert orig_definition == define.definition
 
     db.add_global_defines("someGlobaName", 'BOOL')
     for (dataType, define) in db.global_defines.items():
         orig_definition = define.definition
-        canmatrix.dbc.check_define(define)
+        canmatrix.formats.dbc.check_define(define)
         assert orig_definition != define.definition
 
     outdbc = io.BytesIO()
