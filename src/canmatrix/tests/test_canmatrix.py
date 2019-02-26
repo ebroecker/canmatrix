@@ -351,7 +351,7 @@ def test_signal_range_type_float():
 # SignalGroup
 @pytest.fixture
 def the_group():
-    return canmatrix.canmatrix.signal_group(name="TestGroup", id=1)
+    return canmatrix.canmatrix.SignalGroup(name="TestGroup", id=1)
 
 
 @pytest.fixture

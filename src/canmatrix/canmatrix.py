@@ -418,7 +418,7 @@ class Signal(object):
 
 
 @attr.s(cmp=False)
-class signal_group(object):
+class SignalGroup(object):
     """
     Represents signal-group, containing multiple Signals.
     """
@@ -691,7 +691,7 @@ class Frame(object):
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = signal_group(Name, Id)
+        newGroup = SignalGroup(Name, Id)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
@@ -706,7 +706,7 @@ class Frame(object):
 
         :param str name: group name
         :return: SignalGroup by name or None if not found.
-        :rtype: signal_group
+        :rtype: SignalGroup
         """
         for signalGroup in self.signalGroups:
             if signalGroup.name == name:
