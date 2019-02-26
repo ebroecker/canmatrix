@@ -467,7 +467,7 @@ class SignalGroup(object):
 
 
 @attr.s
-class decoded_signal(object):
+class DecodedSignal(object):
     """
     Contains a decoded signal (frame decoding)
 
@@ -1010,7 +1010,7 @@ class Frame(object):
             returnDict= dict()
 
             for s, v in zip(self.signals, unpacked):
-                returnDict[s.name] = decoded_signal(v, s)
+                returnDict[s.name] = DecodedSignal(v, s)
 
             return returnDict
 

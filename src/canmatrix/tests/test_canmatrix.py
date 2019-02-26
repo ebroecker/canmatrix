@@ -328,24 +328,24 @@ def test_signal_max_specified_respects_calc_for_max_none_true():
 
 def test_signal_range_type_int():
     signal = canmatrix.Signal(is_float=False)
-    min, max = signal.calculate_raw_range()
+    signal_min, signal_max = signal.calculate_raw_range()
 
-    min_is = isinstance(min, int)
-    max_is = isinstance(max, int)
+    min_is = isinstance(signal_min, int)
+    max_is = isinstance(signal_max, int)
 
-    assert (min_is, max_is) == (True, True), str((type(min), type(max)))
+    assert (min_is, max_is) == (True, True), str((type(signal_min), type(signal_max)))
 
 
 def test_signal_range_type_float():
     signal = canmatrix.Signal(is_float=True)
-    min, max = signal.calculate_raw_range()
+    signal_min, signal_max = signal.calculate_raw_range()
 
     factory_type = type(signal.float_factory())
 
-    min_is = isinstance(min, factory_type)
-    max_is = isinstance(max, factory_type)
+    min_is = isinstance(signal_min, factory_type)
+    max_is = isinstance(signal_max, factory_type)
 
-    assert (min_is, max_is) == (True, True), str((type(min), type(max)))
+    assert (min_is, max_is) == (True, True), str((type(signal_min), type(signal_max)))
 
 
 # SignalGroup
@@ -695,11 +695,11 @@ def test_canid_repr():
 # DecodedSignal tests
 def test_decoded_signal_phys_value(some_signal):
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
-    decoded = canmatrix.canmatrix.decoded_signal(100, signal)
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
     assert decoded.phys_value == decimal.Decimal("10")
 
 
 def test_decoded_signal_named_value():
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
-    decoded = canmatrix.canmatrix.decoded_signal(100, signal)
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
     assert decoded.named_value == "Init"
