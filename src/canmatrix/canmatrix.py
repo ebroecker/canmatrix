@@ -1029,6 +1029,7 @@ class Frame(object):
             return returnDict
 
     def decode(self, data):
+        # type: (bytes) -> typing.Mapping[str, typing.Any]
         """Return OrderedDictionary with Signal Name: object decodedSignal (support for multiplexed frames)
         decodes only signals matching to muxgroup
 
