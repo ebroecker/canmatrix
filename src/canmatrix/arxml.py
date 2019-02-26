@@ -201,7 +201,7 @@ def dump(dbs, f, **options):
                     pduTriggeringRefConditional, 'PDU-TRIGGERING-REF')
                 pduTriggeringRef.set('DEST', 'PDU-TRIGGERING')
 
-            if frame.extended == 0:
+            if frame.arbitration_id.extended == 0:
                 createSubElement(
                     canFrameTriggering,
                     'CAN-ADDRESSING-MODE',
@@ -211,7 +211,7 @@ def dump(dbs, f, **options):
                     canFrameTriggering,
                     'CAN-ADDRESSING-MODE',
                     'EXTENDED')
-            createSubElement(canFrameTriggering, 'IDENTIFIER', str(frame.id))
+            createSubElement(canFrameTriggering, 'IDENTIFIER', str(frame.arbitration_id.id))
 
             pduTriggeringRef.text = "/Cluster/CAN/IPDUTRIGG_" + frame.name
 
@@ -1234,7 +1234,7 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
     if idele is None:
         logger.info("found Frame %s without arbitration id %s", sn.text)
         return None
-    idNum = int(idele.text)
+    arbitration_id = int(idele.text)
 
     if None != frameR:
         dlc = arGetChild(frameR, "FRAME-LENGTH", xmlRoot, ns)
@@ -1247,10 +1247,10 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
 
         pduFrameMapping[pdu] = arGetName(frameR, ns)
 
-        newFrame = canmatrix.Frame(arGetName(frameR, ns), id=idNum, size=int(dlc.text))
+        new_frame = canmatrix.Frame(arGetName(frameR, ns), size=int(dlc.text))
         comment = get_desc(frameR, xmlRoot, ns)
         if comment is not None:
-            newFrame.add_comment(comment)
+            new_frame.add_comment(comment)
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF" % (sn))
@@ -1260,7 +1260,7 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
         if pdu is None:
             pdu = arGetChild(ipduTriggering, "I-SIGNAL-I-PDU", xmlRoot, ns) ## AR4.2
         dlc = arGetChild(pdu, "LENGTH", xmlRoot, ns)
-        newFrame = canmatrix.Frame(sn.text,id=idNum,dlc=int(dlc.text) / 8)
+        new_frame = canmatrix.Frame(sn.text,id=arbitration_id,dlc=int(dlc.text) / 8)
 
     if pdu is None:
         logger.error("ERROR: pdu")
@@ -1279,13 +1279,13 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
                              is_little_endian=is_little_endian,multiplex="Multiplexor")
 
         multiplexor._initValue = 0
-        newFrame.add_signal(multiplexor)
+        new_frame.add_signal(multiplexor)
         staticPart = arGetChild(pdu, "STATIC-PART", xmlRoot, ns)
         ipdu = arGetChild(staticPart, "I-PDU", xmlRoot, ns)
         if ipdu is not None:
             pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", xmlRoot, ns)
             pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", xmlRoot, ns)
-            get_signals(pdusigmapping, newFrame, xmlRoot, ns, None, float_factory)
+            get_signals(pdusigmapping, new_frame, xmlRoot, ns, None, float_factory)
             multiplexTranslation[arGetName(ipdu, ns)] = arGetName(pdu, ns)
 
         dynamicPart = arGetChild(pdu, "DYNAMIC-PART", xmlRoot, ns)
@@ -1303,14 +1303,15 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
             if ipdu is not None:
                 pdusigmappings = arGetChild(ipdu, "SIGNAL-TO-PDU-MAPPINGS", xmlRoot, ns)
                 pdusigmapping = arGetChildren(pdusigmappings, "I-SIGNAL-TO-I-PDU-MAPPING", xmlRoot, ns)
-                get_signals(pdusigmapping, newFrame, xmlRoot, ns, selectorId.text, float_factory)
+                get_signals(pdusigmapping, new_frame, xmlRoot, ns, selectorId.text, float_factory)
 
-    if newFrame.comment is None:
-        newFrame.add_comment(get_desc(pdu, xmlRoot, ns))
+    if new_frame.comment is None:
+        new_frame.add_comment(get_desc(pdu, xmlRoot, ns))
 
-    if extEle is not None:
-        if extEle.text == 'EXTENDED':
-            newFrame.extended = 1
+    if extEle is not None and  extEle.text == 'EXTENDED':
+        new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended = True)
+    else:
+        new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=False)
 
     timingSpec = arGetChild(pdu, "I-PDU-TIMING-SPECIFICATION", xmlRoot, ns)
     if timingSpec is None:
@@ -1327,48 +1328,48 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
     timePeriod = arGetChild(cyclicTiming, "TIME-PERIOD", xmlRoot, ns)
 
     if cyclicTiming is not None and eventTiming is not None:
-        newFrame.add_attribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
+        new_frame.add_attribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
         if minimumDelay is not None:
-            newFrame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
+            new_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
         if repeats is not None:
-            newFrame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+            new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
     elif cyclicTiming is not None:
-        newFrame.add_attribute("GenMsgSendType", "cyclicX")  # CycleX
+        new_frame.add_attribute("GenMsgSendType", "cyclicX")  # CycleX
         if minimumDelay is not None:
-            newFrame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
+            new_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
         if repeats is not None:
-            newFrame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+            new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
     else:
-        newFrame.add_attribute("GenMsgSendType", "spontanX")  # Spontan
+        new_frame.add_attribute("GenMsgSendType", "spontanX")  # Spontan
         if minimumDelay is not None:
-            newFrame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
+            new_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimumDelay.text) * 1000)))
         if repeats is not None:
-            newFrame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+            new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
 
     if startingTime is not None:
         value = arGetChild(startingTime, "VALUE", xmlRoot, ns)
-        newFrame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
+        new_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
     elif cyclicTiming is not None:
         value = arGetChild(timeOffset, "VALUE", xmlRoot, ns)
         if value is not None:
-            newFrame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
+            new_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
 
     value = arGetChild(repeatingTime, "VALUE", xmlRoot, ns)
     if value is not None:
-        newFrame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
+        new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
     elif cyclicTiming is not None:
         value = arGetChild(timePeriod, "VALUE", xmlRoot, ns)
         if value is not None:
-            newFrame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
+            new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
 
 
 #    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
 #    if pdusigmappings is None or pdusigmappings.__len__() == 0:
-#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (newFrame.name))
+#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (new_frame.name))
     pdusigmapping = arGetChildren(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", xmlRoot, ns)
 
     if pdusigmapping is not None and pdusigmapping.__len__() > 0:
-        get_signals(pdusigmapping, newFrame, xmlRoot, ns, None, float_factory)
+        get_signals(pdusigmapping, new_frame, xmlRoot, ns, None, float_factory)
 
     # Seen some pdusigmapping being [] and not None with some arxml 4.2
     else: ##AR 4.2
@@ -1386,10 +1387,10 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
                 if signaltopdumaps is None:
                     logger.debug("DEBUG: AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!" % (arGetName(ipdus, ns)))
 #                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                get_signals(signaltopdumaps, newFrame, xmlRoot, ns, None, float_factory)
+                get_signals(signaltopdumaps, new_frame, xmlRoot, ns, None, float_factory)
         else:
-            logger.debug("DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found" % (newFrame.name))
-    return newFrame
+            logger.debug("DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found" % (new_frame.name))
+    return new_frame
 
 
 def get_desc(element, arDict, ns):

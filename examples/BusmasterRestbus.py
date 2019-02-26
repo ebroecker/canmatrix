@@ -177,9 +177,9 @@ def ticker_ecus(db, dbcname):
                     cycleTime = int(frame.attributes["GenMsgCycleTime"])
                     if float(cycleTime) > 0:
                         if cycleTime in bu._cycles:
-                            bu._cycles[cycleTime].append(frame.id)
+                            bu._cycles[cycleTime].append(frame.arbitration_id.id)
                         else:
-                            bu._cycles[cycleTime] = [frame.id]
+                            bu._cycles[cycleTime] = [frame.arbitration_id.id]
         nodeList[bu.name] = bu.name + ".cpp"
 
         timedPrototypes = ""

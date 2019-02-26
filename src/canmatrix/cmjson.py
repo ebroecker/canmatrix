@@ -68,7 +68,7 @@ def dump(db, f, **options):
                     "factor": signal.factor,
                     "offset": signal.offset}
             exportArray.append(
-                {"name": frame.name, "id": hex(frame.id), "signals": signals})
+                {"name": frame.name, "id": hex(frame.arbitration_id.id), "signals": signals})
 
     elif exportAll == False:
         for frame in db.frames:
@@ -95,8 +95,8 @@ def dump(db, f, **options):
                     "is_float": signal.is_float
                 })
             symbolic_frame = {"name": frame.name,
-                              "id": int(frame.id),
-                              "is_extended_frame": frame.extended == 1,
+                              "id": int(frame.arbitration_id.id),
+                              "is_extended_frame": frame.arbitration_id.extended,
                               "signals": signals}
             frame_attributes = {}
             for frame_info in additionalFrameColums:  # Look for additional Frame Attributes
@@ -154,8 +154,8 @@ def dump(db, f, **options):
 
             exportArray.append(
                 {"name": frame.name,
-                 "id": int(frame.id),
-                 "is_extended_frame": frame.extended == 1,
+                 "id": int(frame.arbitration_id.id),
+                 "is_extended_frame": frame.arbitration_id.extended,
                  "signals": signals,
                  "attributes": frameattribs,
                  "comment": frame.comment,
@@ -189,15 +189,15 @@ def load(f, **options):
         for frame in jsonData["messages"]:
             #            newframe = Frame(frame["id"],frame["name"],8,None)
             newframe = canmatrix.Frame(frame["name"],
-                             id=frame["id"],
+                                   arbitration_id=frame["id"],
                              size=8)
             if "length" in frame:
                 newframe.size = frame["length"]
 
             if "is_extended_frame" in frame and frame["is_extended_frame"]:
-                newframe.extended = 1
+                newframe.arbitration_id.extended = 1
             else:
-                newframe.extended = 0
+                newframe.arbitration_id.extended = 0
 
             for signal in frame["signals"]:
                 is_little_endian = not signal.get("is_big_endian", False)

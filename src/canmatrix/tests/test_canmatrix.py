@@ -408,7 +408,7 @@ def test_encode_decode_frame():
     input_data = {'signal': decimal.Decimal('3.5')}
 
     s1 = canmatrix.canmatrix.Signal('signal', size=32, is_float=True)
-    f1 = canmatrix.canmatrix.Frame('frame', id=1, size=4)
+    f1 = canmatrix.canmatrix.Frame('frame', arbitration_id=1, size=4)
     f1.add_signal(s1)
 
     raw_bytes = f1.encode(input_data)
@@ -491,7 +491,7 @@ def test_frame_calc_j1939_id():
     frame.source = 0x22
     frame.pgn = 0xAAAA
     frame.priority = 3
-    assert hex(frame.id) == hex(0x0CAAAA22)
+    assert hex(frame.arbitration_id.id) == hex(0x0CAAAA22)
 
 
 def test_frame_get_j1939_properties():
@@ -564,7 +564,7 @@ def test_frame_is_iterable(empty_frame, some_signal):
 
 
 def test_frame_find_mandatory_attribute(empty_frame):
-    assert empty_frame.attribute("id") == empty_frame.id
+    assert empty_frame.attribute("arbitration_id") == empty_frame.arbitration_id
 
 
 def test_frame_find_optional_attribute(empty_frame):
@@ -703,3 +703,26 @@ def test_decoded_signal_named_value():
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
     decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
     assert decoded.named_value == "Init"
+
+def test_Arbitration_id():
+    id_standard = canmatrix.ArbitrationId(id = 0x1, extended= False)
+    id_extended = canmatrix.ArbitrationId(id = 0x1, extended= True)
+    id_unknown = canmatrix.ArbitrationId(id = 0x1, extended= None)
+
+    id_from_int_standard = canmatrix.ArbitrationId.from_compound_integer(1)
+    id_from_int_extended = canmatrix.ArbitrationId.from_compound_integer(1 | 1 << 31)
+
+    assert id_standard.to_compound_integer() == 1
+    assert id_extended.to_compound_integer() == (1 | 1 << 31)
+
+    assert id_standard.id == 1
+    assert id_extended.id == 1
+    assert id_unknown.id == 1
+    assert id_standard != id_extended
+    assert id_standard == id_unknown
+    assert id_extended == id_unknown
+    assert id_from_int_standard == id_standard
+    assert id_from_int_standard != id_extended
+    assert id_from_int_extended == id_extended
+    assert id_from_int_extended != id_standard
+

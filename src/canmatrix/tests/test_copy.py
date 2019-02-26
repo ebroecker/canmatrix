@@ -4,12 +4,12 @@ import canmatrix.copy
 
 def test_merge():
     matrix1 = canmatrix.canmatrix.CanMatrix()
-    frame1 = canmatrix.canmatrix.Frame("Frame1", id=1)
+    frame1 = canmatrix.canmatrix.Frame("Frame1", arbitration_id=1)
     frame1.add_signal(canmatrix.canmatrix.Signal("SomeSignal"))
     matrix1.add_frame(frame1)
 
     matrix2 = canmatrix.canmatrix.CanMatrix()
-    frame2 = canmatrix.canmatrix.Frame("Frame2", id=2)
+    frame2 = canmatrix.canmatrix.Frame("Frame2", arbitration_id=2)
     matrix2.add_frame(frame2)
 
     matrix1.merge([matrix2])
@@ -18,12 +18,12 @@ def test_merge():
 
 def test_copy_ecu_with_frames():
     matrix1 = canmatrix.canmatrix.CanMatrix()
-    frame1 = canmatrix.canmatrix.Frame("Frame1", id=1)
+    frame1 = canmatrix.canmatrix.Frame("Frame1", arbitration_id=1)
     frame1.add_signal(canmatrix.canmatrix.Signal("SomeSignal"))
     matrix1.add_frame(frame1)
 
     matrix2 = canmatrix.canmatrix.CanMatrix()
-    frame2 = canmatrix.canmatrix.Frame("Frame2", id=2, transmitters=["ECU"])
+    frame2 = canmatrix.canmatrix.Frame("Frame2", arbitration_id=2, transmitters= ["ECU"])
     matrix2.add_frame(frame2)
     matrix2.update_ecu_list()
 
@@ -35,12 +35,12 @@ def test_copy_ecu_with_frames():
 
 def test_copy_ecu_without_frames():
     matrix1 = canmatrix.canmatrix.CanMatrix()
-    frame1 = canmatrix.canmatrix.Frame("Frame1", id=1)
+    frame1 = canmatrix.canmatrix.Frame("Frame1", arbitration_id=1)
     frame1.add_signal(canmatrix.canmatrix.Signal("SomeSignal"))
     matrix1.add_frame(frame1)
 
     matrix2 = canmatrix.canmatrix.CanMatrix()
-    frame2 = canmatrix.canmatrix.Frame("Frame2", id=2, transmitters=["ECU"])
+    frame2 = canmatrix.canmatrix.Frame("Frame2", arbitration_id=2, transmitters= ["ECU"])
     matrix2.add_frame(frame2)
     matrix2.update_ecu_list()
     matrix2.add_ecu_defines("attrib", "STRING")
