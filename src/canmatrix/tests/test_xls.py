@@ -15,5 +15,5 @@ def test_parse_value_name_collumn():
     assert maxi == 15
     assert mini == 0
     assert offset == 0
-    assert value_table == {5 : "LabelX"}
+    assert value_table == {5: "LabelX"}
 
