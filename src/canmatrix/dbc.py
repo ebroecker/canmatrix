@@ -163,7 +163,7 @@ def dump(mydb, f, **options):
     nodeList = {}
 
     for ecu in db.ecus:
-        # fix long ecu names:
+        # fix long Ecu names:
         if len(ecu.name) > 32:
             ecu.add_attribute("SystemNodeLongSymbol",  ecu.name)
             ecu.name = ecu.name[0:32]
@@ -315,7 +315,7 @@ def dump(mydb, f, **options):
                                               dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
-    # ecu comments
+    # Ecu comments
     for ecu in db.ecus:
         if ecu.comment is not None and ecu.comment.__len__() > 0:
             f.write(create_comment_string("BU_", ecu.name, ecu.comment, dbcExportEncoding,
@@ -702,7 +702,7 @@ def load(f, **options):
                     myTempListe = temp.group(1).split(' ')
                     for ele in myTempListe:
                         if len(ele.strip()) > 1:
-                            db.ecus.append(canmatrix.ecu(ele))
+                            db.ecus.append(canmatrix.Ecu(ele))
 
             elif decoded.startswith("VAL_ "):
                 regexp = re.compile(r"^VAL_ +(\w+) +(\w+) +(.*);")

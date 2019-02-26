@@ -351,7 +351,7 @@ def load(f, **options):
         db = canmatrix.CanMatrix()
         db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
         for node in nodes:
-            db.BUs.add(canmatrix.ecu(node.get('name')))
+            db.BUs.add(canmatrix.Ecu(node.get('name')))
             nodelist[node.get('id')] = node.get('name')
 
         messages = bus.findall('./' + namespace + 'Message')

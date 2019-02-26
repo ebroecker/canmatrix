@@ -11,8 +11,8 @@ import canmatrix
 
 db = canmatrix.CanMatrix()
 
-db.ecus.add(canmatrix.ecu("testBU"))
-db.ecus.add(canmatrix.ecu("recBU"))
+db.ecus.add(canmatrix.Ecu("testBU"))
+db.ecus.add(canmatrix.Ecu("recBU"))
 
 myFrame1 = canmatrix.Frame("canFdStandard1",Id=1,  dlc=24, is_fd = True, transmitter=["testBU"])
 myFrame2 = canmatrix.Frame("CanFdExtended2",Id=2,  dlc=16, extended = True, is_fd = True, transmitter=["testBU"])
