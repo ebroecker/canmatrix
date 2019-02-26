@@ -21,156 +21,180 @@
 # DAMAGE.
 
 from __future__ import absolute_import
-import logging
 
-from copy import deepcopy
+import copy
+import logging
+import typing
+
+import canmatrix.canmatrix as canmatrix
 
 logger = logging.getLogger(__name__)
 
 
-def copy_ecu(buId, sourceDb, targetDb):
+def copy_ecu(ecu_or_glob, source_db, target_db):
+    # type: (typing.Union[canmatrix.Ecu, str], canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
     """
-    This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
-    while copying is easy, this function additionally copys all relevant Defines
+    Copy ECU(s) identified by Name or as Object from source CAN matrix to target CAN matrix.
+    This function additionally copy all relevant Defines.
+
+    :param ecu_or_glob: Ecu instance or glob pattern for Ecu name
+    :param source_db: Source CAN matrix
+    :param target_db: Destination CAN matrix
     """
-    # check wether buId is object or symbolic name
-    if type(buId).__name__ == 'BoardUnit':
-        buList = [buId]
+    # check whether ecu_or_glob is object or symbolic name
+    if isinstance(ecu_or_glob, canmatrix.Ecu):
+        ecu_list = [ecu_or_glob]
     else:
-        buList = sourceDb.glob_ecus(buId)
+        ecu_list = source_db.glob_ecus(ecu_or_glob)
 
-    for bu in buList:
-        targetDb.add_ecu(deepcopy(bu))
+    for ecu in ecu_list:
+        target_db.add_ecu(copy.deepcopy(ecu))
 
-        # copy all bu-defines
-        for attribute in bu.attributes:
-            if attribute not in targetDb.ecu_defines:
-                targetDb.add_ecu_defines(
-                    deepcopy(attribute), deepcopy(sourceDb.ecu_defines[attribute].definition))
-                targetDb.add_define_default(
-                    deepcopy(attribute), deepcopy(sourceDb.ecu_defines[attribute].defaultValue))
-            # update enum-datatypes if needed:
-            if sourceDb.ecu_defines[attribute].type == 'ENUM':
-                tempAttr = bu.attribute(attribute, db=sourceDb)
-                if tempAttr not in targetDb.buDefines[attribute].values:
-                    targetDb.buDefines[attribute].values.append(deepcopy(tempAttr))
-                    targetDb.buDefines[attribute].update()
+        # copy all ecu-defines
+        for attribute in ecu.attributes:
+            if attribute not in target_db.ecu_defines:
+                target_db.add_ecu_defines(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.ecu_defines[attribute].definition))
+                target_db.add_define_default(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.ecu_defines[attribute].defaultValue))
+            # update enum data types if needed:
+            if source_db.ecu_defines[attribute].type == 'ENUM':
+                temp_attr = ecu.attribute(attribute, db=source_db)
+                if temp_attr not in target_db.ecu_defines[attribute].values:
+                    target_db.ecu_defines[attribute].values.append(copy.deepcopy(temp_attr))
+                    target_db.ecu_defines[attribute].update()
 
 
-
-def copy_ecu_with_frames(buId, sourceDb, targetDb):
+def copy_ecu_with_frames(ecu_or_glob, source_db, target_db):
+    # type: (typing.Union[canmatrix.Ecu, str], canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
     """
-    This function copys a Boardunit identified by Name or as Object from source-Canmatrix to target-Canmatrix
-    while copying is easy, this function additionally copys all relevant Frames and Defines
+    Copy ECU(s) identified by Name or as Object from source CAN matrix to target CAN matrix.
+    This function additionally copy all relevant Frames and Defines.
+
+    :param ecu_or_glob: Ecu instance or glob pattern for Ecu name
+    :param source_db: Source CAN matrix
+    :param target_db: Destination CAN matrix
     """
-    # check wether buId is object or symbolic name
-    if type(buId).__name__ == 'instance':
-        buList = [buId]
+    # check whether ecu_or_glob is object or symbolic name
+    if isinstance(ecu_or_glob, canmatrix.Ecu):
+        ecu_list = [ecu_or_glob]
     else:
-        buList = sourceDb.glob_ecus(buId)
+        ecu_list = source_db.glob_ecus(ecu_or_glob)
 
-    for bu in buList:
-        logger.info("Copying ECU " + bu.name)
+    for ecu in ecu_list:
+        logger.info("Copying ECU " + ecu.name)
 
-        targetDb.add_ecu(deepcopy(bu))
+        target_db.add_ecu(copy.deepcopy(ecu))
 
         # copy tx-frames
-        for frame in sourceDb.frames:
-            if bu.name in frame.transmitters:
-                copy_frame(frame.arbitration_id, sourceDb, targetDb)
+        for frame in source_db.frames:
+            if ecu.name in frame.transmitters:
+                copy_frame(frame.arbitration_id, source_db, target_db)
 
         # copy rx-frames
-        for frame in sourceDb.frames:
+        for frame in source_db.frames:
             for signal in frame.signals:
-                if bu.name in signal.receiver:
-                    copy_frame(frame, sourceDb, targetDb)
+                if ecu.name in signal.receivers:
+                    copy_frame(frame.arbitration_id, source_db, target_db)
                     break
 
-        # copy all bu-defines
-        for attribute in bu.attributes:
-            if attribute not in targetDb.buDefines:
-                targetDb.add_ecu_defines(
-                    deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].definition))
-                targetDb.add_define_default(
-                    deepcopy(attribute), deepcopy(sourceDb.buDefines[attribute].defaultValue))
-            # update enum-datatypes if needed:
-            if sourceDb.buDefines[attribute].type == 'ENUM':
-                tempAttr = bu.attribute(attribute, db=sourceDb)
-                if tempAttr not in targetDb.buDefines[attribute].values:
-                    targetDb.buDefines[attribute].values.append(deepcopy(tempAttr))
-                    targetDb.buDefines[attribute].update()
+        # copy all ECU defines
+        for attribute in ecu.attributes:
+            if attribute not in target_db.ecu_defines:
+                target_db.add_ecu_defines(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.ecu_defines[attribute].definition))
+                target_db.add_define_default(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.ecu_defines[attribute].defaultValue))
+            # update enum-data types if needed:
+            if source_db.ecu_defines[attribute].type == 'ENUM':
+                temp_attr = ecu.attribute(attribute, db=source_db)
+                if temp_attr not in target_db.ecu_defines[attribute].values:
+                    target_db.ecu_defines[attribute].values.append(copy.deepcopy(temp_attr))
+                    target_db.ecu_defines[attribute].update()
 
-def copy_signal(signal_name, source_db, target_db):
+
+def copy_signal(signal_glob, source_db, target_db):
+    # type: (str, canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
     """
-    This function copys a signal identified by name from soruce-Canmatrix to target-Canmatrix
-    In target canmatrix the signal is put without frame, just toplevel
+    Copy Signals identified by name from source CAN matrix to target CAN matrix.
+    In target CanMatrix the signal is put without frame, just on top level.
+
+    :param signal_glob: Signal glob pattern
+    :param source_db: Source CAN matrix
+    :param target_db: Destination CAN matrix
     """
     for frame in source_db.frames:
-        for signal in frame.globSignals(signal_name):
-            target_db.addSignal(signal)
+        for signal in frame.glob_signals(signal_glob):
+            target_db.add_signal(signal)
 
-def copy_frame(frameId, sourceDb, targetDb):
-    """
-    This function copys a Frame identified by ArbitrationId from soruce-Canmatrix to target-Canmatrix
-    while copying is easy, this function additionally copys all relevant Boardunits, and Defines
-    """
-    frameList = [sourceDb.frame_by_id(frameId)]
 
-    for frame in frameList:
+def copy_frame(frame_id, source_db, target_db):
+    # type: (canmatrix.ArbitrationId, canmatrix.CanMatrix, canmatrix.CanMatrix) -> bool
+    """
+    Copy a Frame identified by ArbitrationId from source CAN matrix to target CAN matrix.
+    This function additionally copy all relevant ECUs and Defines.
+
+    :param frame_id: Frame arbitration od
+    :param source_db: Source CAN matrix
+    :param target_db: Destination CAN matrix
+    """
+    frame_list = [source_db.frame_by_id(frame_id)]
+
+    for frame in frame_list:
         logger.info("Copying Frame " + frame.name)
 
-        if targetDb.frame_by_id(frame.arbitration_id) is not None:
-            # frame already in targetdb...
+        if target_db.frame_by_id(frame.arbitration_id) is not None:
+            # frame already in target_db...
             return False
 
         # copy Frame-Object:
-        targetDb.add_frame(deepcopy(frame))
+        target_db.add_frame(copy.deepcopy(frame))
 
-        # Boardunits:
+        # ECUs:
         # each transmitter of Frame could be ECU that is not listed already
         for transmitter in frame.transmitters:
-            targetBU = targetDb.ecu_by_name(transmitter)
-            sourceBU = sourceDb.ecu_by_name(transmitter)
-            if sourceBU is not None and targetBU is None:
-                copy_ecu(sourceBU, sourceDb, targetDb)
+            target_ecu = target_db.ecu_by_name(transmitter)
+            source_ecu = source_db.ecu_by_name(transmitter)
+            if source_ecu is not None and target_ecu is None:
+                copy_ecu(source_ecu, source_db, target_db)
 
         # trigger all signals of Frame
         for sig in frame.signals:
             # each receiver of Signal could be ECU that is not listed already
-            for receiver in sig.receiver:
-                targetBU = targetDb.ecu_by_name(receiver)
-                sourceBU = sourceDb.ecu_by_name(receiver)
-                if sourceBU is not None and targetBU is None:
-                    copy_ecu(sourceBU, sourceDb, targetDb)
+            for receiver in sig.receivers:
+                target_ecu = target_db.ecu_by_name(receiver)
+                source_ecu = source_db.ecu_by_name(receiver)
+                if source_ecu is not None and target_ecu is None:
+                    copy_ecu(source_ecu, source_db, target_db)
 
         # copy all frame-defines
         attributes = frame.attributes
         for attribute in attributes:
-            if attribute not in targetDb.frameDefines:
-                targetDb.add_frame_defines(
-                    deepcopy(attribute), deepcopy(sourceDb.frameDefines[attribute].definition))
-                targetDb.add_define_default(
-                    deepcopy(attribute), deepcopy(sourceDb.frameDefines[attribute].defaultValue))
-            # update enum-datatypes if needed:
-            if sourceDb.frameDefines[attribute].type == 'ENUM':
-                tempAttr = frame.attribute(attribute, db=sourceDb)
-                if tempAttr not in targetDb.frameDefines[attribute].values:
-                    targetDb.frameDefines[attribute].values.append(deepcopy(tempAttr))
-                    targetDb.frameDefines[attribute].update()
+            if attribute not in target_db.frame_defines:
+                target_db.add_frame_defines(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.frame_defines[attribute].definition))
+                target_db.add_define_default(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.frame_defines[attribute].defaultValue))
+            # update enum data types if needed:
+            if source_db.frame_defines[attribute].type == 'ENUM':
+                temp_attr = frame.attribute(attribute, db=source_db)
+                if temp_attr not in target_db.frame_defines[attribute].values:
+                    target_db.frame_defines[attribute].values.append(copy.deepcopy(temp_attr))
+                    target_db.frame_defines[attribute].update()
 
         # trigger all signals of Frame
         for sig in frame.signals:
             # delete all 'unknown' attributes
             for attribute in sig.attributes:
-                targetDb.add_signal_defines(
-                    deepcopy(attribute), deepcopy(sourceDb.signalDefines[attribute].definition))
-                targetDb.add_define_default(
-                    deepcopy(attribute), deepcopy(sourceDb.signalDefines[attribute].defaultValue))
-                # update enum-datatypes if needed:
-                if sourceDb.signalDefines[attribute].type == 'ENUM':
-                    tempAttr = sig.attribute(attribute, db=sourceDb)
-                    if tempAttr not in targetDb.signalDefines[attribute].values:
-                        targetDb.signalDefines[attribute].values.append(deepcopy(tempAttr))
-                        targetDb.signalDefines[attribute].update()
+                target_db.add_signal_defines(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.signal_defines[attribute].definition))
+                target_db.add_define_default(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.signal_defines[attribute].defaultValue))
+                # update enum data types if needed:
+                if source_db.signal_defines[attribute].type == 'ENUM':
+                    temp_attr = sig.attribute(attribute, db=source_db)
+                    if temp_attr not in target_db.signal_defines[attribute].values:
+                        target_db.signal_defines[attribute].values.append(copy.deepcopy(temp_attr))
+                        target_db.signal_defines[attribute].update()
 
     return True
