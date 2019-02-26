@@ -111,7 +111,7 @@ def copy_signal(signal_name, source_db, target_db):
 
 def copy_frame(frameId, sourceDb, targetDb):
     """
-    This function copys a Frame identified by Arbitration_Id from soruce-Canmatrix to target-Canmatrix
+    This function copys a Frame identified by ArbitrationId from soruce-Canmatrix to target-Canmatrix
     while copying is easy, this function additionally copys all relevant Boardunits, and Defines
     """
     frameList = [sourceDb.frame_by_id(frameId)]

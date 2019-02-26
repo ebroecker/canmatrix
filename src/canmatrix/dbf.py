@@ -79,7 +79,7 @@ def load(f, **options):
             else:
                 (boId, temS, SignalName, comment) = line.split(' ', 3)
                 comment = comment.replace('"', '').replace(';', '')
-                db.frame_by_id(canmatrix.Arbitration_Id.from_compound_integer(int(boId))).signal_by_name(
+                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(boId))).signal_by_name(
                     SignalName).add_comment(comment)
 
         if mode == 'BUDescription':
@@ -98,7 +98,7 @@ def load(f, **options):
             else:
                 (boId, temS, comment) = line.split(' ', 2)
                 comment = comment.replace('"', '').replace(';', '')
-                frame = db.frame_by_id(canmatrix.Arbitration_Id.from_compound_integer(int(boId)))
+                frame = db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(boId)))
                 if frame:
                     frame.add_comment(comment)
 
@@ -107,7 +107,7 @@ def load(f, **options):
                 mode = ''
             else:
                 (boId, temS, attrib, value) = line.split(',', 3)
-                db.frame_by_id(canmatrix.Arbitration_Id.from_compound_integer(
+                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(
                     int(boId))).add_attribute(
                     attrib.replace(
                         '"',
@@ -136,7 +136,7 @@ def load(f, **options):
                 mode = ''
             else:
                 (boId, temS, SignalName, attrib, value) = line.split(',', 4)
-                db.frame_by_id(canmatrix.Arbitration_Id.from_compound_integer(
+                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(
                     int(boId))).signal_by_name(SignalName).add_attribute(
                     attrib.replace(
                         '"', ''), value[
@@ -221,7 +221,7 @@ def load(f, **options):
                     Frame(name,
                           size=int(size),
                           transmitters=transmitters))
-                newBo.arbitration_id = canmatrix.Arbitration_Id.from_compound_integer(int(Id))
+                newBo.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(Id))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")

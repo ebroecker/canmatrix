@@ -126,7 +126,7 @@ def convert(infile, outfileName, **options):
             changeTuples = options['changeFrameId'].split(',')
             for renameTuple in changeTuples:
                 old, new = renameTuple.split(':')
-                frame = db.frame_by_id(canmatrix.Arbitration_Id(int(old)))
+                frame = db.frame_by_id(canmatrix.ArbitrationId(int(old)))
                 if frame is not None:
                     frame.arbitration_id.id = int(new)
                 else:

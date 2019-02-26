@@ -369,9 +369,9 @@ def load(f, **options):
                 new_frame.size = dlc
 
             if 'format' in message.attrib and message.get('format') == "extended":
-                new_frame.arbitration_id = canmatrix.Arbitration_Id(int(message.get('id'), 16), extended = True)
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended = True)
             else:
-                new_frame.arbitration_id = canmatrix.Arbitration_Id(int(message.get('id'), 16), extended = False)
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended = False)
 
 
             multiplex = message.find('./' + namespace + 'Multiplex')

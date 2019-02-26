@@ -705,12 +705,12 @@ def test_decoded_signal_named_value():
     assert decoded.named_value == "Init"
 
 def test_Arbitration_id():
-    id_standard = canmatrix.Arbitration_Id(id = 0x1, extended= False)
-    id_extended = canmatrix.Arbitration_Id(id = 0x1, extended= True)
-    id_unknown = canmatrix.Arbitration_Id(id = 0x1, extended= None)
+    id_standard = canmatrix.ArbitrationId(id = 0x1, extended= False)
+    id_extended = canmatrix.ArbitrationId(id = 0x1, extended= True)
+    id_unknown = canmatrix.ArbitrationId(id = 0x1, extended= None)
 
-    id_from_int_standard = canmatrix.Arbitration_Id.from_compound_integer(1)
-    id_from_int_extended = canmatrix.Arbitration_Id.from_compound_integer(1 | 1 << 31)
+    id_from_int_standard = canmatrix.ArbitrationId.from_compound_integer(1)
+    id_from_int_extended = canmatrix.ArbitrationId.from_compound_integer(1 | 1 << 31)
 
     assert id_standard.to_compound_integer() == 1
     assert id_extended.to_compound_integer() == (1 | 1 << 31)

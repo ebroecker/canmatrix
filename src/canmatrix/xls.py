@@ -425,9 +425,9 @@ def load(file, **options):
 
             new_frame = canmatrix.Frame(frameName, size=dlc)
             if frameId.endswith("xh"):
-                new_frame.arbitration_id = canmatrix.Arbitration_Id(int(frameId[:-2], 16), extended = True)
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frameId[:-2], 16), extended = True)
             else:
-                new_frame.arbitration_id = canmatrix.Arbitration_Id(int(frameId[:-2], 16), extended = False)
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frameId[:-2], 16), extended = False)
             db.add_frame(new_frame)
 
             # eval launctype

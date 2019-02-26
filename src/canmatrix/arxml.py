@@ -1309,9 +1309,9 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
         new_frame.add_comment(get_desc(pdu, xmlRoot, ns))
 
     if extEle is not None and  extEle.text == 'EXTENDED':
-        new_frame.arbitration_id = canmatrix.Arbitration_Id(arbitration_id, extended = True)
+        new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended = True)
     else:
-        new_frame.arbitration_id = canmatrix.Arbitration_Id(arbitration_id, extended=False)
+        new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=False)
 
     timingSpec = arGetChild(pdu, "I-PDU-TIMING-SPECIFICATION", xmlRoot, ns)
     if timingSpec is None:

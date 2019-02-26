@@ -553,7 +553,7 @@ def pack_bitstring(length, is_float, value, signed):
     return bitstring
 
 @attr.s(cmp=False)
-class Arbitration_Id(object):
+class ArbitrationId(object):
     standard_id_mask = ((1 << 11) - 1)
     extended_id_mask = ((1 << 29) - 1)
     compound_extended_mask = (1 << 31)
@@ -617,7 +617,7 @@ class Frame(object):
     """
 
     name = attr.ib(default="")
-    arbitration_id = attr.ib(converter=Arbitration_Id.from_compound_integer, default=0)
+    arbitration_id = attr.ib(converter=ArbitrationId.from_compound_integer, default=0)
     size = attr.ib(default=0)
     transmitters = attr.ib(type=list, factory=list)
     # extended = attr.ib(type=bool, default=False)
@@ -1362,7 +1362,7 @@ class CanMatrix(object):
     def frame_by_id(self, arbitration_id):
         """Get Frame by its arbitration id.
 
-        :param Id: Frame id as canmatrix.Arbitration_Id
+        :param Id: Frame id as canmatrix.ArbitrationId
         :rtype: Frame or None
         """
         for test in self.frames:
