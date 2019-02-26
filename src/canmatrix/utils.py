@@ -1,11 +1,12 @@
-import sys
-import shlex
 import csv
+import shlex
+import sys
 
-def quote_aware_space_split(inLine):
+
+def quote_aware_space_split(in_line):
     if sys.version_info >= (3, 0):  # is there a clean way to to it?
-        return shlex.split(inLine.strip())
-    return [item.decode('utf-8') for item in shlex.split(inLine.strip().encode('utf-8'))]
+        return shlex.split(in_line.strip())
+    return [item.decode('utf-8') for item in shlex.split(in_line.strip().encode('utf-8'))]
 
 
 def quote_aware_comma_split(string):
@@ -16,19 +17,19 @@ def quote_aware_comma_split(string):
     return temp[0]
 
 
-def guess_value(textValue):
+def guess_value(text_value):
     """
     returns a string value for common strings.
     method is far from complete but helping with odd arxmls
-    :param textValue: value in text like "true"
+    :param text_value: value in text like "true"
     :return: string for value like "1"
     """
     if sys.version_info >= (3, 0):
-        textValue = textValue.casefold()
+        text_value = text_value.casefold()
     else:
-        textValue = textValue.lower()
-    if textValue in ["false", "off"]:
+        text_value = text_value.lower()
+    if text_value in ["false", "off"]:
         return "0"
-    elif textValue in ["true", "on"]:
+    elif text_value in ["true", "on"]:
         return "1"
-    return textValue
+    return text_value
