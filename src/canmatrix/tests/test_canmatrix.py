@@ -119,19 +119,19 @@ def test_decode_signal():
 
 # BoardUnit
 def test_ecu_find_attribute():
-    ecu = canmatrix.canmatrix.ecu(name="Gateway")
+    ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     ecu.add_attribute("attr1", 255)
     assert ecu.attribute("attr1") == 255
 
 
 def test_ecu_no_attribute():
-    ecu = canmatrix.canmatrix.ecu(name="Gateway")
+    ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     assert ecu.attribute("wrong") is None
     assert ecu.attribute("wrong", default=0) == 0
 
 
 def test_ecu_default_attr_from_db():
-    ecu = canmatrix.canmatrix.ecu(name="Gateway")
+    ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     define = canmatrix.canmatrix.Define("INT 0 255")
     define.defaultValue = 33
     matrix = canmatrix.canmatrix.CanMatrix(ecu_defines={"temperature": define})
@@ -140,9 +140,9 @@ def test_ecu_default_attr_from_db():
 
 
 def test_ecu_repr():
-    ecu = canmatrix.canmatrix.ecu(name="Gateway")
+    ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     ecu.add_comment("with bug")
-    assert str(ecu) == "ecu(name='Gateway', comment='with bug')"
+    assert str(ecu) == "Ecu(name='Gateway', comment='with bug')"
 
 
 # Signal (generic functions)
@@ -351,7 +351,7 @@ def test_signal_range_type_float():
 # SignalGroup
 @pytest.fixture
 def the_group():
-    return canmatrix.canmatrix.signal_group(name="TestGroup", id=1)
+    return canmatrix.canmatrix.SignalGroup(name="TestGroup", id=1)
 
 
 @pytest.fixture
@@ -695,11 +695,11 @@ def test_canid_repr():
 # DecodedSignal tests
 def test_decoded_signal_phys_value(some_signal):
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
-    decoded = canmatrix.canmatrix.decoded_signal(100, signal)
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
     assert decoded.phys_value == decimal.Decimal("10")
 
 
 def test_decoded_signal_named_value():
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
-    decoded = canmatrix.canmatrix.decoded_signal(100, signal)
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
     assert decoded.named_value == "Init"

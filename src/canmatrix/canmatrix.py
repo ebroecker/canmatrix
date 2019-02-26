@@ -295,7 +295,7 @@ class Signal(object):
         if start_bit < 0:
             print("wrong start_bit found Signal: %s Startbit: %d" %
                   (self.name, start_bit))
-            raise StarbitLowerZero
+            raise StartbitLowerZero
         self.start_bit = start_bit
 
     def get_startbit(self, bit_numbering=None, start_little=None):
@@ -1526,11 +1526,11 @@ class CanMatrix(object):
         """Check all Frames and add unknown ECUs to the Matrix ECU list."""
         for frame in self.frames:
             for transmit_ecu in frame.transmitters:
-                self.add_ecu(canmatrix.ecu(transmit_ecu))
+                self.add_ecu(canmatrix.Ecu(transmit_ecu))
             frame.update_receiver()
             for signal in frame.signals:
                 for receive_ecu in signal.receivers:
-                    self.add_ecu(canmatrix.ecu(receive_ecu))
+                    self.add_ecu(canmatrix.Ecu(receive_ecu))
 
     def rename_frame(self, old, newName):
         """Rename Frame.

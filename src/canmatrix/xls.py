@@ -396,7 +396,7 @@ def load(file, **options):
 
     # BoardUnits:
     for x in range(index['BUstart'], index['BUend']):
-        db.add_ecu(canmatrix.ecu(sh.cell(0, x).value))
+        db.add_ecu(canmatrix.Ecu(sh.cell(0, x).value))
 
     # initialize:
     frameId = None
