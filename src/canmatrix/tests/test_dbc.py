@@ -32,13 +32,15 @@ def test_long_signal_name_imports():
         if line.strip().startswith("BA_ "):
             assert line.split()[5][1:-2] == long_signal_name
             long_name_found = True
-    assert long_name_found == True
-    assert name_found == True
+    assert long_name_found is True
+    assert name_found is True
+
 
 def test_create_define():
     defaults = {}
     test_string = canmatrix.dbc.create_define("my_data_type", canmatrix.Define('ENUM "A","B"'), "BA_", defaults)
     assert test_string == 'BA_DEF_ BA_ "my_data_type" ENUM "A","B";\n'
+
 
 def test_create_attribute_string():
     test_string = canmatrix.dbc.create_attribute_string("my_attribute", "BO_", "name", "value", True)
@@ -46,9 +48,11 @@ def test_create_attribute_string():
     test_string = canmatrix.dbc.create_attribute_string("my_attribute", "BO_", "name", 1.23, False)
     assert test_string == 'BA_ "my_attribute" BO_ name 1.23;\n'
 
+
 def test_create_comment_string():
-    test_string = canmatrix.dbc.create_comment_string("BO_","ident", "some comment","utf8","utf8")
+    test_string = canmatrix.dbc.create_comment_string("BO_", "ident", "some comment", "utf8", "utf8")
     assert test_string == b'CM_ BO_ ident "some comment";\n'
+
 
 def test_long_frame_name_imports():
     long_frame_name = u'A_VERY_LONG_FRAME_NAME_WHICH_SHOULD_BE_SPLIT_SOMEHOW'
@@ -74,8 +78,9 @@ def test_long_frame_name_imports():
         if line.strip().startswith("BA_ "):
             assert line.split()[4][1:-2] == long_frame_name
             long_name_found = True
-    assert long_name_found == True
-    assert name_found == True
+    assert long_name_found is True
+    assert name_found is True
+
 
 def test_long_ecu_name_imports():
     long_ecu_name = u'A_VERY_LONG_ECU_NAME_WHICH_SHOULD_BE_SPLIT_SOMEHOW'
@@ -102,8 +107,9 @@ def test_long_ecu_name_imports():
         if line.strip().startswith("BA_ "):
             assert line.split()[4][1:-2] == long_ecu_name
             long_name_found = True
-    assert long_name_found == True
-    assert name_found == True
+    assert long_name_found is True
+    assert name_found is True
+
 
 def test_long_envvar_name_imports():
     long_envvar_name = u'A_VERY_LONG_ENVIROMENT_NAME_WHICH_SHOULD_BE_SPLIT_SOMEHOW'
@@ -132,8 +138,9 @@ def test_long_envvar_name_imports():
         if line.strip().startswith("BA_ "):
             assert line.split()[3][1:-2] == long_envvar_name
             long_name_found = True
-    assert long_name_found == True
-    assert name_found == True
+    assert long_name_found is True
+    assert name_found is True
+
 
 def test_enum_with_comma():
     dbc = io.BytesIO(textwrap.dedent(u'''\
@@ -150,9 +157,10 @@ def test_enum_with_comma():
     ''').encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
 
-    assert matrix.frame_defines[u'example1'].values == ["Val 1","",""," ","'","(",")","[","]","/","-","|","{","}",";",":","<",">",".","?","!","@","#","$","%","^","&","=","`","~"]
+    assert matrix.frame_defines[u'example1'].values == ["Val 1", "", ""] + list(" '()[]/-|{};:<>.?!@#$%^&=`~")
     assert matrix.signal_defines[u'example2'].values == ['Val1', ',']
     assert matrix.ecu_defines[u'example4'].values == ['Val1', ',']
+
 
 @pytest.mark.parametrize(
     'character',
@@ -161,13 +169,13 @@ def test_enum_with_comma():
         for c in string.punctuation
     ],
 )
-
 def test_enum_with_special_character(character):
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BA_DEF_ BO_ "example1" ENUM "Val 1","{}";
     ''').format(character[0]).encode('utf-8'))
     matrix = canmatrix.dbc.load(dbc, dbcImportEncoding="utf8")
-    assert matrix.frame_defines[u'example1'].values == ["Val 1",character[0]]
+    assert matrix.frame_defines[u'example1'].values == ["Val 1", character[0]]
+
 
 def test_export_of_unknown_defines():
     db = canmatrix.CanMatrix()
