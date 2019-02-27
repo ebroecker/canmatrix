@@ -119,19 +119,19 @@ def test_decode_signal():
 
 # BoardUnit
 def test_ecu_find_attribute():
-    ecu = canmatrix.canmatrix.ecu(name="Gateway")
+    ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     ecu.add_attribute("attr1", 255)
     assert ecu.attribute("attr1") == 255
 
 
 def test_ecu_no_attribute():
-    ecu = canmatrix.canmatrix.ecu(name="Gateway")
+    ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     assert ecu.attribute("wrong") is None
     assert ecu.attribute("wrong", default=0) == 0
 
 
 def test_ecu_default_attr_from_db():
-    ecu = canmatrix.canmatrix.ecu(name="Gateway")
+    ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     define = canmatrix.canmatrix.Define("INT 0 255")
     define.defaultValue = 33
     matrix = canmatrix.canmatrix.CanMatrix(ecu_defines={"temperature": define})
@@ -140,9 +140,9 @@ def test_ecu_default_attr_from_db():
 
 
 def test_ecu_repr():
-    ecu = canmatrix.canmatrix.ecu(name="Gateway")
+    ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     ecu.add_comment("with bug")
-    assert str(ecu) == "ecu(name='Gateway', comment='with bug')"
+    assert str(ecu) == "Ecu(name='Gateway', comment='with bug')"
 
 
 # Signal (generic functions)
@@ -328,30 +328,30 @@ def test_signal_max_specified_respects_calc_for_max_none_true():
 
 def test_signal_range_type_int():
     signal = canmatrix.Signal(is_float=False)
-    min, max = signal.calculate_raw_range()
+    signal_min, signal_max = signal.calculate_raw_range()
 
-    min_is = isinstance(min, int)
-    max_is = isinstance(max, int)
+    min_is = isinstance(signal_min, int)
+    max_is = isinstance(signal_max, int)
 
-    assert (min_is, max_is) == (True, True), str((type(min), type(max)))
+    assert (min_is, max_is) == (True, True), str((type(signal_min), type(signal_max)))
 
 
 def test_signal_range_type_float():
     signal = canmatrix.Signal(is_float=True)
-    min, max = signal.calculate_raw_range()
+    signal_min, signal_max = signal.calculate_raw_range()
 
     factory_type = type(signal.float_factory())
 
-    min_is = isinstance(min, factory_type)
-    max_is = isinstance(max, factory_type)
+    min_is = isinstance(signal_min, factory_type)
+    max_is = isinstance(signal_max, factory_type)
 
-    assert (min_is, max_is) == (True, True), str((type(min), type(max)))
+    assert (min_is, max_is) == (True, True), str((type(signal_min), type(signal_max)))
 
 
 # SignalGroup
 @pytest.fixture
 def the_group():
-    return canmatrix.canmatrix.signal_group(name="TestGroup", id=1)
+    return canmatrix.canmatrix.SignalGroup(name="TestGroup", id=1)
 
 
 @pytest.fixture
@@ -408,7 +408,7 @@ def test_encode_decode_frame():
     input_data = {'signal': decimal.Decimal('3.5')}
 
     s1 = canmatrix.canmatrix.Signal('signal', size=32, is_float=True)
-    f1 = canmatrix.canmatrix.Frame('frame', id=1, size=4)
+    f1 = canmatrix.canmatrix.Frame('frame', arbitration_id=1, size=4)
     f1.add_signal(s1)
 
     raw_bytes = f1.encode(input_data)
@@ -491,7 +491,7 @@ def test_frame_calc_j1939_id():
     frame.source = 0x22
     frame.pgn = 0xAAAA
     frame.priority = 3
-    assert hex(frame.id) == hex(0x0CAAAA22)
+    assert hex(frame.arbitration_id.id) == hex(0x0CAAAA22)
 
 
 def test_frame_get_j1939_properties():
@@ -564,7 +564,7 @@ def test_frame_is_iterable(empty_frame, some_signal):
 
 
 def test_frame_find_mandatory_attribute(empty_frame):
-    assert empty_frame.attribute("id") == empty_frame.id
+    assert empty_frame.attribute("arbitration_id") == empty_frame.arbitration_id
 
 
 def test_frame_find_optional_attribute(empty_frame):
@@ -695,11 +695,34 @@ def test_canid_repr():
 # DecodedSignal tests
 def test_decoded_signal_phys_value(some_signal):
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
-    decoded = canmatrix.canmatrix.decoded_signal(100, signal)
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
     assert decoded.phys_value == decimal.Decimal("10")
 
 
 def test_decoded_signal_named_value():
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
-    decoded = canmatrix.canmatrix.decoded_signal(100, signal)
+    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
     assert decoded.named_value == "Init"
+
+def test_Arbitration_id():
+    id_standard = canmatrix.ArbitrationId(id = 0x1, extended= False)
+    id_extended = canmatrix.ArbitrationId(id = 0x1, extended= True)
+    id_unknown = canmatrix.ArbitrationId(id = 0x1, extended= None)
+
+    id_from_int_standard = canmatrix.ArbitrationId.from_compound_integer(1)
+    id_from_int_extended = canmatrix.ArbitrationId.from_compound_integer(1 | 1 << 31)
+
+    assert id_standard.to_compound_integer() == 1
+    assert id_extended.to_compound_integer() == (1 | 1 << 31)
+
+    assert id_standard.id == 1
+    assert id_extended.id == 1
+    assert id_unknown.id == 1
+    assert id_standard != id_extended
+    assert id_standard == id_unknown
+    assert id_extended == id_unknown
+    assert id_from_int_standard == id_standard
+    assert id_from_int_standard != id_extended
+    assert id_from_int_extended == id_extended
+    assert id_from_int_extended != id_standard
+

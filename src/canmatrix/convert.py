@@ -121,14 +121,14 @@ def convert(infile, outfileName, **options):
         if 'frameIdIncrement' in options and options['frameIdIncrement'] is not None:
             idIncrement = int(options['frameIdIncrement'])
             for frame in db.frames:
-                frame.id += idIncrement
+                frame.arbitration_id.id += idIncrement
         if 'changeFrameId' in options and options['changeFrameId'] is not None:
             changeTuples = options['changeFrameId'].split(',')
             for renameTuple in changeTuples:
                 old, new = renameTuple.split(':')
-                frame = db.frame_by_id(int(old))
+                frame = db.frame_by_id(canmatrix.ArbitrationId(int(old)))
                 if frame is not None:
-                    frame.id = int(new)
+                    frame.arbitration_id.id = int(new)
                 else:
                     logger.error("frame with id {} not found", old)
 

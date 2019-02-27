@@ -58,14 +58,15 @@ class ExceptionTemplate(Exception):
     def __call__(self, *args):
         return self.__class__(*(self.args + args))
 
-class StarbitLowerZero(ExceptionTemplate): pass
+class StartbitLowerZero(ExceptionTemplate): pass
 class EncodingComplexMultiplexed(ExceptionTemplate): pass
 class MissingMuxSignal(ExceptionTemplate): pass
 class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
+class ArbitrationIdOutOfRange(ExceptionTemplate): pass
 
 @attr.s
-class ecu(object):
+class Ecu(object):
     """
     Contains one Boardunit/ECU
     """
@@ -301,7 +302,7 @@ class Signal(object):
         if start_bit < 0:
             print("wrong start_bit found Signal: %s Startbit: %d" %
                   (self.name, start_bit))
-            raise StarbitLowerZero
+            raise StartbitLowerZero
         self.start_bit = start_bit
 
     def get_startbit(self, bit_numbering=None, start_little=None):
@@ -428,7 +429,7 @@ class Signal(object):
 
 
 @attr.s(cmp=False)
-class signal_group(object):
+class SignalGroup(object):
     """
     Represents signal-group, containing multiple Signals.
     """
@@ -477,7 +478,7 @@ class signal_group(object):
 
 
 @attr.s
-class decoded_signal(object):
+class DecodedSignal(object):
     """
     Contains a decoded signal (frame decoding)
 
@@ -486,7 +487,7 @@ class decoded_signal(object):
     * namedValue: value of Valuetable
     * signal: pointer signal (object) which was decoded
     """
-    raw_value = attr.ib()  # type: int
+    raw_value = attr.ib()  # type: canmatrix.types.RawValue
     signal = attr.ib()  # type: Signal
 
     @property
@@ -514,7 +515,7 @@ def grouper(iterable, n, fillvalue=None):
     return zip_longest(*args, fillvalue=fillvalue)
 
 def unpack_bitstring(length, is_float, is_signed, bits):
-    # type: (int, bool, bool, typing.Iterable) -> typing.Union[float, int]
+    # type: (int, bool, bool, typing.Any) -> typing.Union[float, int]
     """
     returns a value calculated from bits
     :param length: length of signal in bits
@@ -565,6 +566,48 @@ def pack_bitstring(length, is_float, value, signed):
     return bitstring
 
 @attr.s(cmp=False)
+class ArbitrationId(object):
+    standard_id_mask = ((1 << 11) - 1)
+    extended_id_mask = ((1 << 29) - 1)
+    compound_extended_mask = (1 << 31)
+
+    id = attr.ib(default=None)
+    extended = attr.ib(default=None)
+
+    def __attrs_post_init__(self):
+        if self.extended is None or self.extended:
+            mask = self.extended_id_mask
+        else:
+            mask = self.standard_id_mask
+
+        if self.id != self.id & mask:
+            raise ArbitrationIdOutOfRange('ID out of range')
+
+    @classmethod
+    def from_compound_integer(cls, i):
+        return cls(
+            id=i & cls.extended_id_mask,
+            extended=(i & cls.compound_extended_mask) != 0,
+        )
+
+    def to_compound_integer(self):
+        if self.extended:
+            return self.id | self.compound_extended_mask
+        else:
+            return self.id
+
+    def __eq__(self, other):
+        return (
+            self.id == other.id
+            and (
+                self.extended is None
+                or other.extended is None
+                or self.extended == other.extended
+            )
+        )
+
+
+@attr.s(cmp=False)
 class Frame(object):
     """
     Contains one CAN Frame.
@@ -587,10 +630,10 @@ class Frame(object):
     """
 
     name = attr.ib(default="")  # type: str
-    id = attr.ib(default=0)  # type: int
+    arbitration_id = attr.ib(converter=ArbitrationId.from_compound_integer, default=0)  # type: ArbitrationId
     size = attr.ib(default=0)  # type: int
     transmitters = attr.ib(factory=list)  # type: typing.MutableSequence[str]
-    extended = attr.ib(default=False)  # type: bool
+    # extended = attr.ib(default=False)  # type: bool
     is_complex_multiplexed = attr.ib(default=False)  # type: bool
     is_fd = attr.ib(default=False)  # type: bool
     comment = attr.ib(default="")  # type: str
@@ -617,7 +660,7 @@ class Frame(object):
 
     @property
     def pgn(self):  # type: () -> int
-        return CanId(self.id).pgn
+        return CanId(self.arbitration_id.id).pgn
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
@@ -648,8 +691,8 @@ class Frame(object):
 
     def recalc_J1939_id(self):  # type: () -> None
         """Recompute J1939 ID"""
-        self.id = (self.j1939_source & 0xff) + ((self.j1939_pgn & 0xffff) << 8) + ((self.j1939_prio & 0x7) << 26)
-        self.extended = True
+        self.arbitration_id.id = (self.j1939_source & 0xff) + ((self.j1939_pgn & 0xffff) << 8) + ((self.j1939_prio & 0x7) << 26)
+        self.arbitration_id.extended = True
         self.is_j1939 = True
 
     # @property
@@ -677,6 +720,7 @@ class Frame(object):
 
 
     def attribute(self, attributeName, db=None, default=None):
+        # type: (str, typing.Optional[CanMatrix], typing.Any) -> typing.Any
         """Get any Frame attribute by its name.
 
         :param str attributeName: attribute name, can be mandatory (ex: id) or optional (customer) attribute.
@@ -693,18 +737,19 @@ class Frame(object):
             return define.defaultValue
         return default
 
-    def __iter__(self):
+    def __iter__(self):  # type: () -> typing.Iterator[Signal]
         """Iterator over all signals."""
         return iter(self.signals)
 
     def add_signal_group(self, Name, Id, signalNames):
+        # type: (str, int, typing.Sequence[str]) -> None
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
         :param str Name: Group name
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = signal_group(Name, Id)
+        newGroup = SignalGroup(Name, Id)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
@@ -715,11 +760,12 @@ class Frame(object):
                 newGroup.add_signal(signalId)
 
     def signal_group_by_name(self, name):
+        # type: (str) -> typing.Union[SignalGroup, None]
         """Get signal group.
 
         :param str name: group name
         :return: SignalGroup by name or None if not found.
-        :rtype: signal_group
+        :rtype: SignalGroup
         """
         for signalGroup in self.signalGroups:
             if signalGroup.name == name:
@@ -727,6 +773,7 @@ class Frame(object):
         return None
 
     def add_signal(self, signal):
+        # type: (Signal) -> Signal
         """
         Add Signal to Frame.
 
@@ -737,6 +784,7 @@ class Frame(object):
         return self.signals[len(self.signals) - 1]
 
     def add_transmitter(self, transmitter):
+        # type: (str) -> None
         """Add transmitter ECU Name to Frame.
 
         :param str transmitter: transmitter name
@@ -745,6 +793,7 @@ class Frame(object):
             self.transmitters.append(transmitter)
 
     def del_transmitter(self, transmitter):
+        # type: (str) -> None
         """Delete transmitter ECU Name from Frame.
 
         :param str transmitter: transmitter name
@@ -753,6 +802,7 @@ class Frame(object):
             self.transmitters.remove(transmitter)
 
     def add_receiver(self, receiver):
+        # type: (str) -> None
         """Add receiver ECU Name to Frame.
 
         :param str receiver: receiver name
@@ -761,6 +811,7 @@ class Frame(object):
             self.receivers.append(receiver)
 
     def signal_by_name(self, name):
+        # type: (str) -> typing.Union[Signal, None]
         """
         Get signal by name.
 
@@ -773,6 +824,7 @@ class Frame(object):
         return None
 
     def glob_signals(self, globStr):
+        # type: (str) -> typing.Sequence[Signal]
         """Find Frame Signals by given glob pattern.
 
         :param str globStr: glob pattern for signal name. See `fnmatch.fnmatchcase`
@@ -786,6 +838,7 @@ class Frame(object):
         return returnArray
 
     def add_attribute(self, attribute, value):
+        # type: (str, typing.Any) -> None
         """
         Add the attribute with value to customer Frame attribute-list. If Attribute already exits, modify its value.
         :param str attribute: Attribute name
@@ -797,6 +850,7 @@ class Frame(object):
             self.attributes[attribute] = value
 
     def del_attribute(self, attribute):
+        # type: (str) -> typing.Any
         """
         Remove attribute from customer Frame attribute-list.
 
@@ -806,6 +860,7 @@ class Frame(object):
             del self.attributes[attribute]
 
     def add_comment(self, comment):
+        # type: (str) -> None
         """
         Set Frame comment.
 
@@ -814,6 +869,7 @@ class Frame(object):
         self.comment = comment
 
     def calc_dlc(self):
+        # type: () -> None
         """
         Compute minimal Frame DLC (length) based on its Signals
 
@@ -826,6 +882,7 @@ class Frame(object):
         self.size = max(self.size, int(math.ceil(maxBit / 8)))
 
     def get_frame_layout(self):
+        # type: () -> typing.Sequence[typing.Sequence[str]]
         """
         get layout of frame.
 
@@ -837,8 +894,8 @@ class Frame(object):
         :return: list of lists with signalnames
         :rtype: list of lists
         """
-        little_bits = [[] for _dummy in range((self.size * 8))]
-        big_bits = [[] for _dummy in range((self.size * 8))]
+        little_bits = [[] for _dummy in range((self.size * 8))]  # type: typing.Sequence[typing.MutableSequence]
+        big_bits = [[] for _dummy in range((self.size * 8))]  # type: typing.Sequence[typing.MutableSequence]
         for signal in self.signals:
             if signal.is_little_endian:
                 least = len(little_bits) - signal.start_bit
@@ -862,7 +919,7 @@ class Frame(object):
 
         return returnList
 
-    def create_dummy_signals(self):
+    def create_dummy_signals(self):  # type: () -> None
         """Create big-endian dummy signals for unused bits.
 
         Names of dummy signals are *_Dummy_<frame.name>_<index>*
@@ -880,9 +937,7 @@ class Frame(object):
                 startBit = -1
                 sigCount += 1
 
-
-
-    def update_receiver(self):
+    def update_receiver(self):  # type: () -> None
         """
         Collect Frame receivers out of receiver given in each signal. Add them to `self.receiver` list.
         """
@@ -890,8 +945,8 @@ class Frame(object):
             for receiver in sig.receivers:
                 self.add_receiver(receiver)
 
-
     def signals_to_bytes(self, data):
+        # type: (typing.Mapping[str, canmatrix.types.RawValue]) -> bytes
         """Return a byte string containing the values from data packed
         according to the frame format.
 
@@ -930,6 +985,7 @@ class Frame(object):
 
 
     def encode(self, data=None):
+        # type: (typing.Optional[typing.Mapping[str, typing.Any]]) -> bytes
         """Return a byte string containing the values from data packed
         according to the frame format.
 
@@ -964,6 +1020,7 @@ class Frame(object):
         return self.signals_to_bytes(data)
 
     def bytes_to_bitstrings(self, data):
+        # type: (bytes) -> typing.Tuple[str, str]
         """Return two arrays big and little containing bits of given data (bytearray)
 
         :param data: bytearray of bits (little endian).
@@ -977,6 +1034,7 @@ class Frame(object):
         return little, big
 
     def bitstring_to_signal_list(self, signals, big, little):
+        # type: (typing.Sequence[Signal], str, str) -> typing.Sequence[canmatrix.types.RawValue]
         """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
 
         :param signals: Iterable of signals (class signal) to decode from frame.
@@ -1002,7 +1060,7 @@ class Frame(object):
         return unpacked
 
     def unpack(self, data, report_error=True):
-        # type: (typing.ByteString, bool) -> typing.Mapping[str, DecodedSignal]
+        # type: (bytes, bool) -> typing.Mapping[str, DecodedSignal]
         """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
         decodes every signal in signal-list.
 
@@ -1014,7 +1072,7 @@ class Frame(object):
         rx_length = len(data)
         if rx_length != self.size and report_error:
             print(
-                'Received message 0x{self.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
+                'Received message 0x{self.arbitration_id.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
             raise DecodingFrameLength
         else:
             little, big = self.bytes_to_bitstrings(data)
@@ -1024,7 +1082,7 @@ class Frame(object):
             returnDict= dict()
 
             for s, v in zip(self.signals, unpacked):
-                returnDict[s.name] = decoded_signal(v, s)
+                returnDict[s.name] = DecodedSignal(v, s)
 
             return returnDict
 
@@ -1331,32 +1389,16 @@ class CanMatrix(object):
         for element in toBeDeleted:
             del self.signal_defines[element]
 
-    def frame_by_id(self, Id, extended=None):
+    def frame_by_id(self, arbitration_id):
         """Get Frame by its arbitration id.
 
-        :param Id: Frame id as str or int
-        :param extended: is it an extended id? None means "doesn't matter"
+        :param Id: Frame id as canmatrix.ArbitrationId
         :rtype: Frame or None
         """
-        Id = int(Id)
-        extendedMarker = 0x80000000
         for test in self.frames:
-            if test.id == Id:
-                if extended is None:
-                    # found ID while ignoring extended or standard
-                    return test
-                elif test.extended == extended:
-                    # found ID while checking extended or standard
-                    return test
-            else:
-                if extended is not None:
-                    # what to do if Id is not equal and extended is also provided ???
-                    pass
-                else:
-                    if test.extended and Id & extendedMarker:
-                        # check regarding common used extended Bit 31
-                        if test.id == Id - extendedMarker:
-                            return test
+            if test.arbitration_id == arbitration_id:
+                # found ID while ignoring extended or standard
+                return test
         return None
 
     def frame_by_name(self, name):
@@ -1387,7 +1429,7 @@ class CanMatrix(object):
         Returns Boardunit by Name.
 
         :param str name: BoardUnit name
-        :rtype: ecu or None
+        :rtype: Ecu or None
         """
         for test in self.ecus:
             if test.name == name:
@@ -1399,7 +1441,7 @@ class CanMatrix(object):
         Find ECUs by given glob pattern.
 
         :param globStr: glob pattern to filter BoardUnits. See `fnmatch.fnmatchcase`.
-        :rtype: list of ecu
+        :rtype: list of Ecu
         """
         returnArray = []
         for test in self.ecus:
@@ -1485,7 +1527,7 @@ class CanMatrix(object):
     def rename_ecu(self, old, newName):
         """Rename ECU in the Matrix. Update references in all Frames.
 
-        :param str or ecu old: old name or ECU instance
+        :param str or Ecu old: old name or ECU instance
         :param str newName: new name
         """
         if type(old).__name__ == 'instance':
@@ -1509,7 +1551,7 @@ class CanMatrix(object):
     def add_ecu(self, ecu):
         """Add new ECU to the Matrix. Do nothing if ecu with the same name already exists.
 
-        :param ecu ecu: ECU name to add
+        :param Ecu ecu: ECU name to add
         """
         for bu in self.ecus:
             if bu.name.strip() == ecu.name:
@@ -1519,7 +1561,7 @@ class CanMatrix(object):
     def del_ecu(self, ecu):
         """Remove ECU from Matrix and all Frames.
 
-        :param str or ecu ecu: ECU instance or glob pattern to remove from list
+        :param str or Ecu ecu: ECU instance or glob pattern to remove from list
         """
         if type(ecu).__name__ == 'instance':
             ecuList = [ecu]
@@ -1541,11 +1583,11 @@ class CanMatrix(object):
         """Check all Frames and add unknown ECUs to the Matrix ECU list."""
         for frame in self.frames:
             for transmit_ecu in frame.transmitters:
-                self.add_ecu(canmatrix.ecu(transmit_ecu))
+                self.add_ecu(canmatrix.Ecu(transmit_ecu))
             frame.update_receiver()
             for signal in frame.signals:
                 for receive_ecu in signal.receivers:
-                    self.add_ecu(canmatrix.ecu(receive_ecu))
+                    self.add_ecu(canmatrix.Ecu(receive_ecu))
 
     def rename_frame(self, old, newName):
         """Rename Frame.
@@ -1684,10 +1726,10 @@ class CanMatrix(object):
         """
         for dbTemp in mergeArray:
             for frame in dbTemp.frames:
-                copyResult = canmatrix.copy.copy_frame(frame.id, dbTemp, self)
+                copyResult = canmatrix.copy.copy_frame(frame.arbitration_id, dbTemp, self)
                 if copyResult == False:
                     logger.error(
-                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.id + self.frame_by_id(frame.id).name)
+                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.arbitration_id.id + self.frame_by_id(frame.arbitration_id).name)
             for envVar in dbTemp.env_vars:
                 if envVar not in self.env_vars:
                     self.add_env_var(envVar, dbTemp.envVars[envVar])

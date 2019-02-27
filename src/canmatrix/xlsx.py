@@ -210,7 +210,7 @@ def dump(db, filename, **options):
         if frame.is_complex_multiplexed:
             logger.error("export complex multiplexers is not supported - ignoring frame " + frame.name)
             continue
-        frameHash[int(frame.id)] = frame
+        frameHash[int(frame.arbitration_id.id)] = frame
 
     # set row to first Frame (row = 0 is header)
     row = 1
@@ -434,7 +434,7 @@ def load(filename, **options):
         motorolaBitFormat = "msbreverse"
 
     sheet = readXlsx(filename, sheet=1, header=True)
-    db = canmarix.CanMatrix()
+    db = canmatrix.CanMatrix()
     letterIndex = []
     for a in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
         letterIndex.append(a)
@@ -467,7 +467,7 @@ def load(filename, **options):
 
     # BoardUnits:
     for x in range(_BUstart, _BUend):
-        db.add_ecu(canmatrix.ecu(sheet[0][letterIndex[x]]))
+        db.add_ecu(canmatrix.Ecu(sheet[0][letterIndex[x]]))
 
     # initialize:
     frameId = None

@@ -178,7 +178,7 @@ def dump(db, file, **options):
         if frame.is_complex_multiplexed:
             logger.error("export complex multiplexers is not supported - ignoring frame " + frame.name)
             continue
-        frameHash[int(frame.id)] = frame
+        frameHash[int(frame.arbitration_id.id)] = frame
 
     # set row to first Frame (row = 0 is header)
     row = 1
@@ -396,12 +396,12 @@ def load(file, **options):
 
     # BoardUnits:
     for x in range(index['BUstart'], index['BUend']):
-        db.add_ecu(canmatrix.ecu(sh.cell(0, x).value))
+        db.add_ecu(canmatrix.Ecu(sh.cell(0, x).value))
 
     # initialize:
     frameId = None
     signalName = ""
-    newBo = None
+    new_frame = None
 
     for rownum in range(1, sh.nrows):
         # ignore empty row
@@ -423,15 +423,16 @@ def load(file, **options):
             except:
                 launchParam = "0"
 
+            new_frame = canmatrix.Frame(frameName, size=dlc)
             if frameId.endswith("xh"):
-                newBo = canmatrix.Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended = True)
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frameId[:-2], 16), extended = True)
             else:
-                newBo = canmatrix.Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
-            db.add_frame(newBo)
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frameId[:-2], 16), extended = False)
+            db.add_frame(new_frame)
 
             # eval launctype
             if launchType is not None:
-                newBo.add_attribute("GenMsgSendType", launchType)
+                new_frame.add_attribute("GenMsgSendType", launchType)
                 if launchType not in launchTypes:
                     launchTypes.append(launchType)
 
@@ -440,11 +441,11 @@ def load(file, **options):
                 cycleTime = int(cycleTime)
             except:
                 cycleTime = 0
-            newBo.add_attribute("GenMsgCycleTime", str(int(cycleTime)))
+            new_frame.add_attribute("GenMsgCycleTime", str(int(cycleTime)))
 
             for additionalIndex in additionalInputs:
                 if "frame" in additionalInputs[additionalIndex]:
-                    commandStr = additionalInputs[additionalIndex].replace("frame", "newBo")
+                    commandStr = additionalInputs[additionalIndex].replace("frame", "new_frame")
                     commandStr += "="
                     commandStr += str(sh.cell(rownum, additionalIndex).value)
                     exec(commandStr)
@@ -484,7 +485,7 @@ def load(file, **options):
             if signalName != "-":
                 for x in range(index['BUstart'], index['BUend']):
                     if 's' in sh.cell(rownum, x).value:
-                        newBo.add_transmitter(sh.cell(0, x).value.strip())
+                        new_frame.add_transmitter(sh.cell(0, x).value.strip())
                     if 'r' in sh.cell(rownum, x).value:
                         receiver.append(sh.cell(0, x).value.strip())
 #                if signalLength > 8:
@@ -518,7 +519,7 @@ def load(file, **options):
                         if(len(str(sh.cell(rownum, additionalIndex).value)) > 0):
                             exec (commandStr)
 
-                newBo.add_signal(newSig)
+                new_frame.add_signal(newSig)
                 newSig.add_comment(signalComment)
                 function = sh.cell(rownum, index['function']).value
 

@@ -79,7 +79,7 @@ def load(f, **options):
             else:
                 (boId, temS, SignalName, comment) = line.split(' ', 3)
                 comment = comment.replace('"', '').replace(';', '')
-                db.frame_by_id(int(boId)).signal_by_name(
+                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(boId))).signal_by_name(
                     SignalName).add_comment(comment)
 
         if mode == 'BUDescription':
@@ -98,7 +98,7 @@ def load(f, **options):
             else:
                 (boId, temS, comment) = line.split(' ', 2)
                 comment = comment.replace('"', '').replace(';', '')
-                frame = db.frame_by_id(int(boId))
+                frame = db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(boId)))
                 if frame:
                     frame.add_comment(comment)
 
@@ -107,8 +107,8 @@ def load(f, **options):
                 mode = ''
             else:
                 (boId, temS, attrib, value) = line.split(',', 3)
-                db.frame_by_id(
-                    int(boId)).add_attribute(
+                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(
+                    int(boId))).add_attribute(
                     attrib.replace(
                         '"',
                         ''),
@@ -136,8 +136,8 @@ def load(f, **options):
                 mode = ''
             else:
                 (boId, temS, SignalName, attrib, value) = line.split(',', 4)
-                db.frame_by_id(
-                    int(boId)).signal_by_name(SignalName).add_attribute(
+                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(
+                    int(boId))).signal_by_name(SignalName).add_attribute(
                     attrib.replace(
                         '"', ''), value[
                         1:-1])
@@ -219,9 +219,9 @@ def load(f, **options):
                     transmitters = list()
                 newBo = db.add_frame(
                     Frame(name,
-                          id=int(Id),
                           size=int(size),
                           transmitters=transmitters))
+                newBo.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(Id))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")
@@ -231,7 +231,7 @@ def load(f, **options):
                 temstr = line.strip()[6:].strip()
                 boList = temstr.split(',')
                 for bo in boList:
-                    db.add_ecu(ecu(bo))
+                    db.add_ecu(Ecu(bo))
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
@@ -304,7 +304,7 @@ def load(f, **options):
             frame.update_receiver()
     db.enum_attribs_to_values()
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
-    if free_signals_dummy_frame is not None and free_signals_dummy_frame.id == 0x40000000:
+    if free_signals_dummy_frame is not None and free_signals_dummy_frame.arbitration_id == 0x40000000:
         db.signals = free_signals_dummy_frame.signals
         db.delFrame(free_signals_dummy_frame)
     return db
@@ -341,10 +341,10 @@ def dump(mydb, f, **options):
         # m_cDataFormat If 1 dataformat Intel, 0- Motorola -- immer 1 original Converter macht das nach anzahl entsprechender Signale
         # cFrameFormat Standard 'S' Extended 'X'
         extended = 'S'
-        if frame.extended == 1:
+        if frame.arbitration_id.extended == 1:
             extended = 'X'
         outstr += "[START_MSG] " + frame.name + \
-            ",%d,%d,%d,1,%c," % (frame.id, frame.size,
+            ",%d,%d,%d,1,%c," % (frame.arbitration_id.id, frame.size,
                                  len(frame.signals), extended)
         if frame.transmitters.__len__() == 0:
             frame.add_transmitter("Vector__XXX")
@@ -419,7 +419,7 @@ def dump(mydb, f, **options):
     for frame in db.frames:
         if frame.comment is not None:
             comment = frame.comment.replace("\n", " ")
-            outstr += str(frame.id) + ' S "' + comment + '";\n'
+            outstr += str(frame.arbitration_id.id) + ' S "' + comment + '";\n'
 
     outstr += "[END_DESC_MSG]\n"
 
@@ -441,7 +441,7 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             if signal.comment is not None:
                 comment = signal.comment.replace("\n", " ")
-                outstr += "%d S " % frame.id + signal.name + ' "' + comment + '";\n'
+                outstr += "%d S " % frame.arbitration_id.id + signal.name + ' "' + comment + '";\n'
 
     outstr += "[END_DESC_SIG]\n"
     outstr += "[END_DESC]\n\n"
@@ -500,7 +500,7 @@ def dump(mydb, f, **options):
             continue
 
         for attrib, val in sorted(list(frame.attributes.items())):
-            outstr += str(frame.id) + ',S,"' + attrib + '","' + val + '"\n'
+            outstr += str(frame.arbitration_id.id) + ',S,"' + attrib + '","' + val + '"\n'
     outstr += "[END_PARAM_MSG_VAL]\n"
 
     # signal-attributes:
@@ -511,7 +511,7 @@ def dump(mydb, f, **options):
 
         for signal in frame.signals:
             for attrib, val in sorted(list(signal.attributes.items())):
-                outstr += str(frame.id) + ',S,' + signal.name + \
+                outstr += str(frame.arbitration_id.id) + ',S,' + signal.name + \
                     ',"' + attrib + '","' + val + '"\n'
     outstr += "[END_PARAM_SIG_VAL]\n"
     outstr += "[END_PARAM_VAL]\n"

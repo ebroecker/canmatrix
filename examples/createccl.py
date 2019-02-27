@@ -91,7 +91,7 @@ def main():
     txDict = {}
     for frame in db.frames:
         if ecu in frame.receivers:
-            receiveArray.append(frame.id)
+            receiveArray.append(frame.arbitration_id.id)
             receiveDict[frame] = receiveIndex
             receiveIndex += 1
 

@@ -3,96 +3,96 @@ import os.path
 import textwrap
 
 import attr
-import pytest
 import canmatrix.formats
 
 
-def loadDbc():
+def load_dbc():
     here = os.path.dirname(os.path.realpath(__file__))
-    return canmatrix.formats.loadp(os.path.join(here ,"test_frame_decoding.dbc"), flatImport = True)
+    return canmatrix.formats.loadp(os.path.join(here, "test_frame_decoding.dbc"), flatImport=True)
 
 
 def test_encode_with_dbc_big_endian():
-    cm = loadDbc()
+    cm = load_dbc()
     # 002#0C00057003CD1F83
-    frame = cm.frame_by_id(1)
+    frame = cm.frame_by_id(canmatrix.ArbitrationId(1))
 
-    toEncode = dict()
+    to_encode = dict()
 
-    toEncode["sig0"] = 1
-    toEncode["sig1"] = 35
-    toEncode["sig2"] = 0
-    toEncode["sig3"] = 2048
-    toEncode["sig4"] = 256
-    toEncode["sig5"] = 1
-    toEncode["sig6"] = 0
-    toEncode["sig7"] = 520
-    toEncode["sig8"] = 0
-    toEncode["sig9"] = 0
-    toEncode["sig10"] = 0
+    to_encode["sig0"] = 1
+    to_encode["sig1"] = 35
+    to_encode["sig2"] = 0
+    to_encode["sig3"] = 2048
+    to_encode["sig4"] = 256
+    to_encode["sig5"] = 1
+    to_encode["sig6"] = 0
+    to_encode["sig7"] = 520
+    to_encode["sig8"] = 0
+    to_encode["sig9"] = 0
+    to_encode["sig10"] = 0
 
+    frame_data = frame.encode(to_encode)
+    assert frame_data == bytearray([141, 0, 16, 1, 0, 130, 1, 0])
 
-    frameData = frame.encode(toEncode)
-    assert frameData == bytearray([141, 0, 16, 1, 0, 130, 1, 0])
 
 def test_encode_with_dbc_little_endian():
-    cm = loadDbc()
+    cm = load_dbc()
     # 002#0C00057003CD1F83
-    frame = cm.frame_by_id(2)
+    frame = cm.frame_by_id(canmatrix.ArbitrationId(2))
 
-    toEncode = dict()
-    toEncode["secSig1"] = 0
-    toEncode["secSig2"] = 0
-    toEncode["secSig3"] = 0
-    toEncode["secSig4"] = 2
-    toEncode["secSig5"] = 0
-    toEncode["secSig6"] = 0
-    toEncode["secSig7"] = 0
-    toEncode["secSig8"] = 3
-    toEncode["secSig9"] = 1
-    toEncode["secSig10"] = 1280
-    toEncode["secSig11"] = -144
-    toEncode["secSig12"] = 12
+    to_encode = dict()
+    to_encode["secSig1"] = 0
+    to_encode["secSig2"] = 0
+    to_encode["secSig3"] = 0
+    to_encode["secSig4"] = 2
+    to_encode["secSig5"] = 0
+    to_encode["secSig6"] = 0
+    to_encode["secSig7"] = 0
+    to_encode["secSig8"] = 3
+    to_encode["secSig9"] = 1
+    to_encode["secSig10"] = 1280
+    to_encode["secSig11"] = -144
+    to_encode["secSig12"] = 12
 
-    frameData = frame.encode(toEncode)
-    assert frameData == bytearray([0x0c, 0x00, 0x05, 0x70, 0x03, 0x00, 0x10, 0x83])
+    frame_data = frame.encode(to_encode)
+    assert frame_data == bytearray([0x0c, 0x00, 0x05, 0x70, 0x03, 0x00, 0x10, 0x83])
 
 
 def test_encode_with_dbc_float():
-    cm = loadDbc()
+    cm = load_dbc()
     # 003#38638A7E58A8C540
-    frame = cm.frame_by_id(3)
+    frame = cm.frame_by_id(canmatrix.ArbitrationId(3))
 
-    toEncode = dict()
-    toEncode["floatSignal1"] = 5.424999835668132e-05
-    toEncode["floatSignal2"] =  6.176799774169922
-    frameData = frame.encode(toEncode)
-    assert frameData == bytearray([0x38, 0x63, 0x8A, 0x7E, 0x58, 0xA8, 0xC5, 0x40])
+    to_encode = dict()
+    to_encode["floatSignal1"] = 5.424999835668132e-05
+    to_encode["floatSignal2"] = 6.176799774169922
+    frame_data = frame.encode(to_encode)
+    assert frame_data == bytearray([0x38, 0x63, 0x8A, 0x7E, 0x58, 0xA8, 0xC5, 0x40])
+
 
 def test_encode_with_dbc_multiplex():
-    cm = loadDbc()
+    cm = load_dbc()
 
-    frame = cm.frame_by_id(4)
-    toEncode1 = dict()
-    toEncode1["myMuxer"] = 0
-    toEncode1["muxSig9"] =  0x20
-    toEncode1["muxSig1"] = 0x38
-    toEncode1["muxSig2"] = 0x63
-    toEncode1["muxSig3"] = 0x8A
-    toEncode1["muxSig4"] = 0x3F
+    frame = cm.frame_by_id(canmatrix.ArbitrationId(4))
+    to_encode1 = dict()
+    to_encode1["myMuxer"] = 0
+    to_encode1["muxSig9"] = 0x20
+    to_encode1["muxSig1"] = 0x38
+    to_encode1["muxSig2"] = 0x63
+    to_encode1["muxSig3"] = 0x8A
+    to_encode1["muxSig4"] = 0x3F
 
-    frameData1 = frame.encode(toEncode1)
-    assert frameData1 == bytearray([0x38, 0x63, 0x8A, 0x7E, 0x00, 0x20, 0x00])
+    frame_data1 = frame.encode(to_encode1)
+    assert frame_data1 == bytearray([0x38, 0x63, 0x8A, 0x7E, 0x00, 0x20, 0x00])
 
-    toEncode2 = dict()
-    toEncode2["myMuxer"] = 1
-    toEncode2["muxSig9"] = 0x20
-    toEncode2["muxSig5"] =  -6
-    toEncode2["muxSig6"] =  0x18
-    toEncode2["muxSig7"] =  0x0C
-    toEncode2["muxSig8"] =  -8
-    frameData2 = frame.encode(toEncode2)
-    assert frameData2 == bytearray([0x38, 0x60, 0x80, 0x1E, 0x18, 0x20, 0x20])
+    to_encode2 = dict()
+    to_encode2["myMuxer"] = 1
+    to_encode2["muxSig9"] = 0x20
+    to_encode2["muxSig5"] = -6
+    to_encode2["muxSig6"] = 0x18
+    to_encode2["muxSig7"] = 0x0C
+    to_encode2["muxSig8"] = -8
+    frame_data2 = frame.encode(to_encode2)
+    assert frame_data2 == bytearray([0x38, 0x60, 0x80, 0x1E, 0x18, 0x20, 0x20])
 
 
 def test_sym():
@@ -149,8 +149,8 @@ def test_sym():
         eleven_bit_big_endian = attr.ib(default=0)
         eleven_bit_little_endian = attr.ib(default=0)
 
-        def encode(self, frame):
-            return frame.encode(attr.asdict(self))
+        def encode(self, frame_to_encode):
+            return frame_to_encode.encode(attr.asdict(self))
 
     unsigned_cases = {
         TestFrame(): b'\x00\x00\x00\x00\x00\x00\x00',

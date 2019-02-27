@@ -171,9 +171,9 @@ def dump(dbs, f, **options):
 
         for frame in db.frames:
             message = etree.Element('Message', id="0x%03X" %
-                                    frame.id, name=frame.name, length=str(int(frame.size)))
+                                    frame.arbitration_id.id, name=frame.name, length=str(int(frame.size)))
 
-            if frame.extended == 1:
+            if frame.arbitration_id.extended == 1:
                 message.set("format", "extended")
             if "GenMsgCycleTime" in db.frame_defines:
                 cycleTime = frame.attribute("GenMsgCycleTime", db=db)
@@ -351,7 +351,7 @@ def load(f, **options):
         db = canmatrix.CanMatrix()
         db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
         for node in nodes:
-            db.BUs.add(canmatrix.ecu(node.get('name')))
+            db.BUs.add(canmatrix.Ecu(node.get('name')))
             nodelist[node.get('id')] = node.get('name')
 
         messages = bus.findall('./' + namespace + 'Message')
@@ -359,7 +359,7 @@ def load(f, **options):
         for message in messages:
             dlc = None
             #new_frame = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
-            new_frame = canmatrix.Frame(message.get('name'), id=int(message.get('id'), 16))
+            new_frame = canmatrix.Frame(message.get('name'))
 
             if 'triggered' in message.attrib:
                 new_frame.add_attribute("GenMsgCycleTime", message.get('interval'))
@@ -368,9 +368,11 @@ def load(f, **options):
                 dlc = int(message.get('length'))
                 new_frame.size = dlc
 
-            if 'format' in message.attrib:
-                if message.get('format') == "extended":
-                    new_frame.extended = 1
+            if 'format' in message.attrib and message.get('format') == "extended":
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended = True)
+            else:
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended = False)
+
 
             multiplex = message.find('./' + namespace + 'Multiplex')
             if multiplex is not None:
