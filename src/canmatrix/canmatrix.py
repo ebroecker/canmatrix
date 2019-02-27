@@ -1116,27 +1116,27 @@ class Frame(object):
         else:
             return decoded
 
-
-    def __str__(self):
+    def __str__(self):  # type: () -> str
         """Represent the frame by its name only."""
         return self.name  # add more details than the name only?
+
 
 class Define(object):
     """
     Hold the defines and default-values.
     """
 
-    def __init__(self, definition):
+    def __init__(self, definition):  # type (str) -> None
         """Initialize Define object.
 
         :param str definition: definition string. Ex: "INT -5 10"
         """
         definition = definition.strip()
-        self.definition = definition
-        self.type = None
-        self.defaultValue = None
+        self.definition = definition  # type: str
+        self.type = None  # type: typing.Optional[str]
+        self.defaultValue = None  # type: typing.Any
 
-        def safe_convert_str_to_int(inStr):
+        def safe_convert_str_to_int(inStr):  # type: (str) -> int
             """Convert string to int safely. Check that it isn't float.
 
             :param str inStr: integer represented as string.
@@ -1179,8 +1179,7 @@ class Define(object):
             self.min = defaultFloatFactory(min)
             self.max = defaultFloatFactory(max)
 
-
-    def set_default(self, default):
+    def set_default(self, default):  # type: (typing.Any) -> None
         """Set Definition default value.
 
         :param default: default value; number, str or quoted str ("value")
@@ -1189,7 +1188,7 @@ class Define(object):
             default = default[1:-1]
         self.defaultValue = default
 
-    def update(self):
+    def update(self):  # type: () -> None
         """Update definition string for type ENUM.
 
         For type ENUM rebuild the definition string from current values. Otherwise do nothing.
