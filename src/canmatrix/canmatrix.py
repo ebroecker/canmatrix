@@ -1227,7 +1227,7 @@ class CanMatrix(object):
 
     load_errors = attr.ib(factory=list)  # type: typing.MutableSequence[Exception]
 
-    def __iter__(self):  # type: () -> typing.Iterator
+    def __iter__(self):  # type: () -> typing.Iterator[Frame]
         """Matrix iterates over Frames (Messages)."""
         return iter(self.frames)
 
