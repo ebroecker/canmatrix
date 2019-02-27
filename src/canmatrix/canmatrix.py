@@ -113,7 +113,7 @@ class Ecu(object):
         self.comment = comment
 
 
-def normalize_value_table(table): # type: (typing.Mapping) -> typing.Mapping
+def normalize_value_table(table):  # type: (typing.Mapping) -> typing.Mapping[int, typing.Any]
     return {int(k): v for k, v in table.items()}
 
 
@@ -1212,49 +1212,49 @@ class CanMatrix(object):
     valueTables (global defined values)
     """
 
-    attributes = attr.ib(type=dict, factory=dict)
-    ecus = attr.ib(type=list, factory=list)
-    frames = attr.ib(type=list, factory=list)
+    attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
+    ecus = attr.ib(factory=list)  # type: typing.MutableSequence[Ecu]
+    frames = attr.ib(factory=list)  # type: typing.MutableSequence[Frame]
 
-    signal_defines = attr.ib(type=dict, factory=dict)
-    frame_defines = attr.ib(type=dict, factory=dict)
-    global_defines = attr.ib(type=dict, factory=dict)
-    env_defines = attr.ib(type=dict, factory=dict)
-    ecu_defines = attr.ib(type=dict, factory=dict)
-    value_tables = attr.ib(type=dict, factory=dict)
-    env_vars = attr.ib(type=dict, factory=dict)
-    signals = attr.ib(type=list, factory=list)
+    signal_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
+    frame_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
+    global_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
+    env_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
+    ecu_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
+    value_tables = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Mapping]
+    env_vars = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Mapping]
+    signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
 
-    load_errors = attr.ib(type=list, factory=list)
+    load_errors = attr.ib(factory=list)  # type: typing.MutableSequence[Exception]
 
-    def __iter__(self):
+    def __iter__(self):  # type: () -> typing.Iterator
         """Matrix iterates over Frames (Messages)."""
         return iter(self.frames)
 
-    def add_env_var(self, name, envVarDict):
+    def add_env_var(self, name, envVarDict):  # type: (str, typing.Mapping) -> None
         self.env_vars[name] = envVarDict
 
     def add_env_attribute(self, env_name, attribute_name, attribute_value):
+        # type: (str, str, typing.Any) -> None
         if env_name in self.env_vars:
             if not "attributes" in self.env_vars[env_name]:
                 self.env_vars[env_name]["attributes"] = dict()
             self.env_vars[env_name]["attributes"][attribute_name] = attribute_value
 
     @property
-    def contains_fd(self):
+    def contains_fd(self):  # type: () -> bool
         for frame in self.frames:
             if frame.is_fd:
                 return True
         return False
 
     @property
-    def contains_j1939(self):
+    def contains_j1939(self):  # type: () -> bool
         """Check whether the Matrix contains any J1939 Frame."""
         for frame in self.frames:
             if frame.is_j1939:
                 return True
         return False
-
 
     def attribute(self, attributeName, default=None):
         """Return custom Matrix attribute by name.
@@ -1542,8 +1542,8 @@ class CanMatrix(object):
                 frame.transmitters.remove(oldName)
                 frame.add_transmitter(newName)
             for signal in frame.signals:
-                if oldName in signal.receiver:
-                    signal.receiver.remove(oldName)
+                if oldName in signal.receivers:
+                    signal.receivers.remove(oldName)
                     signal.add_receiver(newName)
             frame.update_receiver()
 
