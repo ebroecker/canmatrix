@@ -118,7 +118,7 @@ def create_signal(signal, nodeList, typeEnums):
 def dump(dbs, f, **options):
 
     signalTypeEnums = {}
-    canClust = canCluster(dbs)
+    canClust = CanCluster(dbs)
     for name in canClust:
         db = canClust[name]
         for (typename, define) in list(db.signal_defines.items()):
@@ -149,7 +149,7 @@ def dump(dbs, f, **options):
     nodeList = {}
 #    for name in dbs:
 #        db = dbs[name]
-    for bu in canClust.boardUnits:
+    for bu in canClust.board_units:
         node = etree.Element('Node', name=bu.name, id="%d" % id)
         root.append(node)
         nodeList[bu.name] = id
