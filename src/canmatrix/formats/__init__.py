@@ -2,8 +2,10 @@
 from importlib import import_module
 import sys
 import logging
-import canmatrix
 import os
+import typing
+
+import canmatrix
 if sys.version_info > (3, 0):
     import io
 else:
@@ -13,7 +15,7 @@ logger = logging.getLogger(__name__)
 moduleList = ["arxml", "cmcsv", "dbc", "dbf", "cmjson",
               "kcd", "fibex", "sym", "xls", "xlsx", "yaml"]
 loadedFormats = []
-supportedFormats = {}
+supportedFormats = {}  # type: typing.MutableMapping[str, typing.MutableSequence[str]]
 extensionMapping = {}
 
 for module in moduleList:
@@ -41,7 +43,7 @@ for loadedModule in loadedFormats:
         extensionMapping[loadedModule] = loadedModule
 
 
-def loads(string, importType=None, key="", flatImport=None, encoding="utf-8",**options):
+def loads(string, importType=None, key="", flatImport=None, encoding="utf-8", **options):
     if sys.version_info > (3, 0):
         if type(string) == str:
             string = bytes(string, encoding)

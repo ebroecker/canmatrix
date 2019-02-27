@@ -5,3 +5,4 @@ xlsxwriter
 pyyaml
 future
 attrs>=18.1.0
+typing; python_version < '3.5'
