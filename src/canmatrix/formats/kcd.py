@@ -28,19 +28,24 @@
 
 from __future__ import absolute_import
 from __future__ import division
-from builtins import *
-from lxml import etree
-import canmatrix
-from .cancluster import *
+
+import decimal
 import os
 import re
-import math
-import decimal
+from builtins import *
+
+from lxml import etree
+
+import canmatrix.cancluster
+import canmatrix
+
 default_float_factory = decimal.Decimal
 
 clusterExporter = 1
 clusterImporter = 1
-def create_signal(signal, nodeList, typeEnums):
+
+
+def create_signal(signal, node_list, type_enums):
     xml_signal = etree.Element(
         'Signal',
         name=signal.name,
@@ -61,8 +66,8 @@ def create_signal(signal, nodeList, typeEnums):
 
     for attrib, val in sorted(signal.attributes.items()):
         try:
-            if attrib in typeEnums and int(val) < len(typeEnums[attrib]):
-                val = typeEnums[attrib][int(val)]
+            if attrib in type_enums and int(val) < len(type_enums[attrib]):
+                val = type_enums[attrib][int(val)]
             comment += ("\n" + attrib + ': ' + val)
         except:
             pass
@@ -74,8 +79,8 @@ def create_signal(signal, nodeList, typeEnums):
 
     consumer = etree.Element('Consumer')
     for receiver in signal.receivers:
-        if receiver in nodeList and len(receiver) > 1:
-            noderef = etree.Element('NodeRef', id=str(nodeList[receiver]))
+        if receiver in node_list and len(receiver) > 1:
+            noderef = etree.Element('NodeRef', id=str(node_list[receiver]))
             consumer.append(noderef)
         if consumer.__len__() > 0:
             xml_signal.append(consumer)
@@ -115,12 +120,11 @@ def create_signal(signal, nodeList, typeEnums):
     return xml_signal
 
 
-def dump(dbs, f, **options):
-
-    signalTypeEnums = {}
-    canClust = CanCluster(dbs)
-    for name in canClust:
-        db = canClust[name]
+def dump(dbs, f, **_options):
+    signal_type_enums = {}
+    cluster = canmatrix.cancluster.CanCluster(dbs)
+    for name in cluster:
+        db = cluster[name]
         for (typename, define) in list(db.signal_defines.items()):
             defines = re.split(r"\s+", define.definition)
             define_type = defines[0]
@@ -128,13 +132,13 @@ def dump(dbs, f, **options):
                 continue
             defines = defines[1].strip('"')
             defines = defines.split('","')
-            signalTypeEnums[typename] = defines
+            signal_type_enums[typename] = defines
 
     # create XML
     root = etree.Element('NetworkDefinition')
     root.set("xmlns", "http://kayak.2codeornot2code.org/1.0")
-    NS_XSI = "{http://www.w3.org/2001/XMLSchema-instance}"
-    root.set(NS_XSI + "schemaLocation", "Definition.xsd")
+    ns_xsi = "{http://www.w3.org/2001/XMLSchema-instance}"
+    root.set(ns_xsi + "schemaLocation", "Definition.xsd")
 
     # root.append(etree.Element('Document'))
     # another child with text
@@ -145,17 +149,17 @@ def dump(dbs, f, **options):
     root.append(child)
 
     # Nodes:
-    id = 1
-    nodeList = {}
-#    for name in dbs:
-#        db = dbs[name]
-    for bu in canClust.board_units:
-        node = etree.Element('Node', name=bu.name, id="%d" % id)
+    element_id = 1
+    node_list = {}
+    # for name in dbs:
+    #    db = dbs[name]
+    for ecu in cluster.ecus:
+        node = etree.Element('Node', name=ecu.name, id="%d" % element_id)
         root.append(node)
-        nodeList[bu.name] = id
-        id += 1
-    for name in canClust:
-        db = canClust[name]
+        node_list[ecu.name] = element_id
+        element_id += 1
+    for name in cluster:
+        db = cluster[name]
         # Bus
         if 'Baudrate' in db.attributes:
             bus = etree.Element('Bus', baudrate=db.attributes['Baudrate'])
@@ -176,24 +180,23 @@ def dump(dbs, f, **options):
             if frame.arbitration_id.extended == 1:
                 message.set("format", "extended")
             if "GenMsgCycleTime" in db.frame_defines:
-                cycleTime = frame.attribute("GenMsgCycleTime", db=db)
-                if cycleTime is not None and int(cycleTime) > 0:
+                cycle_time = frame.attribute("GenMsgCycleTime", db=db)
+                if cycle_time is not None and int(cycle_time) > 0:
                     message.set("triggered", "true")
-                    message.set("interval", "%d" % int(cycleTime))
+                    message.set("interval", "%d" % int(cycle_time))
 
             comment = etree.Element('Notes')
             if frame.comment is not None:
                 comment.text = frame.comment
                 message.append(comment)
 
-
             producer = etree.Element('Producer')
 
             for transmitter in frame.transmitters:
-                if transmitter in nodeList and len(transmitter) > 1:
+                if transmitter in node_list and len(transmitter) > 1:
                     noderef = etree.Element(
                         'NodeRef', id=str(
-                            nodeList[transmitter]))
+                            node_list[transmitter]))
                     producer.append(noderef)
             if producer.__len__() > 0:
                 message.append(producer)
@@ -218,7 +221,7 @@ def dump(dbs, f, **options):
                             'Label', name=valName.replace(
                                 '"', ''), value=str(valueVal))
                         labelset.append(label)
-           # multiplexor found
+            # multiplexor found
             if multiplexor is not None:
                 # ticker all potential muxgroups
                 for i in range(0, 1 << int(multiplexor.get('length'))):
@@ -227,7 +230,7 @@ def dump(dbs, f, **options):
                     for signal in frame.signals:
                         if signal.multiplex is not None and signal.multiplex == i:
                             sig = create_signal(
-                                signal, nodeList, signalTypeEnums)
+                                signal, node_list, signal_type_enums)
                             muxgroup.append(sig)
                             empty = 1
                     if empty == 1:
@@ -236,18 +239,17 @@ def dump(dbs, f, **options):
                         multiplexor.append(labelset)
                 message.append(multiplexor)
 
-
             # standard-signals:
             for signal in frame.signals:
                 if signal.multiplex is None:
-                    sig = create_signal(signal, nodeList, signalTypeEnums)
+                    sig = create_signal(signal, node_list, signal_type_enums)
                     message.append(sig)
-
 
             bus.append(message)
 
         root.append(bus)
     f.write(etree.tostring(root, pretty_print=True))
+
 
 def parse_signal(signal, mux, namespace, nodelist, float_factory):
     startbit = 0
@@ -266,8 +268,8 @@ def parse_signal(signal, mux, namespace, nodelist, float_factory):
     unit = ""
     offset = float_factory('0')
     factor = float_factory('1')
-    min = None
-    max = None
+    min_value = None
+    max_value = None
     is_signed = False
     is_float = False
 
@@ -289,9 +291,9 @@ def parse_signal(signal, mux, namespace, nodelist, float_factory):
         if 'unit' in values.attrib:
             unit = values.get('unit')
         if 'min' in values.attrib:
-            min = values.get('min')
+            min_value = values.get('min')
         if 'max' in values.attrib:
-            max = values.get('max')
+            max_value = values.get('max')
     receiver = []
     consumers = signal.findall('./' + namespace + 'Consumer')
     for consumer in consumers:
@@ -308,13 +310,13 @@ def parse_signal(signal, mux, namespace, nodelist, float_factory):
                     offset=offset,
                     unit=unit,
                     receivers=receiver,
-                    is_float = is_float,
+                    is_float=is_float,
                     multiplex=mux)
 
-    if min is not None:
-        new_sig.min = float_factory(min)
-    if max is not None:
-        new_sig.max = float_factory(max)
+    if min_value is not None:
+        new_sig.min = float_factory(min_value)
+    if max_value is not None:
+        new_sig.max = float_factory(max_value)
 
     new_sig.set_startbit(int(startbit))
 
@@ -334,6 +336,8 @@ def parse_signal(signal, mux, namespace, nodelist, float_factory):
             new_sig.add_values(value, name)
 
     return new_sig
+
+
 def load(f, **options):
     float_factory = options.get("float_factory", default_float_factory)
     dbs = {}
@@ -351,14 +355,14 @@ def load(f, **options):
         db = canmatrix.CanMatrix()
         db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
         for node in nodes:
-            db.BUs.add(canmatrix.Ecu(node.get('name')))
+            db.ecus.add(canmatrix.Ecu(node.get('name')))
             nodelist[node.get('id')] = node.get('name')
 
         messages = bus.findall('./' + namespace + 'Message')
 
         for message in messages:
             dlc = None
-            #new_frame = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
+            # new_frame = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
             new_frame = canmatrix.Frame(message.get('name'))
 
             if 'triggered' in message.attrib:
@@ -369,10 +373,9 @@ def load(f, **options):
                 new_frame.size = dlc
 
             if 'format' in message.attrib and message.get('format') == "extended":
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended = True)
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended=True)
             else:
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended = False)
-
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended=False)
 
             multiplex = message.find('./' + namespace + 'Multiplex')
             if multiplex is not None:
@@ -386,14 +389,14 @@ def load(f, **options):
 
                 is_little_endian = True
 
-                min = None
-                max = None
+                min_value = None
+                max_value = None
                 values = multiplex.find('./' + namespace + 'Value')
                 if values is not None:
                     if 'min' in values.attrib:
-                        min = float_factory(values.get('min'))
+                        min_value = float_factory(values.get('min'))
                     if 'max' in values.attrib:
-                        max = float_factory(values.get('max'))
+                        max_value = float_factory(values.get('max'))
 
                 unit = ""
                 offset = float_factory('0')
@@ -409,7 +412,7 @@ def load(f, **options):
                     noderefs = consumer.findall('./' + namespace + 'NodeRef')
                     for noderef in noderefs:
                         receiver.append(nodelist[noderef.get('id')])
-                newSig = canmatrix.Signal(multiplex.get('name'),
+                new_signal = canmatrix.Signal(multiplex.get('name'),
                                 start_bit=int(startbit),
                                 size=int(signalsize),
                                 is_little_endian=is_little_endian,
@@ -420,19 +423,19 @@ def load(f, **options):
                                 receivers=receiver,
                                 multiplex='Multiplexor')
 
-                if min is not None:
-                    newSig.min = min
-                if max is not None:
-                    newSig.max = max
+                if min_value is not None:
+                    new_signal.min = min_value
+                if max_value is not None:
+                    new_signal.max = max_value
 
-                if is_little_endian == False:
+                if is_little_endian is False:
                     # motorola/big_endian set/convert startbit
-                    newSig.set_startbit(startbit)
+                    new_signal.set_startbit(startbit)
                 notes = multiplex.findall('./' + namespace + 'Notes')
                 comment = ""
                 for note in notes:
                     comment += note.text
-                newSig.add_comment(comment)
+                new_signal.add_comment(comment)
 
                 labelsets = multiplex.findall('./' + namespace + 'LabelSet')
                 for labelset in labelsets:
@@ -440,17 +443,17 @@ def load(f, **options):
                     for label in labels:
                         name = label.get('name')
                         value = label.get('value')
-                        newSig.add_values(value, name)
+                        new_signal.add_values(value, name)
 
-                new_frame.add_signal(newSig)
+                new_frame.add_signal(new_signal)
 
                 muxgroups = multiplex.findall('./' + namespace + 'MuxGroup')
                 for muxgroup in muxgroups:
                     mux = muxgroup.get('count')
                     signales = muxgroup.findall('./' + namespace + 'Signal')
                     for signal in signales:
-                        newSig = parse_signal(signal, mux, namespace, nodelist, float_factory)
-                        new_frame.add_signal(newSig)
+                        new_signal = parse_signal(signal, mux, namespace, nodelist, float_factory)
+                        new_frame.add_signal(new_signal)
 
             signales = message.findall('./' + namespace + 'Signal')
 
@@ -460,8 +463,8 @@ def load(f, **options):
                 for noderef in noderefs:
                     new_frame.add_transmitter(nodelist[noderef.get('id')])
             for signal in signales:
-                newSig = parse_signal(signal, None, namespace, nodelist, float_factory)
-                new_frame.add_signal(newSig)
+                new_signal = parse_signal(signal, None, namespace, nodelist, float_factory)
+                new_frame.add_signal(new_signal)
 
             notes = message.findall('./' + namespace + 'Notes')
             comment = ""

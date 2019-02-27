@@ -68,10 +68,6 @@ class CanCluster(dict):
         return self._ecus
 
     @property
-    def board_units(self):  # type: () -> typing.MutableSequence[canmatrix.Ecu]
-        return self.ecus
-
-    @property
     def frames(self):  # type: () -> typing.MutableSequence[canmatrix.Frame]
         if not self._frames:
             self.update_frames()
