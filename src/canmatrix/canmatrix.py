@@ -1221,8 +1221,8 @@ class CanMatrix(object):
     global_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     env_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     ecu_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
-    value_tables = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Mapping]
-    env_vars = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Mapping]
+    value_tables = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.MutableMapping]
+    env_vars = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.MutableMapping]
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
 
     load_errors = attr.ib(factory=list)  # type: typing.MutableSequence[Exception]
@@ -1231,7 +1231,7 @@ class CanMatrix(object):
         """Matrix iterates over Frames (Messages)."""
         return iter(self.frames)
 
-    def add_env_var(self, name, envVarDict):  # type: (str, typing.Mapping) -> None
+    def add_env_var(self, name, envVarDict):  # type: (str, typing.MutableMapping) -> None
         self.env_vars[name] = envVarDict
 
     def add_env_attribute(self, env_name, attribute_name, attribute_value):
@@ -1815,11 +1815,11 @@ class CanId(object):
     Split Id into Global source addresses (source, destination) off ECU and PGN (SAE J1939).
     """
     # TODO link to BoardUnit/ECU
-    source = None  # Source Address
-    destination = None  # Destination Address
-    pgn = None  # PGN
+    source = None  # type: int  # Source Address
+    destination = None  # type: int  # Destination Address
+    pgn = None  # type: int  # PGN
 
-    def __init__(self, id, extended=True):
+    def __init__(self, id, extended=True):  # type: (int, bool) -> None
         if extended:
             self.source = id & int('0xFF', 16)
             self.pgn = (id >> 8) & int('0xFFFF', 16)
@@ -1828,12 +1828,12 @@ class CanId(object):
             # TODO implement for standard Id
             pass
 
-    def tuples(self):
+    def tuples(self):  # type: () -> typing.Tuple[int, int, int]
         """Get tuple (destination, PGN, source)
 
         :rtype: tuple"""
         return self.destination, self.pgn, self.source
 
-    def __str__(self):
+    def __str__(self):  # type: () -> str
         return "DA:0x{da:02X} PGN:0x{pgn:04X} SA:0x{sa:02X}".format(
             da=self.destination, pgn=self.pgn, sa=self.source)
