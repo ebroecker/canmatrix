@@ -29,7 +29,7 @@ from __future__ import print_function
 
 import xlwt
 import canmatrix
-import canmatrix.xls_common
+import canmatrix.formats.xls_common
 import xlrd
 import decimal
 
@@ -205,7 +205,7 @@ def dump(db, file, **options):
         # iterate over signals
         rowArray = []
         if len(sigHash) == 0: # Frames without signals
-            rowArray += canmatrix.xls_common.get_frame_info(db, frame)
+            rowArray += canmatrix.formats.xls_common.get_frame_info(db, frame)
             for item in range(5, head_start):
                 rowArray.append("")
             tempCol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
@@ -233,7 +233,7 @@ def dump(db, file, **options):
                 valstyle = sigstyle
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
-                    rowArray = canmatrix.xls_common.get_frame_info(db, frame)
+                    rowArray = canmatrix.formats.xls_common.get_frame_info(db, frame)
                     frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                     if framestyle != sty_first_frame:
                         worksheet.row(row).level = 1
@@ -242,7 +242,7 @@ def dump(db, file, **options):
                     col = writeBuMatrix(buList, sig, frame, worksheet, row, col, framestyle)
 
                     # write Value
-                    (frontRow, backRow) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
+                    (frontRow, backRow) = canmatrix.formats.xls_common.get_signal(db, sig, motorolaBitFormat)
                     writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
                     backRow += additionalFrameInfo
                     for item in additional_signal_colums:
@@ -262,7 +262,7 @@ def dump(db, file, **options):
                 # loop over values ends here
             # no valuetable available
             else:
-                rowArray = canmatrix.xls_common.get_frame_info(db, frame)
+                rowArray = canmatrix.formats.xls_common.get_frame_info(db, frame)
                 frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                 if framestyle != sty_first_frame:
                     worksheet.row(row).level = 1
@@ -270,7 +270,7 @@ def dump(db, file, **options):
                 col = head_start
                 col = writeBuMatrix(
                     buList, sig, frame, worksheet, row, col, framestyle)
-                (frontRow,backRow)  = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
+                (frontRow,backRow)  = canmatrix.formats.xls_common.get_signal(db, sig, motorolaBitFormat)
                 writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
 
                 if float(sig.min) != 0 or float(sig.max) != 1.0:

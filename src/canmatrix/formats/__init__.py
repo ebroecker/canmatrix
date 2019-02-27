@@ -20,14 +20,14 @@ extensionMapping = {}
 
 for module in moduleList:
     try:
-        import_module("canmatrix." + module)
+        import_module("canmatrix.formats." + module)
         loadedFormats.append(module)
     except ImportError:
         logger.info("%s is not supported", module)
 
 for loadedModule in loadedFormats:
     supportedFormats[loadedModule] = []
-    moduleInstance = sys.modules["canmatrix." + loadedModule]
+    moduleInstance = sys.modules["canmatrix.formats." + loadedModule]
     if "load" in dir(moduleInstance):
         supportedFormats[loadedModule].append("load")
     if "dump" in dir(moduleInstance):
@@ -71,7 +71,7 @@ def loadp(path, importType=None, key="", flatImport=None, **options):
 
 def load(fileObject, importType, key="", flatImport=None, **options):
     dbs = {}
-    moduleInstance = sys.modules["canmatrix." + importType]
+    moduleInstance = sys.modules["canmatrix.formats." + importType]
     if "clusterImporter" in supportedFormats[importType]:
         dbs = moduleInstance.load(fileObject, **options)
     else:
@@ -85,7 +85,7 @@ def load(fileObject, importType, key="", flatImport=None, **options):
 
 
 def dump(canMatrixOrCluster, fileObject, exportType, **options):
-    moduleInstance = sys.modules["canmatrix." + exportType]
+    moduleInstance = sys.modules["canmatrix.formats." + exportType]
     if isinstance(canMatrixOrCluster, canmatrix.CanMatrix):
         moduleInstance.dump(canMatrixOrCluster, fileObject, **options)
     elif "clusterExporter" in supportedFormats[exportType]:
