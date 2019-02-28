@@ -5,7 +5,7 @@ import os.path
 
 def load_dbc():
     here = os.path.dirname(os.path.realpath(__file__))
-    return canmatrix.formats.loadp(os.path.join(here, "test_frame_decoding.dbc"), flatImport=True)
+    return canmatrix.formats.loadp(os.path.join(here, "test_frame_decoding.dbc"), flat_import=True)
 
 
 def test_decode_with_dbc_big_endian():
