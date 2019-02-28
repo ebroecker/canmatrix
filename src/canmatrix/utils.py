@@ -1,15 +1,16 @@
 import csv
 import shlex
 import sys
+import typing
 
 
-def quote_aware_space_split(in_line):
+def quote_aware_space_split(in_line):  # type: (str) -> typing.List[str]
     if sys.version_info >= (3, 0):  # is there a clean way to to it?
         return shlex.split(in_line.strip())
     return [item.decode('utf-8') for item in shlex.split(in_line.strip().encode('utf-8'))]
 
 
-def quote_aware_comma_split(string):
+def quote_aware_comma_split(string):  # type: (str) -> typing.List[str]
     if sys.version_info >= (3, 0):
         temp = list(csv.reader([string], skipinitialspace=True))
     else:
@@ -17,10 +18,11 @@ def quote_aware_comma_split(string):
     return temp[0]
 
 
-def guess_value(text_value):
+def guess_value(text_value):  # type: (str) -> str
     """
-    returns a string value for common strings.
-    method is far from complete but helping with odd arxmls
+    Get string value for common strings.
+    Method is far from complete but helping with odd arxml files.
+
     :param text_value: value in text like "true"
     :return: string for value like "1"
     """
