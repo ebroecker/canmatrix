@@ -1554,12 +1554,12 @@ class CanMatrix(object):
                 return
         self.ecus.append(ecu)
 
-    def del_ecu(self, ecu_or_name):  # type: (typing.Union[Ecu, str]) -> None
+    def del_ecu(self, ecu_or_glob):  # type: (typing.Union[Ecu, str]) -> None
         """Remove ECU from Matrix and all Frames.
 
-        :param str or Ecu ecu_or_name: ECU instance or glob pattern to remove from list
+        :param str or Ecu ecu_or_glob: ECU instance or glob pattern to remove from list
         """
-        ecu_list = [ecu_or_name] if isinstance(ecu_or_name, Ecu) else self.glob_ecus(ecu_or_name)
+        ecu_list = [ecu_or_glob] if isinstance(ecu_or_glob, Ecu) else self.glob_ecus(ecu_or_glob)
 
         for ecu in ecu_list:
             if ecu in self.ecus:

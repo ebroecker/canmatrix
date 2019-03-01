@@ -704,10 +704,11 @@ def test_decoded_signal_named_value():
     decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
     assert decoded.named_value == "Init"
 
+
 def test_Arbitration_id():
-    id_standard = canmatrix.ArbitrationId(id = 0x1, extended= False)
-    id_extended = canmatrix.ArbitrationId(id = 0x1, extended= True)
-    id_unknown = canmatrix.ArbitrationId(id = 0x1, extended= None)
+    id_standard = canmatrix.ArbitrationId(id=0x1, extended=False)
+    id_extended = canmatrix.ArbitrationId(id=0x1, extended=True)
+    id_unknown = canmatrix.ArbitrationId(id=0x1, extended=None)
 
     id_from_int_standard = canmatrix.ArbitrationId.from_compound_integer(1)
     id_from_int_extended = canmatrix.ArbitrationId.from_compound_integer(1 | 1 << 31)
@@ -725,4 +726,128 @@ def test_Arbitration_id():
     assert id_from_int_standard != id_extended
     assert id_from_int_extended == id_extended
     assert id_from_int_extended != id_standard
+
+
+@pytest.fixture
+def empty_matrix():
+    return canmatrix.CanMatrix()
+
+
+def test_canmatrix_add_attribure(empty_matrix):
+    empty_matrix.add_attribute("name1", "value1")
+    assert empty_matrix.attributes == {"name1": "value1"}
+
+
+def test_canmatrix_get_frame_by_glob(empty_matrix, empty_frame):
+    empty_matrix.add_frame(empty_frame)
+    f2 = canmatrix.Frame(name="nm_osek_esp")
+    empty_matrix.add_frame(f2)
+    assert empty_matrix.glob_frames("*osek*") == [f2]
+
+
+def test_canmatrix_get_frame_by_name(empty_matrix, empty_frame):
+    empty_matrix.add_frame(empty_frame)
+    assert empty_matrix.frame_by_name(empty_frame.name) == empty_frame
+
+
+def test_canmatrix_get_frame_by_wrong_name(empty_matrix, empty_frame):
+    empty_matrix.add_frame(empty_frame)
+    assert empty_matrix.frame_by_name("wrong") is None
+
+
+def test_canmatrix_iterate_over_frames(empty_matrix, empty_frame):
+    empty_matrix.add_frame(empty_frame)
+    assert [f for f in empty_matrix] == [empty_frame]
+
+
+def test_canmatrix_remove_frame(empty_matrix, empty_frame):
+    empty_matrix.add_frame(empty_frame)
+    empty_matrix.add_frame(canmatrix.Frame())
+    empty_matrix.remove_frame(empty_frame)
+    assert len(empty_matrix.frames) == 1
+
+
+def test_canmatrix_rename_ecu_by_name(empty_matrix):
+    ecu = canmatrix.Ecu(name="old_name")
+    empty_matrix.add_ecu(ecu)
+    empty_matrix.rename_ecu("old_name", "new name")
+    assert ecu.name == "new name"
+
+
+def test_canmatrix_rename_ecu_by_wrong_name(empty_matrix):
+    ecu = canmatrix.Ecu(name="old_name")
+    empty_matrix.add_ecu(ecu)
+    empty_matrix.rename_ecu("wrong", "new name")
+    assert ecu.name == "old_name"
+
+
+def test_canmatrix_rename_ecu_by_instance(empty_matrix):
+    ecu = canmatrix.Ecu(name="old_name")
+    empty_matrix.add_ecu(ecu)
+    empty_matrix.rename_ecu(ecu, "new name")
+    assert ecu.name == "new name"
+
+
+def test_canmatrix_del_ecu_by_glob(empty_matrix):
+    ecu1 = canmatrix.Ecu(name="ecu1")
+    ecu2 = canmatrix.Ecu(name="ecu2")
+    frame = canmatrix.Frame(transmitters=["ecu2", "ecu3"])
+    empty_matrix.add_ecu(ecu1)
+    empty_matrix.add_ecu(ecu2)
+    frame.add_signal(canmatrix.Signal(receivers=["ecu1", "ecu2"]))
+    empty_matrix.add_frame(frame)
+    empty_matrix.del_ecu("*2")
+    assert empty_matrix.ecus == [ecu1]
+    assert frame.receivers == ["ecu1"]
+    assert frame.transmitters == ["ecu3"]
+
+
+def test_canmatrix_del_ecu_by_instance(empty_matrix):
+    ecu1 = canmatrix.Ecu(name="ecu1")
+    ecu2 = canmatrix.Ecu(name="ecu2")
+    empty_matrix.add_ecu(ecu1)
+    empty_matrix.add_ecu(ecu2)
+    empty_matrix.del_ecu(ecu1)
+    assert empty_matrix.ecus == [ecu2]
+
+
+def test_canmatrix_rename_frame_by_name(empty_matrix):
+    f = canmatrix.Frame(name="F1")
+    empty_matrix.add_frame(f)
+    empty_matrix.rename_frame("F1", "F2")
+    assert f.name == "F2"
+    empty_matrix.rename_frame("X*", "G")
+    assert f.name == "F2"
+    empty_matrix.rename_frame("F*", "G")
+    assert f.name == "G2"
+    empty_matrix.rename_frame("*0", "9")
+    assert f.name == "G2"
+    empty_matrix.rename_frame("*2", "9")
+    assert f.name == "G9"
+
+
+def test_canmatrix_rename_frame_by_instance(empty_matrix):
+    f = canmatrix.Frame(name="F1")
+    empty_matrix.add_frame(f)
+    empty_matrix.rename_frame(f, "F2")
+    assert f.name == "F2"
+
+
+def test_canmatrix_del_frame_by_name(empty_matrix):
+    f1 = canmatrix.Frame(name="F1")
+    f2 = canmatrix.Frame(name="F2")
+    empty_matrix.add_frame(f1)
+    empty_matrix.add_frame(f2)
+    empty_matrix.del_frame("F1")
+    empty_matrix.del_frame("bad_one")
+    assert empty_matrix.frames == [f2]
+
+
+def test_canmatrix_del_frame_by_instance(empty_matrix):
+    f1 = canmatrix.Frame(name="F1")
+    f2 = canmatrix.Frame(name="F2")
+    empty_matrix.add_frame(f1)
+    empty_matrix.add_frame(f2)
+    empty_matrix.del_frame(f1)
+    assert empty_matrix.frames == [f2]
 
