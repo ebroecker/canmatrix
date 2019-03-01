@@ -113,7 +113,7 @@ class Ecu(object):
         self.comment = comment
 
 
-def normalize_value_table(table):  # type: (typing.Mapping) -> typing.Mapping[int, typing.Any]
+def normalize_value_table(table):  # type: (typing.Mapping) -> typing.MutableMapping[int, typing.Any]
     return {int(k): v for k, v in table.items()}
 
 
@@ -1162,7 +1162,7 @@ class Define(object):
         elif definition[0:4] == 'ENUM':
             self.type = 'ENUM'
             tempValues = canmatrix.utils.quote_aware_comma_split(definition[5:])
-            self.values = []
+            self.values = []  # type: typing.List[str]
             for value in tempValues:
                 value = value.replace("vector_leerstring", "")
                 self.values.append(value)
@@ -1256,7 +1256,7 @@ class CanMatrix(object):
                 return True
         return False
 
-    def attribute(self, attributeName, default=None):
+    def attribute(self, attributeName, default=None):  # type(str, typing.Any) -> typing.Any
         """Return custom Matrix attribute by name.
 
         :param str attributeName: attribute name
@@ -1270,7 +1270,7 @@ class CanMatrix(object):
                 define = self.global_defines[attributeName]
                 return define.defaultValue
 
-    def add_value_table(self, name, valueTable):
+    def add_value_table(self, name, valueTable):  # type: (str, typing.Mapping) -> None
         """Add named value table.
 
         :param str name: value table name
@@ -1278,7 +1278,7 @@ class CanMatrix(object):
         """
         self.value_tables[name] = normalize_value_table(valueTable)
 
-    def add_attribute(self, attribute, value):
+    def add_attribute(self, attribute, value):  # type: (str, typing.Any) -> None
         """
         Add attribute to Matrix attribute-list.
 
@@ -1297,47 +1297,47 @@ class CanMatrix(object):
         if type not in self.signal_defines:
             self.signal_defines[type] = Define(definition)
 
-    def add_frame_defines(self, type, definition):
+    def add_frame_defines(self, name, definition):  # type: (str, str) -> None
         """
         Add frame-attribute definition to canmatrix.
 
-        :param str type: frame type
+        :param str name: frame type
         :param str definition: frame definition as string
         """
-        if type not in self.frame_defines:
-            self.frame_defines[type] = Define(definition)
+        if name not in self.frame_defines:
+            self.frame_defines[name] = Define(definition)
 
-    def add_ecu_defines(self, type, definition):
+    def add_ecu_defines(self, name, definition):  # type: (str, str) -> None
         """
         Add Boardunit-attribute definition to canmatrix.
 
-        :param str type: Boardunit type
+        :param str name: Boardunit type
         :param str definition: BU definition as string
         """
-        if type not in self.ecu_defines:
-            self.ecu_defines[type] = Define(definition)
+        if name not in self.ecu_defines:
+            self.ecu_defines[name] = Define(definition)
 
-    def add_env_defines(self, type, definition):
+    def add_env_defines(self, name, definition):  # type: (str, str) -> None
         """
         Add enviroment variable-attribute definition to canmatrix.
 
-        :param str type: enviroment variable type
+        :param str name: enviroment variable type
         :param str definition: enviroment variable definition as string
         """
-        if type not in self.env_defines:
-            self.env_defines[type] = Define(definition)
+        if name not in self.env_defines:
+            self.env_defines[name] = Define(definition)
 
-    def add_global_defines(self, type, definition):
+    def add_global_defines(self, name, definition):  # type: (str, str) -> None
         """
         Add global-attribute definition to canmatrix.
 
-        :param str type: attribute type
+        :param str name: attribute type
         :param str definition: attribute definition as string
         """
-        if type not in self.global_defines:
-            self.global_defines[type] = Define(definition)
+        if name not in self.global_defines:
+            self.global_defines[name] = Define(definition)
 
-    def add_define_default(self, name, value):
+    def add_define_default(self, name, value):  # type: (str, typing.Any) -> None
         if name in self.signal_defines:
             self.signal_defines[name].set_default(value)
         if name in self.frame_defines:
@@ -1347,51 +1347,51 @@ class CanMatrix(object):
         if name in self.global_defines:
             self.global_defines[name].set_default(value)
 
-    def delete_obsolete_defines(self):
+    def delete_obsolete_defines(self):  # type: () -> None
         """Delete all unused Defines.
 
         Delete them from frameDefines, buDefines and signalDefines.
         """
-        toBeDeleted = []
-        for frameDef in self.frame_defines:
+        defines_to_delete = set()  # type: typing.Set[str]
+        for frameDef in self.frame_defines:  # type: str
             found = False
             for frame in self.frames:
                 if frameDef in frame.attributes:
                     found = True
                     break
-            if found is False and found not in toBeDeleted:
-                toBeDeleted.append(frameDef)
-        for element in toBeDeleted:
+            if not found:
+                defines_to_delete.add(frameDef)
+        for element in defines_to_delete:
             del self.frame_defines[element]
-        toBeDeleted = []
-        for buDef in self.ecu_defines:
+        defines_to_delete = set()
+        for ecu_define in self.ecu_defines:
             found = False
             for ecu in self.ecus:
-                if buDef in ecu.attributes:
+                if ecu_define in ecu.attributes:
                     found = True
                     break
-            if found is False and found not in toBeDeleted:
-                toBeDeleted.append(buDef)
-        for element in toBeDeleted:
+            if not found:
+                defines_to_delete.add(ecu_define)
+        for element in defines_to_delete:
             del self.ecu_defines[element]
 
-        toBeDeleted = []
-        for signalDef in self.signal_defines:
+        defines_to_delete = set()
+        for signal_define in self.signal_defines:
             found = False
             for frame in self.frames:
                 for signal in frame.signals:
-                    if signalDef in signal.attributes:
+                    if signal_define in signal.attributes:
                         found = True
                         break
-            if found is False and found not in toBeDeleted:
-                toBeDeleted.append(signalDef)
-        for element in toBeDeleted:
+            if not found:
+                defines_to_delete.add(signal_define)
+        for element in defines_to_delete:
             del self.signal_defines[element]
 
-    def frame_by_id(self, arbitration_id):
+    def frame_by_id(self, arbitration_id):  # type: (ArbitrationId) -> typing.Union[Frame, None]
         """Get Frame by its arbitration id.
 
-        :param Id: Frame id as canmatrix.ArbitrationId
+        :param ArbitrationId arbitration_id: Frame id as canmatrix.ArbitrationId
         :rtype: Frame or None
         """
         for test in self.frames:
@@ -1400,7 +1400,7 @@ class CanMatrix(object):
                 return test
         return None
 
-    def frame_by_name(self, name):
+    def frame_by_name(self, name):  # type: (str) -> typing.Union[Frame, None]
         """Get Frame by name.
 
         :param str name: Frame name to search for
@@ -1411,19 +1411,19 @@ class CanMatrix(object):
                 return test
         return None
 
-    def glob_frames(self, globStr):
+    def glob_frames(self, globStr):  # type: (str) -> typing.List[Frame]
         """Find Frames by given glob pattern.
 
         :param str globStr: glob pattern to filter Frames. See `fnmatch.fnmatchcase`.
         :rtype: list of Frame
         """
-        returnArray = []
+        return_array = []
         for test in self.frames:
             if fnmatch.fnmatchcase(test.name, globStr):
-                returnArray.append(test)
-        return returnArray
+                return_array.append(test)
+        return return_array
 
-    def ecu_by_name(self, name):
+    def ecu_by_name(self, name):  # type: (str) -> typing.Union[Ecu, None]
         """
         Returns Boardunit by Name.
 
@@ -1435,20 +1435,20 @@ class CanMatrix(object):
                 return test
         return None
 
-    def glob_ecus(self, globStr):
+    def glob_ecus(self, globStr):  # type: (str) -> typing.List[Ecu]
         """
         Find ECUs by given glob pattern.
 
         :param globStr: glob pattern to filter BoardUnits. See `fnmatch.fnmatchcase`.
         :rtype: list of Ecu
         """
-        returnArray = []
+        return_array = []
         for test in self.ecus:
             if fnmatch.fnmatchcase(test.name, globStr):
-                returnArray.append(test)
-        return returnArray
+                return_array.append(test)
+        return return_array
 
-    def add_frame(self, frame):
+    def add_frame(self, frame):  # type: (Frame) -> Frame
         """Add the Frame to the Matrix.
 
         :param Frame frame: Frame to add
@@ -1457,14 +1457,14 @@ class CanMatrix(object):
         self.frames.append(frame)
         return self.frames[len(self.frames) - 1]
 
-    def remove_frame(self, frame):
+    def remove_frame(self, frame):  # type: (Frame) -> None
         """Remove the Frame from Matrix.
 
         :param Frame frame: frame to remove from CAN Matrix
         """
         self.frames.remove(frame)
 
-    def add_signal(self, signal):
+    def add_signal(self, signal):  # type: (Signal) -> Signal
         """
         Add Signal to Frame.
 
@@ -1474,40 +1474,40 @@ class CanMatrix(object):
         self.signals.append(signal)
         return self.signals[len(self.signals) - 1]
 
-    def remove_signal(self, signal):
+    def remove_signal(self, signal):  # type: (Signal) -> None
         """Remove the Frame from Matrix.
 
-        :param Frame frame: frame to remove from CAN Matrix
+        :param Signal signal: frame to remove from CAN Matrix
         """
         self.signals.remove(signal)
 
-    def delete_zero_signals(self):
+    def delete_zero_signals(self):  # type: () -> None
         """Delete all signals with zero bit width from all Frames."""
         for frame in self.frames:
             for signal in frame.signals:
                 if 0 == signal.size:
                     frame.signals.remove(signal)
 
-    def del_signal_attributes(self, unwantedAttributes):
+    def del_signal_attributes(self, unwanted_attributes):  # type: (typing.Sequence[str]) -> None
         """Delete Signal attributes from all Signals of all Frames.
 
-        :param list of str unwantedAttributes: List of attributes to remove
+        :param list of str unwanted_attributes: List of attributes to remove
         """
         for frame in self.frames:
             for signal in frame.signals:
-                for attrib in unwantedAttributes:
+                for attrib in unwanted_attributes:
                     signal.del_attribute(attrib)
 
-    def del_frame_attributes(self, unwantedAttributes):
+    def del_frame_attributes(self, unwanted_attributes):  # type: (typing.Sequence[str]) -> None
         """Delete Frame attributes from all Frames.
 
-        :param list of str unwantedAttributes: List of attributes to remove
+        :param list of str unwanted_attributes: List of attributes to remove
         """
         for frame in self.frames:
-            for attrib in unwantedAttributes:
+            for attrib in unwanted_attributes:
                 frame.del_attribute(attrib)
 
-    def recalc_dlc(self, strategy):
+    def recalc_dlc(self, strategy):  # type: (str) -> None
         """Recompute DLC of all Frames.
 
         :param str strategy: selected strategy, "max" or "force".
@@ -1523,31 +1523,28 @@ class CanMatrix(object):
                         maxBit = sig.get_startbit() + int(sig.size)
                 frame.size = math.ceil(maxBit / 8)
 
-    def rename_ecu(self, old, newName):
+    def rename_ecu(self, ecu_or_name, new_name):  # type: (typing.Union[Ecu, str], str) -> None
         """Rename ECU in the Matrix. Update references in all Frames.
 
-        :param str or Ecu old: old name or ECU instance
-        :param str newName: new name
+        :param str or Ecu ecu_or_name: old name or ECU instance
+        :param str new_name: new name
         """
-        if type(old).__name__ == 'instance':
-            pass
-        else:
-            old = self.ecu_by_name(old)
-        if old is None:
+        ecu = ecu_or_name if isinstance(ecu_or_name, Ecu) else self.ecu_by_name(ecu_or_name)
+        if ecu is None:
             return
-        oldName = old.name
-        old.name = newName
+        old_name = ecu.name
+        ecu.name = new_name
         for frame in self.frames:
-            if oldName in frame.transmitters:
-                frame.transmitters.remove(oldName)
-                frame.add_transmitter(newName)
+            if old_name in frame.transmitters:
+                frame.transmitters.remove(old_name)
+                frame.add_transmitter(new_name)
             for signal in frame.signals:
-                if oldName in signal.receivers:
-                    signal.receivers.remove(oldName)
-                    signal.add_receiver(newName)
+                if old_name in signal.receivers:
+                    signal.receivers.remove(old_name)
+                    signal.add_receiver(new_name)
             frame.update_receiver()
 
-    def add_ecu(self, ecu):
+    def add_ecu(self, ecu):  # type(Ecu) -> None  # todo return Ecu?
         """Add new ECU to the Matrix. Do nothing if ecu with the same name already exists.
 
         :param Ecu ecu: ECU name to add
@@ -1557,108 +1554,99 @@ class CanMatrix(object):
                 return
         self.ecus.append(ecu)
 
-    def del_ecu(self, ecu):
+    def del_ecu(self, ecu_or_glob):  # type: (typing.Union[Ecu, str]) -> None
         """Remove ECU from Matrix and all Frames.
 
-        :param str or Ecu ecu: ECU instance or glob pattern to remove from list
+        :param str or Ecu ecu_or_glob: ECU instance or glob pattern to remove from list
         """
-        if type(ecu).__name__ == 'instance':
-            ecuList = [ecu]
-        else:
-            ecuList = self.glob_ecus(ecu)
+        ecu_list = [ecu_or_glob] if isinstance(ecu_or_glob, Ecu) else self.glob_ecus(ecu_or_glob)
 
-        for ecu in ecuList:
+        for ecu in ecu_list:
             if ecu in self.ecus:
                 self.ecus.remove(ecu)
                 for frame in self.frames:
                     if ecu.name in frame.transmitters:
                         frame.transmitters.remove(ecu.name)
                     for signal in frame.signals:
-                        if ecu.name in signal.receiver:
-                            signal.receiver.remove(ecu.name)
+                        if ecu.name in signal.receivers:
+                            signal.receivers.remove(ecu.name)
                     frame.update_receiver()
 
-    def update_ecu_list(self):
+    def update_ecu_list(self):  # type: () -> None
         """Check all Frames and add unknown ECUs to the Matrix ECU list."""
         for frame in self.frames:
             for transmit_ecu in frame.transmitters:
-                self.add_ecu(canmatrix.Ecu(transmit_ecu))
+                self.add_ecu(Ecu(transmit_ecu))
             frame.update_receiver()
             for signal in frame.signals:
                 for receive_ecu in signal.receivers:
-                    self.add_ecu(canmatrix.Ecu(receive_ecu))
+                    self.add_ecu(Ecu(receive_ecu))
 
-    def rename_frame(self, old, newName):
+    def rename_frame(self, frame_or_name, new_name):  # type: (typing.Union[Frame,str], str) -> None
         """Rename Frame.
 
-        :param Frame or str old: Old Frame instance or name or part of the name with '*' at the beginning or the end.
-        :param str newName: new Frame name, suffix or prefix
+        :param Frame or str frame_or_name: Old Frame instance or name or part of the name with '*' at the beginning or the end.
+        :param str new_name: new Frame name, suffix or prefix
         """
-        if type(old).__name__ == 'instance':
-            old = old.name
+        old_name = frame_or_name.name if isinstance(frame_or_name, Frame) else frame_or_name
         for frame in self.frames:
-            if old[-1] == '*':
-                oldPrefixLen = len(old)-1
-                if frame.name[:oldPrefixLen] == old[:-1]:
-                    frame.name = newName + frame.name[oldPrefixLen:]
-            if old[0] == '*':
-                oldSuffixLen = len(old)-1
-                if frame.name[-oldSuffixLen:] == old[1:]:
-                    frame.name = frame.name[:-oldSuffixLen] + newName
-            elif frame.name == old:
-                frame.name = newName
+            if old_name[-1] == '*':
+                old_prefix_len = len(old_name)-1
+                if frame.name[:old_prefix_len] == old_name[:-1]:
+                    frame.name = new_name + frame.name[old_prefix_len:]
+            if old_name[0] == '*':
+                old_suffix_len = len(old_name)-1
+                if frame.name[-old_suffix_len:] == old_name[1:]:
+                    frame.name = frame.name[:-old_suffix_len] + new_name
+            elif frame.name == old_name:
+                frame.name = new_name
 
-    def del_frame(self, frame):
+    def del_frame(self, frame_or_name):  # type: (typing.Union[Frame, str]) -> None
         """Delete Frame from Matrix.
 
-        :param Frame or str frame: Frame or name to delete"""
-        if type(frame).__name__ == 'instance' or type(frame).__name__ == 'Frame':
-            pass
-        else:
-            frame = self.frame_by_name(frame)
-        self.frames.remove(frame)
+        :param Frame or str frame_or_name: Frame or name to delete"""
+        frame = frame_or_name if isinstance(frame_or_name, Frame) else self.frame_by_name(frame_or_name)
+        if frame:
+            self.frames.remove(frame)
 
-    def rename_signal(self, old, newName):
+    def rename_signal(self, signal_or_name, new_name):  # type: (typing.Union[Signal, str], str) -> None
         """Rename Signal.
 
-        :param Signal or str old: Old Signal instance or name or part of the name with '*' at the beginning or the end.
-        :param str newName: new Signal name, suffix or prefix
+        :param Signal or str signal_or_name: Old Signal instance or name or part of the name with '*' at the beginning or the end.
+        :param str new_name: new Signal name, suffix or prefix
         """
-        if type(old).__name__ == 'instance' or type(old).__name__ == 'Signal':
-            old.name = newName
-        else:
-            for frame in self.frames:
-                if old[-1] == '*':
-                    oldPrefixLen = len(old) - 1
-                    for signal in frame.signals:
-                        if signal.name[:oldPrefixLen] == old[:-1]:
-                            signal.name = newName + signal.name[oldPrefixLen:]
-                if old[0] == '*':
-                    oldSuffixLen = len(old) - 1
-                    for signal in frame.signals:
-                        if signal.name[-oldSuffixLen:] == old[1:]:
-                            signal.name = signal.name[:-oldSuffixLen] + newName
+        old_name = signal_or_name.name if isinstance(signal_or_name, Signal) else signal_or_name
+        for frame in self.frames:
+            if old_name[-1] == '*':
+                old_prefix_len = len(old_name) - 1
+                for signal in frame.signals:
+                    if signal.name[:old_prefix_len] == old_name[:-1]:
+                        signal.name = new_name + signal.name[old_prefix_len:]
+            elif old_name[0] == '*':
+                old_suffix_len = len(old_name) - 1
+                for signal in frame.signals:
+                    if signal.name[-old_suffix_len:] == old_name[1:]:
+                        signal.name = signal.name[:-old_suffix_len] + new_name
+            else:
+                signal_found = frame.signal_by_name(old_name)
+                if signal_found:
+                    signal_found.name = new_name
 
-                else:
-                    signal = frame.signal_by_name(old)
-                    if signal is not None:
-                        signal.name = newName
-
-    def del_signal(self, signal):
+    def del_signal(self, signal):  # type: (typing.Union[Signal, str]) -> None
         """Delete Signal from Matrix and all Frames.
 
         :param Signal or str signal: Signal instance or glob pattern to be deleted"""
-        if type(signal).__name__ == 'instance' or type(signal).__name__ == 'Signal':
+        if isinstance(signal, Signal):
             for frame in self.frames:
                 if signal in frame.signals:
                     frame.signals.remove(signal)
         else:
             for frame in self.frames:
-                signalList = frame.glob_signals(signal)
-                for sig in signalList:
+                signal_list = frame.glob_signals(signal)
+                for sig in signal_list:
                     frame.signals.remove(sig)
 
-    def add_signal_receiver(self, globFrame, globSignal, ecu):
+    def add_signal_receiver(self, globFrame, globSignal, ecu):  # type: (str, str, str) -> None
         """Add Receiver to all Frames and Signals by glob pattern.
 
         :param str globFrame: glob pattern for Frame name.
@@ -1671,7 +1659,7 @@ class CanMatrix(object):
                 signal.add_receiver(ecu)
             frame.update_receiver()
 
-    def del_signal_receiver(self, globFrame, globSignal, ecu):
+    def del_signal_receiver(self, globFrame, globSignal, ecu):  # type: (str, str, str) -> None
         """Delete Receiver from all Frames by glob pattern.
 
         :param str globFrame: glob pattern for Frame name.
@@ -1684,7 +1672,7 @@ class CanMatrix(object):
                 signal.del_receiver(ecu)
             frame.update_receiver()
 
-    def add_frame_transmitter(self, globFrame, ecu):
+    def add_frame_transmitter(self, globFrame, ecu):  # type: (str, str) -> None
         """Add Transmitter to all Frames by glob pattern.
 
         :param str globFrame: glob pattern for Frame name.
@@ -1694,7 +1682,7 @@ class CanMatrix(object):
         for frame in frames:
             frame.add_transmitter(ecu)
 
-    def add_frame_receiver(self, globFrame, ecu):
+    def add_frame_receiver(self, globFrame, ecu):  # type: (str, str) -> None
         """Add Receiver to all Frames by glob pattern.
 
         :param str globFrame: glob pattern for Frame name.
@@ -1705,7 +1693,7 @@ class CanMatrix(object):
             for signal in frame.signals:
                 signal.add_receiver(ecu)
 
-    def del_frame_transmitter(self, globFrame, ecu):
+    def del_frame_transmitter(self, globFrame, ecu):  # type: (str, str) -> None
         """Delete Transmitter from all Frames by glob pattern.
 
         :param str globFrame: glob pattern for Frame name.
@@ -1715,7 +1703,7 @@ class CanMatrix(object):
         for frame in frames:
             frame.del_transmitter(ecu)
 
-    def merge(self, mergeArray):
+    def merge(self, mergeArray):  # type: (typing.Sequence[CanMatrix]) -> None
         """Merge multiple Matrices to this Matrix.
 
         Try to copy all Frames and all environment variables from source Matrices. Don't make duplicates.
@@ -1723,20 +1711,21 @@ class CanMatrix(object):
 
         :param list of Matrix mergeArray: list of source CAN Matrices to be merged to to self.
         """
-        for dbTemp in mergeArray:
+        for dbTemp in mergeArray:  # type: CanMatrix
             for frame in dbTemp.frames:
                 copyResult = canmatrix.copy.copy_frame(frame.arbitration_id, dbTemp, self)
-                if copyResult == False:
+                if copyResult is False:
                     logger.error(
-                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.arbitration_id.id + self.frame_by_id(frame.arbitration_id).name)
+                        "ID Conflict, could not copy/merge frame " + frame.name + "  %xh " % frame.arbitration_id.id + self.frame_by_id(frame.arbitration_id).name
+                    )
             for envVar in dbTemp.env_vars:
                 if envVar not in self.env_vars:
-                    self.add_env_var(envVar, dbTemp.envVars[envVar])
+                    self.add_env_var(envVar, dbTemp.env_vars[envVar])
                 else:
                     logger.error(
                         "Name Conflict, could not copy/merge EnvVar " + envVar)
 
-    def set_fd_type(self):
+    def set_fd_type(self):  # type: () -> None
         """Try to guess and set the CAN type for every frame.
 
         If a Frame is longer than 8 bytes, it must be Flexible Data Rate frame (CAN-FD).
@@ -1746,7 +1735,7 @@ class CanMatrix(object):
             if frame.size > 8:
                 frame.is_fd = True
 
-    def encode(self, frame_id, data):
+    def encode(self, frame_id, data):  # type: (ArbitrationId, typing.Mapping[str, typing.Any]) -> bytes
         """Return a byte string containing the values from data packed
         according to the frame format.
 
@@ -1756,7 +1745,7 @@ class CanMatrix(object):
         """
         return self.frame_by_id(frame_id).encode(data)
 
-    def decode(self, frame_id, data):
+    def decode(self, frame_id, data):  # type: (ArbitrationId, bytes) -> typing.Mapping[str, typing.Any]
         """Return OrderedDictionary with Signal Name: object decodedSignal
 
         :param frame_id: frame id
@@ -1766,7 +1755,7 @@ class CanMatrix(object):
         """
         return self.frame_by_id(frame_id).decode(data)
 
-    def enum_attribs_to_values(self):
+    def enum_attribs_to_values(self):  # type: () -> None
         for define in self.ecu_defines:
             if self.ecu_defines[define].type == "ENUM":
                 for bu in self.ecus:
@@ -1786,7 +1775,7 @@ class CanMatrix(object):
                         if define in signal.attributes:
                             signal.attributes[define] = self.signal_defines[define].values[int(signal.attributes[define])]
 
-    def enum_attribs_to_keys(self):
+    def enum_attribs_to_keys(self):  # type: () -> None
         for define in self.ecu_defines:
             if self.ecu_defines[define].type == "ENUM":
                 for bu in self.ecus:
