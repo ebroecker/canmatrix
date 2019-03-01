@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 import typing
-import canmatrix
+import canmatrix.canmatrix as canmatrix
 
 
 class CanCluster(dict):
 
     def __init__(self, *arg, **kw):
         super(CanCluster, self).__init__(*arg, **kw)
-        self._frames = []  # type: typing.MutableSequence[canmatrix.Frame]
-        self._signals = []
-        self._ecus = []
+        self._frames = []  # type: typing.List[canmatrix.Frame]
+        self._signals = []  # type: typing.List[canmatrix.Signal]
+        self._ecus = []  # type: typing.List[canmatrix.Ecu]
         self.update()
 
     def update_frames(self):  # type: () -> typing.MutableSequence[canmatrix.Frame]
-        frames = []  # type: typing.MutableSequence[canmatrix.Frame]
-        frame_names = []  # type: typing.MutableSequence[str]
+        frames = []  # type: typing.List[canmatrix.Frame]
+        frame_names = []  # type: typing.List[str]
         for matrixName in self:
             for frame in self[matrixName].frames:  # type: canmatrix.Frame
                 if frame.name not in frame_names:
@@ -30,8 +30,8 @@ class CanCluster(dict):
         return frames
 
     def update_signals(self):  # type: () -> typing.MutableSequence[canmatrix.Signal]
-        signals = []  # type: typing.MutableSequence[canmatrix.Signal]
-        signal_names = []  # type: typing.MutableSequence[str]
+        signals = []  # type: typing.List[canmatrix.Signal]
+        signal_names = []  # type: typing.List[str]
         for matrixName in self:
             for frame in self[matrixName].frames:
                 for signal in frame.signals:  # type: canmatrix.Signal
@@ -46,8 +46,8 @@ class CanCluster(dict):
         return signals
 
     def update_ecus(self):  # type: () -> typing.MutableSequence[canmatrix.Ecu]
-        ecus = []  # type: typing.MutableSequence[canmatrix.Ecu]
-        ecu_names = []  # type: typing.MutableSequence[str]
+        ecus = []  # type: typing.List[canmatrix.Ecu]
+        ecu_names = []  # type: typing.List[str]
         for matrixName in self:
             for ecu in self[matrixName].ecus:  # type: canmatrix.Ecu
                 if ecu.name not in ecu_names:

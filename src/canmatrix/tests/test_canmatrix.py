@@ -271,8 +271,8 @@ def test_signal_set_default_min_max():
 def test_signal_decode_named_value(some_signal):
     some_signal.add_values(255, "Init")
     some_signal.add_values(254, "Error")
-    assert some_signal.raw2phys(254, decodeToStr=True) == "Error"
-    assert some_signal.raw2phys(200, decodeToStr=True) == 200
+    assert some_signal.raw2phys(254, decode_to_str=True) == "Error"
+    assert some_signal.raw2phys(200, decode_to_str=True) == 200
 
 
 def test_signal_encode_named_value(some_signal):
