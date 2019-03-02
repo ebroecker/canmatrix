@@ -28,31 +28,31 @@
 # TODO: Definitions should be disassembled
 
 from __future__ import division, absolute_import
-import math
-import attr
-if attr.__version__ < '17.4.0':
-    raise "need attrs >= 17.4.0"
 
-import logging
-import fnmatch
 import decimal
+import fnmatch
+import logging
+import math
+import struct
 import typing
+from itertools import chain
 
 try:
     from itertools import zip_longest as zip_longest
 except ImportError:
-    from itertools import izip_longest as zip_longest
+    from itertools import izip_longest as zip_longest  # type: ignore
 
-from itertools import chain
-import struct
+from past.builtins import basestring  # type: ignore
+import attr
 
-from past.builtins import basestring
 import canmatrix.copy
 import canmatrix.types
 import canmatrix.utils
 
+if attr.__version__ < '17.4.0':  # type: ignore
+    raise RuntimeError("need attrs >= 17.4.0")
 logger = logging.getLogger(__name__)
-defaultFloatFactory = decimal.Decimal
+defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
 
 class ExceptionTemplate(Exception):
     def __call__(self, *args):
@@ -65,35 +65,36 @@ class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
 class ArbitrationIdOutOfRange(ExceptionTemplate): pass
 
+
 @attr.s
 class Ecu(object):
     """
-    Contains one Boardunit/ECU
+    Represents one ECU.
     """
 
     name = attr.ib()  # type: str
     comment = attr.ib(default=None)  # type: typing.Optional[str]
     attributes = attr.ib(factory=dict, repr=False)  # type: typing.MutableMapping[str, typing.Any]
 
-    def attribute(self, attributeName, db=None, default=None):  # type: (str, CanMatrix, typing.Any) -> typing.Any
+    def attribute(self, attribute_name, db=None, default=None):  # type: (str, CanMatrix, typing.Any) -> typing.Any
         """Get Board unit attribute by its name.
 
-        :param str attributeName: attribute name.
+        :param str attribute_name: attribute name.
         :param CanMatrix db: Optional database parameter to get global default attribute value.
         :param default: Default value if attribute doesn't exist.
         :return: Return the attribute value if found, else `default` or None
         """
-        if attributeName in self.attributes:
-            return self.attributes[attributeName]
+        if attribute_name in self.attributes:
+            return self.attributes[attribute_name]
         elif db is not None:
-            if attributeName in db.ecu_defines:
-                define = db.ecu_defines[attributeName]
+            if attribute_name in db.ecu_defines:
+                define = db.ecu_defines[attribute_name]
                 return define.defaultValue
         return default
 
     def add_attribute(self, attribute, value):  # type (attribute: str, value: typing.Any) -> None
         """
-        Add the Attribute to current Boardunit/ECU. If the attribute already exists, update the value.
+        Add the Attribute to current ECU. If the attribute already exists, update the value.
 
         :param str attribute: Attribute name
         :param any value: Attribute value
@@ -106,7 +107,7 @@ class Ecu(object):
 
     def add_comment(self, comment):  # type: (str) -> None
         """
-        Set Board unit comment.
+        Set ECU comment.
 
         :param str comment: BU comment/description.
         """
@@ -129,25 +130,25 @@ class Signal(object):
     * is_little_endian (1: Intel, 0: Motorola)
     * is_signed (bool)
     * factor, offset, min, max
-    * receiver  (Boarunit/ECU-Name)
+    * receiver  (ECU Name)
     * attributes, _values, unit, comment
     * _multiplex ('Multiplexor' or Number of Multiplex)
     """
 
     name = attr.ib(default="")  # type: str
     # float_factory = attr.ib(default=defaultFloatFactory)
-    float_factory = defaultFloatFactory  # type: typing.Callable
+    float_factory = defaultFloatFactory  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
     start_bit = attr.ib(default=0)  # type: int
     size = attr.ib(default=0)  # type: int
     is_little_endian = attr.ib(default=True)  # type: bool
     is_signed = attr.ib(default=True)  # type: bool
-    offset = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: decimal.Decimal
-    factor = attr.ib(converter=float_factory, default=float_factory(1.0))  # type: decimal.Decimal
+    offset = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: canmatrix.types.PhysicalValue
+    factor = attr.ib(converter=float_factory, default=float_factory(1.0))  # type: canmatrix.types.PhysicalValue
 
     unit = attr.ib(default="")  # type: str
     receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     comment = attr.ib(default=None)  # type: typing.Optional[str]
-    multiplex = attr.ib(default=None)
+    multiplex = attr.ib(default=None)  # type: typing.Union[str, int]
 
     mux_value = attr.ib(default=None)
     is_float = attr.ib(default=False)  # type: bool
@@ -404,25 +405,23 @@ class Signal(object):
             raw_value = int(raw_value)
         return raw_value
 
-    def raw2phys(self, value, decodeToStr=False):
-        # type: (canmatrix.types.RawValue, bool) -> canmatrix.types.PhysicalValue
+    def raw2phys(self, value, decode_to_str=False):
+        # type: (canmatrix.types.RawValue, bool) -> typing.Union[canmatrix.types.PhysicalValue, str]
         """Decode the given raw value (= as is on CAN).
 
         :param value: raw value compatible with `decimal`.
-        :param bool decodeToStr: If True, try to get value representation as *string* ('Init' etc.)
+        :param bool decode_to_str: If True, try to get value representation as *string* ('Init' etc.)
         :return: physical value (scaled)
         """
-
         if self.is_float:
             value = self.float_factory(value)
-        value = value * self.factor + self.offset
-        if decodeToStr:
+        result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
+        if decode_to_str:
             for value_key, value_string in self.values.items():
-                if value_key == value:
-                    value = value_string
+                if value_key == result:
+                    result = value_string
                     break
-
-        return value
+        return result
 
     def __str__(self):  # type: () -> str
         return self.name
@@ -504,7 +503,7 @@ class DecodedSignal(object):
         :return: value of Valuetable
         :rtype: typing.Union[str, int, decimal.Decimal]
         """
-        return self.signal.raw2phys(self.raw_value, decodeToStr=True)
+        return self.signal.raw2phys(self.raw_value, decode_to_str=True)
 
 
 # https://docs.python.org/3/library/itertools.html
@@ -584,7 +583,7 @@ class ArbitrationId(object):
             raise ArbitrationIdOutOfRange('ID out of range')
 
     @classmethod
-    def from_compound_integer(cls, i):
+    def from_compound_integer(cls, i):  # type: (typing.Any) -> ArbitrationId
         return cls(
             id=i & cls.extended_id_mask,
             extended=(i & cls.compound_extended_mask) != 0,
@@ -610,18 +609,17 @@ class ArbitrationId(object):
 @attr.s(cmp=False)
 class Frame(object):
     """
-    Contains one CAN Frame.
+    Represents CAN Frame.
 
     The Frame has  following mandatory attributes
 
-    * id,
+    * arbitration_id,
     * name,
-    * transmitters (list of boardunits/ECU-names),
-    * size (= DLC),
+    * transmitters (list of ECU names),
+    * size (DLC),
     * signals (list of signal-objects),
     * attributes (list of attributes),
-    * receivers (list of boardunits/ECU-names),
-    * extended (Extended Frame = 1),
+    * receivers (list of ECU names),
     * comment
 
     and any *custom* attributes in `attributes` dict.
@@ -630,6 +628,7 @@ class Frame(object):
     """
 
     name = attr.ib(default="")  # type: str
+    # mypy Unsupported converter:
     arbitration_id = attr.ib(converter=ArbitrationId.from_compound_integer, default=0)  # type: ArbitrationId
     size = attr.ib(default=0)  # type: int
     transmitters = attr.ib(factory=list)  # type: typing.MutableSequence[str]
@@ -691,7 +690,9 @@ class Frame(object):
 
     def recalc_J1939_id(self):  # type: () -> None
         """Recompute J1939 ID"""
-        self.arbitration_id.id = (self.j1939_source & 0xff) + ((self.j1939_pgn & 0xffff) << 8) + ((self.j1939_prio & 0x7) << 26)
+        self.arbitration_id.id = self.j1939_source & 0xff
+        self.arbitration_id.id += (self.j1939_pgn & 0xffff) << 8  # default pgn is None -> mypy reports error
+        self.arbitration_id.id += (self.j1939_prio & 0x7) << 26
         self.arbitration_id.extended = True
         self.is_j1939 = True
 
@@ -717,23 +718,21 @@ class Frame(object):
     #    self._sendType = value
     #    self.attributes["GenMsgCycleTime"] = value
 
-
-
-    def attribute(self, attributeName, db=None, default=None):
+    def attribute(self, attribute_name, db=None, default=None):
         # type: (str, typing.Optional[CanMatrix], typing.Any) -> typing.Any
         """Get any Frame attribute by its name.
 
-        :param str attributeName: attribute name, can be mandatory (ex: id) or optional (customer) attribute.
+        :param str attribute_name: attribute name, can be mandatory (ex: id) or optional (customer) attribute.
         :param CanMatrix db: Optional database parameter to get global default attribute value.
         :param default: Default value if attribute doesn't exist.
         :return: Return the attribute value if found, else `default` or None
         """
-        if attributeName in attr.fields_dict(type(self)):
-            return getattr(self, attributeName)
-        if attributeName in self.attributes:
-            return self.attributes[attributeName]
-        elif db is not None and attributeName in db.frame_defines:
-            define = db.frame_defines[attributeName]
+        if attribute_name in attr.fields_dict(type(self)):
+            return getattr(self, attribute_name)
+        if attribute_name in self.attributes:
+            return self.attributes[attribute_name]
+        elif db is not None and attribute_name in db.frame_defines:
+            define = db.frame_defines[attribute_name]
             return define.defaultValue
         return default
 
@@ -823,19 +822,19 @@ class Frame(object):
                 return signal
         return None
 
-    def glob_signals(self, globStr):
+    def glob_signals(self, glob_str):
         # type: (str) -> typing.Sequence[Signal]
         """Find Frame Signals by given glob pattern.
 
-        :param str globStr: glob pattern for signal name. See `fnmatch.fnmatchcase`
+        :param str glob_str: glob pattern for signal name. See `fnmatch.fnmatchcase`
         :return: list of Signals by glob pattern.
         :rtype: list of Signal
         """
-        returnArray = []
+        return_array = []
         for signal in self.signals:
-            if fnmatch.fnmatchcase(signal.name, globStr):
-                returnArray.append(signal)
-        return returnArray
+            if fnmatch.fnmatchcase(signal.name, glob_str):
+                return_array.append(signal)
+        return return_array
 
     def add_attribute(self, attribute, value):
         # type: (str, typing.Any) -> None
@@ -875,11 +874,11 @@ class Frame(object):
 
         :return: Message DLC
         """
-        maxBit = 0
+        max_bit = 0
         for sig in self.signals:
-            if sig.get_startbit() + int(sig.size) > maxBit:
-                maxBit = sig.get_startbit() + int(sig.size)
-        self.size = max(self.size, int(math.ceil(maxBit / 8)))
+            if sig.get_startbit() + int(sig.size) > max_bit:
+                max_bit = sig.get_startbit() + int(sig.size)
+        self.size = max(self.size, int(math.ceil(max_bit / 8)))
 
     def get_frame_layout(self):
         # type: () -> typing.Sequence[typing.Sequence[str]]
@@ -894,8 +893,8 @@ class Frame(object):
         :return: list of lists with signalnames
         :rtype: list of lists
         """
-        little_bits = [[] for _dummy in range((self.size * 8))]  # type: typing.Sequence[typing.MutableSequence]
-        big_bits = [[] for _dummy in range((self.size * 8))]  # type: typing.Sequence[typing.MutableSequence]
+        little_bits = [[] for _dummy in range((self.size * 8))]  # type: typing.List[typing.List]
+        big_bits = [[] for _dummy in range((self.size * 8))]  # type: typing.List[typing.List]
         for signal in self.signals:
             if signal.is_little_endian:
                 least = len(little_bits) - signal.start_bit
@@ -909,15 +908,15 @@ class Frame(object):
                 for big_bit_signals in big_bits[most:least]:
                     big_bit_signals.append(signal)
 
-        little_bits = reversed(tuple(grouper(little_bits, 8)))
-        little_bits = tuple(chain(*little_bits))
+        little_bits_iter = reversed(tuple(grouper(little_bits, 8)))
+        little_bits = list(chain(*little_bits_iter))
 
-        returnList = [
+        return_list = [
             little + big
             for little, big in zip(little_bits, big_bits)
         ]
 
-        return returnList
+        return return_list
 
     def create_dummy_signals(self):  # type: () -> None
         """Create big-endian dummy signals for unused bits.
@@ -971,8 +970,8 @@ class Frame(object):
                     least = most + signal.size
 
                     big_bits[most:least] = bits
-        little_bits = reversed(tuple(grouper(little_bits, 8)))
-        little_bits = tuple(chain(*little_bits))
+        little_bits_iter = reversed(tuple(grouper(little_bits, 8)))
+        little_bits = list(chain(*little_bits_iter))
         bitstring = ''.join(
             next(x for x in (l, b, '0') if x is not None)
             # l if l != ' ' else (b if b != ' ' else '0')
@@ -982,7 +981,6 @@ class Frame(object):
             int(''.join(b), 2)
             for b in grouper(bitstring, 8)
         )
-
 
     def encode(self, data=None):
         # type: (typing.Optional[typing.Mapping[str, typing.Any]]) -> bytes
@@ -1066,6 +1064,7 @@ class Frame(object):
 
         :param data: bytearray
             i.e. bytearray([0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8])
+        :param report_error: set to False to silence error output
         :return: OrderedDictionary
         """
 
@@ -1203,13 +1202,13 @@ class CanMatrix(object):
     """
     The Can-Matrix-Object
     attributes (global canmatrix-attributes),
-    boardUnits (list of boardunits/ECUs),
+    ecus (list of ECUs),
     frames (list of Frames)
-    signalDefines (list of signal-attribute types)
-    frameDefines (list of frame-attribute types)
-    buDefines (list of BoardUnit-attribute types)
-    globalDefines (list of global attribute types)
-    valueTables (global defined values)
+    signal_defines (list of signal-attribute types)
+    frame_defines (list of frame-attribute types)
+    ecu_defines (list of ECU-attribute types)
+    global_defines (list of global attribute types)
+    value_tables (global defined values)
     """
 
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]

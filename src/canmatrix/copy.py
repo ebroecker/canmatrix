@@ -26,13 +26,13 @@ import copy
 import logging
 import typing
 
-import canmatrix.canmatrix as canmatrix
+import canmatrix.canmatrix as cm
 
 logger = logging.getLogger(__name__)
 
 
 def copy_ecu(ecu_or_glob, source_db, target_db):
-    # type: (typing.Union[canmatrix.Ecu, str], canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
+    # type: (typing.Union[cm.Ecu, str], cm.CanMatrix, cm.CanMatrix) -> None
     """
     Copy ECU(s) identified by Name or as Object from source CAN matrix to target CAN matrix.
     This function additionally copy all relevant Defines.
@@ -42,7 +42,7 @@ def copy_ecu(ecu_or_glob, source_db, target_db):
     :param target_db: Destination CAN matrix
     """
     # check whether ecu_or_glob is object or symbolic name
-    if isinstance(ecu_or_glob, canmatrix.Ecu):
+    if isinstance(ecu_or_glob, cm.Ecu):
         ecu_list = [ecu_or_glob]
     else:
         ecu_list = source_db.glob_ecus(ecu_or_glob)
@@ -66,7 +66,7 @@ def copy_ecu(ecu_or_glob, source_db, target_db):
 
 
 def copy_ecu_with_frames(ecu_or_glob, source_db, target_db):
-    # type: (typing.Union[canmatrix.Ecu, str], canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
+    # type: (typing.Union[cm.Ecu, str], cm.CanMatrix, cm.CanMatrix) -> None
     """
     Copy ECU(s) identified by Name or as Object from source CAN matrix to target CAN matrix.
     This function additionally copy all relevant Frames and Defines.
@@ -76,7 +76,7 @@ def copy_ecu_with_frames(ecu_or_glob, source_db, target_db):
     :param target_db: Destination CAN matrix
     """
     # check whether ecu_or_glob is object or symbolic name
-    if isinstance(ecu_or_glob, canmatrix.Ecu):
+    if isinstance(ecu_or_glob, cm.Ecu):
         ecu_list = [ecu_or_glob]
     else:
         ecu_list = source_db.glob_ecus(ecu_or_glob)
@@ -114,7 +114,7 @@ def copy_ecu_with_frames(ecu_or_glob, source_db, target_db):
 
 
 def copy_signal(signal_glob, source_db, target_db):
-    # type: (str, canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
+    # type: (str, cm.CanMatrix, cm.CanMatrix) -> None
     """
     Copy Signals identified by name from source CAN matrix to target CAN matrix.
     In target CanMatrix the signal is put without frame, just on top level.
@@ -129,7 +129,7 @@ def copy_signal(signal_glob, source_db, target_db):
 
 
 def copy_frame(frame_id, source_db, target_db):
-    # type: (canmatrix.ArbitrationId, canmatrix.CanMatrix, canmatrix.CanMatrix) -> bool
+    # type: (cm.ArbitrationId, cm.CanMatrix, cm.CanMatrix) -> bool
     """
     Copy a Frame identified by ArbitrationId from source CAN matrix to target CAN matrix.
     This function additionally copy all relevant ECUs and Defines.

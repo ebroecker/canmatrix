@@ -57,7 +57,8 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             frame_list = options['frames'].split(',')
             db = cm.CanMatrix()
             for frame_name in frame_list:  # type: str
-                canmatrix.copy.copy_frame(frame_name, dbs[name], db)
+                frame_to_copy = dbs[name].frame_by_name(frame_name)  # type: cm.Frame
+                canmatrix.copy.copy_frame(frame_to_copy.arbitration_id, dbs[name], db)
         if options.get('signals', False):
             signal_list = options['signals'].split(',')
             db = cm.CanMatrix()
@@ -85,8 +86,8 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                             canmatrix.copy.copy_ecu_with_frames(
                                 mergeOpt.split('=')[1], db_temp_list[dbTemp], db)
                         if mergeOpt.split('=')[0] == "frame":
-                            canmatrix.copy.copy_frame(
-                                mergeOpt.split('=')[1], db_temp_list[dbTemp], db)
+                            frame_to_copy = dbs[name].frame_by_name(mergeOpt.split('=')[1])
+                            canmatrix.copy.copy_frame(frame_to_copy.arbitration_id, db_temp_list[dbTemp], db)
 
         if 'renameEcu' in options and options['renameEcu'] is not None:
             rename_tuples = options['renameEcu'].split(',')
@@ -111,8 +112,8 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             for touple in touples:
                 (frameName, ecu) = touple.split(':')
                 frames = db.glob_frames(frameName)
-                for frame in frames:  # type: canmatrix.Frame
-                    for signal in frame.signals:  # type: canmatrix.Signal
+                for frame in frames:  # type: cm.Frame
+                    for signal in frame.signals:  # type: cm.Signal
                         signal.add_receiver(ecu)
                     frame.update_receiver()
 
@@ -124,7 +125,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             change_tuples = options['changeFrameId'].split(',')
             for renameTuple in change_tuples:
                 old, new = renameTuple.split(':')
-                frame = db.frame_by_id(canmatrix.ArbitrationId(int(old)))
+                frame = db.frame_by_id(cm.ArbitrationId(int(old)))
                 if frame is not None:
                     frame.arbitration_id.id = int(new)
                 else:
@@ -144,7 +145,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                     frame_ptr.is_fd = False
 
         if 'skipLongDlc' in options and options['skipLongDlc'] is not None:
-            delete_frame_list = []  # type: typing.List[canmatrix.Frame]
+            delete_frame_list = []  # type: typing.List[cm.Frame]
             for frame in db.frames:
                 if frame.size > int(options['skipLongDlc']):
                     delete_frame_list.append(frame)
