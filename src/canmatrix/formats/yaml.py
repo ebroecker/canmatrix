@@ -25,20 +25,21 @@
 
 
 from __future__ import absolute_import
+
+import copy
 from builtins import *
 
-from .canmatrix import *
-import copy
-import codecs
 import yaml
+
+import canmatrix.canmatrix as cm
 
 try:
     from yaml.representer import SafeRepresenter
 except ImportError:
-    yaml = None
+    yaml = None  # type: ignore
 
 
-representers = False
+representers = False  # type: bool
 try:
     yaml.add_representer(int, SafeRepresenter.represent_int)
     yaml.add_representer(long, SafeRepresenter.represent_long)
@@ -52,20 +53,20 @@ except:
 
 
 def dump(db, f, **options):
-    newdb = copy.deepcopy(db)
+    new_db = copy.deepcopy(db)  # type: cm.CanMatrix
 
-    for i, frame in enumerate(newdb.frames):
+    for i, frame in enumerate(new_db.frames):
         for j, signal in enumerate(frame.signals):
-            if signal.is_little_endian == False:
-                signal.startbit = signal.get_startbit(
+            if not signal.is_little_endian:
+                signal.start_bit = signal.get_startbit(
                     bit_numbering=1, start_little=True)
-#                newdb.frames[i].signals[j].startbit = signal.startbit
+#                new_db.frames[i].signals[j].start_bit = signal.start_bit
 
 #    f = open(filename, "w")
     if representers:
-        f.write(unicode(yaml.dump(newdb)))
+        f.write(unicode(yaml.dump(new_db)))
     else:
-        f.write(yaml.dump(newdb).encode('utf8'))
+        f.write(yaml.dump(new_db).encode('utf8'))
 
 
 def load(f, **options):
@@ -76,11 +77,12 @@ def load(f, **options):
     return db
 
 
-def constructor(loader, node, cls, mapping={}):
+def constructor(loader, node, cls, mapping=None):
     d = {k.lstrip('_'): v for k, v in loader.construct_mapping(node).items()}
     name = d.pop('name')
-    for old, new in mapping.items():
-        d[new] = d.pop(old)
+    if mapping:
+        for old, new in mapping.items():
+            d[new] = d.pop(old)
     return cls(name, **d)
 
 
@@ -88,7 +90,7 @@ def frame_constructor(loader, node):
     return constructor(
         loader=loader,
         node=node,
-        cls=Frame,
+        cls=cm.Frame,
         mapping={
             'size': 'dlc',
         },
@@ -104,14 +106,14 @@ def signal_constructor(loader, node):
     signal = constructor(
         loader=loader,
         node=node,
-        cls=Signal,
+        cls=cm.Signal,
         mapping={
             'startbit': 'startBit',
             'signalsize': 'signalSize',
         },
     )
 
-    if signal.is_little_endian == False:
+    if not signal.is_little_endian:
         signal.set_startbit(
             loader.construct_mapping(node)['_startbit'],
             bitNumbering=1,
@@ -129,4 +131,4 @@ def frame_representer(dumper, data):
 
 yaml.add_constructor(u'tag:yaml.org,2002:Frame', frame_constructor)
 yaml.add_constructor(u'tag:yaml.org,2002:Signal', signal_constructor)
-yaml.add_representer(Frame, frame_representer)
+yaml.add_representer(cm.Frame, frame_representer)
