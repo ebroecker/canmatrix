@@ -583,7 +583,7 @@ class ArbitrationId(object):
             raise ArbitrationIdOutOfRange('ID out of range')
 
     @classmethod
-    def from_compound_integer(cls, i):
+    def from_compound_integer(cls, i):  # type: (typing.Any) -> ArbitrationId
         return cls(
             id=i & cls.extended_id_mask,
             extended=(i & cls.compound_extended_mask) != 0,

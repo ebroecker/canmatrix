@@ -293,13 +293,13 @@ def compareFrame(f1, f2, ignore=None):
                     "dlc: %d" %
                     f1.size, "dlc: %d" %
                     f2.size]))
-    if f1.extended != f2.extended:
+    if f1.arbitration_id.extended != f2.arbitration_id.extended:
         result.addChild(
             compareResult(
                 "changed", "FRAME", f1, [
                     "extended-Flag: %d" %
-                    f1.extended, "extended-Flag: %d" %
-                    f2.extended]))
+                    f1.arbitration_id.extended, "extended-Flag: %d" %
+                    f2.arbitration_id.extended]))
     if "comment" not in ignore:
         if f2.comment is None:
             f2.add_comment("")
