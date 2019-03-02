@@ -23,9 +23,11 @@
 from __future__ import print_function
 from __future__ import absolute_import
 import logging
+import sys
+import typing
 
 from .log import setup_logger, set_log_level
-import sys
+import canmatrix.canmatrix as cm
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +42,7 @@ class compareResult(object):
         # reference to related object
         self._ref = ref
         self._changes = changes
-        self._children = []
+        self._children = []  # type: typing.List[compareResult]
 
     def addChild(self, child):
         self._children.append(child)
@@ -269,6 +271,7 @@ def compareBu(bu1, bu2, ignore=None):
 
 
 def compareFrame(f1, f2, ignore=None):
+    # type: (cm.Frame, cm.Frame, typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> compareResult
     result = compareResult("equal", "FRAME", f1)
 
     for s1 in f1:
@@ -290,14 +293,14 @@ def compareFrame(f1, f2, ignore=None):
                     "dlc: %d" %
                     f1.size, "dlc: %d" %
                     f2.size]))
-    if f1.extended != f2.extended:
+    if f1.arbitration_id.extended != f2.arbitration_id.extended:
         result.addChild(
             compareResult(
                 "changed", "FRAME", f1, [
                     "extended-Flag: %d" %
-                    f1.extended, "extended-Flag: %d" %
-                    f2.extended]))
-    if not "comment" in ignore:
+                    f1.arbitration_id.extended, "extended-Flag: %d" %
+                    f2.arbitration_id.extended]))
+    if "comment" not in ignore:
         if f2.comment is None:
             f2.add_comment("")
         if f1.comment is None:
@@ -553,14 +556,13 @@ def main():
     db2 = next(iter(canmatrix.formats.loadp(matrix2).values()))
     logger.info("%d Frames found" % (db2.frames.__len__()))
 
-    ignore = {}
+    ignore = {}  # type: typing.Dict[str, typing.Union[str, bool]]
 
     if not cmdlineOptions.check_comments:
         ignore["comment"] = "*"
 
     if not cmdlineOptions.check_attributes:
         ignore["ATTRIBUTE"] = "*"
-
 
     if cmdlineOptions.ignore_valuetables:
         ignore["VALUETABLES"] = True

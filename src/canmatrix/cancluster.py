@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import typing
-import canmatrix
+
+import canmatrix.canmatrix as cm
 
 
 class CanCluster(dict):
 
     def __init__(self, *arg, **kw):
         super(CanCluster, self).__init__(*arg, **kw)
-        self._frames = []  # type: typing.MutableSequence[canmatrix.Frame]
-        self._signals = []
-        self._ecus = []
+        self._frames = []  # type: typing.List[cm.Frame]
+        self._signals = []  # type: typing.List[cm.Signal]
+        self._ecus = []  # type: typing.List[cm.Ecu]
         self.update()
 
-    def update_frames(self):  # type: () -> typing.MutableSequence[canmatrix.Frame]
-        frames = []  # type: typing.MutableSequence[canmatrix.Frame]
-        frame_names = []  # type: typing.MutableSequence[str]
+    def update_frames(self):  # type: () -> typing.MutableSequence[cm.Frame]
+        frames = []  # type: typing.List[cm.Frame]
+        frame_names = []  # type: typing.List[str]
         for matrixName in self:
-            for frame in self[matrixName].frames:  # type: canmatrix.Frame
+            for frame in self[matrixName].frames:  # type: cm.Frame
                 if frame.name not in frame_names:
                     frame_names.append(frame.name)
                     frames.append(frame)
@@ -29,12 +31,12 @@ class CanCluster(dict):
         self._frames = frames
         return frames
 
-    def update_signals(self):  # type: () -> typing.MutableSequence[canmatrix.Signal]
-        signals = []  # type: typing.MutableSequence[canmatrix.Signal]
-        signal_names = []  # type: typing.MutableSequence[str]
+    def update_signals(self):  # type: () -> typing.MutableSequence[cm.Signal]
+        signals = []  # type: typing.List[cm.Signal]
+        signal_names = []  # type: typing.List[str]
         for matrixName in self:
             for frame in self[matrixName].frames:
-                for signal in frame.signals:  # type: canmatrix.Signal
+                for signal in frame.signals:  # type: cm.Signal
                     if signal.name not in signal_names:
                         signal_names.append(signal.name)
                         signals.append(signal)
@@ -45,11 +47,11 @@ class CanCluster(dict):
         self._signals = signals
         return signals
 
-    def update_ecus(self):  # type: () -> typing.MutableSequence[canmatrix.Ecu]
-        ecus = []  # type: typing.MutableSequence[canmatrix.Ecu]
-        ecu_names = []  # type: typing.MutableSequence[str]
+    def update_ecus(self):  # type: () -> typing.MutableSequence[cm.Ecu]
+        ecus = []  # type: typing.List[cm.Ecu]
+        ecu_names = []  # type: typing.List[str]
         for matrixName in self:
-            for ecu in self[matrixName].ecus:  # type: canmatrix.Ecu
+            for ecu in self[matrixName].ecus:  # type: cm.Ecu
                 if ecu.name not in ecu_names:
                     ecu_names.append(ecu.name)
                     ecus.append(ecu)
@@ -62,19 +64,19 @@ class CanCluster(dict):
         self.update_ecus()
 
     @property
-    def ecus(self):  # type: () -> typing.MutableSequence[canmatrix.Ecu]
+    def ecus(self):  # type: () -> typing.MutableSequence[cm.Ecu]
         if not self._ecus:
             self.update_ecus()
         return self._ecus
 
     @property
-    def frames(self):  # type: () -> typing.MutableSequence[canmatrix.Frame]
+    def frames(self):  # type: () -> typing.MutableSequence[cm.Frame]
         if not self._frames:
             self.update_frames()
         return self._frames
 
     @property
-    def signals(self):  # type: () -> typing.MutableSequence[canmatrix.Signal]
+    def signals(self):  # type: () -> typing.MutableSequence[cm.Signal]
         if not self._signals:
             self.update_signals()
         return self._signals
