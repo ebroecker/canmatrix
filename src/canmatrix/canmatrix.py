@@ -609,18 +609,17 @@ class ArbitrationId(object):
 @attr.s(cmp=False)
 class Frame(object):
     """
-    Contains one CAN Frame.
+    Represents CAN Frame.
 
     The Frame has  following mandatory attributes
 
-    * id,
+    * arbitration_id,
     * name,
-    * transmitters (list of boardunits/ECU-names),
-    * size (= DLC),
+    * transmitters (list of ECU names),
+    * size (DLC),
     * signals (list of signal-objects),
     * attributes (list of attributes),
-    * receivers (list of boardunits/ECU-names),
-    * extended (Extended Frame = 1),
+    * receivers (list of ECU names),
     * comment
 
     and any *custom* attributes in `attributes` dict.
@@ -1203,13 +1202,13 @@ class CanMatrix(object):
     """
     The Can-Matrix-Object
     attributes (global canmatrix-attributes),
-    boardUnits (list of boardunits/ECUs),
+    ecus (list of ECUs),
     frames (list of Frames)
-    signalDefines (list of signal-attribute types)
-    frameDefines (list of frame-attribute types)
-    buDefines (list of BoardUnit-attribute types)
-    globalDefines (list of global attribute types)
-    valueTables (global defined values)
+    signal_defines (list of signal-attribute types)
+    frame_defines (list of frame-attribute types)
+    ecu_defines (list of ECU-attribute types)
+    global_defines (list of global attribute types)
+    value_tables (global defined values)
     """
 
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]

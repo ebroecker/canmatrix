@@ -27,7 +27,7 @@ import sys
 import typing
 
 from .log import setup_logger, set_log_level
-import canmatrix.canmatrix as canmatrix
+import canmatrix.canmatrix as cm
 
 logger = logging.getLogger(__name__)
 
@@ -271,7 +271,7 @@ def compareBu(bu1, bu2, ignore=None):
 
 
 def compareFrame(f1, f2, ignore=None):
-    # type: (canmatrix.Frame, canmatrix.Frame, typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> compareResult
+    # type: (cm.Frame, cm.Frame, typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> compareResult
     result = compareResult("equal", "FRAME", f1)
 
     for s1 in f1:
