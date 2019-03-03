@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
@@ -564,6 +565,7 @@ def pack_bitstring(length, is_float, value, signed):
 
     return bitstring
 
+
 @attr.s(cmp=False)
 class ArbitrationId(object):
     standard_id_mask = ((1 << 11) - 1)
@@ -659,7 +661,7 @@ class Frame(object):
 
     @property
     def pgn(self):  # type: () -> int
-        return CanId(self.arbitration_id.id).pgn
+        return CanId.from_frame(self).pgn
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
@@ -1802,7 +1804,7 @@ class CanId(object):
     """
     Split Id into Global source addresses (source, destination) off ECU and PGN (SAE J1939).
     """
-    # TODO link to BoardUnit/ECU
+    # TODO link to ECU
     source = None  # type: int  # Source Address
     destination = None  # type: int  # Destination Address
     pgn = None  # type: int  # PGN
@@ -1815,6 +1817,16 @@ class CanId(object):
         else:
             # TODO implement for standard Id
             pass
+
+    @classmethod
+    def from_frame(cls, frame):  # type: (Frame) -> CanId
+        """Construct CanId from Frame."""
+        return CanId.from_arbitration_id(frame.arbitration_id)
+
+    @classmethod
+    def from_arbitration_id(cls, arbitration_id):  # type: (ArbitrationId) -> CanId
+        """Construct CanId from ArbitrationId."""
+        return cls(arbitration_id.id)
 
     def tuples(self):  # type: () -> typing.Tuple[int, int, int]
         """Get tuple (destination, PGN, source)
