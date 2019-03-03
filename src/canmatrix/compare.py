@@ -29,6 +29,8 @@ import optparse
 import sys
 import typing
 
+import attr
+
 import canmatrix
 
 logger = logging.getLogger(__name__)
@@ -36,19 +38,14 @@ ConfigDict = typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]
 WithAttribute = typing.TypeVar("WithAttribute", canmatrix.CanMatrix, canmatrix.Ecu, canmatrix.Frame, canmatrix.Signal)
 
 
+@attr.s
 class CompareResult(object):
     """Hold comparison results in logical tree."""
-
-    def __init__(self, result=None, mtype=None, ref=None, changes=None):
-        # type: (str, str, typing.Any, typing.List) -> None
-        # any of equal, added, deleted, changed
-        self.result = result
-        # db, ecu, frame, signal, attribute
-        self._type = mtype
-        # reference to related object
-        self._ref = ref
-        self._changes = changes
-        self._children = []  # type: typing.List[CompareResult]
+    result = attr.ib(default=None)  # type: typing.Optional[str]    # any of equal, added, deleted, changed
+    type = attr.ib(default=None)  # type: typing.Optional[str]      # db, ecu, frame, signal, signalGroup or attribute
+    ref = attr.ib(default=None)  # type: typing.Any                 # reference to related object
+    changes = attr.ib(default=None)  # type: typing.Optional[typing.List]
+    _children = attr.ib(factory=list)  # type: typing.List[CompareResult]  # nested CompareResults
 
     def add_child(self, child):
         # type: (CompareResult) -> None
@@ -112,15 +109,15 @@ def compare_db(db1, db2, ignore=None):
                 db2.global_defines))
 
         temp = compare_define_list(db1.ecu_defines, db2.ecu_defines)
-        temp._type = "ECU Defines"
+        temp.type = "ECU Defines"
         result.add_child(temp)
 
         temp = compare_define_list(db1.frame_defines, db2.frame_defines)
-        temp._type = "Frame Defines"
+        temp.type = "Frame Defines"
         result.add_child(temp)
 
         temp = compare_define_list(db1.signal_defines, db2.signal_defines)
-        temp._type = "Signal Defines"
+        temp.type = "Signal Defines"
         result.add_child(temp)
 
     if "VALUETABLES" in ignore and ignore["VALUETABLES"]:
@@ -475,33 +472,33 @@ def compare_signal(s1, s2, ignore=None):
 
 def dump_result(res, depth=0):
     # type: (CompareResult, int) -> None
-    if res._type is not None and res.result != "equal":
+    if res.type is not None and res.result != "equal":
         for _ in range(0, depth):
             print(" ", end=' ')
-        print(res._type + " " + res.result + " ", end=' ')
-        if hasattr(res._ref, 'name'):
-            print(res._ref.name)
+        print(res.type + " " + res.result + " ", end=' ')
+        if hasattr(res.ref, 'name'):
+            print(res.ref.name)
         else:
             print(" ")
-        if res._changes is not None and res._changes[0] is not None and res._changes[1] is not None:
+        if res.changes is not None and res.changes[0] is not None and res.changes[1] is not None:
             for _ in range(0, depth):
                 print(" ", end=' ')
-            print(type(res._changes[0]))
+            print(type(res.changes[0]))
             if sys.version_info[0] < 3:
-                if isinstance(res._changes[0], type(u'')):
-                    res._changes[0] = res._changes[0].encode('ascii', 'ignore')
-                if isinstance(res._changes[1], type(u'')):
-                    res._changes[1] = res._changes[1].encode('ascii', 'ignore')
+                if isinstance(res.changes[0], type(u'')):
+                    res.changes[0] = res.changes[0].encode('ascii', 'ignore')
+                if isinstance(res.changes[1], type(u'')):
+                    res.changes[1] = res.changes[1].encode('ascii', 'ignore')
             else:
-                if type(res._changes[0]) == str:
-                    res._changes[0] = res._changes[0].encode('ascii', 'ignore')
-                if type(res._changes[1]) == str:
-                    res._changes[1] = res._changes[1].encode('ascii', 'ignore')
+                if type(res.changes[0]) == str:
+                    res.changes[0] = res.changes[0].encode('ascii', 'ignore')
+                if type(res.changes[1]) == str:
+                    res.changes[1] = res.changes[1].encode('ascii', 'ignore')
             print("old: " +
-                  str(res._changes[0]) +
+                  str(res.changes[0]) +
                   " new: " +
-                  str(res._changes[1]))
-    for child in res._children:
+                  str(res.changes[1]))
+    for child in res.children:
         dump_result(child, depth + 1)
 
 
