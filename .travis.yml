@@ -21,6 +21,8 @@ matrix:
       dist: xenial
       sudo: true
       env: TOXENV=old_tests
+    - python: 3.6
+      env: TOXENV=mypy
 
 install:
   - pip install tox-travis
