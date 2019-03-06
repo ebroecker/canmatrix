@@ -239,8 +239,11 @@ def compare_define_list(d1list, d2list):
     return result
 
 
+T = typing.TypeVar("T", cm.CanMatrix, cm.Ecu, cm.Frame, cm.Signal)
+
+
 def compare_attributes(ele1, ele2, ignore=None):
-    # type: (typing.Union[cm.CanMatrix, cm.Ecu, cm.Frame, cm.Signal], typing.Union[cm.CanMatrix, cm.Ecu, cm.Frame, cm.Signal], typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> CompareResult
+    # type: (T, T, typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> CompareResult
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "ATTRIBUTES", ele1)
