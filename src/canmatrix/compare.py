@@ -589,14 +589,16 @@ def main():  # type: () -> int
         ignore["VALUETABLES"] = True
 
     if cmdlineOptions.frames:
-        only_in_matrix1 = []  # type: typing.List[str]
-        only_in_matrix2 = []  # type: typing.List[str]
-        for frame in db1.frames:
-            if db2.frame_by_name(frame.name) is None:
-                only_in_matrix1.append(frame.name)
-        for frame in db2.frames:
-            if db1.frame_by_name(frame.name) is None:
-                only_in_matrix2.append(frame.name)
+        only_in_matrix1 = [
+            frame.name
+            for frame in db1.frames
+            if db2.frame_by_name(frame.name) is None
+        ]
+        only_in_matrix2 = [
+            frame.name
+            for frame in db2.frames
+            if db1.frame_by_name(frame.name) is None
+        ]
         print("Frames only in " + matrix1 + ": " + " ".join(only_in_matrix1))
         print("Frames only in " + matrix2 + ": " + " ".join(only_in_matrix2))
 
