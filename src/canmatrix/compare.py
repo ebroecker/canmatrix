@@ -241,7 +241,7 @@ def compare_define_list(d1list, d2list):
 
 def compare_attributes(ele1, ele2, ignore=None):
     # type: (typing.Union[cm.CanMatrix, cm.Ecu, cm.Frame, cm.Signal], typing.Union[cm.CanMatrix, cm.Ecu, cm.Frame, cm.Signal], typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> CompareResult
-    if not ignore:
+    if ignore is not None:
         ignore = dict()
     result = CompareResult("equal", "ATTRIBUTES", ele1)
     if "ATTRIBUTE" in ignore and (
