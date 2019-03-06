@@ -73,7 +73,7 @@ def propagate_changes(res):  # type: (CompareResult) -> int
 def compare_db(db1, db2, ignore=None):
     # type: (cm.CanMatrix, cm.CanMatrix, typing.Optional[typing.Dict[str, typing.Union[str, bool]]]) -> CompareResult
     result = CompareResult()
-    if not ignore:
+    if ignore is None:
         ignore = dict()
     for f1 in db1.frames:
         f2 = db2.frame_by_id(f1.arbitration_id)
@@ -241,7 +241,7 @@ def compare_define_list(d1list, d2list):
 
 def compare_attributes(ele1, ele2, ignore=None):
     # type: (typing.Union[cm.CanMatrix, cm.Ecu, cm.Frame, cm.Signal], typing.Union[cm.CanMatrix, cm.Ecu, cm.Frame, cm.Signal], typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> CompareResult
-    if ignore is not None:
+    if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "ATTRIBUTES", ele1)
     if "ATTRIBUTE" in ignore and (
@@ -272,7 +272,7 @@ def compare_attributes(ele1, ele2, ignore=None):
 
 def compare_ecu(ecu1, ecu2, ignore=None):
     # type: (cm.Ecu, cm.Ecu, typing.Optional[typing.Mapping]) -> CompareResult
-    if not ignore:
+    if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "ECU", ecu1)
 
@@ -292,6 +292,8 @@ def compare_ecu(ecu1, ecu2, ignore=None):
 
 def compare_frame(f1, f2, ignore=None):
     # type: (cm.Frame, cm.Frame, typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> CompareResult
+    if ignore is None:
+        ignore = dict()
     result = CompareResult("equal", "FRAME", f1)
 
     for s1 in f1:
@@ -336,7 +338,7 @@ def compare_frame(f1, f2, ignore=None):
         if not s1:
             result.add_child(CompareResult("added", "SIGNAL", s2))
 
-    if ignore is not None and "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
+    if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
         pass
     else:
         result.add_child(compare_attributes(f1, f2, ignore))
@@ -366,7 +368,7 @@ def compare_frame(f1, f2, ignore=None):
 
 def compare_signal(s1, s2, ignore=None):
     # type: (cm.Signal, cm.Signal, typing.Optional[typing.Mapping]) -> CompareResult
-    if not ignore:
+    if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "SIGNAL", s1)
 
