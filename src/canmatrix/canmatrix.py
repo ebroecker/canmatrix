@@ -1566,11 +1566,11 @@ class CanMatrix(object):
             if ecu in self.ecus:
                 self.ecus.remove(ecu)
                 for frame in self.frames:
-                    if ecu.name in frame.transmitters:
-                        frame.transmitters.remove(ecu.name)
+                    frame.del_transmitter(ecu.name)
+					
                     for signal in frame.signals:
-                        if ecu.name in signal.receivers:
-                            signal.receivers.remove(ecu.name)
+                        signal.del_receiver(ecu.name)
+
                     frame.update_receiver()
 
     def update_ecu_list(self):  # type: () -> None
