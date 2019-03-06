@@ -1,5 +1,4 @@
-from __future__ import absolute_import
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
@@ -24,10 +23,12 @@ from __future__ import absolute_import
 # Configurable logging
 # Author: Martin Hoffmann (m8ddin@gmail.com)
 
+from __future__ import absolute_import
+
 import logging
 
 
-def setup_logger():
+def setup_logger():  # type: () -> logging.Logger
     """Setup the root logger. Return the logger instance for possible further setting and use.
 
     To be used from CLI scripts only.
@@ -44,13 +45,17 @@ def setup_logger():
     return logger
 
 
-def set_log_level(logger, level):
+def set_log_level(logger, level):  # type: (logging.Logger, int) -> None
     """Dynamic reconfiguration of the log level"""
     if level > 2:
         level = 2
     if level < -1:
         level = -1
 
-    lvls = {-1: logging.ERROR, 0: logging.WARN,
-            1: logging.INFO, 2: logging.DEBUG}
-    logger.setLevel(lvls[level])
+    levels = {
+        -1: logging.ERROR,
+        0: logging.WARN,
+        1: logging.INFO,
+        2: logging.DEBUG
+    }
+    logger.setLevel(levels[level])
