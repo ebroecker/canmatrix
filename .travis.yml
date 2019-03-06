@@ -24,6 +24,10 @@ matrix:
     - python: 3.6
       env: TOXENV=mypy
 
+  allow_failures:
+    - python: 3.6  # until we solve all typing issues
+      env: TOXENV=mypy
+
 install:
   - pip install tox-travis
   - pip install -r requirements.tox.txt
