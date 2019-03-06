@@ -33,6 +33,7 @@ import canmatrix.canmatrix as cm
 import canmatrix.log as log  # import alias due to lazy import in main()
 
 logger = logging.getLogger(__name__)
+ConfigDict = typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]
 
 
 class CompareResult(object):
@@ -71,7 +72,7 @@ def propagate_changes(res):  # type: (CompareResult) -> int
 
 
 def compare_db(db1, db2, ignore=None):
-    # type: (cm.CanMatrix, cm.CanMatrix, typing.Optional[typing.Dict[str, typing.Union[str, bool]]]) -> CompareResult
+    # type: (cm.CanMatrix, cm.CanMatrix, ConfigDict) -> CompareResult
     result = CompareResult()
     if ignore is None:
         ignore = dict()
@@ -243,7 +244,7 @@ T = typing.TypeVar("T", cm.CanMatrix, cm.Ecu, cm.Frame, cm.Signal)
 
 
 def compare_attributes(ele1, ele2, ignore=None):
-    # type: (T, T, typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> CompareResult
+    # type: (T, T, ConfigDict) -> CompareResult
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "ATTRIBUTES", ele1)
@@ -274,7 +275,7 @@ def compare_attributes(ele1, ele2, ignore=None):
 
 
 def compare_ecu(ecu1, ecu2, ignore=None):
-    # type: (cm.Ecu, cm.Ecu, typing.Optional[typing.Mapping]) -> CompareResult
+    # type: (cm.Ecu, cm.Ecu, ConfigDict) -> CompareResult
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "ECU", ecu1)
@@ -294,7 +295,7 @@ def compare_ecu(ecu1, ecu2, ignore=None):
 
 
 def compare_frame(f1, f2, ignore=None):
-    # type: (cm.Frame, cm.Frame, typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> CompareResult
+    # type: (cm.Frame, cm.Frame, ConfigDict) -> CompareResult
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "FRAME", f1)
@@ -370,7 +371,7 @@ def compare_frame(f1, f2, ignore=None):
 
 
 def compare_signal(s1, s2, ignore=None):
-    # type: (cm.Signal, cm.Signal, typing.Optional[typing.Mapping]) -> CompareResult
+    # type: (cm.Signal, cm.Signal, ConfigDict) -> CompareResult
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "SIGNAL", s1)
