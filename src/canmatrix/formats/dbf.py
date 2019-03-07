@@ -24,16 +24,17 @@
 # this script imports dbf-files in a canmatrix-object
 # dbf-files are the can-matrix-definitions of the busmaster-project (http://rbei-etas.github.io/busmaster/)
 #
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
-from copy import deepcopy
 
-import logging
-
-from .canmatrix import *
-import re
 import decimal
+import logging
+import math
+import re
+import copy
+
+import canmatrix
 
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
@@ -66,7 +67,7 @@ def load(f, **options):
     dbfImportEncoding = options.get("dbfImportEncoding",'iso-8859-1')
     float_factory = options.get('float_factory', default_float_factory)
 
-    db = CanMatrix()
+    db = canmatrix.CanMatrix()
 
     mode = ''
     for line in f:
@@ -218,20 +219,20 @@ def load(f, **options):
                 else:
                     transmitters = list()
                 newBo = db.add_frame(
-                    Frame(name,
+                    canmatrix.Frame(name,
                           size=int(size),
                           transmitters=transmitters))
                 newBo.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(Id))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")
-                    newBo.extended = 1
+                    newBo.arbitration_id.extended = 1
 
             if line.startswith("[NODE]"):
                 temstr = line.strip()[6:].strip()
                 boList = temstr.split(',')
                 for bo in boList:
-                    db.add_ecu(Ecu(bo))
+                    db.add_ecu(canmatrix.Ecu(bo))
 
             if line.startswith("[START_SIGNALS]"):
                 temstr = line.strip()[15:].strip()
@@ -267,7 +268,7 @@ def load(f, **options):
                 startbit = int(startbit)
                 startbit += (int(startbyte) - 1) * 8
 
-                newSig = newBo.add_signal(Signal(name,
+                newSig = newBo.add_signal(canmatrix.Signal(name,
                                                  start_bit=int(startbit),
                                                  size=int(size),
                                                  is_little_endian=(
@@ -306,17 +307,17 @@ def load(f, **options):
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
     if free_signals_dummy_frame is not None and free_signals_dummy_frame.arbitration_id == 0x40000000:
         db.signals = free_signals_dummy_frame.signals
-        db.delFrame(free_signals_dummy_frame)
+        db.del_frame(free_signals_dummy_frame)
     return db
 
 
 def dump(mydb, f, **options):
     # create copy because export changes database
-    db = deepcopy(mydb)
+    db = copy.deepcopy(mydb)
     dbfExportEncoding = options.get("dbfExportEncoding", 'iso-8859-1')
     db.enum_attribs_to_keys()
     if len(db.signals) > 0:
-        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG",  id = 0x40000000, extended=True)
+        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG", arbitration_id=0xC0000000)  # todo the id is longer than 29 bits and be filtered to zero!!
         free_signals_dummy_frame.signals = db.signals
         db.addFrame(free_signals_dummy_frame)
 

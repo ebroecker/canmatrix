@@ -36,7 +36,7 @@ import canmatrix.canmatrix as cm
 try:
     from yaml.representer import SafeRepresenter
 except ImportError:
-    yaml = None  # type: ignore
+    yaml = None
 
 
 representers = False  # type: bool

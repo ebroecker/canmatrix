@@ -23,19 +23,21 @@
 # this script exports xls-files from a canmatrix-object
 # xls-files are the can-matrix-definitions displayed in Excel
 
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
 
+import decimal
+import typing
+
+import xlrd
 import xlwt
+
 import canmatrix
 import canmatrix.formats.xls_common
-import xlrd
-import decimal
 
 logger = canmatrix.logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
-
 
 # Font Size : 8pt * 20 = 160
 #font = 'font: name Arial Narrow, height 160'
@@ -132,7 +134,7 @@ def dump(db, file, **options):
 #    worksheet = workbook.add_sheet('K-Matrix ' + wsname[0:22])
     worksheet = workbook.add_sheet('K-Matrix ')
 
-    rowArray = []
+    rowArray = []  # type: typing.List[str]
     col = 0
 
     # write frameardunits in first row:
@@ -206,7 +208,7 @@ def dump(db, file, **options):
         rowArray = []
         if len(sigHash) == 0: # Frames without signals
             rowArray += canmatrix.formats.xls_common.get_frame_info(db, frame)
-            for item in range(5, head_start):
+            for _ in range(5, head_start):
                 rowArray.append("")
             tempCol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
             tempCol = writeBuMatrix(buList, None, frame, worksheet, row, tempCol , framestyle)
@@ -292,7 +294,7 @@ def dump(db, file, **options):
                 sigstyle = sty_white
                 framestyle = sty_white
         # reset signal-Array
-        signals = []
+        signals = []  # todo unused
         # loop over signals ends here
     # loop over frames ends here
 
@@ -344,7 +346,7 @@ def load(file, **options):
     db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
     db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
 #       db.addFrameDefines("GenMsgStartValue",  'STRING')
-    launchTypes = []
+    launchTypes = []  # type: typing.List[str]
 #       db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
     db.add_signal_defines("GenSigSNA", 'STRING')
 
@@ -409,7 +411,7 @@ def load(file, **options):
             break
         # new frame detected
         if sh.cell(rownum, index['ID']).value != frameId:
-            sender = []
+            sender = []  # todo unused
             # new Frame
             frameId = sh.cell(rownum, index['ID']).value
             frameName = sh.cell(rownum, index['frameName']).value
@@ -462,7 +464,7 @@ def load(file, **options):
             signalLength = int(sh.cell(rownum, index['signalLength']).value)
             signalDefault = sh.cell(rownum, index['signalDefault']).value
             signalSNA = sh.cell(rownum, index['signalSNA']).value
-            multiplex = None
+            multiplex = None  # type: typing.Union[str, int, None]
             if signalComment.startswith('Mode Signal:'):
                 multiplex = 'Multiplexor'
                 signalComment = signalComment[12:]
@@ -533,7 +535,6 @@ def load(file, **options):
             valueName = "1"
         #.encode('utf-8')
 
-        factor = 0
         unit = ""
 
         factor = sh.cell(rownum, index['function']).value
