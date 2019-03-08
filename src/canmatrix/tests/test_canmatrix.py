@@ -680,23 +680,15 @@ def test_define_for_float():
 
 # CanId tests
 def test_canid_parse_values():
-    can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
+    can_id = canmatrix.canmatrix.CanId(canmatrix.ArbitrationId(id=0x01ABCD02, extended=True))
     assert can_id.source == 0x02
     assert can_id.destination == 0x01
     assert can_id.pgn == 0xABCD
     assert can_id.tuples() == (1, 0xABCD, 2)
 
 
-def test_canid_from_frame():
-    frame = canmatrix.canmatrix.Frame(arbitration_id=0x81ABCD03)
-    can_id = canmatrix.canmatrix.CanId.from_frame(frame)
-    assert can_id.source == 0x03
-    assert can_id.destination == 0x01
-    assert can_id.pgn == 0xABCD
-
-
 def test_canid_repr():
-    can_id = canmatrix.canmatrix.CanId(0x01ABCD02)
+    can_id = canmatrix.canmatrix.CanId(canmatrix.ArbitrationId(id=0x01ABCD02, extended=True))
     assert str(can_id) == "DA:0x01 PGN:0xABCD SA:0x02"
 
 

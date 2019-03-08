@@ -661,7 +661,7 @@ class Frame(object):
 
     @property
     def pgn(self):  # type: () -> int
-        return CanId.from_frame(self).pgn
+        return CanId(self.arbitration_id).pgn
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
@@ -1809,24 +1809,14 @@ class CanId(object):
     destination = None  # type: int  # Destination Address
     pgn = None  # type: int  # PGN
 
-    def __init__(self, id, extended=True):  # type: (int, bool) -> None
-        if extended:
-            self.source = id & int('0xFF', 16)
-            self.pgn = (id >> 8) & int('0xFFFF', 16)
-            self.destination = id >> 8 * 3 & int('0xFF', 16)
+    def __init__(self, arbitration_id):  # type: (ArbitrationId) -> None
+        if arbitration_id.extended:
+            self.source = arbitration_id.id & int('0xFF', 16)
+            self.pgn = (arbitration_id.id >> 8) & int('0xFFFF', 16)
+            self.destination = arbitration_id.id >> 8 * 3 & int('0xFF', 16)
         else:
             # TODO implement for standard Id
             pass
-
-    @classmethod
-    def from_frame(cls, frame):  # type: (Frame) -> CanId
-        """Construct CanId from Frame."""
-        return CanId.from_arbitration_id(frame.arbitration_id)
-
-    @classmethod
-    def from_arbitration_id(cls, arbitration_id):  # type: (ArbitrationId) -> CanId
-        """Construct CanId from ArbitrationId."""
-        return cls(arbitration_id.id)
 
     def tuples(self):  # type: () -> typing.Tuple[int, int, int]
         """Get tuple (destination, PGN, source)
