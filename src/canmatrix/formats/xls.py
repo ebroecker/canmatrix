@@ -192,7 +192,7 @@ def dump(db, file, **options):
         framestyle = sty_first_frame
 
         # sort signals:
-        sigHash = {}
+        sigHash = {}  # type: typing.Dict[str, canmatrix.Signal]
         for sig in frame.signals:
             sigHash["%02d" % int(sig.get_startbit()) + sig.name] = sig
 

@@ -317,7 +317,8 @@ def dump(mydb, f, **options):
     dbfExportEncoding = options.get("dbfExportEncoding", 'iso-8859-1')
     db.enum_attribs_to_keys()
     if len(db.signals) > 0:
-        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG", arbitration_id=0xC0000000)  # todo the id is longer than 29 bits and be filtered to zero!!
+        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG")
+        free_signals_dummy_frame.arbitration_id = canmatrix.ArbitrationId(id=0x40000000, extended=True)
         free_signals_dummy_frame.signals = db.signals
         db.addFrame(free_signals_dummy_frame)
 
