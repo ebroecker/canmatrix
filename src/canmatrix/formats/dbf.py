@@ -226,7 +226,7 @@ def load(f, **options):
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")
-                    newBo.arbitration_id.extended = 1
+                    newBo.arbitration_id.extended = True
 
             if line.startswith("[NODE]"):
                 temstr = line.strip()[6:].strip()

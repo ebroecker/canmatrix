@@ -163,8 +163,6 @@ def dump(mydb, f, **options):
 
     # ECUs
     f.write("BU_: ".encode(dbcExportEncoding))
-    id = 1
-    nodeList = {}
 
     for ecu in db.ecus:
         # fix long ecu names:

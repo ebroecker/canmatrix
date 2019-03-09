@@ -332,8 +332,6 @@ def dump(db, filename, **options):
                 # set style to normal - without border
                 sigstyle = sty_white
                 framestyle = sty_white
-        # reset signal-Array
-        signals = []  # todo remove this unused variable
         # loop over signals ends here
     # loop over frames ends here
 

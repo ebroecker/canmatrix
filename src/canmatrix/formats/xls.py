@@ -293,8 +293,6 @@ def dump(db, file, **options):
                 # set style to normal - without border
                 sigstyle = sty_white
                 framestyle = sty_white
-        # reset signal-Array
-        signals = []  # todo unused
         # loop over signals ends here
     # loop over frames ends here
 
@@ -411,7 +409,6 @@ def load(file, **options):
             break
         # new frame detected
         if sh.cell(rownum, index['ID']).value != frameId:
-            sender = []  # todo unused
             # new Frame
             frameId = sh.cell(rownum, index['ID']).value
             frameName = sh.cell(rownum, index['frameName']).value
