@@ -29,8 +29,7 @@ import optparse
 import sys
 import typing
 
-import canmatrix.canmatrix as cm
-import canmatrix.log as log  # import alias due to lazy import in main()
+import canmatrix
 
 logger = logging.getLogger(__name__)
 ConfigDict = typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]
@@ -72,7 +71,7 @@ def propagate_changes(res):  # type: (CompareResult) -> int
 
 
 def compare_db(db1, db2, ignore=None):
-    # type: (cm.CanMatrix, cm.CanMatrix, ConfigDict) -> CompareResult
+    # type: (canmatrix.CanMatrix, canmatrix.CanMatrix, ConfigDict) -> CompareResult
     result = CompareResult()
     if ignore is None:
         ignore = dict()
@@ -180,7 +179,7 @@ def compare_value_table(vt1, vt2):
 
 
 def compare_signal_group(sg1, sg2):
-    # type: (cm.SignalGroup, cm.SignalGroup) -> CompareResult
+    # type: (canmatrix.SignalGroup, canmatrix.SignalGroup) -> CompareResult
     result = CompareResult("equal", "SignalGroup", sg1)
 
     if sg1.name != sg2.name:
@@ -205,7 +204,7 @@ def compare_signal_group(sg1, sg2):
 
 
 def compare_define_list(d1list, d2list):
-    # type: (typing.Mapping[str, cm.Define], typing.Mapping[str, cm.Define]) -> CompareResult
+    # type: (typing.Mapping[str, canmatrix.Define], typing.Mapping[str, canmatrix.Define]) -> CompareResult
     result = CompareResult("equal", "DefineList", d1list)
     for definition in d1list:
         if definition not in d2list:
@@ -240,7 +239,7 @@ def compare_define_list(d1list, d2list):
     return result
 
 
-T = typing.TypeVar("T", cm.CanMatrix, cm.Ecu, cm.Frame, cm.Signal)
+T = typing.TypeVar("T", canmatrix.CanMatrix, canmatrix.Ecu, canmatrix.Frame, canmatrix.Signal)
 
 
 def compare_attributes(ele1, ele2, ignore=None):
@@ -275,7 +274,7 @@ def compare_attributes(ele1, ele2, ignore=None):
 
 
 def compare_ecu(ecu1, ecu2, ignore=None):
-    # type: (cm.Ecu, cm.Ecu, ConfigDict) -> CompareResult
+    # type: (canmatrix.Ecu, canmatrix.Ecu, ConfigDict) -> CompareResult
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "ECU", ecu1)
@@ -295,7 +294,7 @@ def compare_ecu(ecu1, ecu2, ignore=None):
 
 
 def compare_frame(f1, f2, ignore=None):
-    # type: (cm.Frame, cm.Frame, ConfigDict) -> CompareResult
+    # type: (canmatrix.Frame, canmatrix.Frame, ConfigDict) -> CompareResult
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "FRAME", f1)
@@ -371,7 +370,7 @@ def compare_frame(f1, f2, ignore=None):
 
 
 def compare_signal(s1, s2, ignore=None):
-    # type: (cm.Signal, cm.Signal, ConfigDict) -> CompareResult
+    # type: (canmatrix.Signal, canmatrix.Signal, ConfigDict) -> CompareResult
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "SIGNAL", s1)
@@ -509,7 +508,8 @@ def dump_result(res, depth=0):
 
 
 def main():  # type: () -> int
-    log.setup_logger()
+    import canmatrix.log
+    canmatrix.log.setup_logger()
 
     usage = """
     %prog [options] cancompare matrix1 matrix2
@@ -568,7 +568,7 @@ def main():  # type: () -> int
     if cmdlineOptions.silent:
         # Only print ERROR messages (ignore import warnings)
         verbosity = -1
-    log.set_log_level(logger, verbosity)
+    canmatrix.log.set_log_level(logger, verbosity)
 
     # import only after setting log level, to also disable warning messages in silent mode.
     import canmatrix.formats  # due this import we need the import alias for log module
