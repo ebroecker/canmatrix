@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
@@ -564,6 +565,7 @@ def pack_bitstring(length, is_float, value, signed):
 
     return bitstring
 
+
 @attr.s(cmp=False)
 class ArbitrationId(object):
     standard_id_mask = ((1 << 11) - 1)
@@ -659,7 +661,7 @@ class Frame(object):
 
     @property
     def pgn(self):  # type: () -> int
-        return CanId(self.arbitration_id.id).pgn
+        return CanId(self.arbitration_id).pgn
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
@@ -1802,16 +1804,16 @@ class CanId(object):
     """
     Split Id into Global source addresses (source, destination) off ECU and PGN (SAE J1939).
     """
-    # TODO link to BoardUnit/ECU
+    # TODO link to ECU
     source = None  # type: int  # Source Address
     destination = None  # type: int  # Destination Address
     pgn = None  # type: int  # PGN
 
-    def __init__(self, id, extended=True):  # type: (int, bool) -> None
-        if extended:
-            self.source = id & int('0xFF', 16)
-            self.pgn = (id >> 8) & int('0xFFFF', 16)
-            self.destination = id >> 8 * 3 & int('0xFF', 16)
+    def __init__(self, arbitration_id):  # type: (ArbitrationId) -> None
+        if arbitration_id.extended:
+            self.source = arbitration_id.id & int('0xFF', 16)
+            self.pgn = (arbitration_id.id >> 8) & int('0xFFFF', 16)
+            self.destination = arbitration_id.id >> 8 * 3 & int('0xFF', 16)
         else:
             # TODO implement for standard Id
             pass
