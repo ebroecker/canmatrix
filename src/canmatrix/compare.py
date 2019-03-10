@@ -33,6 +33,7 @@ import canmatrix
 
 logger = logging.getLogger(__name__)
 ConfigDict = typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]
+WithAttribute = typing.TypeVar("WithAttribute", canmatrix.CanMatrix, canmatrix.Ecu, canmatrix.Frame, canmatrix.Signal)
 
 
 class CompareResult(object):
@@ -239,11 +240,8 @@ def compare_define_list(d1list, d2list):
     return result
 
 
-T = typing.TypeVar("T", canmatrix.CanMatrix, canmatrix.Ecu, canmatrix.Frame, canmatrix.Signal)
-
-
 def compare_attributes(ele1, ele2, ignore=None):
-    # type: (T, T, ConfigDict) -> CompareResult
+    # type: (WithAttribute, WithAttribute, ConfigDict) -> CompareResult
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "ATTRIBUTES", ele1)
