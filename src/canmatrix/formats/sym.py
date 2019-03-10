@@ -22,23 +22,26 @@
 #
 # this script exports sym-files from a canmatrix-object
 # sym-files are the can-matrix-definitions of the Peak Systems Tools
-from __future__ import division
+
 from __future__ import absolute_import
+from __future__ import division
 
-import logging
-
-from builtins import *
 import collections
-import canmatrix
-import sys
 import decimal
-import canmatrix.utils
+import logging
+import sys
+import typing
+from builtins import *
+
 import attr
+
+import canmatrix
+import canmatrix.utils
+
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
 
-
-enumDict = {}
+enumDict = {}  # type: typing.Dict[str, str]
 enums = "{ENUMS}\n"
 
 
@@ -90,8 +93,8 @@ def format_float(f):
         s = s[:-2]
 
     if 'E' in s:
-        s = s.split('E')
-        s = '%sE%s%s' % (s[0], s[1][0], s[1][1:].rjust(3, '0'))
+        tmp = s.split('E')
+        s = '%sE%s%s' % (tmp[0], tmp[1][0], tmp[1][1:].rjust(3, '0'))
 
     return s.upper()
 
@@ -452,7 +455,7 @@ def load(f, **options):
 
                     startBit = int(tempArray[indexOffset + 1].split(',')[0])
                     signalLength = int(tempArray[indexOffset + 1].split(',')[1])
-                    intel = 1
+                    intel = True
                     unit = ""
                     factor = 1
                     max = None

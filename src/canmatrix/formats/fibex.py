@@ -28,11 +28,10 @@
 # https://de.wikipedia.org/wiki/Field_Bus_Exchange_Format)
 
 from __future__ import absolute_import
-from builtins import *
-from lxml import etree
 
-from .canmatrix import *
-import os.path
+from builtins import *
+
+from lxml import etree
 
 fx = "http://www.asam.net/xml/fbx"
 ho = "http://www.asam.net/xml"

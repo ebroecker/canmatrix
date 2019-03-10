@@ -22,24 +22,25 @@
 #
 # this script exports canmatrix-objects to a CSV file. (Based on exportxlsx)
 # Author: Martin Hoffmann (m8ddin@gmail.com)
+
 from __future__ import absolute_import
 
-from collections import defaultdict
-import sys
+import collections
 import csv
 import logging
-import canmatrix.xls_common
+import sys
+import typing
+
+import canmatrix.formats.xls_common
 
 logger = logging.getLogger(__name__)
 
-if (sys.version_info > (3, 0)):
-    import codecs
-
 extension = 'csv'
 
-class csvRow:
+
+class CsvRow:
     def __init__(self):
-        self._rowdict = defaultdict(str)
+        self._rowdict = collections.defaultdict(str)  # type: typing.Dict[str, str]
 
     def __getitem__(self, key):
         return self._rowdict[key]
@@ -95,6 +96,7 @@ def writeBuMatrixx(buList, sig, frame, row, col):
     return col
 
 def dump(db, thefile, delimiter=',', **options):
+    # type: (canmatrix.CanMatrix, typing.BinaryIO, str, **str) -> None
     head_top = [
         'ID',
         'Frame Name',
@@ -132,7 +134,7 @@ def dump(db, thefile, delimiter=',', **options):
     col = 0  # Column counter
 
     # -- headers start:
-    headerrow = csvRow()
+    headerrow = CsvRow()
 
     # write first row (header) cols before frameardunits:
     for head in head_top:
@@ -195,10 +197,10 @@ def dump(db, thefile, delimiter=',', **options):
             if sig.values.__len__() > 0:
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
-                    signalRow = csvRow()
-                    signalRow += canmatrix.xls_common.get_frame_info(db, frame)
+                    signalRow = CsvRow()
+                    signalRow += canmatrix.formats.xls_common.get_frame_info(db, frame)
 
-                    (front, back) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
+                    (front, back) = canmatrix.formats.xls_common.get_signal(db, sig, motorolaBitFormat)
                     signalRow += front
                     signalRow += ("s" if sig.is_signed else "u")
 
@@ -219,10 +221,10 @@ def dump(db, thefile, delimiter=',', **options):
                 # loop over values ends here
             # no value table available
             else:
-                signalRow = csvRow()
-                signalRow += canmatrix.xls_common.get_frame_info(db, frame)
+                signalRow = CsvRow()
+                signalRow += canmatrix.formats.xls_common.get_frame_info(db, frame)
 
-                (front, back) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
+                (front, back) = canmatrix.formats.xls_common.get_signal(db, sig, motorolaBitFormat)
                 signalRow += front
                 signalRow += ("s" if sig.is_signed else "u")
 
@@ -255,8 +257,8 @@ def dump(db, thefile, delimiter=',', **options):
 
     try:
         writer = csv.writer(temp, delimiter=delimiter)
-        for row in csvtable:
-            writer.writerow(row.as_list)
+        for csv_row in csvtable:
+            writer.writerow(csv_row.as_list)
         # else:
         #    # just print to stdout
         #    finalTableString = "\n".join(
