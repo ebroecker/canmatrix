@@ -22,22 +22,25 @@
 #
 # this script exports dbc-files from a canmatrix-object
 # dbc-files are the can-matrix-definitions of the CanOe (Vector Informatic)
+
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import absolute_import
-from copy import deepcopy
+
 import collections
-import logging
+import copy
 import decimal
-
-
-from builtins import *
-import canmatrix
-import re
+import logging
 import math
+import re
+import typing
+from builtins import *
+
+import canmatrix
 
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
+
 
 #dbcExportEncoding = 'iso-8859-1'
 # CP1253
@@ -58,8 +61,8 @@ def format_float(f):
         s = s[:-2]
 
     if 'E' in s:
-        s = s.split('E')
-        s = '%sE%s%s' % (s[0], s[1][0], s[1][1:].rjust(3, '0'))
+        tmp = s.split('E')
+        s = '%sE%s%s' % (tmp[0], tmp[1][0], tmp[1][1:].rjust(3, '0'))
 
     return s.upper()
 
@@ -103,7 +106,7 @@ def create_comment_string(comment_class, comment_ident, comment, dbcExportEncodi
 
 def dump(mydb, f, **options):
     # create copy because export changes database
-    db = deepcopy(mydb)
+    db = copy.deepcopy(mydb)
 
     dbcExportEncoding = options.get("dbcExportEncoding", 'iso-8859-1')
     dbcExportCommentEncoding = options.get("dbcExportCommentEncoding",  dbcExportEncoding)
@@ -142,7 +145,8 @@ def dump(mydb, f, **options):
 
     # free signals are in special frame in dbc...
     if len(db.signals) > 0:
-        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG", id = canmatrix.ArbitrationId(0x40000000, extended=True))
+        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG")
+        free_signals_dummy_frame.arbitration_id = canmatrix.ArbitrationId(0x40000000, extended=True)
         free_signals_dummy_frame.signals = db.signals
         db.addFrame(free_signals_dummy_frame)
 
@@ -159,8 +163,6 @@ def dump(mydb, f, **options):
 
     # ECUs
     f.write("BU_: ".encode(dbcExportEncoding))
-    id = 1
-    nodeList = {}
 
     for ecu in db.ecus:
         # fix long ecu names:
@@ -446,22 +448,22 @@ def load(f, **options):
             range(5))
     followUp = FollowUps.nothing
     comment = ""
-    signal = None
+    signal = None  # type: typing.Optional[canmatrix.Signal]
     frame = None
     boardUnit = None
     db = canmatrix.CanMatrix()
-    framesById = {}
-    
-    def hash_arbitration_id(arbitration_id):
+    framesById = {}  # type: typing.Dict[int, canmatrix.Frame]
+
+    def hash_arbitration_id(arbitration_id):  # type: (canmatrix.ArbitrationId) -> int
         return hash((arbitration_id.id, arbitration_id.extended))
 
-    def get_frame_by_id(arbitration_id):
+    def get_frame_by_id(arbitration_id):  # type: (canmatrix.ArbitrationId) -> typing.Optional[canmatrix.Frame]
         try:
             return framesById[hash_arbitration_id(arbitration_id)]
         except KeyError:
             return None
-            
-    def add_frame_by_id(frame):
+
+    def add_frame_by_id(frame):  # type: (canmatrix.Frame) -> None
         framesById[hash_arbitration_id(frame.arbitration_id)] = frame
 
     for line in f:
@@ -552,7 +554,7 @@ def load(f, **options):
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     receiver = [b.strip() for b in temp.group(12).split(',')]
-                    multiplex = temp.group(2)
+                    multiplex = temp.group(2)  # type: typing.Union[str, int]
 
                     is_complex_multiplexed = False
 
@@ -605,8 +607,8 @@ def load(f, **options):
                 regexp = re.compile(r"^BO_TX_BU_ ([0-9]+) *: *(.+);")
                 temp = regexp.match(decoded)
                 frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
-                for ecu in temp.group(2).split(','):
-                    frame.add_transmitter(ecu)
+                for ecu_name in temp.group(2).split(','):
+                    frame.add_transmitter(ecu_name)
             elif decoded.startswith("CM_ SG_ "):
                 pattern = r"^CM_ +SG_ +(\w+) +(\w+) +\"(.*)\";"
                 regexp = re.compile(pattern)
@@ -723,12 +725,12 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 if temp:
                     frame_id = temp.group(1)
-                    signal = temp.group(2)
+                    signal_name = temp.group(2)
                     tempList = temp.group(3).split('"')
                     if frame_id.isnumeric(): # value for Frame
                         try:
                             frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frame_id)))
-                            sg = frame.signal_by_name(signal)
+                            sg = frame.signal_by_name(signal_name)
                             for i in range(math.floor(len(tempList) / 2)):
                                 val = tempList[i * 2 + 1]
                                 if sg:
@@ -825,7 +827,7 @@ def load(f, **options):
                 frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
                 if frame is not None:
                     signalArray = temp.group(4).split(' ')
-                    frame.add_signal_group(temp.group(2), temp.group(3), signalArray)
+                    frame.add_signal_group(temp.group(2), temp.group(3), signalArray)  # todo wrong annotation in canmatrix? Id is a string?
 
             elif decoded.startswith("SIG_VALTYPE_ "):
                 regexp = re.compile(r"^SIG_VALTYPE_ +(\w+) +(\w+)\s*\:(.*);")
@@ -861,9 +863,9 @@ def load(f, **options):
                     if frame is not None:
                         signal = frame.signal_by_name(signalName)
                         frame.is_complex_multiplexed = True
-                        signal.muxerForSignal = muxerForSignal
-                        signal.muxValMin = muxValMin
-                        signal.muxValMax = muxValMax
+                        signal.muxer_for_signal = muxerForSignal
+                        signal.mux_val_min = muxValMin
+                        signal.mux_val_max = muxValMax
             elif decoded.startswith("EV_ "):
                 pattern = r"^EV_ +([A-Za-z0-9\-_]+) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(\w*)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([A-Za-z0-9\-_]+) +(.*);"
                 regexp = re.compile(pattern)

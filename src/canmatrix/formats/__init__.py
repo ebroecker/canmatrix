@@ -6,6 +6,7 @@ import os
 import typing
 
 import canmatrix
+import canmatrix.cancluster
 if sys.version_info > (3, 0):
     import io
 else:
@@ -44,10 +45,10 @@ for loadedModule in loadedFormats:
 
 
 def loads(string, import_type=None, key="", flat_import=None, encoding="utf-8", **options):
+    # type: (typing.Union[bytes,str], str, str, bool, str, **str) -> typing.Union[canmatrix.CanMatrix, typing.Dict[str, canmatrix.CanMatrix], None]
     if sys.version_info > (3, 0):
-        if type(string) == str:
-            string = bytes(string, encoding)
-        file_object = io.BytesIO(string)
+        byte_str = bytes(string, encoding) if isinstance(string, str) else string
+        file_object = io.BytesIO(byte_str)
     else:
         string = string.encode(encoding)
         file_object = StringIO.StringIO(string)
@@ -55,6 +56,7 @@ def loads(string, import_type=None, key="", flat_import=None, encoding="utf-8", 
 
 
 def loadp(path, import_type=None, key="", flat_import=None, **options):
+    # type: (str, str, str, bool, **str) -> typing.Union[canmatrix.CanMatrix, typing.Dict[str, canmatrix.CanMatrix], None]
     with open(path, "rb") as fileObject:
         if not import_type:
             for supportedImportType, extension in extensionMapping.items():
@@ -70,29 +72,32 @@ def loadp(path, import_type=None, key="", flat_import=None, **options):
 
 
 def load(file_object, import_type, key="", flat_import=None, **options):
-    dbs = {}
+    # type: (typing.BinaryIO, str, str, bool, **str) -> typing.Union[canmatrix.CanMatrix, typing.Dict[str, canmatrix.CanMatrix], None]
+    dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
     module_instance = sys.modules["canmatrix.formats." + import_type]
     if "clusterImporter" in supportedFormats[import_type]:
-        dbs = module_instance.load(file_object, **options)
+        dbs = module_instance.load(file_object, **options)  # type: ignore
     else:
-        dbs[key] = module_instance.load(file_object, **options)
+        dbs[key] = module_instance.load(file_object, **options)  # type: ignore
 
     if flat_import:
         for key in dbs:
-            return dbs[key]
+            return dbs[key]  # todo `dbs.values()[0]` ?? this causes "Missing return statement"
     else:
         return dbs
 
 
 def dump(can_matrix_or_cluster, file_object, export_type, **options):
+    # type: (typing.Union[canmatrix.CanMatrix, canmatrix.cancluster.CanCluster], typing.BinaryIO, str, **str) -> None
     module_instance = sys.modules["canmatrix.formats." + export_type]
     if isinstance(can_matrix_or_cluster, canmatrix.CanMatrix):
-        module_instance.dump(can_matrix_or_cluster, file_object, **options)
+        module_instance.dump(can_matrix_or_cluster, file_object, **options)  # type: ignore
     elif "clusterExporter" in supportedFormats[export_type]:
-        module_instance.dump(can_matrix_or_cluster, file_object, **options)
+        module_instance.dump(can_matrix_or_cluster, file_object, **options)  # type: ignore
 
 
 def dumpp(can_cluster, path, export_type=None, **options):
+    # type: (canmatrix.cancluster.CanCluster, str, str, **str) -> None
     if not export_type:
         for key, extension in extensionMapping.items():
             if path.lower().endswith("." + extension) and "dump" in supportedFormats[key]:
@@ -105,8 +110,8 @@ def dumpp(can_cluster, path, export_type=None, **options):
         else:
             for name in can_cluster:
                 if len(name) > 0:
-                    (filepath, ext) = os.path.splitext(path)
-                    outfile = filepath + "_" + name + ext
+                    (file_path, ext) = os.path.splitext(path)
+                    outfile = file_path + "_" + name + ext
                 else:
                     outfile = path
                 db = can_cluster[name]
@@ -115,5 +120,3 @@ def dumpp(can_cluster, path, export_type=None, **options):
                 file_object.close()
     else:
         logger.error("This file format is not supported for writing")
-
-    return None

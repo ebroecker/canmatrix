@@ -36,8 +36,8 @@ from builtins import *
 
 from lxml import etree
 
-import canmatrix.cancluster
 import canmatrix
+import canmatrix.cancluster
 
 default_float_factory = decimal.Decimal
 
@@ -355,7 +355,7 @@ def load(f, **options):
         db = canmatrix.CanMatrix()
         db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
         for node in nodes:
-            db.ecus.add(canmatrix.Ecu(node.get('name')))
+            db.ecus.append(canmatrix.Ecu(node.get('name')))
             nodelist[node.get('id')] = node.get('name')
 
         messages = bus.findall('./' + namespace + 'Message')
