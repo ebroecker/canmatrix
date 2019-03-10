@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
@@ -20,144 +21,157 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import print_function
+
 import logging
+import optparse
 import sys
 import typing
 
-from .log import setup_logger, set_log_level
-import canmatrix.canmatrix as cm
+import canmatrix
 
 logger = logging.getLogger(__name__)
+ConfigDict = typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]
+WithAttribute = typing.TypeVar("WithAttribute", canmatrix.CanMatrix, canmatrix.Ecu, canmatrix.Frame, canmatrix.Signal)
 
 
-class compareResult(object):
+class CompareResult(object):
+    """Hold comparison results in logical tree."""
 
     def __init__(self, result=None, mtype=None, ref=None, changes=None):
-        # equal, added, deleted, changed
-        self._result = result
-        # db, bu, frame, signal, attribute
+        # type: (str, str, typing.Any, typing.List) -> None
+        # any of equal, added, deleted, changed
+        self.result = result
+        # db, ecu, frame, signal, attribute
         self._type = mtype
         # reference to related object
         self._ref = ref
         self._changes = changes
-        self._children = []  # type: typing.List[compareResult]
+        self._children = []  # type: typing.List[CompareResult]
 
-    def addChild(self, child):
+    def add_child(self, child):
+        # type: (CompareResult) -> None
         self._children.append(child)
 
+    @property
+    def children(self):  # type: () -> typing.List[CompareResult]
+        return self._children
 
-def propagateChanges(res):
+
+def propagate_changes(res):  # type: (CompareResult) -> int
     change = 0
-    for child in res._children:
-        change += propagateChanges(child)
+    for child in res.children:
+        change += propagate_changes(child)
     if change != 0:
-        res._result = "changed"
-    if res._result != "equal":
+        res.result = "changed"
+    if res.result != "equal":
         return 1
     else:
         return 0
 
 
-def compareDb(db1, db2, ignore=None):
-    result = compareResult()
+def compare_db(db1, db2, ignore=None):
+    # type: (canmatrix.CanMatrix, canmatrix.CanMatrix, ConfigDict) -> CompareResult
+    result = CompareResult()
+    if ignore is None:
+        ignore = dict()
     for f1 in db1.frames:
-        f2 = db2.frame_by_id(f1.id)
+        f2 = db2.frame_by_id(f1.arbitration_id)
         if f2 is None:
-            result.addChild(compareResult("deleted", "FRAME", f1))
+            result.add_child(CompareResult("deleted", "FRAME", f1))
         else:
-            result.addChild(compareFrame(f1, f2, ignore))
+            result.add_child(compare_frame(f1, f2, ignore))
     for f2 in db2.frames:
-        f1 = db1.frame_by_id(f2.id)
+        f1 = db1.frame_by_id(f2.arbitration_id)
         if f1 is None:
-            result.addChild(compareResult("added", "FRAME", f2))
+            result.add_child(CompareResult("added", "FRAME", f2))
 
-    if ignore is not None and "ATTRIBUTE" in ignore and ignore[
-            "ATTRIBUTE"] == "*":
+    if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
         pass
     else:
-        result.addChild(compareAttributes(db1, db2, ignore))
+        result.add_child(compare_attributes(db1, db2, ignore))
 
-    for bu1 in db1.ecus:
-        bu2 = db2.ecu_by_name(bu1.name)
-        if bu2 is None:
-            result.addChild(compareResult("deleted", "ecu", bu1))
+    for ecu1 in db1.ecus:
+        ecu2 = db2.ecu_by_name(ecu1.name)
+        if ecu2 is None:
+            result.add_child(CompareResult("deleted", "ecu", ecu1))
         else:
-            result.addChild(compareBu(bu1, bu2, ignore))
-    for bu2 in db2.ecus:
-        bu1 = db1.ecu_by_name(bu2.name)
-        if bu1 is None:
-            result.addChild(compareResult("added", "ecu", bu2))
+            result.add_child(compare_ecu(ecu1, ecu2, ignore))
+    for ecu2 in db2.ecus:
+        ecu1 = db1.ecu_by_name(ecu2.name)
+        if ecu1 is None:
+            result.add_child(CompareResult("added", "ecu", ecu2))
 
-    if ignore is not None and "DEFINE" in ignore and ignore["DEFINE"] == "*":
+    if "DEFINE" in ignore and ignore["DEFINE"] == "*":
         pass
     else:
-        result.addChild(
-            compareDefineList(
-                db1.globalDefines,
-                db2.globalDefines))
+        result.add_child(
+            compare_define_list(
+                db1.global_defines,
+                db2.global_defines))
 
-        temp = compareDefineList(db1.buDefines, db2.buDefines)
+        temp = compare_define_list(db1.ecu_defines, db2.ecu_defines)
         temp._type = "ECU Defines"
-        result.addChild(temp)
+        result.add_child(temp)
 
-        temp = compareDefineList(db1.frameDefines, db2.frameDefines)
+        temp = compare_define_list(db1.frame_defines, db2.frame_defines)
         temp._type = "Frame Defines"
-        result.addChild(temp)
+        result.add_child(temp)
 
-        temp = compareDefineList(db1.signalDefines, db2.signalDefines)
+        temp = compare_define_list(db1.signal_defines, db2.signal_defines)
         temp._type = "Signal Defines"
-        result.addChild(temp)
+        result.add_child(temp)
 
     if "VALUETABLES" in ignore and ignore["VALUETABLES"]:
         pass
     else:
-        for vt1 in db1.valueTables:
-            if vt1 not in db2.valueTables:
-                result.addChild(
-                    compareResult(
+        for vt1 in db1.value_tables:
+            if vt1 not in db2.value_tables:
+                result.add_child(
+                    CompareResult(
                         "deleted",
                         "valuetable " + vt1,
-                        db1.valueTables))
+                        db1.value_tables))
             else:
-                result.addChild(
-                    compareValueTable(
-                        db1.valueTables[vt1],
-                        db2.valueTables[vt1]))
+                result.add_child(
+                    compare_value_table(
+                        db1.value_tables[vt1],
+                        db2.value_tables[vt1]))
 
-        for vt2 in db2.valueTables:
-            if vt2 not in db1.valueTables:
-                result.addChild(
-                    compareResult(
+        for vt2 in db2.value_tables:
+            if vt2 not in db1.value_tables:
+                result.add_child(
+                    CompareResult(
                         "added",
                         "valuetable " + vt2,
-                        db2.valueTables))
+                        db2.value_tables))
 
-    propagateChanges(result)
+    propagate_changes(result)
 
     return result
 
 
-def compareValueTable(vt1, vt2):
-    result = compareResult("equal", "Valuetable", vt1)
+def compare_value_table(vt1, vt2):
+    # type: (typing.Mapping, typing.Mapping) -> CompareResult
+    result = CompareResult("equal", "Valuetable", vt1)
     for value in vt1:
         if value not in vt2:
-            result.addChild(
-                compareResult(
+            result.add_child(
+                CompareResult(
                     "removed",
                     "Value " +
                     str(value),
                     vt1[value]))
         elif vt1[value] != vt2[value]:
-            result.addChild(compareResult("changed", "Value " +
-                                          str(value) +
-                                          " " +
-                                          str(vt1[value].encode('ascii', 'ignore')), [vt1[value], vt2[value]]))
+            result.add_child(CompareResult("changed", "Value " +
+                                           str(value) +
+                                           " " +
+                                           str(vt1[value].encode('ascii', 'ignore')), [vt1[value], vt2[value]]))
     for value in vt2:
         if value not in vt1:
-            result.addChild(
-                compareResult(
+            result.add_child(
+                CompareResult(
                     "added",
                     "Value " +
                     str(value),
@@ -165,36 +179,38 @@ def compareValueTable(vt1, vt2):
     return result
 
 
-def compareSignalGroup(sg1, sg2):
-    result = compareResult("equal", "SignalGroup", sg1)
+def compare_signal_group(sg1, sg2):
+    # type: (canmatrix.SignalGroup, canmatrix.SignalGroup) -> CompareResult
+    result = CompareResult("equal", "SignalGroup", sg1)
 
     if sg1.name != sg2.name:
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "SignalName", [
                     sg1.name, sg2.name]))
     if sg1.id != sg2.id:
-        result.addChild(compareResult(
+        result.add_child(CompareResult(
             "changed", "SignalName", [str(sg1.id), str(sg2.id)]))
 
     if sg1.signals is None or sg2.signals is None:
         logger.debug("Strange - sg wo members???")
         return result
-    for member in sg1.signals:
-        if sg2.by_name(member.name) is None:
-            result.addChild(compareResult("deleted", str(member.name), member))
-    for member in sg2.signals:
-        if sg1.by_name(member.name) is None:
-            result.addChild(compareResult("added", str(member.name), member))
+    for signal in sg1.signals:
+        if sg2.by_name(signal.name) is None:
+            result.add_child(CompareResult("deleted", str(signal.name), signal))
+    for signal in sg2.signals:
+        if sg1.by_name(signal.name) is None:
+            result.add_child(CompareResult("added", str(signal.name), signal))
     return result
 
 
-def compareDefineList(d1list, d2list):
-    result = compareResult("equal", "DefineList", d1list)
+def compare_define_list(d1list, d2list):
+    # type: (typing.Mapping[str, canmatrix.Define], typing.Mapping[str, canmatrix.Define]) -> CompareResult
+    result = CompareResult("equal", "DefineList", d1list)
     for definition in d1list:
         if definition not in d2list:
-            result.addChild(
-                compareResult(
+            result.add_child(
+                CompareResult(
                     "deleted",
                     "Define" +
                     str(definition),
@@ -203,20 +219,20 @@ def compareDefineList(d1list, d2list):
             d2 = d2list[definition]
             d1 = d1list[definition]
             if d1.definition != d2.definition:
-                result.addChild(
-                    compareResult(
+                result.add_child(
+                    CompareResult(
                         "changed", "Definition", d1.definition, [
                             d1.definition, d2.definition]))
 
             if d1.defaultValue != d2.defaultValue:
-                result.addChild(
-                    compareResult(
+                result.add_child(
+                    CompareResult(
                         "changed", "DefaultValue", d1.definition, [
                             d1.defaultValue, d2.defaultValue]))
     for definition in d2list:
         if definition not in d1list:
-            result.addChild(
-                compareResult(
+            result.add_child(
+                CompareResult(
                     "added",
                     "Define" +
                     str(definition),
@@ -224,78 +240,85 @@ def compareDefineList(d1list, d2list):
     return result
 
 
-def compareAttributes(ele1, ele2, ignore=None):
-    result = compareResult("equal", "ATTRIBUTES", ele1)
-    if ignore is not None and "ATTRIBUTE" in ignore and (
+def compare_attributes(ele1, ele2, ignore=None):
+    # type: (WithAttribute, WithAttribute, ConfigDict) -> CompareResult
+    if ignore is None:
+        ignore = dict()
+    result = CompareResult("equal", "ATTRIBUTES", ele1)
+    if "ATTRIBUTE" in ignore and (
             ignore["ATTRIBUTE"] == "*" or ignore["ATTRIBUTE"] == ele1):
         return result
     for attribute in ele1.attributes:
         if attribute not in ele2.attributes:
-            result.addChild(
-                compareResult(
+            result.add_child(
+                CompareResult(
                     "deleted",
                     str(attribute),
                     ele1.attributes[attribute]))
         elif ele1.attributes[attribute] != ele2.attributes[attribute]:
-            result.addChild(
-                compareResult(
+            result.add_child(
+                CompareResult(
                     "changed", str(attribute), ele1.attributes[attribute], [
                         ele1.attributes[attribute], ele2.attributes[attribute]]))
 
     for attribute in ele2.attributes:
         if attribute not in ele1.attributes:
-            result.addChild(
-                compareResult(
+            result.add_child(
+                CompareResult(
                     "added",
                     str(attribute),
                     ele2.attributes[attribute]))
     return result
 
 
-def compareBu(bu1, bu2, ignore=None):
-    result = compareResult("equal", "ECU", bu1)
+def compare_ecu(ecu1, ecu2, ignore=None):
+    # type: (canmatrix.Ecu, canmatrix.Ecu, ConfigDict) -> CompareResult
+    if ignore is None:
+        ignore = dict()
+    result = CompareResult("equal", "ECU", ecu1)
 
-    if not "comment" in ignore:
-        if bu1.comment != bu2.comment:
-            result.addChild(
-                compareResult(
-                    "changed", "ECU", bu1, [
-                        bu1.comment, bu2.comment]))
+    if "comment" not in ignore:
+        if ecu1.comment != ecu2.comment:
+            result.add_child(
+                CompareResult(
+                    "changed", "ECU", ecu1, [
+                        ecu1.comment, ecu2.comment]))
 
-    if ignore is not None and "ATTRIBUTE" in ignore and ignore[
-            "ATTRIBUTE"] == "*":
+    if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
         pass
     else:
-        result.addChild(compareAttributes(bu1, bu2, ignore))
+        result.add_child(compare_attributes(ecu1, ecu2, ignore))
     return result
 
 
-def compareFrame(f1, f2, ignore=None):
-    # type: (cm.Frame, cm.Frame, typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]) -> compareResult
-    result = compareResult("equal", "FRAME", f1)
+def compare_frame(f1, f2, ignore=None):
+    # type: (canmatrix.Frame, canmatrix.Frame, ConfigDict) -> CompareResult
+    if ignore is None:
+        ignore = dict()
+    result = CompareResult("equal", "FRAME", f1)
 
     for s1 in f1:
         s2 = f2.signal_by_name(s1.name)
         if not s2:
-            result.addChild(compareResult("deleted", "SIGNAL", s1))
+            result.add_child(CompareResult("deleted", "SIGNAL", s1))
         else:
-            result.addChild(compareSignal(s1, s2, ignore))
+            result.add_child(compare_signal(s1, s2, ignore))
 
     if f1.name != f2.name:
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "Name", f1, [
                     f1.name, f2.name]))
     if f1.size != f2.size:
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "dlc", f1, [
                     "dlc: %d" %
                     f1.size, "dlc: %d" %
                     f2.size]))
     if f1.arbitration_id.extended != f2.arbitration_id.extended:
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "FRAME", f1, [
                     "extended-Flag: %d" %
                     f1.arbitration_id.extended, "extended-Flag: %d" %
@@ -306,163 +329,164 @@ def compareFrame(f1, f2, ignore=None):
         if f1.comment is None:
             f1.add_comment("")
         if f1.comment != f2.comment:
-            result.addChild(
-                compareResult(
+            result.add_child(
+                CompareResult(
                     "changed", "FRAME", f1, [
                         "comment: " + f1.comment, "comment: " + f2.comment]))
 
     for s2 in f2.signals:
         s1 = f1.signal_by_name(s2.name)
         if not s1:
-            result.addChild(compareResult("added", "SIGNAL", s2))
+            result.add_child(CompareResult("added", "SIGNAL", s2))
 
-    if ignore is not None and "ATTRIBUTE" in ignore and ignore[
-            "ATTRIBUTE"] == "*":
+    if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
         pass
     else:
-        result.addChild(compareAttributes(f1, f2, ignore))
+        result.add_child(compare_attributes(f1, f2, ignore))
 
     temp = [str(item) for item in f2.transmitters]
     for transmitter in f1.transmitters:
         if transmitter not in temp:
-            result.addChild(compareResult("removed", "Frame-Transmitter", f1))
+            result.add_child(CompareResult("removed", "Frame-Transmitter", f1))
 
     temp = [str(item) for item in f1.transmitters]
     for transmitter in f2.transmitters:
         if transmitter not in temp:
-            result.addChild(compareResult("added", "Frame-Transmitter",  f2))
+            result.add_child(CompareResult("added", "Frame-Transmitter", f2))
 
     for sg1 in f1.signalGroups:
         sg2 = f2.signal_group_by_name(sg1.name)
         if sg2 is None:
-            result.addChild(compareResult("removed", "Signalgroup", sg1))
+            result.add_child(CompareResult("removed", "Signalgroup", sg1))
         else:
-            result.addChild(compareSignalGroup(sg1, sg2))
+            result.add_child(compare_signal_group(sg1, sg2))
 
     for sg2 in f2.signalGroups:
         if f1.signal_group_by_name(sg2.name) is None:
-            result.addChild(compareResult("added", "Signalgroup", sg2))
+            result.add_child(CompareResult("added", "Signalgroup", sg2))
     return result
 
 
-def compareSignal(s1, s2, ignore=None):
-    result = compareResult("equal", "SIGNAL", s1)
+def compare_signal(s1, s2, ignore=None):
+    # type: (canmatrix.Signal, canmatrix.Signal, ConfigDict) -> CompareResult
+    if ignore is None:
+        ignore = dict()
+    result = CompareResult("equal", "SIGNAL", s1)
 
-    if s1.startBit != s2.startBit:
-        result.addChild(
-            compareResult(
+    if s1.start_bit != s2.start_bit:
+        result.add_child(
+            CompareResult(
                 "changed", "startbit", s1, [
                     " %d" %
-                    s1.startBit, " %d" %
-                    s2.startBit]))
+                    s1.start_bit, " %d" %
+                    s2.start_bit]))
     if s1.size != s2.size:
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "signalsize", s1, [
                     " %d" %
                     s1.size, " %d" %
                     s2.size]))
     if float(s1.factor) != float(s2.factor):
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "factor", s1, [
                     s1.factor, s2.factor]))
     if float(s1.offset) != float(s2.offset):
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "offset", s1, [
                     s1.offset, s2.offset]))
     if float(s1.min) != float(s2.min):
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "min", s1, [
                     s1.min, s2.min]))
     if float(s1.max) != float(s2.max):
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "max", s1, [
                     s1.max, s2.max]))
     if s1.is_little_endian != s2.is_little_endian:
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "is_little_endian", s1, [
                     " %d" %
                     s1.is_little_endian, " %d" %
                     s2.is_little_endian]))
     if s1.is_signed != s2.is_signed:
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "sign", s1, [
                     " %d" %
                     s1.is_signed, " %d" %
                     s2.is_signed]))
     if s1.multiplex != s2.multiplex:
-        result.addChild(compareResult("changed", "multiplex", s1, [
-                        str(s1.multiplex), str(s2.multiplex)]))
+        result.add_child(CompareResult("changed", "multiplex", s1, [
+            str(s1.multiplex), str(s2.multiplex)]))
     if s1.unit != s2.unit:
-        result.addChild(
-            compareResult(
+        result.add_child(
+            CompareResult(
                 "changed", "unit", s1, [
                     s1.unit, s2.unit]))
-    if not "comment" in ignore:
+    if "comment" not in ignore:
         if s1.comment is not None and s2.comment is not None and s1.comment != s2.comment:
             if s1.comment.replace("\n", " ") != s2.comment.replace("\n", " "):
-                result.addChild(
-                    compareResult(
+                result.add_child(
+                    CompareResult(
                         "changed", "comment", s1, [
                             s1.comment, s2.comment]))
             else:
-                result.addChild(
-                    compareResult(
+                result.add_child(
+                    CompareResult(
                         "changed", "comment", s1, [
                             "only whitespaces differ", ""]))
 
-    for receiver in s1.receiver:
-        if receiver.strip() not in s2.receiver:
-            result.addChild(
-                compareResult(
+    for receiver in s1.receivers:
+        if receiver.strip() not in s2.receivers:
+            result.add_child(
+                CompareResult(
                     "removed",
                     "receiver " +
                     receiver,
-                    s1.receiver))
+                    s1.receivers))
 
-    for receiver in s2.receiver:
-        if receiver.strip() not in s1.receiver:
-            result.addChild(
-                compareResult(
+    for receiver in s2.receivers:
+        if receiver.strip() not in s1.receivers:
+            result.add_child(
+                CompareResult(
                     "added",
                     "receiver " +
                     receiver,
-                    s1.receiver))
+                    s1.receivers))
 
-    if ignore is not None and "ATTRIBUTE" in ignore and ignore[
-            "ATTRIBUTE"] == "*":
+    if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
         pass
     else:
-        result.addChild(compareAttributes(s1, s2, ignore))
+        result.add_child(compare_attributes(s1, s2, ignore))
 
     if "VALUETABLES" in ignore and ignore["VALUETABLES"]:
         pass
     else:
-        result.addChild(compareValueTable(s1.values, s2.values))
+        result.add_child(compare_value_table(s1.values, s2.values))
 
     return result
 
 
-def dumpResult(res, depth=0):
-    if res._type is not None and res._result != "equal":
+def dump_result(res, depth=0):
+    # type: (CompareResult, int) -> None
+    if res._type is not None and res.result != "equal":
         for _ in range(0, depth):
             print(" ", end=' ')
-        print(res._type + " " + res._result + " ", end=' ')
+        print(res._type + " " + res.result + " ", end=' ')
         if hasattr(res._ref, 'name'):
             print(res._ref.name)
         else:
             print(" ")
-        if res._changes is not None and res._changes[
-                0] is not None and res._changes[1] is not None:
+        if res._changes is not None and res._changes[0] is not None and res._changes[1] is not None:
             for _ in range(0, depth):
                 print(" ", end=' ')
-            print (type(res._changes[0]))
+            print(type(res._changes[0]))
             if sys.version_info[0] < 3:
                 if isinstance(res._changes[0], type(u'')):
                     res._changes[0] = res._changes[0].encode('ascii', 'ignore')
@@ -478,12 +502,12 @@ def dumpResult(res, depth=0):
                   " new: " +
                   str(res._changes[1]))
     for child in res._children:
-        dumpResult(child, depth + 1)
+        dump_result(child, depth + 1)
 
 
-def main():
-    setup_logger()
-    from optparse import OptionParser
+def main():  # type: () -> int
+    import canmatrix.log
+    canmatrix.log.setup_logger()
 
     usage = """
     %prog [options] cancompare matrix1 matrix2
@@ -491,7 +515,7 @@ def main():
     matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml
     """
 
-    parser = OptionParser(usage=usage)
+    parser = optparse.OptionParser(usage=usage)
     parser.add_option(
         "-s",
         dest="silent",
@@ -505,7 +529,7 @@ def main():
         help="Output verbosity",
         default=0)
     parser.add_option(
-        "-f","--frames",
+        "-f", "--frames",
         dest="frames",
         action="store_true",
         help="show list of frames",
@@ -542,11 +566,10 @@ def main():
     if cmdlineOptions.silent:
         # Only print ERROR messages (ignore import warnings)
         verbosity = -1
-    set_log_level(logger, verbosity)
+    canmatrix.log.set_log_level(logger, verbosity)
 
-    # import only after setting log level, to also disable warning messages in
-    # silent mode.
-    import canmatrix.formats
+    # import only after setting log level, to also disable warning messages in silent mode.
+    import canmatrix.formats  # due this import we need the import alias for log module
 
     logger.info("Importing " + matrix1 + " ... ")
     db1 = next(iter(canmatrix.formats.loadp(matrix1).values()))
@@ -568,22 +591,27 @@ def main():
         ignore["VALUETABLES"] = True
 
     if cmdlineOptions.frames:
-        onlyInMatrix1 = []
-        onlyInMatrix2 = []
-        for frame in db1.frames:
-            if db2.frame_by_name(frame.name) is None:
-                onlyInMatrix1.append(frame.name)
-        for frame in db2.frames:
-            if db1.frame_by_name(frame.name) is None:
-                onlyInMatrix2.append(frame.name)
-        print ("Frames only in " + matrix1 + ": " + " ".join(onlyInMatrix1))
-        print ("Frames only in " + matrix2 + ": " + " ".join(onlyInMatrix2))
+        only_in_matrix1 = [
+            frame.name
+            for frame in db1.frames
+            if db2.frame_by_name(frame.name) is None
+        ]
+        only_in_matrix2 = [
+            frame.name
+            for frame in db2.frames
+            if db1.frame_by_name(frame.name) is None
+        ]
+        print("Frames only in " + matrix1 + ": " + " ".join(only_in_matrix1))
+        print("Frames only in " + matrix2 + ": " + " ".join(only_in_matrix2))
 
     else:
-        #ignore["ATTRIBUTE"] = "*"
-        #ignore["DEFINE"] = "*"
-        obj = compareDb(db1, db2, ignore)
-        dumpResult(obj)
+        # ignore["ATTRIBUTE"] = "*"
+        # ignore["DEFINE"] = "*"
+        obj = compare_db(db1, db2, ignore)
+        dump_result(obj)
+    return 0
 
+
+# to be run as module `python -m canmatrix.compare`, NOT as script with argument `canmatrix/compare.py`
 if __name__ == '__main__':
     sys.exit(main())
