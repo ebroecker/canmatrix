@@ -19,36 +19,38 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
+import typing
+
 
 def get_frame_info(db, frame):
-    retArray = []
+    ret_array = []  # type: typing.List[str]
     # frame-id
     if frame.arbitration_id.extended:
-        retArray.append("%3Xxh" % frame.arbitration_id.id)
+        ret_array.append("%3Xxh" % frame.arbitration_id.id)
     else:
-        retArray.append("%3Xh" % frame.arbitration_id.id)
+        ret_array.append("%3Xh" % frame.arbitration_id.id)
     # frame-Name
-    retArray.append(frame.name)
+    ret_array.append(frame.name)
 
     if "GenMsgCycleTime" in db.frame_defines:
         # determin cycle-time
-        retArray.append(frame.attribute("GenMsgCycleTime", db=db))
+        ret_array.append(frame.attribute("GenMsgCycleTime", db=db))
 
     # determin send-type
     if "GenMsgSendType" in db.frame_defines:
-        retArray.append(frame.attribute("GenMsgSendType", db=db))
+        ret_array.append(frame.attribute("GenMsgSendType", db=db))
         if "GenMsgDelayTime" in db.frame_defines:
-            retArray.append(frame.attribute("GenMsgDelayTime", db=db))
+            ret_array.append(frame.attribute("GenMsgDelayTime", db=db))
         else:
-            retArray.append("")
+            ret_array.append("")
     else:
-        retArray.append("")
-        retArray.append("")
-    return retArray
+        ret_array.append("")
+        ret_array.append("")
+    return ret_array
 
 
 def get_signal(db, sig, motorolaBitFormat):
-    frontArray = []
+    frontArray = []  # type: typing.List[typing.Any]
     backArray = []
     if motorolaBitFormat == "msb":
         startBit = sig.get_startbit(bit_numbering=1)

@@ -24,11 +24,15 @@
 # xls-files are the can-matrix-definitions displayed in Excel
 
 
-from __future__ import division
 from __future__ import absolute_import
-import canmatrix
+from __future__ import division
+
+import typing
+
 import xlsxwriter
-import canmatrix.xls_common
+
+import canmatrix
+import canmatrix.formats.xls_common
 
 logger = canmatrix.logging.getLogger(__name__)
 
@@ -97,6 +101,7 @@ def writeExcelLine(worksheet, row, col, rowArray, style):
 
 
 def dump(db, filename, **options):
+    # type: (canmatrix.CanMatrix, str, **str) -> None
     if 'xlsMotorolaBitFormat' in options:
         motorolaBitFormat = options["xlsMotorolaBitFormat"]
     else:
@@ -237,11 +242,11 @@ def dump(db, filename, **options):
         # iterate over signals
         rowArray = []
         if len(sigHash) == 0:
-            rowArray += canmatrix.xls_common.get_frame_info(db, frame)
-            for item in range(5, head_start):
+            rowArray += canmatrix.formats.xls_common.get_frame_info(db, frame)
+            for _ in range(5, head_start):
                 rowArray.append("")
             tempCol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
-            tempCol = writeBuMatrixx(ecu_list, None, frame, worksheet, row, tempCol , framestyle)
+            tempCol = writeBuMatrixx(ecu_list, None, frame, worksheet, row, tempCol, framestyle)
 
             rowArray = []
             for col in range(tempCol, additionalFrame_start):
@@ -266,7 +271,7 @@ def dump(db, filename, **options):
                 valstyle = sigstyle
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
-                    rowArray = canmatrix.xls_common.get_frame_info(db, frame)
+                    rowArray = canmatrix.formats.xls_common.get_frame_info(db, frame)
                     frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                     if framestyle != sty_first_frame:
                         worksheet.set_row(row, None, None, {'level': 1})
@@ -275,7 +280,7 @@ def dump(db, filename, **options):
                     col = writeBuMatrixx(ecu_list, sig, frame, worksheet, row, col, framestyle)
 
                     # write Value
-                    (frontRow, backRow) = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
+                    (frontRow, backRow) = canmatrix.formats.xls_common.get_signal(db, sig, motorolaBitFormat)
                     writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
                     backRow += additionalFrameInfo
                     for item in additional_signal_colums:
@@ -295,7 +300,7 @@ def dump(db, filename, **options):
                 # loop over values ends here
             # no valuetable available
             else:
-                rowArray = canmatrix.xls_common.get_frame_info(db, frame)
+                rowArray = canmatrix.formats.xls_common.get_frame_info(db, frame)
                 frontcol = writeExcelLine(worksheet, row, 0, rowArray, framestyle)
                 if framestyle != sty_first_frame:
                     worksheet.set_row(row, None, None, {'level': 1})
@@ -303,11 +308,11 @@ def dump(db, filename, **options):
                 col = head_start
                 col = writeBuMatrixx(
                     ecu_list, sig, frame, worksheet, row, col, framestyle)
-                (frontRow,backRow)  = canmatrix.xls_common.get_signal(db, sig, motorolaBitFormat)
+                (frontRow, backRow) = canmatrix.formats.xls_common.get_signal(db, sig, motorolaBitFormat)
                 writeExcelLine(worksheet, row, frontcol, frontRow, sigstyle)
 
                 if float(sig.min) != 0 or float(sig.max) != 1.0:
-                    backRow.insert(0,str("%g..%g" %(sig.min,sig.max)))
+                    backRow.insert(0, str("%g..%g" % (sig.min, sig.max)))  # type: ignore
                 else:
                     backRow.insert(0, "")
                 backRow.insert(0,"")
@@ -327,8 +332,6 @@ def dump(db, filename, **options):
                 # set style to normal - without border
                 sigstyle = sty_white
                 framestyle = sty_white
-        # reset signal-Array
-        signals = []
         # loop over signals ends here
     # loop over frames ends here
 
@@ -337,11 +340,6 @@ def dump(db, filename, **options):
     worksheet.freeze_panes(1, 0)
     # save file
     workbook.close()
-
-
-import codecs
-import zipfile
-from xml.etree.ElementTree import iterparse
 
 
 def readXlsx(file, **args):
@@ -358,7 +356,7 @@ def readXlsx(file, **args):
     else:
         isHeader = False
 
-    rows = []
+    rows = []  # type: typing.List[typing.Dict[str, str]]
     row = {}
     header = {}
     z = zipfile.ZipFile(file)
@@ -397,7 +395,7 @@ def readXlsx(file, **args):
 
                     # if there is a header row, use the first row's names as
                     # the row hash index
-                    if isHeader == True and letter in header:
+                    if isHeader is True and letter in header:
                         row[header[letter]] = value
                     else:
                         row[letter] = value
@@ -418,14 +416,12 @@ def getIfPossible(row, value):
 
 
 def load(filename, **options):
-    from sys import modules
-
     # use xlrd excel reader if available, because its more robust
     if 'xlsxLegacy' in options and options['xlsxLegacy'] == True:
         logger.error("xlsx: using legacy xlsx-reader - please get xlrd working for better results!")
     else:
-        import canmatrix.xls
-        return canmatrix.xls.load(filename, **options)
+        import canmatrix.formats.xls as xls_loader  # we need alias, otherwise we hide the globally imported canmatrix
+        return xls_loader.load(filename, **options)
 
     # else use this hack to read xlsx
     if 'xlsMotorolaBitFormat' in options:
@@ -480,7 +476,7 @@ def load(filename, **options):
             continue
         # new frame detected
         if row['ID'] != frameId:
-            sender = []
+            sender = []  # todo unused
             # new Frame
             frameId = row['ID']
             frameName = row['Frame Name']
@@ -493,9 +489,10 @@ def load(filename, **options):
             launchParam = str(int(launchParam))
 
             if frameId.endswith("xh"):
-                newBo = canmatrix.Frame(frameName, id=int(frameId[:-2], 16), size=dlc, extended=True)
+                newBo = canmatrix.Frame(frameName, arbitration_id=int(frameId[:-2], 16), size=dlc)
+                newBo.arbitration_id.extended = True
             else:
-                newBo = canmatrix.Frame(frameName, id=int(frameId[:-1], 16), size=dlc)
+                newBo = canmatrix.Frame(frameName, arbitration_id=int(frameId[:-1], 16), size=dlc)
 
             db.add_frame(newBo)
 

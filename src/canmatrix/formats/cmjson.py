@@ -24,36 +24,35 @@
 # json-files are the can-matrix-definitions of the CANard-project
 # (https://github.com/ericevenchick/CANard)
 
-from builtins import *
-import canmatrix
-import codecs
+from __future__ import absolute_import
+
 import json
 import sys
+import typing
+from builtins import *
 
+import canmatrix
 
 extension = 'json'
 
+
 def dump(db, f, **options):
+    # type: (canmatrix.CanMatrix, typing.BinaryIO, **str) -> None
 
     exportCanard = options.get('jsonCanard', False)
     motorolaBitFormat = options.get('jsonMotorolaBitFormat', "lsb")
-
-
-    if 'jsonAll' in options:
-        exportAll = options['jsonAll']
-    else:
-        exportAll = False
+    exportAll = options.get('jsonAll', False)
 
     if (sys.version_info > (3, 0)):
         mode = 'w'
     else:
         mode = 'wb'
 
-    additionalFrameColums = []
+    additionalFrameColums = []  # type: typing.List[str]
     if "additionalFrameAttributes" in options and options["additionalFrameAttributes"]:
         additionalFrameColums = options["additionalFrameAttributes"].split(",")
 
-    exportArray = []
+    exportArray = []  # type: typing.List[typing.Union[str, int, list, dict]]
 
     if exportCanard:
         for frame in db.frames:
@@ -64,15 +63,15 @@ def dump(db, f, **options):
                         bit_numbering=1,
                         start_little=True)] = {
                     "name": signal.name,
-                    "bit_length": signal.signalsize,
+                    "bit_length": signal.size,
                     "factor": signal.factor,
                     "offset": signal.offset}
             exportArray.append(
                 {"name": frame.name, "id": hex(frame.arbitration_id.id), "signals": signals})
 
-    elif exportAll == False:
+    elif exportAll is False:
         for frame in db.frames:
-            signals = []
+            symbolic_signals = []
             for signal in frame.signals:
                 if not signal.is_little_endian:
                     if motorolaBitFormat == "msb":
@@ -84,7 +83,7 @@ def dump(db, f, **options):
                 else:
                     startBit = signal.get_startbit(bit_numbering=1, start_little=True)
 
-                signals.append({
+                symbolic_signals.append({
                     "name": signal.name,
                     "start_bit": startBit,
                     "bit_length": signal.size,
@@ -97,7 +96,7 @@ def dump(db, f, **options):
             symbolic_frame = {"name": frame.name,
                               "id": int(frame.arbitration_id.id),
                               "is_extended_frame": frame.arbitration_id.extended,
-                              "signals": signals}
+                              "signals": symbolic_signals}
             frame_attributes = {}
             for frame_info in additionalFrameColums:  # Look for additional Frame Attributes
                 if frame.attribute(frame_info) is not None:  # does the attribute exist? None value isn't exported.
@@ -110,7 +109,7 @@ def dump(db, f, **options):
             frameattribs = {}
             for attribute in db.frame_defines:
                 frameattribs[attribute] = frame.attribute(attribute, db=db)
-            signals = []
+            symbolic_signals = []
             for signal in frame.signals:
                 attribs = {}
                 for attribute in db.signal_defines:
@@ -149,14 +148,14 @@ def dump(db, f, **options):
                     signalDict["multiplex"] = signal.multiplex
                 if signal.unit:
                     signalDict["unit"] = signal.unit
-                signals.append(signalDict)
+                symbolic_signals.append(signalDict)
 
 
             exportArray.append(
                 {"name": frame.name,
                  "id": int(frame.arbitration_id.id),
                  "is_extended_frame": frame.arbitration_id.extended,
-                 "signals": signals,
+                 "signals": symbolic_signals,
                  "attributes": frameattribs,
                  "comment": frame.comment,
                  "length": frame.size})
@@ -177,6 +176,8 @@ def dump(db, f, **options):
 
 
 def load(f, **options):
+    # type: (typing.BinaryIO, **str) -> canmatrix.CanMatrix
+
     db = canmatrix.CanMatrix()
 
     if (sys.version_info > (3, 0)):
@@ -187,7 +188,7 @@ def load(f, **options):
 
     if "messages" in jsonData:
         for frame in jsonData["messages"]:
-            #            newframe = Frame(frame["id"],frame["name"],8,None)
+            # newframe = Frame(frame["id"],frame["name"],8,None)
             newframe = canmatrix.Frame(frame["name"],
                                    arbitration_id=frame["id"],
                              size=8)
@@ -235,7 +236,7 @@ def load(f, **options):
                 if signal.get("values", False):
                     for key in signal["values"]:
                         newsignal.add_values(key, signal["values"][key])
-                if newsignal.is_little_endian == False:
+                if newsignal.is_little_endian is False:
                     newsignal.set_startbit(
                         newsignal.start_bit, bitNumbering=1, startLittle=True)
                 newframe.add_signal(newsignal)

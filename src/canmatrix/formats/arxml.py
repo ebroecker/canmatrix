@@ -25,55 +25,57 @@
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 # currently Support for Autosar 3.2 and 4.0-4.3 is planned
 
-
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import absolute_import
-import canmatrix.utils
-import logging
 
+import decimal
+import logging
+import typing
 from builtins import *
+
 from lxml import etree
 
 import canmatrix
-import decimal
+import canmatrix.utils
 
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
-
 
 clusterExporter = 1
 clusterImporter = 1
 
 
 def createSubElement(parent, elementName, strName=None):
+    # type: (etree._Element, str, str) -> etree._Element
     sn = etree.SubElement(parent, elementName)
     if strName is not None:
         sn.text = str(strName)
     return sn
 
 def getBaseTypeOfSignal(signal):
+    # type: (canmatrix.Signal) -> typing.Tuple[str, int]
     if signal.is_float:
-        if signal.signalsize > 32:
+        if signal.size > 32:
             createType = "double"
             size = 64
         else:
             createType = "single"
             size = 32
     else:
-        if signal.signalsize > 32:
+        if signal.size > 32:
             if signal.is_signed:
                 createType = "sint64"
             else:
                 createType = "uint64"
             size = 64                            
-        elif signal.signalsize > 16:
+        elif signal.size > 16:
             if signal.is_signed:
                 createType = "sint32"
             else:
                 createType = "uint32"
             size = 32                            
-        elif signal.signalsize > 8:
+        elif signal.size > 8:
             if signal.is_signed:
                 createType = "sint16"
             else:
@@ -89,6 +91,7 @@ def getBaseTypeOfSignal(signal):
 
 
 def dump(dbs, f, **options):
+    # type: (canmatrix.cancluster.CanCluster, typing.BinaryIO, **str) -> None
     arVersion = options.get("arVersion", "3.2.3")
 
     for name in dbs:
@@ -571,7 +574,7 @@ def dump(dbs, f, **options):
                     compuMethodRef.set('DEST', 'COMPU-METHOD')
                     compuMethodRef.text = "/DataType/Semantics/" + signal.name
     else:
-        createdTypes = []
+        createdTypes = []  # type: typing.List[str]
         for name in dbs:
             db = dbs[name]
             for frame in db.frames:
@@ -651,8 +654,8 @@ def dump(dbs, f, **options):
                 createSubElement(unit, 'SHORT-NAME', signal.name)
                 createSubElement(unit, 'DISPLAY-NAME', signal.unit)
 
-    txIPduGroups = {}
-    rxIPduGroups = {}
+    txIPduGroups = {}  # type: typing.Dict[str, typing.List[str]]
+    rxIPduGroups = {}  # type: typing.Dict[str, typing.List[str]]
 
     #
     # AR-PACKAGE ECU
@@ -834,7 +837,7 @@ class arTree(object):
     def __init__(self, name="", ref=None):
         self._name = name
         self._ref = ref
-        self._array = []
+        self._array = []  # type: typing.List[arTree]
     def new(self, name, child):
         temp = arTree(name, child)
         self._array.append(temp)
@@ -844,7 +847,9 @@ class arTree(object):
             if tem._name == path:
                 return tem
 
+
 def arParseTree(tag, ardict, namespace):
+    # type: (etree._Element, arTree, str) -> None
     for child in tag:
         name = child.find('./' + namespace + 'SHORT-NAME')
 #               namel = child.find('./' + namespace + 'LONG-NAME')
@@ -854,9 +859,8 @@ def arParseTree(tag, ardict, namespace):
             arParseTree(child, ardict, namespace)
 
 
-
-
 def arGetXchildren(root, path, arDict, ns):
+    # type: (etree._Element, str, arTree, str) -> typing.Sequence[etree._Element]
     pathElements = path.split('/')
     ptr = root
     for element in pathElements[:-1]:
@@ -870,20 +874,22 @@ def arGetXchildren(root, path, arDict, ns):
 
 
 def arPath2xPath(arPath, destElement=None):
+    # type: (str, typing.Optional[str]) -> str
     arPathElements = arPath.strip('/').split('/')
     xpath = "."
 
     for element in arPathElements[:-1]:
         xpath += "//A:SHORT-NAME[text()='" + element + "']/.."
     if destElement:
-        xpath +=  "//A:" + destType + "/A:SHORT-NAME[text()='" + arPathElements[-1] + "']/.."
+        xpath += "//A:" + destElement + "/A:SHORT-NAME[text()='" + arPathElements[-1] + "']/.."
     else:
-        xpath +=  "//A:SHORT-NAME[text()='" + arPathElements[-1] + "']/.."
+        xpath += "//A:SHORT-NAME[text()='" + arPathElements[-1] + "']/.."
 
     return xpath
 
 
-ArCache = dict()
+ArCache = dict()  # type: typing.Dict[str, etree._Element]
+
 
 def getArPath(tree, arPath, namespaces):
     global ArCache
@@ -900,6 +906,7 @@ def getArPath(tree, arPath, namespaces):
 
 
 def arGetPath(ardict, path):
+    # type: (arTree, str) -> typing.Optional[etree._Element]
     ptr = ardict
     for p in path.split('/'):
         if p.strip():
@@ -917,14 +924,15 @@ def arGetPath(ardict, path):
 
 
 def arGetChild(parent, tagname, xmlRoot, namespace):
-    #    logger.debug("getChild: " + tagname)
+    # type: (etree._Element, str, etree._Element, str) -> typing.Optional[etree._Element]
+    # logger.debug("getChild: " + tagname)
     if parent is None:
         return None
     ret = parent.find('.//' + namespace + tagname)
     if ret is None:
         ret = parent.find('.//' + namespace + tagname + '-REF')
         if ret is not None:
-            if isinstance(xmlRoot, type(arTree())):
+            if isinstance(xmlRoot, arTree):
                 ret = arGetPath(xmlRoot, ret.text)
             else:
                 ret = getArPath(xmlRoot, ret.text, namespace)
@@ -945,6 +953,7 @@ def arGetChildren(parent, tagname, arTranslationTable, namespace):
 
 
 def arGetName(parent, ns):
+    # type: (etree._Element, str) -> str
     name = parent.find('./' + ns + 'SHORT-NAME')
     if name is not None:
         if name.text is not None:
@@ -1062,7 +1071,7 @@ def get_signals(signalarray, frame, xmlRoot, ns, multiplex_id, float_factory):
 
         Min = None
         Max = None
-        receiver = []
+        receiver = []  # type: typing.List[str]
 
         signalDescription = get_desc(syssignal, xmlRoot, ns)
 
@@ -1153,12 +1162,12 @@ def get_signals(signalarray, frame, xmlRoot, ns, multiplex_id, float_factory):
               if l4 is not None:
                 Unit = l4.text
 
-        initvalue = arGetXchildren(syssignal, "INIT-VALUE/VALUE", xmlRoot, ns)
+        init_list = arGetXchildren(syssignal, "INIT-VALUE/VALUE", xmlRoot, ns)
 
-        if initvalue is None or initvalue.__len__() == 0:
-            initvalue = arGetXchildren(isignal, "INIT-VALUE/NUMERICAL-VALUE-SPECIFICATION/VALUE", xmlRoot, ns) ##AR4.2
-        if initvalue is not None and initvalue.__len__() >= 1:
-            initvalue = initvalue[0]
+        if not init_list:
+            init_list = arGetXchildren(isignal, "INIT-VALUE/NUMERICAL-VALUE-SPECIFICATION/VALUE", xmlRoot, ns)  # #AR4.2
+        if init_list:
+            initvalue = init_list[0]
         else:
             initvalue = None
 
@@ -1236,7 +1245,7 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
         return None
     arbitration_id = int(idele.text)
 
-    if None != frameR:
+    if frameR is not None:
         dlc = arGetChild(frameR, "FRAME-LENGTH", xmlRoot, ns)
         pdumappings = arGetChild(frameR, "PDU-TO-FRAME-MAPPINGS", xmlRoot, ns)
         pdumapping = arGetChild(pdumappings, "PDU-TO-FRAME-MAPPING", xmlRoot, ns)
@@ -1260,7 +1269,7 @@ def get_frame(frameTriggering, xmlRoot, multiplexTranslation, ns, float_factory)
         if pdu is None:
             pdu = arGetChild(ipduTriggering, "I-SIGNAL-I-PDU", xmlRoot, ns) ## AR4.2
         dlc = arGetChild(pdu, "LENGTH", xmlRoot, ns)
-        new_frame = canmatrix.Frame(sn.text,id=arbitration_id,dlc=int(dlc.text) / 8)
+        new_frame = canmatrix.Frame(sn.text, arbitration_id=arbitration_id, size=int(int(dlc.text) / 8))
 
     if pdu is None:
         logger.error("ERROR: pdu")
@@ -1543,7 +1552,10 @@ def extract_cm_from_ecuc(com_module, search_point, ns):
     db.recalc_dlc(strategy = "max")
     return {"": db}
 
+
 def load(file, **options):
+    # type: (typing.BinaryIO, **str) -> typing.Dict[str, canmatrix.CanMatrix]
+
     global ArCache
     ArCache = dict()
     global pduFrameMapping
@@ -1568,7 +1580,7 @@ def load(file, **options):
 
     topLevelPackages = root.find('./' + ns + 'TOP-LEVEL-PACKAGES')
 
-    if None == topLevelPackages:
+    if topLevelPackages is None:
         # no "TOP-LEVEL-PACKAGES found, try root
         topLevelPackages = root
 
@@ -1662,13 +1674,13 @@ def load(file, **options):
                     "%d frames found in arxml\n" %
                     (canframetrig.__len__()))
 
-        multiplexTranslation = {}
-        for frameTrig in canframetrig:
+        multiplexTranslation = {}  # type: typing.Dict[str, str]
+        for frameTrig in canframetrig:  # type: etree._Element
             frameObject = get_frame(frameTrig, searchPoint, multiplexTranslation, ns, float_factory)
             if frameObject is not None:
                 db.add_frame(frameObject)
                 
-        if ignoreClusterInfo == True:
+        if ignoreClusterInfo is True:
             pass
             # no support for signal direction
         else:
@@ -1697,7 +1709,7 @@ def load(file, **options):
                         # port points in ECU; probably more stable to go up
                         # from each ECU than to go down in XML...
                         if sysSignal in signalRxs:
-                            if ecuName not in signalRxs[sysSignal].receiver:
+                            if ecuName not in signalRxs[sysSignal].receivers:
                                 signalRxs[sysSignal].receivers.append(ecuName)
     # find ECUs:
         nodes = root.findall('.//' + ns + 'ECU-INSTANCE')
