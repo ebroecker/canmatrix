@@ -2,12 +2,12 @@
 
 import typing
 
-import canmatrix.canmatrix as cm
+import canmatrix
 import canmatrix.formats
 
 
 def list_pgn(db):
-    # type: (cm.CanMatrix) -> typing.Tuple[typing.List[int], typing.List[cm.ArbitrationId]]
+    # type: (canmatrix.CanMatrix) -> typing.Tuple[typing.List[int], typing.List[canmatrix.ArbitrationId]]
     """
     Get all PGN values for given frame.
 
@@ -15,12 +15,12 @@ def list_pgn(db):
     :return: tuple of [pgn] and [arbitration_id]
     """
     id_list = [x.arbitration_id for x in db.frames]
-    pgn_list = [cm.CanId(arb_id).pgn for arb_id in id_list]
+    pgn_list = [canmatrix.CanId(arb_id).pgn for arb_id in id_list]
     return pgn_list, id_list
 
 
 def ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y):
-    # type: (typing.Sequence[cm.ArbitrationId], typing.Sequence[int], typing.Sequence[cm.ArbitrationId], typing.Sequence[int]) -> typing.Iterable[typing.Tuple[cm.ArbitrationId, cm.ArbitrationId]]
+    # type: (typing.Sequence[canmatrix.ArbitrationId], typing.Sequence[int], typing.Sequence[canmatrix.ArbitrationId], typing.Sequence[int]) -> typing.Iterable[typing.Tuple[canmatrix.ArbitrationId, canmatrix.ArbitrationId]]
     """Yield arbitration ids which has the same pgn."""
     for id_a, pgn_a in zip(id_x, pgn_x):
         for id_b, pgn_b in zip(id_y, pgn_y):
@@ -28,13 +28,13 @@ def ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y):
                 yield (id_a, id_b)
 
 
-def join_frame_by_signal_start_bit(files):  # type: (typing.List[str]) -> cm.CanMatrix
-    target_db = next(iter(canmatrix.formats.loadp(files.pop(0)).values()))  # type: cm.CanMatrix
+def join_frame_by_signal_start_bit(files):  # type: (typing.List[str]) -> canmatrix.CanMatrix
+    target_db = next(iter(canmatrix.formats.loadp(files.pop(0)).values()))  # type: canmatrix.CanMatrix
 
     pgn_x, id_x = list_pgn(db=target_db)
 
     for f in files:
-        source_db = next(iter(canmatrix.formats.loadp(f).values()))  # type: cm.CanMatrix
+        source_db = next(iter(canmatrix.formats.loadp(f).values()))  # type: canmatrix.CanMatrix
         pgn_y, id_y = list_pgn(db=source_db)
 
         same_pgn = ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y)
@@ -44,7 +44,7 @@ def join_frame_by_signal_start_bit(files):  # type: (typing.List[str]) -> cm.Can
             target_fr = target_db.frame_by_id(id_a)
             source_fr = source_db.frame_by_id(id_b)
 
-            signal_to_add = []  # type: typing.List[cm.Signal]
+            signal_to_add = []  # type: typing.List[canmatrix.Signal]
             for sig_t in target_fr.signals:
                 for sig_s in source_fr.signals:
                     # print(sig.name)
@@ -56,9 +56,9 @@ def join_frame_by_signal_start_bit(files):  # type: (typing.List[str]) -> cm.Can
     return target_db
 
 
-def rename_frame_with_id(source_db):  # type: (cm.CanMatrix) -> None
+def rename_frame_with_id(source_db):  # type: (canmatrix.CanMatrix) -> None
     for frameSc in source_db.frames:
-        _, pgn, sa = cm.CanId(frameSc.arbitration_id).tuples()
+        _, pgn, sa = canmatrix.CanId(frameSc.arbitration_id).tuples()
 
         extension = "__{pgn:#04X}_{sa:#02X}_{sa:03d}d".format(pgn=pgn, sa=sa)
         new_name = frameSc.name + extension
@@ -66,7 +66,7 @@ def rename_frame_with_id(source_db):  # type: (cm.CanMatrix) -> None
         frameSc.name = new_name
 
 
-def rename_frame_with_sae_acronym(source_db, target_db):  # type: (cm.CanMatrix, cm.CanMatrix) -> None
+def rename_frame_with_sae_acronym(source_db, target_db):  # type: (canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
     pgn_x, id_x = list_pgn(db=target_db)
     pgn_y, id_y = list_pgn(db=source_db)
     same_pgn = ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y)
@@ -79,7 +79,7 @@ def rename_frame_with_sae_acronym(source_db, target_db):  # type: (cm.CanMatrix,
         target_fr.name = new_name
 
 
-def join_frame_for_manufacturer(db, files):  # type: (cm.CanMatrix, typing.Sequence[str]) -> None
+def join_frame_for_manufacturer(db, files):  # type: (canmatrix.CanMatrix, typing.Sequence[str]) -> None
     # target_db = next(iter(im.importany(files.pop(0)).values()))
 
     pgn_x, id_x = list_pgn(db=db)
@@ -95,7 +95,7 @@ def join_frame_for_manufacturer(db, files):  # type: (cm.CanMatrix, typing.Seque
             target_fr = db.frame_by_id(idx)
             source_fr = source_db.frame_by_id(idy)
 
-            _, pgn, sa = cm.CanId(target_fr.arbitration_id).tuples()
+            _, pgn, sa = canmatrix.CanId(target_fr.arbitration_id).tuples()
             if sa < 128:
                 print('less', target_fr.name)
                 to_add = []
