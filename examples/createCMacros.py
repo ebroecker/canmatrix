@@ -165,7 +165,7 @@ def main():
         ecuList = cmdlineOptions.exportecu.split(',')
         for frame in db.frames:
             for ecu in ecuList:
-                if ecu in frame.transmitter:
+                if ecu in frame.transmitters:
                     sourceCode += createStoreMacrosForFrame(
                         frame, "_" + frame.name + "_")
                 for signal in frame.signals:

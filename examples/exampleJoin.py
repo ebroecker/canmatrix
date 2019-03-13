@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import canmatrix.exportall as ex
+import canmatrix.formats
 from canmatrix.join import join_frame_by_signal_startbit
 
 files = ["../test/db_B.dbc", "../test/db_A.dbc"]
@@ -10,5 +10,5 @@ target = join_frame_by_signal_startbit(files)
 #
 # export the new (target)-Matrix for example as .dbc:
 #
-ex.exportDbc(target, "target.dbc")
-ex.exportXlsx(target, "target.xlsx")
+canmatrix.formats.dumpp(target, "target.dbc")
+canmatrix.formats.dumpp(target, "target.xlsx")

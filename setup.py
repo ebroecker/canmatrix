@@ -50,13 +50,14 @@ Topic :: Scientific/Engineering
 
 import sys
 from setuptools import setup, find_packages
-from canmatrix.version import version
+import versioneer
 
 doclines = __doc__.split("\n")
 
 setup(
     name = "canmatrix",
-    version = version,
+    version = versioneer.get_version(),
+    cmdclass = versioneer.get_cmdclass(),
     maintainer = "Eduard Broecker",
     maintainer_email = "eduard at gmx dot de",
     url = "http://github.com/ebroecker/canmatrix",
@@ -66,7 +67,7 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-    install_requires = ["future"],
+    install_requires = ["future", "attrs>=18.1.0", "bitstruct", "pathlib2"],
     extras_require = {
         "arxml": ["lxml"],
         "kcd": ["lxml"],
@@ -77,10 +78,13 @@ setup(
         "dbc": [],
         "dbf": [],
         "json": [],
-        "sym": []
+        "sym": [],
+        "test": ["coverage", "pytest", "pytest-cov", "tox"],
     },
 
-    packages = find_packages(),
+    packages = find_packages("src"),
+    package_dir = {"": "src"},
+    package_data = {"canmatrix" : ["tests/*.dbc"]},
     entry_points={'console_scripts': ['cancompare = canmatrix.compare:main',
                                       'canconvert = canmatrix.convert:main']}
 )

@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/ebroecker/canmatrix.svg?branch=master)](https://travis-ci.org/ebroecker/canmatrix)
+[![Build Status](https://travis-ci.org/ebroecker/canmatrix.svg?branch=development)](https://travis-ci.org/ebroecker/canmatrix)
 
-## **Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats.##
+## **Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats. ##
 
 ### About
 
@@ -32,11 +32,18 @@ supported file formats for export:
 ***
 
 ### Install instructions
+[Chinese Translation / 安装中文方法解释及注意事项](https://github.com/ebroecker/canmatrix/wiki/%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E6%96%B9%E6%B3%95%E8%A7%A3%E9%87%8A%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
+
 Install *canmatrix* with either "pip install canmatrix" or  "python setup.py install" and "pip install -r requirements.txt"
 
 This installs the *canmatrix* package into your python installation.
 
 In addition to the *canmatrix* package there are 2 scripts installed with this package:
+
+
+for additional formats [arxml, kcd, fibex, xls, xlsx] use syntax like:
+`pip install git+https://github.com/ebroecker/canmatrix#egg=canmatrix[kcd]`
+
 
 1. **canconvert**: 
 
@@ -206,6 +213,18 @@ this will remove signales ```mySignal``` and ```mySignal2``` in ```source.dbc```
 this will load ```source.dbc``` and rename signals ```mySignal``` in ```myNewSignal```  and ```mySignal2``` in ```myNewSignal2```.
 The result is stored in ```target.dlc```.
 
+**canFD:**
+
+```canconvert.py --setFrameFd=myFrame,myFrame2 source.dbc target.dbc```
+
+this will set frame-type of  ```myFrame``` and ```myFrame2``` in ```source.dbc``` to CANFD and store the result in ```target.dlc```
+                        list) Syntax: --setFrameFd=myFrame1,mySecondFrame
+
+```canconvert.py --unsetFrameFd=myFrame,myFrame2 source.dbc target.dbc```
+
+this will set frame-type of  ```myFrame``` and ```myFrame2``` in ```source.dbc``` to normal (not FD) and store the result in ```target.dlc```
+                        list) Syntax: --unsetFrameFd=myFrame1,mySecondFrame
+
 
 #### Extract and Merge:
 
@@ -366,6 +385,12 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
   
                         Excel format for startbit of motorola coded signals. Valid values: msb, lsb, msbreverse default msbreverse. [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
 
+* csv:
+
+  --csvAdditionalSignalAttributes
+                        append additional signal-collums to csv, example:
+                        is_signed,attributes["GenSigStartValue"]
+  
 
  
 * arxml:
@@ -382,6 +407,10 @@ Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ```second.dbc``` with
  
                         Export Canard compatible json format
 	
+ --jsonMotorolaBitFormat
+  
+                        Json format for startbit of motorola coded signals. Valid values: msb, lsb, msbreverse default lsb. [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
+
 * kdc
 * csv
 

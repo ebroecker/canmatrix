@@ -1,0 +1,58 @@
+VERSION "created by canmatrix"
+
+
+NS_ : 
+
+
+BS_:
+
+BU_: CCL_TEST TEST_ECU
+
+
+BO_ 4 muxTestFrame: 7 TEST_ECU
+ SG_ myMuxer M : 53|3@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ muxSig4 m0 : 25|7@1- (1,0) [0|0] ""  CCL_TEST
+ SG_ muxSig3 m0 : 16|9@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ muxSig2 m0 : 15|8@0- (1,0) [0|0] ""  CCL_TEST
+ SG_ muxSig1 m0 : 0|8@1- (1,0) [0|0] ""  CCL_TEST
+ SG_ muxSig5 m1 : 22|7@1- (1,0) [0|0] ""  CCL_TEST
+ SG_ muxSig6 m1 : 32|9@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ muxSig7 m1 : 2|8@0- (1,0) [0|0] ""  CCL_TEST
+ SG_ muxSig8 m1 : 0|6@1- (1,0) [0|0] ""  CCL_TEST
+ SG_ muxSig9 : 40|8@1- (1,0) [0|0] ""  CCL_TEST
+
+BO_ 3 testFrameFloat: 8 TEST_ECU
+ SG_ floatSignal2 : 32|32@1- (1,0) [0|0] ""  CCL_TEST
+ SG_ floatSignal1 : 7|32@0- (1,0) [0|0] ""  CCL_TEST
+
+BO_ 1 testFrame1: 8 TEST_ECU
+ SG_ sig0 : 1|2@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig1 : 7|6@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig2 : 15|11@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig3 : 20|12@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig4 : 24|9@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig5 : 50|3@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig6 : 53|3@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig7 : 47|10@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig8 : 58|3@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig9 : 61|3@0+ (1,0) [0|0] ""  CCL_TEST
+ SG_ sig10 : 63|2@0+ (1,0) [0|0] ""  CCL_TEST
+
+BO_ 2 testFrame2: 8 TEST_ECU
+ SG_ secSig1 : 60|2@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig2 : 55|1@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig3 : 20|4@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig4 : 62|2@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig5 : 34|3@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig6 : 37|3@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig7 : 59|1@1- (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig8 : 56|3@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig9 : 52|3@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig10 : 8|12@1+ (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig11 : 24|10@1- (1,0) [0|0] ""  CCL_TEST
+ SG_ secSig12 : 0|8@1+ (1,0) [0|0] ""  CCL_TEST
+
+
+
+SIG_VALTYPE_ 3 floatSignal2 : 1;
+SIG_VALTYPE_ 3 floatSignal1 : 1;

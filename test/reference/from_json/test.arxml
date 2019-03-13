@@ -27,7 +27,7 @@
                   <I-PDU-TRIGGERING-REFS>
                     <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/IPDUTRIGG_extendedFrame</I-PDU-TRIGGERING-REF>
                   </I-PDU-TRIGGERING-REFS>
-                  <CAN-ADDRESSING-MODE>STANDARD</CAN-ADDRESSING-MODE>
+                  <CAN-ADDRESSING-MODE>EXTENDED</CAN-ADDRESSING-MODE>
                   <IDENTIFIER>18</IDENTIFIER>
                 </CAN-FRAME-TRIGGERING>
               </FRAME-TRIGGERINGSS>
@@ -206,11 +206,11 @@
           <ELEMENTS>
             <UNIT>
               <SHORT-NAME>someTestSignal</SHORT-NAME>
-              <DISPLAY-NAME></DISPLAY-NAME>
+              <DISPLAY-NAME>specialCharUnit&#176;$</DISPLAY-NAME>
             </UNIT>
             <UNIT>
               <SHORT-NAME>Signal</SHORT-NAME>
-              <DISPLAY-NAME></DISPLAY-NAME>
+              <DISPLAY-NAME>someUnit</DISPLAY-NAME>
             </UNIT>
           </ELEMENTS>
         </AR-PACKAGE>

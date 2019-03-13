@@ -1,0 +1,2 @@
+include versioneer.py
+include canmatrix/_version.py
