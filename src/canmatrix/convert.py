@@ -203,7 +203,7 @@ def convert(infile, outfileName, **options):
 
 
 def main():
-    setup_logger()
+    logger = setup_logger()
     from optparse import OptionParser
 
     usage = """
@@ -234,7 +234,7 @@ def main():
         dest="verbosity",
         action="count",
         help="Output verbosity",
-        default=0)
+        default=1)
     parser.add_option(
         "-s",
         dest="silent",

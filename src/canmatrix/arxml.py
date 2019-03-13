@@ -1209,7 +1209,7 @@ def getSignals(signalarray, Bo, xmlRoot, ns, multiplexId, float_factory):
 
             if initvalue is not None and initvalue.text is not None:
                 initvalue.text = canmatrix.utils.guess_value(initvalue.text)
-                newSig._initValue = int(initvalue.text)
+                newSig._initValue = int(float(initvalue.text))
                 newSig.addAttribute("GenSigStartValue", str(newSig._initValue))
             else:
                 newSig._initValue = 0
