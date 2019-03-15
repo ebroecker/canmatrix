@@ -2,5 +2,5 @@
 import sys
 sys.path.append('..')
 
-import canmatrix.compare
-canmatrix.compare.main()
+import canmatrix.cli.compare
+canmatrix.cli.compare.main()

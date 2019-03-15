@@ -7,7 +7,7 @@ from __future__ import absolute_import
 import sys
 sys.path.append('../src')
 
-import canmatrix.convert
+import canmatrix.cli.convert
 import canmatrix.formats
 import copy
 import os
@@ -82,7 +82,7 @@ for i in import_types:
                 # 'converted/from_arxml'
                 pass
             out_file = os.path.join(directory, out_file)
-            canmatrix.convert.convert(in_file, out_file)
+            canmatrix.cli.convert.convert(in_file, out_file)
 
 exit_code = subprocess.call(['diff', '-r', 'reference', 'converted'])
 
