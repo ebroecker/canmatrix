@@ -8,7 +8,6 @@ __version__ = canmatrix._version.get_versions()['version']
 
 import canmatrix.formats as formats
 import canmatrix.cancluster as cancluster
-import canmatrix.cli.convert as convert
 from canmatrix.canmatrix import *
 
 # Set default logging handler to avoid "No handler found" warnings in python 2.
