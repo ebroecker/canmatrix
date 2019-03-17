@@ -227,3 +227,15 @@ def test_braces_in_attributes():
     BA_ "Signal Age [ms]" SG_ 20 sometext 5000;
      ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+
+def test_defines_with_spaces():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    BU_: someOtherEcu
+
+    BA_DEF_ BU_ "Node Address" INT 0 255;
+    BA_ "Node Address" BU_ someOtherEcu 42;
+     ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.ecu_defines["Node Address"].type == "INT"
+    assert matrix.ecu_defines["Node Address"].min == 0
+    assert matrix.ecu_defines["Node Address"].max == 255
