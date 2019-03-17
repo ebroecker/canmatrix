@@ -761,7 +761,7 @@ def load(f, **options):
                 substring = decoded[7:].strip()
                 define_type = substring[:3]
                 substring = substring[3:].strip()
-                pattern = r"^\"([A-Za-z0-9\-_]+)\" +(.+);"
+                pattern = r"^\"([A-Za-z0-9\-_\ ]+)\" +(.+);"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(substring)
