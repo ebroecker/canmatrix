@@ -217,3 +217,13 @@ def test_export_of_unknown_defines():
             assert line.endswith("STRING;")
         if line.startswith("BA_ "):
             assert line.endswith('";')
+
+def test_braces_in_attributes():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    BO_ 20 frameName: 1 someEcu
+    SG_ sometext: 1|2@0+ (1,0) [0|0] ""  someOtherEcu
+    
+    BA_ "Period [ms]" BO_ 20 3000;
+    BA_ "Signal Age [ms]" SG_ 20 sometext 5000;
+     ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
