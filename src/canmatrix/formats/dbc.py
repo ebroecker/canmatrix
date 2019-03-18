@@ -471,8 +471,8 @@ def load(f, **options):
         l = line.strip()
         if l.__len__() == 0:
             continue
-        #try:
-        if 1==1:
+        try:
+        #if 1==1:
             if followUp == FollowUps.signalComment:
                 try:
                     comment += "\n" + \
@@ -885,8 +885,8 @@ def load(f, **options):
                               "accessType" : accessType, "accessNodes" : accessNodes})
 
 
-        else:
-#        except:
+#        else:
+        except:
             print ("error with line no: %d" % i)
             print (line)
 # Backtracking
