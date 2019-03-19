@@ -243,6 +243,6 @@ def test_defines_with_spaces():
     assert matrix.ecu_defines["Node Address"].min == 0
     assert matrix.ecu_defines["Node Address"].max == 255
     assert matrix.frame_defines["Period [ms]"].min == 0
-    assert matrix.frame_defines["Period [ms]"].max == 3000
-
+    assert matrix.frame_defines["Period [ms]"].max == 5000
+    assert matrix.frames[0].attributes["Period [ms]"] == '3000'
 
