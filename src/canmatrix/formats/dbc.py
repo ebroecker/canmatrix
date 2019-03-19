@@ -797,7 +797,7 @@ def load(f, **options):
                     get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).add_attribute(
                         temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("SG_ "):
-                    regexp = re.compile(r"^BA_ +\"(.*)\" +SG_ +(\w+) +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.*)\" +SG_ +(.+) +(.+) +(.+);")
                     temp = regexp.match(decoded)
                     if temp != None:
                         get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).signal_by_name(
@@ -808,7 +808,7 @@ def load(f, **options):
                     if temp != None:
                         db.add_env_attribute(temp.group(2),temp.group(1),temp.group(3))
                 elif tempba.group(1).strip().startswith("BU_ "):
-                    regexp = re.compile(r"^BA_ +\"(.*)\" +BU_ +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.*)\" +BU_ +(.+) +(.+);")
                     temp = regexp.match(decoded)
                     db.ecu_by_name(
                         temp.group(2)).add_attribute(
@@ -839,7 +839,7 @@ def load(f, **options):
     #                SIG_VALTYPE_ 0 float : 1;
 
             elif decoded.startswith("BA_DEF_DEF_ "):
-                pattern = r"^BA_DEF_DEF_ +\"([\w\-\.]+)\" +(.+)\;"
+                pattern = r"^BA_DEF_DEF_ +\"(.+)\" +(.+)\;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
