@@ -223,7 +223,6 @@ def test_braces_in_attributes():
     BO_ 20 frameName: 1 someEcu
     SG_ sometext: 1|2@0+ (1,0) [0|0] ""  someOtherEcu
     
-    BA_ "Period [ms]" BO_ 20 3000;
     BA_ "Signal Age [ms]" SG_ 20 sometext 5000;
      ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
@@ -232,10 +231,18 @@ def test_defines_with_spaces():
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BU_: someOtherEcu
 
+    BO_ 123 someFrame: 1 someOtherEcu
+
     BA_DEF_ BU_ "Node Address" INT 0 255;
+    BA_DEF_ BO_ "Period [ms]" INT 0 5000;
     BA_ "Node Address" BU_ someOtherEcu 42;
+    BA_ "Period [ms]" BO_ 123 3000;
      ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.ecu_defines["Node Address"].type == "INT"
     assert matrix.ecu_defines["Node Address"].min == 0
     assert matrix.ecu_defines["Node Address"].max == 255
+    assert matrix.frame_defines["Period [ms]"].min == 0
+    assert matrix.frame_defines["Period [ms]"].max == 3000
+
+
