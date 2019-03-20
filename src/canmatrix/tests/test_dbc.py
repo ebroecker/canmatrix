@@ -233,10 +233,14 @@ def test_defines_with_spaces():
 
     BO_ 123 someFrame: 1 someOtherEcu
 
+    EV_ someEnvVar: 0 [0|0] "" 0 2 DUMMY_NODE_VECTOR0 Vector__XXX;
+
     BA_DEF_ BU_ "Node Address" INT 0 255;
     BA_DEF_ BO_ "Period [ms]" INT 0 5000;
+    BA_DEF_ EV_ "some attrib" STRING;
     BA_ "Node Address" BU_ someOtherEcu 42;
     BA_ "Period [ms]" BO_ 123 3000;
+    BA_ "some attrib" EV_ someEnvVar "some space";
      ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.ecu_defines["Node Address"].type == "INT"
@@ -245,4 +249,17 @@ def test_defines_with_spaces():
     assert matrix.frame_defines["Period [ms]"].min == 0
     assert matrix.frame_defines["Period [ms]"].max == 5000
     assert matrix.frames[0].attributes["Period [ms]"] == '3000'
+    assert matrix.env_vars["someEnvVar"]["attributes"]["some attrib"] == '"some space"'
 
+def test_defines_with_special_cars():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    BU_: someOtherEcu
+
+    BO_ 123 someFrame: 1 someOtherEcu
+     SG_ someSignal: 1|2@0+ (1,0) [0|0] ""  CCL_TEST
+
+    BA_DEF_ SG_ "Accuracy" STRING;
+    BA_ "Accuracy" SG_ 123 someSignal "+/- 10.2 at 55.1%";
+     ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.frames[0].signals[0].attributes["Accuracy"] == "+/- 10.2 at 55.1%"
