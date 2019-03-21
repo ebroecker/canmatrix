@@ -808,7 +808,7 @@ def load(f, **options):
                     if temp != None:
                         db.add_env_attribute(temp.group(2),temp.group(1),temp.group(3))
                 elif tempba.group(1).strip().startswith("BU_ "):
-                    regexp = re.compile(r"^BA_ +\"(.*)\" +BU_ +(.+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.*?)\" +BU_ +(\w+) +(.+);")
                     temp = regexp.match(decoded)
                     db.ecu_by_name(
                         temp.group(2)).add_attribute(
