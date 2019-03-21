@@ -237,8 +237,10 @@ def test_defines_with_spaces():
 
     BA_DEF_ BU_ "Node Address" INT 0 255;
     BA_DEF_ BO_ "Period [ms]" INT 0 5000;
+    BA_DEF_ BU_ "Description X" STRING;
     BA_DEF_ EV_ "some attrib" STRING;
     BA_ "Node Address" BU_ someOtherEcu 42;
+    BA_ "Description X" BU_ someOtherEcu "Some Some Text";
     BA_ "Period [ms]" BO_ 123 3000;
     BA_ "some attrib" EV_ someEnvVar "some space";
      ''').encode('utf-8'))
@@ -250,6 +252,8 @@ def test_defines_with_spaces():
     assert matrix.frame_defines["Period [ms]"].max == 5000
     assert matrix.frames[0].attributes["Period [ms]"] == '3000'
     assert matrix.env_vars["someEnvVar"]["attributes"]["some attrib"] == '"some space"'
+    assert matrix.ecus[0].attributes["Description X"] == "Some Some Text"
+
 
 def test_defines_with_special_cars():
     dbc = io.BytesIO(textwrap.dedent(u'''\
