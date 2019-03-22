@@ -426,8 +426,8 @@ def dump(mydb, f, **options):
     for frame in db.frames:
         if frame.is_complex_multiplexed:
             for signal in frame.signals:
-                if signal.muxerForSignal is not None:
-                    f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.arbitration_id.id, signal.name, signal.muxerForSignal, signal.muxValMin, signal.muxValMax)).encode(dbcExportEncoding))
+                if signal.muxer_for_signal is not None:
+                    f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.arbitration_id.id, signal.name, signal.muxer_for_signal, signal.mux_val_min, signal.mux_val_max)).encode(dbcExportEncoding))
 
     for envVarName in db.env_vars:
         envVar = db.env_vars[envVarName]
