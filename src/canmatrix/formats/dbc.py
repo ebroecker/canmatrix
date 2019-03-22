@@ -778,7 +778,7 @@ def load(f, **options):
                         db.add_env_defines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
 
             elif decoded.startswith("BA_DEF_ "):
-                pattern = r"^BA_DEF_ +\"(.+)\" +(.+);"
+                pattern = r"^BA_DEF_ +\"(.+?)\" +(.+);"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -788,22 +788,22 @@ def load(f, **options):
                                           temp_raw.group(2).decode(dbcImportEncoding))
 
             elif decoded.startswith("BA_ "):
-                regexp = re.compile(r"^BA_ +\".+\" +(.+)")
+                regexp = re.compile(r"^BA_ +\".+?\" +(.+)")
                 tempba = regexp.match(decoded)
 
                 if tempba.group(1).strip().startswith("BO_ "):
-                    regexp = re.compile(r"^BA_ +\"(.+)\" +BO_ +(\d+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +BO_ +(\d+) +(.+);")
                     temp = regexp.match(decoded)
                     get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).add_attribute(
                         temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("SG_ "):
-                    regexp = re.compile(r"^BA_ +\"(.+)\" +SG_ +(\d+) +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +SG_ +(\d+) +(\w+) +(.+);")
                     temp = regexp.match(decoded)
                     if temp != None:
                         get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).signal_by_name(
                             temp.group(3)).add_attribute(temp.group(1), temp.group(4))
                 elif tempba.group(1).strip().startswith("EV_ "):
-                    regexp = re.compile(r"^BA_ +\"(.+)\" +EV_ +(\w+) +(.*);")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +EV_ +(\w+) +(.*);")
                     temp = regexp.match(decoded)
                     if temp != None:
                         db.add_env_attribute(temp.group(2),temp.group(1),temp.group(3))
@@ -839,7 +839,7 @@ def load(f, **options):
     #                SIG_VALTYPE_ 0 float : 1;
 
             elif decoded.startswith("BA_DEF_DEF_ "):
-                pattern = r"^BA_DEF_DEF_ +\"(.+)\" +(.+)\;"
+                pattern = r"^BA_DEF_DEF_ +\"(.+?)\" +(.+?)\;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -867,7 +867,7 @@ def load(f, **options):
                         signal.mux_val_min = muxValMin
                         signal.mux_val_max = muxValMax
             elif decoded.startswith("EV_ "):
-                pattern = r"^EV_ +([\w\-\_]+) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*?)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([\w\-]+) +(.*);"
+                pattern = r"^EV_ +([\w\-\_]+?) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*?)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([\w\-]+?) +(.*);"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
 
