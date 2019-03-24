@@ -471,8 +471,8 @@ def load(f, **options):
         l = line.strip()
         if l.__len__() == 0:
             continue
-        #try:
-        if 1==1:
+        try:
+#        if 1==1:
             if followUp == FollowUps.signalComment:
                 try:
                     comment += "\n" + \
@@ -761,7 +761,7 @@ def load(f, **options):
                 substring = decoded[7:].strip()
                 define_type = substring[:3]
                 substring = substring[3:].strip()
-                pattern = r"^\"([A-Za-z0-9\-_]+)\" +(.+);"
+                pattern = r"^\"(.+?)\" +(.+);"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(substring)
@@ -778,7 +778,7 @@ def load(f, **options):
                         db.add_env_defines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
 
             elif decoded.startswith("BA_DEF_ "):
-                pattern = r"^BA_DEF_ +\"([A-Za-z0-9\-_]+)\" +(.+);"
+                pattern = r"^BA_DEF_ +\"(.+?)\" +(.+);"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -788,27 +788,27 @@ def load(f, **options):
                                           temp_raw.group(2).decode(dbcImportEncoding))
 
             elif decoded.startswith("BA_ "):
-                regexp = re.compile(r"^BA_ +\"[A-Za-z0-9[\-_ .]+\" +(.+)")
+                regexp = re.compile(r"^BA_ +\".+?\" +(.+)")
                 tempba = regexp.match(decoded)
 
                 if tempba.group(1).strip().startswith("BO_ "):
-                    regexp = re.compile(r"^BA_ +\"(.*)\" +BO_ +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +BO_ +(\d+) +(.+);")
                     temp = regexp.match(decoded)
                     get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).add_attribute(
                         temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("SG_ "):
-                    regexp = re.compile(r"^BA_ +\"(.*)\" +SG_ +(\w+) +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +SG_ +(\d+) +(\w+) +(.+);")
                     temp = regexp.match(decoded)
                     if temp != None:
                         get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).signal_by_name(
                             temp.group(3)).add_attribute(temp.group(1), temp.group(4))
                 elif tempba.group(1).strip().startswith("EV_ "):
-                    regexp = re.compile(r"^BA_ +\"(.*)\" +EV_ +(.+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +EV_ +(\w+) +(.*);")
                     temp = regexp.match(decoded)
                     if temp != None:
                         db.add_env_attribute(temp.group(2),temp.group(1),temp.group(3))
                 elif tempba.group(1).strip().startswith("BU_ "):
-                    regexp = re.compile(r"^BA_ +\"(.*)\" +BU_ +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.*?)\" +BU_ +(\w+) +(.+);")
                     temp = regexp.match(decoded)
                     db.ecu_by_name(
                         temp.group(2)).add_attribute(
@@ -816,7 +816,7 @@ def load(f, **options):
                         temp.group(3))
                 else:
                     regexp = re.compile(
-                        r"^BA_ +\"([A-Za-z0-9\-_]+)\" +([\"A-Za-z0-9\-_\.]+);")
+                        r"^BA_ +\"([A-Za-z0-9\-_]+)\" +([\"\w\-\.]+);")
                     temp = regexp.match(decoded)
                     if temp:
                         db.add_attribute(temp.group(1), temp.group(2))
@@ -839,7 +839,7 @@ def load(f, **options):
     #                SIG_VALTYPE_ 0 float : 1;
 
             elif decoded.startswith("BA_DEF_DEF_ "):
-                pattern = r"^BA_DEF_DEF_ +\"([A-Za-z0-9\-_\.]+)\" +(.+)\;"
+                pattern = r"^BA_DEF_DEF_ +\"(.+?)\" +(.+?)\;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -848,7 +848,7 @@ def load(f, **options):
                     db.add_define_default(temp.group(1),
                                           temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("SG_MUL_VAL_ "):
-                pattern = r"^SG_MUL_VAL_ +([0-9]+) +([A-Za-z0-9\-_]+) +([A-Za-z0-9\-_]+) +([0-9]+)\-([0-9]+) *;"
+                pattern = r"^SG_MUL_VAL_ +([0-9]+) +([\w\-]+) +([\w\-]+) +([0-9]+)\-([0-9]+) *;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
@@ -867,7 +867,7 @@ def load(f, **options):
                         signal.mux_val_min = muxValMin
                         signal.mux_val_max = muxValMax
             elif decoded.startswith("EV_ "):
-                pattern = r"^EV_ +([A-Za-z0-9\-_]+) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(\w*)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([A-Za-z0-9\-_]+) +(.*);"
+                pattern = r"^EV_ +([\w\-\_]+?) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*?)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([\w\-]+?) +(.*);"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
 
@@ -885,8 +885,8 @@ def load(f, **options):
                               "accessType" : accessType, "accessNodes" : accessNodes})
 
 
-        else:
-#        except:
+#        else:
+        except:
             print ("error with line no: %d" % i)
             print (line)
 # Backtracking
