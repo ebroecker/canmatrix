@@ -672,24 +672,22 @@ class Frame(object):
         """get possible multiplexer values."""
         multiplexer_values = []
         for sig in self.signals:
-            if sig.mux_val not in multiplexer_values:
+            if sig.mux_val not in multiplexer_values and sig.mux_val is not None:
                 multiplexer_values.append(sig.mux_val)
         return multiplexer_values
 
     def get_signals_for_multiplexer_value(self, mux_value):
         # type: (int) -> typing.Sequence[Signal]
         """Find Frame Signals by given muxer value.
-
         :param int mux_value: muxer value
         :return: list of signals relevant for given muxer value.
         :rtype: list of signals
         """
         muxed_signals = []
         for sig in self.signals:
-            if (sig.mux_val is None and not sig.is_multiplexer) or sig.mux_value == mux_value:
+            if (sig.mux_val is None and not sig.is_multiplexer) or sig.mux_val == mux_value:
                 muxed_signals.append(sig)
         return muxed_signals
-
 
     @property
     def pgn(self):  # type: () -> int
