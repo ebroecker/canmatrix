@@ -477,6 +477,55 @@ def test_frame_is_multiplexed():
     frame.add_signal(signal)
     assert frame.is_multiplexed
 
+def test_get_multiplexer():
+    frame = canmatrix.canmatrix.Frame(name="multiplexed_frame")
+    signal = canmatrix.canmatrix.Signal(name="mx")
+    signal.multiplex_setter("Multiplexor")
+    frame.add_signal(signal)
+    assert frame.get_multiplexer == signal
+
+def test_get_multiplexer_values():
+    frame = canmatrix.canmatrix.Frame(name="multiplexed_frame")
+    signal = canmatrix.canmatrix.Signal(name="mx")
+    signal.multiplex_setter("Multiplexor")
+
+    signal2 = canmatrix.canmatrix.Signal(name="s2")
+    signal2.multiplex_setter(2)
+    frame.add_signal(signal2)
+
+    signal3 = canmatrix.canmatrix.Signal(name="s3")
+    signal3.multiplex_setter(3)
+    frame.add_signal(signal3)
+
+    signal4 = canmatrix.canmatrix.Signal(name="s4")
+    signal4.multiplex_setter(None)
+    frame.add_signal(signal4)
+
+    assert frame.get_signals_for_multiplexer_value(2)[0] == signal2
+    assert frame.get_signals_for_multiplexer_value(2)[1] == signal4
+    assert frame.get_signals_for_multiplexer_value(3)[0] == signal3
+    assert frame.get_signals_for_multiplexer_value(3)[1] == signal4
+    assert frame.get_signals_for_multiplexer_value(1)[0] == signal4
+
+def test_get_multiplexer_values():
+    frame = canmatrix.canmatrix.Frame(name="multiplexed_frame")
+    signal = canmatrix.canmatrix.Signal(name="mx")
+    signal.multiplex_setter("Multiplexor")
+
+    signal2 = canmatrix.canmatrix.Signal(name="s2")
+    signal2.multiplex_setter(2)
+    frame.add_signal(signal2)
+
+    signal3 = canmatrix.canmatrix.Signal(name="s3")
+    signal3.multiplex_setter(3)
+    frame.add_signal(signal3)
+
+    signal4 = canmatrix.canmatrix.Signal(name="s4")
+    signal4.multiplex_setter(None)
+    frame.add_signal(signal4)
+
+    assert frame.get_multiplexer_values == [2,3]
+
 
 def test_frame_not_multiplexed():
     frame = canmatrix.canmatrix.Frame(name="not_multiplexed_frame")
