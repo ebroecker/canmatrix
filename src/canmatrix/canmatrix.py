@@ -1431,6 +1431,18 @@ class CanMatrix(object):
                 return test
         return None
 
+    def frame_by_pgn(self, pgn):  # type: (int) -> typing.Union[Frame, None]
+        """Get Frame by pgn (j1939).
+
+        :param int pgn: pgn to search for
+        :rtype: Frame or None
+        """
+        for test in self.frames:
+            if CanId(test.arbitration_id).pgn == pgn:
+                return test
+        return None
+
+
     def frame_by_name(self, name):  # type: (str) -> typing.Union[Frame, None]
         """Get Frame by name.
 
