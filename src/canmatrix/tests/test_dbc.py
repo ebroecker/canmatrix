@@ -254,6 +254,23 @@ def test_defines_with_spaces():
     assert matrix.env_vars["someEnvVar"]["attributes"]["some attrib"] == '"some space"'
     assert matrix.ecus[0].attributes["Description X"] == "Some Some Text"
 
+def test_writing_complex_multiplex():
+    db = canmatrix.CanMatrix()
+    frame = canmatrix.Frame("someFrame")
+    frame.is_complex_multiplexed = True
+    signal = canmatrix.Signal("mx")
+    signal.mux_val_max = 5
+    signal.mux_val_min = 1
+    signal.muxer_for_signal = 4
+    frame.add_signal(signal)
+    db.add_frame(frame)
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(db, outdbc, "dbc")
+    for line in outdbc.getvalue().decode('utf8').split('\n'):
+        if "SG_MUL_VAL" in line:
+            return True
+    assert False
+
 
 def test_defines_with_special_cars():
     dbc = io.BytesIO(textwrap.dedent(u'''\

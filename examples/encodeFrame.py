@@ -48,19 +48,15 @@ for frame in frames:
         continue
     if frame.is_multiplexed:
         # if multiplexed frame search for multiplexer
-        multiplexer_signal = None
-        for signal in frame.signals:
-            if signal.is_multiplexer:
-                multiplexer_signal = signal
-
-        signalDict = dict()
+        multiplexer_signal = frame.get_multiplexer
 
         # read multiplexer value
         a = input("Enter Value for Multiplexer " + multiplexer_signal.name + " ")
+        signalDict = dict()
         signalDict[multiplexer_signal.name] = int(a)
 
         # read signals for the given multiplexer value
-        for signal in [s for s in frame.signals if (s.mux_val == int(a) or (s.mux_val is None and not s.is_multiplexer) )]:
+        for signal in frame.get_signals_for_multiplexer_value(int(a)):
             signalDict[signal.name] = read_signal_value_from_user(signal)
 
     else:
