@@ -28,7 +28,7 @@ frame_string = sys.argv[2]
 (arbitration_id_string, hexdata) = frame_string.split('#')
 
 # set arbitration_id
-if len(arbitration_id_string) == 3:
+if len(arbitration_id_string) <= 3:
     arbitration_id = canmatrix.ArbitrationId(int(arbitration_id_string, 16), extended = False)
 else:
     # extended frame
