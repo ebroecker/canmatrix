@@ -28,18 +28,15 @@ frame_string = sys.argv[2]
 (arbitration_id_string, hexdata) = frame_string.split('#')
 
 # set arbitration_id
-arbitration_id = canmatrix.ArbitrationId(int(arbitration_id_string, 16))
-arbitration_id.id = int(arbitration_id_string, 16)
-
-# extended frame?
 if len(arbitration_id_string) == 3:
-    arbitration_id.extended = False
+    arbitration_id = canmatrix.ArbitrationId(int(arbitration_id_string, 16), extended = False)
 else:
-    arbitration_id.extended = True
+    # extended frame
+    arbitration_id = canmatrix.ArbitrationId(int(arbitration_id_string, 16), extended = True)
 
 # find frame to given arbitration_id
 frame = db.frame_by_id(arbitration_id)
-can_data = bytearray([int(hexdata[index: index+2],16) for index in range(0,len(hexdata),2)])
+can_data = bytearray.fromhex(hexdata)
 
 # decode frame
 decoded = frame.decode(can_data)
@@ -47,5 +44,3 @@ decoded = frame.decode(can_data)
 #print decoded signals
 for (signal, value) in decoded.items():
     print (signal + "\t" + hex(value.raw_value) + "\t(" + str(value.phys_value)+ ")")
-
-
