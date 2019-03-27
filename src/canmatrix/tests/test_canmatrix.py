@@ -731,14 +731,14 @@ def test_define_for_float():
 def test_canid_parse_values():
     can_id = canmatrix.canmatrix.CanId(canmatrix.ArbitrationId(id=0x01ABCD02, extended=True))
     assert can_id.source == 0x02
-    assert can_id.destination == 0x01
+    assert can_id.destination == 0xCD
     assert can_id.pgn == 0xABCD
-    assert can_id.tuples() == (1, 0xABCD, 2)
+    assert can_id.tuples() == (0xCD, 0xABCD, 2)
 
 
 def test_canid_repr():
     can_id = canmatrix.canmatrix.CanId(canmatrix.ArbitrationId(id=0x01ABCD02, extended=True))
-    assert str(can_id) == "DA:0x01 PGN:0xABCD SA:0x02"
+    assert str(can_id) == "DA:0xCD PGN:0xABCD SA:0x02"
 
 
 # DecodedSignal tests

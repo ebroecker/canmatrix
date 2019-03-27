@@ -1437,8 +1437,14 @@ class CanMatrix(object):
         :param int pgn: pgn to search for
         :rtype: Frame or None
         """
+
+        if pgn <= 0xEFFF:
+            #PDU1 Format
+            #set all bits of destination, this ignores destination in comparison
+            pgn |= 0xFF
+
         for test in self.frames:
-            if CanId(test.arbitration_id).pgn == pgn:
+            if (CanId(test.arbitration_id).pgn & pgn) == CanId(test.arbitration_id).pgn:
                 return test
         return None
 
@@ -1855,7 +1861,12 @@ class CanId(object):
         if arbitration_id.extended:
             self.source = arbitration_id.id & int('0xFF', 16)
             self.pgn = (arbitration_id.id >> 8) & int('0xFFFF', 16)
-            self.destination = arbitration_id.id >> 8 * 3 & int('0xFF', 16)
+            if self.pgn <= 0xEFFF:
+                #PDU1 Format
+                self.destination = self.pgn & 0xff
+            else:
+                #PDU2 Format
+                self.destination = 0xFF
         else:
             # TODO implement for standard Id
             pass
