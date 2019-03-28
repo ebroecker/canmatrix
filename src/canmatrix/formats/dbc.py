@@ -295,14 +295,14 @@ def dump(mydb, f, **options):
     # second Sender:
     for frame in db.frames:
         if frame.transmitters.__len__() > 1:
-            f.write(("BO_TX_BU_ %d : %s;\n" % (frame.arbitration_id.id, ','.join(frame.transmitters))).encode(dbcExportEncoding))
+            f.write(("BO_TX_BU_ %d : %s;\n" % (frame.arbitration_id.to_compound_integer(), ','.join(frame.transmitters))).encode(dbcExportEncoding))
 
 
 
     # frame comments
     # wow, there are dbcs where comments are encoded with other coding than rest of dbc...
     for frame in db.frames:
-        f.write(create_comment_string("BO_", "%d " % frame.arbitration_id.id, frame.comment, dbcExportEncoding, dbcExportCommentEncoding))
+        f.write(create_comment_string("BO_", "%d " % frame.arbitration_id.to_compound_integer(), frame.comment, dbcExportEncoding, dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal comments
@@ -310,7 +310,7 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             if signal.comment is not None and signal.comment.__len__() > 0:
                 name = output_names[frame][signal]
-                f.write(create_comment_string("SG_", "%d " % frame.arbitration_id.id + name, signal.comment, dbcExportEncoding,
+                f.write(create_comment_string("SG_", "%d " % frame.arbitration_id.to_compound_integer() + name, signal.comment, dbcExportEncoding,
                                               dbcExportCommentEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
@@ -332,7 +332,7 @@ def dump(mydb, f, **options):
     for (data_type, define) in sorted(list(db.signal_defines.items())):
         f.write(create_define(data_type, define, "SG_", defaults).encode(dbcExportEncoding, 'replace'))
 
-    for (data_type, define) in sorted(list(db.signal_defines.items())):
+    for (data_type, define) in sorted(list(db.ecu_defines.items())):
         f.write(create_define(data_type, define, "BU_", defaults).encode(dbcExportEncoding, 'replace'))
 
     for (data_type, define) in sorted(list(db.env_defines.items())):
@@ -361,7 +361,7 @@ def dump(mydb, f, **options):
     # messages-attributes:
     for frame in db.frames:
         for attrib, val in sorted(frame.attributes.items()):
-            f.write(create_attribute_string(attrib, "BO_", str(frame.arbitration_id.id), val, db.frame_defines[attrib].type == "STRING").encode(dbcExportEncoding))
+            f.write(create_attribute_string(attrib, "BO_", str(frame.arbitration_id.to_compound_integer()), val, db.frame_defines[attrib].type == "STRING").encode(dbcExportEncoding))
     f.write("\n".encode(dbcExportEncoding))
 
     # signal-attributes:
@@ -371,7 +371,7 @@ def dump(mydb, f, **options):
                 name = output_names[frame][signal]
                 if isinstance(val, float):
                     val = format_float(val)
-                f.write(create_attribute_string(attrib, "SG_", '%d ' % frame.arbitration_id.id + name, val,
+                f.write(create_attribute_string(attrib, "SG_", '%d ' % frame.arbitration_id.to_compound_integer() + name, val,
                                                 db.signal_defines[attrib].type == "STRING").encode(dbcExportEncoding))
 
     f.write("\n".encode(dbcExportEncoding))
@@ -395,7 +395,7 @@ def dump(mydb, f, **options):
             if signal.values:
                 f.write(
                     ('VAL_ %d ' %
-                     frame.arbitration_id.id +
+                     frame.arbitration_id.to_compound_integer() +
                      output_names[frame][signal]).encode(dbcExportEncoding))
                 for attrib, val in sorted(
                         signal.values.items(), key=lambda x: int(x[0])):
@@ -408,16 +408,16 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             if signal.is_float:
                 if int(signal.size) > 32:
-                    f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.arbitration_id.id, output_names[frame][signal])).encode(
+                    f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.arbitration_id.to_compound_integer(), output_names[frame][signal])).encode(
                         dbcExportEncoding))
                 else:
-                    f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.arbitration_id.id, output_names[frame][signal])).encode(
+                    f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.arbitration_id.to_compound_integer(), output_names[frame][signal])).encode(
                         dbcExportEncoding))
 
     # signal-groups:
     for frame in db.frames:
         for sigGroup in frame.signalGroups:
-            f.write(("SIG_GROUP_ " + str(frame.arbitration_id.id) + " " + sigGroup.name +
+            f.write(("SIG_GROUP_ " + str(frame.arbitration_id.to_compound_integer()) + " " + sigGroup.name +
                      " " + str(sigGroup.id) + " :").encode(dbcExportEncoding))
             for signal in sigGroup.signals:
                 f.write((" " + output_names[frame][signal]).encode(dbcExportEncoding))
@@ -427,7 +427,7 @@ def dump(mydb, f, **options):
         if frame.is_complex_multiplexed:
             for signal in frame.signals:
                 if signal.muxer_for_signal is not None:
-                    f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.arbitration_id.id, signal.name, signal.muxer_for_signal, signal.mux_val_min, signal.mux_val_max)).encode(dbcExportEncoding))
+                    f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.arbitration_id.to_compound_integer(), signal.name, signal.muxer_for_signal, signal.mux_val_min, signal.mux_val_max)).encode(dbcExportEncoding))
 
 
 
