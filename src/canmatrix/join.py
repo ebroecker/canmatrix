@@ -15,7 +15,7 @@ def list_pgn(db):
     :return: tuple of [pgn] and [arbitration_id]
     """
     id_list = [x.arbitration_id for x in db.frames]
-    pgn_list = [canmatrix.CanId(arb_id).pgn for arb_id in id_list]
+    pgn_list = [canmatrix.J1939CanId(arb_id).pgn for arb_id in id_list]
     return pgn_list, id_list
 
 
@@ -58,7 +58,7 @@ def join_frame_by_signal_start_bit(files):  # type: (typing.List[str]) -> canmat
 
 def rename_frame_with_id(source_db):  # type: (canmatrix.CanMatrix) -> None
     for frameSc in source_db.frames:
-        _, pgn, sa = canmatrix.CanId(frameSc.arbitration_id).tuples()
+        _, pgn, sa = canmatrix.J1939CanId(frameSc.arbitration_id).tuples()
 
         extension = "__{pgn:#04X}_{sa:#02X}_{sa:03d}d".format(pgn=pgn, sa=sa)
         new_name = frameSc.name + extension
@@ -95,7 +95,7 @@ def join_frame_for_manufacturer(db, files):  # type: (canmatrix.CanMatrix, typin
             target_fr = db.frame_by_id(idx)
             source_fr = source_db.frame_by_id(idy)
 
-            _, pgn, sa = canmatrix.CanId(target_fr.arbitration_id).tuples()
+            _, pgn, sa = canmatrix.J1939CanId(target_fr.arbitration_id).tuples()
             if sa < 128:
                 print('less', target_fr.name)
                 to_add = []
