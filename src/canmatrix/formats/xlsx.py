@@ -123,13 +123,13 @@ def dump(db, filename, **options):
         'Byteorder']
     head_tail = ['Value', 'Name / Phys. Range', 'Function / Increment Unit']
 
-    if "additionalAttributes" in options and len(options["additionalAttributes"]) > 0:
-        additional_signal_colums = options["additionalAttributes"].split(",")
+    if len(options.get("additionalAttributes", "")) > 0:
+        additional_signal_colums = options.get("additionalAttributes").split(",")
     else:
         additional_signal_colums = []#["attributes['DisplayDecimalPlaces']"]
 
-    if "additionalFrameAttributes" in options and len(options["additionalFrameAttributes"]) > 0:
-        additional_frame_colums = options["additionalFrameAttributes"].split(",")
+    if len(options.get("additionalFrameAttributes", "")) > 0:
+        additional_frame_colums = options.get("additionalFrameAttributes").split(",")
     else:
         additional_frame_colums = []#["attributes['DisplayDecimalPlaces']"]
 
@@ -347,14 +347,8 @@ def readXlsx(file, **args):
     import zipfile
     from xml.etree.ElementTree import iterparse
 
-    if "sheet" in args:
-        sheet = args["sheet"]
-    else:
-        sheet = 1
-    if "header" in args:
-        isHeader = args["header"]
-    else:
-        isHeader = False
+    sheet = args.get("sheet", 1)
+    isHeader = args.get("header", False)
 
     rows = []  # type: typing.List[typing.Dict[str, str]]
     row = {}

@@ -48,9 +48,10 @@ def dump(db, f, **options):
     else:
         mode = 'wb'
 
-    additionalFrameColums = []  # type: typing.List[str]
-    if "additionalFrameAttributes" in options and options["additionalFrameAttributes"]:
-        additionalFrameColums = options["additionalFrameAttributes"].split(",")
+    if options.get("additionalFrameAttributes",False):
+        additionalFrameColums = options.get("additionalFrameAttributes").split(",")
+    else:
+        additionalFrameColums = []  # type: typing.List[str]
 
     exportArray = []  # type: typing.List[typing.Union[str, int, list, dict]]
 
@@ -192,10 +193,9 @@ def load(f, **options):
             newframe = canmatrix.Frame(frame["name"],
                                    arbitration_id=frame["id"],
                              size=8)
-            if "length" in frame:
-                newframe.size = frame["length"]
+            newframe.size = frame.get("length",0)
 
-            if "is_extended_frame" in frame and frame["is_extended_frame"]:
+            if frame.get("is_extended_frame", False):
                 newframe.arbitration_id.extended = 1
             else:
                 newframe.arbitration_id.extended = 0
@@ -221,7 +221,7 @@ def load(f, **options):
                                    factor=signal["factor"],
                                    offset=signal["offset"])
 
-                if signal.get("min") is not None:
+                if signal.get("min", False) is not None:
                     newsignal.min = newsignal.float_factory(signal["min"])
 
                 if signal.get("max", False):

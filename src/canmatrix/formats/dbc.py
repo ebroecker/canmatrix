@@ -892,7 +892,7 @@ def load(f, **options):
 # Backtracking
 
     for env_var_name, env_var in db.env_vars.items():
-        if "attributes" in env_var and 'SystemEnvVarLongSymbol' in env_var["attributes"]:
+        if 'SystemEnvVarLongSymbol' in env_var.get("attributes", ""):
             long_name = env_var["attributes"]["SystemEnvVarLongSymbol"][1:-1]
             del(env_var["attributes"]["SystemEnvVarLongSymbol"])
             db.env_vars[long_name] = db.env_vars.pop(env_var_name)
@@ -912,7 +912,7 @@ def load(f, **options):
         #    frame.id -= 0x80000000
         #    frame.extended = 1
 
-        if "VFrameFormat" in frame.attributes and "_FD" in frame.attributes["VFrameFormat"]:
+        if "_FD" in frame.attributes.get("VFrameFormat",""):
             frame.is_fd = True
 
         for signal in frame.signals:
