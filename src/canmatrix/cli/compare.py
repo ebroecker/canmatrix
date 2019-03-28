@@ -84,7 +84,7 @@ def compare_db(db1, db2, ignore=None):
         if f1 is None:
             result.add_child(CompareResult("added", "FRAME", f2))
 
-    if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
+    if ignore.get("ATTRIBUTE", "") == "*":
         pass
     else:
         result.add_child(compare_attributes(db1, db2, ignore))
@@ -100,7 +100,7 @@ def compare_db(db1, db2, ignore=None):
         if ecu1 is None:
             result.add_child(CompareResult("added", "ecu", ecu2))
 
-    if "DEFINE" in ignore and ignore["DEFINE"] == "*":
+    if ignore.get("DEFINE", "") == "*":
         pass
     else:
         result.add_child(
@@ -120,7 +120,7 @@ def compare_db(db1, db2, ignore=None):
         temp.type = "Signal Defines"
         result.add_child(temp)
 
-    if "VALUETABLES" in ignore and ignore["VALUETABLES"]:
+    if ignore.get("VALUETABLES", False):
         pass
     else:
         for vt1 in db1.value_tables:
@@ -242,8 +242,7 @@ def compare_attributes(ele1, ele2, ignore=None):
     if ignore is None:
         ignore = dict()
     result = CompareResult("equal", "ATTRIBUTES", ele1)
-    if "ATTRIBUTE" in ignore and (
-            ignore["ATTRIBUTE"] == "*" or ignore["ATTRIBUTE"] == ele1):
+    if ignore.get("ATTRIBUTE", "") == "*" or ignore.get("ATTRIBUTE","") == ele1:
         return result
     for attribute in ele1.attributes:
         if attribute not in ele2.attributes:
@@ -281,7 +280,7 @@ def compare_ecu(ecu1, ecu2, ignore=None):
                     "changed", "ECU", ecu1, [
                         ecu1.comment, ecu2.comment]))
 
-    if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
+    if ignore.get("ATTRIBUTE", "") == "*":
         pass
     else:
         result.add_child(compare_attributes(ecu1, ecu2, ignore))
@@ -336,7 +335,7 @@ def compare_frame(f1, f2, ignore=None):
         if not s1:
             result.add_child(CompareResult("added", "SIGNAL", s2))
 
-    if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
+    if ignore.get("ATTRIBUTE", "") == "*":
         pass
     else:
         result.add_child(compare_attributes(f1, f2, ignore))
@@ -457,12 +456,12 @@ def compare_signal(s1, s2, ignore=None):
                     receiver,
                     s1.receivers))
 
-    if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
+    if ignore.get("ATTRIBUTE", "") == "*":
         pass
     else:
         result.add_child(compare_attributes(s1, s2, ignore))
 
-    if "VALUETABLES" in ignore and ignore["VALUETABLES"]:
+    if ignore.get("VALUETABLES", ""):
         pass
     else:
         result.add_child(compare_value_table(s1.values, s2.values))
