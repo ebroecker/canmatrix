@@ -429,8 +429,6 @@ def dump(mydb, f, **options):
                 if signal.muxer_for_signal is not None:
                     f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.arbitration_id.id, signal.name, signal.muxer_for_signal, signal.mux_val_min, signal.mux_val_max)).encode(dbcExportEncoding))
 
-
-
     for envVarName in db.env_vars:
         envVar = db.env_vars[envVarName]
         f.write(("EV_ {0} : {1} [{2}|{3}] \"{4}\" {5} {6} {7} {8};\n".format(envVarName, envVar["varType"], envVar["min"],
