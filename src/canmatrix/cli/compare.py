@@ -84,7 +84,7 @@ def compare_db(db1, db2, ignore=None):
         if f1 is None:
             result.add_child(CompareResult("added", "FRAME", f2))
 
-    if ignore.get("ATTRIBUTE", "") == "*":
+    if ignore.get("ATTRIBUTE") == "*":
         pass
     else:
         result.add_child(compare_attributes(db1, db2, ignore))
