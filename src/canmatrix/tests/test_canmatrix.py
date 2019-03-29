@@ -729,21 +729,21 @@ def test_define_for_float():
 
 # J1939CanId tests
 def test_canid_parse_values():
-    can_id = canmatrix.canmatrix.J1939CanId(canmatrix.ArbitrationId(id=0x01ABCD02, extended=True))
-    assert can_id.source == 0x02
-    assert can_id.destination == 0xcd
-    assert can_id.pgn == 0xAB00
-    assert can_id.destination == 0xCD
-    assert can_id.priority == 0
-    assert can_id.tuples() == (0xCD, 0xAB00, 2)
+    can_id = canmatrix.ArbitrationId(id=0x01ABCD02, extended=True)
+    assert can_id.j1939_source == 0x02
+    assert can_id.j1939_destination == 0xcd
+    assert can_id.j1939_pgn == 0xAB00
+    assert can_id.j1939_destination == 0xCD
+    assert can_id.j1939_priority == 0
+    assert can_id.j1939_tuples == (0xCD, 0xAB00, 2)
 
     test_data = {0xc00000b : 0,  0xcef27fd : 61184,  0xcffcafd : 65482, 0xc000003 : 0, 0xcf00203 : 61442, 0x18fe4a03 : 65098, 0xc010305 : 256}
     for canId, pgn in test_data.items():
-        assert canmatrix.canmatrix.J1939CanId(canmatrix.ArbitrationId(id=canId, extended=True)).pgn == pgn
+        assert canmatrix.ArbitrationId(id=canId, extended=True).pgn == pgn
 
 def test_canid_repr():
-    can_id = canmatrix.canmatrix.J1939CanId(canmatrix.ArbitrationId(id=0x01ABCD02, extended=True))
-    assert str(can_id) == "DA:0xCD PGN:0xAB00 SA:0x02"
+    can_id = canmatrix.ArbitrationId(id=0x01ABCD02, extended=True)
+    assert can_id.j1939_str == "DA:0xCD PGN:0xAB00 SA:0x02"
 
 
 # DecodedSignal tests

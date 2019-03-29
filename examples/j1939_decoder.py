@@ -11,7 +11,7 @@ class j1939_decoder(object):
     _data = attr.ib(init=False, default=bytearray())
 
     def decode(self, arbitration_id, can_data, matrix):
-        if canmatrix.J1939CanId(arbitration_id).pgn == 0xEC00 or canmatrix.J1939CanId(arbitration_id).pgn == 0xECFF:
+        if arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(0xECFF):
             # BAM detected
             self.length = (int(can_data[2]) << 8) + int(can_data[1])
             self.count_succesive_frames = int(can_data[3])
@@ -20,7 +20,7 @@ class j1939_decoder(object):
             self._data = bytearray()
             return ("BAM          ", {})
 
-        if canmatrix.J1939CanId(arbitration_id).pgn == 0xEB00 or canmatrix.J1939CanId(arbitration_id).pgn == 0xEBFF:
+        if canmatrix.arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(0xEBFF).pgn:
             self.count_succesive_frames -= 1
 
             self._data = self._data + can_data[1:min(8, self.bytes_left + 1)]

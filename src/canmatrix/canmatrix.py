@@ -65,6 +65,7 @@ class MissingMuxSignal(ExceptionTemplate): pass
 class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
 class ArbitrationIdOutOfRange(ExceptionTemplate): pass
+class J1939needsExtendedIdetifier(ExceptionTemplate): pass
 
 
 @attr.s
@@ -584,11 +585,90 @@ class ArbitrationId(object):
         if self.id != self.id & mask:
             raise ArbitrationIdOutOfRange('ID out of range')
 
+    @property
+    def j1939_pgn(self):
+        return self.pgn
+
+    @property
+    def pgn(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+
+        ps = (self.id >> 8) & 0xFF
+        pf = (self.id >> 16) & 0xFF
+        _pgn = pf << 8
+        if pf >= 240:
+            _pgn += ps
+        return _pgn
+
+    @property
+    def j1939_tuples(self):  # type: () -> typing.Tuple[int, int, int]
+        """Get tuple (destination, PGN, source)
+
+        :rtype: tuple"""
+
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+
+        return self.j1939_destination, self.pgn, self.j1939_source
+
+    @property
+    def j1939_destination(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        if self.j1939_pf < 240:
+            destination = self.j1939_ps
+        else:
+            destination = None
+        return destination
+
+    @property
+    def j1939_source(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return self.id & 0xFF
+
+    @property
+    def j1939_ps(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 8) & 0xFF
+
+    @property
+    def j1939_pf(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 16) & 0xFF
+
+    @property
+    def j1939_edp(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 24) & 0x03
+
+    @property
+    def j1939_priority(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 25) & 0x7
+
+    @property
+    def j1939_str(self):  # type: () -> str
+        return "DA:0x{da:02X} PGN:0x{pgn:04X} SA:0x{sa:02X}".format(
+            da=self.j1939_destination, pgn=self.pgn, sa=self.j1939_source)
+
+
     @classmethod
     def from_compound_integer(cls, i):  # type: (typing.Any) -> ArbitrationId
         return cls(
             id=i & cls.extended_id_mask,
             extended=(i & cls.compound_extended_mask) != 0,
+        )
+
+    @classmethod
+    def from_pgn(cls, pgn):
+        return cls(
+            id = (pgn << 8), extended = True
         )
 
     def to_compound_integer(self):
@@ -691,7 +771,7 @@ class Frame(object):
 
     @property
     def pgn(self):  # type: () -> int
-        return J1939CanId(self.arbitration_id).pgn
+        return self.arbitration_id.pgn
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
@@ -1439,7 +1519,7 @@ class CanMatrix(object):
         """
 
         for test in self.frames:
-            if J1939CanId(test.arbitration_id).pgn == J1939CanId.from_pgn(pgn).pgn:
+            if test.arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(pgn).pgn:
                 return test
         return None
 
@@ -1610,7 +1690,6 @@ class CanMatrix(object):
                 self.ecus.remove(ecu)
                 for frame in self.frames:
                     frame.del_transmitter(ecu.name)
-					
                     for signal in frame.signals:
                         signal.del_receiver(ecu.name)
 
@@ -1841,46 +1920,3 @@ class CanMatrix(object):
                         if define in signal.attributes:
                             signal.attributes[define] = self.signal_defines[define].values.index(signal.attributes[define])
                             signal.attributes[define] = str(signal.attributes[define])
-
-
-class J1939CanId(object):
-    """
-    Split Id into Global source addresses (source, destination) off ECU and PGN (SAE J1939).
-    """
-    # TODO link to ECU
-    source = None  # type: int  # Source Address
-    destination = None  # type: int  # Destination Address
-    pgn = None  # type: int  # PGN
-
-    def __init__(self, arbitration_id):  # type: (ArbitrationId) -> None
-        if arbitration_id.extended:
-            self.source = arbitration_id.id & 0xFF
-            self.ps = (arbitration_id.id >> 8) & 0xFF
-            self.pf = (arbitration_id.id >> 16) & 0xFF
-            self.edp = (arbitration_id.id >> 24) & 0x03
-            self.priority = (arbitration_id.id >> 25) & 0x7
-
-            self.pgn = self.pf << 8
-            if self.pf >= 240:
-                self.pgn += self.ps
-            else:
-                self.destination = self.ps
-        else:
-            # TODO implement for standard Id
-            pass
-
-    @classmethod
-    def from_pgn(cls, pgn):
-        return cls(
-            canmatrix.ArbitrationId(id = (pgn << 8), extended = True)
-        )
-
-    def tuples(self):  # type: () -> typing.Tuple[int, int, int]
-        """Get tuple (destination, PGN, source)
-
-        :rtype: tuple"""
-        return self.destination, self.pgn, self.source
-
-    def __str__(self):  # type: () -> str
-        return "DA:0x{da:02X} PGN:0x{pgn:04X} SA:0x{sa:02X}".format(
-            da=self.destination, pgn=self.pgn, sa=self.source)
