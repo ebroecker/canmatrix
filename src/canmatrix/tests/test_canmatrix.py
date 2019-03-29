@@ -737,6 +737,9 @@ def test_canid_parse_values():
     assert can_id.priority == 0
     assert can_id.tuples() == (0xCD, 0xAB00, 2)
 
+    test_data = {0xc00000b : 0,  0xcef27fd : 61184,  0xcffcafd : 65482, 0xc000003 : 0, 0xcf00203 : 61442, 0x18fe4a03 : 65098, 0xc010305 : 256}
+    for canId, pgn in test_data.items():
+        assert canmatrix.canmatrix.J1939CanId(canmatrix.ArbitrationId(id=canId, extended=True)).pgn == pgn
 
 def test_canid_repr():
     can_id = canmatrix.canmatrix.J1939CanId(canmatrix.ArbitrationId(id=0x01ABCD02, extended=True))
