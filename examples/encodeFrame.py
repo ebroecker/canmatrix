@@ -25,7 +25,7 @@ if len(args) < 1:
     sys.exit(1)
 
 # load matrix
-db = canmatrix.formats.loadp(args[0], flat_import=True)
+db = canmatrix.formats.loadp_flat(args[0])
 
 #get all frames which match the commandline
 frames = db.glob_frames(cmdlineOptions.frames)
