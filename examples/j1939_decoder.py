@@ -5,13 +5,19 @@ import textwrap
 
 @attr.s
 class j1939_decoder(object):
+    j1939_db = canmatrix.formats.loadp_flat("j1939.dbc", dbcImportEncoding = "utf8")
     length = attr.ib(default=0)  # type: int
     count_succesive_frames = attr.ib(default=0)  # type: int
     transfered_pgn = attr.ib(default=0)  # type: int
     _data = attr.ib(init=False, default=bytearray())
 
     def decode(self, arbitration_id, can_data, matrix):
-        if arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(0xECFF):
+        if self.j1939_db.frame_by_pgn(arbitration_id.pgn) is not None:
+            frame = self.j1939_db.frame_by_pgn(arbitration_id.pgn)
+            signals = frame.decode(can_data)
+            return ("J1939 known: " + frame.name + " " + frame.comment, signals)
+
+        elif arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(0xECFF).pgn:
             # BAM detected
             self.length = (int(can_data[2]) << 8) + int(can_data[1])
             self.count_succesive_frames = int(can_data[3])
@@ -20,7 +26,7 @@ class j1939_decoder(object):
             self._data = bytearray()
             return ("BAM          ", {})
 
-        if canmatrix.arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(0xEBFF).pgn:
+        elif arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(0xEBFF).pgn:
             self.count_succesive_frames -= 1
 
             self._data = self._data + can_data[1:min(8, self.bytes_left + 1)]
@@ -35,6 +41,7 @@ class j1939_decoder(object):
                 return ("BAM last data", {})
             else:
                 return ("BAM data     ", {})
+        return ("",{})
 
 
 def test_j1939_decoder():
@@ -86,6 +93,23 @@ def test_j1939_decoder():
 
         for signal, value in signals.items():
             print (signal + " " + str(value.raw_value))
+
+    print ("-------- test data -------- ")
+    test_frames =   {
+        0xcef27fd : "fffae1ff00ffff",
+        0xcffcafd : "c0fffffffffff800",
+        0xcf00203 : "cc00000000b812ff",
+        0xfe4a03 : "fffcffffffffffff",
+        0xc010305 : "ccfffaffff204e0a",
+        0x0CF00400: "F4DEDE3028FFF0FF"}
+
+    for arb_id, asc_data in test_frames.items():
+        (type, signals) = t.decode(canmatrix.ArbitrationId(id=arb_id, extended=True),
+                                   bytearray.fromhex(asc_data), matrix)
+        if type is not None:
+            print (type)
+            for sig,decoded in signals.items():
+                print (" " + decoded.signal.name + " " + str(decoded.raw_value))
 
 
 test_j1939_decoder()

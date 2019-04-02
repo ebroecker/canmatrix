@@ -98,6 +98,8 @@ def create_attribute_string(attribute, attribute_class, name, value, is_string):
     return attribute_string
 
 def create_comment_string(comment_class, comment_ident, comment, dbcExportEncoding, dbcExportCommentEncoding):
+    if len(comment) == 0:
+        return b""
     comment_string = ("CM_ " + comment_class + " " + comment_ident + ' "').encode(dbcExportEncoding, 'ignore')
     comment_string += comment.replace('"', '\\"').encode(dbcExportCommentEncoding, 'ignore')
     comment_string += '";\n'.encode(dbcExportEncoding)
@@ -212,8 +214,9 @@ def dump(mydb, f, **options):
         ))
 
         # remove "-" from frame names
-        if compatibility and '-' in frame.name:
-            frame.name = frame.name.replace("-", whitespaceReplacement)
+        if compatibility:
+            frame.name = re.sub("[^A-Za-z0-9]", whitespaceReplacement, frame.name)
+
 
         duplicate_signal_totals = collections.Counter(normalized_names.values())
         duplicate_signal_counter = collections.Counter()
@@ -222,8 +225,8 @@ def dump(mydb, f, **options):
 
         for signal in frame.signals:
             name = normalized_names[signal]
-            if compatibility and '-' in name:
-                name = name.replace("-", whitespaceReplacement)
+            if compatibility:
+                name = re.sub("[^A-Za-z0-9]",whitespaceReplacement,name)
             duplicate_signal_counter[name] += 1
             if duplicate_signal_totals[name] > 1:
                 # TODO: pad to 01 in case of 10+ instances, for example?
@@ -548,7 +551,7 @@ def load(f, **options):
                     frame.add_signal(tempSig)
     #                db.frames.addSignalToLastFrame(tempSig)
                 else:
-                    pattern = r"^SG_ +(\w+) +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
+                    pattern = r"^SG_ +(.+?) +(.+?) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                     regexp = re.compile(pattern)
                     regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                     temp = regexp.match(decoded)
