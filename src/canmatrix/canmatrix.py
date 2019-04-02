@@ -136,7 +136,7 @@ class Signal(object):
     * is_little_endian (1: Intel, 0: Motorola)
     * is_signed (bool)
     * factor, offset, min, max
-    * receiver  (ECU Name)
+    * receivers  (ECU Name)
     * attributes, _values, unit, comment
     * _multiplex ('Multiplexor' or Number of Multiplex)
     """
