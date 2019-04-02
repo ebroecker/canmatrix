@@ -18,7 +18,6 @@ from canmatrix.canmatrix import (
     Frame,
     Define,
     CanMatrix,
-    CanId
 )
 
 from canmatrix.canmatrix import (

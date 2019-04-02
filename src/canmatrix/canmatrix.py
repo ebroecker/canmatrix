@@ -607,13 +607,10 @@ class ArbitrationId(object):
         return _pgn
 
     @property
-    def j1939_tuples(self):  # type: () -> typing.Tuple[int, int, int]
+    def j1939_tuple(self):  # type: () -> typing.Tuple[int, int, int]
         """Get tuple (destination, PGN, source)
 
         :rtype: tuple"""
-
-        if not self.extended:
-            raise J1939needsExtendedIdetifier
 
         return self.j1939_destination, self.pgn, self.j1939_source
 
@@ -1525,7 +1522,9 @@ class CanMatrix(object):
         """
 
         for test in self.frames:
-            if test.arbitration_id.pgn == pgn:
+            if test.arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(pgn).pgn:
+                # canmatrix.ArbitrationId.from_pgn(pgn).pgn instead
+                # of just pgn is needed to do the pf >= 240 check
                 return test
         return None
 

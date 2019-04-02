@@ -735,7 +735,7 @@ def test_canid_parse_values():
     assert can_id.j1939_pgn == 0xAB00
     assert can_id.j1939_destination == 0xCD
     assert can_id.j1939_priority == 0
-    assert can_id.j1939_tuples == (0xCD, 0xAB00, 2)
+    assert can_id.j1939_tuple == (0xCD, 0xAB00, 2)
 
     test_data = {0xc00000b : 0,  0xcef27fd : 61184,  0xcffcafd : 65482, 0xc000003 : 0, 0xcf00203 : 61442, 0x18fe4a03 : 65098, 0xc010305 : 256}
     for canId, pgn in test_data.items():
