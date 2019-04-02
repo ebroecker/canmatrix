@@ -666,7 +666,7 @@ class ArbitrationId(object):
         )
 
     @classmethod
-    def from_pgn(cls, pgn):
+    def from_pgn(cls, pgn):  # type: (int) -> ArbitrationId
         return cls(
             id = (pgn << 8), extended = True
         )
