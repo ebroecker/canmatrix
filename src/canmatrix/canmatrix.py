@@ -68,6 +68,11 @@ class ArbitrationIdOutOfRange(ExceptionTemplate): pass
 class J1939needsExtendedIdetifier(ExceptionTemplate): pass
 
 
+def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
+    """Converter for attrs which accepts ArbitrationId itself or int."""
+    return source if isinstance(source, ArbitrationId) else ArbitrationId.from_compound_integer(source)
+
+
 @attr.s
 class Ecu(object):
     """
@@ -711,7 +716,7 @@ class Frame(object):
 
     name = attr.ib(default="")  # type: str
     # mypy Unsupported converter:
-    arbitration_id = attr.ib(converter=ArbitrationId.from_compound_integer, default=0)  # type: ArbitrationId
+    arbitration_id = attr.ib(converter=arbitration_id_converter, default=arbitration_id_converter(0))  # type: ArbitrationId
     size = attr.ib(default=0)  # type: int
     transmitters = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     # extended = attr.ib(default=False)  # type: bool
@@ -750,11 +755,12 @@ class Frame(object):
     @property
     def get_multiplexer_values(self):  # type: () -> typing.Sequence[int]
         """get possible multiplexer values."""
-        multiplexer_values = []
-        for sig in self.signals:
-            if sig.mux_val not in multiplexer_values and sig.mux_val is not None:
-                multiplexer_values.append(sig.mux_val)
-        return multiplexer_values
+        multiplexer_values = {
+            sig.mux_val
+            for sig in self.signals
+            if sig.mux_val is not None
+        }
+        return list(multiplexer_values)
 
     def get_signals_for_multiplexer_value(self, mux_value):
         # type: (int) -> typing.Sequence[Signal]
@@ -1065,7 +1071,7 @@ class Frame(object):
         :return: A byte string of the packed values.
         """
 
-        little_bits = [None] * (self.size * 8)
+        little_bits = [None] * (self.size * 8)  # type: typing.List[typing.Optional[str]]
         big_bits = list(little_bits)
         for signal in self.signals:
             if signal.name in data:
