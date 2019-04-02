@@ -39,23 +39,16 @@ extension = 'json'
 def dump(db, f, **options):
     # type: (canmatrix.CanMatrix, typing.BinaryIO, **str) -> None
 
-    exportCanard = options.get('jsonCanard', False)
-    motorolaBitFormat = options.get('jsonMotorolaBitFormat', "lsb")
-    exportAll = options.get('jsonAll', False)
+    export_canard = options.get('jsonCanard', False)
+    motorola_bit_format = options.get('jsonMotorolaBitFormat', "lsb")
+    export_all = options.get('jsonAll', False)
+    additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
 
-    if (sys.version_info > (3, 0)):
-        mode = 'w'
-    else:
-        mode = 'wb'
 
-    if options.get("additionalFrameAttributes",False):
-        additionalFrameColums = options.get("additionalFrameAttributes").split(",")
-    else:
-        additionalFrameColums = []  # type: typing.List[str]
+    export_array = []  # type: typing.List[typing.Union[str, float, list, dict]]
 
-    exportArray = []  # type: typing.List[typing.Union[str, int, list, dict]]
 
-    if exportCanard:
+    if export_canard:
         for frame in db.frames:
             signals = {}
             for signal in frame.signals:
@@ -67,26 +60,26 @@ def dump(db, f, **options):
                     "bit_length": signal.size,
                     "factor": signal.factor,
                     "offset": signal.offset}
-            exportArray.append(
+            export_array.append(
                 {"name": frame.name, "id": hex(frame.arbitration_id.id), "signals": signals})
 
-    elif exportAll is False:
+    elif export_all is False:
         for frame in db.frames:
             symbolic_signals = []
             for signal in frame.signals:
                 if not signal.is_little_endian:
-                    if motorolaBitFormat == "msb":
-                        startBit = signal.get_startbit(bit_numbering=1)
-                    elif motorolaBitFormat == "msbreverse":
-                        startBit = signal.get_startbit()
-                    else:  # motorolaBitFormat == "lsb"
-                        startBit = signal.get_startbit(bit_numbering=1, start_little=True)
+                    if motorola_bit_format == "msb":
+                        start_bit = signal.get_startbit(bit_numbering=1)
+                    elif motorola_bit_format == "msbreverse":
+                        start_bit = signal.get_startbit()
+                    else:  # motorola_bit_format == "lsb"
+                        start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
                 else:
-                    startBit = signal.get_startbit(bit_numbering=1, start_little=True)
+                    start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
 
                 symbolic_signals.append({
                     "name": signal.name,
-                    "start_bit": startBit,
+                    "start_bit": start_bit,
                     "bit_length": signal.size,
                     "factor": str(signal.factor),
                     "offset": str(signal.offset),
@@ -98,41 +91,34 @@ def dump(db, f, **options):
                               "id": int(frame.arbitration_id.id),
                               "is_extended_frame": frame.arbitration_id.extended,
                               "signals": symbolic_signals}
-            frame_attributes = {}
-            for frame_info in additionalFrameColums:  # Look for additional Frame Attributes
-                if frame.attribute(frame_info) is not None:  # does the attribute exist? None value isn't exported.
-                    frame_attributes[frame_info] = frame.attribute(frame_info)
-            if frame_attributes:  # only add Attributes if there are any
+            frame_attributes = {
+                attr: frame.attribute(attr)
+                for attr in additional_frame_columns
+                if frame.attribute(attr) is not None  # don't export None parameters
+            }
+            if frame_attributes:  # only add attributes if there are any
                 symbolic_frame["attributes"] = frame_attributes
-            exportArray.append(symbolic_frame)
-    else:  # exportAll
+            export_array.append(symbolic_frame)
+    else:  # export_all
         for frame in db.frames:
-            frameattribs = {}
-            for attribute in db.frame_defines:
-                frameattribs[attribute] = frame.attribute(attribute, db=db)
+            frame_attributes = {attribute: frame.attribute(attribute, db=db) for attribute in db.frame_defines}
             symbolic_signals = []
             for signal in frame.signals:
-                attribs = {}
-                for attribute in db.signal_defines:
-                    attribs[attribute] = signal.attribute(attribute, db=db)
-
-                values = {}
-                for key in signal.values:
-                    values[key] = signal.values[key]
+                attributes = {attribute: signal.attribute(attribute, db=db) for attribute in db.signal_defines}
+                values = {key: signal.values[key] for key in signal.values}
                 if not signal.is_little_endian:
-                    if motorolaBitFormat == "msb":
-                        startBit = signal.get_startbit(bit_numbering=1)
-                    elif motorolaBitFormat == "msbreverse":
-                        startBit = signal.get_startbit()
-                    else:  # motorolaBitFormat == "lsb"
-                        startBit = signal.get_startbit(bit_numbering=1, start_little=True)
-                else:  # motorolaBitFormat == "lsb"
-                    startBit = signal.get_startbit(bit_numbering=1, start_little=True)
+                    if motorola_bit_format == "msb":
+                        start_bit = signal.get_startbit(bit_numbering=1)
+                    elif motorola_bit_format == "msbreverse":
+                        start_bit = signal.get_startbit()
+                    else:  # motorola_bit_format == "lsb"
+                        start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
+                else:  # motorola_bit_format == "lsb"
+                    start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
 
-
-                signalDict = {
+                symbolic_signal = {
                     "name": signal.name,
-                    "start_bit": startBit,
+                    "start_bit": start_bit,
                     "bit_length": signal.size,
                     "factor": str(signal.factor),
                     "offset": str(signal.offset),
@@ -142,22 +128,21 @@ def dump(db, f, **options):
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
                     "comment": signal.comment,
-                    "attributes": attribs,
+                    "attributes": attributes,
                     "values": values
                 }
                 if signal.multiplex is not None:
-                    signalDict["multiplex"] = signal.multiplex
+                    symbolic_signal["multiplex"] = signal.multiplex
                 if signal.unit:
-                    signalDict["unit"] = signal.unit
-                symbolic_signals.append(signalDict)
+                    symbolic_signal["unit"] = signal.unit
+                symbolic_signals.append(symbolic_signal)
 
-
-            exportArray.append(
+            export_array.append(
                 {"name": frame.name,
                  "id": int(frame.arbitration_id.id),
                  "is_extended_frame": frame.arbitration_id.extended,
                  "signals": symbolic_signals,
-                 "attributes": frameattribs,
+                 "attributes": frame_attributes,
                  "comment": frame.comment,
                  "length": frame.size})
     if sys.version_info > (3, 0):
@@ -167,7 +152,7 @@ def dump(db, f, **options):
         temp = f
 
     try:
-        json.dump({"messages": exportArray}, temp, sort_keys=True,
+        json.dump({"messages": export_array}, temp, sort_keys=True,
                   indent=4, separators=(',', ': '))
     finally:
         if sys.version_info > (3, 0):
@@ -176,70 +161,62 @@ def dump(db, f, **options):
             temp.detach()
 
 
-def load(f, **options):
+def load(f, **_options):
     # type: (typing.BinaryIO, **str) -> canmatrix.CanMatrix
 
     db = canmatrix.CanMatrix()
 
-    if (sys.version_info > (3, 0)):
+    if sys.version_info > (3, 0):
         import io
-        jsonData = json.load(io.TextIOWrapper(f, encoding='UTF-8'))
+        json_data = json.load(io.TextIOWrapper(f, encoding='UTF-8'))
     else:
-        jsonData = json.load(f)
 
-    if "messages" in jsonData:
-        for frame in jsonData["messages"]:
-            # newframe = Frame(frame["id"],frame["name"],8,None)
-            newframe = canmatrix.Frame(frame["name"],
-                                   arbitration_id=frame["id"],
-                             size=8)
-            newframe.size = frame.get("length",0)
+        json_data = json.load(f)
 
-            if frame.get("is_extended_frame", False):
-                newframe.arbitration_id.extended = 1
-            else:
-                newframe.arbitration_id.extended = 0
+    if "messages" in json_data:
+        for frame in json_data["messages"]:
+            # new_frame = Frame(frame["id"],frame["name"],8,None)
+            new_frame = canmatrix.Frame(frame["name"], arbitration_id=frame["id"], size=8)
+            if "length" in frame:
+                new_frame.size = frame["length"]
+
+            new_frame.arbitration_id.extended = frame.get("is_extended_frame", False)
 
             for signal in frame["signals"]:
                 is_little_endian = not signal.get("is_big_endian", False)
+                is_float = signal.get("is_float", False)
+                is_signed = signal.get("is_signed", False)
 
-                if signal.get("is_float", False):
-                    is_float = True
-                else:
-                    is_float = False
+                new_signal = canmatrix.Signal(
+                    signal["name"],
+                    start_bit=signal["start_bit"],
+                    size=signal["bit_length"],
+                    is_little_endian=is_little_endian,
+                    is_signed=is_signed,
+                    is_float=is_float,
+                    factor=signal["factor"],
+                    offset=signal["offset"]
+                )
 
-                if signal.get("is_signed", False):
-                    is_signed = True
-                else:
-                    is_signed = False
-                newsignal = canmatrix.Signal(signal["name"],
-                                   start_bit=signal["start_bit"],
-                                   size=signal["bit_length"],
-                                   is_little_endian=is_little_endian,
-                                   is_signed=is_signed,
-                                   is_float = is_float,
-                                   factor=signal["factor"],
-                                   offset=signal["offset"])
-
-                if signal.get("min", False):
-                    newsignal.min = newsignal.float_factory(signal["min"])
+                if signal.get("min") is not None:
+                    new_signal.min = new_signal.float_factory(signal["min"])
 
                 if signal.get("max", False):
-                    newsignal.max = newsignal.float_factory(signal["max"])
+                    new_signal.max = new_signal.float_factory(signal["max"])
 
                 if signal.get("unit", False):
-                    newsignal.unit = signal["unit"]
+                    new_signal.unit = signal["unit"]
 
                 if signal.get("multiplex", False):
-                    newsignal.unit = signal["multiplex"]
+                    new_signal.unit = signal["multiplex"]
 
                 if signal.get("values", False):
                     for key in signal["values"]:
-                        newsignal.add_values(key, signal["values"][key])
-                if newsignal.is_little_endian is False:
-                    newsignal.set_startbit(
-                        newsignal.start_bit, bitNumbering=1, startLittle=True)
-                newframe.add_signal(newsignal)
-            db.add_frame(newframe)
+                        new_signal.add_values(key, signal["values"][key])
+                if new_signal.is_little_endian is False:
+                    new_signal.set_startbit(
+                        new_signal.start_bit, bitNumbering=1, startLittle=True)
+                new_frame.add_signal(new_signal)
+            db.add_frame(new_frame)
     f.close()
     return db
