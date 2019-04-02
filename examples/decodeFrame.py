@@ -21,7 +21,7 @@ if len(sys.argv) < 3:
     sys.exit(1)
 
 # load matrix
-db = canmatrix.formats.loadp(sys.argv[1], flat_import=True)
+db = canmatrix.formats.loadp_flat(sys.argv[1])
 
 # load frame data from argv
 frame_string = sys.argv[2]

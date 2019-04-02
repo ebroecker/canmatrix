@@ -44,19 +44,25 @@ for loadedModule in loadedFormats:
         extensionMapping[loadedModule] = loadedModule
 
 
-def loads(string, import_type=None, key="", flat_import=None, encoding="utf-8", **options):
-    # type: (typing.Union[bytes,str], str, str, bool, str, **str) -> typing.Union[canmatrix.CanMatrix, typing.Dict[str, canmatrix.CanMatrix], None]
+def loads(string, import_type=None, key="", encoding="utf-8", **options):
+    # type: (typing.Union[bytes,str], str, str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
     if sys.version_info > (3, 0):
         byte_str = bytes(string, encoding) if isinstance(string, str) else string
         file_object = io.BytesIO(byte_str)
     else:
         string = string.encode(encoding)
         file_object = StringIO.StringIO(string)
-    return load(file_object, import_type, key, flat_import, **options)
+    return load(file_object, import_type, key, **options)
 
 
-def loadp(path, import_type=None, key="", flat_import=None, **options):
-    # type: (str, str, str, bool, **str) -> typing.Union[canmatrix.CanMatrix, typing.Dict[str, canmatrix.CanMatrix], None]
+def loads_flat(string, import_type=None, key="", **options):
+    # type: (str, str, typing.Optional[str], **str) -> typing.Union[canmatrix.CanMatrix, None]
+    dbs = loads(string, import_type, key, **options)
+    return dbs.popitem()[1] if dbs else None
+
+
+def loadp(path, import_type=None, key="", **options):
+    # type: (str, str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
     with open(path, "rb") as fileObject:
         if not import_type:
             for supportedImportType, extension in extensionMapping.items():
@@ -65,26 +71,33 @@ def loadp(path, import_type=None, key="", flat_import=None, **options):
                     break
 
         if import_type:
-            return load(fileObject, import_type, key, flat_import, **options)
+            return load(fileObject, import_type, key, **options)
         else:
             logger.error("This file format is not supported for reading")
             return None
 
 
-def load(file_object, import_type, key="", flat_import=None, **options):
-    # type: (typing.BinaryIO, str, str, bool, **str) -> typing.Union[canmatrix.CanMatrix, typing.Dict[str, canmatrix.CanMatrix], None]
+def loadp_flat(path, import_type=None, key="", **options):
+    # type: (str, str, str, **str) -> typing.Union[canmatrix.CanMatrix, None]
+    dbs = loadp(path, import_type, key, **options)
+    return dbs.popitem()[1] if dbs else None
+
+
+def load(file_object, import_type, key="", **options):
+    # type: (typing.BinaryIO, str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
     dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
     module_instance = sys.modules["canmatrix.formats." + import_type]
     if "clusterImporter" in supportedFormats[import_type]:
         dbs = module_instance.load(file_object, **options)  # type: ignore
     else:
         dbs[key] = module_instance.load(file_object, **options)  # type: ignore
+    return dbs
 
-    if flat_import:
-        for key in dbs:
-            return dbs[key]  # todo `dbs.values()[0]` ?? this causes "Missing return statement"
-    else:
-        return dbs
+
+def load_flat(file_object, import_type, key="", **options):
+    # type: (typing.BinaryIO, str, str, **str) -> typing.Union[canmatrix.CanMatrix, None]
+    dbs = load(file_object, import_type, key, **options)
+    return dbs.popitem()[1] if dbs else None
 
 
 def dump(can_matrix_or_cluster, file_object, export_type, **options):
