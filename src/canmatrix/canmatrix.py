@@ -1519,7 +1519,7 @@ class CanMatrix(object):
         """
 
         for test in self.frames:
-            if test.arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(pgn).pgn:
+            if test.arbitration_id.pgn == pgn:
                 return test
         return None
 
