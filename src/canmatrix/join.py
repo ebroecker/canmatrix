@@ -58,7 +58,7 @@ def join_frame_by_signal_start_bit(files):  # type: (typing.List[str]) -> canmat
 
 def rename_frame_with_id(source_db):  # type: (canmatrix.CanMatrix) -> None
     for frameSc in source_db.frames:
-        _, pgn, sa = frameSc.arbitration_id.j1939tuples()
+        _, pgn, sa = frameSc.arbitration_id.j1939_tuple()
 
         extension = "__{pgn:#04X}_{sa:#02X}_{sa:03d}d".format(pgn=pgn, sa=sa)
         new_name = frameSc.name + extension
@@ -95,7 +95,7 @@ def join_frame_for_manufacturer(db, files):  # type: (canmatrix.CanMatrix, typin
             target_fr = db.frame_by_id(idx)
             source_fr = source_db.frame_by_id(idy)
 
-            _, pgn, sa = target_fr.arbitration_i.j1939tuples()
+            _, pgn, sa = target_fr.arbitration_id.j1939_tuple()
             if sa < 128:
                 print('less', target_fr.name)
                 to_add = []

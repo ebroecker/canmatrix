@@ -42,9 +42,6 @@ logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
 
 
-#dbcExportEncoding = 'iso-8859-1'
-# CP1253
-
 
 def normalizeName(name, whitespaceReplacement):
     name = re.sub(r'\s+', whitespaceReplacement, name)
@@ -88,6 +85,7 @@ def create_define(data_type, define, define_type, defaults):
             defaults[data_type] = define.defaultValue
     return define_string
 
+
 def create_attribute_string(attribute, attribute_class, name, value, is_string):
     if is_string:
         value = '"' + value + '"'
@@ -96,6 +94,7 @@ def create_attribute_string(attribute, attribute_class, name, value, is_string):
 
     attribute_string = 'BA_ "' + attribute + '" ' + attribute_class + ' ' + name + ' ' + str(value) + ';\n'
     return attribute_string
+
 
 def create_comment_string(comment_class, comment_ident, comment, dbcExportEncoding, dbcExportCommentEncoding):
     if len(comment) == 0:
@@ -226,7 +225,7 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             name = normalized_names[signal]
             if compatibility:
-                name = re.sub("[^A-Za-z0-9]",whitespaceReplacement,name)
+                name = re.sub("[^A-Za-z0-9]",whitespaceReplacement, name)
             duplicate_signal_counter[name] += 1
             if duplicate_signal_totals[name] > 1:
                 # TODO: pad to 01 in case of 10+ instances, for example?
@@ -299,8 +298,6 @@ def dump(mydb, f, **options):
     for frame in db.frames:
         if frame.transmitters.__len__() > 1:
             f.write(("BO_TX_BU_ %d : %s;\n" % (frame.arbitration_id.to_compound_integer(), ','.join(frame.transmitters))).encode(dbcExportEncoding))
-
-
 
     # frame comments
     # wow, there are dbcs where comments are encoded with other coding than rest of dbc...
@@ -438,6 +435,7 @@ def dump(mydb, f, **options):
                                                                             envVar["max"], envVar["unit"],envVar["initialValue"],
                                                                             envVar["evId"], envVar["accessType"],
                                                                             ",".join(envVar["accessNodes"])) ).encode(dbcExportEncoding))
+
 
 def load(f, **options):
     dbcImportEncoding = options.get("dbcImportEncoding", 'iso-8859-1')
