@@ -43,7 +43,7 @@ try:
 except ImportError:
     from itertools import izip_longest as zip_longest  # type: ignore
 
-from past.builtins import basestring  # type: ignore
+from past.builtins import basestring
 import attr
 
 import canmatrix.copy

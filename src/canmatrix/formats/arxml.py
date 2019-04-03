@@ -46,72 +46,72 @@ clusterExporter = 1
 clusterImporter = 1
 
 
-def createSubElement(parent, elementName, strName=None):
+def create_sub_element(parent, element_name, text=None):
     # type: (etree._Element, str, str) -> etree._Element
-    sn = etree.SubElement(parent, elementName)
-    if strName is not None:
-        sn.text = str(strName)
+    sn = etree.SubElement(parent, element_name)
+    if text is not None:
+        sn.text = str(text)
     return sn
 
-def getBaseTypeOfSignal(signal):
+
+def get_base_type_of_signal(signal):
     # type: (canmatrix.Signal) -> typing.Tuple[str, int]
     if signal.is_float:
         if signal.size > 32:
-            createType = "double"
+            create_type = "double"
             size = 64
         else:
-            createType = "single"
+            create_type = "single"
             size = 32
     else:
         if signal.size > 32:
             if signal.is_signed:
-                createType = "sint64"
+                create_type = "sint64"
             else:
-                createType = "uint64"
+                create_type = "uint64"
             size = 64                            
         elif signal.size > 16:
             if signal.is_signed:
-                createType = "sint32"
+                create_type = "sint32"
             else:
-                createType = "uint32"
+                create_type = "uint32"
             size = 32                            
         elif signal.size > 8:
             if signal.is_signed:
-                createType = "sint16"
+                create_type = "sint16"
             else:
-                createType = "uint16"
+                create_type = "uint16"
             size = 16
         else:
             if signal.is_signed:
-                createType = "sint8"
+                create_type = "sint8"
             else:
-                createType = "uint8"
+                create_type = "uint8"
             size = 8
-    return createType, size
+    return create_type, size
 
 
 def dump(dbs, f, **options):
     # type: (canmatrix.cancluster.CanCluster, typing.BinaryIO, **str) -> None
-    arVersion = options.get("arVersion", "3.2.3")
+    ar_version = options.get("arVersion", "3.2.3")
 
     for name in dbs:
-        db = dbs[name]
+        db = dbs[name]  # type: canmatrix.CanMatrix
         for frame in db.frames:
             for signal in frame.signals:
                 for rec in signal.receivers:
-                    if rec.strip() not in frame.receivers:
-                        frame.receivers.append(rec.strip())
+                    frame.add_receiver(rec.strip())
 
-    if arVersion[0] == "3":
+    if ar_version[0] == "3":
         xsi = 'http://www.w3.org/2001/XMLSchema-instance'
         root = etree.Element(
             'AUTOSAR',
             nsmap={
-                None: 'http://autosar.org/' + arVersion,
+                None: 'http://autosar.org/' + ar_version,
                 'xsi': xsi})
         root.attrib['{{{pre}}}schemaLocation'.format(
-            pre=xsi)] = 'http://autosar.org/' + arVersion + ' AUTOSAR_' + arVersion.replace('.', '') + '.xsd'
-        toplevelPackages = createSubElement(root, 'TOP-LEVEL-PACKAGES')
+            pre=xsi)] = 'http://autosar.org/' + ar_version + ' AUTOSAR_' + ar_version.replace('.', '') + '.xsd'
+        top_level_packages = create_sub_element(root, 'TOP-LEVEL-PACKAGES')
     else:
         xsi = 'http://www.w3.org/2001/XMLSchema-instance'
         root = etree.Element(
@@ -120,219 +120,166 @@ def dump(dbs, f, **options):
                 None: "http://autosar.org/schema/r4.0",
                 'xsi': xsi})
         root.attrib['{{{pre}}}schemaLocation'.format(
-            pre=xsi)] = 'http://autosar.org/schema/r4.0 AUTOSAR_' + arVersion.replace('.', '-') + '.xsd'
-        toplevelPackages = createSubElement(root, 'AR-PACKAGES')
+            pre=xsi)] = 'http://autosar.org/schema/r4.0 AUTOSAR_' + ar_version.replace('.', '-') + '.xsd'
+        top_level_packages = create_sub_element(root, 'AR-PACKAGES')
 
     #
     # AR-PACKAGE Cluster
     #
-    arPackage = createSubElement(toplevelPackages, 'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'Cluster')
-    elements = createSubElement(arPackage, 'ELEMENTS')
+    ar_package = create_sub_element(top_level_packages, 'AR-PACKAGE')
+    create_sub_element(ar_package, 'SHORT-NAME', 'Cluster')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
 
     for name in dbs:
         db = dbs[name]
-#        if len(name) == 0:
-#            (path, ext) = os.path.splitext(filename)
-#            busName = path
-#        else:
+        # if len(name) == 0:
+        #    (path, ext) = os.path.splitext(filename)
+        #    bus_name = path
+        # else:
         if len(name) > 0:
-            busName = name
+            bus_name = name
         else:
-            busName = "CAN"
+            bus_name = "CAN"
 
-        cancluster = createSubElement(elements, 'CAN-CLUSTER')
-        createSubElement(cancluster, 'SHORT-NAME', busName)
-        if arVersion[0] == "3":
-         #       createSubElement(cancluster, 'SPEED', '50000')
-            physicalChannels = createSubElement(
-                cancluster, 'PHYSICAL-CHANNELS')
-            physicalChannel = createSubElement(
-                physicalChannels, 'PHYSICAL-CHANNEL')
-            createSubElement(physicalChannel, 'SHORT-NAME', 'CAN')
-            frameTriggering = createSubElement(
-                physicalChannel, 'FRAME-TRIGGERINGSS')
+        can_cluster = create_sub_element(elements, 'CAN-CLUSTER')
+        create_sub_element(can_cluster, 'SHORT-NAME', bus_name)
+        if ar_version[0] == "3":
+            # createSubElement(can_cluster, 'SPEED', '50000')
+            physical_channels = create_sub_element(can_cluster, 'PHYSICAL-CHANNELS')
+            physical_channel = create_sub_element(physical_channels, 'PHYSICAL-CHANNEL')
+            create_sub_element(physical_channel, 'SHORT-NAME', 'CAN')
+            frame_triggering = create_sub_element(physical_channel, 'FRAME-TRIGGERINGSS')
         else:
-            canClusterVaraints = createSubElement(
-                cancluster, 'CAN-CLUSTER-VARIANTS')
-            canClusterConditional = createSubElement(
-                canClusterVaraints, 'CAN-CLUSTER-CONDITIONAL')
-            physicalChannels = createSubElement(
-                canClusterConditional, 'PHYSICAL-CHANNELS')
-            physicalChannel = createSubElement(
-                physicalChannels, 'CAN-PHYSICAL-CHANNEL')
-            createSubElement(physicalChannel, 'SHORT-NAME', 'CAN')
-            frameTriggering = createSubElement(
-                physicalChannel, 'FRAME-TRIGGERINGS')
+            can_cluster_variants = create_sub_element(can_cluster, 'CAN-CLUSTER-VARIANTS')
+            can_cluster_conditional = create_sub_element(can_cluster_variants, 'CAN-CLUSTER-CONDITIONAL')
+            physical_channels = create_sub_element(can_cluster_conditional, 'PHYSICAL-CHANNELS')
+            physical_channel = create_sub_element(physical_channels, 'CAN-PHYSICAL-CHANNEL')
+            create_sub_element(physical_channel, 'SHORT-NAME', 'CAN')
+            frame_triggering = create_sub_element(physical_channel, 'FRAME-TRIGGERINGS')
         for frame in db.frames:
             if frame.is_complex_multiplexed:
-                logger.error("export complex multiplexers is not supported - ignoring frame " + frame.name)
+                logger.error("Export complex multiplexers is not supported - ignoring frame %s", frame.name)
                 continue
-            canFrameTriggering = createSubElement(
-                frameTriggering, 'CAN-FRAME-TRIGGERING')
-            createSubElement(canFrameTriggering, 'SHORT-NAME', frame.name)
-            framePortRefs = createSubElement(
-                canFrameTriggering, 'FRAME-PORT-REFS')
+            can_frame_triggering = create_sub_element(frame_triggering, 'CAN-FRAME-TRIGGERING')
+            create_sub_element(can_frame_triggering, 'SHORT-NAME', frame.name)
+            frame_port_refs = create_sub_element(can_frame_triggering, 'FRAME-PORT-REFS')
             for transmitter in frame.transmitters:
-                framePortRef = createSubElement(
-                    framePortRefs, 'FRAME-PORT-REF')
-                framePortRef.set('DEST', 'FRAME-PORT')
-                framePortRef.text = "/ECU/" + transmitter + \
-                    "/CN_" + transmitter + "/" + frame.name
+                frame_port_ref = create_sub_element(frame_port_refs, 'FRAME-PORT-REF')
+                frame_port_ref.set('DEST', 'FRAME-PORT')
+                frame_port_ref.text = "/ECU/{0}/CN_{0}/{1}".format(transmitter, frame.name)
             for rec in frame.receivers:
-                framePortRef = createSubElement(
-                    framePortRefs, 'FRAME-PORT-REF')
-                framePortRef.set('DEST', 'FRAME-PORT')
-                framePortRef.text = "/ECU/" + rec + "/CN_" + rec + "/" + frame.name
-            frameRef = createSubElement(canFrameTriggering, 'FRAME-REF')
-            if arVersion[0] == "3":
-                frameRef.set('DEST', 'FRAME')
-                frameRef.text = "/Frame/FRAME_" + frame.name
-                pduTriggeringRefs = createSubElement(
-                    canFrameTriggering, 'I-PDU-TRIGGERING-REFS')
-                pduTriggeringRef = createSubElement(
-                    pduTriggeringRefs, 'I-PDU-TRIGGERING-REF')
-                pduTriggeringRef.set('DEST', 'I-PDU-TRIGGERING')
+                frame_port_ref = create_sub_element(frame_port_refs, 'FRAME-PORT-REF')
+                frame_port_ref.set('DEST', 'FRAME-PORT')
+                frame_port_ref.text = "/ECU/{0}/CN_{0}/{1}".format(rec, frame.name)
+            frame_ref = create_sub_element(can_frame_triggering, 'FRAME-REF')
+            if ar_version[0] == "3":
+                frame_ref.set('DEST', 'FRAME')
+                frame_ref.text = "/Frame/FRAME_{0}".format(frame.name)
+                pdu_triggering_refs = create_sub_element(can_frame_triggering, 'I-PDU-TRIGGERING-REFS')
+                pdu_triggering_ref = create_sub_element(pdu_triggering_refs, 'I-PDU-TRIGGERING-REF')
+                pdu_triggering_ref.set('DEST', 'I-PDU-TRIGGERING')
             else:
-                frameRef.set('DEST', 'CAN-FRAME')
-                frameRef.text = "/CanFrame/FRAME_" + frame.name
-                pduTriggering = createSubElement(
-                    canFrameTriggering, 'PDU-TRIGGERINGS')
-                pduTriggeringRefConditional = createSubElement(
-                    pduTriggering, 'PDU-TRIGGERING-REF-CONDITIONAL')
-                pduTriggeringRef = createSubElement(
-                    pduTriggeringRefConditional, 'PDU-TRIGGERING-REF')
-                pduTriggeringRef.set('DEST', 'PDU-TRIGGERING')
+                frame_ref.set('DEST', 'CAN-FRAME')
+                frame_ref.text = "/CanFrame/FRAME_{0}".format(frame.name)
+                pdu_triggering = create_sub_element(can_frame_triggering, 'PDU-TRIGGERINGS')
+                pdu_triggering_ref_conditional = create_sub_element(pdu_triggering, 'PDU-TRIGGERING-REF-CONDITIONAL')
+                pdu_triggering_ref = create_sub_element(pdu_triggering_ref_conditional, 'PDU-TRIGGERING-REF')
+                pdu_triggering_ref.set('DEST', 'PDU-TRIGGERING')
 
-            if frame.arbitration_id.extended == 0:
-                createSubElement(
-                    canFrameTriggering,
-                    'CAN-ADDRESSING-MODE',
-                    'STANDARD')
+            if frame.arbitration_id.extended is False:
+                create_sub_element(can_frame_triggering, 'CAN-ADDRESSING-MODE', 'STANDARD')
             else:
-                createSubElement(
-                    canFrameTriggering,
-                    'CAN-ADDRESSING-MODE',
-                    'EXTENDED')
-            createSubElement(canFrameTriggering, 'IDENTIFIER', str(frame.arbitration_id.id))
+                create_sub_element(can_frame_triggering, 'CAN-ADDRESSING-MODE', 'EXTENDED')
+            create_sub_element(can_frame_triggering, 'IDENTIFIER', str(frame.arbitration_id.id))
 
-            pduTriggeringRef.text = "/Cluster/CAN/IPDUTRIGG_" + frame.name
+            pdu_triggering_ref.text = "/Cluster/CAN/IPDUTRIGG_{0}".format(frame.name)
 
-        if arVersion[0] == "3":
-            ipduTriggerings = createSubElement(
-                physicalChannel, 'I-PDU-TRIGGERINGS')
+        if ar_version[0] == "3":
+            ipdu_triggerings = create_sub_element(physical_channel, 'I-PDU-TRIGGERINGS')
             for frame in db.frames:
                 if frame.is_complex_multiplexed:
                     continue
 
-                ipduTriggering = createSubElement(
-                    ipduTriggerings, 'I-PDU-TRIGGERING')
-                createSubElement(
-                    ipduTriggering,
-                    'SHORT-NAME',
-                    "IPDUTRIGG_" +
-                    frame.name)
-                ipduRef = createSubElement(ipduTriggering, 'I-PDU-REF')
-                ipduRef.set('DEST', 'SIGNAL-I-PDU')
-                ipduRef.text = "/PDU/PDU_" + frame.name
-            isignalTriggerings = createSubElement(
-                physicalChannel, 'I-SIGNAL-TRIGGERINGS')
+                ipdu_triggering = create_sub_element(ipdu_triggerings, 'I-PDU-TRIGGERING')
+                create_sub_element(ipdu_triggering, 'SHORT-NAME', "IPDUTRIGG_{0}".format(frame.name))
+                ipdu_ref = create_sub_element(ipdu_triggering, 'I-PDU-REF')
+                ipdu_ref.set('DEST', 'SIGNAL-I-PDU')
+                ipdu_ref.text = "/PDU/PDU_{0}".format(frame.name)
+            isignal_triggerings = create_sub_element(physical_channel, 'I-SIGNAL-TRIGGERINGS')
             for frame in db.frames:
                 if frame.is_complex_multiplexed:
                     continue
-
                 for signal in frame.signals:
-                    isignalTriggering = createSubElement(
-                        isignalTriggerings, 'I-SIGNAL-TRIGGERING')
-                    createSubElement(isignalTriggering,
-                                     'SHORT-NAME', signal.name)
-                    iSignalPortRefs = createSubElement(
-                        isignalTriggering, 'I-SIGNAL-PORT-REFS')
+                    isignal_triggering = create_sub_element(isignal_triggerings, 'I-SIGNAL-TRIGGERING')
+                    create_sub_element(isignal_triggering, 'SHORT-NAME', signal.name)
+                    isignal_port_refs = create_sub_element(isignal_triggering, 'I-SIGNAL-PORT-REFS')
 
                     for receiver in signal.receivers:
-                        iSignalPortRef = createSubElement(
-                            iSignalPortRefs,
+                        isignal_port_ref = create_sub_element(
+                            isignal_port_refs,
                             'I-SIGNAL-PORT-REF',
-                            '/ECU/' +
-                            receiver +
-                            '/CN_' +
-                            receiver +
-                            '/' +
-                            signal.name)
-                        iSignalPortRef.set('DEST', 'SIGNAL-PORT')
+                            '/ECU/{0}/CN_{0}/{1}'.format(receiver, signal.name))
+                        isignal_port_ref.set('DEST', 'SIGNAL-PORT')
 
-                    isignalRef = createSubElement(
-                        isignalTriggering, 'SIGNAL-REF')
-                    isignalRef.set('DEST', 'I-SIGNAL')
-                    isignalRef.text = "/ISignal/" + signal.name
+                    isignal_ref = create_sub_element(
+                        isignal_triggering, 'SIGNAL-REF')
+                    isignal_ref.set('DEST', 'I-SIGNAL')
+                    isignal_ref.text = "/ISignal/{}".format(signal.name)
         else:
-            isignalTriggerings = createSubElement(
-                physicalChannel, 'I-SIGNAL-TRIGGERINGS')
+            isignal_triggerings = create_sub_element(physical_channel, 'I-SIGNAL-TRIGGERINGS')
             for frame in db.frames:
                 if frame.is_complex_multiplexed:
                     continue
 
                 for signal in frame.signals:
-                    isignalTriggering = createSubElement(
-                        isignalTriggerings, 'I-SIGNAL-TRIGGERING')
-                    createSubElement(isignalTriggering,
-                                     'SHORT-NAME', signal.name)
-                    iSignalPortRefs = createSubElement(
-                        isignalTriggering, 'I-SIGNAL-PORT-REFS')
-                    for receiver in signal.receiver:
-                        iSignalPortRef = createSubElement(
-                            iSignalPortRefs,
+                    isignal_triggering = create_sub_element(isignal_triggerings, 'I-SIGNAL-TRIGGERING')
+                    create_sub_element(isignal_triggering, 'SHORT-NAME', signal.name)
+                    isignal_port_refs = create_sub_element(isignal_triggering, 'I-SIGNAL-PORT-REFS')
+                    for receiver in signal.receivers:
+                        isignal_port_ref = create_sub_element(
+                            isignal_port_refs,
                             'I-SIGNAL-PORT-REF',
-                            '/ECU/' +
-                            receiver +
-                            '/CN_' +
-                            receiver +
-                            '/' +
-                            signal.name)
-                        iSignalPortRef.set('DEST', 'I-SIGNAL-PORT')
+                            '/ECU/{0}/CN_{0}/{1}'.format(receiver, signal.name))
+                        isignal_port_ref.set('DEST', 'I-SIGNAL-PORT')
 
-                    isignalRef = createSubElement(
-                        isignalTriggering, 'I-SIGNAL-REF')
-                    isignalRef.set('DEST', 'I-SIGNAL')
-                    isignalRef.text = "/ISignal/" + signal.name
-            ipduTriggerings = createSubElement(
-                physicalChannel, 'PDU-TRIGGERINGS')
+                    isignal_ref = create_sub_element(isignal_triggering, 'I-SIGNAL-REF')
+                    isignal_ref.set('DEST', 'I-SIGNAL')
+                    isignal_ref.text = "/ISignal/{0}".format(signal.name)
+            ipdu_triggerings = create_sub_element(physical_channel, 'PDU-TRIGGERINGS')
             for frame in db.frames:
                 if frame.is_complex_multiplexed:
                     continue
 
-                ipduTriggering = createSubElement(
-                    ipduTriggerings, 'PDU-TRIGGERING')
-                createSubElement(
-                    ipduTriggering,
+                ipdu_triggering = create_sub_element(ipdu_triggerings, 'PDU-TRIGGERING')
+                create_sub_element(
+                    ipdu_triggering,
                     'SHORT-NAME',
-                    "IPDUTRIGG_" +
-                    frame.name)
+                    "IPDUTRIGG_{0}".format(frame.name))
                 # missing: I-PDU-PORT-REFS
-                ipduRef = createSubElement(ipduTriggering, 'I-PDU-REF')
-                ipduRef.set('DEST', 'I-SIGNAL-I-PDU')
-                ipduRef.text = "/PDU/PDU_" + frame.name
+                ipdu_ref = create_sub_element(ipdu_triggering, 'I-PDU-REF')
+                ipdu_ref.set('DEST', 'I-SIGNAL-I-PDU')
+                ipdu_ref.text = "/PDU/PDU_{0}".format(frame.name)
                 # missing: I-SIGNAL-TRIGGERINGS
 
 # TODO
-#        ipduTriggerings = createSubElement(physicalChannel, 'PDU-TRIGGERINGS')
+#        ipdu_triggerings = createSubElement(physical_channel, 'PDU-TRIGGERINGS')
 #        for frame in db.frames:
-#            ipduTriggering = createSubElement(ipduTriggerings, 'PDU-TRIGGERING')
-#            createSubElement(ipduTriggering, 'SHORT-NAME', "PDUTRIGG_" + frame.name)
-#            ipduRef = createSubElement(ipduTriggering, 'I-PDU-REF')
-#            ipduRef.set('DEST','SIGNAL-I-PDU')
-#            ipduRef.text = "/PDU/PDU_" + frame.name
+#            ipdu_triggering = createSubElement(ipdu_triggerings, 'PDU-TRIGGERING')
+#            createSubElement(ipdu_triggering, 'SHORT-NAME', "PDUTRIGG_{0}".format(frame.name))
+#            ipdu_ref = createSubElement(ipdu_triggering, 'I-PDU-REF')
+#            ipdu_ref.set('DEST','SIGNAL-I-PDU')
+#            ipdu_ref.text = "/PDU/PDU_{0}".format(frame.name)
 
     #
     # AR-PACKAGE FRAME
     #
-    arPackage = createSubElement(toplevelPackages, 'AR-PACKAGE')
-    if arVersion[0] == "3":
-        createSubElement(arPackage, 'SHORT-NAME', 'Frame')
+    ar_package = create_sub_element(top_level_packages, 'AR-PACKAGE')
+    if ar_version[0] == "3":
+        create_sub_element(ar_package, 'SHORT-NAME', 'Frame')
     else:
-        createSubElement(arPackage, 'SHORT-NAME', 'CanFrame')
+        create_sub_element(ar_package, 'SHORT-NAME', 'CanFrame')
 
-    elements = createSubElement(arPackage, 'ELEMENTS')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
     for name in dbs:
         db = dbs[name]
         # TODO: reused frames will be paced multiple times in file
@@ -340,115 +287,105 @@ def dump(dbs, f, **options):
             if frame.is_complex_multiplexed:
                 continue
 
-            if arVersion[0] == "3":
-                frameEle = createSubElement(elements, 'FRAME')
+            if ar_version[0] == "3":
+                frame_ele = create_sub_element(elements, 'FRAME')
             else:
-                frameEle = createSubElement(elements, 'CAN-FRAME')
-            createSubElement(frameEle, 'SHORT-NAME', "FRAME_" + frame.name)
+                frame_ele = create_sub_element(elements, 'CAN-FRAME')
+            create_sub_element(frame_ele, 'SHORT-NAME', "FRAME_{0}".format(frame.name))
             if frame.comment:
-                desc = createSubElement(frameEle, 'DESC')
-                l2 = createSubElement(desc, 'L-2')
+                desc = create_sub_element(frame_ele, 'DESC')
+                l2 = create_sub_element(desc, 'L-2')
                 l2.set("L", "FOR-ALL")
                 l2.text = frame.comment
-            createSubElement(frameEle, 'FRAME-LENGTH', "%d" % frame.size)
-            pdumappings = createSubElement(frameEle, 'PDU-TO-FRAME-MAPPINGS')
-            pdumapping = createSubElement(pdumappings, 'PDU-TO-FRAME-MAPPING')
-            createSubElement(pdumapping, 'SHORT-NAME', frame.name)
-            createSubElement(
-                pdumapping,
-                'PACKING-BYTE-ORDER',
-                "MOST-SIGNIFICANT-BYTE-LAST")
-            pduRef = createSubElement(pdumapping, 'PDU-REF')
-            createSubElement(pdumapping, 'START-POSITION', '0')
-            pduRef.text = "/PDU/PDU_" + frame.name
-            if arVersion[0] == "3":
-                pduRef.set('DEST', 'SIGNAL-I-PDU')
+            create_sub_element(frame_ele, 'FRAME-LENGTH', "%d" % frame.size)
+            pdu_mappings = create_sub_element(frame_ele, 'PDU-TO-FRAME-MAPPINGS')
+            pdu_mapping = create_sub_element(pdu_mappings, 'PDU-TO-FRAME-MAPPING')
+            create_sub_element(pdu_mapping, 'SHORT-NAME', frame.name)
+            create_sub_element(pdu_mapping, 'PACKING-BYTE-ORDER', "MOST-SIGNIFICANT-BYTE-LAST")
+            pdu_ref = create_sub_element(pdu_mapping, 'PDU-REF')
+            create_sub_element(pdu_mapping, 'START-POSITION', '0')
+            pdu_ref.text = "/PDU/PDU_{0}".format(frame.name)
+            if ar_version[0] == "3":
+                pdu_ref.set('DEST', 'SIGNAL-I-PDU')
             else:
-                pduRef.set('DEST', 'I-SIGNAL-I-PDU')
+                pdu_ref.set('DEST', 'I-SIGNAL-I-PDU')
 
     #
     # AR-PACKAGE PDU
     #
-    arPackage = createSubElement(toplevelPackages, 'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'PDU')
-    elements = createSubElement(arPackage, 'ELEMENTS')
+    ar_package = create_sub_element(top_level_packages, 'AR-PACKAGE')
+    create_sub_element(ar_package, 'SHORT-NAME', 'PDU')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
             if frame.is_complex_multiplexed:
                 continue
 
-            if arVersion[0] == "3":
-                signalIpdu = createSubElement(elements, 'SIGNAL-I-PDU')
-                createSubElement(signalIpdu, 'SHORT-NAME', "PDU_" + frame.name)
-                createSubElement(signalIpdu, 'LENGTH', "%d" %
-                                 int(frame.size * 8))
+            if ar_version[0] == "3":
+                signal_ipdu = create_sub_element(elements, 'SIGNAL-I-PDU')
+                create_sub_element(signal_ipdu, 'SHORT-NAME', "PDU_{}".format(frame.name))
+                create_sub_element(signal_ipdu, 'LENGTH', str(frame.size * 8))
             else:
-                signalIpdu = createSubElement(elements, 'I-SIGNAL-I-PDU')
-                createSubElement(signalIpdu, 'SHORT-NAME', "PDU_" + frame.name)
-                createSubElement(signalIpdu, 'LENGTH', "%d" % int(frame.size))
+                signal_ipdu = create_sub_element(elements, 'I-SIGNAL-I-PDU')
+                create_sub_element(signal_ipdu, 'SHORT-NAME', "PDU_{}".format(frame.name))
+                create_sub_element(signal_ipdu, 'LENGTH', str(frame.size))
 
             # I-PDU-TIMING-SPECIFICATION
-            if arVersion[0] == "3":
-                signalToPduMappings = createSubElement(
-                    signalIpdu, 'SIGNAL-TO-PDU-MAPPINGS')
+            if ar_version[0] == "3":
+                signal_to_pdu_mappings = create_sub_element(signal_ipdu, 'SIGNAL-TO-PDU-MAPPINGS')
             else:
-                signalToPduMappings = createSubElement(
-                    signalIpdu, 'I-SIGNAL-TO-PDU-MAPPINGS')
+                signal_to_pdu_mappings = create_sub_element(signal_ipdu, 'I-SIGNAL-TO-PDU-MAPPINGS')
 
             for signal in frame.signals:
-                signalToPduMapping = createSubElement(
-                    signalToPduMappings, 'I-SIGNAL-TO-I-PDU-MAPPING')
-                createSubElement(signalToPduMapping, 'SHORT-NAME', signal.name)
+                signal_to_pdu_mapping = create_sub_element(signal_to_pdu_mappings, 'I-SIGNAL-TO-I-PDU-MAPPING')
+                create_sub_element(signal_to_pdu_mapping, 'SHORT-NAME', signal.name)
 
-                if arVersion[0] == "3":
-                    if signal.is_little_endian == 1:  # Intel
-                        createSubElement(
-                            signalToPduMapping,
+                if ar_version[0] == "3":
+                    if signal.is_little_endian:  # Intel
+                        create_sub_element(
+                            signal_to_pdu_mapping,
                             'PACKING-BYTE-ORDER',
                             'MOST-SIGNIFICANT-BYTE-LAST')
                     else:  # Motorola
-                        createSubElement(
-                            signalToPduMapping,
+                        create_sub_element(
+                            signal_to_pdu_mapping,
                             'PACKING-BYTE-ORDER',
                             'MOST-SIGNIFICANT-BYTE-FIRST')
-                    signalRef = createSubElement(
-                        signalToPduMapping, 'SIGNAL-REF')
+                    signal_ref = create_sub_element(signal_to_pdu_mapping, 'SIGNAL-REF')
                 else:
-                    signalRef = createSubElement(
-                        signalToPduMapping, 'I-SIGNAL-REF')
-                    if signal.is_little_endian == 1:  # Intel
-                        createSubElement(
-                            signalToPduMapping,
+                    signal_ref = create_sub_element(signal_to_pdu_mapping, 'I-SIGNAL-REF')
+                    if signal.is_little_endian:  # Intel
+                        create_sub_element(
+                            signal_to_pdu_mapping,
                             'PACKING-BYTE-ORDER',
                             'MOST-SIGNIFICANT-BYTE-LAST')
                     else:  # Motorola
-                        createSubElement(
-                            signalToPduMapping,
+                        create_sub_element(
+                            signal_to_pdu_mapping,
                             'PACKING-BYTE-ORDER',
                             'MOST-SIGNIFICANT-BYTE-FIRST')
-                signalRef.text = "/ISignal/" + signal.name
-                signalRef.set('DEST', 'I-SIGNAL')
+                signal_ref.text = "/ISignal/{0}".format(signal.name)
+                signal_ref.set('DEST', 'I-SIGNAL')
 
-                createSubElement(signalToPduMapping, 'START-POSITION',
-                                 str(signal.get_startbit(bit_numbering=1)))
+                create_sub_element(signal_to_pdu_mapping, 'START-POSITION',
+                                   str(signal.get_startbit(bit_numbering=1)))
                 # missing: TRANSFER-PROPERTY: PENDING/...
 
             for group in frame.signalGroups:
-                signalToPduMapping = createSubElement(
-                    signalToPduMappings, 'I-SIGNAL-TO-I-PDU-MAPPING')
-                createSubElement(signalToPduMapping, 'SHORT-NAME', group.name)
-                signalRef = createSubElement(signalToPduMapping, 'SIGNAL-REF')
-                signalRef.text = "/ISignal/" + group.name
-                signalRef.set('DEST', 'I-SIGNAL')
+                signal_to_pdu_mapping = create_sub_element(signal_to_pdu_mappings, 'I-SIGNAL-TO-I-PDU-MAPPING')
+                create_sub_element(signal_to_pdu_mapping, 'SHORT-NAME', group.name)
+                signal_ref = create_sub_element(signal_to_pdu_mapping, 'SIGNAL-REF')
+                signal_ref.text = "/ISignal/{}".format(group.name)
+                signal_ref.set('DEST', 'I-SIGNAL')
                 # TODO: TRANSFER-PROPERTY: PENDING???
 
     #
     # AR-PACKAGE ISignal
     #
-    arPackage = createSubElement(toplevelPackages, 'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'ISignal')
-    elements = createSubElement(arPackage, 'ELEMENTS')
+    ar_package = create_sub_element(top_level_packages, 'AR-PACKAGE')
+    create_sub_element(ar_package, 'SHORT-NAME', 'ISignal')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
@@ -456,51 +393,50 @@ def dump(dbs, f, **options):
                 continue
 
             for signal in frame.signals:
-                signalEle = createSubElement(elements, 'I-SIGNAL')
-                createSubElement(signalEle, 'SHORT-NAME', signal.name)
-                if arVersion[0] == "4":
-                    createSubElement(signalEle, 'LENGTH',
-                                     str(signal.signalsize))
+                signal_ele = create_sub_element(elements, 'I-SIGNAL')
+                create_sub_element(signal_ele, 'SHORT-NAME', signal.name)
+                if ar_version[0] == "4":
+                    create_sub_element(signal_ele, 'LENGTH', str(signal.size))
 
-                    networkRepresentProps = createSubElement(
-                        signalEle, 'NETWORK-REPRESENTATION-PROPS')
-                    swDataDefPropsVariants = createSubElement(
-                        networkRepresentProps, 'SW-DATA-DEF-PROPS-VARIANTS')
-                    swDataDefPropsConditional = createSubElement(
-                        swDataDefPropsVariants, 'SW-DATA-DEF-PROPS-CONDITIONAL')
+                    network_represent_props = create_sub_element(
+                        signal_ele, 'NETWORK-REPRESENTATION-PROPS')
+                    sw_data_def_props_variants = create_sub_element(
+                        network_represent_props, 'SW-DATA-DEF-PROPS-VARIANTS')
+                    sw_data_def_props_conditional = create_sub_element(
+                        sw_data_def_props_variants, 'SW-DATA-DEF-PROPS-CONDITIONAL')
                     
-                    baseTypeRef = createSubElement(swDataDefPropsConditional, 'BASE-TYPE-REF')
-                    baseTypeRef.set('DEST', 'SW-BASE-TYPE')
-                    createType, size = getBaseTypeOfSignal(signal)
-                    baseTypeRef.text = "/DataType/" + createType
-                    compuMethodRef = createSubElement(
-                        swDataDefPropsConditional,
+                    base_type_ref = create_sub_element(sw_data_def_props_conditional, 'BASE-TYPE-REF')
+                    base_type_ref.set('DEST', 'SW-BASE-TYPE')
+                    create_type, size = get_base_type_of_signal(signal)
+                    base_type_ref.text = "/DataType/{}".format(create_type)
+                    compu_method_ref = create_sub_element(
+                        sw_data_def_props_conditional,
                         'COMPU-METHOD-REF',
-                        '/DataType/Semantics/' + signal.name)
-                    compuMethodRef.set('DEST', 'COMPU-METHOD')
-                    unitRef = createSubElement(
-                        swDataDefPropsConditional,
+                        '/DataType/Semantics/{}'.format(signal.name))
+                    compu_method_ref.set('DEST', 'COMPU-METHOD')
+                    unit_ref = create_sub_element(
+                        sw_data_def_props_conditional,
                         'UNIT-REF',
-                        '/DataType/Unit/' + signal.name)
-                    unitRef.set('DEST', 'UNIT')
+                        '/DataType/Unit/{}'.format(signal.name))
+                    unit_ref.set('DEST', 'UNIT')
 
-                sysSigRef = createSubElement(signalEle, 'SYSTEM-SIGNAL-REF')
-                sysSigRef.text = "/Signal/" + signal.name
+                sys_sig_ref = create_sub_element(signal_ele, 'SYSTEM-SIGNAL-REF')
+                sys_sig_ref.text = "/Signal/{}".format(signal.name)
 
-                sysSigRef.set('DEST', 'SYSTEM-SIGNAL')
+                sys_sig_ref.set('DEST', 'SYSTEM-SIGNAL')
             for group in frame.signalGroups:
-                signalEle = createSubElement(elements, 'I-SIGNAL')
-                createSubElement(signalEle, 'SHORT-NAME', group.name)
-                sysSigRef = createSubElement(signalEle, 'SYSTEM-SIGNAL-REF')
-                sysSigRef.text = "/Signal/" + group.name
-                sysSigRef.set('DEST', 'SYSTEM-SIGNAL-GROUP')
+                signal_ele = create_sub_element(elements, 'I-SIGNAL')
+                create_sub_element(signal_ele, 'SHORT-NAME', group.name)
+                sys_sig_ref = create_sub_element(signal_ele, 'SYSTEM-SIGNAL-REF')
+                sys_sig_ref.text = "/Signal/{}".format(group.name)
+                sys_sig_ref.set('DEST', 'SYSTEM-SIGNAL-GROUP')
 
     #
     # AR-PACKAGE Signal
     #
-    arPackage = createSubElement(toplevelPackages, 'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'Signal')
-    elements = createSubElement(arPackage, 'ELEMENTS')
+    ar_package = create_sub_element(top_level_packages, 'AR-PACKAGE')
+    create_sub_element(ar_package, 'SHORT-NAME', 'Signal')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
@@ -508,47 +444,45 @@ def dump(dbs, f, **options):
                 continue
 
             for signal in frame.signals:
-                signalEle = createSubElement(elements, 'SYSTEM-SIGNAL')
-                createSubElement(signalEle, 'SHORT-NAME', signal.name)
+                signal_ele = create_sub_element(elements, 'SYSTEM-SIGNAL')
+                create_sub_element(signal_ele, 'SHORT-NAME', signal.name)
                 if signal.comment:
-                    desc = createSubElement(signalEle, 'DESC')
-                    l2 = createSubElement(desc, 'L-2')
+                    desc = create_sub_element(signal_ele, 'DESC')
+                    l2 = create_sub_element(desc, 'L-2')
                     l2.set("L", "FOR-ALL")
                     l2.text = signal.comment
-                if arVersion[0] == "3":
-                    dataTypeRef = createSubElement(signalEle, 'DATA-TYPE-REF')
+                if ar_version[0] == "3":
+                    data_type_ref = create_sub_element(signal_ele, 'DATA-TYPE-REF')
                     if signal.is_float:
-                        dataTypeRef.set('DEST', 'REAL-TYPE')
+                        data_type_ref.set('DEST', 'REAL-TYPE')
                     else:
-                        dataTypeRef.set('DEST', 'INTEGER-TYPE')
-                    dataTypeRef.text = "/DataType/" + signal.name
-                    createSubElement(signalEle, 'LENGTH',
-                                     str(signal.size))
+                        data_type_ref.set('DEST', 'INTEGER-TYPE')
+                    data_type_ref.text = "/DataType/{}".format(signal.name)
+                    create_sub_element(signal_ele, 'LENGTH', str(signal.size))
+                # init_value_ref = create_sub_element(signal_ele, 'INIT-VALUE-REF')
+                # init_value_ref.set('DEST', 'INTEGER-LITERAL')
+                # init_value_ref.text = "/CONSTANTS/{}".format(signal.name)
             for group in frame.signalGroups:
-                groupEle = createSubElement(elements, 'SYSTEM-SIGNAL-GROUP')
-                createSubElement(signalEle, 'SHORT-NAME', group.name)
-                if arVersion[0] == "3":
-                    dataTypeRef.set('DEST', 'INTEGER-TYPE')
-                sysSignalRefs = createSubElement(
-                    groupEle, 'SYSTEM-SIGNAL-REFS')
+                group_ele = create_sub_element(elements, 'SYSTEM-SIGNAL-GROUP')
+                create_sub_element(group_ele, 'SHORT-NAME', group.name)
+                if ar_version[0] == "3":
+                    data_type_ref.set('DEST', 'INTEGER-TYPE')  # todo check this
+                sys_signal_refs = create_sub_element(
+                    group_ele, 'SYSTEM-SIGNAL-REFS')
                 for member in group.signals:
-                    memberEle = createSubElement(
-                        sysSignalRefs, 'SYSTEM-SIGNAL-REF')
-                    memberEle.set('DEST', 'SYSTEM-SIGNAL')
-                    memberEle.text = "/Signal/" + member.name
-
-#                       initValueRef = createSubElement(signalEle, 'INIT-VALUE-REF')
-#                       initValueRef.set('DEST','INTEGER-LITERAL')
-#                       initValueRef.text = "/CONSTANTS/" + signal.name
+                    member_ele = create_sub_element(
+                        sys_signal_refs, 'SYSTEM-SIGNAL-REF')
+                    member_ele.set('DEST', 'SYSTEM-SIGNAL')
+                    member_ele.text = "/Signal/{}".format(member.name)
 
     #
     # AR-PACKAGE Datatype
     #
-    arPackage = createSubElement(toplevelPackages, 'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'DataType')
-    elements = createSubElement(arPackage, 'ELEMENTS')
+    ar_package = create_sub_element(top_level_packages, 'AR-PACKAGE')
+    create_sub_element(ar_package, 'SHORT-NAME', 'DataType')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
 
-    if arVersion[0] == "3":
+    if ar_version[0] == "3":
         for name in dbs:
             db = dbs[name]
             for frame in db.frames:
@@ -557,24 +491,23 @@ def dump(dbs, f, **options):
 
                 for signal in frame.signals:
                     if signal.is_float:
-                        typeEle = createSubElement(elements, 'REAL-TYPE')
+                        type_ele = create_sub_element(elements, 'REAL-TYPE')
                     else:
-                        typeEle = createSubElement(elements, 'INTEGER-TYPE')
-                    createSubElement(typeEle, 'SHORT-NAME', signal.name)
-                    swDataDefProps = createSubElement(
-                        typeEle, 'SW-DATA-DEF-PROPS')
+                        type_ele = create_sub_element(elements, 'INTEGER-TYPE')
+                    create_sub_element(type_ele, 'SHORT-NAME', signal.name)
+                    sw_data_def_props = create_sub_element(
+                        type_ele, 'SW-DATA-DEF-PROPS')
                     if signal.is_float:
-                        encoding = createSubElement(typeEle, 'ENCODING')                        
-                        if signal.signalsize > 32:
+                        encoding = create_sub_element(type_ele, 'ENCODING')
+                        if signal.size > 32:
                             encoding.text = "DOUBLE"
                         else:
                             encoding.text = "SINGLE"
-                    compuMethodRef = createSubElement(
-                        swDataDefProps, 'COMPU-METHOD-REF')
-                    compuMethodRef.set('DEST', 'COMPU-METHOD')
-                    compuMethodRef.text = "/DataType/Semantics/" + signal.name
+                    compu_method_ref = create_sub_element(sw_data_def_props, 'COMPU-METHOD-REF')
+                    compu_method_ref.set('DEST', 'COMPU-METHOD')
+                    compu_method_ref.text = "/DataType/Semantics/{}".format(signal.name)
     else:
-        createdTypes = []  # type: typing.List[str]
+        created_types = []  # type: typing.List[str]
         for name in dbs:
             db = dbs[name]
             for frame in db.frames:
@@ -582,27 +515,23 @@ def dump(dbs, f, **options):
                     continue
 
                 for signal in frame.signals:
-                    createType, size = getBaseTypeOfSignal(signal)
-                    if createType not in createdTypes:
-                        createdTypes.append(createType)
-                        swBaseType = createSubElement(elements, 'SW-BASE-TYPE')
-                        sname = createSubElement(swBaseType, 'SHORT-NAME')
-                        sname.text = createType
-                        cat = createSubElement(swBaseType, 'CATEGORY')
-                        cat.text = "FIXED_LENGTH"
-                        baseTypeSize = createSubElement(swBaseType, 'BASE-TYPE-SIZE')
-                        baseTypeSize.text = str(size)
+                    create_type, size = get_base_type_of_signal(signal)
+                    if create_type not in created_types:
+                        created_types.append(create_type)
+                        sw_base_type = create_sub_element(elements, 'SW-BASE-TYPE')
+                        create_sub_element(sw_base_type, 'SHORT-NAME', create_type)
+                        create_sub_element(sw_base_type, 'CATEGORY', 'FIXED_LENGTH')
+                        create_sub_element(sw_base_type, 'BASE-TYPE-SIZE', str(size))
                         if signal.is_float:
-                            enc = createSubElement(swBaseType, 'BASE-TYPE-ENCODING')
-                            enc.text = "IEEE754"
+                            create_sub_element(sw_base_type, 'BASE-TYPE-ENCODING', 'IEEE754')
 
-    if arVersion[0] == "3":
-        subpackages = createSubElement(arPackage, 'SUB-PACKAGES')
+    if ar_version[0] == "3":
+        subpackages = create_sub_element(ar_package, 'SUB-PACKAGES')
     else:
-        subpackages = createSubElement(arPackage, 'AR-PACKAGES')
-    arPackage = createSubElement(subpackages, 'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'Semantics')
-    elements = createSubElement(arPackage, 'ELEMENTS')
+        subpackages = create_sub_element(ar_package, 'AR-PACKAGES')
+    ar_package = create_sub_element(subpackages, 'AR-PACKAGE')
+    create_sub_element(ar_package, 'SHORT-NAME', 'Semantics')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
@@ -610,39 +539,36 @@ def dump(dbs, f, **options):
                 continue
 
             for signal in frame.signals:
-                compuMethod = createSubElement(elements, 'COMPU-METHOD')
-                createSubElement(compuMethod, 'SHORT-NAME', signal.name)
+                compu_method = create_sub_element(elements, 'COMPU-METHOD')
+                create_sub_element(compu_method, 'SHORT-NAME', signal.name)
                 # missing: UNIT-REF
-                compuIntToPhys = createSubElement(
-                    compuMethod, 'COMPU-INTERNAL-TO-PHYS')
-                compuScales = createSubElement(compuIntToPhys, 'COMPU-SCALES')
+                compu_int_to_phys = create_sub_element(
+                    compu_method, 'COMPU-INTERNAL-TO-PHYS')
+                compu_scales = create_sub_element(compu_int_to_phys, 'COMPU-SCALES')
                 for value in sorted(signal.values, key=lambda x: int(x)):
-                    compuScale = createSubElement(compuScales, 'COMPU-SCALE')
-                    desc = createSubElement(compuScale, 'DESC')
-                    l2 = createSubElement(desc, 'L-2')
+                    compu_scale = create_sub_element(compu_scales, 'COMPU-SCALE')
+                    desc = create_sub_element(compu_scale, 'DESC')
+                    l2 = create_sub_element(desc, 'L-2')
                     l2.set('L', 'FOR-ALL')
                     l2.text = signal.values[value]
-                    createSubElement(compuScale, 'LOWER-LIMIT', str(value))
-                    createSubElement(compuScale, 'UPPER-LIMIT', str(value))
-                    compuConst = createSubElement(compuScale, 'COMPU-CONST')
-                    createSubElement(compuConst, 'VT', signal.values[value])
+                    create_sub_element(compu_scale, 'LOWER-LIMIT', str(value))
+                    create_sub_element(compu_scale, 'UPPER-LIMIT', str(value))
+                    compu_const = create_sub_element(compu_scale, 'COMPU-CONST')
+                    create_sub_element(compu_const, 'VT', signal.values[value])
                 else:
-                    compuScale = createSubElement(compuScales, 'COMPU-SCALE')
-    #                createSubElement(compuScale, 'LOWER-LIMIT', str(#TODO))
-    #                createSubElement(compuScale, 'UPPER-LIMIT', str(#TODO))
-                    compuRationslCoeff = createSubElement(
-                        compuScale, 'COMPU-RATIONAL-COEFFS')
-                    compuNumerator = createSubElement(
-                        compuRationslCoeff, 'COMPU-NUMERATOR')
-                    createSubElement(compuNumerator, 'V', "%g" % signal.offset)
-                    createSubElement(compuNumerator, 'V', "%g" % signal.factor)
-                    compuDenomiator = createSubElement(
-                        compuRationslCoeff, 'COMPU-DENOMINATOR')
-                    createSubElement(compuDenomiator, 'V', "1")
+                    compu_scale = create_sub_element(compu_scales, 'COMPU-SCALE')
+                    # createSubElement(compuScale, 'LOWER-LIMIT', str(#TODO))
+                    # createSubElement(compuScale, 'UPPER-LIMIT', str(#TODO))
+                    compu_rationsl_coeff = create_sub_element(compu_scale, 'COMPU-RATIONAL-COEFFS')
+                    compu_numerator = create_sub_element(compu_rationsl_coeff, 'COMPU-NUMERATOR')
+                    create_sub_element(compu_numerator, 'V', "%g" % signal.offset)
+                    create_sub_element(compu_numerator, 'V', "%g" % signal.factor)
+                    compu_denomiator = create_sub_element(compu_rationsl_coeff, 'COMPU-DENOMINATOR')
+                    create_sub_element(compu_denomiator, 'V', "1")
 
-    arPackage = createSubElement(subpackages, 'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'Unit')
-    elements = createSubElement(arPackage, 'ELEMENTS')
+    ar_package = create_sub_element(subpackages, 'AR-PACKAGE')
+    create_sub_element(ar_package, 'SHORT-NAME', 'Unit')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
     for name in dbs:
         db = dbs[name]
         for frame in db.frames:
@@ -650,181 +576,158 @@ def dump(dbs, f, **options):
                 continue
 
             for signal in frame.signals:
-                unit = createSubElement(elements, 'UNIT')
-                createSubElement(unit, 'SHORT-NAME', signal.name)
-                createSubElement(unit, 'DISPLAY-NAME', signal.unit)
+                unit = create_sub_element(elements, 'UNIT')
+                create_sub_element(unit, 'SHORT-NAME', signal.name)
+                create_sub_element(unit, 'DISPLAY-NAME', signal.unit)
 
-    txIPduGroups = {}  # type: typing.Dict[str, typing.List[str]]
-    rxIPduGroups = {}  # type: typing.Dict[str, typing.List[str]]
+    tx_ipdu_groups = {}  # type: typing.Dict[str, typing.List[str]]
+    rx_ipdu_groups = {}  # type: typing.Dict[str, typing.List[str]]
 
     #
     # AR-PACKAGE ECU
     #
-    arPackage = createSubElement(toplevelPackages, 'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'ECU')
-    elements = createSubElement(arPackage, 'ELEMENTS')
+    ar_package = create_sub_element(top_level_packages, 'AR-PACKAGE')
+    create_sub_element(ar_package, 'SHORT-NAME', 'ECU')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
     for name in dbs:
         db = dbs[name]
         for ecu in db.ecus:
-            ecuInstance = createSubElement(elements, 'ECU-INSTANCE')
-            createSubElement(ecuInstance, 'SHORT-NAME', ecu.name)
+            ecu_instance = create_sub_element(elements, 'ECU-INSTANCE')
+            create_sub_element(ecu_instance, 'SHORT-NAME', ecu.name)
             if ecu.comment:
-                desc = createSubElement(ecuInstance, 'DESC')
-                l2 = createSubElement(desc, 'L-2')
+                desc = create_sub_element(ecu_instance, 'DESC')
+                l2 = create_sub_element(desc, 'L-2')
                 l2.set('L', 'FOR-ALL')
                 l2.text = ecu.comment
 
-            if arVersion[0] == "3":
-                assoIpduGroupRefs = createSubElement(
-                    ecuInstance, 'ASSOCIATED-I-PDU-GROUP-REFS')
-                connectors = createSubElement(ecuInstance, 'CONNECTORS')
-                commConnector = createSubElement(
-                    connectors, 'COMMUNICATION-CONNECTOR')
+            if ar_version[0] == "3":
+                asso_ipdu_group_refs = create_sub_element(
+                    ecu_instance, 'ASSOCIATED-I-PDU-GROUP-REFS')
+                connectors = create_sub_element(ecu_instance, 'CONNECTORS')
+                comm_connector = create_sub_element(connectors, 'COMMUNICATION-CONNECTOR')
             else:
-                assoIpduGroupRefs = createSubElement(
-                    ecuInstance, 'ASSOCIATED-COM-I-PDU-GROUP-REFS')
-                connectors = createSubElement(ecuInstance, 'CONNECTORS')
-                commConnector = createSubElement(
-                    connectors, 'CAN-COMMUNICATION-CONNECTOR')
+                asso_ipdu_group_refs = create_sub_element(ecu_instance, 'ASSOCIATED-COM-I-PDU-GROUP-REFS')
+                connectors = create_sub_element(ecu_instance, 'CONNECTORS')
+                comm_connector = create_sub_element(connectors, 'CAN-COMMUNICATION-CONNECTOR')
 
-            createSubElement(commConnector, 'SHORT-NAME', 'CN_' + ecu.name)
-            ecuCommPortInstances = createSubElement(
-                commConnector, 'ECU-COMM-PORT-INSTANCES')
+            create_sub_element(comm_connector, 'SHORT-NAME', 'CN_' + ecu.name)
+            ecu_comm_port_instances = create_sub_element(comm_connector, 'ECU-COMM-PORT-INSTANCES')
 
-            recTemp = None
-            sendTemp = None
+            rec_temp = None
+            send_temp = None
 
             for frame in db.frames:
                 if frame.is_complex_multiplexed:
                     continue
 
                 if ecu.name in frame.transmitters:
-                    frameport = createSubElement(
-                        ecuCommPortInstances, 'FRAME-PORT')
-                    createSubElement(frameport, 'SHORT-NAME', frame.name)
-                    createSubElement(
-                        frameport, 'COMMUNICATION-DIRECTION', 'OUT')
-                    sendTemp = 1
-                    if ecu.name + "_Tx" not in txIPduGroups:
-                        txIPduGroups[ecu.name + "_Tx"] = []
-                    txIPduGroups[ecu.name + "_Tx"].append(frame.name)
+                    frame_port = create_sub_element(ecu_comm_port_instances, 'FRAME-PORT')
+                    create_sub_element(frame_port, 'SHORT-NAME', frame.name)
+                    create_sub_element(frame_port, 'COMMUNICATION-DIRECTION', 'OUT')
+                    send_temp = 1
+                    if ecu.name + "_Tx" not in tx_ipdu_groups:
+                        tx_ipdu_groups[ecu.name + "_Tx"] = []
+                    tx_ipdu_groups[ecu.name + "_Tx"].append(frame.name)
 
                     # missing I-PDU-PORT
                     for signal in frame.signals:
-                        if arVersion[0] == "3":
-                            signalPort = createSubElement(
-                                ecuCommPortInstances, 'SIGNAL-PORT')
+                        if ar_version[0] == "3":
+                            signal_port = create_sub_element(ecu_comm_port_instances, 'SIGNAL-PORT')
                         else:
-                            signalPort = createSubElement(
-                                ecuCommPortInstances, 'I-SIGNAL-PORT')
+                            signal_port = create_sub_element(ecu_comm_port_instances, 'I-SIGNAL-PORT')
 
-                        createSubElement(signalPort, 'SHORT-NAME', signal.name)
-                        createSubElement(
-                            signalPort, 'COMMUNICATION-DIRECTION', 'OUT')
+                        create_sub_element(signal_port, 'SHORT-NAME', signal.name)
+                        create_sub_element(signal_port, 'COMMUNICATION-DIRECTION', 'OUT')
                 if ecu.name in frame.receivers:
-                    frameport = createSubElement(
-                        ecuCommPortInstances, 'FRAME-PORT')
-                    createSubElement(frameport, 'SHORT-NAME', frame.name)
-                    createSubElement(
-                        frameport, 'COMMUNICATION-DIRECTION', 'IN')
-                    recTemp = 1
-                    if ecu.name + "_Tx" not in rxIPduGroups:
-                        rxIPduGroups[ecu.name + "_Rx"] = []
-                    rxIPduGroups[ecu.name + "_Rx"].append(frame.name)
+                    frame_port = create_sub_element(ecu_comm_port_instances, 'FRAME-PORT')
+                    create_sub_element(frame_port, 'SHORT-NAME', frame.name)
+                    create_sub_element(frame_port, 'COMMUNICATION-DIRECTION', 'IN')
+                    rec_temp = 1
+                    if ecu.name + "_Tx" not in rx_ipdu_groups:
+                        rx_ipdu_groups[ecu.name + "_Rx"] = []
+                    rx_ipdu_groups[ecu.name + "_Rx"].append(frame.name)
 
                     # missing I-PDU-PORT
                     for signal in frame.signals:
                         if ecu.name in signal.receivers:
-                            if arVersion[0] == "3":
-                                signalPort = createSubElement(
-                                    ecuCommPortInstances, 'SIGNAL-PORT')
+                            if ar_version[0] == "3":
+                                signal_port = create_sub_element(ecu_comm_port_instances, 'SIGNAL-PORT')
                             else:
-                                signalPort = createSubElement(
-                                    ecuCommPortInstances, 'I-SIGNAL-PORT')
+                                signal_port = create_sub_element(ecu_comm_port_instances, 'I-SIGNAL-PORT')
 
-                            createSubElement(
-                                signalPort, 'SHORT-NAME', signal.name)
-                            createSubElement(
-                                signalPort, 'COMMUNICATION-DIRECTION', 'IN')
+                            create_sub_element(signal_port, 'SHORT-NAME', signal.name)
+                            create_sub_element(signal_port, 'COMMUNICATION-DIRECTION', 'IN')
 
-            if recTemp is not None:
-                if arVersion[0] == "3":
-                    assoIpduGroupRef = createSubElement(
-                        assoIpduGroupRefs, 'ASSOCIATED-I-PDU-GROUP-REF')
-                    assoIpduGroupRef.set('DEST', "I-PDU-GROUP")
+            if rec_temp is not None:
+                if ar_version[0] == "3":
+                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-I-PDU-GROUP-REF')
+                    asso_ipdu_group_ref.set('DEST', "I-PDU-GROUP")
                 else:
-                    assoIpduGroupRef = createSubElement(
-                        assoIpduGroupRefs, 'ASSOCIATED-COM-I-PDU-GROUP-REF')
-                    assoIpduGroupRef.set('DEST', "I-SIGNAL-I-PDU-GROUP")
+                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-COM-I-PDU-GROUP-REF')
+                    asso_ipdu_group_ref.set('DEST', "I-SIGNAL-I-PDU-GROUP")
 
-                assoIpduGroupRef.text = "/IPDUGroup/" + ecu.name + "_Rx"
+                asso_ipdu_group_ref.text = "/IPDUGroup/{0}_Rx".format(ecu.name)
 
-            if sendTemp is not None:
-                if arVersion[0] == "3":
-                    assoIpduGroupRef = createSubElement(
-                        assoIpduGroupRefs, 'ASSOCIATED-I-PDU-GROUP-REF')
-                    assoIpduGroupRef.set('DEST', "I-PDU-GROUP")
+            if send_temp is not None:
+                if ar_version[0] == "3":
+                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-I-PDU-GROUP-REF')
+                    asso_ipdu_group_ref.set('DEST', "I-PDU-GROUP")
                 else:
-                    assoIpduGroupRef = createSubElement(
-                        assoIpduGroupRefs, 'ASSOCIATED-COM-I-PDU-GROUP-REF')
-                    assoIpduGroupRef.set('DEST', "I-SIGNAL-I-PDU-GROUP")
-                assoIpduGroupRef.text = "/IPDUGroup/" + ecu.name + "_Tx"
+                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-COM-I-PDU-GROUP-REF')
+                    asso_ipdu_group_ref.set('DEST', "I-SIGNAL-I-PDU-GROUP")
+                asso_ipdu_group_ref.text = "/IPDUGroup/{}_Tx".format(ecu.name)
 
     #
     # AR-PACKAGE IPDUGroup
     #
-    arPackage = createSubElement(toplevelPackages, 'AR-PACKAGE')
-    createSubElement(arPackage, 'SHORT-NAME', 'IPDUGroup')
-    elements = createSubElement(arPackage, 'ELEMENTS')
-    for pdugrp in txIPduGroups:
-        if arVersion[0] == "3":
-            ipduGrp = createSubElement(elements, 'I-PDU-GROUP')
+    ar_package = create_sub_element(top_level_packages, 'AR-PACKAGE')
+    create_sub_element(ar_package, 'SHORT-NAME', 'IPDUGroup')
+    elements = create_sub_element(ar_package, 'ELEMENTS')
+    for pdu_group in tx_ipdu_groups:
+        if ar_version[0] == "3":
+            ipdu_grp = create_sub_element(elements, 'I-PDU-GROUP')
         else:
-            ipduGrp = createSubElement(elements, 'I-SIGNAL-I-PDU-GROUP')
+            ipdu_grp = create_sub_element(elements, 'I-SIGNAL-I-PDU-GROUP')
 
-        createSubElement(ipduGrp, 'SHORT-NAME', pdugrp)
-        createSubElement(ipduGrp, 'COMMUNICATION-DIRECTION', "OUT")
+        create_sub_element(ipdu_grp, 'SHORT-NAME', pdu_group)
+        create_sub_element(ipdu_grp, 'COMMUNICATION-DIRECTION', "OUT")
 
-        if arVersion[0] == "3":
-            ipduRefs = createSubElement(ipduGrp, 'I-PDU-REFS')
-            for frame in txIPduGroups[pdugrp]:
-                ipduRef = createSubElement(ipduRefs, 'I-PDU-REF')
-                ipduRef.set('DEST', "SIGNAL-I-PDU")
-                ipduRef.text = "/PDU/PDU_" + frame
+        if ar_version[0] == "3":
+            ipdu_refs = create_sub_element(ipdu_grp, 'I-PDU-REFS')
+            for frame_name in tx_ipdu_groups[pdu_group]:
+                ipdu_ref = create_sub_element(ipdu_refs, 'I-PDU-REF')
+                ipdu_ref.set('DEST', "SIGNAL-I-PDU")
+                ipdu_ref.text = "/PDU/PDU_{}".format(frame_name)
         else:
-            isignalipdus = createSubElement(ipduGrp, 'I-SIGNAL-I-PDUS')
-            for frame in txIPduGroups[pdugrp]:
-                isignalipdurefconditional = createSubElement(
-                    isignalipdus, 'I-SIGNAL-I-PDU-REF-CONDITIONAL')
-                ipduRef = createSubElement(
-                    isignalipdurefconditional, 'I-SIGNAL-I-PDU-REF')
-                ipduRef.set('DEST', "I-SIGNAL-I-PDU")
-                ipduRef.text = "/PDU/PDU_" + frame
+            isignal_ipdus = create_sub_element(ipdu_grp, 'I-SIGNAL-I-PDUS')
+            for frame_name in tx_ipdu_groups[pdu_group]:
+                isignal_ipdu_ref_conditional = create_sub_element(isignal_ipdus, 'I-SIGNAL-I-PDU-REF-CONDITIONAL')
+                ipdu_ref = create_sub_element(isignal_ipdu_ref_conditional, 'I-SIGNAL-I-PDU-REF')
+                ipdu_ref.set('DEST', "I-SIGNAL-I-PDU")
+                ipdu_ref.text = "/PDU/PDU_{}".format(frame_name)
 
-    if arVersion[0] == "3":
-        for pdugrp in rxIPduGroups:
-            ipduGrp = createSubElement(elements, 'I-PDU-GROUP')
-            createSubElement(ipduGrp, 'SHORT-NAME', pdugrp)
-            createSubElement(ipduGrp, 'COMMUNICATION-DIRECTION', "IN")
+    if ar_version[0] == "3":
+        for pdu_group in rx_ipdu_groups:
+            ipdu_grp = create_sub_element(elements, 'I-PDU-GROUP')
+            create_sub_element(ipdu_grp, 'SHORT-NAME', pdu_group)
+            create_sub_element(ipdu_grp, 'COMMUNICATION-DIRECTION', "IN")
 
-            ipduRefs = createSubElement(ipduGrp, 'I-PDU-REFS')
-            for frame in rxIPduGroups[pdugrp]:
-                ipduRef = createSubElement(ipduRefs, 'I-PDU-REF')
-                ipduRef.set('DEST', "SIGNAL-I-PDU")
-                ipduRef.text = "/PDU/PDU_" + frame
+            ipdu_refs = create_sub_element(ipdu_grp, 'I-PDU-REFS')
+            for frame_name in rx_ipdu_groups[pdu_group]:
+                ipdu_ref = create_sub_element(ipdu_refs, 'I-PDU-REF')
+                ipdu_ref.set('DEST', "SIGNAL-I-PDU")
+                ipdu_ref.text = "/PDU/PDU_{}".format(frame_name)
     else:
-        for pdugrp in rxIPduGroups:
-            ipduGrp = createSubElement(elements, 'I-SIGNAL-I-PDU-GROUP')
-            createSubElement(ipduGrp, 'SHORT-NAME', pdugrp)
-            createSubElement(ipduGrp, 'COMMUNICATION-DIRECTION', "IN")
-            isignalipdus = createSubElement(ipduGrp, 'I-SIGNAL-I-PDUS')
-            for frame in rxIPduGroups[pdugrp]:
-                isignalipdurefconditional = createSubElement(
-                    isignalipdus, 'I-SIGNAL-I-PDU-REF-CONDITIONAL')
-                ipduRef = createSubElement(
-                    isignalipdurefconditional, 'I-SIGNAL-I-PDU-REF')
-                ipduRef.set('DEST', "I-SIGNAL-I-PDU")
-                ipduRef.text = "/PDU/PDU_" + frame
+        for pdu_group in rx_ipdu_groups:
+            ipdu_grp = create_sub_element(elements, 'I-SIGNAL-I-PDU-GROUP')
+            create_sub_element(ipdu_grp, 'SHORT-NAME', pdu_group)
+            create_sub_element(ipdu_grp, 'COMMUNICATION-DIRECTION', "IN")
+            isignal_ipdus = create_sub_element(ipdu_grp, 'I-SIGNAL-I-PDUS')
+            for frame_name in rx_ipdu_groups[pdu_group]:
+                isignal_ipdu_ref_conditional = create_sub_element(isignal_ipdus, 'I-SIGNAL-I-PDU-REF-CONDITIONAL')
+                ipdu_ref = create_sub_element(isignal_ipdu_ref_conditional, 'I-SIGNAL-I-PDU-REF')
+                ipdu_ref.set('DEST', "I-SIGNAL-I-PDU")
+                ipdu_ref.text = "/PDU/PDU_" + frame_name
 
     f.write(etree.tostring(root, pretty_print=True, xml_declaration=True))
 
