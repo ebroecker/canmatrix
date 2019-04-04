@@ -1,8 +1,6 @@
 import canmatrix.formats
-from pathlib2 import Path
+import pathlib2
 import attr
-import io
-import textwrap
 
 @attr.s
 class j1939_decoder(object):
@@ -15,7 +13,7 @@ class j1939_decoder(object):
     _data = attr.ib(init=False, default=bytearray())
 
     def decode(self, arbitration_id, can_data, matrix):
-        frame = matrix.frame_by_pgn(canmatrix.ArbitrationId(id=can_id, extended=True).pgn)
+        frame = matrix.frame_by_pgn(arbitration_id.pgn)
         if frame is not None:
             return ("regular", frame.decode(can_data))
         elif self.j1939_db.frame_by_pgn(arbitration_id.pgn) is not None:
@@ -64,7 +62,6 @@ class j1939_decoder(object):
 
         elif arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(0xEBFF).pgn:
             # transfer data
-            self.count_succesive_frames -= 1
 
             self._data = self._data + can_data[1:min(8, self.bytes_left + 1)]
             self.bytes_left = max(self.bytes_left - 7, 0)
@@ -77,77 +74,9 @@ class j1939_decoder(object):
                     return ("BAM last data", signals)
                 return ("BAM last data", {})
             else:
+                self.count_succesive_frames -= 1
                 return ("BAM data     ", {})
         return ("",{})
 
 
-def test_j1939_decoder():
-    dbc = io.BytesIO(textwrap.dedent(u'''\
-       BO_ 2566856834 CM_Requests: 9 CGW
-    SG_ CM_Inlet_MotorRequest : 50|2@0+ (1,0) [0|3] "" CM
-    SG_ CM_ChargeUnit_Request : 52|2@0+ (1,0) [0|3] "" CM
-    SG_ CM_RTC_TimerValue : 47|8@0+ (1,0) [0|254] "min" CM
-    SG_ CM_RTC_TimerRequest : 37|2@0+ (1,0) [0|3] "" CM
-    SG_ CM_PlugLock_MotorRequest : 35|3@0+ (1,0) [0|7] "" CM
-    SG_ CM_LED2_Request : 23|8@0+ (0.5,0) [0|100] "%" CM
-    SG_ CM_LED1_Request : 15|8@0+ (0.5,0) [0|100] "%" CM
-    SG_ CM_LED0_Request : 7|8@0+ (0.5,0) [0|100] "%" CM
-    SG_ CM_HighSideOut4_Request : 39|2@0+ (1,0) [0|3] "" CM
-    SG_ CM_HighSideOut3_Request : 25|2@0+ (1,0) [0|3] "" CM
-    SG_ CM_HighSideOut2_Request : 27|2@0+ (1,0) [0|3] "" CM
-    SG_ CM_HighSideOut1_Request : 29|2@0+ (1,0) [0|3] "" CM
-    SG_ CM_HighSideOut0_Request : 31|2@0+ (1,0) [0|3] "" CM
-    SG_ CM_ControlPilot_ChargeModeRe : 55|3@0+ (1,0) [0|7] "" CM
-       ''').encode('utf-8'))
-    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
-
-    t = j1939_decoder()
-
-    #  BAM
-    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xec0000, extended= True),
-        bytearray([0x20,10,0,1,0xff,0x66,0x1,0]), matrix)
-    print (type, signals)
-
-    # data 1
-    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xeb0000, extended= True),
-        bytearray([0x0,1,1,1,1,1,1,1]), matrix)
-    print (type, signals)
-
-    # data 2
-    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xeb0000, extended= True),
-        bytearray([0x1,1,1,1,1,1,1,1]), matrix)
-    print (type, signals)
-
-
-    can_ids = [0x18ECFF82, 0x18EBFF82, 0x18EBFF82]
-    can_data = [bytearray([0x20, 9, 0, 2, 0xff, 0x20, 0xff, 0]),bytearray([0x1, 0, 0, 0, 0, 0x80, 0x0, 0x80]),bytearray([0x2, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])]
-    #  BA0x20, M
-
-    for i in range(0,len(can_ids)):
-        (type, signals) = t.decode(canmatrix.ArbitrationId(id=can_ids[i], extended=True),
-             can_data[i], matrix)
-        print (type,"\t" , " ".join(["%02X" % x for x in can_data[i]]))
-
-        for signal, value in signals.items():
-            print (signal + " " + str(value.raw_value))
-
-    print ("-------- test data -------- ")
-    test_frames =   {
-        0xcef27fd : "fffae1ff00ffff",
-        0xcffcafd : "c0fffffffffff800",
-        0xcf00203 : "cc00000000b812ff",
-        0xfe4a03 : "fffcffffffffffff",
-        0xc010305 : "ccfffaffff204e0a",
-        0x0CF00400: "F4DEDE3028FFF0FF"}
-
-    for arb_id, asc_data in test_frames.items():
-        (type, signals) = t.decode(canmatrix.ArbitrationId(id=arb_id, extended=True),
-                                   bytearray.fromhex(asc_data), matrix)
-        if type is not None:
-            print (type)
-            for sig,decoded in signals.items():
-                print (" " + decoded.signal.name + " " + str(decoded.raw_value))
-
-
-test_j1939_decoder()
 
