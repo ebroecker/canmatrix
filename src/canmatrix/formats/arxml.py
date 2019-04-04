@@ -1351,23 +1351,24 @@ def get_element_desc(element, ar_tree, ns):
         return ""
 
 
-def process_ecu(ecu, db, ar_dict, multiplex_translation, ns):
+def process_ecu(ecu_elem, db, ar_dict, multiplex_translation, ns):
+    # type: (_Element, canmatrix.CanMatrix, _DocRoot, typing.Mapping[str, str], str) -> canmatrix.Ecu
     global pdu_frame_mapping
-    connectors = get_child(ecu, "CONNECTORS", ar_dict, ns)
-    diag_address = get_child(ecu, "DIAGNOSTIC-ADDRESS", ar_dict, ns)
-    diag_response = get_child(ecu, "RESPONSE-ADDRESSS", ar_dict, ns)
+    connectors = get_child(ecu_elem, "CONNECTORS", ar_dict, ns)
+    diag_address = get_child(ecu_elem, "DIAGNOSTIC-ADDRESS", ar_dict, ns)
+    diag_response = get_child(ecu_elem, "RESPONSE-ADDRESSS", ar_dict, ns)
     # TODO: use diag_address for frame-classification
     comm_connector = get_child(connectors, "COMMUNICATION-CONNECTOR", ar_dict, ns)
     if comm_connector is None:
         comm_connector = get_child(connectors, "CAN-COMMUNICATION-CONNECTOR", ar_dict, ns)
     frames = find_children_by_path(comm_connector, "ECU-COMM-PORT-INSTANCES/FRAME-PORT", ar_dict, ns)
     nm_address = get_child(comm_connector, "NM-ADDRESS", ar_dict, ns)
-    assoc_refs = get_child(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", ar_dict, ns)
+    assoc_refs = get_child(ecu_elem, "ASSOCIATED-I-PDU-GROUP-REFS", ar_dict, ns)
 
     if assoc_refs is not None:
         assoc = get_children(assoc_refs, "ASSOCIATED-I-PDU-GROUP", ar_dict, ns)
     else:  # AR4
-        assoc_refs = get_child(ecu, "ASSOCIATED-COM-I-PDU-GROUP-REFS", ar_dict, ns)
+        assoc_refs = get_child(ecu_elem, "ASSOCIATED-COM-I-PDU-GROUP-REFS", ar_dict, ns)
         assoc = get_children(assoc_refs, "ASSOCIATED-COM-I-PDU-GROUP", ar_dict, ns)
 
     in_frame = []
@@ -1419,7 +1420,7 @@ def process_ecu(ecu, db, ar_dict, multiplex_translation, ns):
                 out = multiplex_translation[out]
             frame = db.frame_by_name(out)
             if frame is not None:
-                frame.add_transmitter(get_element_name(ecu, ns))
+                frame.add_transmitter(get_element_name(ecu_elem, ns))
             else:
                 pass
 
@@ -1434,14 +1435,14 @@ def process_ecu(ecu, db, ar_dict, multiplex_translation, ns):
 #                                               signal.receiver.append(recname)
 #                       else:
 #                               print "in not found: " + inf
-    bu = ecu(get_element_name(ecu, ns))
+    new_ecu = canmatrix.Ecu(get_element_name(ecu_elem, ns))
     if nm_address is not None:
-        bu.add_attribute("NWM-Stationsadresse", nm_address.text)
-        bu.add_attribute("NWM-Knoten", "ja")
+        new_ecu.add_attribute("NWM-Stationsadresse", nm_address.text)
+        new_ecu.add_attribute("NWM-Knoten", "ja")
     else:
-        bu.add_attribute("NWM-Stationsadresse", "0")
-        bu.add_attribute("NWM-Knoten", "nein")
-    return bu
+        new_ecu.add_attribute("NWM-Stationsadresse", "0")
+        new_ecu.add_attribute("NWM-Knoten", "nein")
+    return new_ecu
 
 
 def ecuc_extract_signal(signal_node, ns):
@@ -1472,7 +1473,8 @@ def ecuc_extract_signal(signal_node, ns):
     return canmatrix.Signal(get_element_name(signal_node, ns), start_bit=start_bit, size=size, is_little_endian=is_little)
 
 
-def extract_cm_from_ecuc(com_module, search_point, ns):
+def extract_cm_from_ecuc(com_module, root_or_cache, ns):
+    # type: (_Element, _DocRoot, str) -> typing.Dict[str, canmatrix.CanMatrix]
     db = canmatrix.CanMatrix()
     definitions = com_module.findall('.//' + ns + "DEFINITION-REF")
     for definition in definitions:
@@ -1480,9 +1482,9 @@ def extract_cm_from_ecuc(com_module, search_point, ns):
             container = definition.getparent()
             frame = canmatrix.Frame(get_element_name(container, ns))
             db.add_frame(frame)
-            all_references = get_children(container, "ECUC-REFERENCE-VALUE", search_point, ns)
+            all_references = get_children(container, "ECUC-REFERENCE-VALUE", root_or_cache, ns)
             for reference in all_references:
-                value = get_child(reference, "VALUE", search_point, ns)
+                value = get_child(reference, "VALUE", root_or_cache, ns)
                 if value is not None:
                     signal_definition = value.find('./' + ns + "DEFINITION-REF")
                     if signal_definition.text.endswith("ComSignal"):
