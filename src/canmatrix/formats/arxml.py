@@ -21,7 +21,7 @@
 # DAMAGE.
 
 #
-# this script axports arxml-files from a canmatrix-object
+# this script exports arxml-files from a canmatrix-object
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 # currently Support for Autosar 3.2 and 4.0-4.3 is planned
 
@@ -47,8 +47,38 @@ clusterExporter = 1
 clusterImporter = 1
 
 
+class ArTree(object):
+    def __init__(self, name="", ref=None):  # type: (str, etree._Element) -> None
+        self._name = name
+        self._ref = ref
+        self._array = []  # type: typing.List[ArTree]
+
+    def append_child(self, name, child):  # type: (str, typing.Any) -> ArTree
+        """Append new child and return it."""
+        temp = ArTree(name, child)
+        self._array.append(temp)
+        return temp
+
+    def get_child_by_name(self, name):  # type: (str) -> typing.Union[ArTree, None]
+        for child in self._array:
+            if child._name == name:
+                return child
+        return None
+
+    @property
+    def ref(self):  # type: () -> etree._Element
+        return self._ref
+
+
+# for typing only
+_Element = etree._Element
+_DocRoot = typing.Union[_Element, ArTree]
+_MultiplexId = typing.Union[str, int, None]
+_FloatFactory = typing.Callable[[typing.Any], typing.Any]
+
+
 def create_sub_element(parent, element_name, text=None):
-    # type: (etree._Element, str, str) -> etree._Element
+    # type: (_Element, str, typing.Optional[str]) -> _Element
     sn = etree.SubElement(parent, element_name)
     if text is not None:
         sn.text = str(text)
@@ -57,6 +87,7 @@ def create_sub_element(parent, element_name, text=None):
 
 def get_base_type_of_signal(signal):
     # type: (canmatrix.Signal) -> typing.Tuple[str, int]
+    """Get signal arxml-type and size based on the Signal properties."""
     if signal.is_float:
         if signal.size > 32:
             create_type = "double"
@@ -732,60 +763,36 @@ def dump(dbs, f, **options):
 
     f.write(etree.tostring(root, pretty_print=True, xml_declaration=True))
 
+
 ###################################
 # read ARXML
 ###################################
 
-
-class ArTree(object):
-    def __init__(self, name="", ref=None):  # type: (str, etree._Element) -> None
-        self._name = name
-        self._ref = ref
-        self._array = []  # type: typing.List[ArTree]
-
-    def append_child(self, name, child):  # type: (str, typing.Any) -> ArTree
-        """Append new child and return it."""
-        temp = ArTree(name, child)
-        self._array.append(temp)
-        return temp
-
-    def get_child_by_name(self, name):  # type: (str) -> typing.Union[ArTree, None]
-        for child in self._array:
-            if child._name == name:
-                return child
-        return None
-
-    @property
-    def ref(self):  # type: () -> etree._Element
-        return self._ref
-
-
-def ar_parse_tree(tag, ar_tree, namespace):
-    # type: (etree._Element, ArTree, str) -> None
-    for child in tag:
+def fill_tree_from_xml(tag, ar_tree, namespace):
+    # type: (_Element, ArTree, str) -> None
+    """Parse the xml tree into ArTree objects."""
+    for child in tag:  # type: _Element
         name_elem = child.find('./' + namespace + 'SHORT-NAME')
         # long_name = child.find('./' + namespace + 'LONG-NAME')
         if name_elem is not None and child is not None:
-            ar_parse_tree(child, ar_tree.append_child(name_elem.text, child), namespace)
+            fill_tree_from_xml(child, ar_tree.append_child(name_elem.text, child), namespace)
         if name_elem is None and child is not None:
-            ar_parse_tree(child, ar_tree, namespace)
+            fill_tree_from_xml(child, ar_tree, namespace)
 
 
-def ar_get_xchildren(root, path, ar_tree, ns):
-    # type: (etree._Element, str, ArTree, str) -> typing.Sequence[etree._Element]
+def find_children_by_path(from_element, path, root_or_cache, namespace):
+    # type: (_Element, str, _DocRoot, str) -> typing.Sequence[_Element]
     path_elements = path.split('/')
-    element = root
+    element = from_element
     for element_name in path_elements[:-1]:
-        element = ar_get_child(element, element_name, ar_tree, ns)
-    children = ar_get_children(element, path_elements[-1], ar_tree, ns)
+        element = get_child(element, element_name, root_or_cache, namespace)
+    children = get_children(element, path_elements[-1], root_or_cache, namespace)
     return children
 
 
-#
-# get path in tranlation-dictionary
-#
 def ar_path_to_x_path(ar_path, dest_element=None):
     # type: (str, typing.Optional[str]) -> str
+    """Get path in translation-dictionary."""
     ar_path_elements = ar_path.strip('/').split('/')
     xpath = "."
 
@@ -799,102 +806,110 @@ def ar_path_to_x_path(ar_path, dest_element=None):
     return xpath
 
 
-ArCache = dict()  # type: typing.Dict[str, etree._Element]
+xml_element_cache = dict()  # type: typing.Dict[str, _Element]
 
 
-def get_ar_path(tree, ar_path, namespaces):
-    global ArCache
-    namespace_map = {'A': namespaces[1:-1]}
-    base_ar_path = ar_path[:ar_path.rfind('/')]
-    if base_ar_path in ArCache:
-        base_element = ArCache[base_ar_path]
+def get_element_by_path(tree, path_and_name, namespace):
+    # type: (_Element, str, str) -> typing.Union[_Element, None]
+    """Find sub-element of given path with given short name."""
+    global xml_element_cache
+    namespace_map = {'A': namespace[1:-1]}
+    base_path, element_name = path_and_name.rsplit('/', 1)
+    if base_path in xml_element_cache:
+        base_element = xml_element_cache[base_path]
     else:
-        xbase_path = ar_path_to_x_path(base_ar_path)
-        base_element = tree.xpath(xbase_path, namespaces=namespace_map)[0]
-        ArCache[base_ar_path] = base_element
-    found = base_element.xpath(
-        ".//A:SHORT-NAME[text()='" + ar_path[ar_path.rfind('/') + 1:] + "']/..",
-        namespaces=namespace_map)[0]
-    return found
+        base_xpath = ar_path_to_x_path(base_path)
+        elems = tree.xpath(base_xpath, namespaces=namespace_map)
+        base_element = elems[0] if elems else None
+        xml_element_cache[base_path] = base_element
+
+    element_found = None
+    if base_element is not None:
+        element_found = base_element.xpath(
+            ".//A:SHORT-NAME[text()='{name}']/..".format(name=element_name),
+            namespaces=namespace_map)[0]
+    return element_found
 
 
-def ar_get_path(ar_tree, path):
-    # type: (ArTree, str) -> typing.Optional[etree._Element]
-    ptr = ar_tree
-    for p in path.split('/'):
-        if p.strip():
-            if ptr is not None:
-                try:  # any reason to raise?
-                    ptr = ptr.get_child_by_name(p)
-                except:
-                    return None
-            else:
-                return None
-    if ptr is not None:
-        return ptr.ref
-    else:
+def get_cached_element_by_path(data_tree, path):
+    # type: (ArTree, str) -> typing.Optional[_Element]
+    """Get element from ArTree by path."""
+    if not isinstance(data_tree, ArTree):
+        logger.warning("%s not called with ArTree, return None", get_cached_element_by_path.__name__)
         return None
+    ptr = data_tree
+    for name in path.split('/'):
+        if ptr is None:
+            return None
+        if name.strip():
+            ptr = ptr.get_child_by_name(name)
+    return ptr.ref if ptr else None
 
 
-def ar_get_child(parent, tag_name, xml_root, namespace):
-    # type: (etree._Element, str, typing.Union[etree._Element, ArTree], str) -> typing.Optional[etree._Element]
-    # logger.debug("ar_get_child: " + tag_name)
+def get_child(parent, tag_name, root_or_cache, namespace):
+    # type: (_Element, str, _DocRoot, str) -> typing.Optional[_Element]
+    """Get first sub-child or referenced sub-child with given name."""
+    # logger.debug("get_child: " + tag_name)
     if parent is None:
         return None
     ret = parent.find('.//' + namespace + tag_name)
-    if ret is None:
-        ret = parent.find('.//' + namespace + tag_name + '-REF')
-        if ret is not None:
-            if isinstance(xml_root, ArTree):
-                ret = ar_get_path(xml_root, ret.text)
+    if ret is None:  # no direct element - try reference
+        reference = parent.find('.//' + namespace + tag_name + '-REF')
+        if reference is not None:
+            if isinstance(root_or_cache, ArTree):
+                ret = get_cached_element_by_path(root_or_cache, reference.text)
             else:
-                ret = get_ar_path(xml_root, ret.text, namespace)
+                ret = get_element_by_path(root_or_cache, reference.text, namespace)
     return ret
 
 
-def ar_get_children(parent, tag_name, ar_translation_table, namespace):
-    # type: (etree._Element, str, ArTree, str) -> typing.List[etree._Element]
+def get_children(parent, tag_name, root_or_cache, namespace):
+    # type: (_Element, str, _DocRoot, str) -> typing.Sequence[_Element]
     if parent is None:
         return []
     ret = parent.findall('.//' + namespace + tag_name)
-    if not ret:
+    if not ret:  # no direct element - get references
         ret_list = parent.findall('.//' + namespace + tag_name + '-REF')
-        ret = [ar_get_path(ar_translation_table, item.text) for item in ret_list]
+        if isinstance(root_or_cache, ArTree):
+            ret = [get_cached_element_by_path(root_or_cache, item.text) for item in ret_list]
+        else:
+            ret = [get_element_by_path(root_or_cache, item.text, namespace) for item in ret_list]
     return ret
 
 
-def ar_get_name(parent, ns):
-    # type: (etree._Element, str) -> str
+def get_element_name(parent, ns):
+    # type: (_Element, str) -> str
+    """Get element short name."""
     name = parent.find('./' + ns + 'SHORT-NAME')
     if name is not None and name.text is not None:
         return name.text
     return ""
 
 
-pdu_frame_mapping = {}  # type: typing.Dict[etree._Element, str]
-signal_rxs = {}  # type: typing.Dict[etree._Element, canmatrix.Signal]
+pdu_frame_mapping = {}  # type: typing.Dict[_Element, str]
+signal_rxs = {}  # type: typing.Dict[_Element, canmatrix.Signal]
 
 
 def get_sys_signals(sys_signal, sys_signal_array, frame, group_id, ns):
-    # type: (etree._Element, typing.Sequence[etree._Element], canmatrix.Frame, int, str) -> None
-    members = [ar_get_name(signal, ns) for signal in sys_signal_array]
-    frame.add_signal_group(ar_get_name(sys_signal, ns), 1, members)  # todo use group_id instead of 1?
+    # type: (_Element, typing.Sequence[_Element], canmatrix.Frame, int, str) -> None
+    members = [get_element_name(signal, ns) for signal in sys_signal_array]
+    frame.add_signal_group(get_element_name(sys_signal, ns), 1, members)  # todo use group_id instead of 1?
 
 
-def decode_compu_method(compu_method, ar_cache, ns, float_factory):
-    # type: (etree._Element, ArTree, str, typing.Callable[[typing.Any], typing.Any]) -> typing.Tuple
+def decode_compu_method(compu_method, root_or_cache, ns, float_factory):
+    # type: (_Element, _DocRoot, str, _FloatFactory) -> typing.Tuple
     values = {}
     factor = float_factory(1.0)
     offset = float_factory(0)
-    unit = ar_get_child(compu_method, "UNIT", ar_cache, ns)
+    unit = get_child(compu_method, "UNIT", root_or_cache, ns)
     const = None
-    compu_scales = ar_get_xchildren(compu_method, "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE", ar_cache, ns)
+    compu_scales = find_children_by_path(compu_method, "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE", root_or_cache, ns)
     for compu_scale in compu_scales:
-        ll = ar_get_child(compu_scale, "LOWER-LIMIT", ar_cache, ns)
-        ul = ar_get_child(compu_scale, "UPPER-LIMIT", ar_cache, ns)
-        sl = ar_get_child(compu_scale, "SHORT-LABEL", ar_cache, ns)
+        ll = get_child(compu_scale, "LOWER-LIMIT", root_or_cache, ns)
+        ul = get_child(compu_scale, "UPPER-LIMIT", root_or_cache, ns)
+        sl = get_child(compu_scale, "SHORT-LABEL", root_or_cache, ns)
         if sl is None:
-            desc = get_desc(compu_scale, ar_cache, ns)
+            desc = get_element_desc(compu_scale, root_or_cache, ns)
         else:
             desc = sl.text
         #####################################################################################################
@@ -906,26 +921,26 @@ def decode_compu_method(compu_method, ar_cache, ns, float_factory):
             #####################################################################################################
             values[ll.text] = desc
 
-        scale_desc = get_desc(compu_scale, ar_cache, ns)
-        rational = ar_get_child(compu_scale, "COMPU-RATIONAL-COEFFS", ar_cache, ns)
+        scale_desc = get_element_desc(compu_scale, root_or_cache, ns)
+        rational = get_child(compu_scale, "COMPU-RATIONAL-COEFFS", root_or_cache, ns)
         if rational is not None:
-            numerator_parent = ar_get_child(rational, "COMPU-NUMERATOR", ar_cache, ns)
-            numerator = ar_get_children(numerator_parent, "V", ar_cache, ns)
-            denominator_parent = ar_get_child(rational, "COMPU-DENOMINATOR", ar_cache, ns)
-            denominator = ar_get_children(denominator_parent, "V", ar_cache, ns)
+            numerator_parent = get_child(rational, "COMPU-NUMERATOR", root_or_cache, ns)
+            numerator = get_children(numerator_parent, "V", root_or_cache, ns)
+            denominator_parent = get_child(rational, "COMPU-DENOMINATOR", root_or_cache, ns)
+            denominator = get_children(denominator_parent, "V", root_or_cache, ns)
 
             factor = float_factory(numerator[1].text) / float_factory(denominator[0].text)
             offset = float_factory(numerator[0].text) / float_factory(denominator[0].text)
         else:
-            const = ar_get_child(compu_scale, "COMPU-CONST", ar_cache, ns)
+            const = get_child(compu_scale, "COMPU-CONST", root_or_cache, ns)
             # add value
             if const is None:
                 logger.warning("Unknown Compu-Method: at sourceline %d ", compu_method.sourceline)
     return values, factor, offset, unit, const
 
 
-def get_signals(signal_array, frame, xml_root, ns, multiplex_id, float_factory):
-    # type: (typing.Sequence[etree._Element], canmatrix.Frame, ArTree, str, typing.Optional[int], typing.Callable) -> None
+def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_factory):
+    # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, str, _MultiplexId, typing.Callable) -> None
     """Add signals from xml to the Frame."""
     global signal_rxs
     group_id = 1
@@ -933,49 +948,50 @@ def get_signals(signal_array, frame, xml_root, ns, multiplex_id, float_factory):
         return
     for signal in signal_array:
         compu_method = None
-        motorola = ar_get_child(signal, "PACKING-BYTE-ORDER", xml_root, ns)
-        start_bit = ar_get_child(signal, "START-POSITION", xml_root, ns)
+        motorola = get_child(signal, "PACKING-BYTE-ORDER", root_or_cache, ns)
+        start_bit = get_child(signal, "START-POSITION", root_or_cache, ns)
 
-        isignal = ar_get_child(signal, "SIGNAL", xml_root, ns)
+        isignal = get_child(signal, "SIGNAL", root_or_cache, ns)
         if isignal is None:
-            isignal = ar_get_child(signal, "I-SIGNAL", xml_root, ns)
+            isignal = get_child(signal, "I-SIGNAL", root_or_cache, ns)
         if isignal is None:
-            isignal = ar_get_child(signal, "I-SIGNAL-GROUP", xml_root, ns)
+            isignal = get_child(signal, "I-SIGNAL-GROUP", root_or_cache, ns)
             if isignal is not None:
                 logger.debug("get_signals: found I-SIGNAL-GROUP ")
 
-                isignalarray = ar_get_xchildren(isignal, "I-SIGNAL", xml_root, ns)
-                get_sys_signals(isignal, isignalarray, frame, group_id, ns)
+                isignal_array = find_children_by_path(isignal, "I-SIGNAL", root_or_cache, ns)
+                get_sys_signals(isignal, isignal_array, frame, group_id, ns)
                 group_id = group_id + 1
                 continue
         if isignal is None:
             logger.debug(
                 'Frame %s, no isignal for %s found',
-                frame.name, ar_get_child(signal, "SHORT-NAME", xml_root, ns).text)
+                frame.name, get_child(signal, "SHORT-NAME", root_or_cache, ns).text)
 
-        base_type = ar_get_child(isignal, "BASE-TYPE", xml_root, ns)
-        sig_long_name = ar_get_child(isignal, "LONG-NAME", xml_root, ns)
-        if sig_long_name is not None:
-            sig_long_name = ar_get_child(sig_long_name, "L-4", xml_root, ns)
-            if sig_long_name is not None:
-                sig_long_name = sig_long_name.text
-        syssignal = ar_get_child(isignal, "SYSTEM-SIGNAL", xml_root, ns)
-        if syssignal is None:
-            logger.debug('Frame %s, signal %s has no systemsignal', isignal.tag, frame.name)
+        base_type = get_child(isignal, "BASE-TYPE", root_or_cache, ns)
+        signal_name = None  # type: typing.Optional[str]
+        signal_name_elem = get_child(isignal, "LONG-NAME", root_or_cache, ns)
+        if signal_name_elem is not None:
+            signal_name_elem = get_child(signal_name_elem, "L-4", root_or_cache, ns)
+            if signal_name_elem is not None:
+                signal_name = signal_name_elem.text
+        system_signal = get_child(isignal, "SYSTEM-SIGNAL", root_or_cache, ns)
+        if system_signal is None:
+            logger.debug('Frame %s, signal %s has no system-signal', frame.name, isignal.tag)
 
-        if "SYSTEM-SIGNAL-GROUP" in syssignal.tag:
-            syssignalarray = ar_get_xchildren(syssignal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL", xml_root, ns)
-            get_sys_signals(syssignal, syssignalarray, frame, group_id, ns)
+        if "SYSTEM-SIGNAL-GROUP" in system_signal.tag:
+            system_signals = find_children_by_path(system_signal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL", root_or_cache, ns)
+            get_sys_signals(system_signal, system_signals, frame, group_id, ns)
             group_id = group_id + 1
             continue
 
-        length = ar_get_child(isignal, "LENGTH", xml_root, ns)
+        length = get_child(isignal, "LENGTH", root_or_cache, ns)
         if length is None:
-            length = ar_get_child(syssignal, "LENGTH", xml_root, ns)
+            length = get_child(system_signal, "LENGTH", root_or_cache, ns)
 
-        name = ar_get_child(syssignal, "SHORT-NAME", xml_root, ns)
-        unit_element = ar_get_child(isignal, "UNIT", xml_root, ns)
-        display_name = ar_get_child(unit_element, "DISPLAY-NAME", xml_root, ns)
+        name = get_child(system_signal, "SHORT-NAME", root_or_cache, ns)
+        unit_element = get_child(isignal, "UNIT", root_or_cache, ns)
+        display_name = get_child(unit_element, "DISPLAY-NAME", root_or_cache, ns)
         if display_name is not None:
             signal_unit = display_name.text
         else:
@@ -985,20 +1001,20 @@ def get_signals(signal_array, frame, xml_root, ns, multiplex_id, float_factory):
         signal_max = None  # type: canmatrix.types.OptionalPhysicalValue
         receiver = []  # type: typing.List[str]
 
-        signal_description = get_desc(syssignal, xml_root, ns)
+        signal_description = get_element_desc(system_signal, root_or_cache, ns)
 
-        datatype = ar_get_child(syssignal, "DATA-TYPE", xml_root, ns)
+        datatype = get_child(system_signal, "DATA-TYPE", root_or_cache, ns)
         if datatype is None:  # AR4?
-            data_constr = ar_get_child(isignal, "DATA-CONSTR", xml_root, ns)
-            compu_method = ar_get_child(isignal, "COMPU-METHOD", xml_root, ns)
-            base_type = ar_get_child(isignal, "BASE-TYPE", xml_root, ns)
-            lower = ar_get_child(data_constr, "LOWER-LIMIT", xml_root, ns)
-            upper = ar_get_child(data_constr, "UPPER-LIMIT", xml_root, ns)
+            data_constr = get_child(isignal, "DATA-CONSTR", root_or_cache, ns)
+            compu_method = get_child(isignal, "COMPU-METHOD", root_or_cache, ns)
+            base_type = get_child(isignal, "BASE-TYPE", root_or_cache, ns)
+            lower = get_child(data_constr, "LOWER-LIMIT", root_or_cache, ns)
+            upper = get_child(data_constr, "UPPER-LIMIT", root_or_cache, ns)
             encoding = None  # TODO - find encoding in AR4
         else:
-            lower = ar_get_child(datatype, "LOWER-LIMIT", xml_root, ns)
-            upper = ar_get_child(datatype, "UPPER-LIMIT", xml_root, ns)
-            encoding = ar_get_child(datatype, "ENCODING", xml_root, ns)
+            lower = get_child(datatype, "LOWER-LIMIT", root_or_cache, ns)
+            upper = get_child(datatype, "UPPER-LIMIT", root_or_cache, ns)
+            encoding = get_child(datatype, "ENCODING", root_or_cache, ns)
 
         if encoding is not None and (encoding.text == "SINGLE" or encoding.text == "DOUBLE"):
             is_float = True
@@ -1009,24 +1025,24 @@ def get_signals(signal_array, frame, xml_root, ns, multiplex_id, float_factory):
             signal_min = float_factory(lower.text)
             signal_max = float_factory(upper.text)
 
-        datdefprops = ar_get_child(datatype, "SW-DATA-DEF-PROPS", xml_root, ns)
+        datdefprops = get_child(datatype, "SW-DATA-DEF-PROPS", root_or_cache, ns)
 
         if compu_method is None:
-            compu_method = ar_get_child(datdefprops, "COMPU-METHOD", xml_root, ns)
+            compu_method = get_child(datdefprops, "COMPU-METHOD", root_or_cache, ns)
         if compu_method is None:  # AR4
-            compu_method = ar_get_child(isignal, "COMPU-METHOD", xml_root, ns)
-            base_type = ar_get_child(isignal, "BASE-TYPE", xml_root, ns)
-            encoding = ar_get_child(base_type, "BASE-TYPE-ENCODING", xml_root, ns)
+            compu_method = get_child(isignal, "COMPU-METHOD", root_or_cache, ns)
+            base_type = get_child(isignal, "BASE-TYPE", root_or_cache, ns)
+            encoding = get_child(base_type, "BASE-TYPE-ENCODING", root_or_cache, ns)
             if encoding is not None and encoding.text == "IEEE754":
                 is_float = True
         if compu_method is None:
             logger.debug('No Compmethod found!! - try alternate scheme 1.')
-            networkrep = ar_get_child(isignal, "NETWORK-REPRESENTATION-PROPS", xml_root, ns)
-            data_def_props_var = ar_get_child(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", xml_root, ns)
-            data_def_props_cond = ar_get_child(data_def_props_var, "SW-DATA-DEF-PROPS-CONDITIONAL", xml_root, ns)
+            networkrep = get_child(isignal, "NETWORK-REPRESENTATION-PROPS", root_or_cache, ns)
+            data_def_props_var = get_child(networkrep, "SW-DATA-DEF-PROPS-VARIANTS", root_or_cache, ns)
+            data_def_props_cond = get_child(data_def_props_var, "SW-DATA-DEF-PROPS-CONDITIONAL", root_or_cache, ns)
             if data_def_props_cond is not None:
                 try:
-                    compu_method = ar_get_child(data_def_props_cond, "COMPU-METHOD", xml_root, ns)
+                    compu_method = get_child(data_def_props_cond, "COMPU-METHOD", root_or_cache, ns)
                 except:
                     logger.debug('No valid compu method found for this - check ARXML file!!')
                     compu_method = None
@@ -1035,10 +1051,10 @@ def get_signals(signal_array, frame, xml_root, ns, multiplex_id, float_factory):
         #####################################################################################################
         if compu_method is None:
             logger.debug('No Compmethod found!! - fuzzy search in syssignal.')
-            compu_method = ar_get_child(syssignal, "COMPU-METHOD", xml_root, ns)
+            compu_method = get_child(system_signal, "COMPU-METHOD", root_or_cache, ns)
 
         # decode compuMethod:
-        (values, factor, offset, unit_elem, const) = decode_compu_method(compu_method, xml_root, ns, float_factory)
+        (values, factor, offset, unit_elem, const) = decode_compu_method(compu_method, root_or_cache, ns, float_factory)
 
         if signal_min is not None:
             signal_min *= factor
@@ -1048,9 +1064,9 @@ def get_signals(signal_array, frame, xml_root, ns, multiplex_id, float_factory):
             signal_max += offset
 
         if base_type is None:
-            base_type = ar_get_child(datdefprops, "BASE-TYPE", xml_root, ns)
+            base_type = get_child(datdefprops, "BASE-TYPE", root_or_cache, ns)
         if base_type is not None:
-            type_name = ar_get_name(base_type, ns)
+            type_name = get_element_name(base_type, ns)
             if type_name[0] == 'u':
                 is_signed = False  # unsigned
             else:
@@ -1059,26 +1075,26 @@ def get_signals(signal_array, frame, xml_root, ns, multiplex_id, float_factory):
             is_signed = True  # signed
 
         if unit_elem is not None:
-            longname = ar_get_child(unit_elem, "LONG-NAME", xml_root, ns)
+            longname = get_child(unit_elem, "LONG-NAME", root_or_cache, ns)
         #####################################################################################################
         # Modification to support obtaining the Signals Unit by DISPLAY-NAME. 07June16
         #####################################################################################################
             display_name = None
             try:
-                display_name = ar_get_child(unit_elem, "DISPLAY-NAME", xml_root, ns)
+                display_name = get_child(unit_elem, "DISPLAY-NAME", root_or_cache, ns)
             except:
                 logger.debug('No Unit Display name found!! - using long name')
             if display_name is not None:
                 signal_unit = display_name.text
             else:
-                l4 = ar_get_child(longname, "L-4", xml_root, ns)
+                l4 = get_child(longname, "L-4", root_or_cache, ns)
                 if l4 is not None:
                     signal_unit = l4.text
 
-        init_list = ar_get_xchildren(syssignal, "INIT-VALUE/VALUE", xml_root, ns)
+        init_list = find_children_by_path(system_signal, "INIT-VALUE/VALUE", root_or_cache, ns)
 
         if not init_list:
-            init_list = ar_get_xchildren(isignal, "INIT-VALUE/NUMERICAL-VALUE-SPECIFICATION/VALUE", xml_root, ns)  # #AR4.2
+            init_list = find_children_by_path(isignal, "INIT-VALUE/NUMERICAL-VALUE-SPECIFICATION/VALUE", root_or_cache, ns)  # #AR4.2
         if init_list:
             initvalue = init_list[0]
         else:
@@ -1123,10 +1139,10 @@ def get_signals(signal_array, frame, xml_root, ns, multiplex_id, float_factory):
                 new_signal.set_startbit(int(start_bit.text), bitNumbering=1)
 
             # save signal, to determin receiver-ECUs for this signal later
-            signal_rxs[syssignal] = new_signal
+            signal_rxs[system_signal] = new_signal
 
             if base_type is not None:
-                temp = ar_get_child(base_type, "SHORT-NAME", xml_root, ns)
+                temp = get_child(base_type, "SHORT-NAME", root_or_cache, ns)
                 if temp is not None and "boolean" == temp.text:
                     new_signal.add_values(1, "TRUE")
                     new_signal.add_values(0, "FALSE")
@@ -1140,19 +1156,19 @@ def get_signals(signal_array, frame, xml_root, ns, multiplex_id, float_factory):
 
             for key, value in list(values.items()):
                 new_signal.add_values(key, value)
-            if sig_long_name is not None:
-                new_signal.add_attribute("LongName", sig_long_name)
+            if signal_name is not None:
+                new_signal.add_attribute("LongName", signal_name)
             frame.add_signal(new_signal)
 
 
-def get_frame(frame_triggering, xml_root, multiplex_translation, ns, float_factory):
-    # type: (etree._Element, ArTree, dict, str, typing.Callable) -> typing.Union[canmatrix.Frame, None]
+def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_factory):
+    # type: (_Element, _DocRoot, dict, str, typing.Callable) -> typing.Union[canmatrix.Frame, None]
     global pdu_frame_mapping
-    address_mode = ar_get_child(frame_triggering, "CAN-ADDRESSING-MODE", xml_root, ns)
-    arb_id = ar_get_child(frame_triggering, "IDENTIFIER", xml_root, ns)
-    frame_elem = ar_get_child(frame_triggering, "FRAME", xml_root, ns)
+    address_mode = get_child(frame_triggering, "CAN-ADDRESSING-MODE", root_or_cache, ns)
+    arb_id = get_child(frame_triggering, "IDENTIFIER", root_or_cache, ns)
+    frame_elem = get_child(frame_triggering, "FRAME", root_or_cache, ns)
 
-    frame_name_elem = ar_get_child(frame_triggering, "SHORT-NAME", xml_root, ns)
+    frame_name_elem = get_child(frame_triggering, "SHORT-NAME", root_or_cache, ns)
     logger.debug("processing Frame: %s", frame_name_elem.text)
     if arb_id is None:
         logger.info("found Frame %s without arbitration id", frame_name_elem.text)
@@ -1160,40 +1176,40 @@ def get_frame(frame_triggering, xml_root, multiplex_translation, ns, float_facto
     arbitration_id = int(arb_id.text)
 
     if frame_elem is not None:
-        dlc = ar_get_child(frame_elem, "FRAME-LENGTH", xml_root, ns)
-        pdumappings = ar_get_child(frame_elem, "PDU-TO-FRAME-MAPPINGS", xml_root, ns)
-        pdumapping = ar_get_child(pdumappings, "PDU-TO-FRAME-MAPPING", xml_root, ns)
-        pdu = ar_get_child(pdumapping, "PDU", xml_root, ns)  # SIGNAL-I-PDU
+        dlc_elem = get_child(frame_elem, "FRAME-LENGTH", root_or_cache, ns)
+        pdu_mappings = get_child(frame_elem, "PDU-TO-FRAME-MAPPINGS", root_or_cache, ns)
+        pdu_mapping = get_child(pdu_mappings, "PDU-TO-FRAME-MAPPING", root_or_cache, ns)
+        pdu = get_child(pdu_mapping, "PDU", root_or_cache, ns)  # SIGNAL-I-PDU
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            logger.info("found secured pdu - no signal extraction possible: %s", ar_get_name(pdu, ns))
+            logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
 
-        pdu_frame_mapping[pdu] = ar_get_name(frame_elem, ns)
+        pdu_frame_mapping[pdu] = get_element_name(frame_elem, ns)
 
-        new_frame = canmatrix.Frame(ar_get_name(frame_elem, ns), size=int(dlc.text))
-        comment = get_desc(frame_elem, xml_root, ns)
+        new_frame = canmatrix.Frame(get_element_name(frame_elem, ns), size=int(dlc_elem.text))
+        comment = get_element_desc(frame_elem, root_or_cache, ns)
         if comment is not None:
             new_frame.add_comment(comment)
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF", frame_name_elem.text)
-        ipdu_triggering_refs = ar_get_child(frame_triggering, "I-PDU-TRIGGERING-REFS", xml_root, ns)
-        ipdu_triggering = ar_get_child(ipdu_triggering_refs, "I-PDU-TRIGGERING", xml_root, ns)
-        pdu = ar_get_child(ipdu_triggering, "I-PDU", xml_root, ns)
+        ipdu_triggering_refs = get_child(frame_triggering, "I-PDU-TRIGGERING-REFS", root_or_cache, ns)
+        ipdu_triggering = get_child(ipdu_triggering_refs, "I-PDU-TRIGGERING", root_or_cache, ns)
+        pdu = get_child(ipdu_triggering, "I-PDU", root_or_cache, ns)
         if pdu is None:
-            pdu = ar_get_child(ipdu_triggering, "I-SIGNAL-I-PDU", xml_root, ns)  # AR4.2
-        dlc = ar_get_child(pdu, "LENGTH", xml_root, ns)
-        new_frame = canmatrix.Frame(frame_name_elem.text, arbitration_id=arbitration_id, size=int(int(dlc.text) / 8))
+            pdu = get_child(ipdu_triggering, "I-SIGNAL-I-PDU", root_or_cache, ns)  # AR4.2
+        dlc_elem = get_child(pdu, "LENGTH", root_or_cache, ns)
+        new_frame = canmatrix.Frame(frame_name_elem.text, arbitration_id=arbitration_id, size=int(int(dlc_elem.text) / 8))
 
     if pdu is None:
-        logger.error("ERROR: pdu")
+        logger.error("pdu is None")
     else:
-        logger.debug(ar_get_name(pdu, ns))
+        logger.debug(get_element_name(pdu, ns))
 
     if pdu is not None and "MULTIPLEXED-I-PDU" in pdu.tag:
-        selector_byte_order = ar_get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER", xml_root, ns)
-        selector_len = ar_get_child(pdu, "SELECTOR-FIELD-LENGTH", xml_root, ns)
-        selector_start = ar_get_child(pdu, "SELECTOR-FIELD-START-POSITION", xml_root, ns)
+        selector_byte_order = get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER", root_or_cache, ns)
+        selector_len = get_child(pdu, "SELECTOR-FIELD-LENGTH", root_or_cache, ns)
+        selector_start = get_child(pdu, "SELECTOR-FIELD-START-POSITION", root_or_cache, ns)
         is_little_endian = False
         if selector_byte_order.text == 'MOST-SIGNIFICANT-BYTE-LAST':
             is_little_endian = True
@@ -1207,52 +1223,52 @@ def get_frame(frame_triggering, xml_root, multiplex_translation, ns, float_facto
 
         multiplexor._initValue = 0
         new_frame.add_signal(multiplexor)
-        static_part = ar_get_child(pdu, "STATIC-PART", xml_root, ns)
-        ipdu = ar_get_child(static_part, "I-PDU", xml_root, ns)
+        static_part = get_child(pdu, "STATIC-PART", root_or_cache, ns)
+        ipdu = get_child(static_part, "I-PDU", root_or_cache, ns)
         if ipdu is not None:
-            pdu_sig_mappings = ar_get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", xml_root, ns)
-            pdu_sig_mapping = ar_get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", xml_root, ns)
-            get_signals(pdu_sig_mapping, new_frame, xml_root, ns, None, float_factory)
-            multiplex_translation[ar_get_name(ipdu, ns)] = ar_get_name(pdu, ns)
+            pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
+            pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+            get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
+            multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
 
-        dynamic_part = ar_get_child(pdu, "DYNAMIC-PART", xml_root, ns)
+        dynamic_part = get_child(pdu, "DYNAMIC-PART", root_or_cache, ns)
 #               segmentPositions = arGetChild(dynamic_part, "SEGMENT-POSITIONS", arDict, ns)
 #               segmentPosition = arGetChild(segmentPositions, "SEGMENT-POSITION", arDict, ns)
 #               byteOrder = arGetChild(segmentPosition, "SEGMENT-BYTE-ORDER", arDict, ns)
 #               segLength = arGetChild(segmentPosition, "SEGMENT-LENGTH", arDict, ns)
 #               segPos = arGetChild(segmentPosition, "SEGMENT-POSITION", arDict, ns)
-        dynamic_part_alternatives = ar_get_child(dynamic_part, "DYNAMIC-PART-ALTERNATIVES", xml_root, ns)
-        dynamic_part_alternative_list = ar_get_children(dynamic_part_alternatives, "DYNAMIC-PART-ALTERNATIVE", xml_root, ns)
+        dynamic_part_alternatives = get_child(dynamic_part, "DYNAMIC-PART-ALTERNATIVES", root_or_cache, ns)
+        dynamic_part_alternative_list = get_children(dynamic_part_alternatives, "DYNAMIC-PART-ALTERNATIVE", root_or_cache, ns)
         for alternative in dynamic_part_alternative_list:
-            selector_id = ar_get_child(alternative, "SELECTOR-FIELD-CODE", xml_root, ns)
-            ipdu = ar_get_child(alternative, "I-PDU", xml_root, ns)
-            multiplex_translation[ar_get_name(ipdu, ns)] = ar_get_name(pdu, ns)
+            selector_id = get_child(alternative, "SELECTOR-FIELD-CODE", root_or_cache, ns)
+            ipdu = get_child(alternative, "I-PDU", root_or_cache, ns)
+            multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
             if ipdu is not None:
-                pdu_sig_mappings = ar_get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", xml_root, ns)
-                pdu_sig_mapping = ar_get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", xml_root, ns)
-                get_signals(pdu_sig_mapping, new_frame, xml_root, ns, selector_id.text, float_factory)
+                pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
+                pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+                get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, selector_id.text, float_factory)
 
     if new_frame.comment is None:
-        new_frame.add_comment(get_desc(pdu, xml_root, ns))
+        new_frame.add_comment(get_element_desc(pdu, root_or_cache, ns))
 
     if address_mode is not None and address_mode.text == 'EXTENDED':
         new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=True)
     else:
         new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=False)
 
-    timing_spec = ar_get_child(pdu, "I-PDU-TIMING-SPECIFICATION", xml_root, ns)
+    timing_spec = get_child(pdu, "I-PDU-TIMING-SPECIFICATION", root_or_cache, ns)
     if timing_spec is None:
-        timing_spec = ar_get_child(pdu, "I-PDU-TIMING-SPECIFICATIONS", xml_root, ns)
-    cyclic_timing = ar_get_child(timing_spec, "CYCLIC-TIMING", xml_root, ns)
-    repeating_time = ar_get_child(cyclic_timing, "REPEATING-TIME", xml_root, ns)
+        timing_spec = get_child(pdu, "I-PDU-TIMING-SPECIFICATIONS", root_or_cache, ns)
+    cyclic_timing = get_child(timing_spec, "CYCLIC-TIMING", root_or_cache, ns)
+    repeating_time = get_child(cyclic_timing, "REPEATING-TIME", root_or_cache, ns)
 
-    event_timing = ar_get_child(timing_spec, "EVENT-CONTROLLED-TIMING", xml_root, ns)
-    repeats = ar_get_child(event_timing, "NUMBER-OF-REPEATS", xml_root, ns)
-    minimum_delay = ar_get_child(timing_spec, "MINIMUM-DELAY", xml_root, ns)
-    starting_time = ar_get_child(timing_spec, "STARTING-TIME", xml_root, ns)
+    event_timing = get_child(timing_spec, "EVENT-CONTROLLED-TIMING", root_or_cache, ns)
+    repeats = get_child(event_timing, "NUMBER-OF-REPEATS", root_or_cache, ns)
+    minimum_delay = get_child(timing_spec, "MINIMUM-DELAY", root_or_cache, ns)
+    starting_time = get_child(timing_spec, "STARTING-TIME", root_or_cache, ns)
 
-    time_offset = ar_get_child(cyclic_timing, "TIME-OFFSET", xml_root, ns)
-    time_period = ar_get_child(cyclic_timing, "TIME-PERIOD", xml_root, ns)
+    time_offset = get_child(cyclic_timing, "TIME-OFFSET", root_or_cache, ns)
+    time_period = get_child(cyclic_timing, "TIME-PERIOD", root_or_cache, ns)
 
     if cyclic_timing is not None and event_timing is not None:
         new_frame.add_attribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
@@ -1274,60 +1290,61 @@ def get_frame(frame_triggering, xml_root, multiplex_translation, ns, float_facto
             new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
 
     if starting_time is not None:
-        value = ar_get_child(starting_time, "VALUE", xml_root, ns)
+        value = get_child(starting_time, "VALUE", root_or_cache, ns)
         new_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
     elif cyclic_timing is not None:
-        value = ar_get_child(time_offset, "VALUE", xml_root, ns)
+        value = get_child(time_offset, "VALUE", root_or_cache, ns)
         if value is not None:
             new_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
 
-    value = ar_get_child(repeating_time, "VALUE", xml_root, ns)
+    value = get_child(repeating_time, "VALUE", root_or_cache, ns)
     if value is not None:
         new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
     elif cyclic_timing is not None:
-        value = ar_get_child(time_period, "VALUE", xml_root, ns)
+        value = get_child(time_period, "VALUE", root_or_cache, ns)
         if value is not None:
             new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
 
 
-#    pdusigmappings = arGetChild(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
-#    if pdusigmappings is None or pdusigmappings.__len__() == 0:
-#        logger.debug("DEBUG: Frame %s no SIGNAL-TO-PDU-MAPPINGS found" % (new_frame.name))
-    pdu_sig_mapping = ar_get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", xml_root, ns)
+#    pdu_sig_mappings = get_child(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
+#    if not pdu_sig_mappings:
+#        logger.debug("Frame %s no SIGNAL-TO-PDU-MAPPINGS found", new_frame.name)
+    pdu_sig_mapping = get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+    if pdu_sig_mapping:
+        get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
 
-    if pdu_sig_mapping is not None and pdu_sig_mapping.__len__() > 0:
-        get_signals(pdu_sig_mapping, new_frame, xml_root, ns, None, float_factory)
-
-    # Seen some pdusigmapping being [] and not None with some arxml 4.2
+    # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
     else:  # AR 4.2
-        pdu_trigs = ar_get_children(frame_triggering, "PDU-TRIGGERINGS", xml_root, ns)
+        pdu_trigs = get_children(frame_triggering, "PDU-TRIGGERINGS", root_or_cache, ns)
         if pdu_trigs is not None:
             for pdu_trig in pdu_trigs:
-                trig_ref_cond = ar_get_child(pdu_trig, "PDU-TRIGGERING-REF-CONDITIONAL", xml_root, ns)
-                trigs = ar_get_child(trig_ref_cond, "PDU-TRIGGERING", xml_root, ns)
-                ipdus = ar_get_child(trigs, "I-PDU", xml_root, ns)
+                trig_ref_cond = get_child(pdu_trig, "PDU-TRIGGERING-REF-CONDITIONAL", root_or_cache, ns)
+                trigs = get_child(trig_ref_cond, "PDU-TRIGGERING", root_or_cache, ns)
+                ipdus = get_child(trigs, "I-PDU", root_or_cache, ns)
 
-                signal_to_pdu_maps = ar_get_child(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", xml_root, ns)
+                signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
                 if signal_to_pdu_maps is None:
-                    signal_to_pdu_maps = ar_get_child(ipdus, "I-SIGNAL-TO-I-PDU-MAPPINGS", xml_root, ns)
+                    signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-I-PDU-MAPPINGS", root_or_cache, ns)
 
                 if signal_to_pdu_maps is None:
-                    logger.debug("DEBUG: AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!" % (ar_get_name(ipdus, ns)))
-#                signaltopdumap = arGetChild(signaltopdumaps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                get_signals(signal_to_pdu_maps, new_frame, xml_root, ns, None, float_factory)
+                    logger.debug("AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!",
+                                 get_element_name(ipdus, ns))
+                # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+                get_signals(signal_to_pdu_maps, new_frame, root_or_cache, ns, None, float_factory)  # todo BUG expects list, not item
         else:
-            logger.debug("DEBUG: Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
+            logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
     return new_frame
 
 
-def get_desc(element, ar_tree, ns):
-    # type: (etree._Element, ArTree, str) -> str
-    desc = ar_get_child(element, "DESC", ar_tree, ns)
-    txt = ar_get_child(desc, 'L-2[@L="DE"]', ar_tree, ns)
+def get_element_desc(element, ar_tree, ns):
+    # type: (_Element, _DocRoot, str) -> str
+    """Get element description from XML."""
+    desc = get_child(element, "DESC", ar_tree, ns)
+    txt = get_child(desc, 'L-2[@L="DE"]', ar_tree, ns)
     if txt is None:
-        txt = ar_get_child(desc, 'L-2[@L="EN"]', ar_tree, ns)
+        txt = get_child(desc, 'L-2[@L="EN"]', ar_tree, ns)
     if txt is None:
-        txt = ar_get_child(desc, 'L-2', ar_tree, ns)
+        txt = get_child(desc, 'L-2', ar_tree, ns)
     if txt is not None:
         return txt.text
     else:
@@ -1336,34 +1353,34 @@ def get_desc(element, ar_tree, ns):
 
 def process_ecu(ecu, db, ar_dict, multiplex_translation, ns):
     global pdu_frame_mapping
-    connectors = ar_get_child(ecu, "CONNECTORS", ar_dict, ns)
-    diag_address = ar_get_child(ecu, "DIAGNOSTIC-ADDRESS", ar_dict, ns)
-    diag_response = ar_get_child(ecu, "RESPONSE-ADDRESSS", ar_dict, ns)
+    connectors = get_child(ecu, "CONNECTORS", ar_dict, ns)
+    diag_address = get_child(ecu, "DIAGNOSTIC-ADDRESS", ar_dict, ns)
+    diag_response = get_child(ecu, "RESPONSE-ADDRESSS", ar_dict, ns)
     # TODO: use diag_address for frame-classification
-    comm_connector = ar_get_child(connectors, "COMMUNICATION-CONNECTOR", ar_dict, ns)
+    comm_connector = get_child(connectors, "COMMUNICATION-CONNECTOR", ar_dict, ns)
     if comm_connector is None:
-        comm_connector = ar_get_child(connectors, "CAN-COMMUNICATION-CONNECTOR", ar_dict, ns)
-    frames = ar_get_xchildren(comm_connector, "ECU-COMM-PORT-INSTANCES/FRAME-PORT", ar_dict, ns)
-    nm_address = ar_get_child(comm_connector, "NM-ADDRESS", ar_dict, ns)
-    assoc_refs = ar_get_child(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", ar_dict, ns)
+        comm_connector = get_child(connectors, "CAN-COMMUNICATION-CONNECTOR", ar_dict, ns)
+    frames = find_children_by_path(comm_connector, "ECU-COMM-PORT-INSTANCES/FRAME-PORT", ar_dict, ns)
+    nm_address = get_child(comm_connector, "NM-ADDRESS", ar_dict, ns)
+    assoc_refs = get_child(ecu, "ASSOCIATED-I-PDU-GROUP-REFS", ar_dict, ns)
 
     if assoc_refs is not None:
-        assoc = ar_get_children(assoc_refs, "ASSOCIATED-I-PDU-GROUP", ar_dict, ns)
+        assoc = get_children(assoc_refs, "ASSOCIATED-I-PDU-GROUP", ar_dict, ns)
     else:  # AR4
-        assoc_refs = ar_get_child(ecu, "ASSOCIATED-COM-I-PDU-GROUP-REFS", ar_dict, ns)
-        assoc = ar_get_children(assoc_refs, "ASSOCIATED-COM-I-PDU-GROUP", ar_dict, ns)
+        assoc_refs = get_child(ecu, "ASSOCIATED-COM-I-PDU-GROUP-REFS", ar_dict, ns)
+        assoc = get_children(assoc_refs, "ASSOCIATED-COM-I-PDU-GROUP", ar_dict, ns)
 
     in_frame = []
     out_frame = []
 
     # get direction of frames (is current ECU sender/receiver/...?)
     for ref in assoc:
-        direction = ar_get_child(ref, "COMMUNICATION-DIRECTION", ar_dict, ns)
-        group_refs = ar_get_child(ref, "CONTAINED-I-PDU-GROUPS-REFS", ar_dict, ns)
-        pdu_refs = ar_get_child(ref, "I-PDU-REFS", ar_dict, ns)
+        direction = get_child(ref, "COMMUNICATION-DIRECTION", ar_dict, ns)
+        group_refs = get_child(ref, "CONTAINED-I-PDU-GROUPS-REFS", ar_dict, ns)
+        pdu_refs = get_child(ref, "I-PDU-REFS", ar_dict, ns)
         if pdu_refs is not None:  # AR3
             # local defined pdus
-            pdus = ar_get_children(pdu_refs, "I-PDU", ar_dict, ns)
+            pdus = get_children(pdu_refs, "I-PDU", ar_dict, ns)
             for pdu in pdus:
                 if pdu in pdu_frame_mapping:
                     if direction.text == "IN":
@@ -1371,11 +1388,11 @@ def process_ecu(ecu, db, ar_dict, multiplex_translation, ns):
                     else:
                         out_frame.append(pdu_frame_mapping[pdu])
         else:  # AR4
-            isigpdus = ar_get_child(ref, "I-SIGNAL-I-PDUS", ar_dict, ns)
-            isigconds = ar_get_children(
+            isigpdus = get_child(ref, "I-SIGNAL-I-PDUS", ar_dict, ns)
+            isigconds = get_children(
                 isigpdus, "I-SIGNAL-I-PDU-REF-CONDITIONAL", ar_dict, ns)
             for isigcond in isigconds:
-                pdus = ar_get_children(isigcond, "I-SIGNAL-I-PDU", ar_dict, ns)
+                pdus = get_children(isigcond, "I-SIGNAL-I-PDU", ar_dict, ns)
                 for pdu in pdus:
                     if pdu in pdu_frame_mapping:
                         if direction.text == "IN":
@@ -1384,25 +1401,25 @@ def process_ecu(ecu, db, ar_dict, multiplex_translation, ns):
                             out_frame.append(pdu_frame_mapping[pdu])
 
         # grouped pdus
-        group = ar_get_children(group_refs, "CONTAINED-I-PDU-GROUPS", ar_dict, ns)
+        group = get_children(group_refs, "CONTAINED-I-PDU-GROUPS", ar_dict, ns)
         for t in group:
             if direction is None:
-                direction = ar_get_child(
+                direction = get_child(
                     t, "COMMUNICATION-DIRECTION", ar_dict, ns)
-            pdu_refs = ar_get_child(t, "I-PDU-REFS", ar_dict, ns)
-            pdus = ar_get_children(pdu_refs, "I-PDU", ar_dict, ns)
+            pdu_refs = get_child(t, "I-PDU-REFS", ar_dict, ns)
+            pdus = get_children(pdu_refs, "I-PDU", ar_dict, ns)
             for pdu in pdus:
                 if direction.text == "IN":
-                    in_frame.append(ar_get_name(pdu, ns))
+                    in_frame.append(get_element_name(pdu, ns))
                 else:
-                    out_frame.append(ar_get_name(pdu, ns))
+                    out_frame.append(get_element_name(pdu, ns))
 
         for out in out_frame:
             if out in multiplex_translation:
                 out = multiplex_translation[out]
             frame = db.frame_by_name(out)
             if frame is not None:
-                frame.add_transmitter(ar_get_name(ecu, ns))
+                frame.add_transmitter(get_element_name(ecu, ns))
             else:
                 pass
 
@@ -1417,7 +1434,7 @@ def process_ecu(ecu, db, ar_dict, multiplex_translation, ns):
 #                                               signal.receiver.append(recname)
 #                       else:
 #                               print "in not found: " + inf
-    bu = ecu(ar_get_name(ecu, ns))
+    bu = ecu(get_element_name(ecu, ns))
     if nm_address is not None:
         bu.add_attribute("NWM-Stationsadresse", nm_address.text)
         bu.add_attribute("NWM-Knoten", "ja")
@@ -1428,9 +1445,9 @@ def process_ecu(ecu, db, ar_dict, multiplex_translation, ns):
 
 
 def ecuc_extract_signal(signal_node, ns):
-    # type: (etree._Element, str) -> canmatrix.Signal
+    # type: (_Element, str) -> canmatrix.Signal
     """Extract signal from ECUc file."""
-    attributes = signal_node.findall(".//" + ns + "DEFINITION-REF")  # type: typing.Sequence[etree._Element]
+    attributes = signal_node.findall(".//" + ns + "DEFINITION-REF")  # type: typing.Sequence[_Element]
     start_bit = None
     size = 0
     is_little = False
@@ -1452,7 +1469,7 @@ def ecuc_extract_signal(signal_node, ns):
             signal_type = attribute.getparent().find(".//" + ns + "VALUE").text
         if attribute.text.endswith("ComTimeout"):
             timeout = int(attribute.getparent().find(".//" + ns + "VALUE").text)
-    return canmatrix.Signal(ar_get_name(signal_node, ns), start_bit=start_bit, size=size, is_little_endian=is_little)
+    return canmatrix.Signal(get_element_name(signal_node, ns), start_bit=start_bit, size=size, is_little_endian=is_little)
 
 
 def extract_cm_from_ecuc(com_module, search_point, ns):
@@ -1461,11 +1478,11 @@ def extract_cm_from_ecuc(com_module, search_point, ns):
     for definition in definitions:
         if definition.text.endswith("ComIPdu"):
             container = definition.getparent()
-            frame = canmatrix.Frame(ar_get_name(container, ns))
+            frame = canmatrix.Frame(get_element_name(container, ns))
             db.add_frame(frame)
-            all_references = ar_get_children(container, "ECUC-REFERENCE-VALUE", search_point, ns)
+            all_references = get_children(container, "ECUC-REFERENCE-VALUE", search_point, ns)
             for reference in all_references:
-                value = ar_get_child(reference, "VALUE", search_point, ns)
+                value = get_child(reference, "VALUE", search_point, ns)
                 if value is not None:
                     signal_definition = value.find('./' + ns + "DEFINITION-REF")
                     if signal_definition.text.endswith("ComSignal"):
@@ -1478,8 +1495,8 @@ def extract_cm_from_ecuc(com_module, search_point, ns):
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> typing.Dict[str, canmatrix.CanMatrix]
 
-    global ArCache
-    ArCache = dict()
+    global xml_element_cache
+    xml_element_cache = dict()
     global pdu_frame_mapping
     pdu_frame_mapping = {}
     global signal_rxs
@@ -1493,10 +1510,10 @@ def load(file, **options):
     logger.debug("Read arxml ...")
     tree = etree.parse(file)
 
-    root = tree.getroot()  # type: etree._Element
+    root = tree.getroot()  # type: _Element
     logger.debug(" Done\n")
 
-    ns = "{" + tree.xpath('namespace-uri(.)') + "}"
+    ns = "{" + tree.xpath('namespace-uri(.)') + "}"  # type: str
     nsp = tree.xpath('namespace-uri(.)')
 
     top_level_packages = root.find('./' + ns + 'TOP-LEVEL-PACKAGES')
@@ -1508,15 +1525,18 @@ def load(file, **options):
     logger.debug("Build arTree ...")
 
     if use_ar_xpath:
-        search_point = top_level_packages  # type: typing.Union[etree._Element, ArTree]
+        search_point = top_level_packages  # type: typing.Union[_Element, ArTree]
     else:
         ar_tree = ArTree()
-        ar_parse_tree(top_level_packages, ar_tree, ns)
+        fill_tree_from_xml(top_level_packages, ar_tree, ns)
         search_point = ar_tree
 
     logger.debug(" Done\n")
 
-    com_module = ar_get_path(search_point, "ActiveEcuC/Com")
+    if isinstance(search_point, ArTree):
+        com_module = get_cached_element_by_path(search_point, "ActiveEcuC/Com")
+    else:
+        com_module = get_element_by_path(search_point, "ActiveEcuC/Com", ns)
     if com_module is not None:
         logger.info("seems to be a ECUC arxml. Very limited support for extracting canmatrix.")
         return extract_cm_from_ecuc(com_module, search_point, ns)
@@ -1525,21 +1545,21 @@ def load(file, **options):
     if frames is None:
         frames = root.findall('.//' + ns + 'FRAME')  # AR3.2-4.1?
     
-    logger.debug("DEBUG %d frames in arxml...", len(frames))
+    logger.debug("%d frames in arxml...", len(frames))
     can_triggers = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
-    logger.debug("DEBUG %d can-frame-triggering in arxml...", len(can_triggers))
+    logger.debug("%d can-frame-triggering in arxml...", len(can_triggers))
 
     sig_pdu_map = root.findall('.//' + ns + 'SIGNAL-TO-PDU-MAPPINGS')
-    logger.debug("DEBUG %d SIGNAL-TO-PDU-MAPPINGS in arxml...", len(sig_pdu_map))
+    logger.debug("%d SIGNAL-TO-PDU-MAPPINGS in arxml...", len(sig_pdu_map))
 
     sig_ipdu = root.findall('.//' + ns + 'I-SIGNAL-TO-I-PDU-MAPPING')
-    logger.debug("DEBUG %d I-SIGNAL-TO-I-PDU-MAPPING in arxml...", len(sig_ipdu))
+    logger.debug("%d I-SIGNAL-TO-I-PDU-MAPPING in arxml...", len(sig_ipdu))
 
     if ignore_cluster_info is True:
-        ccs = [etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[etree._Element]
+        ccs = [etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
     else:
         ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
-    for cc in ccs:  # type: etree._Element
+    for cc in ccs:  # type: _Element
         db = canmatrix.CanMatrix()
 # Defines not jet imported...
         db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
@@ -1559,32 +1579,32 @@ def load(file, **options):
             can_frame_trig = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
             bus_name = ""
         else:
-            speed = ar_get_child(cc, "SPEED", search_point, ns)
-            logger.debug("Busname: " + ar_get_name(cc, ns))
+            speed = get_child(cc, "SPEED", search_point, ns)
+            logger.debug("Busname: " + get_element_name(cc, ns))
 
-            bus_name = ar_get_name(cc, ns)
+            bus_name = get_element_name(cc, ns)
             if speed is not None:
                 logger.debug(" Speed: " + speed.text)
 
-            physical_channels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")  # type: etree._Element
+            physical_channels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")  # type: _Element
             if physical_channels is None:
-                logger.error("Error - PHYSICAL-CHANNELS not found")
+                logger.error("PHYSICAL-CHANNELS not found")
 
-            nm_lower_id = ar_get_child(cc, "NM-LOWER-CAN-ID", search_point, ns)
+            nm_lower_id = get_child(cc, "NM-LOWER-CAN-ID", search_point, ns)
 
-            physical_channel = ar_get_child(physical_channels, "PHYSICAL-CHANNEL", search_point, ns)
+            physical_channel = get_child(physical_channels, "PHYSICAL-CHANNEL", search_point, ns)
             if physical_channel is None:
-                physical_channel = ar_get_child(physical_channels, "CAN-PHYSICAL-CHANNEL", search_point, ns)
+                physical_channel = get_child(physical_channels, "CAN-PHYSICAL-CHANNEL", search_point, ns)
             if physical_channel is None:
-                logger.error("Error - PHYSICAL-CHANNEL not found")
-            can_frame_trig = ar_get_children(physical_channel, "CAN-FRAME-TRIGGERING", search_point, ns)
+                logger.error("PHYSICAL-CHANNEL not found")
+            can_frame_trig = get_children(physical_channel, "CAN-FRAME-TRIGGERING", search_point, ns)
             if can_frame_trig is None:
-                logger.error("Error - CAN-FRAME-TRIGGERING not found")
+                logger.error("CAN-FRAME-TRIGGERING not found")
             else:
                 logger.debug("%d frames found in arxml", len(can_frame_trig))
 
         multiplex_translation = {}  # type: typing.Dict[str, str]
-        for frameTrig in can_frame_trig:  # type: etree._Element
+        for frameTrig in can_frame_trig:  # type: _Element
             frame = get_frame(frameTrig, search_point, multiplex_translation, ns, float_factory)
             if frame is not None:
                 db.add_frame(frame)
@@ -1593,33 +1613,33 @@ def load(file, **options):
             pass
             # no support for signal direction
         else:
-            isignal_triggerings = ar_get_xchildren(physical_channel, "I-SIGNAL-TRIGGERING", search_point, ns)
+            isignal_triggerings = find_children_by_path(physical_channel, "I-SIGNAL-TRIGGERING", search_point, ns)
             for sig_trig in isignal_triggerings:
-                isignal = ar_get_child(sig_trig, 'SIGNAL', search_point, ns)
+                isignal = get_child(sig_trig, 'SIGNAL', search_point, ns)
                 if isignal is None:
-                    isignal = ar_get_child(sig_trig, 'I-SIGNAL', search_point, ns)
+                    isignal = get_child(sig_trig, 'I-SIGNAL', search_point, ns)
                 if isignal is None:
-                    sig_trig_text = ar_get_name(sig_trig, ns) if sig_trig is not None else "None"
+                    sig_trig_text = get_element_name(sig_trig, ns) if sig_trig is not None else "None"
                     logger.debug("load: no isignal for %s", sig_trig_text)
                     continue
 
-                port_ref = ar_get_children(sig_trig, "I-SIGNAL-PORT", search_point, ns)
+                port_ref = get_children(sig_trig, "I-SIGNAL-PORT", search_point, ns)
 
                 for port in port_ref:
-                    comm_direction = ar_get_child(port, "COMMUNICATION-DIRECTION", search_point, ns)
+                    comm_direction = get_child(port, "COMMUNICATION-DIRECTION", search_point, ns)
                     if comm_direction is not None and comm_direction.text == "IN":
-                        sys_signal = ar_get_child(isignal, "SYSTEM-SIGNAL", search_point, ns)
-                        ecu_name = ar_get_name(port.getparent().getparent().getparent().getparent(), ns)
+                        sys_signal = get_child(isignal, "SYSTEM-SIGNAL", search_point, ns)
+                        ecu_name = get_element_name(port.getparent().getparent().getparent().getparent(), ns)
                         # port points in ECU; probably more stable to go up
                         # from each ECU than to go down in XML...
                         if sys_signal in signal_rxs:
                             signal_rxs[sys_signal].add_receiver(ecu_name)
     # find ECUs:
         nodes = root.findall('.//' + ns + 'ECU-INSTANCE')
-        for node in nodes:  # type: etree._Element
+        for node in nodes:  # type: _Element
             ecu = process_ecu(node, db, search_point, multiplex_translation, ns)
-            desc = ar_get_child(node, "DESC", search_point, ns)
-            l2 = ar_get_child(desc, "L-2", search_point, ns)
+            desc = get_child(node, "DESC", search_point, ns)
+            l2 = get_child(desc, "L-2", search_point, ns)
             if l2 is not None:
                 ecu.add_comment(l2.text)
 
