@@ -1,6 +1,7 @@
 import io
 import canmatrix.j1939_decoder
 import textwrap
+import collections
 
 def test_j1939_decoder():
     dbc = io.BytesIO(textwrap.dedent(u'''\
@@ -52,13 +53,13 @@ def test_j1939_decoder():
              can_data[i], matrix)
 
     print ("-------- test data -------- ")
-    test_frames =   {
-        0xcef27fd : "fffae1ff00ffff",
-        0xcffcafd : "c0fffffffffff800",
-        0xcf00203 : "cc00000000b812ff",
-        0xfe4a03 : "fffcffffffffffff",
-        0xc010305 : "ccfffaffff204e0a",
-        0x0CF00400: "F4DEDE3028FFF0FF"}
+    test_frames = collections.OrderedDict ([
+        (0xcef27fd , "fffae1ff00ffff"),
+        (0xcffcafd , "c0fffffffffff800"),
+        (0xcf00203 , "cc00000000b812ff"),
+        (0xfe4a03 , "fffcffffffffffff"),
+        (0xc010305 , "ccfffaffff204e0a"),
+        (0x0CF00400, "F4DEDE3028FFF0FF")])
 
     expected = ["EEC1","TC1","ETC7","ETC1"]
     for arb_id, asc_data in test_frames.items():
