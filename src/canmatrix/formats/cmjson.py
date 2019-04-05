@@ -44,7 +44,9 @@ def dump(db, f, **options):
     export_all = options.get('jsonAll', False)
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
 
+
     export_array = []  # type: typing.List[typing.Union[str, float, list, dict]]
+
 
     if export_canard:
         for frame in db.frames:
@@ -168,6 +170,7 @@ def load(f, **_options):
         import io
         json_data = json.load(io.TextIOWrapper(f, encoding='UTF-8'))
     else:
+
         json_data = json.load(f)
 
     if "messages" in json_data:

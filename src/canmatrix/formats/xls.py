@@ -114,20 +114,17 @@ def dump(db, file, **options):
                 'Signal Name', 'Signal Function', 'Signal Length [Bit]', 'Signal Default', ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 
-    if "additionalAttributes" in options  and len(options["additionalAttributes"]) > 0:
-        additional_signal_colums = options["additionalAttributes"].split(",")
+    if len(options.get("additionalAttributes", "")) > 0:
+        additional_signal_colums = options.get("additionalAttributes").split(",")
     else:
         additional_signal_colums = []#["attributes['DisplayDecimalPlaces']"]
 
-    if "additionalFrameAttributes" in options  and len(options["additionalFrameAttributes"]) > 0:
-        additional_frame_colums = options["additionalFrameAttributes"].split(",")
+    if len(options.get("additionalFrameAttributes","")) > 0:
+        additional_frame_colums = options.get("additionalFrameAttributes").split(",")
     else:
         additional_frame_colums = []#["attributes['DisplayDecimalPlaces']"]
 
-    if 'xlsMotorolaBitFormat' in options:
-        motorolaBitFormat = options["xlsMotorolaBitFormat"]
-    else:
-        motorolaBitFormat = "msbreverse"
+    motorolaBitFormat = options.get("xlsMotorolaBitFormat","msbreverse")
 
     workbook = xlwt.Workbook(encoding='utf8')
 #    wsname = os.path.basename(filename).replace('.xls', '')
@@ -469,7 +466,7 @@ def load(file, **options):
                 mux, signalComment = signalComment[4:].split(':', 1)
                 multiplex = int(mux.strip())
 
-            if "byteorder" in index:
+            if index.get("byteorder", False):
                 signalByteorder = sh.cell(rownum, index['byteorder']).value
 
                 if 'i' in signalByteorder:
