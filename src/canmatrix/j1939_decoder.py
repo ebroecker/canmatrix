@@ -15,10 +15,13 @@ class j1939_decoder(object):
     transfered_pgn = attr.ib(default=0)  # type: int
     _data = attr.ib(init=False, default=bytearray())
 
-    def decode(self, arbitration_id, can_data, matrix):
-        frame = matrix.frame_by_pgn(arbitration_id.pgn)
+    def decode(self, arbitration_id, can_data, matrix = None):
+        if matrix is not None:
+            frame = matrix.frame_by_pgn(arbitration_id.pgn)
+        else:
+            frame = None
         if frame is not None:
-            return ("regular", frame.decode(can_data))
+            return ("regular " + frame.name, frame.decode(can_data))
         elif self.j1939_db.frame_by_pgn(arbitration_id.pgn) is not None:
             frame = self.j1939_db.frame_by_pgn(arbitration_id.pgn)
             signals = frame.decode(can_data)
