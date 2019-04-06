@@ -101,7 +101,7 @@ def load_flat(file_object, import_type, key="", **options):
 
 
 def dump(can_matrix_or_cluster, file_object, export_type, **options):
-    # type: (typing.Union[canmatrix.CanMatrix, canmatrix.cancluster.CanCluster], typing.BinaryIO, str, **str) -> None
+    # type: (typing.Union[canmatrix.CanMatrix, canmatrix.cancluster.CanCluster], typing.IO, str, **str) -> None
     module_instance = sys.modules["canmatrix.formats." + export_type]
     if isinstance(can_matrix_or_cluster, canmatrix.CanMatrix):
         module_instance.dump(can_matrix_or_cluster, file_object, **options)  # type: ignore
@@ -118,7 +118,7 @@ def dumpp(can_cluster, path, export_type=None, **options):
                 break
     if export_type:
         if "clusterExporter" in supportedFormats[export_type]:
-            file_object = open(path, "wb")
+            file_object = open(path, "wb")  # type: typing.IO
             dump(can_cluster, file_object, export_type, **options)
         else:
             for name in can_cluster:
