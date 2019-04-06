@@ -1149,7 +1149,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
 
             if initvalue is not None and initvalue.text is not None:
                 initvalue.text = canmatrix.utils.guess_value(initvalue.text)
-                new_signal._initValue = int(initvalue.text)
+                new_signal._initValue = float_factory(initvalue.text)
                 new_signal.add_attribute("GenSigStartValue", str(new_signal._initValue))
             else:
                 new_signal._initValue = 0
