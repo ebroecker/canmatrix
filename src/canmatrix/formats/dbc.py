@@ -913,9 +913,6 @@ def load(f, **options):
         #    frame.id -= 0x80000000
         #    frame.extended = 1
 
-        if "_FD" in frame.attributes.get("VFrameFormat",""):
-            frame.is_fd = True
-
         for signal in frame.signals:
             if signal.attribute("SystemSignalLongSymbol") is not None:
                 signal.name = signal.attribute("SystemSignalLongSymbol")[1:-1]
@@ -942,6 +939,12 @@ def load(f, **options):
                         signal.attributes[define] = signal.attributes[define][1:-1]
 
     db.enum_attribs_to_values()
+    for frame in db.frames:
+        if "_FD" in frame.attributes.get("VFrameFormat", ""):
+            frame.is_fd = True
+        if "J1939PG" in frame.attributes.get("VFrameFormat", ""):
+            frame.is_j1939 = True
+
     db.update_ecu_list()
     db.del_ecu("Vector__XXX")
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")

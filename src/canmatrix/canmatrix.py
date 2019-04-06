@@ -1881,7 +1881,18 @@ class CanMatrix(object):
             i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
         :return: OrderedDictionary
         """
-        return self.frame_by_id(frame_id).decode(data)
+        if not self.contains_j1939:
+            return self.frame_by_id(frame_id).decode(data)
+        elif frame_id.extended:
+            frame = self.frame_by_id(frame_id)
+            if frame is None:
+                frame = self.frame_by_pgn(frame_id.pgn)
+            if frame:
+                return frame.decode(data)
+            else:
+                return {}
+        else:
+            return {}
 
     def enum_attribs_to_values(self):  # type: () -> None
         for define in self.ecu_defines:

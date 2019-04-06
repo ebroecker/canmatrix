@@ -23,9 +23,8 @@ class j1939_decoder(object):
         if frame is not None:
             return ("regular " + frame.name, frame.decode(can_data))
         elif self.j1939_db.frame_by_pgn(arbitration_id.pgn) is not None:
-            frame = self.j1939_db.frame_by_pgn(arbitration_id.pgn)
-            signals = frame.decode(can_data)
-            return ("J1939 known: " + frame.name + " " + frame.comment, signals)
+            signals = self.j1939_db.decode(arbitration_id,can_data)
+            return ("J1939 known: ", signals)
 
         elif arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(0xECFF).pgn and can_data[0] == 32:
             # BAM detected
