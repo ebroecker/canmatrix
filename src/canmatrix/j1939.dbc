@@ -374,9 +374,9 @@ BO_ 2163213824 EAC1: 8 Vector__XXX
  SG_ Differential_Lock_State___Front_ : 10|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Differential_Lock_State___Rear_A : 12|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Differential_Lock_State___Rear_A : 14|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Differential_Lock_State___Centra : 16|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Differential_Lock_State___Centra : 18|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Differential_Lock_State___Centra : 20|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Differential_Lock_State___Centra0 : 16|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Differential_Lock_State___Centra1 : 18|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Differential_Lock_State___Centra2 : 20|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Front_axle_group_engagement_stat : 24|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Rear_axle_group_engagement_statu : 26|2@1+ (1,0) [0|3] "" Vector__XXX
 
@@ -1483,16 +1483,16 @@ BO_ 2164106240 PTODE: 8 Vector__XXX
  SG_ Enable_Switch___PTO_Engine_Acces : 10|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Enable_Switch___PTO_Engine_Acces : 12|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Engagement_Consent___Transfer_ca : 16|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Engagement_Consent___Transmissio : 18|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Engagement_Consent___Transmissio : 20|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Engagement_Consent___Transmissio : 22|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Engagement_Consent___PTO_Engine_ : 24|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Engagement_Consent___PTO_Engine_ : 26|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Engagement_Consent___PTO_Engine_ : 28|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Engagement_Consent___Transmissio0 : 18|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Engagement_Consent___Transmissio1 : 20|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Engagement_Consent___Transmissio2 : 22|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Engagement_Consent___PTO_Engine_0 : 24|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Engagement_Consent___PTO_Engine_1 : 26|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Engagement_Consent___PTO_Engine_2 : 28|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Engagement_Status___Transfer_cas : 32|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Engagement_Status___Transmission : 34|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Engagement_Status___Transmission : 36|2@1+ (1,0) [0|3] "" Vector__XXX
- SG_ Engagement_Status___Transmission : 38|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Engagement_Status___Transmission0 : 34|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Engagement_Status___Transmission1 : 36|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Engagement_Status___Transmission2 : 38|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Engagement_Status___PTO_Engine_F : 40|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Engagement_Status___PTO_Engine_A : 42|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ Engagement_Status___PTO_Engine_A : 44|2@1+ (1,0) [0|3] "" Vector__XXX
@@ -2373,9 +2373,9 @@ BO_ 2164164096 IT5: 8 Vector__XXX
  SG_ Engine_Cylinder__20_Ignition_Tim : 48|16@1+ (1,0) [0|65535] "" Vector__XXX
 
 BO_ 2164164352 IT6: 8 Vector__XXX
- SG_ Engine_Desired_Ignition_Timing__ : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ Engine_Desired_Ignition_Timing__ : 16|16@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ Engine_Desired_Ignition_Timing__ : 32|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Engine_Desired_Ignition_Timing__0 : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Engine_Desired_Ignition_Timing__1 : 16|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Engine_Desired_Ignition_Timing__2 : 32|16@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ Engine_Actual_Ignition_Timing : 48|16@1+ (1,0) [0|65535] "" Vector__XXX
 
 BO_ 2164164608 ISO1: 8 Vector__XXX
@@ -2610,12 +2610,12 @@ BO_ 2164173568 ETC6: 8 Vector__XXX
 BO_ 2164173824 EBC4: 8 Vector__XXX
  SG_ Brake_Lining_Remaining__Front_Ax : 0|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ Brake_Lining_Remaining__Front_Ax : 8|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ Brake_Lining_Remaining__Rear_Axl : 16|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ Brake_Lining_Remaining__Rear_Axl : 24|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ Brake_Lining_Remaining__Rear_Axl : 32|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ Brake_Lining_Remaining__Rear_Axl : 40|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ Brake_Lining_Remaining__Rear_Axl : 48|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ Brake_Lining_Remaining__Rear_Axl : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Brake_Lining_Remaining__Rear_Axl0 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Brake_Lining_Remaining__Rear_Axl1 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Brake_Lining_Remaining__Rear_Axl2 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Brake_Lining_Remaining__Rear_Axl3 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Brake_Lining_Remaining__Rear_Axl4 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Brake_Lining_Remaining__Rear_Axl5 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 2164174080 EBC3: 8 Vector__XXX
  SG_ Brake_Application_Pressure_High_0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
@@ -3116,10 +3116,370 @@ BO_ 2164195072 WFI: 8 Vector__XXX
 
 
 
+BA_DEF_ BO_ "VFrameFormat" ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG";
 BA_DEF_ SG_ "SPN" INT 0 524287;
 BA_DEF_ SG_ "SystemSignalLongSymbol" STRING;
+BA_DEF_  "ProtocolType" STRING;
 
+BA_ "ProtocolType"   "J1939";
 
+BA_ "VFrameFormat" BO_ 2147483648 4;
+BA_ "VFrameFormat" BO_ 2147549184 4;
+BA_ "VFrameFormat" BO_ 2147745792 4;
+BA_ "VFrameFormat" BO_ 2147942400 4;
+BA_ "VFrameFormat" BO_ 2148007936 4;
+BA_ "VFrameFormat" BO_ 2157641728 4;
+BA_ "VFrameFormat" BO_ 2157707264 4;
+BA_ "VFrameFormat" BO_ 2157772800 4;
+BA_ "VFrameFormat" BO_ 2158297088 4;
+BA_ "VFrameFormat" BO_ 2158362624 4;
+BA_ "VFrameFormat" BO_ 2158428160 4;
+BA_ "VFrameFormat" BO_ 2158493696 4;
+BA_ "VFrameFormat" BO_ 2158559232 4;
+BA_ "VFrameFormat" BO_ 2158886912 4;
+BA_ "VFrameFormat" BO_ 2161049600 4;
+BA_ "VFrameFormat" BO_ 2161115136 4;
+BA_ "VFrameFormat" BO_ 2161180672 4;
+BA_ "VFrameFormat" BO_ 2161246208 4;
+BA_ "VFrameFormat" BO_ 2161442816 4;
+BA_ "VFrameFormat" BO_ 2161901568 4;
+BA_ "VFrameFormat" BO_ 2161967104 4;
+BA_ "VFrameFormat" BO_ 2162032640 4;
+BA_ "VFrameFormat" BO_ 2162163712 4;
+BA_ "VFrameFormat" BO_ 2163212288 4;
+BA_ "VFrameFormat" BO_ 2163212544 4;
+BA_ "VFrameFormat" BO_ 2163212800 4;
+BA_ "VFrameFormat" BO_ 2163213056 4;
+BA_ "VFrameFormat" BO_ 2163213312 4;
+BA_ "VFrameFormat" BO_ 2163213568 4;
+BA_ "VFrameFormat" BO_ 2163213824 4;
+BA_ "VFrameFormat" BO_ 2163214080 4;
+BA_ "VFrameFormat" BO_ 2163214336 4;
+BA_ "VFrameFormat" BO_ 2163214592 4;
+BA_ "VFrameFormat" BO_ 2163214848 4;
+BA_ "VFrameFormat" BO_ 2163215104 4;
+BA_ "VFrameFormat" BO_ 2163215360 4;
+BA_ "VFrameFormat" BO_ 2163215616 4;
+BA_ "VFrameFormat" BO_ 2163215872 4;
+BA_ "VFrameFormat" BO_ 2163216128 4;
+BA_ "VFrameFormat" BO_ 2163216384 4;
+BA_ "VFrameFormat" BO_ 2163216640 4;
+BA_ "VFrameFormat" BO_ 2163216896 4;
+BA_ "VFrameFormat" BO_ 2163217152 4;
+BA_ "VFrameFormat" BO_ 2163217408 4;
+BA_ "VFrameFormat" BO_ 2163217920 4;
+BA_ "VFrameFormat" BO_ 2163218176 4;
+BA_ "VFrameFormat" BO_ 2163218432 4;
+BA_ "VFrameFormat" BO_ 2163218688 4;
+BA_ "VFrameFormat" BO_ 2163218944 4;
+BA_ "VFrameFormat" BO_ 2163219712 4;
+BA_ "VFrameFormat" BO_ 2163220736 4;
+BA_ "VFrameFormat" BO_ 2163221248 4;
+BA_ "VFrameFormat" BO_ 2163221504 4;
+BA_ "VFrameFormat" BO_ 2163221760 4;
+BA_ "VFrameFormat" BO_ 2163222016 4;
+BA_ "VFrameFormat" BO_ 2163222272 4;
+BA_ "VFrameFormat" BO_ 2163222528 4;
+BA_ "VFrameFormat" BO_ 2164073216 4;
+BA_ "VFrameFormat" BO_ 2164073472 4;
+BA_ "VFrameFormat" BO_ 2164073728 4;
+BA_ "VFrameFormat" BO_ 2164073984 4;
+BA_ "VFrameFormat" BO_ 2164074240 4;
+BA_ "VFrameFormat" BO_ 2164074496 4;
+BA_ "VFrameFormat" BO_ 2164074752 4;
+BA_ "VFrameFormat" BO_ 2164075008 4;
+BA_ "VFrameFormat" BO_ 2164075264 4;
+BA_ "VFrameFormat" BO_ 2164075520 4;
+BA_ "VFrameFormat" BO_ 2164075776 4;
+BA_ "VFrameFormat" BO_ 2164076032 4;
+BA_ "VFrameFormat" BO_ 2164076288 4;
+BA_ "VFrameFormat" BO_ 2164076544 4;
+BA_ "VFrameFormat" BO_ 2164076800 4;
+BA_ "VFrameFormat" BO_ 2164077312 4;
+BA_ "VFrameFormat" BO_ 2164077568 4;
+BA_ "VFrameFormat" BO_ 2164077824 4;
+BA_ "VFrameFormat" BO_ 2164078080 4;
+BA_ "VFrameFormat" BO_ 2164078336 4;
+BA_ "VFrameFormat" BO_ 2164078592 4;
+BA_ "VFrameFormat" BO_ 2164078848 4;
+BA_ "VFrameFormat" BO_ 2164079104 4;
+BA_ "VFrameFormat" BO_ 2164079360 4;
+BA_ "VFrameFormat" BO_ 2164079616 4;
+BA_ "VFrameFormat" BO_ 2164079872 4;
+BA_ "VFrameFormat" BO_ 2164080128 4;
+BA_ "VFrameFormat" BO_ 2164080384 4;
+BA_ "VFrameFormat" BO_ 2164080640 4;
+BA_ "VFrameFormat" BO_ 2164080896 4;
+BA_ "VFrameFormat" BO_ 2164081664 4;
+BA_ "VFrameFormat" BO_ 2164081920 4;
+BA_ "VFrameFormat" BO_ 2164082176 4;
+BA_ "VFrameFormat" BO_ 2164082432 4;
+BA_ "VFrameFormat" BO_ 2164082688 4;
+BA_ "VFrameFormat" BO_ 2164082944 4;
+BA_ "VFrameFormat" BO_ 2164084992 4;
+BA_ "VFrameFormat" BO_ 2164085248 4;
+BA_ "VFrameFormat" BO_ 2164085504 4;
+BA_ "VFrameFormat" BO_ 2164090112 4;
+BA_ "VFrameFormat" BO_ 2164090368 4;
+BA_ "VFrameFormat" BO_ 2164090624 4;
+BA_ "VFrameFormat" BO_ 2164090880 4;
+BA_ "VFrameFormat" BO_ 2164091136 4;
+BA_ "VFrameFormat" BO_ 2164091392 4;
+BA_ "VFrameFormat" BO_ 2164091648 4;
+BA_ "VFrameFormat" BO_ 2164091904 4;
+BA_ "VFrameFormat" BO_ 2164092160 4;
+BA_ "VFrameFormat" BO_ 2164092416 4;
+BA_ "VFrameFormat" BO_ 2164092672 4;
+BA_ "VFrameFormat" BO_ 2164092928 4;
+BA_ "VFrameFormat" BO_ 2164093184 4;
+BA_ "VFrameFormat" BO_ 2164093440 4;
+BA_ "VFrameFormat" BO_ 2164093696 4;
+BA_ "VFrameFormat" BO_ 2164093952 4;
+BA_ "VFrameFormat" BO_ 2164094208 4;
+BA_ "VFrameFormat" BO_ 2164094464 4;
+BA_ "VFrameFormat" BO_ 2164094720 4;
+BA_ "VFrameFormat" BO_ 2164094976 4;
+BA_ "VFrameFormat" BO_ 2164095232 4;
+BA_ "VFrameFormat" BO_ 2164095488 4;
+BA_ "VFrameFormat" BO_ 2164095744 4;
+BA_ "VFrameFormat" BO_ 2164096000 4;
+BA_ "VFrameFormat" BO_ 2164096512 4;
+BA_ "VFrameFormat" BO_ 2164096768 4;
+BA_ "VFrameFormat" BO_ 2164097280 4;
+BA_ "VFrameFormat" BO_ 2164097792 4;
+BA_ "VFrameFormat" BO_ 2164098048 4;
+BA_ "VFrameFormat" BO_ 2164098304 4;
+BA_ "VFrameFormat" BO_ 2164098560 4;
+BA_ "VFrameFormat" BO_ 2164098816 4;
+BA_ "VFrameFormat" BO_ 2164099072 4;
+BA_ "VFrameFormat" BO_ 2164099328 4;
+BA_ "VFrameFormat" BO_ 2164099584 4;
+BA_ "VFrameFormat" BO_ 2164099840 4;
+BA_ "VFrameFormat" BO_ 2164100096 4;
+BA_ "VFrameFormat" BO_ 2164101120 4;
+BA_ "VFrameFormat" BO_ 2164101632 4;
+BA_ "VFrameFormat" BO_ 2164102144 4;
+BA_ "VFrameFormat" BO_ 2164102400 4;
+BA_ "VFrameFormat" BO_ 2164103168 4;
+BA_ "VFrameFormat" BO_ 2164103424 4;
+BA_ "VFrameFormat" BO_ 2164103936 4;
+BA_ "VFrameFormat" BO_ 2164104192 4;
+BA_ "VFrameFormat" BO_ 2164104448 4;
+BA_ "VFrameFormat" BO_ 2164104704 4;
+BA_ "VFrameFormat" BO_ 2164104960 4;
+BA_ "VFrameFormat" BO_ 2164105216 4;
+BA_ "VFrameFormat" BO_ 2164105472 4;
+BA_ "VFrameFormat" BO_ 2164105728 4;
+BA_ "VFrameFormat" BO_ 2164105984 4;
+BA_ "VFrameFormat" BO_ 2164106240 4;
+BA_ "VFrameFormat" BO_ 2164106496 4;
+BA_ "VFrameFormat" BO_ 2164107264 4;
+BA_ "VFrameFormat" BO_ 2164107520 4;
+BA_ "VFrameFormat" BO_ 2164107776 4;
+BA_ "VFrameFormat" BO_ 2164108800 4;
+BA_ "VFrameFormat" BO_ 2164109056 4;
+BA_ "VFrameFormat" BO_ 2164109312 4;
+BA_ "VFrameFormat" BO_ 2164109568 4;
+BA_ "VFrameFormat" BO_ 2164109824 4;
+BA_ "VFrameFormat" BO_ 2164110080 4;
+BA_ "VFrameFormat" BO_ 2164110336 4;
+BA_ "VFrameFormat" BO_ 2164111616 4;
+BA_ "VFrameFormat" BO_ 2164111872 4;
+BA_ "VFrameFormat" BO_ 2164112128 4;
+BA_ "VFrameFormat" BO_ 2164112384 4;
+BA_ "VFrameFormat" BO_ 2164112640 4;
+BA_ "VFrameFormat" BO_ 2164112896 4;
+BA_ "VFrameFormat" BO_ 2164113152 4;
+BA_ "VFrameFormat" BO_ 2164113408 4;
+BA_ "VFrameFormat" BO_ 2164113664 4;
+BA_ "VFrameFormat" BO_ 2164114432 4;
+BA_ "VFrameFormat" BO_ 2164114688 4;
+BA_ "VFrameFormat" BO_ 2164114944 4;
+BA_ "VFrameFormat" BO_ 2164115200 4;
+BA_ "VFrameFormat" BO_ 2164115456 4;
+BA_ "VFrameFormat" BO_ 2164115712 4;
+BA_ "VFrameFormat" BO_ 2164115968 4;
+BA_ "VFrameFormat" BO_ 2164116224 4;
+BA_ "VFrameFormat" BO_ 2164116480 4;
+BA_ "VFrameFormat" BO_ 2164116736 4;
+BA_ "VFrameFormat" BO_ 2164117504 4;
+BA_ "VFrameFormat" BO_ 2164117760 4;
+BA_ "VFrameFormat" BO_ 2164118016 4;
+BA_ "VFrameFormat" BO_ 2164118272 4;
+BA_ "VFrameFormat" BO_ 2164118528 4;
+BA_ "VFrameFormat" BO_ 2164118784 4;
+BA_ "VFrameFormat" BO_ 2164119040 4;
+BA_ "VFrameFormat" BO_ 2164119296 4;
+BA_ "VFrameFormat" BO_ 2164119552 4;
+BA_ "VFrameFormat" BO_ 2164119808 4;
+BA_ "VFrameFormat" BO_ 2164120064 4;
+BA_ "VFrameFormat" BO_ 2164120320 4;
+BA_ "VFrameFormat" BO_ 2164120576 4;
+BA_ "VFrameFormat" BO_ 2164121344 4;
+BA_ "VFrameFormat" BO_ 2164121600 4;
+BA_ "VFrameFormat" BO_ 2164121856 4;
+BA_ "VFrameFormat" BO_ 2164122112 4;
+BA_ "VFrameFormat" BO_ 2164122368 4;
+BA_ "VFrameFormat" BO_ 2164122624 4;
+BA_ "VFrameFormat" BO_ 2164122880 4;
+BA_ "VFrameFormat" BO_ 2164123136 4;
+BA_ "VFrameFormat" BO_ 2164131584 4;
+BA_ "VFrameFormat" BO_ 2164146176 4;
+BA_ "VFrameFormat" BO_ 2164146432 4;
+BA_ "VFrameFormat" BO_ 2164148736 4;
+BA_ "VFrameFormat" BO_ 2164148992 4;
+BA_ "VFrameFormat" BO_ 2164149248 4;
+BA_ "VFrameFormat" BO_ 2164149504 4;
+BA_ "VFrameFormat" BO_ 2164149760 4;
+BA_ "VFrameFormat" BO_ 2164150016 4;
+BA_ "VFrameFormat" BO_ 2164150272 4;
+BA_ "VFrameFormat" BO_ 2164150528 4;
+BA_ "VFrameFormat" BO_ 2164150784 4;
+BA_ "VFrameFormat" BO_ 2164151040 4;
+BA_ "VFrameFormat" BO_ 2164151296 4;
+BA_ "VFrameFormat" BO_ 2164151552 4;
+BA_ "VFrameFormat" BO_ 2164151808 4;
+BA_ "VFrameFormat" BO_ 2164152064 4;
+BA_ "VFrameFormat" BO_ 2164152320 4;
+BA_ "VFrameFormat" BO_ 2164152576 4;
+BA_ "VFrameFormat" BO_ 2164152832 4;
+BA_ "VFrameFormat" BO_ 2164153088 4;
+BA_ "VFrameFormat" BO_ 2164155904 4;
+BA_ "VFrameFormat" BO_ 2164156160 4;
+BA_ "VFrameFormat" BO_ 2164156416 4;
+BA_ "VFrameFormat" BO_ 2164156672 4;
+BA_ "VFrameFormat" BO_ 2164156928 4;
+BA_ "VFrameFormat" BO_ 2164157184 4;
+BA_ "VFrameFormat" BO_ 2164157440 4;
+BA_ "VFrameFormat" BO_ 2164157696 4;
+BA_ "VFrameFormat" BO_ 2164157952 4;
+BA_ "VFrameFormat" BO_ 2164158208 4;
+BA_ "VFrameFormat" BO_ 2164158464 4;
+BA_ "VFrameFormat" BO_ 2164158720 4;
+BA_ "VFrameFormat" BO_ 2164158976 4;
+BA_ "VFrameFormat" BO_ 2164159232 4;
+BA_ "VFrameFormat" BO_ 2164159488 4;
+BA_ "VFrameFormat" BO_ 2164159744 4;
+BA_ "VFrameFormat" BO_ 2164160000 4;
+BA_ "VFrameFormat" BO_ 2164160256 4;
+BA_ "VFrameFormat" BO_ 2164160512 4;
+BA_ "VFrameFormat" BO_ 2164160768 4;
+BA_ "VFrameFormat" BO_ 2164161024 4;
+BA_ "VFrameFormat" BO_ 2164161280 4;
+BA_ "VFrameFormat" BO_ 2164161536 4;
+BA_ "VFrameFormat" BO_ 2164161792 4;
+BA_ "VFrameFormat" BO_ 2164162048 4;
+BA_ "VFrameFormat" BO_ 2164162304 4;
+BA_ "VFrameFormat" BO_ 2164162560 4;
+BA_ "VFrameFormat" BO_ 2164162816 4;
+BA_ "VFrameFormat" BO_ 2164163072 4;
+BA_ "VFrameFormat" BO_ 2164163328 4;
+BA_ "VFrameFormat" BO_ 2164163584 4;
+BA_ "VFrameFormat" BO_ 2164163840 4;
+BA_ "VFrameFormat" BO_ 2164164096 4;
+BA_ "VFrameFormat" BO_ 2164164352 4;
+BA_ "VFrameFormat" BO_ 2164164608 4;
+BA_ "VFrameFormat" BO_ 2164164864 4;
+BA_ "VFrameFormat" BO_ 2164165120 4;
+BA_ "VFrameFormat" BO_ 2164165376 4;
+BA_ "VFrameFormat" BO_ 2164165632 4;
+BA_ "VFrameFormat" BO_ 2164165888 4;
+BA_ "VFrameFormat" BO_ 2164166144 4;
+BA_ "VFrameFormat" BO_ 2164166400 4;
+BA_ "VFrameFormat" BO_ 2164166656 4;
+BA_ "VFrameFormat" BO_ 2164166912 4;
+BA_ "VFrameFormat" BO_ 2164167168 4;
+BA_ "VFrameFormat" BO_ 2164167424 4;
+BA_ "VFrameFormat" BO_ 2164167680 4;
+BA_ "VFrameFormat" BO_ 2164167936 4;
+BA_ "VFrameFormat" BO_ 2164168192 4;
+BA_ "VFrameFormat" BO_ 2164168448 4;
+BA_ "VFrameFormat" BO_ 2164168704 4;
+BA_ "VFrameFormat" BO_ 2164168960 4;
+BA_ "VFrameFormat" BO_ 2164169216 4;
+BA_ "VFrameFormat" BO_ 2164169472 4;
+BA_ "VFrameFormat" BO_ 2164169728 4;
+BA_ "VFrameFormat" BO_ 2164169984 4;
+BA_ "VFrameFormat" BO_ 2164170240 4;
+BA_ "VFrameFormat" BO_ 2164170496 4;
+BA_ "VFrameFormat" BO_ 2164170752 4;
+BA_ "VFrameFormat" BO_ 2164171008 4;
+BA_ "VFrameFormat" BO_ 2164171264 4;
+BA_ "VFrameFormat" BO_ 2164171520 4;
+BA_ "VFrameFormat" BO_ 2164171776 4;
+BA_ "VFrameFormat" BO_ 2164172032 4;
+BA_ "VFrameFormat" BO_ 2164172288 4;
+BA_ "VFrameFormat" BO_ 2164172544 4;
+BA_ "VFrameFormat" BO_ 2164172800 4;
+BA_ "VFrameFormat" BO_ 2164173056 4;
+BA_ "VFrameFormat" BO_ 2164173312 4;
+BA_ "VFrameFormat" BO_ 2164173568 4;
+BA_ "VFrameFormat" BO_ 2164173824 4;
+BA_ "VFrameFormat" BO_ 2164174080 4;
+BA_ "VFrameFormat" BO_ 2164174336 4;
+BA_ "VFrameFormat" BO_ 2164174592 4;
+BA_ "VFrameFormat" BO_ 2164174848 4;
+BA_ "VFrameFormat" BO_ 2164175104 4;
+BA_ "VFrameFormat" BO_ 2164175360 4;
+BA_ "VFrameFormat" BO_ 2164175616 4;
+BA_ "VFrameFormat" BO_ 2164175872 4;
+BA_ "VFrameFormat" BO_ 2164176128 4;
+BA_ "VFrameFormat" BO_ 2164176384 4;
+BA_ "VFrameFormat" BO_ 2164176640 4;
+BA_ "VFrameFormat" BO_ 2164176896 4;
+BA_ "VFrameFormat" BO_ 2164177152 4;
+BA_ "VFrameFormat" BO_ 2164177408 4;
+BA_ "VFrameFormat" BO_ 2164177664 4;
+BA_ "VFrameFormat" BO_ 2164177920 4;
+BA_ "VFrameFormat" BO_ 2164178176 4;
+BA_ "VFrameFormat" BO_ 2164178432 4;
+BA_ "VFrameFormat" BO_ 2164178688 4;
+BA_ "VFrameFormat" BO_ 2164178944 4;
+BA_ "VFrameFormat" BO_ 2164179200 4;
+BA_ "VFrameFormat" BO_ 2164179456 4;
+BA_ "VFrameFormat" BO_ 2164179712 4;
+BA_ "VFrameFormat" BO_ 2164180224 4;
+BA_ "VFrameFormat" BO_ 2164180736 4;
+BA_ "VFrameFormat" BO_ 2164184320 4;
+BA_ "VFrameFormat" BO_ 2164185344 4;
+BA_ "VFrameFormat" BO_ 2164185600 4;
+BA_ "VFrameFormat" BO_ 2164185856 4;
+BA_ "VFrameFormat" BO_ 2164186112 4;
+BA_ "VFrameFormat" BO_ 2164186368 4;
+BA_ "VFrameFormat" BO_ 2164186624 4;
+BA_ "VFrameFormat" BO_ 2164186880 4;
+BA_ "VFrameFormat" BO_ 2164187136 4;
+BA_ "VFrameFormat" BO_ 2164187392 4;
+BA_ "VFrameFormat" BO_ 2164187648 4;
+BA_ "VFrameFormat" BO_ 2164187904 4;
+BA_ "VFrameFormat" BO_ 2164188160 4;
+BA_ "VFrameFormat" BO_ 2164188416 4;
+BA_ "VFrameFormat" BO_ 2164188672 4;
+BA_ "VFrameFormat" BO_ 2164188928 4;
+BA_ "VFrameFormat" BO_ 2164189184 4;
+BA_ "VFrameFormat" BO_ 2164189440 4;
+BA_ "VFrameFormat" BO_ 2164189696 4;
+BA_ "VFrameFormat" BO_ 2164189952 4;
+BA_ "VFrameFormat" BO_ 2164190208 4;
+BA_ "VFrameFormat" BO_ 2164190464 4;
+BA_ "VFrameFormat" BO_ 2164190720 4;
+BA_ "VFrameFormat" BO_ 2164190976 4;
+BA_ "VFrameFormat" BO_ 2164191232 4;
+BA_ "VFrameFormat" BO_ 2164191488 4;
+BA_ "VFrameFormat" BO_ 2164191744 4;
+BA_ "VFrameFormat" BO_ 2164192000 4;
+BA_ "VFrameFormat" BO_ 2164192256 4;
+BA_ "VFrameFormat" BO_ 2164192512 4;
+BA_ "VFrameFormat" BO_ 2164192768 4;
+BA_ "VFrameFormat" BO_ 2164193024 4;
+BA_ "VFrameFormat" BO_ 2164193280 4;
+BA_ "VFrameFormat" BO_ 2164193536 4;
+BA_ "VFrameFormat" BO_ 2164193792 4;
+BA_ "VFrameFormat" BO_ 2164194048 4;
+BA_ "VFrameFormat" BO_ 2164194304 4;
+BA_ "VFrameFormat" BO_ 2164194560 4;
+BA_ "VFrameFormat" BO_ 2164194816 4;
+BA_ "VFrameFormat" BO_ 2164195072 4;
 
 BA_ "SPN" SG_ 2147483648 Engine_Override_Control_Mode 695;
 BA_ "SPN" SG_ 2147483648 Engine_Requested_Speed_Control_C 696;
@@ -3494,20 +3854,12 @@ BA_ "SPN" SG_ 2163213568 Transmission_Current_Gear 523;
 BA_ "SPN" SG_ 2163213568 Transmission_Requested_Range 162;
 BA_ "SPN" SG_ 2163213568 Transmission_Current_Range 163;
 BA_ "SPN" SG_ 2163213824 Location 927;
-BA_ "SPN" SG_ 2163213824 Differential_Lock_State___Front_ 567;
-BA_ "SystemSignalLongSymbol" SG_ 2163213824 Differential_Lock_State___Front_ "Differential Lock State - Front Axle 1";
 BA_ "SPN" SG_ 2163213824 Differential_Lock_State___Front_ 568;
 BA_ "SystemSignalLongSymbol" SG_ 2163213824 Differential_Lock_State___Front_ "Differential Lock State - Front Axle 2";
-BA_ "SPN" SG_ 2163213824 Differential_Lock_State___Rear_A 569;
-BA_ "SystemSignalLongSymbol" SG_ 2163213824 Differential_Lock_State___Rear_A "Differential Lock State - Rear Axle 1";
 BA_ "SPN" SG_ 2163213824 Differential_Lock_State___Rear_A 570;
 BA_ "SystemSignalLongSymbol" SG_ 2163213824 Differential_Lock_State___Rear_A "Differential Lock State - Rear Axle 2";
-BA_ "SPN" SG_ 2163213824 Differential_Lock_State___Centra 564;
-BA_ "SystemSignalLongSymbol" SG_ 2163213824 Differential_Lock_State___Centra "Differential Lock State - Central";
-BA_ "SPN" SG_ 2163213824 Differential_Lock_State___Centra 565;
-BA_ "SystemSignalLongSymbol" SG_ 2163213824 Differential_Lock_State___Centra "Differential Lock State - Central Front";
-BA_ "SPN" SG_ 2163213824 Differential_Lock_State___Centra 566;
-BA_ "SystemSignalLongSymbol" SG_ 2163213824 Differential_Lock_State___Centra "Differential Lock State - Central Rear";
+BA_ "SPN" SG_ 2163213824 Differential_Lock_State___Centra0 566;
+BA_ "SystemSignalLongSymbol" SG_ 2163213824 Differential_Lock_State___Centra0 "Differential Lock State - Central Rear";
 BA_ "SPN" SG_ 2163213824 Front_axle_group_engagement_stat 3819;
 BA_ "SystemSignalLongSymbol" SG_ 2163213824 Front_axle_group_engagement_stat "Front axle group engagement status";
 BA_ "SPN" SG_ 2163213824 Rear_axle_group_engagement_statu 3820;
@@ -4988,42 +5340,24 @@ BA_ "SPN" SG_ 2164106240 Enable_Switch___Transfer_case_ou 3455;
 BA_ "SystemSignalLongSymbol" SG_ 2164106240 Enable_Switch___Transfer_case_ou "Enable Switch – Transfer case output shaft PTO";
 BA_ "SPN" SG_ 2164106240 Enable_Switch___Transmission_out 3454;
 BA_ "SystemSignalLongSymbol" SG_ 2164106240 Enable_Switch___Transmission_out "Enable Switch – Transmission output shaft PTO";
-BA_ "SPN" SG_ 2164106240 Enable_Switch___Transmission_inp 3453;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Enable_Switch___Transmission_inp "Enable Switch – Transmission input shaft PTO 2";
 BA_ "SPN" SG_ 2164106240 Enable_Switch___Transmission_inp 3452;
 BA_ "SystemSignalLongSymbol" SG_ 2164106240 Enable_Switch___Transmission_inp "Enable Switch – Transmission input shaft PTO 1";
 BA_ "SPN" SG_ 2164106240 Enable_Switch___PTO_Engine_Flywh 3939;
 BA_ "SystemSignalLongSymbol" SG_ 2164106240 Enable_Switch___PTO_Engine_Flywh "Enable Switch - PTO Engine Flywheel";
-BA_ "SPN" SG_ 2164106240 Enable_Switch___PTO_Engine_Acces 3942;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Enable_Switch___PTO_Engine_Acces "Enable Switch - PTO Engine Accessory Drive 1";
 BA_ "SPN" SG_ 2164106240 Enable_Switch___PTO_Engine_Acces 3945;
 BA_ "SystemSignalLongSymbol" SG_ 2164106240 Enable_Switch___PTO_Engine_Acces "Enable Switch - PTO Engine Accessory Drive 2";
 BA_ "SPN" SG_ 2164106240 Engagement_Consent___Transfer_ca 3459;
 BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Consent___Transfer_ca "Engagement Consent – Transfer case output shaft PTO";
-BA_ "SPN" SG_ 2164106240 Engagement_Consent___Transmissio 3458;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Consent___Transmissio "Engagement Consent – Transmission output shaft PTO";
-BA_ "SPN" SG_ 2164106240 Engagement_Consent___Transmissio 3457;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Consent___Transmissio "Engagement Consent – Transmission input shaft PTO 2";
-BA_ "SPN" SG_ 2164106240 Engagement_Consent___Transmissio 3456;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Consent___Transmissio "Engagement Consent – Transmission input shaft PTO 1";
-BA_ "SPN" SG_ 2164106240 Engagement_Consent___PTO_Engine_ 3940;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Consent___PTO_Engine_ "Engagement Consent - PTO Engine Flywheel";
-BA_ "SPN" SG_ 2164106240 Engagement_Consent___PTO_Engine_ 3943;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Consent___PTO_Engine_ "Engagement Consent - PTO Engine Accessory Drive 1";
-BA_ "SPN" SG_ 2164106240 Engagement_Consent___PTO_Engine_ 3946;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Consent___PTO_Engine_ "Engagement Consent - PTO Engine Accessory Drive 2";
+BA_ "SPN" SG_ 2164106240 Engagement_Consent___Transmissio0 3456;
+BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Consent___Transmissio0 "Engagement Consent – Transmission input shaft PTO 1";
+BA_ "SPN" SG_ 2164106240 Engagement_Consent___PTO_Engine_0 3946;
+BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Consent___PTO_Engine_0 "Engagement Consent - PTO Engine Accessory Drive 2";
 BA_ "SPN" SG_ 2164106240 Engagement_Status___Transfer_cas 3463;
 BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Status___Transfer_cas "Engagement Status – Transfer case output shaft PTO";
-BA_ "SPN" SG_ 2164106240 Engagement_Status___Transmission 3462;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Status___Transmission "Engagement Status – Transmission output shaft PTO";
-BA_ "SPN" SG_ 2164106240 Engagement_Status___Transmission 3461;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Status___Transmission "Engagement Status – Transmission input shaft PTO 2";
-BA_ "SPN" SG_ 2164106240 Engagement_Status___Transmission 3460;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Status___Transmission "Engagement Status – Transmission input shaft PTO 1";
+BA_ "SPN" SG_ 2164106240 Engagement_Status___Transmission0 3460;
+BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Status___Transmission0 "Engagement Status – Transmission input shaft PTO 1";
 BA_ "SPN" SG_ 2164106240 Engagement_Status___PTO_Engine_F 3941;
 BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Status___PTO_Engine_F "Engagement Status - PTO Engine Flywheel";
-BA_ "SPN" SG_ 2164106240 Engagement_Status___PTO_Engine_A 3944;
-BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Status___PTO_Engine_A "Engagement Status - PTO Engine Accessory Drive 1";
 BA_ "SPN" SG_ 2164106240 Engagement_Status___PTO_Engine_A 3947;
 BA_ "SystemSignalLongSymbol" SG_ 2164106240 Engagement_Status___PTO_Engine_A "Engagement Status - PTO Engine Accessory Drive 2";
 BA_ "SPN" SG_ 2164106240 At_least_one_PTO_engaged 3948;
@@ -5568,8 +5902,6 @@ BA_ "SPN" SG_ 2164123136 Hydraulic_Brake_System_Audible_W 2930;
 BA_ "SystemSignalLongSymbol" SG_ 2164123136 Hydraulic_Brake_System_Audible_W "Hydraulic Brake System Audible Warning Command";
 BA_ "SPN" SG_ 2164123136 Hydraulic_Brake_Fluid_Level_Swit 2931;
 BA_ "SystemSignalLongSymbol" SG_ 2164123136 Hydraulic_Brake_Fluid_Level_Swit "Hydraulic Brake Fluid Level Switch";
-BA_ "SPN" SG_ 2164131584 Engine_Exhaust_Gas_Temperature__ 2433;
-BA_ "SystemSignalLongSymbol" SG_ 2164131584 Engine_Exhaust_Gas_Temperature__ "Engine Exhaust Gas Temperature - Right Manifold";
 BA_ "SPN" SG_ 2164131584 Engine_Exhaust_Gas_Temperature__ 2434;
 BA_ "SystemSignalLongSymbol" SG_ 2164131584 Engine_Exhaust_Gas_Temperature__ "Engine Exhaust Gas Temperature - Left Manifold";
 BA_ "SPN" SG_ 2164146176 Running_Light 2404;
@@ -6019,12 +6351,8 @@ BA_ "SPN" SG_ 2164164096 Engine_Cylinder__19_Ignition_Tim 1431;
 BA_ "SystemSignalLongSymbol" SG_ 2164164096 Engine_Cylinder__19_Ignition_Tim "Engine Cylinder #19 Ignition Timing";
 BA_ "SPN" SG_ 2164164096 Engine_Cylinder__20_Ignition_Tim 1432;
 BA_ "SystemSignalLongSymbol" SG_ 2164164096 Engine_Cylinder__20_Ignition_Tim "Engine Cylinder #20 Ignition Timing";
-BA_ "SPN" SG_ 2164164352 Engine_Desired_Ignition_Timing__ 1433;
-BA_ "SystemSignalLongSymbol" SG_ 2164164352 Engine_Desired_Ignition_Timing__ "Engine Desired Ignition Timing #1";
-BA_ "SPN" SG_ 2164164352 Engine_Desired_Ignition_Timing__ 1434;
-BA_ "SystemSignalLongSymbol" SG_ 2164164352 Engine_Desired_Ignition_Timing__ "Engine Desired Ignition Timing #2";
-BA_ "SPN" SG_ 2164164352 Engine_Desired_Ignition_Timing__ 1435;
-BA_ "SystemSignalLongSymbol" SG_ 2164164352 Engine_Desired_Ignition_Timing__ "Engine Desired Ignition Timing #3";
+BA_ "SPN" SG_ 2164164352 Engine_Desired_Ignition_Timing__0 1435;
+BA_ "SystemSignalLongSymbol" SG_ 2164164352 Engine_Desired_Ignition_Timing__0 "Engine Desired Ignition Timing #3";
 BA_ "SPN" SG_ 2164164352 Engine_Actual_Ignition_Timing 1436;
 BA_ "SPN" SG_ 2164164608 Engine_Cylinder__1_Ignition_Tran 1393;
 BA_ "SystemSignalLongSymbol" SG_ 2164164608 Engine_Cylinder__1_Ignition_Tran "Engine Cylinder #1 Ignition Transformer Secondary Output";
@@ -6298,22 +6626,10 @@ BA_ "SPN" SG_ 2164173568 Recommended_Gear 1113;
 BA_ "SPN" SG_ 2164173568 Highest_Possible_Gear 1115;
 BA_ "SPN" SG_ 2164173568 Lowest_Possible_Gear 1114;
 BA_ "SPN" SG_ 2164173568 Clutch_Life_Remaining 2983;
-BA_ "SPN" SG_ 2164173824 Brake_Lining_Remaining__Front_Ax 1099;
-BA_ "SystemSignalLongSymbol" SG_ 2164173824 Brake_Lining_Remaining__Front_Ax "Brake Lining Remaining, Front Axle, Left Wheel";
 BA_ "SPN" SG_ 2164173824 Brake_Lining_Remaining__Front_Ax 1100;
 BA_ "SystemSignalLongSymbol" SG_ 2164173824 Brake_Lining_Remaining__Front_Ax "Brake Lining Remaining, Front Axle, Right Wheel";
-BA_ "SPN" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl 1101;
-BA_ "SystemSignalLongSymbol" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl "Brake Lining Remaining, Rear Axle #1, Left Wheel";
-BA_ "SPN" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl 1102;
-BA_ "SystemSignalLongSymbol" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl "Brake Lining Remaining, Rear Axle #1, Right Wheel";
-BA_ "SPN" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl 1103;
-BA_ "SystemSignalLongSymbol" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl "Brake Lining Remaining, Rear Axle #2, Left Wheel";
-BA_ "SPN" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl 1104;
-BA_ "SystemSignalLongSymbol" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl "Brake Lining Remaining, Rear Axle #2, Right Wheel";
-BA_ "SPN" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl 1105;
-BA_ "SystemSignalLongSymbol" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl "Brake Lining Remaining, Rear Axle #3, Left Wheel";
-BA_ "SPN" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl 1106;
-BA_ "SystemSignalLongSymbol" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl "Brake Lining Remaining, Rear Axle #3, Right Wheel";
+BA_ "SPN" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl0 1106;
+BA_ "SystemSignalLongSymbol" SG_ 2164173824 Brake_Lining_Remaining__Rear_Axl0 "Brake Lining Remaining, Rear Axle #3, Right Wheel";
 BA_ "SPN" SG_ 2164174080 Brake_Application_Pressure_High_0 1091;
 BA_ "SystemSignalLongSymbol" SG_ 2164174080 Brake_Application_Pressure_High_0 "Brake Application Pressure High Range, Front Axle, Left Wheel";
 BA_ "SPN" SG_ 2164174080 Brake_Application_Pressure_High_1 1092;
@@ -6429,11 +6745,14 @@ BA_ "SystemSignalLongSymbol" SG_ 2164178688 Relative_Speed__Rear_Axle__2__Le "Re
 BA_ "SPN" SG_ 2164178688 Relative_Speed__Rear_Axle__2__Ri 910;
 BA_ "SystemSignalLongSymbol" SG_ 2164178688 Relative_Speed__Rear_Axle__2__Ri "Relative Speed; Rear Axle #2, Right Wheel";
 BA_ "SPN" SG_ 2164178944 Service_Component_Identification0 911;
+BA_ "SystemSignalLongSymbol" SG_ 2164178944 Service_Component_Identification0 "Service_Component_Identification0";
 BA_ "SPN" SG_ 2164178944 Service_Distance 914;
 BA_ "SPN" SG_ 2164178944 Service_Component_Identification1 912;
+BA_ "SystemSignalLongSymbol" SG_ 2164178944 Service_Component_Identification1 "Service_Component_Identification1";
 BA_ "SPN" SG_ 2164178944 Service_Delay_Calendar_Time_Base 915;
 BA_ "SystemSignalLongSymbol" SG_ 2164178944 Service_Delay_Calendar_Time_Base "Service Delay/Calendar Time Based";
 BA_ "SPN" SG_ 2164178944 Service_Component_Identification2 913;
+BA_ "SystemSignalLongSymbol" SG_ 2164178944 Service_Component_Identification2 "Service_Component_Identification2";
 BA_ "SPN" SG_ 2164178944 Service_Delay_Operational_Time_B 916;
 BA_ "SystemSignalLongSymbol" SG_ 2164178944 Service_Delay_Operational_Time_B "Service Delay/Operational Time Based";
 BA_ "SPN" SG_ 2164179200 High_Resolution_Total_Vehicle_Di 917;
@@ -6527,7 +6846,6 @@ BA_ "SystemSignalLongSymbol" SG_ 2164186368 Engine_Turbocharger_Oil_Level_Sw "En
 BA_ "SPN" SG_ 2164186624 Engine_Air_Start_Pressure 82;
 BA_ "SPN" SG_ 2164186880 Nominal_Friction___Percent_Torqu 514;
 BA_ "SystemSignalLongSymbol" SG_ 2164186880 Nominal_Friction___Percent_Torqu "Nominal Friction - Percent Torque";
-BA_ "SPN" SG_ 2164186880 Engine_s_Desired_Operating_Speed 515;
 BA_ "SPN" SG_ 2164186880 Engine_s_Desired_Operating_Speed 519;
 BA_ "SystemSignalLongSymbol" SG_ 2164186880 Engine_s_Desired_Operating_Speed "Engine's Desired Operating Speed Asymmetry Adjustment";
 BA_ "SPN" SG_ 2164186880 Estimated_Engine_Parasitic_Losse 2978;
