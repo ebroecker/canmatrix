@@ -23,15 +23,17 @@
 
 #
 # this script exports fibex-files from a canmatrix-object
-# gibex-files are the network-matrix-definitions; Canmatrix exports CAN
+# fibex-files are the network-matrix-definitions; Canmatrix exports CAN
 # only (fibex: Field Bus Exchange Format //
 # https://de.wikipedia.org/wiki/Field_Bus_Exchange_Format)
 
 from __future__ import absolute_import
 
+import typing
 from builtins import *
-
 from lxml import etree
+
+import canmatrix
 
 fx = "http://www.asam.net/xml/fbx"
 ho = "http://www.asam.net/xml"
@@ -42,34 +44,40 @@ ns_fx = "{%s}" % fx
 ns_can = "{%s}" % can
 ns_xsi = "{%s}" % xsi
 
-
 extension = "xml"
 
-
-def createShortNameDesc(parent, shortname, desc):
-    ShortName = etree.SubElement(parent, ns_ho + "SHORT-NAME")
-    ShortName.text = shortname
-    Desc = etree.SubElement(parent, ns_ho + "DESC")
-    Desc.text = desc
+# noinspection PyProtectedMember
+_Element = etree._Element
 
 
-def createSubElementFx(parent, elementName, elementText=None):
-    new = etree.SubElement(parent, ns_fx + elementName)
-    if elementText is not None:
-        new.text = elementText
+def create_short_name_desc(parent, short_name, desc):
+    # type: (_Element, str, str) -> None
+    short_name_elem = etree.SubElement(parent, ns_ho + "SHORT-NAME")
+    short_name_elem.text = short_name
+    desc_elem = etree.SubElement(parent, ns_ho + "DESC")
+    desc_elem.text = desc
+
+
+def create_sub_element_fx(parent, element_name, element_text=None):
+    # type: (_Element, str, typing.Optional[str]) -> _Element
+    new = etree.SubElement(parent, ns_fx + element_name)
+    if element_text is not None:
+        new.text = element_text
     return new
 
 
-def createSubElementHo(parent, elementName, elementText=None):
-    new = etree.SubElement(parent, ns_ho + elementName)
-    if elementText is not None:
-        new.text = elementText
+def create_sub_element_ho(parent, element_name, element_text=None):
+    # type: (_Element, str, typing.Optional[str]) -> _Element
+    new = etree.SubElement(parent, ns_ho + element_name)
+    if element_text is not None:
+        new.text = element_text
     return new
 
 
 def dump(db, f, **options):
-    nsmap = {"fx": fx, "ho": ho, "can": can, "xsi": xsi}
-    root = etree.Element(ns_fx + "FIBEX", nsmap=nsmap)
+    # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
+    ns_map = {"fx": fx, "ho": ho, "can": can, "xsi": xsi}
+    root = etree.Element(ns_fx + "FIBEX", nsmap=ns_map)
     root.attrib[
         '{{{pre}}}schemaLocation'.format(
             pre=xsi)] = 'http://www.asam.net/xml/fbx ..\\..\\xml_schema\\fibex.xsd http://www.asam.net/xml/fbx/can  ..\\..\\xml_schema\\fibex4can.xsd'
@@ -77,215 +85,207 @@ def dump(db, f, **options):
     #
     # PROJECT
     #
-    project = createSubElementFx(root, "PROJECT")
+    project = create_sub_element_fx(root, "PROJECT")
     project.set('ID', 'canmatrixExport')
-    createShortNameDesc(project, "CAN", "Canmatrix Export")
+    create_short_name_desc(project, "CAN", "Canmatrix Export")
 
     #
     # ELEMENTS
     #
-    elements = createSubElementFx(root, "ELEMENTS")
+    elements = create_sub_element_fx(root, "ELEMENTS")
 
     #
     # CLUSTERS
     #
-    clusters = createSubElementFx(elements, "CLUSTERS")
+    clusters = create_sub_element_fx(elements, "CLUSTERS")
     cluster = etree.SubElement(clusters, ns_fx + "CLUSTER")
     cluster.set('ID', 'canCluster1')
-    createShortNameDesc(cluster, "clusterShort", "clusterDesc")
-    createSubElementFx(cluster, "SPEED", "500")
-    createSubElementFx(cluster, "IS-HIGH-LOW-BIT-ORDER", "false")
-    createSubElementFx(cluster, "BIT-COUNTING-POLICY", "MONOTONE")
-    protocol = createSubElementFx(cluster, "PROTOCOL", "CAN")
+    create_short_name_desc(cluster, "clusterShort", "clusterDesc")
+    create_sub_element_fx(cluster, "SPEED", "500")
+    create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "false")
+    create_sub_element_fx(cluster, "BIT-COUNTING-POLICY", "MONOTONE")
+    protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN")
     protocol.attrib['{{{pre}}}type'.format(pre=xsi)] = "can:PROTOCOL-TYPE"
-    createSubElementFx(cluster, "PROTOCOL-VERSION", "20")
-    channelRefs = createSubElementFx(cluster, "CHANNEL-REFS")
+    create_sub_element_fx(cluster, "PROTOCOL-VERSION", "20")
+    channel_refs = create_sub_element_fx(cluster, "CHANNEL-REFS")
     # for each channel
-    channelRef = createSubElementFx(channelRefs, "CHANNEL-REF")
-    channelRef.set("ID-REF", "CANCHANNEL01")
+    channel_ref = create_sub_element_fx(channel_refs, "CHANNEL-REF")
+    channel_ref.set("ID-REF", "CANCHANNEL01")
 
     #
     # CHANNELS
     #
-    channels = createSubElementFx(elements, "CHANNELS")
-    channel = createSubElementFx(channels, "CHANNEL")
+    channels = create_sub_element_fx(elements, "CHANNELS")
+    channel = create_sub_element_fx(channels, "CHANNEL")
     # for each channel
-    createShortNameDesc(channel, "CANCHANNEL01", "Can Channel Description")
-    frameTriggerings = createSubElementFx(channel, "FRAME-TRIGGERINGS")
+    create_short_name_desc(channel, "CANCHANNEL01", "Can Channel Description")
+    frame_triggerings = create_sub_element_fx(channel, "FRAME-TRIGGERINGS")
     for frame in db.frames:
-        frameTriggering = createSubElementFx(
-            frameTriggerings, "FRAME-TRIGGERING")
-        frameTriggering.set("ID", "FT_" + frame.name)
-        identifier = createSubElementFx(frameTriggering, "IDENTIFIER")
-        createSubElementFx(identifier, "IDENTIFIER-VALUE", str(frame.arbitration_id.id))
-        frameRef = createSubElementFx(frameTriggering, "FRAME-REF")
-        frameRef.set("ID-REF", "FRAME_" + frame.name)
+        frame_triggering = create_sub_element_fx(
+            frame_triggerings, "FRAME-TRIGGERING")
+        frame_triggering.set("ID", "FT_" + frame.name)
+        identifier = create_sub_element_fx(frame_triggering, "IDENTIFIER")
+        create_sub_element_fx(identifier, "IDENTIFIER-VALUE", str(frame.arbitration_id.id))
+        frame_ref = create_sub_element_fx(frame_triggering, "FRAME-REF")
+        frame_ref.set("ID-REF", "FRAME_" + frame.name)
 
     #
     # ECUS
     #
-    ecus = createSubElementFx(elements, "ECUS")
+    ecus = create_sub_element_fx(elements, "ECUS")
     for bu in db.ecus:
-        ecu = createSubElementFx(ecus, "ECU")
+        ecu = create_sub_element_fx(ecus, "ECU")
         ecu.set("ID", bu.name)
-        createShortNameDesc(ecu, bu.name, bu.comment)
-        functionRefs = createSubElementFx(ecu, "FUNCTION-REFS")
-        funcRef = createSubElementFx(functionRefs, "FUNCTION-REF")
-        funcRef.set("ID-REF", "FCT_" + bu.name)
+        create_short_name_desc(ecu, bu.name, bu.comment)
+        function_refs = create_sub_element_fx(ecu, "FUNCTION-REFS")
+        func_ref = create_sub_element_fx(function_refs, "FUNCTION-REF")
+        func_ref.set("ID-REF", "FCT_" + bu.name)
         # ignore CONTROLERS/CONTROLER
 
     #
     # PDUS
     #
-    pdus = createSubElementFx(elements, "PDUS")
+    pdus = create_sub_element_fx(elements, "PDUS")
     for frame in db.frames:
-        pdu = createSubElementFx(pdus, "PDU")
+        pdu = create_sub_element_fx(pdus, "PDU")
         pdu.set("ID", "PDU_" + frame.name)
-        createShortNameDesc(pdu, "PDU_" + frame.name, frame.comment)
-        createSubElementFx(pdu, "BYTE-LENGTH", str(frame.size))  # DLC
-        createSubElementFx(pdu, "PDU-TYPE", "APPLICATION")
-        signalInstances = createSubElementFx(pdu, "SIGNAL-INSTANCES")
+        create_short_name_desc(pdu, "PDU_" + frame.name, frame.comment)
+        create_sub_element_fx(pdu, "BYTE-LENGTH", str(frame.size))  # DLC
+        create_sub_element_fx(pdu, "PDU-TYPE", "APPLICATION")
+        signal_instances = create_sub_element_fx(pdu, "SIGNAL-INSTANCES")
         for signal in frame.signals:
-            signalInstance = createSubElementFx(
-                signalInstances, "SIGNAL-INSTANCE")
-            signalInstance.set("ID", "PDUINST_" + signal.name)
+            signal_instance = create_sub_element_fx(
+                signal_instances, "SIGNAL-INSTANCE")
+            signal_instance.set("ID", "PDUINST_" + signal.name)
             # startBit: TODO - find out correct BYTEORDER ...
-            createSubElementFx(signalInstance, "BIT-POSITION",
-                               str(signal.start_bit))
+            create_sub_element_fx(signal_instance, "BIT-POSITION",
+                                  str(signal.start_bit))
             if signal.is_little_endian:
-                createSubElementFx(
-                    signalInstance,
+                create_sub_element_fx(
+                    signal_instance,
                     "IS-HIGH-LOW-BYTE-ORDER",
-                    "false")  # true:big endian; false:littele endian
+                    "false")  # true:big endian; false:little endian
             else:
-                createSubElementFx(
-                    signalInstance, "IS-HIGH-LOW-BYTE-ORDER", "true")
-            signalRef = createSubElementFx(signalInstance, "SIGNAL-REF")
-            signalRef.set("ID-REF", signal.name)
+                create_sub_element_fx(
+                    signal_instance, "IS-HIGH-LOW-BYTE-ORDER", "true")
+            signal_ref = create_sub_element_fx(signal_instance, "SIGNAL-REF")
+            signal_ref.set("ID-REF", signal.name)
 
     # FRAMES
     #
-    frames = createSubElementFx(elements, "FRAMES")
+    frames = create_sub_element_fx(elements, "FRAMES")
     for frame in db.frames:
-        frameEle = createSubElementFx(frames, "FRAME")
-        frameEle.set("ID", "FRAME_" + frame.name)
-        createShortNameDesc(frameEle, "FRAME_" + frame.name, frame.comment)
-        createSubElementFx(frameEle, "BYTE-LENGTH", str(frame.size))  # DLC
-        createSubElementFx(frameEle, "PDU-TYPE", "APPLICATION")
-        pduInstances = createSubElementFx(frameEle, "PDU-INSTANCES")
-        pduInstance = createSubElementFx(pduInstances, "PDU-INSTANCE")
-        pduInstance.set("ID", "PDUINSTANCE_" + frame.name)
-        pduref = createSubElementFx(pduInstance, "PDU-REF")
-        pduref.set("ID-REF", "PDU_" + frame.name)
-        createSubElementFx(pduInstance, "BIT-POSITION", "0")
-        createSubElementFx(pduInstance, "IS-HIGH-LOW-BYTE-ORDER", "false")
+        frame_element = create_sub_element_fx(frames, "FRAME")
+        frame_element.set("ID", "FRAME_" + frame.name)
+        create_short_name_desc(frame_element, "FRAME_" + frame.name, frame.comment)
+        create_sub_element_fx(frame_element, "BYTE-LENGTH", str(frame.size))  # DLC
+        create_sub_element_fx(frame_element, "PDU-TYPE", "APPLICATION")
+        pdu_instances = create_sub_element_fx(frame_element, "PDU-INSTANCES")
+        pdu_instance = create_sub_element_fx(pdu_instances, "PDU-INSTANCE")
+        pdu_instance.set("ID", "PDUINSTANCE_" + frame.name)
+        pdu_ref = create_sub_element_fx(pdu_instance, "PDU-REF")
+        pdu_ref.set("ID-REF", "PDU_" + frame.name)
+        create_sub_element_fx(pdu_instance, "BIT-POSITION", "0")
+        create_sub_element_fx(pdu_instance, "IS-HIGH-LOW-BYTE-ORDER", "false")
 
     #
     # FUNCTIONS
     #
-    functions = createSubElementFx(elements, "FUNCTIONS")
+    functions = create_sub_element_fx(elements, "FUNCTIONS")
     for bu in db.ecus:
-        function = createSubElementFx(functions, "FUNCTION")
+        function = create_sub_element_fx(functions, "FUNCTION")
         function.set("ID", "FCT_" + bu.name)
-        createShortNameDesc(function, "FCT_" + bu.name, bu.comment)
-        inputPorts = createSubElementFx(function, "INPUT-PORTS")
+        create_short_name_desc(function, "FCT_" + bu.name, bu.comment)
+        input_ports = create_sub_element_fx(function, "INPUT-PORTS")
         for frame in db.frames:
             for signal in frame.signals:
                 if bu.name in signal.receivers:
-                    inputPort = createSubElementFx(inputPorts, "INPUT-PORT")
-                    inputPort.set("ID", "INP_" + signal.name)
-                    desc = etree.SubElement(inputPort, ns_ho + "DESC")
+                    input_port = create_sub_element_fx(input_ports, "INPUT-PORT")
+                    input_port.set("ID", "INP_" + signal.name)
+                    desc = etree.SubElement(input_port, ns_ho + "DESC")
                     desc.text = signal.comment
-                    signalRef = createSubElementFx(inputPort, "SIGNAL-REF")
-                    signalRef.set("ID-REF", "SIG_" + signal.name)
+                    signal_ref = create_sub_element_fx(input_port, "SIGNAL-REF")
+                    signal_ref.set("ID-REF", "SIG_" + signal.name)
 
         for frame in db.frames:
             if bu.name in frame.transmitters:
                 for signal in frame.signals:
-                    outputPort = createSubElementFx(inputPorts, "OUTPUT-PORT")
-                    outputPort.set("ID", "OUTP_" + signal.name)
-                    desc = etree.SubElement(outputPort, ns_ho + "DESC")
+                    output_port = create_sub_element_fx(input_ports, "OUTPUT-PORT")
+                    output_port.set("ID", "OUTP_" + signal.name)
+                    desc = etree.SubElement(output_port, ns_ho + "DESC")
                     desc.text = "signalcomment"
-                    signalRef = createSubElementFx(outputPort, "SIGNAL-REF")
-                    signalRef.set("ID-REF", "SIG_" + signal.name)
+                    signal_ref = create_sub_element_fx(output_port, "SIGNAL-REF")
+                    signal_ref.set("ID-REF", "SIG_" + signal.name)
 
     #
     # SIGNALS
     #
     for frame in db.frames:
-        signals = createSubElementFx(elements, "SIGNALS")
+        signals = create_sub_element_fx(elements, "SIGNALS")
         for signal in frame.signals:
-            signalEle = createSubElementFx(signals, "SIGNAL")
-            signalEle.set("ID", "SIG_" + signal.name)
-            createShortNameDesc(signalEle, signal.name, signal.comment)
-            codingRef = createSubElementFx(signalEle, "CODING-REF")
-            codingRef.set("ID-REF", "CODING_" + signal.name)
+            signal_element = create_sub_element_fx(signals, "SIGNAL")
+            signal_element.set("ID", "SIG_" + signal.name)
+            create_short_name_desc(signal_element, signal.name, signal.comment)
+            coding_ref = create_sub_element_fx(signal_element, "CODING-REF")
+            coding_ref.set("ID-REF", "CODING_" + signal.name)
 
     #
     # PROCESSING-INFORMATION
     #
-    procInfo = etree.SubElement(elements, ns_fx +
-                                "PROCESSING-INFORMATION", nsmap={"ho": ho})
-    unitSpec = createSubElementHo(procInfo, "UNIT-SPEC")
+    proc_info = etree.SubElement(elements, ns_fx + "PROCESSING-INFORMATION", nsmap={"ho": ho})
+    unit_spec = create_sub_element_ho(proc_info, "UNIT-SPEC")
     for frame in db.frames:
         for signal in frame.signals:
-            unit = createSubElementHo(unitSpec, "UNIT")
+            unit = create_sub_element_ho(unit_spec, "UNIT")
             unit.set("ID", "UNIT_" + signal.name)
-            createSubElementHo(unit, "SHORT-NAME", signal.name)
-            createSubElementHo(unit, "DISPLAY-NAME", signal.unit)
+            create_sub_element_ho(unit, "SHORT-NAME", signal.name)
+            create_sub_element_ho(unit, "DISPLAY-NAME", signal.unit)
 
-    codings = createSubElementFx(procInfo, "CODINGS")
+    codings = create_sub_element_fx(proc_info, "CODINGS")
     for frame in db.frames:
         for signal in frame.signals:
-            coding = createSubElementFx(codings, "CODING")
+            coding = create_sub_element_fx(codings, "CODING")
             coding.set("ID", "CODING_" + signal.name)
-            createShortNameDesc(
+            create_short_name_desc(
                 coding,
                 "CODING_" +
                 signal.name,
                 "Coding for " +
                 signal.name)
             # ignore CODE-TYPE
-            compumethods = createSubElementHo(coding, "COMPU-METHODS")
-            compumethod = createSubElementHo(compumethods, "COMPU-METHOD")
-            createSubElementHo(
-                compumethod,
+            compu_methods = create_sub_element_ho(coding, "COMPU-METHODS")
+            compu_method = create_sub_element_ho(compu_methods, "COMPU-METHOD")
+            create_sub_element_ho(
+                compu_method,
                 "SHORT-NAME",
                 "COMPUMETHOD_" +
                 signal.name)
-            createSubElementHo(compumethod, "CATEGORY", "LINEAR")
-            unitRef = createSubElementHo(compumethod, "UNIT-REF")
-            unitRef.set("ID-REF", "UNIT_" + signal.name)
-            compuInternalToPhys = createSubElementHo(
-                compumethod, "COMPU-INTERNAL-TO-PHYS")
-            compuscales = createSubElementHo(
-                compuInternalToPhys, "COMPU-SCALES")
-            compuscale = createSubElementHo(compuscales, "COMPU-SCALE")
-            lowerLimit = createSubElementHo(
-                compuscale, "LOWER-LIMIT", str(signal.min))  # Min
-            lowerLimit.set("INTERVAL-TYPE", "CLOSED")
-            upperLimit = createSubElementHo(
-                compuscale, "UPPER-LIMIT", str(signal.max))  # Max
-            upperLimit.set("INTERVAL-TYPE", "CLOSED")
+            create_sub_element_ho(compu_method, "CATEGORY", "LINEAR")
+            unit_ref = create_sub_element_ho(compu_method, "UNIT-REF")
+            unit_ref.set("ID-REF", "UNIT_" + signal.name)
+            compu_internal_to_phys = create_sub_element_ho(
+                compu_method, "COMPU-INTERNAL-TO-PHYS")
+            compu_scales = create_sub_element_ho(
+                compu_internal_to_phys, "COMPU-SCALES")
+            compu_scale = create_sub_element_ho(compu_scales, "COMPU-SCALE")
+            lower_limit = create_sub_element_ho(compu_scale, "LOWER-LIMIT", str(signal.min))  # Min
+            lower_limit.set("INTERVAL-TYPE", "CLOSED")
+            upper_limit = create_sub_element_ho(compu_scale, "UPPER-LIMIT", str(signal.max))  # Max
+            upper_limit.set("INTERVAL-TYPE", "CLOSED")
 
-            compuRationalCoeffs = createSubElementHo(
-                compuscale, "COMPU-RATIONAL-COEFFS")
-            compuNumerator = createSubElementHo(
-                compuRationalCoeffs, "COMPU-NUMERATOR")
-            createSubElementHo(
-                compuNumerator, "V", str(
-                    signal.offset))  # offset
-            createSubElementHo(
-                compuNumerator, "V", str(
-                    signal.factor))  # factor
-            compuDenomiator = createSubElementHo(
-                compuRationalCoeffs, "COMPU-DENOMINATOR")
-            createSubElementHo(compuDenomiator, "V", "1")  # nenner
-            #defaultValue = createSubElementHo(compuInternalToPhys,"COMPU-DEFAULT-VALUE")
+            compu_rational_coeffs = create_sub_element_ho(
+                compu_scale, "COMPU-RATIONAL-COEFFS")
+            compu_numerator = create_sub_element_ho(
+                compu_rational_coeffs, "COMPU-NUMERATOR")
+            create_sub_element_ho(compu_numerator, "V", str(signal.offset))  # offset
+            create_sub_element_ho(compu_numerator, "V", str(signal.factor))  # factor
+            compu_denominator = create_sub_element_ho(compu_rational_coeffs, "COMPU-DENOMINATOR")
+            create_sub_element_ho(compu_denominator, "V", "1")  # nenner
+            # defaultValue = create_sub_element_ho(compuInternalToPhys,"COMPU-DEFAULT-VALUE")
 
     #
     # REQUIREMENTS
     #
-    #requirements = createSubElementFx(elements,  "REQUIREMENTS")
+    # requirements = createSubElementFx(elements,  "REQUIREMENTS")
 
     f.write(etree.tostring(root, pretty_print=True))
