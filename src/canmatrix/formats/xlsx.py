@@ -27,6 +27,7 @@
 from __future__ import absolute_import
 from __future__ import division
 
+import logging
 import typing
 
 import xlsxwriter
@@ -34,7 +35,7 @@ import xlsxwriter
 import canmatrix
 import canmatrix.formats.xls_common
 
-logger = canmatrix.logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 # Font Size : 8pt * 20 = 160
 # font = 'font: name Arial Narrow, height 160'
@@ -121,17 +122,6 @@ def dump(db, filename, **options):
         'Signal Not Available',
         'Byteorder']
     head_tail = ['Value', 'Name / Phys. Range', 'Function / Increment Unit']
-
-    if len(options.get("additionalAttributes", "")) > 0:
-        additional_signal_colums = options.get("additionalAttributes").split(",")
-    else:
-        additional_signal_colums = []#["attributes['DisplayDecimalPlaces']"]
-
-    if len(options.get("additionalFrameAttributes", "")) > 0:
-        additional_frame_colums = options.get("additionalFrameAttributes").split(",")
-    else:
-        additional_frame_colums = []#["attributes['DisplayDecimalPlaces']"]
-
 
     workbook = xlsxwriter.Workbook(filename)
     # ws_name = os.path.basename(filename).replace('.xlsx', '')
@@ -331,9 +321,8 @@ def read_xlsx(file, **args):
     import zipfile
     from xml.etree.ElementTree import iterparse
 
-
     sheet = args.get("sheet", 1)
-    isHeader = args.get("header", False)
+    is_header = args.get("header", False)
 
     rows = []  # type: typing.List[typing.Dict[str, str]]
     row = {}
