@@ -727,18 +727,23 @@ def test_define_for_float():
     assert define.max == decimal.Decimal('111.11')
 
 
-# CanId tests
+# J1939CanId tests
 def test_canid_parse_values():
-    can_id = canmatrix.canmatrix.CanId(canmatrix.ArbitrationId(id=0x01ABCD02, extended=True))
-    assert can_id.source == 0x02
-    assert can_id.destination == 0x01
-    assert can_id.pgn == 0xABCD
-    assert can_id.tuples() == (1, 0xABCD, 2)
+    can_id = canmatrix.ArbitrationId(id=0x01ABCD02, extended=True)
+    assert can_id.j1939_source == 0x02
+    assert can_id.j1939_destination == 0xcd
+    assert can_id.j1939_pgn == 0xAB00
+    assert can_id.j1939_destination == 0xCD
+    assert can_id.j1939_priority == 0
+    assert can_id.j1939_tuple == (0xCD, 0xAB00, 2)
 
+    test_data = {0xc00000b : 0,  0xcef27fd : 61184,  0xcffcafd : 65482, 0xc000003 : 0, 0xcf00203 : 61442, 0x18fe4a03 : 65098, 0xc010305 : 256}
+    for canId, pgn in test_data.items():
+        assert canmatrix.ArbitrationId(id=canId, extended=True).pgn == pgn
 
 def test_canid_repr():
-    can_id = canmatrix.canmatrix.CanId(canmatrix.ArbitrationId(id=0x01ABCD02, extended=True))
-    assert str(can_id) == "DA:0x01 PGN:0xABCD SA:0x02"
+    can_id = canmatrix.ArbitrationId(id=0x01ABCD02, extended=True)
+    assert can_id.j1939_str == "DA:0xCD PGN:0xAB00 SA:0x02"
 
 
 # DecodedSignal tests
@@ -802,6 +807,18 @@ def test_canmatrix_get_frame_by_name(empty_matrix, empty_frame):
 def test_canmatrix_get_frame_by_wrong_name(empty_matrix, empty_frame):
     empty_matrix.add_frame(empty_frame)
     assert empty_matrix.frame_by_name("wrong") is None
+
+def test_canmatrix_get_frame_by_pgn(empty_matrix, empty_frame):
+    empty_frame.arbitration_id.id = 0xA123456
+    empty_frame.arbitration_id.extended = True
+    empty_matrix.add_frame(empty_frame)
+    assert empty_matrix.frame_by_pgn(0x1234) == empty_frame
+
+def test_canmatrix_get_frame_by_wrong_pgn(empty_matrix, empty_frame):
+    empty_frame.arbitration_id.id = 0xAB123456
+    empty_frame.arbitration_id.extended = True
+    empty_matrix.add_frame(empty_frame)
+    assert empty_matrix.frame_by_pgn(0xAB34) == None
 
 
 def test_canmatrix_iterate_over_frames(empty_matrix, empty_frame):

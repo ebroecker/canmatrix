@@ -65,7 +65,7 @@ def main():  # type: () -> int
         dest="verbosity",
         action="count",
         help="Output verbosity",
-        default=0)
+        default=1)
     parser.add_option(
         "-s",
         dest="silent",

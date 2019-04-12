@@ -65,6 +65,7 @@ class MissingMuxSignal(ExceptionTemplate): pass
 class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
 class ArbitrationIdOutOfRange(ExceptionTemplate): pass
+class J1939needsExtendedIdetifier(ExceptionTemplate): pass
 
 
 def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
@@ -589,11 +590,87 @@ class ArbitrationId(object):
         if self.id != self.id & mask:
             raise ArbitrationIdOutOfRange('ID out of range')
 
+    @property
+    def j1939_pgn(self):
+        return self.pgn
+
+    @property
+    def pgn(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+
+        ps = (self.id >> 8) & 0xFF
+        pf = (self.id >> 16) & 0xFF
+        _pgn = pf << 8
+        if pf >= 240:
+            _pgn += ps
+        return _pgn
+
+    @property
+    def j1939_tuple(self):  # type: () -> typing.Tuple[int, int, int]
+        """Get tuple (destination, PGN, source)
+
+        :rtype: tuple"""
+
+        return self.j1939_destination, self.pgn, self.j1939_source
+
+    @property
+    def j1939_destination(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        if self.j1939_pf < 240:
+            destination = self.j1939_ps
+        else:
+            destination = None
+        return destination
+
+    @property
+    def j1939_source(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return self.id & 0xFF
+
+    @property
+    def j1939_ps(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 8) & 0xFF
+
+    @property
+    def j1939_pf(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 16) & 0xFF
+
+    @property
+    def j1939_edp(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 24) & 0x03
+
+    @property
+    def j1939_priority(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 25) & 0x7
+
+    @property
+    def j1939_str(self):  # type: () -> str
+        return "DA:0x{da:02X} PGN:0x{pgn:04X} SA:0x{sa:02X}".format(
+            da=self.j1939_destination, pgn=self.pgn, sa=self.j1939_source)
+
+
     @classmethod
     def from_compound_integer(cls, i):  # type: (typing.Any) -> ArbitrationId
         return cls(
             id=i & cls.extended_id_mask,
             extended=(i & cls.compound_extended_mask) != 0,
+        )
+
+    @classmethod
+    def from_pgn(cls, pgn):  # type: (int) -> ArbitrationId
+        return cls(
+            id = (pgn << 8), extended = True
         )
 
     def to_compound_integer(self):
@@ -697,7 +774,7 @@ class Frame(object):
 
     @property
     def pgn(self):  # type: () -> int
-        return CanId(self.arbitration_id).pgn
+        return self.arbitration_id.pgn
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
@@ -1437,6 +1514,21 @@ class CanMatrix(object):
                 return test
         return None
 
+    def frame_by_pgn(self, pgn):  # type: (int) -> typing.Union[Frame, None]
+        """Get Frame by pgn (j1939).
+
+        :param int pgn: pgn to search for
+        :rtype: Frame or None
+        """
+
+        for test in self.frames:
+            if test.arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(pgn).pgn:
+                # canmatrix.ArbitrationId.from_pgn(pgn).pgn instead
+                # of just pgn is needed to do the pf >= 240 check
+                return test
+        return None
+
+
     def frame_by_name(self, name):  # type: (str) -> typing.Union[Frame, None]
         """Get Frame by name.
 
@@ -1603,7 +1695,6 @@ class CanMatrix(object):
                 self.ecus.remove(ecu)
                 for frame in self.frames:
                     frame.del_transmitter(ecu.name)
-					
                     for signal in frame.signals:
                         signal.del_receiver(ecu.name)
 
@@ -1790,7 +1881,18 @@ class CanMatrix(object):
             i.e. (0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8)
         :return: OrderedDictionary
         """
-        return self.frame_by_id(frame_id).decode(data)
+        if not self.contains_j1939:
+            return self.frame_by_id(frame_id).decode(data)
+        elif frame_id.extended:
+            frame = self.frame_by_id(frame_id)
+            if frame is None:
+                frame = self.frame_by_pgn(frame_id.pgn)
+            if frame:
+                return frame.decode(data)
+            else:
+                return {}
+        else:
+            return {}
 
     def enum_attribs_to_values(self):  # type: () -> None
         for define in self.ecu_defines:
@@ -1834,32 +1936,3 @@ class CanMatrix(object):
                         if define in signal.attributes:
                             signal.attributes[define] = self.signal_defines[define].values.index(signal.attributes[define])
                             signal.attributes[define] = str(signal.attributes[define])
-
-
-class CanId(object):
-    """
-    Split Id into Global source addresses (source, destination) off ECU and PGN (SAE J1939).
-    """
-    # TODO link to ECU
-    source = None  # type: int  # Source Address
-    destination = None  # type: int  # Destination Address
-    pgn = None  # type: int  # PGN
-
-    def __init__(self, arbitration_id):  # type: (ArbitrationId) -> None
-        if arbitration_id.extended:
-            self.source = arbitration_id.id & int('0xFF', 16)
-            self.pgn = (arbitration_id.id >> 8) & int('0xFFFF', 16)
-            self.destination = arbitration_id.id >> 8 * 3 & int('0xFF', 16)
-        else:
-            # TODO implement for standard Id
-            pass
-
-    def tuples(self):  # type: () -> typing.Tuple[int, int, int]
-        """Get tuple (destination, PGN, source)
-
-        :rtype: tuple"""
-        return self.destination, self.pgn, self.source
-
-    def __str__(self):  # type: () -> str
-        return "DA:0x{da:02X} PGN:0x{pgn:04X} SA:0x{sa:02X}".format(
-            da=self.destination, pgn=self.pgn, sa=self.source)

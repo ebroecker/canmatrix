@@ -42,9 +42,6 @@ logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
 
 
-#dbcExportEncoding = 'iso-8859-1'
-# CP1253
-
 
 def normalizeName(name, whitespaceReplacement):
     name = re.sub(r'\s+', whitespaceReplacement, name)
@@ -88,6 +85,7 @@ def create_define(data_type, define, define_type, defaults):
             defaults[data_type] = define.defaultValue
     return define_string
 
+
 def create_attribute_string(attribute, attribute_class, name, value, is_string):
     if is_string:
         value = '"' + value + '"'
@@ -97,7 +95,10 @@ def create_attribute_string(attribute, attribute_class, name, value, is_string):
     attribute_string = 'BA_ "' + attribute + '" ' + attribute_class + ' ' + name + ' ' + str(value) + ';\n'
     return attribute_string
 
+
 def create_comment_string(comment_class, comment_ident, comment, dbcExportEncoding, dbcExportCommentEncoding):
+    if len(comment) == 0:
+        return b""
     comment_string = ("CM_ " + comment_class + " " + comment_ident + ' "').encode(dbcExportEncoding, 'ignore')
     comment_string += comment.replace('"', '\\"').encode(dbcExportCommentEncoding, 'ignore')
     comment_string += '";\n'.encode(dbcExportEncoding)
@@ -212,8 +213,9 @@ def dump(mydb, f, **options):
         ))
 
         # remove "-" from frame names
-        if compatibility and '-' in frame.name:
-            frame.name = frame.name.replace("-", whitespaceReplacement)
+        if compatibility:
+            frame.name = re.sub("[^A-Za-z0-9]", whitespaceReplacement, frame.name)
+
 
         duplicate_signal_totals = collections.Counter(normalized_names.values())
         duplicate_signal_counter = collections.Counter()
@@ -222,8 +224,8 @@ def dump(mydb, f, **options):
 
         for signal in frame.signals:
             name = normalized_names[signal]
-            if compatibility and '-' in name:
-                name = name.replace("-", whitespaceReplacement)
+            if compatibility:
+                name = re.sub("[^A-Za-z0-9]",whitespaceReplacement, name)
             duplicate_signal_counter[name] += 1
             if duplicate_signal_totals[name] > 1:
                 # TODO: pad to 01 in case of 10+ instances, for example?
@@ -296,8 +298,6 @@ def dump(mydb, f, **options):
     for frame in db.frames:
         if frame.transmitters.__len__() > 1:
             f.write(("BO_TX_BU_ %d : %s;\n" % (frame.arbitration_id.to_compound_integer(), ','.join(frame.transmitters))).encode(dbcExportEncoding))
-
-
 
     # frame comments
     # wow, there are dbcs where comments are encoded with other coding than rest of dbc...
@@ -436,6 +436,7 @@ def dump(mydb, f, **options):
                                                                             envVar["evId"], envVar["accessType"],
                                                                             ",".join(envVar["accessNodes"])) ).encode(dbcExportEncoding))
 
+
 def load(f, **options):
     dbcImportEncoding = options.get("dbcImportEncoding", 'iso-8859-1')
     dbcCommentEncoding = options.get("dbcImportCommentEncoding", dbcImportEncoding)
@@ -548,7 +549,7 @@ def load(f, **options):
                     frame.add_signal(tempSig)
     #                db.frames.addSignalToLastFrame(tempSig)
                 else:
-                    pattern = r"^SG_ +(\w+) +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
+                    pattern = r"^SG_ +(.+?) +(.+?) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                     regexp = re.compile(pattern)
                     regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                     temp = regexp.match(decoded)
@@ -912,9 +913,6 @@ def load(f, **options):
         #    frame.id -= 0x80000000
         #    frame.extended = 1
 
-        if "_FD" in frame.attributes.get("VFrameFormat",""):
-            frame.is_fd = True
-
         for signal in frame.signals:
             if signal.attribute("SystemSignalLongSymbol") is not None:
                 signal.name = signal.attribute("SystemSignalLongSymbol")[1:-1]
@@ -941,6 +939,12 @@ def load(f, **options):
                         signal.attributes[define] = signal.attributes[define][1:-1]
 
     db.enum_attribs_to_values()
+    for frame in db.frames:
+        if "_FD" in frame.attributes.get("VFrameFormat", ""):
+            frame.is_fd = True
+        if "J1939PG" in frame.attributes.get("VFrameFormat", ""):
+            frame.is_j1939 = True
+
     db.update_ecu_list()
     db.del_ecu("Vector__XXX")
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
