@@ -1005,9 +1005,19 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
 
         datatype = get_child(system_signal, "DATA-TYPE", root_or_cache, ns)
         if datatype is None:  # AR4?
-            data_constr = get_child(isignal, "DATA-CONSTR", root_or_cache, ns)
-            compu_method = get_child(isignal, "COMPU-METHOD", root_or_cache, ns)
-            base_type = get_child(isignal, "BASE-TYPE", root_or_cache, ns)
+            data_constr = None
+            compu_method = None
+            base_type = None
+            for test_signal in [isignal, system_signal]:
+                if data_constr is None:
+                    data_constr = get_child(test_signal, "DATA-CONSTR", root_or_cache, ns)
+                if compu_method is None:
+                    compu_method = get_child(test_signal, "COMPU-METHOD", root_or_cache, ns)
+                if base_type is None:
+                    base_type = get_child(test_signal, "BASE-TYPE", root_or_cache, ns)
+
+
+
             lower = get_child(data_constr, "LOWER-LIMIT", root_or_cache, ns)
             upper = get_child(data_constr, "UPPER-LIMIT", root_or_cache, ns)
             encoding = None  # TODO - find encoding in AR4
