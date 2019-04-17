@@ -5,9 +5,9 @@
 # Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 # the following conditions are met:
 #
-#    Redistributions of source code must retain the aframeve copyright notice, this list of conditions and the
+#    Redistributions of source code must retain the above copyright notice, this list of conditions and the
 #    following disclaimer.
-#    Redistributions in binary form must reproduce the aframeve copyright notice, this list of conditions and the
+#    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
 #    following disclaimer in the documentation and/or other materials provided with the distribution.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
@@ -20,9 +20,11 @@
 # DAMAGE.
 
 import typing
+import canmatrix
 
 
 def get_frame_info(db, frame):
+    # type: (canmatrix.CanMatrix, canmatrix.Frame) -> typing.List[str]
     ret_array = []  # type: typing.List[str]
     # frame-id
     if frame.arbitration_id.extended:
@@ -33,10 +35,10 @@ def get_frame_info(db, frame):
     ret_array.append(frame.name)
 
     if "GenMsgCycleTime" in db.frame_defines:
-        # determin cycle-time
+        # determine cycle-time
         ret_array.append(frame.attribute("GenMsgCycleTime", db=db))
 
-    # determin send-type
+    # determine send-type
     if "GenMsgSendType" in db.frame_defines:
         ret_array.append(frame.attribute("GenMsgSendType", db=db))
         if "GenMsgDelayTime" in db.frame_defines:
@@ -49,28 +51,26 @@ def get_frame_info(db, frame):
     return ret_array
 
 
-def get_signal(db, sig, motorolaBitFormat):
-    frontArray = []  # type: typing.List[typing.Any]
-    backArray = []
-    if motorolaBitFormat == "msb":
-        startBit = sig.get_startbit(bit_numbering=1)
-    elif motorolaBitFormat == "msbreverse":
-        startBit = sig.get_startbit()
+def get_signal(db, sig, motorola_bit_format):
+    # type: (canmatrix.CanMatrix, canmatrix.Signal, str) -> typing.Tuple[typing.List, typing.List]
+    front_array = []  # type: typing.List[typing.Union[str, float]]
+    back_array = []
+    if motorola_bit_format == "msb":
+        start_bit = sig.get_startbit(bit_numbering=1)
+    elif motorola_bit_format == "msbreverse":
+        start_bit = sig.get_startbit()
     else:  # motorolaBitFormat == "lsb"
-        startBit = sig.get_startbit(bit_numbering=1, start_little=True)
+        start_bit = sig.get_startbit(bit_numbering=1, start_little=True)
 
-    # startbyte
-    frontArray.append(int(startBit / 8) + 1)
-    # startbit
-    frontArray.append((startBit) % 8)
-    # signalname
-    frontArray.append(sig.name)
+    # start byte
+    front_array.append(int(start_bit / 8) + 1)
+    # start bit
+    front_array.append(start_bit % 8)
+    # signal name
+    front_array.append(sig.name)
 
     # eval comment:
-    if sig.comment is None:
-        comment = ""
-    else:
-        comment = sig.comment
+    comment = sig.comment if sig.comment else ""
 
     # eval multiplex-info
     if sig.multiplex == 'Multiplexor':
@@ -79,50 +79,51 @@ def get_signal(db, sig, motorolaBitFormat):
         comment = "Mode " + str(sig.multiplex) + ":" + comment
 
     # write comment and size of signal in sheet
-    frontArray.append(comment)
-    frontArray.append(sig.size)
+    front_array.append(comment)
+    front_array.append(sig.size)
 
-    # startvalue of signal available
+    # start-value of signal available
     if "GenSigStartValue" in db.signal_defines:
         if db.signal_defines["GenSigStartValue"].definition == "STRING":
-            frontArray.append(sig.attribute("GenSigStartValue", db=db))
-        elif db.signal_defines["GenSigStartValue"].definition == "INT" or db.signal_defines["GenSigStartValue"].definition == "HEX":
-            frontArray.append("%Xh" % sig.attribute("GenSigStartValue", db=db))
+            front_array.append(sig.attribute("GenSigStartValue", db=db))
+        elif db.signal_defines["GenSigStartValue"].definition == "INT" \
+                or db.signal_defines["GenSigStartValue"].definition == "HEX":
+            front_array.append("%Xh" % sig.attribute("GenSigStartValue", db=db))
         else:
-            frontArray.append(" ")
+            front_array.append(" ")
     else:
-        frontArray.append(" ")
+        front_array.append(" ")
 
     # SNA-value of signal available
     if "GenSigSNA" in db.signal_defines:
         sna = sig.attribute("GenSigSNA", db=db)
         if sna is not None:
             sna = sna[1:-1]
-        frontArray.append(sna)
+        front_array.append(sna)
     # no SNA-value of signal available / just for correct style:
     else:
-        frontArray.append(" ")
+        front_array.append(" ")
 
     # eval byteorder (little_endian: intel == True / motorola == 0)
     if sig.is_little_endian:
-        frontArray.append("i")
+        front_array.append("i")
     else:
-        frontArray.append("m")
+        front_array.append("m")
 
     # is a unit defined for signal?
-    if sig.unit.strip().__len__() > 0:
+    if sig.unit.strip():
         # factor not 1.0 ?
         if float(sig.factor) != 1:
-            backArray.append("%g" % float(sig.factor) + "  " + sig.unit)
-        #factor == 1.0
+            back_array.append("%g" % float(sig.factor) + "  " + sig.unit)
+        # factor == 1.0
         else:
-            backArray.append(sig.unit)
+            back_array.append(sig.unit)
     # no unit defined
     else:
         # factor not 1.0 ?
         if float(sig.factor) != 1:
-            backArray.append("%g -" % float(sig.factor))
-        #factor == 1.0
+            back_array.append("%g -" % float(sig.factor))
+        # factor == 1.0
         else:
-            backArray.append("")
-    return frontArray,backArray
+            back_array.append("")
+    return front_array, back_array
