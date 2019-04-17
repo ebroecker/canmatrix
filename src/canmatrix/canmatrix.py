@@ -163,8 +163,7 @@ class Signal(object):
     comments = attr.ib(factory=dict)  # type: typing.MutableMapping[str, str]
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
     values = attr.ib(converter=normalize_value_table, factory=dict)  # type: typing.MutableMapping[int, str]
-    mux_val_max = attr.ib(default=0)  # type: int
-    mux_val_min = attr.ib(default=0)  # type: int
+    mux_val_grp = attr.ib(factory=list)  # type: typing.MutableSequence[list]
     muxer_for_signal = attr.ib(default=None)  # type: typing.Optional[str]
 
     # offset = attr.ib(converter=float_factory, default=0.0)  # type: float # ??
