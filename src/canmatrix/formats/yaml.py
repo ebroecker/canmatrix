@@ -27,11 +27,13 @@
 from __future__ import absolute_import
 
 import copy
+import typing
 from builtins import *
 
 import yaml
+from past.builtins import long, unicode
 
-import canmatrix.canmatrix as cm
+import canmatrix
 
 try:
     from yaml.representer import SafeRepresenter
@@ -39,7 +41,7 @@ except ImportError:
     yaml = None
 
 
-representers = False  # type: bool
+representers = False
 try:
     yaml.add_representer(int, SafeRepresenter.represent_int)
     yaml.add_representer(long, SafeRepresenter.represent_long)
@@ -52,28 +54,24 @@ except:
     # some error with representers ... continue anyway
 
 
-def dump(db, f, **options):
-    new_db = copy.deepcopy(db)  # type: cm.CanMatrix
+def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
+    new_db = copy.deepcopy(db)
 
     for i, frame in enumerate(new_db.frames):
         for j, signal in enumerate(frame.signals):
             if not signal.is_little_endian:
-                signal.start_bit = signal.get_startbit(
-                    bit_numbering=1, start_little=True)
-#                new_db.frames[i].signals[j].start_bit = signal.start_bit
+                signal.start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
+                # new_db.frames[i].signals[j].start_bit = signal.start_bit
 
-#    f = open(filename, "w")
+    # f = open(filename, "w")
     if representers:
         f.write(unicode(yaml.dump(new_db)))
     else:
         f.write(yaml.dump(new_db).encode('utf8'))
 
 
-def load(f, **options):
+def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     db = yaml.load(f)
-    # TODO: don't close here.  someone else opened, they should close.
-    f.close()
-
     return db
 
 
@@ -90,7 +88,7 @@ def frame_constructor(loader, node):
     return constructor(
         loader=loader,
         node=node,
-        cls=cm.Frame,
+        cls=canmatrix.Frame,
         mapping={
             'size': 'dlc',
         },
@@ -98,20 +96,15 @@ def frame_constructor(loader, node):
 
 
 def signal_constructor(loader, node):
-    mapping = {
-        'startbit': 'startBit',
-        'signalsize': 'signalSize',
-    }
-
     signal = constructor(
         loader=loader,
         node=node,
-        cls=cm.Signal,
+        cls=canmatrix.Signal,
         mapping={
-            'startbit': 'startBit',
+            'startbit': 'startBit',  # todo shall probably be updated to match current names like start_bit
             'signalsize': 'signalSize',
         },
-    )
+    )  # type: canmatrix.Signal
 
     if not signal.is_little_endian:
         signal.set_startbit(
@@ -131,4 +124,4 @@ def frame_representer(dumper, data):
 
 yaml.add_constructor(u'tag:yaml.org,2002:Frame', frame_constructor)
 yaml.add_constructor(u'tag:yaml.org,2002:Signal', signal_constructor)
-yaml.add_representer(cm.Frame, frame_representer)
+yaml.add_representer(canmatrix.Frame, frame_representer)
