@@ -566,7 +566,7 @@ def pack_bitstring(length, is_float, value, signed):
         x = bytearray(struct.pack(float_type, value))
         bitstring = ''.join('{:08b}'.format(b) for b in x)
     else:
-        b = '{:0{}b}'.format((2<<length )+ value, length)
+        b = '{:0{}b}'.format(int((2<<length )+ value), length)
         bitstring = b[-length:]
 
     return bitstring
