@@ -160,7 +160,7 @@ class Signal(object):
     mux_value = attr.ib(default=None)
     is_float = attr.ib(default=False)  # type: bool
     enumeration = attr.ib(default=None)  # type: typing.Optional[str]
-    comments = attr.ib(factory=dict)  # type: typing.MutableMapping[str, str]
+    comments = attr.ib(factory=dict)  # type: typing.MutableMapping[int, str]
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
     values = attr.ib(converter=normalize_value_table, factory=dict)  # type: typing.MutableMapping[int, str]
     mux_val_grp = attr.ib(factory=list)  # type: typing.MutableSequence[list]
@@ -281,7 +281,7 @@ class Signal(object):
         """
         Add named Value Description to the Signal.
 
-        :param int value: signal value (0xFF)
+        :param int or str value: signal value (0xFF)
         :param str valueName: Human readable value description ("Init")
         """
         self.values[int(value)] = valueName
@@ -565,7 +565,7 @@ def pack_bitstring(length, is_float, value, signed):
         x = bytearray(struct.pack(float_type, value))
         bitstring = ''.join('{:08b}'.format(b) for b in x)
     else:
-        b = '{:0{}b}'.format((2<<length )+ value, length)
+        b = '{:0{}b}'.format(int((2<<length )+ value), length)
         bitstring = b[-length:]
 
     return bitstring
