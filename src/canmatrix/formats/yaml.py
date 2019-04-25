@@ -27,11 +27,13 @@
 from __future__ import absolute_import
 
 import copy
+import typing
 from builtins import *
 
 import yaml
+from past.builtins import long, unicode
 
-import canmatrix.canmatrix as cm
+import canmatrix
 
 try:
     from yaml.representer import SafeRepresenter
@@ -39,7 +41,7 @@ except ImportError:
     yaml = None
 
 
-representers = False  # type: bool
+representers = False
 try:
     yaml.add_representer(int, SafeRepresenter.represent_int)
     yaml.add_representer(long, SafeRepresenter.represent_long)
@@ -51,33 +53,33 @@ except:
     representers = False
     # some error with representers ... continue anyway
 
+_yaml_initialized = False
 
-def dump(db, f, **options):
-    new_db = copy.deepcopy(db)  # type: cm.CanMatrix
+
+def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
+    __init_yaml()
+    new_db = copy.deepcopy(db)
 
     for i, frame in enumerate(new_db.frames):
         for j, signal in enumerate(frame.signals):
             if not signal.is_little_endian:
-                signal.start_bit = signal.get_startbit(
-                    bit_numbering=1, start_little=True)
-#                new_db.frames[i].signals[j].start_bit = signal.start_bit
+                signal.start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
+                # new_db.frames[i].signals[j].start_bit = signal.start_bit
 
-#    f = open(filename, "w")
+    # f = open(filename, "w")
     if representers:
         f.write(unicode(yaml.dump(new_db)))
     else:
         f.write(yaml.dump(new_db).encode('utf8'))
 
 
-def load(f, **options):
+def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
+    __init_yaml()
     db = yaml.load(f)
-    # TODO: don't close here.  someone else opened, they should close.
-    f.close()
-
     return db
 
 
-def constructor(loader, node, cls, mapping=None):
+def _constructor(loader, node, cls, mapping=None):
     d = {k.lstrip('_'): v for k, v in loader.construct_mapping(node).items()}
     name = d.pop('name')
     if mapping:
@@ -86,32 +88,27 @@ def constructor(loader, node, cls, mapping=None):
     return cls(name, **d)
 
 
-def frame_constructor(loader, node):
-    return constructor(
+def _frame_constructor(loader, node):
+    return _constructor(
         loader=loader,
         node=node,
-        cls=cm.Frame,
+        cls=canmatrix.Frame,
         mapping={
             'size': 'dlc',
         },
     )
 
 
-def signal_constructor(loader, node):
-    mapping = {
-        'startbit': 'startBit',
-        'signalsize': 'signalSize',
-    }
-
-    signal = constructor(
+def _signal_constructor(loader, node):
+    signal = _constructor(
         loader=loader,
         node=node,
-        cls=cm.Signal,
+        cls=canmatrix.Signal,
         mapping={
-            'startbit': 'startBit',
+            'startbit': 'startBit',  # todo shall probably be updated to match current names like start_bit
             'signalsize': 'signalSize',
         },
-    )
+    )  # type: canmatrix.Signal
 
     if not signal.is_little_endian:
         signal.set_startbit(
@@ -122,13 +119,18 @@ def signal_constructor(loader, node):
     return signal
 
 
-def frame_representer(dumper, data):
+def _frame_representer(dumper, data):
     node = yaml.representer.Representer.represent_object(dumper, data)
     node.tag = '{}:Frame'.format(node.tag.partition(':python/object:')[0])
 
     return node
 
 
-yaml.add_constructor(u'tag:yaml.org,2002:Frame', frame_constructor)
-yaml.add_constructor(u'tag:yaml.org,2002:Signal', signal_constructor)
-yaml.add_representer(cm.Frame, frame_representer)
+def __init_yaml():
+    """Lazy init yaml because canmatrix might not be fully loaded when loading this format."""
+    global _yaml_initialized
+    if not _yaml_initialized:
+        _yaml_initialized = True
+        yaml.add_constructor(u'tag:yaml.org,2002:Frame', _frame_constructor)
+        yaml.add_constructor(u'tag:yaml.org,2002:Signal', _signal_constructor)
+        yaml.add_representer(canmatrix.Frame, _frame_representer)
