@@ -28,78 +28,82 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import copy
 import decimal
 import logging
 import math
 import re
-import copy
+import typing
 
 import canmatrix
 
 logger = logging.getLogger(__name__)
-default_float_factory = decimal.Decimal
+
+
+def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
+    return decimal.Decimal(value)
 
 
 # TODO support for [START_PARAM_NODE_RX_SIG]
 # TODO support for [START_PARAM_NODE_TX_MSG]
 
 
-def decodeDefine(line):
-    (define, valueType, value) = line.split(',', 2)
-    valueType = valueType.strip()
-    if valueType == "INT" or valueType == "HEX":
+def decode_define(line):  # type: (str) -> typing.Tuple[str, str, str]
+    (define, value_type, value) = line.split(',', 2)
+    value_type = value_type.strip()
+    if value_type == "INT" or value_type == "HEX":
         (Min, Max, default) = value.split(',', 2)
-        myDef = valueType + ' ' + Min.strip() + ' ' + Max.strip()
+        my_def = value_type + ' ' + Min.strip() + ' ' + Max.strip()
         default = default.strip()
-    elif valueType == "ENUM":
+    elif value_type == "ENUM":
         (enums, default) = value.rsplit(',', 1)
-        myDef = valueType + "  " + enums[1:]
-    elif valueType == "STRING":
-        myDef = valueType
+        my_def = value_type + "  " + enums[1:]
+    elif value_type == "STRING":
+        my_def = value_type
         default = value
     else:
         logger.debug(line)
 
-    return define[1:-1], myDef, default
+    return define[1:-1], my_def, default
 
 
-def load(f, **options):
-    dbfImportEncoding = options.get("dbfImportEncoding",'iso-8859-1')
+def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
+    dbf_import_encoding = options.get("dbfImportEncoding", 'iso-8859-1')
     float_factory = options.get('float_factory', default_float_factory)
 
     db = canmatrix.CanMatrix()
 
     mode = ''
     for line in f:
-        line = line.decode(dbfImportEncoding).strip()
+        line = line.decode(dbf_import_encoding).strip()
 
         if mode == 'SignalDescription':
             if line.startswith(
                     "[END_DESC_SIG]") or line.startswith("[END_DESC]"):
                 mode = ''
             else:
-                (boId, temS, SignalName, comment) = line.split(' ', 3)
+                (bo_id, tem_s, signal_name, comment) = line.split(' ', 3)
                 comment = comment.replace('"', '').replace(';', '')
-                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(boId))).signal_by_name(
-                    SignalName).add_comment(comment)
+                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(bo_id))).signal_by_name(
+                    signal_name).add_comment(comment)
 
         if mode == 'BUDescription':
             if line.startswith(
                     "[END_DESC_NODE]") or line.startswith("[END_DESC]"):
                 mode = ''
             else:
-                (BUName, comment) = line.split(' ', 1)
+                (bu_name, comment) = line.split(' ', 1)
                 comment = comment.replace('"', '').replace(';', '')
-                db.ecu_by_name(BUName).add_comment(comment)
+                db.ecu_by_name(bu_name).add_comment(comment)
 
         if mode == 'FrameDescription':
             if line.startswith(
                     "[END_DESC_MSG]") or line.startswith("[END_DESC]"):
                 mode = ''
             else:
-                (boId, temS, comment) = line.split(' ', 2)
+                (bo_id, tem_s, comment) = line.split(' ', 2)
                 comment = comment.replace('"', '').replace(';', '')
-                frame = db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(boId)))
+                frame = db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(bo_id)))
                 if frame:
                     frame.add_comment(comment)
 
@@ -107,15 +111,11 @@ def load(f, **options):
             if line.startswith("[END_PARAM_MSG_VAL]"):
                 mode = ''
             else:
-                (boId, temS, attrib, value) = line.split(',', 3)
+                (bo_id, tem_s, attrib, value) = line.split(',', 3)
                 db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(
-                    int(boId))).add_attribute(
-                    attrib.replace(
-                        '"',
-                        ''),
-                    value.replace(
-                        '"',
-                        ''))
+                    int(bo_id))).add_attribute(
+                    attrib.replace('"', ''),
+                    value.replace('"', ''))
 
         elif mode == 'ParamNodeVal':
             if line.startswith("[END_PARAM_NODE_VAL]"):
@@ -136,18 +136,16 @@ def load(f, **options):
             if line.startswith("[END_PARAM_SIG_VAL]"):
                 mode = ''
             else:
-                (boId, temS, SignalName, attrib, value) = line.split(',', 4)
-                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(
-                    int(boId))).signal_by_name(SignalName).add_attribute(
-                    attrib.replace(
-                        '"', ''), value[
-                        1:-1])
+                (bo_id, tem_s, signal_name, attrib, value) = line.split(',', 4)
+                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(bo_id)))\
+                    .signal_by_name(signal_name)\
+                    .add_attribute(attrib.replace('"', ''), value[1:-1])
 
         elif mode == 'ParamSig':
             if line.startswith("[END_PARAM_SIG]"):
                 mode = ''
             else:
-                (name, define, default) = decodeDefine(line)
+                (name, define, default) = decode_define(line)
                 db.add_signal_defines(name, define)
                 db.add_define_default(name, default)
 
@@ -155,7 +153,7 @@ def load(f, **options):
             if line.startswith("[END_PARAM_MSG]"):
                 mode = ''
             else:
-                (name, define, default) = decodeDefine(line)
+                (name, define, default) = decode_define(line)
                 db.add_frame_defines(name, define)
                 db.add_define_default(name, default)
 
@@ -163,7 +161,7 @@ def load(f, **options):
             if line.startswith("[END_PARAM_NODE]"):
                 mode = ''
             else:
-                (name, define, default) = decodeDefine(line)
+                (name, define, default) = decode_define(line)
                 db.add_ecu_defines(name, define)
                 db.add_define_default(name, default)
 
@@ -171,7 +169,7 @@ def load(f, **options):
             if line.startswith("[END_PARAM_NET]"):
                 mode = ''
             else:
-                (name, define, default) = decodeDefine(line)
+                (name, define, default) = decode_define(line)
                 db.add_global_defines(name, define)
                 db.add_define_default(name, default)
 
@@ -207,51 +205,52 @@ def load(f, **options):
                 mode = 'ParamNet'
 
             if line.startswith("[START_MSG]"):
-                temstr = line.strip()[11:].strip()
-                temparray = temstr.split(',')
-                (name, Id, size, nSignals, dummy) = temparray[0:5]
-                if len(temparray) > 5:
-                    extended = temparray[5]
+                temp_str = line.strip()[11:].strip()
+                temp_array = temp_str.split(',')
+                (name, arb_id, size, n_signals, dummy) = temp_array[0:5]
+                if len(temp_array) > 5:
+                    extended = temp_array[5]
                 else:
                     extended = None
-                if len(temparray) > 6:
-                    transmitters = temparray[6].split()
+                if len(temp_array) > 6:
+                    transmitters = temp_array[6].split()
                 else:
                     transmitters = list()
-                newBo = db.add_frame(
-                    canmatrix.Frame(name,
-                          size=int(size),
-                          transmitters=transmitters))
-                newBo.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(Id))
+                new_frame = db.add_frame(
+                    canmatrix.Frame(
+                        name,
+                        size=int(size),
+                        transmitters=transmitters))
+                new_frame.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(arb_id))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")
-                    newBo.arbitration_id.extended = True
+                    new_frame.arbitration_id.extended = True
 
             if line.startswith("[NODE]"):
-                temstr = line.strip()[6:].strip()
-                boList = temstr.split(',')
-                for bo in boList:
+                temp_str = line.strip()[6:].strip()
+                bo_list = temp_str.split(',')
+                for bo in bo_list:
                     db.add_ecu(canmatrix.Ecu(bo))
 
             if line.startswith("[START_SIGNALS]"):
-                temstr = line.strip()[15:].strip()
-                temparray = temstr.split(',')
-                (name, size, startbyte, startbit, sign, Max, Min, byteorder,
-                 offset, factor, unit, multiplex) = temparray[0:12]
-                Min = float_factory(Min)
-                Max = float_factory(Max)
+                temp_str = line.strip()[15:].strip()
+                temp_array = temp_str.split(',')
+                (name, size, start_byte, start_bit, sign, max_val, min_val, byteorder,
+                 offset, factor, unit, multiplex) = temp_array[0:12]
+                min_val = float_factory(min_val)
+                max_val = float_factory(max_val)
                 factor = float_factory(factor)
-                ofset = float_factory(offset)
+                offset = float_factory(offset)
 
-                if len(temparray) > 12:
-                    receiver = temparray[12].split(',')
+                if len(temp_array) > 12:
+                    receiver = temp_array[12].split(',')
                 else:
                     receiver = []
 
                 if multiplex == 'M':
                     multiplex = 'Multiplexor'
-                elif multiplex.strip().__len__() > 0:
+                elif len(multiplex.strip()) > 0:
                     multiplex = int(multiplex[1:])
                 else:
                     multiplex = None
@@ -265,43 +264,40 @@ def load(f, **options):
                     is_float = True
                 else:
                     is_signed = True
-                startbit = int(startbit)
-                startbit += (int(startbyte) - 1) * 8
+                start_bit = int(start_bit)
+                start_bit += (int(start_byte) - 1) * 8
 
-                newSig = newBo.add_signal(canmatrix.Signal(name,
-                                                 start_bit=int(startbit),
-                                                 size=int(size),
-                                                 is_little_endian=(
-                                                    int(byteorder) == 1),
-                                                 is_signed=is_signed,
-                                                 factor=factor,
-                                                 offset=offset,
-                                                 min=Min * factor,
-                                                 max=Max * factor,
-                                                 unit=unit,
-                                                 receivers=receiver,
-                                                 is_float=is_float,
-                                                 multiplex=multiplex))
+                new_signal = new_frame.add_signal(
+                    canmatrix.Signal(
+                        name,
+                        start_bit=int(start_bit),
+                        size=int(size),
+                        is_little_endian=(int(byteorder) == 1),
+                        is_signed=is_signed,
+                        factor=factor,
+                        offset=offset,
+                        min=min_val * factor,
+                        max=max_val * factor,
+                        unit=unit,
+                        receivers=receiver,
+                        is_float=is_float,
+                        multiplex=multiplex))
 
                 if int(byteorder) == 0:
-                    # this is dummy here, because internal lsb is default - for
-                    # now
-                    newSig.set_startbit(
-                        startbit, bitNumbering=1, startLittle=True)
+                    # this is dummy here, because internal lsb is default - for now
+                    new_signal.set_startbit(
+                        start_bit, bitNumbering=1, startLittle=True)
 
             if line.startswith("[VALUE_DESCRIPTION]"):
-                temstr = line.strip()[19:].strip()
+                temp_str = line.strip()[19:].strip()
                 regexp = re.compile("\"(.+)\" *, *(.+)")
-                temp = regexp.match(temstr)
+                temp = regexp.match(temp_str)
 
                 if temp:
-                    name = temp.group(1)
-                    value = temp.group(2)
-                    newSig.add_values(value, name)
+                    new_signal.add_values(value=temp.group(2), valueName=temp.group(1))
 
         for frame in db.frames:
-            # receiver is only given in the signals, so do propagate the
-            # receiver to the frame:
+            # receiver is only given in the signals, so do propagate the receiver to the frame:
             frame.update_receiver()
     db.enum_attribs_to_values()
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
@@ -312,17 +308,18 @@ def load(f, **options):
 
 
 def dump(mydb, f, **options):
+    # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
     # create copy because export changes database
     db = copy.deepcopy(mydb)
-    dbfExportEncoding = options.get("dbfExportEncoding", 'iso-8859-1')
+    dbf_export_encoding = options.get("dbfExportEncoding", 'iso-8859-1')
     db.enum_attribs_to_keys()
     if len(db.signals) > 0:
         free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG")
         free_signals_dummy_frame.arbitration_id = canmatrix.ArbitrationId(id=0x40000000, extended=True)
         free_signals_dummy_frame.signals = db.signals
-        db.addFrame(free_signals_dummy_frame)
+        db.add_frame(free_signals_dummy_frame)
 
-    outstr =  """//******************************BUSMASTER Messages and signals Database ******************************//
+    out_str = """//******************************BUSMASTER Messages and signals Database ******************************//
 
 [DATABASE_VERSION] 1.3
 
@@ -331,7 +328,7 @@ def dump(mydb, f, **options):
 [BUSMASTER_VERSION] [1.7.2]
 [NUMBER_OF_MESSAGES] """
 
-    outstr += str(len(db.frames)) + "\n"
+    out_str += str(len(db.frames)) + "\n"
 
     # Frames
     for frame in db.frames:
@@ -340,24 +337,21 @@ def dump(mydb, f, **options):
             continue
 
         # Name unMsgId m_ucLength m_ucNumOfSignals m_cDataFormat m_cFrameFormat? m_txNode
-        # m_cDataFormat If 1 dataformat Intel, 0- Motorola -- immer 1 original Converter macht das nach anzahl entsprechender Signale
+        # m_cDataFormat Data format: 1-Intel, 0-Motorola -- always 1 original converter decides based on signal count.
         # cFrameFormat Standard 'S' Extended 'X'
-        extended = 'S'
-        if frame.arbitration_id.extended == 1:
-            extended = 'X'
-        outstr += "[START_MSG] " + frame.name + \
-            ",%d,%d,%d,1,%c," % (frame.arbitration_id.id, frame.size,
-                                 len(frame.signals), extended)
-        if frame.transmitters.__len__() == 0:
+        extended = 'x' if frame.arbitration_id.extended == 1 else 'S'
+        out_str += "[START_MSG] " + frame.name + \
+            ",%d,%d,%d,1,%c," % (frame.arbitration_id.id, frame.size, len(frame.signals), extended)
+        if not frame.transmitters:
             frame.add_transmitter("Vector__XXX")
 # DBF does not support multiple Transmitters
-        outstr += frame.transmitters[0] + "\n"
+        out_str += frame.transmitters[0] + "\n"
 
         for signal in frame.signals:
             # m_acName ucLength m_ucWhichByte m_ucStartBit
             # m_ucDataFormat m_fOffset m_fScaleFactor m_acUnit m_acMultiplex m_rxNode
             # m_ucDataFormat
-            whichbyte = int(
+            which_byte = int(
                 math.floor(
                     signal.get_startbit(
                         bit_numbering=1,
@@ -370,7 +364,7 @@ def dump(mydb, f, **options):
                 sign = 'U'
             
             if signal.is_float:
-                if signal.signalsize > 32:
+                if signal.size > 32:
                     sign = 'D'
                 else:
                     sign = 'F'
@@ -378,15 +372,15 @@ def dump(mydb, f, **options):
             if signal.factor == 0:
                 signal.factor = 1
 
-            outstr += "[START_SIGNALS] " + signal.name + ",%d,%d,%d,%c," % (signal.size,
-                                                                            whichbyte,
-                                                                            int(signal.get_startbit(bit_numbering=1,
-                                                                                                    start_little=True)) % 8,
-                                                                            sign) + '{},{}'.format(float(signal.max) / float(signal.factor),
-                                                                                                   float(signal.min) / float(signal.factor))
+            out_str += "[START_SIGNALS] " + signal.name \
+                       + ",%d,%d,%d,%c," % (signal.size,
+                                            which_byte,
+                                            int(signal.get_startbit(bit_numbering=1,
+                                                                    start_little=True)) % 8,
+                                            sign) + '{},{}'.format(float(signal.max) / float(signal.factor),
+                                                                   float(signal.min) / float(signal.factor))
 
-            outstr += ",%d,%s,%s" % (signal.is_little_endian,
-                                     signal.offset, signal.factor)
+            out_str += ",%d,%s,%s" % (signal.is_little_endian, signal.offset, signal.factor)
             multiplex = ""
             if signal.multiplex is not None:
                 if signal.multiplex == 'Multiplexor':
@@ -394,48 +388,48 @@ def dump(mydb, f, **options):
                 else:
                     multiplex = 'm' + str(signal.multiplex)
 
-            outstr += "," + signal.unit + ",%s," % multiplex + \
+            out_str += "," + signal.unit + ",%s," % multiplex + \
                 ','.join(signal.receivers) + "\n"
 
             if len(signal.values) > 0:
-                for attrib, val in sorted(list(signal.values.items())):
-                    outstr += '[VALUE_DESCRIPTION] "' + \
-                        val + '",' + str(attrib) + '\n'
+                for value, name in sorted(list(signal.values.items())):
+                    out_str += '[VALUE_DESCRIPTION] "' + \
+                        name + '",' + str(value) + '\n'
 
-        outstr += "[END_MSG]\n\n"
+        out_str += "[END_MSG]\n\n"
 
-    # Boardunits
-    outstr += "[NODE] "
+    # Board units
+    out_str += "[NODE] "
     count = 1
-    for bu in db.ecus:
-        outstr += bu.name
+    for ecu in db.ecus:
+        out_str += ecu.name
         if count < len(db.ecus):
-            outstr += ","
+            out_str += ","
         count += 1
-    outstr += "\n"
+    out_str += "\n"
 
-    outstr += "[START_DESC]\n\n"
+    out_str += "[START_DESC]\n\n"
 
     # BU-descriptions
-    outstr += "[START_DESC_MSG]\n"
+    out_str += "[START_DESC_MSG]\n"
     for frame in db.frames:
         if frame.comment is not None:
             comment = frame.comment.replace("\n", " ")
-            outstr += str(frame.arbitration_id.id) + ' S "' + comment + '";\n'
+            out_str += str(frame.arbitration_id.id) + ' S "' + comment + '";\n'
 
-    outstr += "[END_DESC_MSG]\n"
+    out_str += "[END_DESC_MSG]\n"
 
     # Frame descriptions
-    outstr += "[START_DESC_NODE]\n"
-    for bu in db.ecus:
-        if bu.comment is not None:
-            comment = bu.comment.replace("\n", " ")
-            outstr += bu.name + ' "' + comment + '";\n'
+    out_str += "[START_DESC_NODE]\n"
+    for ecu in db.ecus:
+        if ecu.comment is not None:
+            comment = ecu.comment.replace("\n", " ")
+            out_str += ecu.name + ' "' + comment + '";\n'
 
-    outstr += "[END_DESC_NODE]\n"
+    out_str += "[END_DESC_NODE]\n"
 
     # signal descriptions
-    outstr += "[START_DESC_SIG]\n"
+    out_str += "[START_DESC_SIG]\n"
     for frame in db.frames:
         if frame.is_complex_multiplexed:
             continue
@@ -443,78 +437,78 @@ def dump(mydb, f, **options):
         for signal in frame.signals:
             if signal.comment is not None:
                 comment = signal.comment.replace("\n", " ")
-                outstr += "%d S " % frame.arbitration_id.id + signal.name + ' "' + comment + '";\n'
+                out_str += "%d S " % frame.arbitration_id.id + signal.name + ' "' + comment + '";\n'
 
-    outstr += "[END_DESC_SIG]\n"
-    outstr += "[END_DESC]\n\n"
+    out_str += "[END_DESC_SIG]\n"
+    out_str += "[END_DESC]\n\n"
 
-    outstr += "[START_PARAM]\n"
+    out_str += "[START_PARAM]\n"
 
     # db-parameter
-    outstr += "[START_PARAM_NET]\n"
-    for (type, define) in sorted(list(db.global_defines.items())):
-        defaultVal = define.defaultValue
-        if defaultVal is None:
-            defaultVal = "0"
-        outstr += '"' + type + '",' + define.definition.replace(' ', ',') + ',' + defaultVal + '\n'
-    outstr += "[END_PARAM_NET]\n"
+    out_str += "[START_PARAM_NET]\n"
+    for (data_type, define) in sorted(list(db.global_defines.items())):
+        default_val = define.defaultValue
+        if default_val is None:
+            default_val = "0"
+        out_str += '"' + data_type + '",' + define.definition.replace(' ', ',') + ',' + default_val + '\n'
+    out_str += "[END_PARAM_NET]\n"
 
     # bu-parameter
-    outstr += "[START_PARAM_NODE]\n"
-    for (type, define) in sorted(list(db.ecu_defines.items())):
-        defaultVal = define.defaultValue
-        if defaultVal is None:
-            defaultVal = "0"
-        outstr += '"' + type + '",' + define.definition.replace(' ', ',') + ',' + defaultVal + '\n'
-    outstr += "[END_PARAM_NODE]\n"
+    out_str += "[START_PARAM_NODE]\n"
+    for (data_type, define) in sorted(list(db.ecu_defines.items())):
+        default_val = define.defaultValue
+        if default_val is None:
+            default_val = "0"
+        out_str += '"' + data_type + '",' + define.definition.replace(' ', ',') + ',' + default_val + '\n'
+    out_str += "[END_PARAM_NODE]\n"
 
     # frame-parameter
-    outstr += "[START_PARAM_MSG]\n"
-    for (type, define) in sorted(list(db.frame_defines.items())):
-        defaultVal = define.defaultValue
-        if defaultVal is None:
-            defaultVal = "0"
-        outstr += '"' + type + '",' + define.definition.replace(' ', ',') + ',' + defaultVal + '\n'
+    out_str += "[START_PARAM_MSG]\n"
+    for (data_type, define) in sorted(list(db.frame_defines.items())):
+        default_val = define.defaultValue
+        if default_val is None:
+            default_val = "0"
+        out_str += '"' + data_type + '",' + define.definition.replace(' ', ',') + ',' + default_val + '\n'
 
-    outstr += "[END_PARAM_MSG]\n"
+    out_str += "[END_PARAM_MSG]\n"
 
     # signal-parameter
-    outstr += "[START_PARAM_SIG]\n"
-    for (type, define) in list(db.signal_defines.items()):
-        defaultVal = define.defaultValue
-        if defaultVal is None:
-            defaultVal = "0"
-        outstr += '"' + type + '",' + define.definition.replace(' ', ',') + ',' + defaultVal + '\n'
-    outstr += "[END_PARAM_SIG]\n"
+    out_str += "[START_PARAM_SIG]\n"
+    for (data_type, define) in list(db.signal_defines.items()):
+        default_val = define.defaultValue
+        if default_val is None:
+            default_val = "0"
+        out_str += '"' + data_type + '",' + define.definition.replace(' ', ',') + ',' + default_val + '\n'
+    out_str += "[END_PARAM_SIG]\n"
 
-    outstr += "[START_PARAM_VAL]\n"
-    # boardunit-attributes:
-    outstr += "[START_PARAM_NODE_VAL]\n"
-    for bu in db.ecus:
-        for attrib, val in sorted(list(bu.attributes.items())):
-            outstr += bu.name + ',"' + attrib + '","' + val + '"\n'
-    outstr += "[END_PARAM_NODE_VAL]\n"
+    out_str += "[START_PARAM_VAL]\n"
+    # board unit attributes:
+    out_str += "[START_PARAM_NODE_VAL]\n"
+    for ecu in db.ecus:
+        for attrib, val in sorted(list(ecu.attributes.items())):
+            out_str += ecu.name + ',"' + attrib + '","' + val + '"\n'
+    out_str += "[END_PARAM_NODE_VAL]\n"
 
     # messages-attributes:
-    outstr += "[START_PARAM_MSG_VAL]\n"
+    out_str += "[START_PARAM_MSG_VAL]\n"
     for frame in db.frames:
         if frame.is_complex_multiplexed:
             continue
 
         for attrib, val in sorted(list(frame.attributes.items())):
-            outstr += str(frame.arbitration_id.id) + ',S,"' + attrib + '","' + val + '"\n'
-    outstr += "[END_PARAM_MSG_VAL]\n"
+            out_str += str(frame.arbitration_id.id) + ',S,"' + attrib + '","' + val + '"\n'
+    out_str += "[END_PARAM_MSG_VAL]\n"
 
     # signal-attributes:
-    outstr += "[START_PARAM_SIG_VAL]\n"
+    out_str += "[START_PARAM_SIG_VAL]\n"
     for frame in db.frames:
         if frame.is_complex_multiplexed:
             continue
 
         for signal in frame.signals:
             for attrib, val in sorted(list(signal.attributes.items())):
-                outstr += str(frame.arbitration_id.id) + ',S,' + signal.name + \
+                out_str += str(frame.arbitration_id.id) + ',S,' + signal.name + \
                     ',"' + attrib + '","' + val + '"\n'
-    outstr += "[END_PARAM_SIG_VAL]\n"
-    outstr += "[END_PARAM_VAL]\n"
-    f.write(outstr.encode(dbfExportEncoding))
+    out_str += "[END_PARAM_SIG_VAL]\n"
+    out_str += "[END_PARAM_VAL]\n"
+    f.write(out_str.encode(dbf_export_encoding))

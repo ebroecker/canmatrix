@@ -282,7 +282,7 @@ class Signal(object):
         """
         Add named Value Description to the Signal.
 
-        :param int value: signal value (0xFF)
+        :param int or str value: signal value (0xFF)
         :param str valueName: Human readable value description ("Init")
         """
         self.values[int(value)] = valueName
