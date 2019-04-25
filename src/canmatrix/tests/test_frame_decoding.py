@@ -1,7 +1,8 @@
 import pytest
 import canmatrix.formats
 import os.path
-
+import textwrap
+import io
 
 def load_dbc():
     here = os.path.dirname(os.path.realpath(__file__))
@@ -97,3 +98,21 @@ def test_decode_with_dbc_multiplex():
     assert decoded2["muxSig7"].raw_value == 0x0C
     assert decoded2["muxSig8"].raw_value == -8
     assert decoded2["muxSig9"].raw_value == 0x20
+
+def test_decode_complex_multiplexed():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    BO_ 2024 OBD2: 8 Vector__XXX
+    SG_ ParameterID_Service01 m1M : 23|8@0+ (1,0) [0|0] "" Vector__XXX
+    SG_ Vehicle_speed m13 : 31|8@0+ (1,0) [0|0] "" Vector__XXX
+    SG_ service M : 11|4@0+ (1,0) [0|0] "" Vector__XXX
+    SG_ MAF_air_flow_rate m16 : 31|16@0+ (0.01,0) [0|0] "grams/sec" Vector__XXX
+ 
+    SG_MUL_VAL_ 2024 ParameterID_Service01 service 1-1;
+    SG_MUL_VAL_ 2024 Vehicle_speed ParameterID_Service01 13-13;
+    SG_MUL_VAL_ 2024 MAF_air_flow_rate ParameterID_Service01 16-16;
+    ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+
+    decoded = matrix.decode(canmatrix.ArbitrationId(2024),bytearray([0x03,0x41,0x0d,0x00,0xaa,0xaa,0xaa,0xaa]))
+    assert decoded["Vehicle_speed"].raw_value == 0
+    assert "MAF_air_flow_rate" not in decoded
