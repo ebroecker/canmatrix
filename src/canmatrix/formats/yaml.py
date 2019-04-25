@@ -53,8 +53,11 @@ except:
     representers = False
     # some error with representers ... continue anyway
 
+_yaml_initialized = False
+
 
 def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
+    __init_yaml()
     new_db = copy.deepcopy(db)
 
     for i, frame in enumerate(new_db.frames):
@@ -71,11 +74,12 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
 
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
+    __init_yaml()
     db = yaml.load(f)
     return db
 
 
-def constructor(loader, node, cls, mapping=None):
+def _constructor(loader, node, cls, mapping=None):
     d = {k.lstrip('_'): v for k, v in loader.construct_mapping(node).items()}
     name = d.pop('name')
     if mapping:
@@ -84,8 +88,8 @@ def constructor(loader, node, cls, mapping=None):
     return cls(name, **d)
 
 
-def frame_constructor(loader, node):
-    return constructor(
+def _frame_constructor(loader, node):
+    return _constructor(
         loader=loader,
         node=node,
         cls=canmatrix.Frame,
@@ -95,8 +99,8 @@ def frame_constructor(loader, node):
     )
 
 
-def signal_constructor(loader, node):
-    signal = constructor(
+def _signal_constructor(loader, node):
+    signal = _constructor(
         loader=loader,
         node=node,
         cls=canmatrix.Signal,
@@ -115,13 +119,18 @@ def signal_constructor(loader, node):
     return signal
 
 
-def frame_representer(dumper, data):
+def _frame_representer(dumper, data):
     node = yaml.representer.Representer.represent_object(dumper, data)
     node.tag = '{}:Frame'.format(node.tag.partition(':python/object:')[0])
 
     return node
 
 
-yaml.add_constructor(u'tag:yaml.org,2002:Frame', frame_constructor)
-yaml.add_constructor(u'tag:yaml.org,2002:Signal', signal_constructor)
-yaml.add_representer(canmatrix.Frame, frame_representer)
+def __init_yaml():
+    """Lazy init yaml because canmatrix might not be fully loaded when loading this format."""
+    global _yaml_initialized
+    if not _yaml_initialized:
+        _yaml_initialized = True
+        yaml.add_constructor(u'tag:yaml.org,2002:Frame', _frame_constructor)
+        yaml.add_constructor(u'tag:yaml.org,2002:Signal', _signal_constructor)
+        yaml.add_representer(canmatrix.Frame, _frame_representer)
