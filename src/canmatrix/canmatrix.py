@@ -215,6 +215,13 @@ class Signal(object):
             ret_multiplex = value
         return ret_multiplex
 
+    def multiplexer_value_in_range(self, mux_value):
+        for mux_min, mux_max in self.mux_val_grp:
+            if mux_value >= mux_min and mux_value <= mux_max:
+                return True
+        else:
+            return mux_value == self.mux_val
+
     def attribute(self, attributeName, db=None, default=None):
         # type: (str, CanMatrix, typing.Any) -> typing.Any
         """Get any Signal attribute by its name.
@@ -770,6 +777,8 @@ class Frame(object):
             if (sig.mux_val is None and not sig.is_multiplexer) or sig.mux_val == mux_value:
                 muxed_signals.append(sig)
         return muxed_signals
+
+
 
     @property
     def pgn(self):  # type: () -> int
