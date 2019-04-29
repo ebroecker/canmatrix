@@ -319,4 +319,3 @@ def test_defines_with_special_iss358():
     SG_ AccSts : 62|3@0+ (1.0, 0.0) [0.0|0.0] "" VDDM
     ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
-    print ("A")
