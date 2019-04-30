@@ -310,3 +310,12 @@ def test_j1939_frametype():
      ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].is_j1939 == False
+
+def test_signal_definition_with_spaces_iss358():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    BU_: someOtherEcu
+
+    BO_ 123 someFrame: 1 someOtherEcu
+    SG_ AccSts : 62|3@0+ (1.0, 0.0) [0.0|0.0] "" VDDM
+    ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
