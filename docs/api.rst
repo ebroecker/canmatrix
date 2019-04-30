@@ -1,55 +1,47 @@
 API
 ===
 
-CanMatrix
-_________
+canmatrix.py
+____________
 
-.. autoclass:: canmatrix.CanMatrix
+.. automodule:: canmatrix.canmatrix
     :members:
     
-    
-Frame
-_____
+cancluster.py
+_____________
 
-.. autoclass:: canmatrix.Frame
+.. automodule:: canmatrix.cancluster
     :members:
     
+compare.py
+__________
 
-Signal
-______
-
-.. autoclass:: canmatrix.Signal
-    :members:
-
-    
-SignalGroup
-___________
-
-.. autoclass:: canmatrix.SignalGroup
+.. automodule:: canmatrix.compare
     :members:
     
-ECU
-___
+convert.py
+__________
 
-.. autoclass:: canmatrix.Ecu
+.. automodule:: canmatrix.convert
     :members:
-    
-ArbitrationId
-______________
 
-.. autoclass:: canmatrix.ArbitrationId
+
+copy.py
+_______
+
+.. automodule:: canmatrix.copy
     :members:
-    
 
-DecodedSignal
-______________
+j1939_decoder.py
+________________
 
-.. autoclass:: canmatrix.DecodedSignal
+.. automodule:: canmatrix.j1939_decoder
     :members:
-    
-Define
-______________
 
-.. autoclass:: canmatrix.Define
+utils.py
+________________
+
+.. automodule:: canmatrix.j1939_decoder
     :members:
+
     
