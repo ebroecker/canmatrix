@@ -427,7 +427,10 @@ def dump(mydb, f, **options):
         if frame.is_complex_multiplexed:
             for signal in frame.signals:
                 if signal.muxer_for_signal is not None:
-                    f.write(("SG_MUL_VAL_ %d %s %s %d-%d;\n" % (frame.arbitration_id.to_compound_integer(), signal.name, signal.muxer_for_signal, signal.mux_val_min, signal.mux_val_max)).encode(dbcExportEncoding))
+                    f.write(("SG_MUL_VAL_ %d %s %s " % (frame.arbitration_id.to_compound_integer(), signal.name, signal.muxer_for_signal)).encode(dbcExportEncoding))
+                    f.write((", ".join(["%d-%d" % (a, b) for a, b in signal.mux_val_grp])).encode(dbcExportEncoding))
+
+                    f.write(";\n".encode(dbcExportEncoding))
 
     for envVarName in db.env_vars:
         envVar = db.env_vars[envVarName]
@@ -849,24 +852,24 @@ def load(f, **options):
                     db.add_define_default(temp.group(1),
                                           temp_raw.group(2).decode(dbcImportEncoding))
             elif decoded.startswith("SG_MUL_VAL_ "):
-                pattern = r"^SG_MUL_VAL_ +([0-9]+) +([\w\-]+) +([\w\-]+) +([0-9]+)\-([0-9]+) *;"
+                pattern = r"^SG_MUL_VAL_ +([0-9]+) +([\w\-]+) +([\w\-]+) +(.*) *;"
                 regexp = re.compile(pattern)
-                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
                 temp = regexp.match(decoded)
-                temp_raw = regexp_raw.match(l)
                 if temp:
                     frameId = temp.group(1)
                     signalName = temp.group(2)
                     muxerForSignal = temp.group(3)
-                    muxValMin = int(temp.group(4))
-                    muxValMax = int(temp.group(4))
+                    muxValGroups = temp.group(4).split(',')
                     frame  = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frameId)))
                     if frame is not None:
                         signal = frame.signal_by_name(signalName)
                         frame.is_complex_multiplexed = True
                         signal.muxer_for_signal = muxerForSignal
-                        signal.mux_val_min = muxValMin
-                        signal.mux_val_max = muxValMax
+                        for muxVal in muxValGroups:
+                            muxValMin, muxValMax = muxVal.split("-")
+                            muxValMin = int(muxValMin)
+                            muxValMax = int(muxValMax)
+                            signal.mux_val_grp.append([muxValMin, muxValMax])
             elif decoded.startswith("EV_ "):
                 pattern = r"^EV_ +([\w\-\_]+?) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*?)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([\w\-]+?) +(.*);"
                 regexp = re.compile(pattern)

@@ -163,8 +163,7 @@ class Signal(object):
     comments = attr.ib(factory=dict)  # type: typing.MutableMapping[int, str]
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
     values = attr.ib(converter=normalize_value_table, factory=dict)  # type: typing.MutableMapping[int, str]
-    mux_val_max = attr.ib(default=0)  # type: int
-    mux_val_min = attr.ib(default=0)  # type: int
+    mux_val_grp = attr.ib(factory=list)  # type: typing.MutableSequence[list]
     muxer_for_signal = attr.ib(default=None)  # type: typing.Optional[str]
 
     # offset = attr.ib(converter=float_factory, default=0.0)  # type: float # ??
@@ -215,6 +214,16 @@ class Signal(object):
             self.is_multiplexer = True
             ret_multiplex = value
         return ret_multiplex
+
+    def multiplexer_value_in_range(self, mux_value):
+        if len(self.mux_val_grp) > 0 and mux_value is not None:
+            for mux_min, mux_max in self.mux_val_grp:
+                if mux_value >= mux_min and mux_value <= mux_max:
+                    return True
+            else:
+                return False
+        else:
+            return mux_value == self.mux_val
 
     def attribute(self, attributeName, db=None, default=None):
         # type: (str, CanMatrix, typing.Any) -> typing.Any
@@ -772,6 +781,8 @@ class Frame(object):
                 muxed_signals.append(sig)
         return muxed_signals
 
+
+
     @property
     def pgn(self):  # type: () -> int
         return self.arbitration_id.pgn
@@ -1200,6 +1211,54 @@ class Frame(object):
 
             return returnDict
 
+    def _has_sub_multiplexer(self, parent_multiplexer_name):
+        """
+        check if any sub-multiplexer in frame
+        used for complex-multiplexed frame decoding
+
+        :param parent_multiplexer_name: string with name of parent multiplexer
+        :return: True or False
+        """
+        for signal in self.signals:
+            if signal.is_multiplexer and signal.muxer_for_signal == parent_multiplexer_name:
+                return True
+        return False
+
+    def _get_sub_multiplexer(self, parent_multiplexer_name, parent_multiplexer_value, decoded):
+        """
+        get any sub-multiplexer in frame for decoded data
+        return multiplexers name and value
+        used for complex-multiplexed frame decoding
+
+        :param parent_multiplexer_name: string with name of parent multiplexer
+        :param parent_multiplexer_value: raw_value (int) of parent multiplexer
+        :param decoded: OrderedDictionary which is returned from canmatrix.Frame.unpack
+        :return: muxer_name and muxer_value
+        """
+        for signal in self.signals:
+            if signal.is_multiplexer and signal.muxer_for_signal == parent_multiplexer_name and signal.multiplexer_value_in_range(parent_multiplexer_value):
+                muxer_value = decoded[signal.name].raw_value
+                muxer_name = signal.name
+                return muxer_name, muxer_value
+
+    def _filter_signals_for_multiplexer(self, multiplexer_name, multiplexer_value):
+        """
+        filter a list of signals with given multiplexer (name and value)
+        used for complex-multiplexed frame decoding
+
+
+        :param multiplexer_name: string with name of parent multiplexer
+        :param multiplexer_value: raw_value (int) of parent multiplexer
+        :return: filtered array of canmatrix.Signal
+        """
+        filtered_signals = []
+        for signal in self.signals:
+            if signal.multiplexer_value_in_range(multiplexer_value) and signal.muxer_for_signal == multiplexer_name and not signal.is_multiplexer:
+                filtered_signals.append(signal)
+            elif signal.name == multiplexer_name:
+                filtered_signals.append(signal)
+        return filtered_signals
+
     def decode(self, data):
         # type: (bytes) -> typing.Mapping[str, typing.Any]
         """Return OrderedDictionary with Signal Name: object decodedSignal (support for multiplexed frames)
@@ -1212,10 +1271,25 @@ class Frame(object):
         decoded = self.unpack(data)
 
         if self.is_complex_multiplexed:
-            # TODO
-            raise DecodingComplexMultiplexed
+            decoded_values = dict()
+            filtered_signals = []
+            filtered_signals += self._filter_signals_for_multiplexer(None, None)
+
+            multiplex_name = None
+            multiplex_value = None
+
+            while self._has_sub_multiplexer(multiplex_name):
+                multiplex_name, multiplex_value = self._get_sub_multiplexer(multiplex_name, multiplex_value,
+                                                                      decoded)
+                decoded_values[multiplex_name] = decoded[multiplex_name]
+                filtered_signals += self._filter_signals_for_multiplexer(multiplex_name, multiplex_value)
+
+            for signal in filtered_signals:
+                decoded_values[signal.name] = decoded[signal.name]
+            return decoded_values
+
         elif self.is_multiplexed:
-            returnDict = dict()
+            decoded_values = dict()
             # find multiplexer and decode only its value:
 
             for signal in self.signals:
@@ -1225,8 +1299,9 @@ class Frame(object):
             # find all signals with the identified multiplexer-value
             for signal in self.signals:
                 if signal.mux_val == muxVal or signal.mux_val is None:
-                    returnDict[signal.name] = decoded[signal.name]
-            return returnDict
+                    decoded_values[signal.name] = decoded[signal.name]
+            return decoded_values
+
         else:
             return decoded
 

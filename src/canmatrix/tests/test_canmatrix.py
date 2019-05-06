@@ -347,6 +347,29 @@ def test_signal_range_type_float():
 
     assert (min_is, max_is) == (True, True), str((type(signal_min), type(signal_max)))
 
+def test_signal_multiplexer_value_in_range():
+    # test multiplexer ranges (complex multiplex)
+    signal = canmatrix.Signal()
+    signal.mux_val_grp.append([1, 2])
+    signal.mux_val_grp.append([4, 5])
+    assert signal.multiplexer_value_in_range(0) == False
+    assert signal.multiplexer_value_in_range(1) == True
+    assert signal.multiplexer_value_in_range(2) == True
+    assert signal.multiplexer_value_in_range(3) == False
+    assert signal.multiplexer_value_in_range(4) == True
+    assert signal.multiplexer_value_in_range(5) == True
+    assert signal.multiplexer_value_in_range(6) == False
+
+    # test standard multiplexer
+    signal2 = canmatrix.Signal()
+    signal2.multiplex_setter(1)
+    assert signal2.multiplexer_value_in_range(1) == True
+    assert signal2.multiplexer_value_in_range(0) == False
+
+    signal3 = canmatrix.Signal()
+    signal3.multiplex_setter("Multiplexor")
+    assert signal3.multiplexer_value_in_range(1) == False
+    assert signal3.multiplexer_value_in_range(0) == False
 
 # SignalGroup
 @pytest.fixture
