@@ -130,17 +130,5 @@ def test_get_signals_from_container_i_pdu():
         
      ''').encode('utf-8'))
     matrix = canmatrix.formats.arxml.load(arxml, dbcImportEncoding="utf8")
-    assert matrix.frames[0].is_j1939 == True
-
-    # negative test
-    dbc = io.BytesIO(textwrap.dedent(u'''\
-    BU_: someOtherEcu
-
-    BO_ 2147483648 someFrame: 1 someOtherEcu
-     SG_ someSignal: 1|2@0+ (1,0) [0|0] ""  CCL_TEST
-
-    BA_DEF_ BO_ "VFrameFormat" ENUM "StandardCAN","ExtendedCAN","J1939PG";
-    BA_ "VFrameFormat" BO_ 2147483648 0;
-     ''').encode('utf-8'))
-    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
-    assert matrix.frames[0].is_j1939 == False
+    assert matrix["CAN"].frames[0].signals[0].name == 'Enable_command'
+    assert matrix["CAN"].frames[0].signals[1].name == 'FaultClear_command'
