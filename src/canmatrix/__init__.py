@@ -8,7 +8,28 @@ __version__ = canmatrix._version.get_versions()['version']
 
 import canmatrix.formats as formats
 import canmatrix.cancluster as cancluster
-import canmatrix.convert as convert
+
+from canmatrix.canmatrix import (
+    Ecu,
+    Signal,
+    SignalGroup,
+    DecodedSignal,
+    ArbitrationId,
+    Frame,
+    Define,
+    CanMatrix,
+)
+
+from canmatrix.canmatrix import (
+    StartbitLowerZero,
+    EncodingComplexMultiplexed,
+    MissingMuxSignal,
+    DecodingComplexMultiplexed,
+    DecodingFrameLength,
+    ArbitrationIdOutOfRange
+)
+
+# todo remove this later
 from canmatrix.canmatrix import *
 
 # Set default logging handler to avoid "No handler found" warnings in python 2.

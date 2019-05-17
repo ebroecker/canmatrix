@@ -22,34 +22,39 @@
 #
 # this script exports sym-files from a canmatrix-object
 # sym-files are the can-matrix-definitions of the Peak Systems Tools
-from __future__ import division
+
 from __future__ import absolute_import
+from __future__ import division
 
-import logging
-
-from builtins import *
 import collections
-from .canmatrix import *
-import sys
 import decimal
+import logging
+import sys
+import typing
+from builtins import *
+
+import attr
+
+import canmatrix
 import canmatrix.utils
 
 logger = logging.getLogger(__name__)
-default_float_factory = decimal.Decimal
-
-
-enumDict = {}
+enum_dict = {}  # type: typing.Dict[str, str]
 enums = "{ENUMS}\n"
+
+
+def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
+    return decimal.Decimal(value)
 
 
 @attr.s
 class ParsingError(Exception):
-    line_number = attr.ib()
-    line = attr.ib()
-    message = attr.ib(default=None)
-    original = attr.ib(default=None)
+    line_number = attr.ib()  # type: int
+    line = attr.ib()  # type: str
+    message = attr.ib(default=None)  # type: typing.Optional[str]
+    original = attr.ib(default=None)  # type: typing.Optional[Exception]
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self):  # type: () -> None
         if self.message is None:
             self.message = self.line
 
@@ -59,13 +64,13 @@ class ParsingError(Exception):
         )
         super(ParsingError, self).__init__(self.message)
 
-    def __str__(self):
+    def __str__(self):  # type: () -> str
         return self.message
 
 
 @attr.s
 class DuplicateMuxIdError(ParsingError):
-    id = attr.ib(default=None)
+    id = attr.ib(default=None)  # type: int
     old = attr.ib(default=None)
     new = attr.ib(default=None)
 
@@ -84,33 +89,33 @@ class DuplicateMuxIdError(ParsingError):
         super(DuplicateMuxIdError, self).__attrs_post_init__()
 
 
-def format_float(f):
+def format_float(f):  # type: (typing.Any) -> str
     s = str(f).upper()
     if s.endswith('.0'):
         s = s[:-2]
 
     if 'E' in s:
-        s = s.split('E')
-        s = '%sE%s%s' % (s[0], s[1][0], s[1][1:].rjust(3, '0'))
+        tmp = s.split('E')
+        s = '%sE%s%s' % (tmp[0], tmp[1][0], tmp[1][1:].rjust(3, '0'))
 
     return s.upper()
 
 
-def createSignal(db, signal):
+def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) -> str
     global enums
-    global enumDict
+    global enum_dict
     output = ""
-    output += "Var=%s " % (signal.name)
+    output += "Var=%s " % signal.name
     if not signal.is_signed:
         output += "unsigned "
     else:
         output += "signed "
-    startBit = signal.getStartbit()
+    start_bit = signal.get_startbit()
     if signal.is_little_endian == 0:
         # Motorola
-        output += "%d,%d -m " % (startBit, signal.size)
+        output += "%d,%d -m " % (start_bit, signal.size)
     else:
-        output += "%d,%d " % (startBit, signal.size)
+        output += "%d,%d " % (start_bit, signal.size)
     if signal.attributes.get('HexadecimalOutput', False):
         output += "-h "
     if len(signal.unit) > 0:
@@ -119,7 +124,7 @@ def createSignal(db, signal):
             format_string = '/u:"%s" '
         else:
             format_string = '/u:%s '
-        output += format_string % (t)
+        output += format_string % t
     if float(signal.factor) != 1:
         output += "/f:%s " % (format_float(signal.factor))
     if float(signal.offset) != 0:
@@ -131,32 +136,32 @@ def createSignal(db, signal):
     if signal.max is not None:
         output += "/max:{} ".format(format_float(signal.max))
 
-    displayDecimalPlaces = signal.attributes.get('DisplayDecimalPlaces')
-    if displayDecimalPlaces is not None:
-        output += "/p:%d " % (int(displayDecimalPlaces))
+    display_decimal_places = signal.attributes.get('DisplayDecimalPlaces')
+    if display_decimal_places is not None:
+        output += "/p:%d " % (int(display_decimal_places))
 
     if len(signal.values) > 0:
-        valTabName = signal.enumeration
-        if valTabName is None:
-            valTabName = signal.name
+        val_tab_name = signal.enumeration
+        if val_tab_name is None:
+            val_tab_name = signal.name
 
-        output += "/e:%s " % (valTabName)
-        if valTabName not in enumDict:
-            enumDict[valTabName] = "enum " + valTabName + "(" + ', '.join(
+        output += "/e:%s " % val_tab_name
+        if val_tab_name not in enum_dict:
+            enum_dict[val_tab_name] = "enum " + val_tab_name + "(" + ', '.join(
                 '%s="%s"' %
                 (key, val) for (
                     key, val) in sorted(
                     signal.values.items())) + ")"
 
-    if "GenSigStartValue" in db.signalDefines:
-        genSigStartVal = signal.attribute("GenSigStartValue", db=db)
-        if genSigStartVal is not None:
+    if "GenSigStartValue" in db.signal_defines:
+        gen_sig_start_val = signal.attribute("GenSigStartValue", db=db)
+        if gen_sig_start_val is not None:
             factory = (
                 signal.float_factory
                 if signal.is_float
                 else int
             )
-            default = factory(genSigStartVal) * signal.factor
+            default = factory(gen_sig_start_val) * signal.factor  # type: ignore
             min_ok = signal.min is None or default >= signal.min
             max_ok = signal.max is None or default <= signal.max
             if min_ok and max_ok:
@@ -173,32 +178,32 @@ def createSignal(db, signal):
     return output
 
 
-def dump(db, f, **options):
+def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
     """
     export canmatrix-object as .sym file (compatible to PEAK-Systems)
     """
-    global enumDict
+    global enum_dict
     global enums
-    symEncoding = options.get('symExportEncoding', 'iso-8859-1')
+    sym_encoding = options.get('symExportEncoding', 'iso-8859-1')
 
-    enumDict = {}
+    enum_dict = {}
     enums = "{ENUMS}\n"
 
     header = """FormatVersion=5.0 // Do not edit this line!
 Title=\"canmatrix-Export\"
 """
-    f.write(header.encode(symEncoding))
+    f.write(header.encode(sym_encoding))
 
-    def sendreceive(f):
+    def send_receive(for_frame):
         return (
-            f.attributes.get('Sendable', 'True') == 'True',
-            f.attributes.get('Receivable', 'True') == 'True',
+            for_frame.attributes.get('Sendable', 'True') == 'True',
+            for_frame.attributes.get('Receivable', 'True') == 'True',
         )
 
     sections = collections.OrderedDict((
-        ('SEND', tuple(f for f in db.frames if sendreceive(f) == (True, False))),
-        ('RECEIVE', tuple(f for f in db.frames if sendreceive(f) == (False, True))),
-        ('SENDRECEIVE', tuple(f for f in db.frames if sendreceive(f) == (True, True))),
+        ('SEND', tuple(f for f in db.frames if send_receive(f) == (True, False))),
+        ('RECEIVE', tuple(f for f in db.frames if send_receive(f) == (False, True))),
+        ('SENDRECEIVE', tuple(f for f in db.frames if send_receive(f) == (True, True))),
     ))
 
     output = '\n'
@@ -214,18 +219,18 @@ Title=\"canmatrix-Export\"
         for frame in frames:
             name = "[" + frame.name + "]\n"
 
-            if frame.extended == 1:
-                idType = "ID=%08Xh" % (frame.id)
+            if frame.arbitration_id.extended == 1:
+                id_type = "ID=%08Xh" % frame.arbitration_id.id
             else:
-                idType = "ID=%03Xh" % (frame.id)
+                id_type = "ID=%03Xh" % frame.arbitration_id.id
             if frame.comment is not None and len(frame.comment) > 0:
-                idType += "\t// " + \
+                id_type += "\t// " + \
                     frame.comment.replace('\n', ' ').replace('\r', ' ')
-            idType += "\n"
-            if frame.extended == 1:
-                idType += "Type=Extended\n"
+            id_type += "\n"
+            if frame.arbitration_id.extended == 1:
+                id_type += "Type=Extended\n"
             else:
-                idType += "Type=Standard\n"
+                id_type += "Type=Standard\n"
 
             # check if frame has multiplexed signals
             multiplex = 0
@@ -237,85 +242,81 @@ Title=\"canmatrix-Export\"
                 # search for multiplexor in frame:
                 for signal in frame.signals:
                     if signal.multiplex == 'Multiplexor':
-                        muxSignal = signal
+                        mux_signal = signal
 
-                # ticker all possible mux-groups as i (0 - 2^ (number of bits of
-                # multiplexor))
+                # ticker all possible mux-groups as i (0 - 2^ (number of bits of multiplexor))
                 first = 0
-                for i in range(0, 1 << int(muxSignal.size)):
+                for i in range(0, 1 << int(mux_signal.size)):
                     found = 0
-                    muxOut = ""
+                    mux_out = ""
                     # ticker all signals
                     for signal in frame.signals:
                         # if signal is in mux-group i
                         if signal.multiplex == i:
-                            muxOut = name
+                            mux_out = name
                             if first == 0:
-                                muxOut += idType
+                                mux_out += id_type
                                 first = 1
-                            muxOut += "DLC=%d\n" % (frame.size)
-                            if "GenMsgCycleTime" in db.frameDefines:
-                                cycleTime = frame.attribute("GenMsgCycleTime", db=db)
-                                if cycleTime is not None:
-                                    muxOut += "CycleTime=" + str(cycleTime) + "\n"
+                            mux_out += "DLC=%d\n" % frame.size
+                            if "GenMsgCycleTime" in db.frame_defines:
+                                cycle_time = frame.attribute("GenMsgCycleTime", db=db)
+                                if cycle_time is not None:
+                                    mux_out += "CycleTime=" + str(cycle_time) + "\n"
 
-                            muxName = frame.mux_names.get(
-                                i, muxSignal.name + "%d" % i)
+                            mux_name = frame.mux_names.get(i, mux_signal.name + "%d" % i)
 
-                            muxOut += "Mux=" + muxName
-                            startBit = muxSignal.getStartbit()
+                            mux_out += "Mux=" + mux_name
+                            start_bit = mux_signal.get_startbit()
                             s = str(i)
                             if len(s) > 1:
                                 length = len(
-                                    '{:X}'.format(int(muxSignal.calcMax()))
+                                    '{:X}'.format(int(mux_signal.calc_max()))
                                 )
                                 s = '{:0{}X}h'.format(i, length)
-                            if signal.is_little_endian == 0:
+                            if not signal.is_little_endian:
                                 # Motorola
-                                muxOut += " %d,%d %s -m" % (startBit,
-                                                            muxSignal.size, s)
+                                mux_out += " %d,%d %s -m" % (start_bit, mux_signal.size, s)
                             else:
-                                muxOut += " %d,%d %s" % (startBit,
-                                                         muxSignal.size, s)
-                            if not muxOut.endswith('h'):
-                                muxOut += ' '
-                            if i in muxSignal.comments:
-                                comment = muxSignal.comments.get(i)
+                                mux_out += " %d,%d %s" % (start_bit, mux_signal.size, s)
+                            if not mux_out.endswith('h'):
+                                mux_out += ' '
+                            if i in mux_signal.comments:
+                                comment = mux_signal.comments.get(i)
                                 if len(comment) > 0:
-                                    muxOut += '\t// ' + comment
-                            muxOut += "\n"
+                                    mux_out += '\t// ' + comment
+                            mux_out += "\n"
                             found = 1
                             break
 
                     if found == 1:
                         for signal in frame.signals:
                             if signal.multiplex == i or signal.multiplex is None:
-                                muxOut += createSignal(db, signal)
-                        output += muxOut + "\n"
+                                mux_out += create_signal(db, signal)
+                        output += mux_out + "\n"
 
             else:
                 # no multiplex signals in frame, just 'normal' signals
                 output += name
-                output += idType
-                output += "DLC=%d\n" % (frame.size)
-                if "GenMsgCycleTime" in db.frameDefines:
-                    cycleTime = frame.attribute("GenMsgCycleTime", db=db)
-                    if cycleTime is not None:
-                        output += "CycleTime=" + str(cycleTime) + "\n"
+                output += id_type
+                output += "DLC=%d\n" % frame.size
+                if "GenMsgCycleTime" in db.frame_defines:
+                    cycle_time = frame.attribute("GenMsgCycleTime", db=db)
+                    if cycle_time is not None:
+                        output += "CycleTime=" + str(cycle_time) + "\n"
                 for signal in frame.signals:
-                    output += createSignal(db, signal)
+                    output += create_signal(db, signal)
                 output += "\n"
-    enums += '\n'.join(sorted(enumDict.values()))
-    # write outputfile
-    f.write((enums + '\n').encode(symEncoding))
-    f.write(output.encode(symEncoding))
+    enums += '\n'.join(sorted(enum_dict.values()))
+    # write output file
+    f.write((enums + '\n').encode(sym_encoding))
+    f.write(output.encode(sym_encoding))
 
 
-def load(f, **options):
+def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     if 'symImportEncoding' in options:
-        symImportEncoding = options["symImportEncoding"]
+        sym_import_encoding = options["symImportEncoding"]
     else:
-        symImportEncoding = 'iso-8859-1'
+        sym_import_encoding = 'iso-8859-1'
 
     calc_min_for_none = options.get('calc_min_for_none')
     calc_max_for_none = options.get('calc_max_for_none')
@@ -325,22 +326,22 @@ def load(f, **options):
         glob, enums, send, sendReceive, receive = list(range(5))
     mode = Mode.glob
 
-    frameName = ""
+    frame_name = ""
     frame = None
 
-    db = CanMatrix()
-    db.addFrameDefines("GenMsgCycleTime", 'INT 0 65535')
-    db.addFrameDefines("Receivable", 'BOOL False True')
-    db.addFrameDefines("Sendable", 'BOOL False True')
-    db.addSignalDefines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
-    db.addSignalDefines("HexadecimalOutput", 'BOOL False True')
-    db.addSignalDefines("DisplayDecimalPlaces", 'INT 0 65535')
-    db.addSignalDefines("LongName", 'STR')
+    db = canmatrix.CanMatrix()
+    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+    db.add_frame_defines("Receivable", 'BOOL False True')
+    db.add_frame_defines("Sendable", 'BOOL False True')
+    db.add_signal_defines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
+    db.add_signal_defines("HexadecimalOutput", 'BOOL False True')
+    db.add_signal_defines("DisplayDecimalPlaces", 'INT 0 65535')
+    db.add_signal_defines("LongName", 'STR')
 
-    for linecount, line in enumerate(f, 1):
+    for line_count, line in enumerate(f, 1):
         try:
-            line = line.decode(symImportEncoding).strip()
-            # ignore emty line:
+            line = line.decode(sym_import_encoding).strip()
+            # ignore empty line:
             if line.__len__() == 0:
                 continue
 
@@ -367,52 +368,52 @@ def load(f, **options):
                     while not line[5:].strip().endswith(')'):
                         line = line.split('//')[0]
                         if sys.version_info > (3, 0):  # is there a clean way to to it?
-                            line += ' ' + f.readline().decode(symImportEncoding).strip()
+                            line += ' ' + f.readline().decode(sym_import_encoding).strip()
                         else:
-                            line += ' ' + next(f).decode(symImportEncoding).strip()
+                            line += ' ' + next(f).decode(sym_import_encoding).strip()
                     line = line.split('//')[0]
-                    tempArray = line[5:].strip().rstrip(')').split('(', 1)
-                    valtabName = tempArray[0]
-                    split = canmatrix.utils.quote_aware_space_split(tempArray[1])
-                    tempArray = [s.rstrip(',') for s in split]
-                    tempValTable = {}
-                    for entry in tempArray:
-                        tempValTable[entry.split('=')[0].strip()] = entry.split('=')[
+                    temp_array = line[5:].strip().rstrip(')').split('(', 1)
+                    val_table_name = temp_array[0]
+                    split = canmatrix.utils.quote_aware_space_split(temp_array[1])
+                    temp_array = [s.rstrip(',') for s in split]
+                    temp_val_table = {}
+                    for entry in temp_array:
+                        temp_val_table[entry.split('=')[0].strip()] = entry.split('=')[
                             1].replace('"', '').strip()
-                    db.addValueTable(valtabName, tempValTable)
+                    db.add_value_table(val_table_name, temp_val_table)
 
             elif mode in {Mode.send, Mode.sendReceive, Mode.receive}:
                 if line.startswith('['):
                     multiplexor = None
                     # found new frame:
-                    if frameName != line.replace('[', '').replace(']', '').replace('"','').strip():
-                        frameName = line.replace('[', '').replace(']', '').replace('"','').strip()
+                    if frame_name != line.replace('[', '').replace(']', '').replace('"', '').strip():
+                        frame_name = line.replace('[', '').replace(']', '').replace('"', '').strip()
                         # TODO: CAMPid 939921818394902983238
                         if frame is not None:
                             if len(frame.mux_names) > 0:
-                                frame.signalByName(
+                                frame.signal_by_name(
                                     frame.name + "_MUX").values = frame.mux_names
-                            db.addFrame(frame)
+                            db.add_frame(frame)
 
-                        frame = Frame(frameName)
+                        frame = canmatrix.Frame(frame_name)
 
-                        frame.addAttribute(
+                        frame.add_attribute(
                             'Receivable',
                             mode in {Mode.receive, Mode.sendReceive}
                         )
-                        frame.addAttribute(
+                        frame.add_attribute(
                             'Sendable',
                             mode in {Mode.send, Mode.sendReceive}
                         )
 
                 # key value:
                 elif line.startswith('Var') or line.startswith('Mux'):
-                    tmpMux = line[:3]
+                    tmp_mux = line[:3]
                     line = line[4:]
-                    comment = ""
-                    indexOffset = 1
-                    if tmpMux == "Mux":
-                        indexOffset = 0
+                    # comment = ""
+                    index_offset = 1
+                    if tmp_mux == "Mux":
+                        index_offset = 0
                     comment = ""
                     if '//' in line:
                         split = line.split('//', 1)
@@ -420,52 +421,50 @@ def load(f, **options):
                         line = split[0].strip()
                     line = line.replace('  ', ' "" ')
 
-                    tempArray = canmatrix.utils.quote_aware_space_split(line)
-                    sigName = tempArray[0]
+                    temp_array = canmatrix.utils.quote_aware_space_split(line)
+                    sig_name = temp_array[0]
 
                     is_float = False
-                    if indexOffset != 1:
+                    if index_offset != 1:
                         is_signed = True
                     else:
                         is_signed = False
 
-                        if tempArray[1] == 'unsigned':
+                        if temp_array[1] == 'unsigned':
                             pass
-                        elif tempArray[1] == 'bit':
+                        elif temp_array[1] == 'bit':
                             # TODO: actually support bit instead of interpreting as
                             # an unsigned
                             pass
-                        elif tempArray[1] == 'signed':
+                        elif temp_array[1] == 'signed':
                             is_signed = True
-                        elif tempArray[1] in ['float', 'double']:
+                        elif temp_array[1] in ['float', 'double']:
                             is_float = True
-                        elif tempArray[1] in ['string']:
+                        elif temp_array[1] in ['string']:
                             # TODO: actually support these variable types instead
                             # of skipping
                             print('Variable type \'{}\' found and skipped'
-                                  .format(tempArray[1]))
+                                  .format(temp_array[1]))
                             continue
                         else:
-                            raise ValueError(
-                                'Unknown type \'{}\' found'.format(
-                                    tempArray[1]))
+                            raise ValueError('Unknown type \'{}\' found'.format(temp_array[1]))
 
-                    startBit = int(tempArray[indexOffset + 1].split(',')[0])
-                    signalLength = int(tempArray[indexOffset + 1].split(',')[1])
-                    intel = 1
+                    start_bit = int(temp_array[index_offset + 1].split(',')[0])
+                    signal_length = int(temp_array[index_offset + 1].split(',')[1])
+                    intel = True
                     unit = ""
                     factor = 1
-                    max = None
-                    min = None
-                    longName = None
-                    startValue = None
+                    max_value = None
+                    min_value = None
+                    long_name = None
+                    start_value = None
                     offset = 0
-                    valueTableName = None
+                    value_table_name = None
                     hexadecimal_output = False
-                    displayDecimalPlaces = None
+                    display_decimal_places = None
 
-                    if tmpMux == "Mux":
-                        multiplexor = tempArray[2]
+                    if tmp_mux == "Mux":
+                        multiplexor = temp_array[2]
                         if multiplexor[-1] == 'h':
                             multiplexor = int(multiplexor[:-1], 16)
                         else:
@@ -474,16 +473,16 @@ def load(f, **options):
                             raise DuplicateMuxIdError(
                                 id=multiplexor,
                                 old=frame.mux_names[multiplexor],
-                                new=sigName,
-                                line_number=linecount,
+                                new=sig_name,
+                                line_number=line_count,
                                 line=line,
                             )
-                        frame.mux_names[multiplexor] = sigName
-                        indexOffset = 2
+                        frame.mux_names[multiplexor] = sig_name
+                        index_offset = 2
 
-                    for switch in tempArray[indexOffset + 2:]:
+                    for switch in temp_array[index_offset + 2:]:
                         if switch == "-m":
-                            intel = 0
+                            intel = False
                         elif switch == "-h":
                             hexadecimal_output = True
                         elif switch.startswith('/'):
@@ -493,103 +492,103 @@ def load(f, **options):
                             elif s[0] == 'f':
                                 factor = s[1]
                             elif s[0] == 'd':
-                                startValue = s[1]
+                                start_value = s[1]
                             elif s[0] == 'p':
-                                displayDecimalPlaces = s[1]
+                                display_decimal_places = s[1]
                             elif s[0] == 'o':
                                 offset = s[1]
                             elif s[0] == 'e':
-                                valueTableName = s[1]
+                                value_table_name = s[1]
                             elif s[0] == 'max':
-                                max = s[1]
+                                max_value = s[1]
                             elif s[0] == 'min':
-                                min = s[1]
+                                min_value = s[1]
                             elif s[0] == 'ln':
-                                longName = s[1]
+                                long_name = s[1]
     #                                               else:
     #                                                       print switch
     #                                       else:
     #                                               print switch
-                    if tmpMux == "Mux":
-                        signal = frame.signalByName(frameName + "_MUX")
+                    if tmp_mux == "Mux":
+                        signal = frame.signal_by_name(frame_name + "_MUX")
                         if signal is None:
                             extras = {}
                             if calc_min_for_none is not None:
                                 extras['calc_min_for_none'] = calc_min_for_none
                             if calc_max_for_none is not None:
                                 extras['calc_max_for_none'] = calc_max_for_none
-#                            if float_factory is not None:
-#                                extras['float_factory'] = float_factory
+                            # if float_factory is not None:
+                            #     extras['float_factory'] = float_factory
 
-                            signal = Signal(frameName + "_MUX",
-                                            startBit=int(startBit),
-                                            size=int(signalLength),
-                                            is_little_endian=intel,
-                                            is_signed=is_signed,
-                                            is_float=is_float,
-                                            factor=factor,
-                                            offset=offset,
-                                            unit=unit,
-                                            multiplex='Multiplexor',
-                                            comment=comment,
-                                            **extras)
-                            if min is not None:
-                                signal.min = float_factory(min)
-                            if max is not None:
-                                signal.max = float_factory(max)
-    #                        signal.addComment(comment)
-                            if intel == 0:
-                                # motorola set/convert startbit
-                                signal.setStartbit(startBit)
-                            frame.addSignal(signal)
+                            signal = canmatrix.Signal(
+                                frame_name + "_MUX",
+                                start_bit=int(start_bit),
+                                size=int(signal_length),
+                                is_little_endian=intel,
+                                is_signed=is_signed,
+                                is_float=is_float,
+                                factor=factor,
+                                offset=offset,
+                                unit=unit,
+                                multiplex='Multiplexor',
+                                comment=comment,
+                                **extras)
+                            if min_value is not None:
+                                signal.min = float_factory(min_value)
+                            if max_value is not None:
+                                signal.max = float_factory(max_value)
+                            # signal.add_comment(comment)
+                            if intel is False:
+                                # motorola set/convert start bit
+                                signal.set_startbit(start_bit)
+                            frame.add_signal(signal)
                         signal.comments[multiplexor] = comment
 
                     else:
-                     #                   signal = Signal(sigName, startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", multiplexor)
+                        # signal = Signal(sigName, startBit, signalLength, intel, is_signed, factor, offset, min, max, unit, "", multiplexor)
                         extras = {}
                         if calc_min_for_none is not None:
                             extras['calc_min_for_none'] = calc_min_for_none
                         if calc_max_for_none is not None:
                             extras['calc_max_for_none'] = calc_max_for_none
-#                        if float_factory is not None:
-#                            extras['float_factory'] = float_factory
+                        # if float_factory is not None:
+                        #     extras['float_factory'] = float_factory
 
-                        signal = Signal(sigName,
-                                        startBit=int(startBit),
-                                        size=int(signalLength),
-                                        is_little_endian=intel,
-                                        is_signed=is_signed,
-                                        is_float=is_float,
-                                        factor=factor,
-                                        offset=offset,
-                                        unit=unit,
-                                        multiplex=multiplexor,
-                                         comment=comment,
-                                         **extras)
-                        if min is not None:
-                            signal.min = float_factory(min)
-                        if max is not None:
-                            signal.max = float_factory(max)
-    #
-                        if intel == 0:
-                            # motorola set/convert startbit
-                            signal.setStartbit(startBit)
-                        if valueTableName is not None:
-                            signal.values = db.valueTables[valueTableName]
-                            signal.enumeration = valueTableName
-      #                  signal.addComment(comment)
+                        signal = canmatrix.Signal(
+                            sig_name,
+                            start_bit=int(start_bit),
+                            size=int(signal_length),
+                            is_little_endian=intel,
+                            is_signed=is_signed,
+                            is_float=is_float,
+                            factor=factor,
+                            offset=offset,
+                            unit=unit,
+                            multiplex=multiplexor,
+                            comment=comment,
+                            **extras)
+                        if min_value is not None:
+                            signal.min = float_factory(min_value)
+                        if max_value is not None:
+                            signal.max = float_factory(max_value)
+                        if intel is False:
+                            # motorola set/convert start bit
+                            signal.set_startbit(start_bit)
+                        if value_table_name is not None:
+                            signal.values = db.value_tables[value_table_name]
+                            signal.enumeration = value_table_name
+                        # signal.add_comment(comment)
                         # ... (1 / ...) because this somehow made 59.8/0.1 be 598.0 rather than 597.9999999999999
-                        if startValue is not None:
-                            startValue = float_factory(startValue) * (1 / float_factory(factor))
-                            signal.addAttribute("GenSigStartValue", str(startValue))
-                        frame.addSignal(signal)
-                    if longName is not None:
-                        signal.addAttribute("LongName", longName)
+                        if start_value is not None:
+                            start_value = float_factory(start_value) * (1 / float_factory(factor))
+                            signal.add_attribute("GenSigStartValue", str(start_value))
+                        frame.add_signal(signal)
+                    if long_name is not None:
+                        signal.add_attribute("LongName", long_name)
                     if hexadecimal_output:
-                        signal.addAttribute("HexadecimalOutput", str(True))
-                    if displayDecimalPlaces is not None:
-                        signal.addAttribute(
-                            "DisplayDecimalPlaces", displayDecimalPlaces)
+                        signal.add_attribute("HexadecimalOutput", str(True))
+                    if display_decimal_places is not None:
+                        signal.add_attribute("DisplayDecimalPlaces", display_decimal_places)
                     # variable processing
                 elif line.startswith('ID'):
                     comment = ""
@@ -597,39 +596,39 @@ def load(f, **options):
                         split = line.split('//', 1)
                         comment = split[1].strip()
                         line = split[0].strip()
-                    frame.id = int(line.split('=')[1].strip()[:-1], 16)
-                    frame.addComment(comment)
+                    frame.arbitration_id.id = int(line.split('=')[1].strip()[:-1], 16)
+                    frame.add_comment(comment)
                 elif line.startswith('Type'):
                     if line.split('=')[1][:8] == "Extended":
-                        frame.extended = 1
+                        frame.arbitration_id.extended = 1
                 elif line.startswith('DLC'):
                     frame.size = int(line.split('=')[1])
 
                 elif line.startswith('CycleTime'):
-                    frame.addAttribute(
+                    frame.add_attribute(
                         "GenMsgCycleTime",
                         line.split('=')[1].strip())
-#                       else:
-#                               print line
-#               else:
-#                       print "Unrecocniced line: " + l + " (%d) " % i
+                #        else:
+                #                print line
+                # else:
+                #        print "Unrecognized line: " + l + " (%d) " % i
         except Exception as e:
             if not isinstance(e, ParsingError):
                 ParsingError(
                     message=str(e),
-                    line_number=linecount,
+                    line_number=line_count,
                     line=line,
                     original=e,
                 )
 
             db.load_errors.append(e)
 
-            logger.error("Error decoding line %d" % linecount)
+            logger.error("Error decoding line %d" % line_count)
             logger.error(line)
     # TODO: CAMPid 939921818394902983238
     if frame is not None:
         if len(frame.mux_names) > 0:
-            frame.signalByName(frame.name + "_MUX").values = frame.mux_names
-        db.addFrame(frame)
+            frame.signal_by_name(frame.name + "_MUX").values = frame.mux_names
+        db.add_frame(frame)
 
     return db

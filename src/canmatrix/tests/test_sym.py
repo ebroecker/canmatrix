@@ -4,7 +4,7 @@ import textwrap
 import pytest
 
 import canmatrix.canmatrix
-import canmatrix.sym
+import canmatrix.formats.sym
 
 
 def test_colliding_mux_values():
@@ -32,13 +32,13 @@ def test_colliding_mux_values():
         ).encode('utf-8'),
     )
 
-    matrix = canmatrix.sym.load(f)
+    matrix = canmatrix.formats.sym.load(f)
     error, = matrix.load_errors
     line_number = 16
 
     assert len(matrix.load_errors) == 1
 
-    assert isinstance(error, canmatrix.sym.DuplicateMuxIdError)
+    assert isinstance(error, canmatrix.formats.sym.DuplicateMuxIdError)
 
     assert error.line_number == line_number
 
@@ -67,7 +67,7 @@ def test_parse_longname_with_colon():
         ).encode('utf-8'),
     )
 
-    matrix = canmatrix.sym.load(f)
+    matrix = canmatrix.formats.sym.load(f)
     frame = matrix.frames[0]
     signal = frame.signals[0]
     assert signal.attributes['LongName'] == 'Access Level : Password'
@@ -83,20 +83,20 @@ def test_parse_longname_with_colon():
 def test_export_default_decimal_places(is_float, value, expected):
     matrix = canmatrix.canmatrix.CanMatrix()
     # the `FLOAT` type here is irrelevant at the moment...  at least for this
-    matrix.addSignalDefines('GenSigStartValue', 'FLOAT -3.4E+038 3.4E+038')
+    matrix.add_signal_defines('GenSigStartValue', 'FLOAT -3.4E+038 3.4E+038')
 
     frame = canmatrix.canmatrix.Frame()
-    matrix.addFrame(frame)
+    matrix.add_frame(frame)
 
     signal = canmatrix.canmatrix.Signal(
         size=32,
         is_float=is_float,
         is_signed=False,
     )
-    signal.addAttribute('GenSigStartValue', value)
-    frame.addSignal(signal)
+    signal.add_attribute('GenSigStartValue', value)
+    frame.add_signal(signal)
 
-    s = canmatrix.sym.createSignal(db=matrix, signal=signal)
+    s = canmatrix.formats.sym.create_signal(db=matrix, signal=signal)
 
     start = '/d:'
 
@@ -137,7 +137,7 @@ def tests_parse_float(variable_type, bit_length):
         ).encode('utf-8'),
     )
 
-    matrix = canmatrix.sym.load(f)
+    matrix = canmatrix.formats.sym.load(f)
     assert matrix.load_errors == []
     frame = matrix.frames[0]
     signal = frame.signals[0]

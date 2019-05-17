@@ -11,7 +11,6 @@ import canmatrix.convert
 import canmatrix.formats
 import copy
 import os
-import re
 import shutil
 import subprocess
 

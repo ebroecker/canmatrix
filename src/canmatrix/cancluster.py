@@ -1,74 +1,82 @@
-class canCluster(dict):
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+import typing
+
+import canmatrix.canmatrix as cm
+
+
+class CanCluster(dict):
 
     def __init__(self, *arg, **kw):
-        super(canCluster, self).__init__(*arg, **kw)
+        super(CanCluster, self).__init__(*arg, **kw)
+        self._frames = []  # type: typing.List[cm.Frame]
+        self._signals = []  # type: typing.List[cm.Signal]
+        self._ecus = []  # type: typing.List[cm.Ecu]
         self.update()
 
-    def updateFrames(self):
-        frameArray = []
-        frameArrayName = []
+    def update_frames(self):  # type: () -> typing.MutableSequence[cm.Frame]
+        frames = []  # type: typing.List[cm.Frame]
+        frame_names = []  # type: typing.List[str]
         for matrixName in self:
-            for frame in self[matrixName].frames:
-                if frame.name not in frameArrayName:
-                    frameArrayName.append(frame.name)
-                    frameArray.append(frame)
+            for frame in self[matrixName].frames:  # type: cm.Frame
+                if frame.name not in frame_names:
+                    frame_names.append(frame.name)
+                    frames.append(frame)
                 else:
-                    index = frameArrayName.index(frame.name)
+                    index = frame_names.index(frame.name)
                     for transmitter in frame.transmitters:
-                        frameArray[index].addTransmitter(transmitter)
-                    for receiver in frame.receiver:
-                        frameArray[index].addReceiver(receiver)
-        self._frames = frameArray
-        return frameArray
+                        frames[index].add_transmitter(transmitter)
+                    for receiver in frame.receivers:
+                        frames[index].add_receiver(receiver)
+        self._frames = frames
+        return frames
 
-    def updateSignals(self):
-        signalArray = []
-        signalArrayName = []
+    def update_signals(self):  # type: () -> typing.MutableSequence[cm.Signal]
+        signals = []  # type: typing.List[cm.Signal]
+        signal_names = []  # type: typing.List[str]
         for matrixName in self:
             for frame in self[matrixName].frames:
-                for signal in frame.signals:
-                    if signal.name not in signalArrayName:
-                        signalArrayName.append(signal.name)
-                        signalArray.append(signal)
+                for signal in frame.signals:  # type: cm.Signal
+                    if signal.name not in signal_names:
+                        signal_names.append(signal.name)
+                        signals.append(signal)
                     else:
-                        index = signalArrayName.index(signal.name)
-                        for receiver in signal.receiver:
-                            signalArray[index].addReceiver(receiver)
-        self._signals = signalArray
+                        index = signal_names.index(signal.name)
+                        for receiver in signal.receivers:
+                            signals[index].add_receiver(receiver)
+        self._signals = signals
+        return signals
 
-    def updateECUs(self):
-        ECUArray = []
-        ECUArrayName = []
+    def update_ecus(self):  # type: () -> typing.MutableSequence[cm.Ecu]
+        ecus = []  # type: typing.List[cm.Ecu]
+        ecu_names = []  # type: typing.List[str]
         for matrixName in self:
-            for ecu in self[matrixName].boardUnits:
-                if ecu.name not in ECUArrayName:
-                    ECUArrayName.append(ecu.name)
-                    ECUArray.append(ecu)
-        self._ecus = ECUArray
+            for ecu in self[matrixName].ecus:  # type: cm.Ecu
+                if ecu.name not in ecu_names:
+                    ecu_names.append(ecu.name)
+                    ecus.append(ecu)
+        self._ecus = ecus
+        return ecus
 
     def update(self):
-        self.updateFrames()
-        self.updateSignals()
-        self.updateECUs()
+        self.update_frames()
+        self.update_signals()
+        self.update_ecus()
 
     @property
-    def ecus(self):
+    def ecus(self):  # type: () -> typing.MutableSequence[cm.Ecu]
         if not self._ecus:
-            self.updateECUs()
+            self.update_ecus()
         return self._ecus
 
     @property
-    def boardUnits(self):
-        return self.ecus
-
-    @property
-    def frames(self):
+    def frames(self):  # type: () -> typing.MutableSequence[cm.Frame]
         if not self._frames:
-            self.updateFrames()
+            self.update_frames()
         return self._frames
 
     @property
-    def signals(self):
+    def signals(self):  # type: () -> typing.MutableSequence[cm.Signal]
         if not self._signals:
-            self.updateSignals()
+            self.update_signals()
         return self._signals

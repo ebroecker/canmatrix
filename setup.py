@@ -46,6 +46,12 @@ Development Status :: 4 - Beta
 Environment :: Console
 License :: OSI Approved :: BSD License
 Topic :: Scientific/Engineering
+Programming Language :: Python
+Programming Language :: Python :: 2.7
+Programming Language :: Python :: 3.4
+Programming Language :: Python :: 3.5
+Programming Language :: Python :: 3.6
+Programming Language :: Python :: 3.7
 """
 
 import sys
@@ -67,7 +73,13 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-    install_requires = ["future", "attrs>=18.1.0", "bitstruct", "pathlib2"],
+      install_requires = [
+        "attrs>=18.1.0",
+        "bitstruct",
+        "future",
+        "pathlib2",
+        "typing; python_version < '3.5'",
+    ],
     extras_require = {
         "arxml": ["lxml"],
         "kcd": ["lxml"],
@@ -84,8 +96,8 @@ setup(
 
     packages = find_packages("src"),
     package_dir = {"": "src"},
-    package_data = {"canmatrix" : ["tests/*.dbc"]},
-    entry_points={'console_scripts': ['cancompare = canmatrix.compare:main',
-                                      'canconvert = canmatrix.convert:main']}
+    package_data = {"canmatrix" : ["tests/*.dbc", "tests/*.arxml", "j1939.dbc"]},
+    entry_points={'console_scripts': ['cancompare = canmatrix.cli.compare:main',
+                                      'canconvert = canmatrix.cli.convert:main']}
 )
 

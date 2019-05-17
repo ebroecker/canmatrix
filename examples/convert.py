@@ -2,5 +2,5 @@
 import sys
 sys.path.append('..')
 
-import canmatrix.convert
-canmatrix.convert.main()
+import canmatrix.cli.convert
+canmatrix.cli.convert.main()

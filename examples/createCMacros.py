@@ -26,9 +26,9 @@ import canmatrix.formats
 
 
 def createStoreMacro(signal, prefix="", frame="frame"):
-    startBit = signal.getStartbit(bitNumbering=1, startLittle=1)
+    startBit = signal.get_startbit(bit_numbering=1, start_little=1)
     byteOrder = signal.is_little_endian
-    length = signal.signalsize
+    length = signal.size
     startByte = int(startBit / 8)
     startBitInByte = startBit % 8
     currentTargetLength = (8 - startBitInByte)
@@ -58,7 +58,7 @@ def createStoreMacro(signal, prefix="", frame="frame"):
 
 def createDecodeMacro(
         signal, prefix="", macrosource="source", source="source"):
-    startBit = signal.getStartbit(bitNumbering=1, startLittle=1)
+    startBit = signal.get_startbit(bit_numbering=1, start_little=1)
     byteOrder = signal.is_little_endian
     length = signal.signalsize
 
@@ -67,7 +67,7 @@ def createDecodeMacro(
     startByte = int(startBit / 8)
     startBitInByte = startBit % 8
 
-    code = "#define getSignal%s%s(%s)  ((((%s[%d])>>%d" % (
+    code = "#define get_signal%s%s(%s)  ((((%s[%d])>>%d" % (
         prefix, signal.name, macrosource, source, startByte, startBitInByte)
     currentTargetLength = (8 - startBitInByte)
 
@@ -152,9 +152,9 @@ def main():
     if cmdlineOptions.exportframe is not None:
         for frameId in cmdlineOptions.exportframe.split(','):
             try:
-                frame = db.frameById(int(frameId))
+                frame = db.frame_by_id(canmatrix.ArbitrationId(frameId))
             except ValueError:
-                frame = db.frameByName(frameId)
+                frame = db.frame_by_name(frameId)
             if frame is not None:
                 sourceCode += createDecodeMacrosForFrame(
                     frame, "_" + frame.name + "_")

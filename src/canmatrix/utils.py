@@ -1,14 +1,18 @@
-import sys
-import shlex
+# -*- coding: utf-8 -*-
+
 import csv
+import shlex
+import sys
+import typing
 
-def quote_aware_space_split(inLine):
+
+def quote_aware_space_split(in_line):  # type: (str) -> typing.List[str]
     if sys.version_info >= (3, 0):  # is there a clean way to to it?
-        return shlex.split(inLine.strip())
-    return [item.decode('utf-8') for item in shlex.split(inLine.strip().encode('utf-8'))]
+        return shlex.split(in_line.strip())
+    return [item.decode('utf-8') for item in shlex.split(in_line.strip().encode('utf-8'))]
 
 
-def quote_aware_comma_split(string):
+def quote_aware_comma_split(string):  # type: (str) -> typing.List[str]
     if sys.version_info >= (3, 0):
         temp = list(csv.reader([string], skipinitialspace=True))
     else:
@@ -16,19 +20,20 @@ def quote_aware_comma_split(string):
     return temp[0]
 
 
-def guess_value(textValue):
+def guess_value(text_value):  # type: (str) -> str
     """
-    returns a string value for common strings.
-    method is far from complete but helping with odd arxmls
-    :param textValue: value in text like "true"
+    Get string value for common strings.
+    Method is far from complete but helping with odd arxml files.
+
+    :param text_value: value in text like "true"
     :return: string for value like "1"
     """
     if sys.version_info >= (3, 0):
-        textValue = textValue.casefold()
+        text_value = text_value.casefold()
     else:
-        textValue = textValue.lower()
-    if textValue in ["false", "off"]:
+        text_value = text_value.lower()
+    if text_value in ["false", "off"]:
         return "0"
-    elif textValue in ["true", "on"]:
+    elif text_value in ["true", "on"]:
         return "1"
-    return textValue
+    return text_value
