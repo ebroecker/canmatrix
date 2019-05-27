@@ -675,7 +675,7 @@ def dump(dbs, f, **options):
                     create_sub_element(frame_port, 'SHORT-NAME', frame.name)
                     create_sub_element(frame_port, 'COMMUNICATION-DIRECTION', 'IN')
                     rec_temp = 1
-                    if ecu.name + "_Tx" not in rx_ipdu_groups:
+                    if ecu.name + "_Rx" not in rx_ipdu_groups:
                         rx_ipdu_groups[ecu.name + "_Rx"] = []
                     rx_ipdu_groups[ecu.name + "_Rx"].append(frame.name)
 
