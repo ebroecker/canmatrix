@@ -1144,7 +1144,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
             if signal_max is not None:
                 new_signal.max = signal_max
 
-            if new_signal.is_little_endian == 0:
+            if not new_signal.is_little_endian:
                 # startbit of motorola coded signals are MSB in arxml
                 new_signal.set_startbit(int(start_bit.text), bitNumbering=1)
 
