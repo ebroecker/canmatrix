@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import canmatrix.canmatrix
 import canmatrix.copy
 
