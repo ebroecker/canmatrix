@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import io
 import canmatrix.j1939_decoder
 import textwrap
