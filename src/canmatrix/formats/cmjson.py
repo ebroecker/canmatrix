@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -83,7 +83,7 @@ def dump(db, f, **options):
                     "bit_length": signal.size,
                     "factor": str(signal.factor),
                     "offset": str(signal.offset),
-                    "is_big_endian": signal.is_little_endian == 0,
+                    "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float
                 })
@@ -124,7 +124,7 @@ def dump(db, f, **options):
                     "offset": str(signal.offset),
                     "min": str(signal.min),
                     "max": str(signal.max),
-                    "is_big_endian": signal.is_little_endian == 0,
+                    "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
                     "comment": signal.comment,

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -21,7 +21,7 @@
 
 #
 # this script exports dbc-files from a canmatrix-object
-# dbc-files are the can-matrix-definitions of the CanOe (Vector Informatic)
+# dbc-files are the can-matrix-definitions of the CANoe (Vector Informatic)
 
 from __future__ import absolute_import
 from __future__ import division
@@ -39,12 +39,14 @@ from builtins import *
 import canmatrix
 
 logger = logging.getLogger(__name__)
-default_float_factory = decimal.Decimal
 
 
+def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
+    return decimal.Decimal(value)
 
-def normalizeName(name, whitespaceReplacement):
-    name = re.sub(r'\s+', whitespaceReplacement, name)
+
+def normalize_name(name, whitespace_replacement):  # type: (str, str) -> str
+    name = re.sub(r'\s+', whitespace_replacement, name)
 
     if ' ' in name:
         name = '"' + name + '"'
@@ -52,7 +54,7 @@ def normalizeName(name, whitespaceReplacement):
     return name
 
 
-def format_float(f):
+def format_float(f):  # type: (typing.Any) -> str
     s = str(f).upper()
     if s.endswith('.0'):
         s = s[:-2]
@@ -64,15 +66,16 @@ def format_float(f):
     return s.upper()
 
 
-def check_define(define):
-    # check if define is compatible with dbc. else repace by STRING
+def check_define(define):  # type: (canmatrix.Define) -> None
+    # check if define is compatible with dbc. else replace by STRING
     if define.type not in ["ENUM", "STRING", "INT", "HEX", "FLOAT"]:
-        logger.warn("dbc export of attribute type {} not supported; replaced by STRING".format(define.type))
+        logger.warning("dbc export of attribute type %s not supported; replaced by STRING", define.type)
         define.definition = "STRING"
         define.type = "STRING"
 
 
 def create_define(data_type, define, define_type, defaults):
+    # type: (str, canmatrix.Define, str, typing.MutableMapping[str, str]) -> str
     check_define(define)
     define_string = "BA_DEF_ " + define_type
     define_string += ' "' + data_type + '" '
@@ -87,6 +90,7 @@ def create_define(data_type, define, define_type, defaults):
 
 
 def create_attribute_string(attribute, attribute_class, name, value, is_string):
+    # type: (str, str, str, typing.Any, bool) -> str
     if is_string:
         value = '"' + value + '"'
     elif not value:
@@ -96,29 +100,29 @@ def create_attribute_string(attribute, attribute_class, name, value, is_string):
     return attribute_string
 
 
-def create_comment_string(comment_class, comment_ident, comment, dbcExportEncoding, dbcExportCommentEncoding):
+def create_comment_string(comment_class, comment_ident, comment, export_encoding, export_comment_encoding):
+    # type: (str, str, str, str, str) -> bytes
     if len(comment) == 0:
         return b""
-    comment_string = ("CM_ " + comment_class + " " + comment_ident + ' "').encode(dbcExportEncoding, 'ignore')
-    comment_string += comment.replace('"', '\\"').encode(dbcExportCommentEncoding, 'ignore')
-    comment_string += '";\n'.encode(dbcExportEncoding)
+    comment_string = ("CM_ " + comment_class + " " + comment_ident + ' "').encode(export_encoding, 'ignore')
+    comment_string += comment.replace('"', '\\"').encode(export_comment_encoding, 'ignore')
+    comment_string += '";\n'.encode(export_encoding)
     return comment_string
 
 
-def dump(mydb, f, **options):
+def dump(in_db, f, **options):
+    # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
     # create copy because export changes database
-    db = copy.deepcopy(mydb)
+    db = copy.deepcopy(in_db)
 
-    dbcExportEncoding = options.get("dbcExportEncoding", 'iso-8859-1')
-    dbcExportCommentEncoding = options.get("dbcExportCommentEncoding",  dbcExportEncoding)
-    writeValTable = options.get("writeValTable", True)
+    dbc_export_encoding = options.get("dbcExportEncoding", 'iso-8859-1')
+    dbc_export_comment_encoding = options.get("dbcExportCommentEncoding",  dbc_export_encoding)
+    write_val_table = options.get("writeValTable", True)
     compatibility = options.get('compatibility', True)
 
-    whitespaceReplacement = options.get("whitespaceReplacement", '_')
-    if whitespaceReplacement in ['', None] or set(
-            [' ', '\t']).intersection(whitespaceReplacement):
-        print("Warning: Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
-
+    whitespace_replacement = options.get("whitespaceReplacement", '_')
+    if whitespace_replacement in ['', None] or {' ', '\t'}.intersection(whitespace_replacement):
+        logger.warning("Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
 
     if db.contains_fd or db.contains_j1939:
         if db.contains_fd:
@@ -149,21 +153,20 @@ def dump(mydb, f, **options):
         free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG")
         free_signals_dummy_frame.arbitration_id = canmatrix.ArbitrationId(0x40000000, extended=True)
         free_signals_dummy_frame.signals = db.signals
-        db.addFrame(free_signals_dummy_frame)
+        db.add_frame(free_signals_dummy_frame)
 
-    # shorten long enviroment variable names
-    for envVarName in db.env_vars:
-        if len(envVarName) > 32:
-            db.add_env_attribute(envVarName, "SystemEnvVarLongSymbol", envVarName)
-            db.env_vars[envVarName[:32]] = db.env_vars.pop(envVarName)
+    # shorten long environment variable names
+    for env_var_name in db.env_vars:
+        if len(env_var_name) > 32:
+            db.add_env_attribute(env_var_name, "SystemEnvVarLongSymbol", env_var_name)
+            db.env_vars[env_var_name[:32]] = db.env_vars.pop(env_var_name)
             db.add_env_defines("SystemEnvVarLongSymbol", "STRING")
 
-
     header = "VERSION \"created by canmatrix\"\n\n\nNS_ :\n\nBS_:\n\n"
-    f.write(header.encode(dbcExportEncoding))
+    f.write(header.encode(dbc_export_encoding))
 
     # ECUs
-    f.write("BU_: ".encode(dbcExportEncoding))
+    f.write("BU_: ".encode(dbc_export_encoding))
 
     for ecu in db.ecus:
         # fix long ecu names:
@@ -172,26 +175,20 @@ def dump(mydb, f, **options):
             ecu.name = ecu.name[0:32]
             db.add_ecu_defines("SystemNodeLongSymbol", "STRING")
 
-        f.write((ecu.name + " ").encode(dbcExportEncoding))
+        f.write((ecu.name + " ").encode(dbc_export_encoding))
 
-    f.write("\n\n".encode(dbcExportEncoding))
+    f.write("\n\n".encode(dbc_export_encoding))
 
-    if writeValTable:
+    if write_val_table:
         # ValueTables
         for table in sorted(db.value_tables):
-            f.write(("VAL_TABLE_ " + table).encode(dbcExportEncoding))
+            f.write(("VAL_TABLE_ " + table).encode(dbc_export_encoding))
             for row in db.value_tables[table]:
-                f.write(
-                    (' ' +
-                     str(row) +
-                     ' "' +
-                     db.value_tables[table][row] +
-                     '"').encode(dbcExportEncoding))
-            f.write(";\n".encode(dbcExportEncoding))
-        f.write("\n".encode(dbcExportEncoding))
+                f.write(' {} "{}"'.format(str(row), db.value_tables[table][row]).encode(dbc_export_encoding))
+            f.write(";\n".encode(dbc_export_encoding))
+        f.write("\n".encode(dbc_export_encoding))
 
-    output_names = collections.defaultdict(dict)
-
+    output_names = collections.defaultdict(dict)  # type: typing.Dict[canmatrix.Frame, typing.Dict[canmatrix.Signal, str]]
 
     for frame in db.frames:
         # fix long frame names
@@ -208,24 +205,23 @@ def dump(mydb, f, **options):
                 db.add_signal_defines("SystemSignalLongSymbol", "STRING")
 
         normalized_names = collections.OrderedDict((
-            (s, normalizeName(s.name, whitespaceReplacement))
+            (s, normalize_name(s.name, whitespace_replacement))
             for s in frame.signals
         ))
 
         # remove "-" from frame names
         if compatibility:
-            frame.name = re.sub("[^A-Za-z0-9]", whitespaceReplacement, frame.name)
-
+            frame.name = re.sub("[^A-Za-z0-9]", whitespace_replacement, frame.name)
 
         duplicate_signal_totals = collections.Counter(normalized_names.values())
-        duplicate_signal_counter = collections.Counter()
+        duplicate_signal_counter = collections.Counter()  # type: typing.Counter[str]
 
-        numbered_names = collections.OrderedDict()
+        numbered_names = collections.OrderedDict()  # type: ignore
 
         for signal in frame.signals:
             name = normalized_names[signal]
             if compatibility:
-                name = re.sub("[^A-Za-z0-9]",whitespaceReplacement, name)
+                name = re.sub("[^A-Za-z0-9]", whitespace_replacement, name)
             duplicate_signal_counter[name] += 1
             if duplicate_signal_totals[name] > 1:
                 # TODO: pad to 01 in case of 10+ instances, for example?
@@ -235,7 +231,7 @@ def dump(mydb, f, **options):
     # Frames
     for frame in db.frames:
         multiplex_written = False
-        if frame.transmitters.__len__() == 0:
+        if len(frame.transmitters) == 0:
             frame.add_transmitter("Vector__XXX")
 
         f.write(
@@ -245,10 +241,10 @@ def dump(mydb, f, **options):
              ": %d " %
              frame.size +
              frame.transmitters[0] +
-             "\n").encode(dbcExportEncoding))
+             "\n").encode(dbc_export_encoding))
 
         duplicate_signal_totals = collections.Counter(
-            normalizeName(s.name, whitespaceReplacement) for s in frame.signals
+            normalize_name(s.name, whitespace_replacement) for s in frame.signals
         )
         duplicate_signal_counter = collections.Counter()
         for signal in frame.signals:
@@ -265,20 +261,19 @@ def dump(mydb, f, **options):
                 signal_line += "M "
                 multiplex_written = True
 
-
-            startbit = signal.get_startbit(bit_numbering=1)
+            start_bit = signal.get_startbit(bit_numbering=1)
 
             if signal.is_signed:
                 sign = '-'
             else:
                 sign = '+'
             signal_line += (": %d|%d@%d%c" %
-                 (startbit,
-                  signal.size,
-                  signal.is_little_endian,
-                  sign))
+                            (start_bit,
+                             signal.size,
+                             signal.is_little_endian,
+                             sign))
             signal_line += " (%s,%s)" % (format_float(signal.factor), format_float(signal.offset))
-            signal_line += " [{}|{}]".format(format_float(signal.min),format_float(signal.max))
+            signal_line += " [{}|{}]".format(format_float(signal.min), format_float(signal.max))
             signal_line += ' "'
 
             if signal.unit is None:
@@ -286,83 +281,84 @@ def dump(mydb, f, **options):
             signal_line += signal.unit
             signal_line += '" '
 
-            if signal.receivers.__len__() == 0:
+            if len(signal.receivers) == 0:
                 signal.add_receiver('Vector__XXX')
             signal_line += ','.join(signal.receivers) + "\n"
-            f.write(signal_line.encode(dbcExportEncoding))
+            f.write(signal_line.encode(dbc_export_encoding))
 
-        f.write("\n".encode(dbcExportEncoding))
-    f.write("\n".encode(dbcExportEncoding))
+        f.write("\n".encode(dbc_export_encoding))
+    f.write("\n".encode(dbc_export_encoding))
 
     # second Sender:
     for frame in db.frames:
-        if frame.transmitters.__len__() > 1:
-            f.write(("BO_TX_BU_ %d : %s;\n" % (frame.arbitration_id.to_compound_integer(), ','.join(frame.transmitters))).encode(dbcExportEncoding))
+        if len(frame.transmitters) > 1:
+            f.write(("BO_TX_BU_ %d : %s;\n" % (frame.arbitration_id.to_compound_integer(), ','.join(frame.transmitters))).encode(dbc_export_encoding))
 
     # frame comments
     # wow, there are dbcs where comments are encoded with other coding than rest of dbc...
     for frame in db.frames:
-        f.write(create_comment_string("BO_", "%d " % frame.arbitration_id.to_compound_integer(), frame.comment, dbcExportEncoding, dbcExportCommentEncoding))
-    f.write("\n".encode(dbcExportEncoding))
+        f.write(create_comment_string("BO_", "%d " % frame.arbitration_id.to_compound_integer(), frame.comment, dbc_export_encoding, dbc_export_comment_encoding))
+    f.write("\n".encode(dbc_export_encoding))
 
     # signal comments
     for frame in db.frames:
         for signal in frame.signals:
-            if signal.comment is not None and signal.comment.__len__() > 0:
+            if signal.comment:
                 name = output_names[frame][signal]
-                f.write(create_comment_string("SG_", "%d " % frame.arbitration_id.to_compound_integer() + name, signal.comment, dbcExportEncoding,
-                                              dbcExportCommentEncoding))
-    f.write("\n".encode(dbcExportEncoding))
+                f.write(create_comment_string(
+                    "SG_",
+                    "%d " % frame.arbitration_id.to_compound_integer() + name,
+                    signal.comment,
+                    dbc_export_encoding,
+                    dbc_export_comment_encoding))
+    f.write("\n".encode(dbc_export_encoding))
 
     # ecu comments
     for ecu in db.ecus:
-        if ecu.comment is not None and ecu.comment.__len__() > 0:
-            f.write(create_comment_string("BU_", ecu.name, ecu.comment, dbcExportEncoding,
-                                          dbcExportCommentEncoding))
-    f.write("\n".encode(dbcExportEncoding))
+        if ecu.comment:
+            f.write(create_comment_string("BU_", ecu.name, ecu.comment, dbc_export_encoding,
+                                          dbc_export_comment_encoding))
+    f.write("\n".encode(dbc_export_encoding))
 
-    defaults = {}
-
+    defaults = {}  # type: typing.Dict[str, str]
 
     # write defines
     for (data_type, define) in sorted(list(db.frame_defines.items())):
-        f.write(create_define(data_type, define, "BO_", defaults).encode(dbcExportEncoding, 'replace'))
-
+        f.write(create_define(data_type, define, "BO_", defaults).encode(dbc_export_encoding, 'replace'))
 
     for (data_type, define) in sorted(list(db.signal_defines.items())):
-        f.write(create_define(data_type, define, "SG_", defaults).encode(dbcExportEncoding, 'replace'))
+        f.write(create_define(data_type, define, "SG_", defaults).encode(dbc_export_encoding, 'replace'))
 
     for (data_type, define) in sorted(list(db.ecu_defines.items())):
-        f.write(create_define(data_type, define, "BU_", defaults).encode(dbcExportEncoding, 'replace'))
+        f.write(create_define(data_type, define, "BU_", defaults).encode(dbc_export_encoding, 'replace'))
 
     for (data_type, define) in sorted(list(db.env_defines.items())):
-        f.write(create_define(data_type, define, "EV_", defaults).encode(dbcExportEncoding, 'replace'))
+        f.write(create_define(data_type, define, "EV_", defaults).encode(dbc_export_encoding, 'replace'))
 
     for (data_type, define) in sorted(list(db.global_defines.items())):
-        f.write(create_define(data_type, define, "", defaults).encode(dbcExportEncoding, 'replace'))
+        f.write(create_define(data_type, define, "", defaults).encode(dbc_export_encoding, 'replace'))
 
-    for define in sorted(defaults):
-        f.write(('BA_DEF_DEF_ "' + define + '" ').encode(dbcExportEncoding) +
-            defaults[define].encode(dbcExportEncoding,'replace') + ';\n'.encode(dbcExportEncoding))
-
+    for define_name in sorted(defaults):
+        f.write(('BA_DEF_DEF_ "' + define_name + '" ').encode(dbc_export_encoding) +
+                defaults[define_name].encode(dbc_export_encoding, 'replace') + ';\n'.encode(dbc_export_encoding))
 
     # ecu-attributes:
     for ecu in db.ecus:
         for attrib, val in sorted(ecu.attributes.items()):
-            f.write(create_attribute_string(attrib, "BU_", ecu.name, val, db.ecu_defines[attrib].type == "STRING").encode(dbcExportEncoding))
-    f.write("\n".encode(dbcExportEncoding))
+            f.write(create_attribute_string(attrib, "BU_", ecu.name, val, db.ecu_defines[attrib].type == "STRING").encode(dbc_export_encoding))
+    f.write("\n".encode(dbc_export_encoding))
 
     # global-attributes:
     for attrib, val in sorted(db.attributes.items()):
         f.write(create_attribute_string(attrib, "", "", val, db.global_defines[attrib].type == "STRING").encode(
-            dbcExportEncoding))
-    f.write("\n".encode(dbcExportEncoding))
+            dbc_export_encoding))
+    f.write("\n".encode(dbc_export_encoding))
 
     # messages-attributes:
     for frame in db.frames:
         for attrib, val in sorted(frame.attributes.items()):
-            f.write(create_attribute_string(attrib, "BO_", str(frame.arbitration_id.to_compound_integer()), val, db.frame_defines[attrib].type == "STRING").encode(dbcExportEncoding))
-    f.write("\n".encode(dbcExportEncoding))
+            f.write(create_attribute_string(attrib, "BO_", str(frame.arbitration_id.to_compound_integer()), val, db.frame_defines[attrib].type == "STRING").encode(dbc_export_encoding))
+    f.write("\n".encode(dbc_export_encoding))
 
     # signal-attributes:
     for frame in db.frames:
@@ -372,16 +368,15 @@ def dump(mydb, f, **options):
                 if isinstance(val, float):
                     val = format_float(val)
                 f.write(create_attribute_string(attrib, "SG_", '%d ' % frame.arbitration_id.to_compound_integer() + name, val,
-                                                db.signal_defines[attrib].type == "STRING").encode(dbcExportEncoding))
+                                                db.signal_defines[attrib].type == "STRING").encode(dbc_export_encoding))
 
-    f.write("\n".encode(dbcExportEncoding))
+    f.write("\n".encode(dbc_export_encoding))
 
     for env_var_name, env_var in db.env_vars.items():
         if "attributes" in env_var:
             for attribute, value in env_var["attributes"].items():
                 f.write(create_attribute_string(attribute, "EV_", "", value,
-                                                db.env_defines[attribute].type == "STRING").encode(dbcExportEncoding))
-
+                                                db.env_defines[attribute].type == "STRING").encode(dbc_export_encoding))
 
     # signal-values:
     for frame in db.frames:
@@ -396,12 +391,11 @@ def dump(mydb, f, **options):
                 f.write(
                     ('VAL_ %d ' %
                      frame.arbitration_id.to_compound_integer() +
-                     output_names[frame][signal]).encode(dbcExportEncoding))
-                for attrib, val in sorted(
-                        signal.values.items(), key=lambda x: int(x[0])):
+                     output_names[frame][signal]).encode(dbc_export_encoding))
+                for attr_name, val in sorted(signal.values.items(), key=lambda x: int(x[0])):
                     f.write(
-                        (' ' + str(attrib) + ' "' + val + '"').encode(dbcExportEncoding))
-                f.write(";\n".encode(dbcExportEncoding))
+                        (' ' + str(attr_name) + ' "' + val + '"').encode(dbc_export_encoding))
+                f.write(";\n".encode(dbc_export_encoding))
 
     # SIG_VALTYPE
     for frame in db.frames:
@@ -409,113 +403,113 @@ def dump(mydb, f, **options):
             if signal.is_float:
                 if int(signal.size) > 32:
                     f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.arbitration_id.to_compound_integer(), output_names[frame][signal])).encode(
-                        dbcExportEncoding))
+                        dbc_export_encoding))
                 else:
                     f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.arbitration_id.to_compound_integer(), output_names[frame][signal])).encode(
-                        dbcExportEncoding))
+                        dbc_export_encoding))
 
     # signal-groups:
     for frame in db.frames:
         for sigGroup in frame.signalGroups:
             f.write(("SIG_GROUP_ " + str(frame.arbitration_id.to_compound_integer()) + " " + sigGroup.name +
-                     " " + str(sigGroup.id) + " :").encode(dbcExportEncoding))
+                     " " + str(sigGroup.id) + " :").encode(dbc_export_encoding))
             for signal in sigGroup.signals:
-                f.write((" " + output_names[frame][signal]).encode(dbcExportEncoding))
-            f.write(";\n".encode(dbcExportEncoding))
+                f.write((" " + output_names[frame][signal]).encode(dbc_export_encoding))
+            f.write(";\n".encode(dbc_export_encoding))
 
     for frame in db.frames:
         if frame.is_complex_multiplexed:
             for signal in frame.signals:
                 if signal.muxer_for_signal is not None:
-                    f.write(("SG_MUL_VAL_ %d %s %s " % (frame.arbitration_id.to_compound_integer(), signal.name, signal.muxer_for_signal)).encode(dbcExportEncoding))
-                    f.write((", ".join(["%d-%d" % (a, b) for a, b in signal.mux_val_grp])).encode(dbcExportEncoding))
+                    f.write(("SG_MUL_VAL_ %d %s %s " % (frame.arbitration_id.to_compound_integer(), signal.name, signal.muxer_for_signal)).encode(dbc_export_encoding))
+                    f.write((", ".join(["%d-%d" % (a, b) for a, b in signal.mux_val_grp])).encode(dbc_export_encoding))
 
-                    f.write(";\n".encode(dbcExportEncoding))
+                    f.write(";\n".encode(dbc_export_encoding))
 
-    for envVarName in db.env_vars:
-        envVar = db.env_vars[envVarName]
-        f.write(("EV_ {0} : {1} [{2}|{3}] \"{4}\" {5} {6} {7} {8};\n".format(envVarName, envVar["varType"], envVar["min"],
-                                                                            envVar["max"], envVar["unit"],envVar["initialValue"],
-                                                                            envVar["evId"], envVar["accessType"],
-                                                                            ",".join(envVar["accessNodes"])) ).encode(dbcExportEncoding))
+    for env_var_name in db.env_vars:
+        env_var = db.env_vars[env_var_name]
+        f.write(("EV_ {0} : {1} [{2}|{3}] \"{4}\" {5} {6} {7} {8};\n".format(
+            env_var_name, env_var["varType"], env_var["min"],
+            env_var["max"], env_var["unit"], env_var["initialValue"],
+            env_var["evId"], env_var["accessType"],
+            ",".join(env_var["accessNodes"]))).encode(dbc_export_encoding))
 
 
-def load(f, **options):
-    dbcImportEncoding = options.get("dbcImportEncoding", 'iso-8859-1')
-    dbcCommentEncoding = options.get("dbcImportCommentEncoding", dbcImportEncoding)
+class _FollowUps(object):
+    NOTHING, SIGNAL_COMMENT, FRAME_COMMENT, BOARD_UNIT_COMMENT, GLOBAL_COMMENT = range(5)
+
+
+def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
+    dbc_import_encoding = options.get("dbcImportEncoding", 'iso-8859-1')
+    dbc_comment_encoding = options.get("dbcImportCommentEncoding", dbc_import_encoding)
     float_factory = options.get('float_factory', default_float_factory)
 
     i = 0
 
-    class FollowUps(object):
-        nothing, signalComment, frameComment, boardUnitComment, globalComment = list(
-            range(5))
-    followUp = FollowUps.nothing
+    follow_up = _FollowUps.NOTHING
     comment = ""
     signal = None  # type: typing.Optional[canmatrix.Signal]
     frame = None
-    boardUnit = None
+    board_unit = None
     db = canmatrix.CanMatrix()
-    framesById = {}  # type: typing.Dict[int, canmatrix.Frame]
+    frames_by_id = {}  # type: typing.Dict[int, canmatrix.Frame]
 
     def hash_arbitration_id(arbitration_id):  # type: (canmatrix.ArbitrationId) -> int
         return hash((arbitration_id.id, arbitration_id.extended))
 
     def get_frame_by_id(arbitration_id):  # type: (canmatrix.ArbitrationId) -> typing.Optional[canmatrix.Frame]
         try:
-            return framesById[hash_arbitration_id(arbitration_id)]
+            return frames_by_id[hash_arbitration_id(arbitration_id)]
         except KeyError:
             return None
 
-    def add_frame_by_id(frame):  # type: (canmatrix.Frame) -> None
-        framesById[hash_arbitration_id(frame.arbitration_id)] = frame
+    def add_frame_by_id(new_frame):  # type: (canmatrix.Frame) -> None
+        frames_by_id[hash_arbitration_id(new_frame.arbitration_id)] = new_frame
 
     for line in f:
         i = i + 1
         l = line.strip()
-        if l.__len__() == 0:
+        if len(l) == 0:
             continue
         try:
-#        if 1==1:
-            if followUp == FollowUps.signalComment:
+        # if 1==1:
+            if follow_up == _FollowUps.SIGNAL_COMMENT:
                 try:
-                    comment += "\n" + \
-                        l.decode(dbcCommentEncoding).replace('\\"', '"')
+                    comment += "\n" + l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
                 if l.endswith(b'";'):
-                    followUp = FollowUps.nothing
+                    follow_up = _FollowUps.NOTHING
                     if signal is not None:
                         signal.add_comment(comment[0:-2])
                 continue
-            elif followUp == FollowUps.frameComment:
+            elif follow_up == _FollowUps.FRAME_COMMENT:
                 try:
-                    comment += "\n" + \
-                        l.decode(dbcCommentEncoding).replace('\\"', '"')
+                    comment += "\n" + l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
                 if l.endswith(b'";'):
-                    followUp = FollowUps.nothing
+                    follow_up = _FollowUps.NOTHING
                     if frame is not None:
                         frame.add_comment(comment[0:-2])
                 continue
-            elif followUp == FollowUps.boardUnitComment:
+            elif follow_up == _FollowUps.BOARD_UNIT_COMMENT:
                 try:
                     comment += "\n" + \
-                        l.decode(dbcCommentEncoding).replace('\\"', '"')
+                        l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
                 if l.endswith(b'";'):
-                    followUp = FollowUps.nothing
-                    if boardUnit is not None:
-                        boardUnit.add_comment(comment[0:-2])
+                    follow_up = _FollowUps.NOTHING
+                    if board_unit is not None:
+                        board_unit.add_comment(comment[0:-2])
                 continue
-            decoded = l.decode(dbcImportEncoding).strip()
+            decoded = l.decode(dbc_import_encoding).strip()
             if decoded.startswith("BO_ "):
                 regexp = re.compile(r"^BO_ ([^\ ]+) ([^\ ]+) *: ([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-                frame = canmatrix.Frame(temp.group(2),arbitration_id = int(temp.group(1)),
+                frame = canmatrix.Frame(temp.group(2), arbitration_id=int(temp.group(1)),
                                         size=int(temp.group(3)), transmitters=temp.group(4).split())
                 db.frames.append(frame)
                 add_frame_by_id(frame)
@@ -523,16 +517,16 @@ def load(f, **options):
                 pattern = r"^SG_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+), *([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
-                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp_raw = regexp_raw.match(l)
                 if temp:
                     receiver = [b.strip() for b in temp.group(11).split(',')]
 
-                    extras = {}
+                    extras = {}  # type: typing.Dict[typing.Any, typing.Any]
 #                    if float_factory is not None:
 #                        extras['float_factory'] = float_factory
 
-                    tempSig = canmatrix.Signal(
+                    temp_signal = canmatrix.Signal(
                         temp.group(1),
                         start_bit=int(temp.group(2)),
                         size=int(temp.group(3)),
@@ -542,23 +536,23 @@ def load(f, **options):
                         offset=temp.group(7),
                         min=temp.group(8),
                         max=temp.group(9),
-                        unit=temp_raw.group(10).decode(dbcImportEncoding),
+                        unit=temp_raw.group(10).decode(dbc_import_encoding),
                         receivers=receiver,
                         **extras
                     )
-                    if not tempSig.is_little_endian:
+                    if not temp_signal.is_little_endian:
                         # startbit of motorola coded signals are MSB in dbc
-                        tempSig.set_startbit(int(temp.group(2)), bitNumbering=1)
-                    frame.add_signal(tempSig)
+                        temp_signal.set_startbit(int(temp.group(2)), bitNumbering=1)
+                    frame.add_signal(temp_signal)
     #                db.frames.addSignalToLastFrame(tempSig)
                 else:
                     pattern = r"^SG_ +(.+?) +(.+?) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                     regexp = re.compile(pattern)
-                    regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                    regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     receiver = [b.strip() for b in temp.group(12).split(',')]
-                    multiplex = temp.group(2)  # type: typing.Union[str, int]
+                    multiplex = temp.group(2)  # type: str
 
                     is_complex_multiplexed = False
 
@@ -572,13 +566,13 @@ def load(f, **options):
                         try:
                             multiplex = int(multiplex[1:])
                         except:
-                            raise Exception('error decoding line',line)
+                            raise Exception('error decoding line', line)
 
                     extras = {}
 #                    if float_factory is not None:
 #                        extras['float_factory'] = float_factory
 
-                    tempSig = canmatrix.Signal(
+                    temp_signal = canmatrix.Signal(
                         temp.group(1),
                         start_bit=int(temp.group(3)),
                         size=int(temp.group(4)),
@@ -588,24 +582,23 @@ def load(f, **options):
                         offset=temp.group(8),
                         min=temp.group(9),
                         max=temp.group(10),
-                        unit=temp_raw.group(11).decode(dbcImportEncoding),
+                        unit=temp_raw.group(11).decode(dbc_import_encoding),
                         receivers=receiver,
                         multiplex=multiplex,
                         **extras
                     )
 
                     if is_complex_multiplexed:
-                        tempSig.is_multiplexer = True
-                        tempSig.multiplex = 'Multiplexor'
+                        temp_signal.is_multiplexer = True
+                        temp_signal.multiplex = 'Multiplexor'
 
-                    if not tempSig.is_little_endian:
+                    if not temp_signal.is_little_endian:
                         # startbit of motorola coded signals are MSB in dbc
-                        tempSig.set_startbit(int(temp.group(3)), bitNumbering=1)
-                    frame.add_signal(tempSig)
+                        temp_signal.set_startbit(int(temp.group(3)), bitNumbering=1)
+                    frame.add_signal(temp_signal)
 
                     if is_complex_multiplexed:
                         frame.is_complex_multiplexed = True
-
 
             elif decoded.startswith("BO_TX_BU_ "):
                 regexp = re.compile(r"^BO_TX_BU_ ([0-9]+) *: *(.+);")
@@ -616,7 +609,7 @@ def load(f, **options):
             elif decoded.startswith("CM_ SG_ "):
                 pattern = r"^CM_ +SG_ +(\w+) +(\w+) +\"(.*)\";"
                 regexp = re.compile(pattern)
-                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
@@ -625,7 +618,7 @@ def load(f, **options):
                     if signal:
                         try:
                             signal.add_comment(temp_raw.group(3).decode(
-                                dbcCommentEncoding).replace('\\"', '"'))
+                                dbc_comment_encoding).replace('\\"', '"'))
                         except:
                             logger.error(
                                 "Error decoding line: %d (%s)" %
@@ -633,7 +626,7 @@ def load(f, **options):
                 else:
                     pattern = r"^CM_ +SG_ +(\w+) +(\w+) +\"(.*)"
                     regexp = re.compile(pattern)
-                    regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                    regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     if temp:
@@ -641,17 +634,17 @@ def load(f, **options):
                         signal = frame.signal_by_name(temp.group(2))
                         try:
                             comment = temp_raw.group(3).decode(
-                                dbcCommentEncoding).replace('\\"', '"')
+                                dbc_comment_encoding).replace('\\"', '"')
                         except:
                             logger.error(
                                 "Error decoding line: %d (%s)" %
                                 (i, line))
-                        followUp = FollowUps.signalComment
+                        follow_up = _FollowUps.SIGNAL_COMMENT
 
             elif decoded.startswith("CM_ BO_ "):
                 pattern = r"^CM_ +BO_ +(\w+) +\"(.*)\";"
                 regexp = re.compile(pattern)
-                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
@@ -659,7 +652,7 @@ def load(f, **options):
                     if frame:
                         try:
                             frame.add_comment(temp_raw.group(2).decode(
-                                dbcCommentEncoding).replace('\\"', '"'))
+                                dbc_comment_encoding).replace('\\"', '"'))
                         except:
                             logger.error(
                                 "Error decoding line: %d (%s)" %
@@ -667,60 +660,58 @@ def load(f, **options):
                 else:
                     pattern = r"^CM_ +BO_ +(\w+) +\"(.*)"
                     regexp = re.compile(pattern)
-                    regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                    regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     if temp:
                         frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
                         try:
                             comment = temp_raw.group(2).decode(
-                                dbcCommentEncoding).replace('\\"', '"')
+                                dbc_comment_encoding).replace('\\"', '"')
                         except:
                             logger.error(
                                 "Error decoding line: %d (%s)" %
                                 (i, line))
-                        followUp = FollowUps.frameComment
+                        follow_up = _FollowUps.FRAME_COMMENT
             elif decoded.startswith("CM_ BU_ "):
                 pattern = r"^CM_ +BU_ +(\w+) +\"(.*)\";"
                 regexp = re.compile(pattern)
-                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    boardUnit = db.ecu_by_name(temp.group(1))
-                    if boardUnit:
+                    board_unit = db.ecu_by_name(temp.group(1))
+                    if board_unit:
                         try:
-                            boardUnit.add_comment(temp_raw.group(2).decode(
-                                dbcCommentEncoding).replace('\\"', '"'))
+                            board_unit.add_comment(temp_raw.group(2).decode(
+                                dbc_comment_encoding).replace('\\"', '"'))
                         except:
-                            logger.error(
-                                "Error decoding line: %d (%s)" %
-                                (i, line))
+                            logger.error("Error decoding line: %d (%s)" % (i, line))
                 else:
                     pattern = r"^CM_ +BU_ +(\w+) +\"(.*)"
                     regexp = re.compile(pattern)
-                    regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                    regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     if temp:
-                        boardUnit = db.ecu_by_name(temp.group(1))
-                        if boardUnit:
+                        board_unit = db.ecu_by_name(temp.group(1))
+                        if board_unit:
                             try:
                                 comment = temp_raw.group(2).decode(
-                                    dbcCommentEncoding).replace('\\"', '"')
+                                    dbc_comment_encoding).replace('\\"', '"')
                             except:
                                 logger.error(
                                     "Error decoding line: %d (%s)" %
                                     (i, line))
-                            followUp = FollowUps.boardUnitComment
+                            follow_up = _FollowUps.BOARD_UNIT_COMMENT
             elif decoded.startswith("BU_:"):
                 pattern = r"^BU_\:(.*)"
                 regexp = re.compile(pattern)
-                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
                 if temp:
-                    myTempListe = temp.group(1).split(' ')
-                    for ele in myTempListe:
+                    my_temp_list = temp.group(1).split(' ')
+                    for ele in my_temp_list:
                         if len(ele.strip()) > 1:
                             db.ecus.append(canmatrix.Ecu(ele))
 
@@ -730,34 +721,34 @@ def load(f, **options):
                 if temp:
                     frame_id = temp.group(1)
                     signal_name = temp.group(2)
-                    tempList = temp.group(3).split('"')
-                    if frame_id.isnumeric(): # value for Frame
+                    temp_list = temp.group(3).split('"')
+                    if frame_id.isnumeric():  # value for Frame
                         try:
                             frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frame_id)))
                             sg = frame.signal_by_name(signal_name)
-                            for i in range(math.floor(len(tempList) / 2)):
-                                val = tempList[i * 2 + 1]
+                            for i in range(math.floor(len(temp_list) / 2)):
+                                val = temp_list[i * 2 + 1]
                                 if sg:
-                                    sg.add_values(tempList[i * 2], val)
+                                    sg.add_values(temp_list[i * 2], val)
                         except:
-                            logger.error("Error with Line: " + str(tempList))
+                            logger.error("Error with Line: " + str(temp_list))
                     else:
-                        logger.info("Warning: enviroment variables currently not supported")
+                        logger.info("Warning: environment variables currently not supported")
 
             elif decoded.startswith("VAL_TABLE_ "):
                 regexp = re.compile(r"^VAL_TABLE_ +(\w+) +(.*);")
                 temp = regexp.match(decoded)
                 if temp:
-                    tableName = temp.group(1)
-                    tempList = temp.group(2).split('"')
+                    table_name = temp.group(1)
+                    temp_list = temp.group(2).split('"')
+                    value_hash = {}
                     try:
-                        valHash = {}
-                        for i in range(math.floor(len(tempList) / 2)):
-                            val = tempList[i * 2 + 1]
-                            valHash[tempList[i * 2].strip()] = val.strip()
+                        for i in range(math.floor(len(temp_list) / 2)):
+                            val = temp_list[i * 2 + 1]
+                            value_hash[temp_list[i * 2].strip()] = val.strip()
                     except:
-                        logger.error("Error with Line: " + str(tempList))
-                    db.add_value_table(tableName, valHash)
+                        logger.error("Error with Line: " + str(temp_list))
+                    db.add_value_table(table_name, value_hash)
                 else:
                     logger.debug(l)
 
@@ -767,29 +758,29 @@ def load(f, **options):
                 substring = substring[3:].strip()
                 pattern = r"^\"(.+?)\" +(.+);"
                 regexp = re.compile(pattern)
-                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(substring)
                 substring_line = l[7:].strip()[3:].strip()
                 temp_raw = regexp_raw.match(substring_line)
                 if temp:
                     if define_type == "SG_":
-                        db.add_signal_defines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+                        db.add_signal_defines(temp.group(1), temp_raw.group(2).decode(dbc_import_encoding))
                     elif define_type == "BO_":
-                        db.add_frame_defines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+                        db.add_frame_defines(temp.group(1), temp_raw.group(2).decode(dbc_import_encoding))
                     elif define_type == "BU_":
-                        db.add_ecu_defines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+                        db.add_ecu_defines(temp.group(1), temp_raw.group(2).decode(dbc_import_encoding))
                     elif define_type == "EV_":
-                        db.add_env_defines(temp.group(1), temp_raw.group(2).decode(dbcImportEncoding))
+                        db.add_env_defines(temp.group(1), temp_raw.group(2).decode(dbc_import_encoding))
 
             elif decoded.startswith("BA_DEF_ "):
                 pattern = r"^BA_DEF_ +\"(.+?)\" +(.+);"
                 regexp = re.compile(pattern)
-                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
                     db.add_global_defines(temp.group(1),
-                                          temp_raw.group(2).decode(dbcImportEncoding))
+                                          temp_raw.group(2).decode(dbc_import_encoding))
 
             elif decoded.startswith("BA_ "):
                 regexp = re.compile(r"^BA_ +\".+?\" +(.+)")
@@ -803,14 +794,14 @@ def load(f, **options):
                 elif tempba.group(1).strip().startswith("SG_ "):
                     regexp = re.compile(r"^BA_ +\"(.+?)\" +SG_ +(\d+) +(\w+) +(.+);")
                     temp = regexp.match(decoded)
-                    if temp != None:
+                    if temp is not None:
                         get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).signal_by_name(
                             temp.group(3)).add_attribute(temp.group(1), temp.group(4))
                 elif tempba.group(1).strip().startswith("EV_ "):
                     regexp = re.compile(r"^BA_ +\"(.+?)\" +EV_ +(\w+) +(.*);")
                     temp = regexp.match(decoded)
-                    if temp != None:
-                        db.add_env_attribute(temp.group(2),temp.group(1),temp.group(3))
+                    if temp is not None:
+                        db.add_env_attribute(temp.group(2), temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("BU_ "):
                     regexp = re.compile(r"^BA_ +\"(.*?)\" +BU_ +(\w+) +(.+);")
                     temp = regexp.match(decoded)
@@ -830,8 +821,8 @@ def load(f, **options):
                 temp = regexp.match(decoded)
                 frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
                 if frame is not None:
-                    signalArray = temp.group(4).split(' ')
-                    frame.add_signal_group(temp.group(2), temp.group(3), signalArray)  # todo wrong annotation in canmatrix? Id is a string?
+                    signal_array = temp.group(4).split(' ')
+                    frame.add_signal_group(temp.group(2), temp.group(3), signal_array)  # todo wrong annotation in canmatrix? Id is a string?
 
             elif decoded.startswith("SIG_VALTYPE_ "):
                 regexp = re.compile(r"^SIG_VALTYPE_ +(\w+) +(\w+)\s*\:(.*);")
@@ -845,54 +836,53 @@ def load(f, **options):
             elif decoded.startswith("BA_DEF_DEF_ "):
                 pattern = r"^BA_DEF_DEF_ +\"(.+?)\" +(.+?)\;"
                 regexp = re.compile(pattern)
-                regexp_raw = re.compile(pattern.encode(dbcImportEncoding))
+                regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
                     db.add_define_default(temp.group(1),
-                                          temp_raw.group(2).decode(dbcImportEncoding))
+                                          temp_raw.group(2).decode(dbc_import_encoding))
             elif decoded.startswith("SG_MUL_VAL_ "):
                 pattern = r"^SG_MUL_VAL_ +([0-9]+) +([\w\-]+) +([\w\-]+) +(.*) *;"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
                 if temp:
-                    frameId = temp.group(1)
-                    signalName = temp.group(2)
-                    muxerForSignal = temp.group(3)
-                    muxValGroups = temp.group(4).split(',')
-                    frame  = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frameId)))
+                    frame_id = temp.group(1)
+                    signal_name = temp.group(2)
+                    muxer_for_signal = temp.group(3)
+                    mux_val_groups = temp.group(4).split(',')
+                    frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frame_id)))
                     if frame is not None:
-                        signal = frame.signal_by_name(signalName)
+                        signal = frame.signal_by_name(signal_name)
                         frame.is_complex_multiplexed = True
-                        signal.muxer_for_signal = muxerForSignal
-                        for muxVal in muxValGroups:
-                            muxValMin, muxValMax = muxVal.split("-")
-                            muxValMin = int(muxValMin)
-                            muxValMax = int(muxValMax)
-                            signal.mux_val_grp.append([muxValMin, muxValMax])
+                        signal.muxer_for_signal = muxer_for_signal
+                        for muxVal in mux_val_groups:
+                            mux_val_min, mux_val_max = muxVal.split("-")
+                            mux_val_min_number = int(mux_val_min)
+                            mux_val_max_number = int(mux_val_max)
+                            signal.mux_val_grp.append([mux_val_min_number, mux_val_max_number])
             elif decoded.startswith("EV_ "):
                 pattern = r"^EV_ +([\w\-\_]+?) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*?)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([\w\-]+?) +(.*);"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
 
-                varName = temp.group(1)
-                varType = temp.group(2)
-                min = temp.group(3)
-                max = temp.group(4)
+                var_name = temp.group(1)
+                var_type = temp.group(2)
+                min_value = temp.group(3)
+                max_value = temp.group(4)
                 unit = temp.group(5)
-                initialValue  = temp.group(6)
-                evId  = temp.group(7)
-                accessType  = temp.group(8)
-                accessNodes = temp.group(9).split(",")
-                db.add_env_var(varName, {"varType": varType, "min" : min, "max" : max,
-                              "unit" : unit, "initialValue" : initialValue, "evId" : evId,
-                              "accessType" : accessType, "accessNodes" : accessNodes})
+                initial_value = temp.group(6)
+                ev_id = temp.group(7)
+                access_type = temp.group(8)
+                access_nodes = temp.group(9).split(",")
+                db.add_env_var(var_name, {"varType": var_type, "min": min_value, "max": max_value, "unit": unit,
+                                          "initialValue": initial_value, "evId": ev_id, "accessType": access_type,
+                                          "accessNodes": access_nodes})
 
-
-#        else:
+        # else:
         except:
-            print ("error with line no: %d" % i)
-            print (line)
+            print("error with line no: %d" % i)
+            print(line)
 # Backtracking
 
     for env_var_name, env_var in db.env_vars.items():
@@ -911,10 +901,10 @@ def load(f, **options):
         # receiver is only given in the signals, so do propagate the receiver
         # to the frame:
         frame.update_receiver()
-        # extended-flag is implicite in canid, thus repair this:
-        #if frame.id > 0x80000000:
-        #    frame.id -= 0x80000000
-        #    frame.extended = 1
+        # extended-flag is implicit in can id, thus repair this:
+        # if frame.id > 0x80000000:
+        #     frame.id -= 0x80000000
+        #     frame.extended = 1
 
         for signal in frame.signals:
             if signal.attribute("SystemSignalLongSymbol") is not None:
