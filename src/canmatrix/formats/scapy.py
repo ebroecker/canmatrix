@@ -28,21 +28,18 @@ import textwrap
 
 
 def get_fmt(signal):
-    if signal.is_little_endian:
-        if signal.is_float:
-            fmt = "<f"
-        elif signal.is_signed:
-            fmt = "<b"
-        else:
-            fmt = "<B"
-    else:
-        if signal.is_float:
-            fmt = ">f"
-        elif signal.is_signed:
-            fmt = ">b"
-        else:
-            fmt = ">B"
 
+    if signal.is_little_endian:
+        fmt = "<"
+    else:
+        fmt = ">"
+
+    if signal.is_float:
+        fmt += "f"
+    elif signal.is_signed:
+        fmt += "b"
+    else:
+        fmt += "B"
     return fmt
 
 
@@ -69,15 +66,8 @@ def dump(db, f, **options):
     for frame in db.frames:
         scapy_decoder += "class " + frame.name + "(Packet):\n"
         scapy_decoder += "    fields_desc = [ \n"
-        signal_collection = []
-        for signal_group in frame.signalGroups:
-            for signal in signal_group.signals:
-                signal_collection.append(signal)
 
         for signal in frame.signals:
-            signal_collection.append(signal)
-
-        for signal in signal_collection:
             scapy_decoder += u'        SignalField("{}", default=0, start={}, size={}, scaling={}, offset={}, unit="{}", fmt="{}"),\n'.format(
                 signal.name, signal.get_startbit(bit_numbering=1), signal.size, signal.factor, signal.offset,
                 signal.unit, get_fmt(signal))
