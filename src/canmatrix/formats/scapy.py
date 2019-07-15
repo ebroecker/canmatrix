@@ -78,7 +78,7 @@ def dump(db, f, **options):
             signal_collection.append(signal)
 
         for signal in signal_collection:
-            scapy_decoder += '        SignalField("{}", default=0, start={}, size={}, scaling={}, offset={}, unit="{}", fmt="{}"),\n'.format(
+            scapy_decoder += u'        SignalField("{}", default=0, start={}, size={}, scaling={}, offset={}, unit="{}", fmt="{}"),\n'.format(
                 signal.name, signal.get_startbit(bit_numbering=1), signal.size, signal.factor, signal.offset,
                 signal.unit, get_fmt(signal))
         scapy_decoder += "    ]\n\n"
