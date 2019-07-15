@@ -1316,13 +1316,14 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
             new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
 
 
-    if pdu.tag == "CONTAINER-I-PDU":
+    if pdu.tag == ns + "CONTAINER-I-PDU":
         pdus = get_children(pdu, "CONTAINED-PDU-TRIGGERING", root_or_cache, ns)
         signal_group_id = 1
         singnals_grouped = []
         for pdu in pdus:
             ipdu = get_child(pdu, "I-PDU", root_or_cache, ns)
-            pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
+            # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
+            pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
             # TODO
             if pdu_sig_mapping:
                 get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
