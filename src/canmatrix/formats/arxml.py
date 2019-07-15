@@ -1318,12 +1318,22 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
 
     if pdu.tag == "CONTAINER-I-PDU":
         pdus = get_children(pdu, "CONTAINED-PDU-TRIGGERING", root_or_cache, ns)
+        signal_group_id = 1
+        singnals_grouped = []
         for pdu in pdus:
             ipdu = get_child(pdu, "I-PDU", root_or_cache, ns)
             pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
             # TODO
             if pdu_sig_mapping:
                 get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
+                new_signals = []
+                for signal in new_frame:
+                    if signal.name not in singnals_grouped:
+                        new_signals.append(signal.name)
+                new_frame.add_signal_group(get_element_name(pdu, ns), signal_group_id, new_signals)
+                singnals_grouped += new_signals
+                signal_group_id += 1
+
     else:
         pdu_sig_mapping = get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
         if pdu_sig_mapping:
