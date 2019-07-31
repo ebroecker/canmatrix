@@ -72,8 +72,8 @@ def test_export_min_max():
     out_file = io.BytesIO()
     canmatrix.formats.dump(matrix, out_file, "cmjson", jsonAll=True)
     data = json.loads(out_file.getvalue().decode("utf-8"))
-    assert(data['messages'][0]['signals'][0]['min'] == '-5')
-    assert(data['messages'][0]['signals'][0]['max'] == '42')
+    assert(data['messages'][0]['signals'][0]['min'] == -5.0)
+    assert(data['messages'][0]['signals'][0]['max'] == 42.0)
 
 
 def test_import_min_max():
@@ -91,14 +91,14 @@ def test_import_min_max():
                         "attributes": {},
                         "bit_length": 40,
                         "comment": null,
-                        "factor": "1",
+                        "factor": 1.0,
                         "is_big_endian": false,
                         "is_float": false,
                         "is_signed": true,
-                        "max": "42",
-                        "min": "-5",
+                        "max": 42.0,
+                        "min": -5,
                         "name": "someSigName",
-                        "offset": "0",
+                        "offset": 0.0,
                         "start_bit": 0,
                         "values": {}
                     }
