@@ -96,7 +96,7 @@ def test_import_min_max():
                         "is_float": false,
                         "is_signed": true,
                         "max": 42.0,
-                        "min": -5,
+                        "min": -5.0,
                         "name": "someSigName",
                         "offset": 0.0,
                         "start_bit": 0,
