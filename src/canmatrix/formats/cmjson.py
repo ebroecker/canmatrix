@@ -42,6 +42,7 @@ def dump(db, f, **options):
     export_canard = options.get('jsonCanard', False)
     motorola_bit_format = options.get('jsonMotorolaBitFormat', "lsb")
     export_all = options.get('jsonAll', False)
+    native_types = options.get('jsonNativeTypes', False)
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
 
 
@@ -81,8 +82,8 @@ def dump(db, f, **options):
                     "name": signal.name,
                     "start_bit": start_bit,
                     "bit_length": signal.size,
-                    "factor": float(signal.factor),
-                    "offset": float(signal.offset),
+                    "factor": str(signal.factor) if not native_types else float(signal.factor),
+                    "offset": str(signal.offset) if not native_types else float(signal.offset),
                     "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float
@@ -120,10 +121,10 @@ def dump(db, f, **options):
                     "name": signal.name,
                     "start_bit": start_bit,
                     "bit_length": signal.size,
-                    "factor": float(signal.factor),
-                    "offset": float(signal.offset),
-                    "min": float(signal.min),
-                    "max": float(signal.max),
+                    "factor": str(signal.factor) if not native_types else float(signal.factor),
+                    "offset": str(signal.offset) if not native_types else float(signal.offset),
+                    "min": str(signal.min) if not native_types else float(signal.min),
+                    "max": str(signal.max) if not native_types else float(signal.max),
                     "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
