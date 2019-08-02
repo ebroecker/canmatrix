@@ -43,6 +43,7 @@ def dump(db, f, **options):
     motorola_bit_format = options.get('jsonMotorolaBitFormat', "lsb")
     export_all = options.get('jsonAll', False)
     native_types = options.get('jsonNativeTypes', False)
+    number_converter = float if native_types else str
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
 
 
@@ -82,8 +83,8 @@ def dump(db, f, **options):
                     "name": signal.name,
                     "start_bit": start_bit,
                     "bit_length": signal.size,
-                    "factor": str(signal.factor) if not native_types else float(signal.factor),
-                    "offset": str(signal.offset) if not native_types else float(signal.offset),
+                    "factor": number_converter(signal.factor),
+                    "offset": number_converter(signal.offset),
                     "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float
@@ -121,10 +122,10 @@ def dump(db, f, **options):
                     "name": signal.name,
                     "start_bit": start_bit,
                     "bit_length": signal.size,
-                    "factor": str(signal.factor) if not native_types else float(signal.factor),
-                    "offset": str(signal.offset) if not native_types else float(signal.offset),
-                    "min": str(signal.min) if not native_types else float(signal.min),
-                    "max": str(signal.max) if not native_types else float(signal.max),
+                    "factor": number_converter(signal.factor),
+                    "offset": number_converter(signal.offset),
+                    "min": number_converter(signal.min),
+                    "max": number_converter(signal.max),
                     "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
@@ -194,11 +195,10 @@ def load(f, **_options):
                     size=signal["bit_length"],
                     is_little_endian=is_little_endian,
                     is_signed=is_signed,
-                    is_float=is_float
+                    is_float=is_float,
+                    factor=signal["factor"],
+                    offset=signal["offset"]
                 )
-
-                new_signal.factor = new_signal.float_factory(signal["factor"])
-                new_signal.offset = new_signal.float_factory(signal["offset"])
 
                 if signal.get("min") is not None:
                     new_signal.min = new_signal.float_factory(signal["min"])
