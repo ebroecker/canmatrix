@@ -47,6 +47,7 @@ import attr
 import canmatrix.copy
 import canmatrix.types
 import canmatrix.utils
+import copy
 
 if attr.__version__ < '17.4.0':  # type: ignore
     raise RuntimeError("need attrs >= 17.4.0")
@@ -68,8 +69,8 @@ class J1939needsExtendedIdetifier(ExceptionTemplate): pass
 
 def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
     """Converter for attrs which accepts ArbitrationId itself or int."""
-    return source if isinstance(source, ArbitrationId) else ArbitrationId.from_compound_integer(source)
-
+    temp_id = source if isinstance(source, ArbitrationId) else ArbitrationId.from_compound_integer(source)
+    return copy.deepcopy(temp_id)
 
 @attr.s
 class Ecu(object):
