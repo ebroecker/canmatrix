@@ -805,6 +805,16 @@ def test_Arbitration_id():
     assert id_from_int_extended == id_extended
     assert id_from_int_extended != id_standard
 
+def test_arbitration_id_is_instance():
+    frame1 = canmatrix.Frame(name = "Frame1")
+    frame2 = canmatrix.Frame(name = "Frame1")
+
+    frame1.arbitration_id.id = 42
+
+    assert frame1.arbitration_id.id == 42
+    assert frame2.arbitration_id.id == 0
+
+
 
 @pytest.fixture
 def empty_matrix():
