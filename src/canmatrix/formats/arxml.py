@@ -1192,7 +1192,9 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
         pdu = get_child(pdu_mapping, "PDU", root_or_cache, ns)  # SIGNAL-I-PDU
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
+            payload = get_child(pdu, "PAYLOAD", root_or_cache, ns)
+            pdu = get_child(payload, "I-PDU", root_or_cache, ns)
+            # logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
 
         pdu_frame_mapping[pdu] = get_element_name(frame_elem, ns)
 
