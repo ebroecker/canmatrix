@@ -109,3 +109,68 @@ def test_import_min_max():
     matrix = canmatrix.formats.loads_flat(json_input, "cmjson", jsonAll=True)
     assert matrix.frames[0].signals[0].min == -5
     assert matrix.frames[0].signals[0].max == 42
+
+def test_import_native():
+    json_input = """{
+        "messages": [
+            {
+                "attributes": {},
+                "comment": "",
+                "id": 10,
+                "is_extended_frame": false,
+                "length": 6,
+                "name": "test_frame",
+                "signals": [
+                    {
+                        "attributes": {},
+                        "bit_length": 40,
+                        "comment": null,
+                        "factor": 0.123,
+                        "is_big_endian": false,
+                        "is_float": false,
+                        "is_signed": true,
+                        "max": 42,
+                        "min": -4.2,
+                        "name": "someSigName",
+                        "offset": 1,
+                        "start_bit": 0,
+                        "values": {}
+                    }
+                ]
+            }
+        ]
+    }"""
+    matrix = canmatrix.formats.loads_flat(json_input, "cmjson", jsonAll=True)
+    assert matrix.frames[0].signals[0].min == -4.2
+    assert matrix.frames[0].signals[0].max == 42
+    assert matrix.frames[0].signals[0].factor == 0.123
+    assert matrix.frames[0].signals[0].offset == 1
+
+def test_export_native():
+    matrix = canmatrix.canmatrix.CanMatrix()
+    frame = canmatrix.canmatrix.Frame(name="test_frame", size=6, arbitration_id=10)
+    signal = canmatrix.Signal(name="test_sig", size=40, is_float=True, min="-4.2", max=42, factor="0.123", offset=1)
+    frame.add_signal(signal)
+    matrix.add_frame(frame)
+    out_file = io.BytesIO()
+    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonNativeTypes=True)
+    data = json.loads(out_file.getvalue().decode("utf-8"))
+    assert (data['messages'][0]['signals'][0]['factor'] == 0.123)
+    assert (data['messages'][0]['signals'][0]['offset'] == 1)
+
+def test_export_all_native():
+    matrix = canmatrix.canmatrix.CanMatrix()
+    frame = canmatrix.canmatrix.Frame(name="test_frame", size=6, arbitration_id=10)
+    signal = canmatrix.Signal(name="test_sig", size=40, is_float=True, min="-4.2", max=42, factor="0.123", offset=1)
+    frame.add_signal(signal)
+    matrix.add_frame(frame)
+    out_file = io.BytesIO()
+    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonAll=True, jsonNativeTypes=True)
+    data = json.loads(out_file.getvalue().decode("utf-8"))
+    assert (data['messages'][0]['signals'][0]['min'] == -4.2)
+    assert (data['messages'][0]['signals'][0]['max'] == 42)
+    assert (data['messages'][0]['signals'][0]['factor'] == 0.123)
+    assert (data['messages'][0]['signals'][0]['offset'] == 1)
+
+
+

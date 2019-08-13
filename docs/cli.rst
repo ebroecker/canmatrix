@@ -5,6 +5,7 @@ Command Line Interface
 1. **canconvert**:
 
     converts CAN database formats between all supported formats.
+    
     Example: "*canconvert* someArSystemdescription.arxml file.dbc"
 
 2. **cancompare**:
@@ -17,29 +18,39 @@ Command Line Interface
 General
 _______
 
+If you properly install canmatrix using *pip,* the setuptools create
+two ecxcutables for you: `canconvert` and `cancompare`. You can find these executables
+near to your `python(.exe)`
+
+If you aren't able to find the scripts, you can still run it as
+
 ::
 
-    $ canconvert.py -h
-    $ canconvert.py --help
+$ python -m canmatrix.cli.compare [args]
+$ python -m canmatrix.cli.convert [args]
 
-show help message/usage and exits
+To show help message/usage call ::
 
-::
+    $ canconvert -h
+    $ canconvert --help
 
-    $ canconvert.py -v
+
+Another arguments are ::
+
+    $ canconvert -v
 
 Output verbosity
 
 
 ::
 
-    $ canconvert.py -s
+    $ canconvert -s
 
 don't print status messages to stdout. (only errors)
 
 ::
 
-    $ canconvert.py -f FORCE_OUTPUT
+    $ canconvert -f FORCE_OUTPUT
 
 enforce output format, ignoring output file extension (e.g., -f csv)
 
@@ -51,19 +62,19 @@ __________________________
 
 ::
 
-    $ canconvert.py source.dbc target.xlsx
+    $ canconvert source.dbc target.xlsx
 
 **convert dbc file to dbf:**
 
 ::
 
-    $ canconvert.py source.dbc target.dbf
+    $ canconvert source.dbc target.dbf
 
 **convert arxml file to dbc:**
 
 ::
 
-    $ canconvert.py source.arxml target.dbc
+    $ canconvert source.arxml target.dbc
 
 Note: in case of ``.arxml`` there can be multiple can databases in.
 Thus the target ``target.dbc`` may in this case be called ``BUS-NAME-IN-ARXML_target.dbc``.
@@ -75,7 +86,7 @@ You can even convert to the same format:
 
 ::
 
-    $ canconvert.py source.dbc target.dbc
+    $ canconvert source.dbc target.dbc
 
 Multiple charset support:
 
@@ -83,7 +94,7 @@ Multiple charset support:
 
 ::
 
-    $ canconvert.py --dbcImportEncoding=iso-8859-1 --dbcImportCommentEncoding=cp-1252 --dbcExportEncoding=utf-8 --dbcExportCommentEncoding=utf-8 source.dbc target.dbc
+    $ canconvert --dbcImportEncoding=iso-8859-1 --dbcImportCommentEncoding=cp-1252 --dbcExportEncoding=utf-8 --dbcExportCommentEncoding=utf-8 source.dbc target.dbc
 
 This converts ``source.dbc`` where units are coded in ``iso-8859-1`` and comments are coded in ``cp-1252`` in a ``target.dbc`` where everything is coded in ``utf-8``.
 Similar charset conversions are possible or even mandatory for following formats: dbc, dbf and sym.
@@ -96,7 +107,7 @@ _______________________
 
 ::
 
-    $ canconvert.py --deleteZeroSignals source.dbc target.dbc
+    $ canconvert --deleteZeroSignals source.dbc target.dbc
 
 will delete signals with 0 bit length from matrix
 
@@ -104,7 +115,7 @@ will delete signals with 0 bit length from matrix
 
 ::
 
-    $ convert.py --deleteSignalAttributes GenMsgCycleTime,MyAttrib source.dbc target.dbc
+    $ canconvert --deleteSignalAttributes GenMsgCycleTime,MyAttrib source.dbc target.dbc
 
 will delete the attributes ``GenMsgCycleTime`` and ``MyAttrib`` from all signals in ``source.dbc`` and save the result in ``target.dbc``
 
@@ -112,7 +123,7 @@ will delete the attributes ``GenMsgCycleTime`` and ``MyAttrib`` from all signals
 
 ::
 
-    $ convert.py --deleteFrameAttributes GenMsgCycleTime,MyAttrib source.dbc target.dbc
+    $ canconvert --deleteFrameAttributes GenMsgCycleTime,MyAttrib source.dbc target.dbc
 
 will delete the attributes ``GenMsgCycleTime`` and ``MyAttrib`` from all frames in ``source.dbc`` and save the result in ``target.dbc``
 
@@ -120,7 +131,7 @@ will delete the attributes ``GenMsgCycleTime`` and ``MyAttrib`` from all frames 
 
 ::
 
-    $ canconvert.py --recalcDLC=max source.dbc target.dbc
+    $ canconvert --recalcDLC=max source.dbc target.dbc
 
 this will recalculate DLC for each frame in ``source.dbc``.
 In ``target.dlc``  the same DLC like in ``source.dbc`` will be stored, except the calculated DLC is bigger.
@@ -130,7 +141,7 @@ Than the calculated DLC will be stored.
 
 ::
 
-    $ canconvert.py --recalcDLC=force source.dbc target.dbc
+    $ canconvert --recalcDLC=force source.dbc target.dbc
 
 this will recalculate DLC for each frame in ``source.dbc``.
 In ``target.dlc`` the calculated DLC will be stored independently from ``source.dbc``.
@@ -139,7 +150,7 @@ In ``target.dlc`` the calculated DLC will be stored independently from ``source.
 
 ::
 
-    $ canconvert.py --deleteObsoleteDefines source.dbc target.dbc
+    $ canconvert --deleteObsoleteDefines source.dbc target.dbc
 
 this will remove all defines which no attribute exist for in ``source.dbc`` and store the result in ``target.dlc``.
 
@@ -147,7 +158,7 @@ this will remove all defines which no attribute exist for in ``source.dbc`` and 
 
 ::
 
-    $ canconvert.py --deleteECU=myEcu,myEcu2 source.dbc target.dbc
+    $ canconvert --deleteECU=myEcu,myEcu2 source.dbc target.dbc
 
 this will remove ECUs ``myEcu`` and ``myEcu2`` in ``source.dbc`` and store the result in ``target.dlc``.
 
@@ -155,7 +166,7 @@ this will remove ECUs ``myEcu`` and ``myEcu2`` in ``source.dbc`` and store the r
 
 ::
 
-    $ canconvert.py --renameECU=myEcu:myNewEcu,myEcu2:myNewEcu2 source.dbc target.dbc
+    $ canconvert --renameECU=myEcu:myNewEcu,myEcu2:myNewEcu2 source.dbc target.dbc
 
 this will load ``source.dbc`` and rename ECU ``myEcu`` in ``myNewEcu``  and ``myEcu2`` in ``myNewEcu2``.
 The result is stored in ``target.dlc``.
@@ -164,7 +175,7 @@ The result is stored in ``target.dlc``.
 
 ::
 
-    $ canconvert.py --deleteFrame=myFrame,myFrame2 source.dbc target.dbc
+    $ canconvert --deleteFrame=myFrame,myFrame2 source.dbc target.dbc
 
 this will remove frames ``myFrame`` and ``myFrame2`` in ``source.dbc`` and store the result in ``target.dlc``.
 
@@ -172,7 +183,7 @@ this will remove frames ``myFrame`` and ``myFrame2`` in ``source.dbc`` and store
 
 ::
 
-    $ canconvert.py --renameFrame=myFrame:myNewFrame,myFrame2:myNewFrame2 source.dbc target.dbc
+    $ canconvert --renameFrame=myFrame:myNewFrame,myFrame2:myNewFrame2 source.dbc target.dbc
 
 this will load ``source.dbc`` and rename frames ``myFrame`` in ``myNewFrame``  and ``myFrame2`` in ``myNewFrame2``.
 The result is stored in ``target.dlc``.
@@ -182,7 +193,7 @@ The result is stored in ``target.dlc``.
 
 ::
 
-    $ canconvert.py --deleteSignal=mySignal,mySignal2 source.dbc target.dbc
+    $ canconvert --deleteSignal=mySignal,mySignal2 source.dbc target.dbc
 
 this will remove signales ``mySignal`` and ``mySignal2`` in ``source.dbc`` and store the result in ``target.dlc``.
 
@@ -190,7 +201,7 @@ this will remove signales ``mySignal`` and ``mySignal2`` in ``source.dbc`` and s
 
 ::
 
-    $ canconvert.py --renameSignal=mySignal:myNewSignal,mySignal2:myNewSignal2 source.dbc target.dbc
+    $ canconvert --renameSignal=mySignal:myNewSignal,mySignal2:myNewSignal2 source.dbc target.dbc
 
 this will load ``source.dbc`` and rename signals ``mySignal`` in ``myNewSignal``  and ``mySignal2`` in ``myNewSignal2``.
 The result is stored in ``target.dlc``.
@@ -199,14 +210,14 @@ The result is stored in ``target.dlc``.
 
 ::
 
-    $ canconvert.py --setFrameFd=myFrame,myFrame2 source.dbc target.dbc
+    $ canconvert --setFrameFd=myFrame,myFrame2 source.dbc target.dbc
 
 this will set frame-type of  ``myFrame`` and ``myFrame2`` in ``source.dbc`` to CANFD and store the result in ``target.dlc``
                         list) Syntax: --setFrameFd=myFrame1,mySecondFrame
 
 ::
 
-    $ canconvert.py --unsetFrameFd=myFrame,myFrame2 source.dbc target.dbc
+    $ canconvert --unsetFrameFd=myFrame,myFrame2 source.dbc target.dbc
 
 this will set frame-type of  ``myFrame`` and ``myFrame2`` in ``source.dbc`` to normal (not FD) and store the result in ``target.dlc``
                         list) Syntax: --unsetFrameFd=myFrame1,mySecondFrame
@@ -219,7 +230,7 @@ __________________
 
 ::
 
-    $ canconvert.py --ecus=REAR_ECU source.dbc target.dbc
+    $ canconvert --ecus=REAR_ECU source.dbc target.dbc
 
 This generates a ``target.dbc`` with all Informations out of ``source.dbc`` which are needed for ``REAR_ECU``.
 All frames which are received or sent by ``REAR_ECU`` are extracted. Also all attributes of the frames and the ECU.
@@ -229,13 +240,13 @@ This is some *lite* ECU-Extract.
 
 ::
 
-    $ canconvert.py --ecus=FRONT_ECU,REAR_ECU source.dbc target.dbc
+    $ canconvert --ecus=FRONT_ECU,REAR_ECU source.dbc target.dbc
 
 **extract frame[s] out of matrix:**
 
 ::
 
-    $ canconvert.py --frames=REAR_FRAME,FRONT_FRAME source.dbc target.dbc
+    $ canconvert --frames=REAR_FRAME,FRONT_FRAME source.dbc target.dbc
 
 Extracts the frames ``REAR_FRAME`` and ``FRONT_FRAME`` with the needed ECUs and attributes.
 
@@ -243,7 +254,7 @@ Extracts the frames ``REAR_FRAME`` and ``FRONT_FRAME`` with the needed ECUs and 
 
 ::
 
-    $ canconvert.py --merge=second.dbc source.dbc target.dbc
+    $ canconvert --merge=second.dbc source.dbc target.dbc
 
 Merges ``source.dbc`` and ``second.dbc`` in ``target.dbc``.
 
@@ -251,7 +262,7 @@ Merges ``source.dbc`` and ``second.dbc`` in ``target.dbc``.
 
 ::
 
-    $ canconvert.py --merge=second.dbc:ecu=REAR_ECU source.dbc target.dbc
+    $ canconvert --merge=second.dbc:ecu=REAR_ECU source.dbc target.dbc
 
 Merges REAR_ECU out of ``second.dbc`` with ``source.dbc`` and store result in ``target.dbc``.
 
@@ -259,7 +270,7 @@ Merges REAR_ECU out of ``second.dbc`` with ``source.dbc`` and store result in ``
 
 ::
 
-    $ canconvert.py --merge=second.dbc:frame=REAR_FRAME source.dbc target.dbc
+    $ canconvert --merge=second.dbc:frame=REAR_FRAME source.dbc target.dbc
 
 Merges REAR_FRAME out of ``second.dbc`` with ``source.dbc`` and store result in ``target.dbc``.
 
@@ -267,7 +278,7 @@ Merges REAR_FRAME out of ``second.dbc`` with ``source.dbc`` and store result in 
 
 ::
 
-    $ canconvert.py --merge=second.dbc:ecu=REAR_ECU:ecu=FRONT_ECU:frame=FRAME1:FRAME=FRAME2 source.dbc target.dbc
+    $ canconvert --merge=second.dbc:ecu=REAR_ECU:ecu=FRONT_ECU:frame=FRAME1:FRAME=FRAME2 source.dbc target.dbc
 
 Merges REAR_ECU and FRONT_ECU and FRAME1 and FRAME2 out of ``second.dbc`` with ``source.dbc`` and store result in ``target.dbc``.
 

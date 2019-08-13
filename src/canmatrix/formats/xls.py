@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -421,7 +421,7 @@ def load(file, **options):
             if frame_id.endswith("xh"):
                 new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True)
             else:
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=False)
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-1], 16), extended=False)
             db.add_frame(new_frame)
 
             # eval launch_type

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -111,7 +111,7 @@ def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) 
     else:
         output += "signed "
     start_bit = signal.get_startbit()
-    if signal.is_little_endian == 0:
+    if not signal.is_little_endian:
         # Motorola
         output += "%d,%d -m " % (start_bit, signal.size)
     else:

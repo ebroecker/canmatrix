@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -42,6 +42,8 @@ def dump(db, f, **options):
     export_canard = options.get('jsonCanard', False)
     motorola_bit_format = options.get('jsonMotorolaBitFormat', "lsb")
     export_all = options.get('jsonAll', False)
+    native_types = options.get('jsonNativeTypes', False)
+    number_converter = float if native_types else str
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
 
 
@@ -81,9 +83,9 @@ def dump(db, f, **options):
                     "name": signal.name,
                     "start_bit": start_bit,
                     "bit_length": signal.size,
-                    "factor": str(signal.factor),
-                    "offset": str(signal.offset),
-                    "is_big_endian": signal.is_little_endian == 0,
+                    "factor": number_converter(signal.factor),
+                    "offset": number_converter(signal.offset),
+                    "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float
                 })
@@ -120,11 +122,11 @@ def dump(db, f, **options):
                     "name": signal.name,
                     "start_bit": start_bit,
                     "bit_length": signal.size,
-                    "factor": str(signal.factor),
-                    "offset": str(signal.offset),
-                    "min": str(signal.min),
-                    "max": str(signal.max),
-                    "is_big_endian": signal.is_little_endian == 0,
+                    "factor": number_converter(signal.factor),
+                    "offset": number_converter(signal.offset),
+                    "min": number_converter(signal.min),
+                    "max": number_converter(signal.max),
+                    "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
                     "comment": signal.comment,

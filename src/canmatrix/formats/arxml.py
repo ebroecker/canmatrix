@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -675,7 +674,7 @@ def dump(dbs, f, **options):
                     create_sub_element(frame_port, 'SHORT-NAME', frame.name)
                     create_sub_element(frame_port, 'COMMUNICATION-DIRECTION', 'IN')
                     rec_temp = 1
-                    if ecu.name + "_Tx" not in rx_ipdu_groups:
+                    if ecu.name + "_Rx" not in rx_ipdu_groups:
                         rx_ipdu_groups[ecu.name + "_Rx"] = []
                     rx_ipdu_groups[ecu.name + "_Rx"].append(frame.name)
 
@@ -1144,7 +1143,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
             if signal_max is not None:
                 new_signal.max = signal_max
 
-            if new_signal.is_little_endian == 0:
+            if not new_signal.is_little_endian:
                 # startbit of motorola coded signals are MSB in arxml
                 new_signal.set_startbit(int(start_bit.text), bitNumbering=1)
 
