@@ -68,7 +68,7 @@ class J1939needsExtendedIdetifier(ExceptionTemplate): pass
 
 def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
     """Converter for attrs which accepts ArbitrationId itself or int."""
-    return source if isinstance(source, ArbitrationId) else ArbitrationId.from_compound_integer(source)
+    return source if isinstance(source, ArbitrationId) else  ArbitrationId.from_compound_integer(source)
 
 
 @attr.s
@@ -720,7 +720,7 @@ class Frame(object):
 
     name = attr.ib(default="")  # type: str
     # mypy Unsupported converter:
-    arbitration_id = attr.ib(converter=arbitration_id_converter, default=arbitration_id_converter(0))  # type: ArbitrationId
+    arbitration_id = attr.ib(converter=arbitration_id_converter, default=0)  # type: ArbitrationId
     size = attr.ib(default=0)  # type: int
     transmitters = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     # extended = attr.ib(default=False)  # type: bool
