@@ -1169,6 +1169,137 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
                 new_signal.add_attribute("LongName", signal_name)
             frame.add_signal(new_signal)
 
+def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, root_or_cache, ns, float_factory):
+    selector_byte_order = get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER", root_or_cache, ns)
+    selector_len = get_child(pdu, "SELECTOR-FIELD-LENGTH", root_or_cache, ns)
+    selector_start = get_child(pdu, "SELECTOR-FIELD-START-POSITION", root_or_cache, ns)
+    is_little_endian = False
+    if selector_byte_order.text == 'MOST-SIGNIFICANT-BYTE-LAST':
+        is_little_endian = True
+    is_signed = False  # unsigned
+    multiplexor = canmatrix.Signal(
+        "Multiplexor",
+        start_bit=int(selector_start.text),
+        size=int(selector_len.text),
+        is_little_endian=is_little_endian,
+        multiplex="Multiplexor")
+
+    multiplexor._initValue = 0
+    target_frame.add_signal(multiplexor)
+    static_part = get_child(pdu, "STATIC-PART", root_or_cache, ns)
+    ipdu = get_child(static_part, "I-PDU", root_or_cache, ns)
+    if ipdu is not None:
+        pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
+        pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+        get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, None, float_factory)
+        multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
+
+    dynamic_part = get_child(pdu, "DYNAMIC-PART", root_or_cache, ns)
+    #               segmentPositions = arGetChild(dynamic_part, "SEGMENT-POSITIONS", arDict, ns)
+    #               segmentPosition = arGetChild(segmentPositions, "SEGMENT-POSITION", arDict, ns)
+    #               byteOrder = arGetChild(segmentPosition, "SEGMENT-BYTE-ORDER", arDict, ns)
+    #               segLength = arGetChild(segmentPosition, "SEGMENT-LENGTH", arDict, ns)
+    #               segPos = arGetChild(segmentPosition, "SEGMENT-POSITION", arDict, ns)
+    dynamic_part_alternatives = get_child(dynamic_part, "DYNAMIC-PART-ALTERNATIVES", root_or_cache, ns)
+    dynamic_part_alternative_list = get_children(dynamic_part_alternatives, "DYNAMIC-PART-ALTERNATIVE",
+                                                 root_or_cache, ns)
+    for alternative in dynamic_part_alternative_list:
+        selector_id = get_child(alternative, "SELECTOR-FIELD-CODE", root_or_cache, ns)
+        ipdu = get_child(alternative, "I-PDU", root_or_cache, ns)
+        multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
+        if ipdu is not None:
+            pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
+            pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+            get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, selector_id.text, float_factory)
+
+
+
+def get_frame_from_container_ipdu(pdu, target_frame, root_or_cache, ns, float_factory):
+    target_frame.is_fd = True
+    pdus = get_children(pdu, "CONTAINED-PDU-TRIGGERING", root_or_cache, ns)
+    signal_group_id = 1
+    singnals_grouped = []
+    header_type = get_child(pdu, "HEADER-TYPE", root_or_cache, ns).text
+    if header_type == "SHORT-HEADER":
+        header_length = 32
+        target_frame.add_signal(canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex ="Multiplexor", is_little_endian = True))
+        target_frame.add_signal(canmatrix.Signal(start_bit=24, size= 8, name="Header_DLC", is_little_endian = True))
+    elif header_type == "LONG-HEADER":
+        header_length = 64
+        target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor",
+                                                 is_little_endian=True))
+        target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=True))
+    else:
+        raise("header " + header_type + " not supported for containers yet")
+        # none type
+        #TODO
+
+    for cpdu in pdus:
+        ipdu = get_child(cpdu, "I-PDU", root_or_cache, ns)
+        try:
+            if header_type == "SHORT-HEADER":
+                header_id = get_child(ipdu, "HEADER-ID-SHORT-HEADER", root_or_cache, ns).text
+            elif header_type == "LONG-HEADER":
+                header_id = get_child(ipdu, "HEADER-ID-LONG-HEADER", root_or_cache, ns).text
+            else:
+                #none type
+                pass
+        except AttributeError:
+            header_id = "0"
+        if header_id.startswith("0x"):
+            header_id = int(header_id, 16)
+        else:
+            header_id = int(header_id)
+
+        # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
+        pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+        # TODO
+        if pdu_sig_mapping:
+            get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, header_id, float_factory, bit_offset=header_length)
+            new_signals = []
+            for signal in target_frame:
+                if signal.name not in singnals_grouped and signal.name is not "Header_ID" and signal.name is not "Header_DLC":
+                    new_signals.append(signal.name)
+            target_frame.add_signal_group("HEARDER_ID_" + str(header_id), signal_group_id, new_signals)
+            singnals_grouped += new_signals
+            signal_group_id += 1
+
+def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset, repeating_time, root_or_cache, time_period, ns, float_factory):
+    if cyclic_timing is not None and event_timing is not None:
+        target_frame.add_attribute("GenMsgSendType", "cyclicAndSpontanX")  # CycleAndSpontan
+        if minimum_delay is not None:
+            target_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
+        if repeats is not None:
+            target_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+    elif cyclic_timing is not None:
+        target_frame.add_attribute("GenMsgSendType", "cyclicX")  # CycleX
+        if minimum_delay is not None:
+            target_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
+        if repeats is not None:
+            target_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+    else:
+        target_frame.add_attribute("GenMsgSendType", "spontanX")  # Spontan
+        if minimum_delay is not None:
+            target_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
+        if repeats is not None:
+            target_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+
+    if starting_time is not None:
+        value = get_child(starting_time, "VALUE", root_or_cache, ns)
+        target_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
+    elif cyclic_timing is not None:
+        value = get_child(time_offset, "VALUE", root_or_cache, ns)
+        if value is not None:
+            target_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
+
+    value = get_child(repeating_time, "VALUE", root_or_cache, ns)
+    if value is not None:
+        target_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
+    elif cyclic_timing is not None:
+        value = get_child(time_period, "VALUE", root_or_cache, ns)
+        if value is not None:
+            target_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
+
 
 def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_factory):
     # type: (_Element, _DocRoot, dict, str, typing.Callable) -> typing.Union[canmatrix.Frame, None]
@@ -1218,46 +1349,7 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
         logger.debug(get_element_name(pdu, ns))
 
     if pdu is not None and "MULTIPLEXED-I-PDU" in pdu.tag:
-        selector_byte_order = get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER", root_or_cache, ns)
-        selector_len = get_child(pdu, "SELECTOR-FIELD-LENGTH", root_or_cache, ns)
-        selector_start = get_child(pdu, "SELECTOR-FIELD-START-POSITION", root_or_cache, ns)
-        is_little_endian = False
-        if selector_byte_order.text == 'MOST-SIGNIFICANT-BYTE-LAST':
-            is_little_endian = True
-        is_signed = False  # unsigned
-        multiplexor = canmatrix.Signal(
-            "Multiplexor",
-            start_bit=int(selector_start.text),
-            size=int(selector_len.text),
-            is_little_endian=is_little_endian,
-            multiplex="Multiplexor")
-
-        multiplexor._initValue = 0
-        new_frame.add_signal(multiplexor)
-        static_part = get_child(pdu, "STATIC-PART", root_or_cache, ns)
-        ipdu = get_child(static_part, "I-PDU", root_or_cache, ns)
-        if ipdu is not None:
-            pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
-            pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
-            get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
-            multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
-
-        dynamic_part = get_child(pdu, "DYNAMIC-PART", root_or_cache, ns)
-#               segmentPositions = arGetChild(dynamic_part, "SEGMENT-POSITIONS", arDict, ns)
-#               segmentPosition = arGetChild(segmentPositions, "SEGMENT-POSITION", arDict, ns)
-#               byteOrder = arGetChild(segmentPosition, "SEGMENT-BYTE-ORDER", arDict, ns)
-#               segLength = arGetChild(segmentPosition, "SEGMENT-LENGTH", arDict, ns)
-#               segPos = arGetChild(segmentPosition, "SEGMENT-POSITION", arDict, ns)
-        dynamic_part_alternatives = get_child(dynamic_part, "DYNAMIC-PART-ALTERNATIVES", root_or_cache, ns)
-        dynamic_part_alternative_list = get_children(dynamic_part_alternatives, "DYNAMIC-PART-ALTERNATIVE", root_or_cache, ns)
-        for alternative in dynamic_part_alternative_list:
-            selector_id = get_child(alternative, "SELECTOR-FIELD-CODE", root_or_cache, ns)
-            ipdu = get_child(alternative, "I-PDU", root_or_cache, ns)
-            multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
-            if ipdu is not None:
-                pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
-                pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
-                get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, selector_id.text, float_factory)
+        get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, root_or_cache, ns, float_factory)
 
     if new_frame.comment is None:
         new_frame.add_comment(get_element_desc(pdu, root_or_cache, ns))
@@ -1281,75 +1373,10 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
     time_offset = get_child(cyclic_timing, "TIME-OFFSET", root_or_cache, ns)
     time_period = get_child(cyclic_timing, "TIME-PERIOD", root_or_cache, ns)
 
-    if cyclic_timing is not None and event_timing is not None:
-        new_frame.add_attribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
-        if minimum_delay is not None:
-            new_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
-        if repeats is not None:
-            new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
-    elif cyclic_timing is not None:
-        new_frame.add_attribute("GenMsgSendType", "cyclicX")  # CycleX
-        if minimum_delay is not None:
-            new_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
-        if repeats is not None:
-            new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
-    else:
-        new_frame.add_attribute("GenMsgSendType", "spontanX")  # Spontan
-        if minimum_delay is not None:
-            new_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
-        if repeats is not None:
-            new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
-
-    if starting_time is not None:
-        value = get_child(starting_time, "VALUE", root_or_cache, ns)
-        new_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
-    elif cyclic_timing is not None:
-        value = get_child(time_offset, "VALUE", root_or_cache, ns)
-        if value is not None:
-            new_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
-
-    value = get_child(repeating_time, "VALUE", root_or_cache, ns)
-    if value is not None:
-        new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
-    elif cyclic_timing is not None:
-        value = get_child(time_period, "VALUE", root_or_cache, ns)
-        if value is not None:
-            new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
-
+    store_frame_timings(new_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset, repeating_time, root_or_cache, time_period, ns, float_factory)
 
     if pdu.tag == ns + "CONTAINER-I-PDU":
-        pdus = get_children(pdu, "CONTAINED-PDU-TRIGGERING", root_or_cache, ns)
-        signal_group_id = 1
-        singnals_grouped = []
-        header_type = get_child(pdu, "HEADER-TYPE", root_or_cache, ns).text
-        if header_type == "SHORT-HEADER":
-            header_length = 32
-            new_frame.add_signal(canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex = "Multiplexor", is_little_endian = True))
-            new_frame.add_signal(canmatrix.Signal(start_bit=24, size= 8, name="Header_DLC", is_little_endian = True))
-        else:
-            pass
-            #TODO
-
-
-        for cpdu in pdus:
-            ipdu = get_child(cpdu, "I-PDU", root_or_cache, ns)
-            try:
-                #TODO
-                header_id = get_child(ipdu, "HEADER-ID-SHORT-HEADER", root_or_cache, ns).text
-            except AttributeError:
-                header_id = "0"
-            # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
-            pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
-            # TODO
-            if pdu_sig_mapping:
-                get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, int(header_id), float_factory, bit_offset=header_length)
-                new_signals = []
-                for signal in new_frame:
-                    if signal.name not in singnals_grouped and signal.name is not "Header_ID" and signal.name is not "Header_DLC":
-                        new_signals.append(signal.name)
-                new_frame.add_signal_group("HEARDER_ID_" + header_id, signal_group_id, new_signals)
-                singnals_grouped += new_signals
-                signal_group_id += 1
+        get_frame_from_container_ipdu(pdu, new_frame, root_or_cache, ns, float_factory)
 
     else:
         pdu_sig_mapping = get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
@@ -1375,6 +1402,7 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
                     get_signals(signal_to_pdu_maps, new_frame, root_or_cache, ns, None, float_factory)  # todo BUG expects list, not item
             else:
                 logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
+    new_frame.fit_dlc()
     return new_frame
 
 

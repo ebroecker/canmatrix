@@ -128,10 +128,11 @@ def dump(in_db, f, **options):
         if db.contains_fd:
             db.add_global_defines("BusType", "STRING")
             db.add_attribute("BusType", "CAN FD")
+            db.add_frame_defines("VFrameFormat", 'ENUM  "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD"')
         elif db.contains_j1939:
             db.add_global_defines("ProtocolType", "STRING")
             db.add_attribute("ProtocolType", "J1939")
-        db.add_frame_defines("VFrameFormat", 'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
+            db.add_frame_defines("VFrameFormat", 'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
         for frame in db.frames:
             if frame.is_fd:
                 if frame.arbitration_id.extended:

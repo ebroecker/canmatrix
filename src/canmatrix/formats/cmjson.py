@@ -131,7 +131,9 @@ def dump(db, f, **options):
                     "is_float": signal.is_float,
                     "comment": signal.comment,
                     "attributes": attributes,
-                    "values": values
+                    "values": values,
+                    "is_multiplexer" : signal.is_multiplexer,
+                    "mux_value" : signal.mux_val
                 }
                 if signal.multiplex is not None:
                     symbolic_signal["multiplex"] = signal.multiplex
