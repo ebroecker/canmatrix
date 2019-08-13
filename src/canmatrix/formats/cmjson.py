@@ -88,8 +88,6 @@ def dump(db, f, **options):
                     "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
-                    "is_multiplexer" : signal.is_multiplexer,
-                    "muxer" : signal.mux_val
                 })
             symbolic_frame = {"name": frame.name,
                               "id": int(frame.arbitration_id.id),
@@ -212,7 +210,7 @@ def load(f, **_options):
                     new_signal.unit = signal["unit"]
 
                 if signal.get("multiplex", False):
-                    new_signal.unit = signal["multiplex"]
+                    new_signal.multiplex = signal["multiplex"]
 
                 if signal.get("values", False):
                     for key in signal["values"]:
