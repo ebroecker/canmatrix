@@ -1191,7 +1191,9 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
         pdu = get_child(pdu_mapping, "PDU", root_or_cache, ns)  # SIGNAL-I-PDU
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
+            payload = get_child(pdu, "PAYLOAD", root_or_cache, ns)
+            pdu = get_child(payload, "I-PDU", root_or_cache, ns)
+            # logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
 
         pdu_frame_mapping[pdu] = get_element_name(frame_elem, ns)
 
@@ -1315,33 +1317,49 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
             new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
 
 
-#    pdu_sig_mappings = get_child(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
-#    if not pdu_sig_mappings:
-#        logger.debug("Frame %s no SIGNAL-TO-PDU-MAPPINGS found", new_frame.name)
-    pdu_sig_mapping = get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
-    if pdu_sig_mapping:
-        get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
+    if pdu.tag == ns + "CONTAINER-I-PDU":
+        pdus = get_children(pdu, "CONTAINED-PDU-TRIGGERING", root_or_cache, ns)
+        signal_group_id = 1
+        singnals_grouped = []
+        for pdu in pdus:
+            ipdu = get_child(pdu, "I-PDU", root_or_cache, ns)
+            # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
+            pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+            # TODO
+            if pdu_sig_mapping:
+                get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
+                new_signals = []
+                for signal in new_frame:
+                    if signal.name not in singnals_grouped:
+                        new_signals.append(signal.name)
+                new_frame.add_signal_group(get_element_name(pdu, ns), signal_group_id, new_signals)
+                singnals_grouped += new_signals
+                signal_group_id += 1
 
-    # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
-    else:  # AR 4.2
-        pdu_trigs = get_children(frame_triggering, "PDU-TRIGGERINGS", root_or_cache, ns)
-        if pdu_trigs is not None:
-            for pdu_trig in pdu_trigs:
-                trig_ref_cond = get_child(pdu_trig, "PDU-TRIGGERING-REF-CONDITIONAL", root_or_cache, ns)
-                trigs = get_child(trig_ref_cond, "PDU-TRIGGERING", root_or_cache, ns)
-                ipdus = get_child(trigs, "I-PDU", root_or_cache, ns)
+    else:
+        pdu_sig_mapping = get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+        if pdu_sig_mapping:
+            get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
+        # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
+        else:  # AR 4.2
+            pdu_trigs = get_children(frame_triggering, "PDU-TRIGGERINGS", root_or_cache, ns)
+            if pdu_trigs is not None:
+                for pdu_trig in pdu_trigs:
+                    trig_ref_cond = get_child(pdu_trig, "PDU-TRIGGERING-REF-CONDITIONAL", root_or_cache, ns)
+                    trigs = get_child(trig_ref_cond, "PDU-TRIGGERING", root_or_cache, ns)
+                    ipdus = get_child(trigs, "I-PDU", root_or_cache, ns)
 
-                signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
-                if signal_to_pdu_maps is None:
-                    signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-I-PDU-MAPPINGS", root_or_cache, ns)
+                    signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
+                    if signal_to_pdu_maps is None:
+                        signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-I-PDU-MAPPINGS", root_or_cache, ns)
 
-                if signal_to_pdu_maps is None:
-                    logger.debug("AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!",
-                                 get_element_name(ipdus, ns))
-                # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                get_signals(signal_to_pdu_maps, new_frame, root_or_cache, ns, None, float_factory)  # todo BUG expects list, not item
-        else:
-            logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
+                    if signal_to_pdu_maps is None:
+                        logger.debug("AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!",
+                                     get_element_name(ipdus, ns))
+                    # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+                    get_signals(signal_to_pdu_maps, new_frame, root_or_cache, ns, None, float_factory)  # todo BUG expects list, not item
+            else:
+                logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
     return new_frame
 
 

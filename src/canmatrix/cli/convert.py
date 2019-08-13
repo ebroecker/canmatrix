@@ -152,6 +152,9 @@ def main():  # type: () -> int
     parser.add_option("", "--jsonMotorolaBitFormat",
                       dest="jsonMotorolaBitFormat", default="lsb",
                       help="Json format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
+    parser.add_option("", "--jsonNativeTypes",
+                      dest="jsonNativeTypes", action="store_true", default=False,
+                      help="Uses native json representation for decimals instead of string.")
 
     parser.add_option("", "--additionalFrameAttributes",
                       dest="additionalFrameAttributes", default="",
