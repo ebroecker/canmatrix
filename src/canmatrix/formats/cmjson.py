@@ -87,7 +87,9 @@ def dump(db, f, **options):
                     "offset": number_converter(signal.offset),
                     "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
-                    "is_float": signal.is_float
+                    "is_float": signal.is_float,
+                    "is_multiplexer" : signal.is_multiplexer,
+                    "muxer" : signal.mux_val
                 })
             symbolic_frame = {"name": frame.name,
                               "id": int(frame.arbitration_id.id),
