@@ -938,7 +938,7 @@ def decode_compu_method(compu_method, root_or_cache, ns, float_factory):
     return values, factor, offset, unit, const
 
 
-def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_factory):
+def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_factory, bit_offset = 0):
     # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, str, _MultiplexId, typing.Callable) -> None
     """Add signals from xml to the Frame."""
     global signal_rxs
@@ -1126,7 +1126,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
         if start_bit is not None:
             new_signal = canmatrix.Signal(
                 name.text,
-                start_bit=int(start_bit.text),
+                start_bit=int(start_bit.text) + bit_offset,
                 size=int(length.text),
                 is_little_endian=is_little_endian,
                 is_signed=is_signed,
@@ -1145,7 +1145,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
 
             if not new_signal.is_little_endian:
                 # startbit of motorola coded signals are MSB in arxml
-                new_signal.set_startbit(int(start_bit.text), bitNumbering=1)
+                new_signal.set_startbit(int(start_bit.text) + bit_offset, bitNumbering=1)
 
             # save signal, to determin receiver-ECUs for this signal later
             signal_rxs[system_signal] = new_signal
@@ -1321,18 +1321,33 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
         pdus = get_children(pdu, "CONTAINED-PDU-TRIGGERING", root_or_cache, ns)
         signal_group_id = 1
         singnals_grouped = []
-        for pdu in pdus:
-            ipdu = get_child(pdu, "I-PDU", root_or_cache, ns)
+        header_type = get_child(pdu, "HEADER-TYPE", root_or_cache, ns).text
+        if header_type == "SHORT-HEADER":
+            header_length = 32
+            new_frame.add_signal(canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex = "Multiplexor", is_little_endian = True))
+            new_frame.add_signal(canmatrix.Signal(start_bit=24, size= 8, name="Header_DLC", is_little_endian = True))
+        else:
+            pass
+            #TODO
+
+
+        for cpdu in pdus:
+            ipdu = get_child(cpdu, "I-PDU", root_or_cache, ns)
+            try:
+                #TODO
+                header_id = get_child(ipdu, "HEADER-ID-SHORT-HEADER", root_or_cache, ns).text
+            except AttributeError:
+                header_id = "0"
             # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
             pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
             # TODO
             if pdu_sig_mapping:
-                get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
+                get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, int(header_id), float_factory, bit_offset=header_length)
                 new_signals = []
                 for signal in new_frame:
-                    if signal.name not in singnals_grouped:
+                    if signal.name not in singnals_grouped and signal.name is not "Header_ID" and signal.name is not "Header_DLC":
                         new_signals.append(signal.name)
-                new_frame.add_signal_group(get_element_name(pdu, ns), signal_group_id, new_signals)
+                new_frame.add_signal_group("HEARDER_ID_" + header_id, signal_group_id, new_signals)
                 singnals_grouped += new_signals
                 signal_group_id += 1
 
@@ -1677,7 +1692,10 @@ def load(file, **options):
         for frame in db.frames:
             sig_value_hash = dict()
             for sig in frame.signals:
-                sig_value_hash[sig.name] = sig._initValue
+                try:
+                    sig_value_hash[sig.name] = sig._initValue
+                except AttributeError:
+                    sig_value_hash[sig.name] = 0
             frame_data = frame.encode(sig_value_hash)
             frame.add_attribute("GenMsgStartValue", "".join(["%02x" % x for x in frame_data]))
         result[bus_name] = db

@@ -17,7 +17,9 @@ def test_ecu_extract():
 def test_get_signals_from_container_i_pdu():
     here = pathlib2.Path(__file__).parent
     matrix = canmatrix.formats.arxml.load(str(here / "ARXMLContainerTest.arxml"))
-    assert matrix["New_CanCluster"].frames[0].signals[0].name == 'PDU_Contained_1_Signal1_905db81da40081cb'
+    assert matrix["New_CanCluster"].frames[0].signals[0].name == 'Header_ID'
+    assert matrix["New_CanCluster"].frames[0].signals[1].name == 'Header_DLC'
+    assert matrix["New_CanCluster"].frames[0].signals[2].name == 'PDU_Contained_1_Signal1_905db81da40081cb'
     assert matrix["New_CanCluster"].frames[0].signalGroups[0].signals[0].name == 'PDU_Contained_1_Signal1_905db81da40081cb'
 
 def test_get_signals_from_secured_pdu():

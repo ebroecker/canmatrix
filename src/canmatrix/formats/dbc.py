@@ -222,6 +222,8 @@ def dump(in_db, f, **options):
             name = normalized_names[signal]
             if compatibility:
                 name = re.sub("[^A-Za-z0-9]", whitespace_replacement, name)
+                if name[0].isdigit():
+                    name = whitespace_replacement + name
             duplicate_signal_counter[name] += 1
             if duplicate_signal_totals[name] > 1:
                 # TODO: pad to 01 in case of 10+ instances, for example?
