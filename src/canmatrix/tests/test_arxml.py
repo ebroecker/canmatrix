@@ -27,3 +27,8 @@ def test_get_signals_from_secured_pdu():
     matrix = canmatrix.formats.arxml.load(str(here / "ARXMLSecuredPDUTest.arxml"))
     assert matrix["CAN"].frames[0].signals[0].name == 'someTestSignal'
     assert matrix["CAN"].frames[0].signals[1].name == 'Signal'
+
+def test_min_max():
+    here = pathlib2.Path(__file__).parent
+    matrix = canmatrix.formats.arxml.load(str(here / "ARXML_min_max.arxml"))
+    assert matrix["New_CanCluster"].frames[0].signals[0].is_signed == False

@@ -927,9 +927,12 @@ def decode_compu_method(compu_method, root_or_cache, ns, float_factory):
             numerator = get_children(numerator_parent, "V", root_or_cache, ns)
             denominator_parent = get_child(rational, "COMPU-DENOMINATOR", root_or_cache, ns)
             denominator = get_children(denominator_parent, "V", root_or_cache, ns)
-
-            factor = float_factory(numerator[1].text) / float_factory(denominator[0].text)
-            offset = float_factory(numerator[0].text) / float_factory(denominator[0].text)
+            try:
+                factor = float_factory(numerator[1].text) / float_factory(denominator[0].text)
+                offset = float_factory(numerator[0].text) / float_factory(denominator[0].text)
+            except decimal.DivisionByZero:
+                factor = float_factory(1)
+                offset = float_factory(0)
         else:
             const = get_child(compu_scale, "COMPU-CONST", root_or_cache, ns)
             # add value
@@ -937,6 +940,31 @@ def decode_compu_method(compu_method, root_or_cache, ns, float_factory):
                 logger.warning("Unknown Compu-Method: at sourceline %d ", compu_method.sourceline)
     return values, factor, offset, unit, const
 
+
+def eval_type_of_signal(type_encoding, base_type, ns):
+    if type_encoding == "NONE":
+        is_signed = False
+        is_float = False
+    elif type_encoding == "2C":
+        is_signed = True
+        is_float = False
+    elif type_encoding == "IEEE754" or type_encoding == "SINGLE" or type_encoding == "DOUBLE":
+        is_signed = True
+        is_float = True
+    elif type_encoding == "BOOLEAN":
+        is_signed = False
+        is_float = False
+    elif base_type is not None:
+        is_float = False
+        type_name = get_element_name(base_type, ns)
+        if type_name[0] == 'u':
+            is_signed = False  # unsigned
+        else:
+            is_signed = True  # signed
+    else:
+        is_float = False
+        is_signed = False  # signed
+    return is_signed, is_float
 
 def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_factory, bit_offset = 0):
     # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, str, _MultiplexId, typing.Callable) -> None
@@ -968,12 +996,17 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
                 frame.name, get_child(signal, "SHORT-NAME", root_or_cache, ns).text)
 
         base_type = get_child(isignal, "BASE-TYPE", root_or_cache, ns)
+        try:
+            type_encoding = get_child(base_type,"BASE-TYPE-ENCODING", root_or_cache, ns).text
+        except AttributeError:
+            type_encoding = "None"
         signal_name = None  # type: typing.Optional[str]
         signal_name_elem = get_child(isignal, "LONG-NAME", root_or_cache, ns)
         if signal_name_elem is not None:
             signal_name_elem = get_child(signal_name_elem, "L-4", root_or_cache, ns)
             if signal_name_elem is not None:
                 signal_name = signal_name_elem.text
+
         system_signal = get_child(isignal, "SYSTEM-SIGNAL", root_or_cache, ns)
         if system_signal is None:
             logger.debug('Frame %s, signal %s has no system-signal', frame.name, isignal.tag)
@@ -1015,21 +1048,14 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
                 if base_type is None:
                     base_type = get_child(test_signal, "BASE-TYPE", root_or_cache, ns)
 
-
-
             lower = get_child(data_constr, "LOWER-LIMIT", root_or_cache, ns)
             upper = get_child(data_constr, "UPPER-LIMIT", root_or_cache, ns)
             encoding = None  # TODO - find encoding in AR4
         else:
             lower = get_child(datatype, "LOWER-LIMIT", root_or_cache, ns)
             upper = get_child(datatype, "UPPER-LIMIT", root_or_cache, ns)
-            encoding = get_child(datatype, "ENCODING", root_or_cache, ns)
+            type_encoding = get_child(datatype, "ENCODING", root_or_cache, ns)
 
-        if encoding is not None and (encoding.text == "SINGLE" or encoding.text == "DOUBLE"):
-            is_float = True
-        else:
-            is_float = False
-        
         if lower is not None and upper is not None:
             signal_min = float_factory(lower.text)
             signal_max = float_factory(upper.text)
@@ -1074,14 +1100,8 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
 
         if base_type is None:
             base_type = get_child(datdefprops, "BASE-TYPE", root_or_cache, ns)
-        if base_type is not None:
-            type_name = get_element_name(base_type, ns)
-            if type_name[0] == 'u':
-                is_signed = False  # unsigned
-            else:
-                is_signed = True  # signed
-        else:
-            is_signed = True  # signed
+
+        (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type, ns)
 
         if unit_elem is not None:
             longname = get_child(unit_elem, "LONG-NAME", root_or_cache, ns)
