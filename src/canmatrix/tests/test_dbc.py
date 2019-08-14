@@ -50,7 +50,7 @@ def test_create_attribute_string():
 
 
 def test_create_comment_string():
-    test_string = canmatrix.formats.dbc.create_comment_string("BO_", "ident", "some comment", "utf8", "utf8")
+    test_string = canmatrix.formats.dbc.create_comment_string("BO_", "ident", "some comment", "utf8", "utf8", "")
     assert test_string == b'CM_ BO_ ident "some comment";\n'
 
 
