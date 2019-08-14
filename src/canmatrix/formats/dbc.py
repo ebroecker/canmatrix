@@ -100,13 +100,13 @@ def create_attribute_string(attribute, attribute_class, name, value, is_string):
     return attribute_string
 
 
-def create_comment_string(comment_class, comment_ident, comment, export_encoding, export_comment_encoding):
+def create_comment_string(comment_class, comment_ident, comment, export_encoding, export_comment_encoding, ignore_encoding_errors):
     # type: (str, str, str, str, str) -> bytes
     if len(comment) == 0:
         return b""
     comment_string = ("CM_ " + comment_class + " " + comment_ident + ' "').encode(export_encoding, 'ignore')
     comment_string += comment.replace('"', '\\"').encode(export_comment_encoding, 'ignore')
-    comment_string += '";\n'.encode(export_encoding)
+    comment_string += '";\n'.encode(export_encoding, ignore_encoding_errors)
     return comment_string
 
 
@@ -117,6 +117,7 @@ def dump(in_db, f, **options):
 
     dbc_export_encoding = options.get("dbcExportEncoding", 'iso-8859-1')
     dbc_export_comment_encoding = options.get("dbcExportCommentEncoding",  dbc_export_encoding)
+    ignore_encoding_errors= options.get("ignoreExportEncodingErrors",  "")
     write_val_table = options.get("writeValTable", True)
     compatibility = options.get('compatibility', True)
 
@@ -163,10 +164,10 @@ def dump(in_db, f, **options):
             db.add_env_defines("SystemEnvVarLongSymbol", "STRING")
 
     header = "VERSION \"created by canmatrix\"\n\n\nNS_ :\n\nBS_:\n\n"
-    f.write(header.encode(dbc_export_encoding))
+    f.write(header.encode(dbc_export_encoding, ignore_encoding_errors))
 
     # ECUs
-    f.write("BU_: ".encode(dbc_export_encoding))
+    f.write("BU_: ".encode(dbc_export_encoding, ignore_encoding_errors))
 
     for ecu in db.ecus:
         # fix long ecu names:
@@ -175,18 +176,18 @@ def dump(in_db, f, **options):
             ecu.name = ecu.name[0:32]
             db.add_ecu_defines("SystemNodeLongSymbol", "STRING")
 
-        f.write((ecu.name + " ").encode(dbc_export_encoding))
+        f.write((ecu.name + " ").encode(dbc_export_encoding, ignore_encoding_errors))
 
-    f.write("\n\n".encode(dbc_export_encoding))
+    f.write("\n\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     if write_val_table:
         # ValueTables
         for table in sorted(db.value_tables):
-            f.write(("VAL_TABLE_ " + table).encode(dbc_export_encoding))
+            f.write(("VAL_TABLE_ " + table).encode(dbc_export_encoding, ignore_encoding_errors))
             for row in db.value_tables[table]:
-                f.write(' {} "{}"'.format(str(row), db.value_tables[table][row]).encode(dbc_export_encoding))
-            f.write(";\n".encode(dbc_export_encoding))
-        f.write("\n".encode(dbc_export_encoding))
+                f.write(' {} "{}"'.format(str(row), db.value_tables[table][row]).encode(dbc_export_encoding, ignore_encoding_errors))
+            f.write(";\n".encode(dbc_export_encoding, ignore_encoding_errors))
+        f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     output_names = collections.defaultdict(dict)  # type: typing.Dict[canmatrix.Frame, typing.Dict[canmatrix.Signal, str]]
 
@@ -241,7 +242,7 @@ def dump(in_db, f, **options):
              ": %d " %
              frame.size +
              frame.transmitters[0] +
-             "\n").encode(dbc_export_encoding))
+             "\n").encode(dbc_export_encoding, ignore_encoding_errors))
 
         duplicate_signal_totals = collections.Counter(
             normalize_name(s.name, whitespace_replacement) for s in frame.signals
@@ -284,21 +285,21 @@ def dump(in_db, f, **options):
             if len(signal.receivers) == 0:
                 signal.add_receiver('Vector__XXX')
             signal_line += ','.join(signal.receivers) + "\n"
-            f.write(signal_line.encode(dbc_export_encoding))
+            f.write(signal_line.encode(dbc_export_encoding, ignore_encoding_errors))
 
-        f.write("\n".encode(dbc_export_encoding))
-    f.write("\n".encode(dbc_export_encoding))
+        f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
+    f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     # second Sender:
     for frame in db.frames:
         if len(frame.transmitters) > 1:
-            f.write(("BO_TX_BU_ %d : %s;\n" % (frame.arbitration_id.to_compound_integer(), ','.join(frame.transmitters))).encode(dbc_export_encoding))
+            f.write(("BO_TX_BU_ %d : %s;\n" % (frame.arbitration_id.to_compound_integer(), ','.join(frame.transmitters))).encode(dbc_export_encoding, ignore_encoding_errors))
 
     # frame comments
     # wow, there are dbcs where comments are encoded with other coding than rest of dbc...
     for frame in db.frames:
-        f.write(create_comment_string("BO_", "%d " % frame.arbitration_id.to_compound_integer(), frame.comment, dbc_export_encoding, dbc_export_comment_encoding))
-    f.write("\n".encode(dbc_export_encoding))
+        f.write(create_comment_string("BO_", "%d " % frame.arbitration_id.to_compound_integer(), frame.comment, dbc_export_encoding, dbc_export_comment_encoding, dbc_export_encoding))
+    f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     # signal comments
     for frame in db.frames:
@@ -310,15 +311,15 @@ def dump(in_db, f, **options):
                     "%d " % frame.arbitration_id.to_compound_integer() + name,
                     signal.comment,
                     dbc_export_encoding,
-                    dbc_export_comment_encoding))
-    f.write("\n".encode(dbc_export_encoding))
+                    dbc_export_comment_encoding, dbc_export_encoding))
+    f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     # ecu comments
     for ecu in db.ecus:
         if ecu.comment:
             f.write(create_comment_string("BU_", ecu.name, ecu.comment, dbc_export_encoding,
-                                          dbc_export_comment_encoding))
-    f.write("\n".encode(dbc_export_encoding))
+                                          dbc_export_comment_encoding, dbc_export_encoding))
+    f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     defaults = {}  # type: typing.Dict[str, str]
 
@@ -339,26 +340,26 @@ def dump(in_db, f, **options):
         f.write(create_define(data_type, define, "", defaults).encode(dbc_export_encoding, 'replace'))
 
     for define_name in sorted(defaults):
-        f.write(('BA_DEF_DEF_ "' + define_name + '" ').encode(dbc_export_encoding) +
-                defaults[define_name].encode(dbc_export_encoding, 'replace') + ';\n'.encode(dbc_export_encoding))
+        f.write(('BA_DEF_DEF_ "' + define_name + '" ').encode(dbc_export_encoding, ignore_encoding_errors) +
+                defaults[define_name].encode(dbc_export_encoding, 'replace') + ';\n'.encode(dbc_export_encoding, ignore_encoding_errors))
 
     # ecu-attributes:
     for ecu in db.ecus:
         for attrib, val in sorted(ecu.attributes.items()):
-            f.write(create_attribute_string(attrib, "BU_", ecu.name, val, db.ecu_defines[attrib].type == "STRING").encode(dbc_export_encoding))
-    f.write("\n".encode(dbc_export_encoding))
+            f.write(create_attribute_string(attrib, "BU_", ecu.name, val, db.ecu_defines[attrib].type == "STRING").encode(dbc_export_encoding, ignore_encoding_errors))
+    f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     # global-attributes:
     for attrib, val in sorted(db.attributes.items()):
         f.write(create_attribute_string(attrib, "", "", val, db.global_defines[attrib].type == "STRING").encode(
-            dbc_export_encoding))
-    f.write("\n".encode(dbc_export_encoding))
+            dbc_export_encoding, ignore_encoding_errors))
+    f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     # messages-attributes:
     for frame in db.frames:
         for attrib, val in sorted(frame.attributes.items()):
-            f.write(create_attribute_string(attrib, "BO_", str(frame.arbitration_id.to_compound_integer()), val, db.frame_defines[attrib].type == "STRING").encode(dbc_export_encoding))
-    f.write("\n".encode(dbc_export_encoding))
+            f.write(create_attribute_string(attrib, "BO_", str(frame.arbitration_id.to_compound_integer()), val, db.frame_defines[attrib].type == "STRING").encode(dbc_export_encoding, ignore_encoding_errors))
+    f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     # signal-attributes:
     for frame in db.frames:
@@ -368,15 +369,15 @@ def dump(in_db, f, **options):
                 if isinstance(val, float):
                     val = format_float(val)
                 f.write(create_attribute_string(attrib, "SG_", '%d ' % frame.arbitration_id.to_compound_integer() + name, val,
-                                                db.signal_defines[attrib].type == "STRING").encode(dbc_export_encoding))
+                                                db.signal_defines[attrib].type == "STRING").encode(dbc_export_encoding, ignore_encoding_errors))
 
-    f.write("\n".encode(dbc_export_encoding))
+    f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     for env_var_name, env_var in db.env_vars.items():
         if "attributes" in env_var:
             for attribute, value in env_var["attributes"].items():
                 f.write(create_attribute_string(attribute, "EV_", "", value,
-                                                db.env_defines[attribute].type == "STRING").encode(dbc_export_encoding))
+                                                db.env_defines[attribute].type == "STRING").encode(dbc_export_encoding, ignore_encoding_errors))
 
     # signal-values:
     for frame in db.frames:
@@ -391,11 +392,11 @@ def dump(in_db, f, **options):
                 f.write(
                     ('VAL_ %d ' %
                      frame.arbitration_id.to_compound_integer() +
-                     output_names[frame][signal]).encode(dbc_export_encoding))
+                     output_names[frame][signal]).encode(dbc_export_encoding, ignore_encoding_errors))
                 for attr_name, val in sorted(signal.values.items(), key=lambda x: int(x[0])):
                     f.write(
-                        (' ' + str(attr_name) + ' "' + val + '"').encode(dbc_export_encoding))
-                f.write(";\n".encode(dbc_export_encoding))
+                        (' ' + str(attr_name) + ' "' + val + '"').encode(dbc_export_encoding, ignore_encoding_errors))
+                f.write(";\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     # SIG_VALTYPE
     for frame in db.frames:
@@ -403,28 +404,28 @@ def dump(in_db, f, **options):
             if signal.is_float:
                 if int(signal.size) > 32:
                     f.write(('SIG_VALTYPE_ %d %s : 2;\n' % (frame.arbitration_id.to_compound_integer(), output_names[frame][signal])).encode(
-                        dbc_export_encoding))
+                        dbc_export_encoding, ignore_encoding_errors))
                 else:
                     f.write(('SIG_VALTYPE_ %d %s : 1;\n' % (frame.arbitration_id.to_compound_integer(), output_names[frame][signal])).encode(
-                        dbc_export_encoding))
+                        dbc_export_encoding, ignore_encoding_errors))
 
     # signal-groups:
     for frame in db.frames:
         for sigGroup in frame.signalGroups:
             f.write(("SIG_GROUP_ " + str(frame.arbitration_id.to_compound_integer()) + " " + sigGroup.name +
-                     " " + str(sigGroup.id) + " :").encode(dbc_export_encoding))
+                     " " + str(sigGroup.id) + " :").encode(dbc_export_encoding, ignore_encoding_errors))
             for signal in sigGroup.signals:
-                f.write((" " + output_names[frame][signal]).encode(dbc_export_encoding))
-            f.write(";\n".encode(dbc_export_encoding))
+                f.write((" " + output_names[frame][signal]).encode(dbc_export_encoding, ignore_encoding_errors))
+            f.write(";\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     for frame in db.frames:
         if frame.is_complex_multiplexed:
             for signal in frame.signals:
                 if signal.muxer_for_signal is not None:
-                    f.write(("SG_MUL_VAL_ %d %s %s " % (frame.arbitration_id.to_compound_integer(), signal.name, signal.muxer_for_signal)).encode(dbc_export_encoding))
-                    f.write((", ".join(["%d-%d" % (a, b) for a, b in signal.mux_val_grp])).encode(dbc_export_encoding))
+                    f.write(("SG_MUL_VAL_ %d %s %s " % (frame.arbitration_id.to_compound_integer(), signal.name, signal.muxer_for_signal)).encode(dbc_export_encoding, ignore_encoding_errors))
+                    f.write((", ".join(["%d-%d" % (a, b) for a, b in signal.mux_val_grp])).encode(dbc_export_encoding, ignore_encoding_errors))
 
-                    f.write(";\n".encode(dbc_export_encoding))
+                    f.write(";\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     for env_var_name in db.env_vars:
         env_var = db.env_vars[env_var_name]
@@ -432,7 +433,7 @@ def dump(in_db, f, **options):
             env_var_name, env_var["varType"], env_var["min"],
             env_var["max"], env_var["unit"], env_var["initialValue"],
             env_var["evId"], env_var["accessType"],
-            ",".join(env_var["accessNodes"]))).encode(dbc_export_encoding))
+            ",".join(env_var["accessNodes"]))).encode(dbc_export_encoding, ignore_encoding_errors))
 
 
 class _FollowUps(object):
