@@ -557,6 +557,14 @@ def test_frame_not_multiplexed():
     frame.add_signal(canmatrix.canmatrix.Signal(name="some"))
     assert not frame.is_multiplexed
 
+def test_j1939_frame_construction():
+    frame = canmatrix.canmatrix.Frame()
+    frame.source = 0x22
+    frame.pgn = 0xAAAA
+    frame.priority = 3
+    assert frame.pgn == frame.j1939_pgn
+    assert frame.source == frame.j1939_source
+    assert frame.priority == frame.j1939_prio
 
 def test_frame_calc_j1939_id():
     # we have to set all j1939 properties in the __init__ otherwise the setters crash
@@ -564,7 +572,7 @@ def test_frame_calc_j1939_id():
     frame.source = 0x22
     frame.pgn = 0xAAAA
     frame.priority = 3
-    assert hex(frame.arbitration_id.id) == hex(0x0CAAAA22)
+    assert hex(frame.arbitration_id.id) == hex(0xcaa0022)
 
 
 def test_frame_get_j1939_properties():

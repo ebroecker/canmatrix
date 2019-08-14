@@ -733,7 +733,7 @@ class Frame(object):
     receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
 
-    j1939_pgn = attr.ib(default=None)  # type: typing.Optional[int]
+    j1939_pgn = attr.ib(default=0)  # type: typing.Optional[int]
     j1939_source = attr.ib(default=0)  # type: int
     j1939_prio = attr.ib(default=0)  # type: int
     is_j1939 = attr.ib(default=False)  # type: bool
@@ -789,6 +789,7 @@ class Frame(object):
     def pgn(self, value):  # type: (int) -> None
         self.j1939_pgn = value
         self.recalc_J1939_id()
+        self.j1939_pgn = self.arbitration_id.pgn
 
     @property
     def priority(self):  # type: () -> int
