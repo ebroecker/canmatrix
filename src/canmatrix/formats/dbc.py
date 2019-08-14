@@ -124,15 +124,21 @@ def dump(in_db, f, **options):
     if whitespace_replacement in ['', None] or {' ', '\t'}.intersection(whitespace_replacement):
         logger.warning("Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
 
+    if db.contains_fd and db.contains_j1939:
+        db.add_frame_defines("VFrameFormat",
+                             'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
+        logger.warning("dbc export not fully compatible to candb, because both J1939 and CAN_FD frames are defined")
+
+    elif db.contains_fd:
+        db.add_global_defines("BusType", "STRING")
+        db.add_attribute("BusType", "CAN FD")
+        db.add_frame_defines("VFrameFormat", 'ENUM  "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD"')
+    elif db.contains_j1939:
+        db.add_global_defines("ProtocolType", "STRING")
+        db.add_attribute("ProtocolType", "J1939")
+        db.add_frame_defines("VFrameFormat", 'ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG"')
+
     if db.contains_fd or db.contains_j1939:
-        if db.contains_fd:
-            db.add_global_defines("BusType", "STRING")
-            db.add_attribute("BusType", "CAN FD")
-            db.add_frame_defines("VFrameFormat", 'ENUM  "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD"')
-        elif db.contains_j1939:
-            db.add_global_defines("ProtocolType", "STRING")
-            db.add_attribute("ProtocolType", "J1939")
-            db.add_frame_defines("VFrameFormat", 'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
         for frame in db.frames:
             if frame.is_fd:
                 if frame.arbitration_id.extended:
