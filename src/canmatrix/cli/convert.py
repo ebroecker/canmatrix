@@ -41,7 +41,7 @@ def main():  # type: () -> int
     %prog [options] import-file export-file
 
     import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
-    export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
+    export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym|*.py
 
     following formats are available at this installation:
     \n"""
@@ -156,6 +156,10 @@ def main():  # type: () -> int
                       dest="jsonNativeTypes", action="store_true", default=False,
                       help="Uses native json representation for decimals instead of string.")
 
+    parser.add_option("", "--ignoreEncodingErrors",
+                      dest="ignoreEncodingErrors", action="store_true", default=False,
+                      help="ignore character encoding errors during export (dbc,dbf,sym) ")
+
     parser.add_option("", "--additionalFrameAttributes",
                       dest="additionalFrameAttributes", default="",
                       help="append columns to csv/xls(x), example: is_fd")
@@ -236,6 +240,10 @@ def main():  # type: () -> int
         verbosity = -1
 
     canmatrix.log.set_log_level(logger, verbosity)
+    if cmdlineOptions.ignoreEncodingErrors:
+        cmdlineOptions.ignoreEncodingErrors = "ignore"
+    else:
+        cmdlineOptions.ignoreEncodingErrors = ""
 
     canmatrix.convert.convert(infile, out_file_name, **cmdlineOptions.__dict__)
     return 0
