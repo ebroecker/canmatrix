@@ -613,6 +613,20 @@ class ArbitrationId(object):
             _pgn += ps
         return _pgn
 
+    @pgn.setter
+    def pgn(self, value):  # type: (int) -> None
+        self.extended = True
+        ps = value & 0xff
+        pf = (value >> 8) & 0xFF
+        _pgn = pf << 8
+        if pf >= 240:
+            _pgn += ps
+
+        self.id &= 0xff0000ff
+        self.id |= (_pgn & 0xffff) << 8  # default pgn is None -> mypy reports error
+
+
+
     @property
     def j1939_tuple(self):  # type: () -> typing.Tuple[int, int, int]
         """Get tuple (destination, PGN, source)
@@ -637,6 +651,11 @@ class ArbitrationId(object):
             raise J1939needsExtendedIdetifier
         return self.id & 0xFF
 
+    @j1939_source.setter
+    def j1939_source(self, value):  # type: (int) -> None
+        self.extended = True
+        self.id = (self.id & 0xffffff00) | (value & 0xff)
+
     @property
     def j1939_ps(self):
         if not self.extended:
@@ -659,7 +678,12 @@ class ArbitrationId(object):
     def j1939_priority(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
-        return (self.id >> 25) & 0x7
+        return (self.id >> 26) & 0x7
+
+    @j1939_priority.setter
+    def j1939_priority(self, value):  # type: (int) -> None
+        self.extended = True
+        self.id = (self.id & 0x2ffffff) | ((value & 0x7) << 26)
 
     @property
     def j1939_str(self):  # type: () -> str
@@ -733,9 +757,6 @@ class Frame(object):
     receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
 
-    j1939_pgn = attr.ib(default=0)  # type: typing.Optional[int]
-    j1939_source = attr.ib(default=0)  # type: int
-    j1939_prio = attr.ib(default=0)  # type: int
     is_j1939 = attr.ib(default=False)  # type: bool
     # ('cycleTime', '_cycleTime', int, None),
     # ('sendType', '_sendType', str, None),
@@ -787,39 +808,28 @@ class Frame(object):
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
-        self.j1939_pgn = value
-        self.recalc_J1939_id()
-        self.j1939_pgn = self.arbitration_id.pgn
+        self.arbitration_id.pgn = value
 
     @property
     def priority(self):  # type: () -> int
         """Get J1939 priority."""
-        return self.j1939_prio
+        return self.arbitration_id.j1939_prio
 
     @priority.setter
     def priority(self, value):  # type: (int) -> None
         """Set J1939 priority."""
-        self.j1939_prio = value
-        self.recalc_J1939_id()
+        self.arbitration_id.j1939_priority = value
 
     @property
     def source(self):  # type: () -> int
         """Get J1939 source."""
-        return self.j1939_source
+        return  self.arbitration_id.j1939_source
 
     @source.setter
     def source(self, value):  # type: (int) -> None
         """Set J1939 source."""
-        self.j1939_source = value
-        self.recalc_J1939_id()
+        self.arbitration_id.j1939_source = value
 
-    def recalc_J1939_id(self):  # type: () -> None
-        """Recompute J1939 ID"""
-        self.arbitration_id.id = self.j1939_source & 0xff
-        self.arbitration_id.id += (self.j1939_pgn & 0xffff) << 8  # default pgn is None -> mypy reports error
-        self.arbitration_id.id += (self.j1939_prio & 0x7) << 26
-        self.arbitration_id.extended = True
-        self.is_j1939 = True
 
     # @property
     # def cycleTime(self):
