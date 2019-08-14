@@ -563,7 +563,7 @@ def test_frame_calc_j1939_id():
     frame.source = 0x22
     frame.pgn = 0xAAAA
     frame.priority = 3
-    assert hex(frame.arbitration_id.id) == hex(0xcaa0022)
+    assert frame.arbitration_id.id == 0xcaa0022
 
 
 def test_frame_add_transmitter(empty_frame):
