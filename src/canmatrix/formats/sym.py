@@ -185,6 +185,7 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     global enum_dict
     global enums
     sym_encoding = options.get('symExportEncoding', 'iso-8859-1')
+    ignore_encoding_errors = options.get("ignoreExportEncodingErrors", "")
 
     enum_dict = {}
     enums = "{ENUMS}\n"
@@ -192,7 +193,7 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     header = """FormatVersion=5.0 // Do not edit this line!
 Title=\"canmatrix-Export\"
 """
-    f.write(header.encode(sym_encoding))
+    f.write(header.encode(sym_encoding, ignore_encoding_errors))
 
     def send_receive(for_frame):
         return (
@@ -308,8 +309,8 @@ Title=\"canmatrix-Export\"
                 output += "\n"
     enums += '\n'.join(sorted(enum_dict.values()))
     # write output file
-    f.write((enums + '\n').encode(sym_encoding))
-    f.write(output.encode(sym_encoding))
+    f.write((enums + '\n').encode(sym_encoding, ignore_encoding_errors))
+    f.write(output.encode(sym_encoding, ignore_encoding_errors))
 
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
