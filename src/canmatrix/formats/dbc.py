@@ -127,7 +127,7 @@ def dump(in_db, f, **options):
 
     if db.contains_fd and db.contains_j1939:
         db.add_frame_defines("VFrameFormat",
-                             'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
+                             'ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD"')
         logger.warning("dbc export not fully compatible to candb, because both J1939 and CAN_FD frames are defined")
 
     elif db.contains_fd:
