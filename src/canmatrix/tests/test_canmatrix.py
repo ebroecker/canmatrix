@@ -591,22 +591,13 @@ def test_frame_not_multiplexed():
     frame.add_signal(canmatrix.canmatrix.Signal(name="some"))
     assert not frame.is_multiplexed
 
-
 def test_frame_calc_j1939_id():
     # we have to set all j1939 properties in the __init__ otherwise the setters crash
-    frame = canmatrix.canmatrix.Frame(j1939_source=0x11, j1939_pgn=0xFFFF, j1939_prio=0)
+    frame = canmatrix.canmatrix.Frame()
     frame.source = 0x22
     frame.pgn = 0xAAAA
     frame.priority = 3
-    assert hex(frame.arbitration_id.id) == hex(0x0CAAAA22)
-
-
-def test_frame_get_j1939_properties():
-    frame = canmatrix.canmatrix.Frame(j1939_source=0x11, j1939_pgn=0xFFFF, j1939_prio=1)
-    frame.recalc_J1939_id()  # pgn property is computed from id!
-    assert frame.pgn == frame.j1939_pgn
-    assert frame.source == frame.j1939_source
-    assert frame.priority == frame.j1939_prio
+    assert frame.arbitration_id.id == 0xcaa0022
 
 
 def test_frame_add_transmitter(empty_frame):
@@ -848,7 +839,14 @@ def test_arbitration_id_is_instance():
     assert frame1.arbitration_id.id == 42
     assert frame2.arbitration_id.id == 0
 
-
+def test_arbitration_id_j1939_direct_setters():
+    arb_id = canmatrix.ArbitrationId(0)
+    arb_id.pgn = 0xF1AA
+    arb_id.j1939_source = 0x22
+    arb_id.j1939_priority = 3
+    assert arb_id.pgn == 0xF1AA
+    assert arb_id.j1939_source == 0x22
+    assert arb_id.j1939_priority == 3
 
 @pytest.fixture
 def empty_matrix():
