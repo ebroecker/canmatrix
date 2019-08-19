@@ -931,6 +931,8 @@ def decode_compu_method(compu_method, root_or_cache, ns, float_factory):
                 factor = float_factory(numerator[1].text) / float_factory(denominator[0].text)
                 offset = float_factory(numerator[0].text) / float_factory(denominator[0].text)
             except decimal.DivisionByZero:
+                if numerator[0].text != denominator[0].text or numerator[1].text != denominator[1].text:
+                    logger.warning("ARXML signal scaling: polynom is not supported and it is replaced by factor=1 and offset =0.")
                 factor = float_factory(1)
                 offset = float_factory(0)
         else:
