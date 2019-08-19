@@ -322,6 +322,22 @@ def parse_value_name_column(value_name, value_str, signal_size, float_factory):
     return mini, maxi, offset, value_table
 
 
+def read_additional_signal_attributes(signal, attribute_name, attribute_value):
+    attribute_mapping = {"initial_value": "GenSigStartValue"}
+    if not attribute_name.startswith("signal"):
+        return
+    if attribute_name.replace("signal.", "") in vars(signal):
+        command_str = attribute_name + "="
+        command_str += str(attribute_value)
+        if len(str(attribute_value)) > 0:
+            exec(command_str)
+    elif attribute_name.replace("signal.", "") in attribute_mapping:
+        signal_attribute = attribute_mapping[attribute_name.replace("signal.", "")]
+        if len(str(attribute_value)) > 0:
+            signal.add_attribute(signal_attribute, attribute_value)
+    else:
+        pass
+
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
@@ -341,7 +357,7 @@ def load(file, **options):
     db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
     # db.addFrameDefines("GenMsgStartValue",  'STRING')
     launch_types = []  # type: typing.List[str]
-    # db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
+    db.add_signal_defines("GenSigStartValue", 'HEX 0 4294967295')
     db.add_signal_defines("GenSigSNA", 'STRING')
 
     # eval search for correct columns:
@@ -426,9 +442,10 @@ def load(file, **options):
 
             # eval launch_type
             if launch_type is not None:
-                new_frame.add_attribute("GenMsgSendType", launch_type)
-                if launch_type not in launch_types:
-                    launch_types.append(launch_type)
+                if len(launch_type) > 0:
+                    new_frame.add_attribute("GenMsgSendType", launch_type)
+                    if launch_type not in launch_types:
+                        launch_types.append(launch_type)
 
             # eval cycle time
             try:
@@ -506,11 +523,7 @@ def load(file, **options):
 
                 for additional_index in additional_inputs:  # todo explain this possibly dangerous code with eval
                     if "signal" in additional_inputs[additional_index]:
-                        command_str = additional_inputs[additional_index].replace("signal", "new_signal")
-                        command_str += "="
-                        command_str += str(sh.cell(row_num, additional_index).value)
-                        if len(str(sh.cell(row_num, additional_index).value)) > 0:
-                            exec(command_str)
+                        read_additional_signal_attributes(new_signal, additional_inputs[additional_index], sh.cell(row_num, additional_index).value)
 
                 new_frame.add_signal(new_signal)
                 new_signal.add_comment(signal_comment)
