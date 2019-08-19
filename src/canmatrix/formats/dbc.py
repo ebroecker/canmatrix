@@ -125,14 +125,21 @@ def dump(in_db, f, **options):
     if whitespace_replacement in ['', None] or {' ', '\t'}.intersection(whitespace_replacement):
         logger.warning("Settings may result in whitespace in DBC variable names.  This is not supported by the DBC format.")
 
+    if db.contains_fd and db.contains_j1939:
+        db.add_frame_defines("VFrameFormat",
+                             'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
+        logger.warning("dbc export not fully compatible to candb, because both J1939 and CAN_FD frames are defined")
+
+    elif db.contains_fd:
+        db.add_global_defines("BusType", "STRING")
+        db.add_attribute("BusType", "CAN FD")
+        db.add_frame_defines("VFrameFormat", 'ENUM  "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD"')
+    elif db.contains_j1939:
+        db.add_global_defines("ProtocolType", "STRING")
+        db.add_attribute("ProtocolType", "J1939")
+        db.add_frame_defines("VFrameFormat", 'ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG"')
+
     if db.contains_fd or db.contains_j1939:
-        if db.contains_fd:
-            db.add_global_defines("BusType", "STRING")
-            db.add_attribute("BusType", "CAN FD")
-        elif db.contains_j1939:
-            db.add_global_defines("ProtocolType", "STRING")
-            db.add_attribute("ProtocolType", "J1939")
-        db.add_frame_defines("VFrameFormat", 'ENUM "StandardCAN","ExtendedCAN","StandardCAN_FD","ExtendedCAN_FD","J1939PG"')
         for frame in db.frames:
             if frame.is_fd:
                 if frame.arbitration_id.extended:
@@ -223,6 +230,8 @@ def dump(in_db, f, **options):
             name = normalized_names[signal]
             if compatibility:
                 name = re.sub("[^A-Za-z0-9]", whitespace_replacement, name)
+                if name[0].isdigit():
+                    name = whitespace_replacement + name
             duplicate_signal_counter[name] += 1
             if duplicate_signal_totals[name] > 1:
                 # TODO: pad to 01 in case of 10+ instances, for example?

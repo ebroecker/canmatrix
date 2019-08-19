@@ -1013,7 +1013,20 @@ class Frame(object):
         for sig in self.signals:
             if sig.get_startbit() + int(sig.size) > max_bit:
                 max_bit = sig.get_startbit() + int(sig.size)
-        self.size = max(self.size, int(math.ceil(max_bit / 8)))
+        max_byte = int(math.ceil(max_bit / 8))
+        self.size = max(self.size, max_byte)
+
+    def fit_dlc(self):
+        """
+            Compute next allowed DLC (length) for current Frame
+        """
+        max_byte = self.size
+        last_size = 8
+        for max_size in [12, 16, 20, 24, 32, 48, 64]:
+            if max_byte > last_size and max_byte < max_size:
+                self.size = max_size
+                break
+            last_size = max_size
 
     def get_frame_layout(self):
         # type: () -> typing.Sequence[typing.Sequence[str]]
@@ -1726,7 +1739,6 @@ class CanMatrix(object):
         :param str strategy: selected strategy, "max" or "force".
         """
         for frame in self.frames:
-            originalDlc = frame.size  # unused, remove?
             if "max" == strategy:
                 frame.calc_dlc()
             if "force" == strategy:

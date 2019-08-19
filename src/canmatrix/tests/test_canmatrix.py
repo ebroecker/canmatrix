@@ -460,6 +460,40 @@ def test_frame_compute_dlc():
     frame.calc_dlc()
     assert frame.size == 2
 
+def test_frame_fit_dlc():
+    frame = canmatrix.canmatrix.Frame()
+    for i in range(1,9):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == i
+    for i in range(9,13):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 12
+    for i in range(13,17):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 16
+    for i in range(17,21):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 20
+    for i in range(21,25):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 24
+    for i in range(25,33):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 32
+    for i in range(33,49):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 48
+    for i in range(49,65):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 64
 
 def test_frame_find_unused_bits():
     frame = canmatrix.canmatrix.Frame(size=1)
