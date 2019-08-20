@@ -25,75 +25,37 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import logging
-import optparse
 import sys
 import typing
+import click
 
 import attr
 import canmatrix.compare
 
 logger = logging.getLogger(__name__)
 
+@click.command()
+@click.option('-v', '--verbose', 'verbosity', help="Output verbosity", count=True, default=1)
+@click.option('-s', '--silent', is_flag=True, default=False, help="don't print status messages to stdout. (only errors)")
+@click.option('-f', '--frames', is_flag=True, default=False, help="show list of frames")
+@click.option('-c', '--comments', 'check_comments', is_flag=True, default=False, help="ignore changed comments")
+@click.option('-a', '--attributes', 'check_attributes', is_flag=True, default=False, help="ignore changed attributes")
+@click.option('-t', '--valueTable', 'ignore_valuetables', is_flag=True, default=False, help="ignore changed valuetables")
+@click.argument('matrix1', required=1)
+@click.argument('matrix2', required=1)
+def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attributes, ignore_valuetables, frames):  # type: () -> int
+    """
+        canmatrix.cli.compare [options] matrix1 matrix2
 
-def main():  # type: () -> int
+        matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
+    """
+
     import canmatrix.log
     canmatrix.log.setup_logger()
 
-    usage = """
-    %prog [options] cancompare matrix1 matrix2
 
-    matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml
-    """
 
-    parser = optparse.OptionParser(usage=usage)
-    parser.add_option(
-        "-s",
-        dest="silent",
-        action="store_true",
-        help="don't print status messages to stdout. (only errors)",
-        default=False)
-    parser.add_option(
-        "-v",
-        dest="verbosity",
-        action="count",
-        help="Output verbosity",
-        default=0)
-    parser.add_option(
-        "-f", "--frames",
-        dest="frames",
-        action="store_true",
-        help="show list of frames",
-        default=False)
-    parser.add_option(
-        "-c", "--comments",
-        dest="check_comments",
-        action="store_true",
-        help="check changed comments",
-        default=False)
-    parser.add_option(
-        "-a", "--attributes",
-        dest="check_attributes",
-        action="store_true",
-        help="check changed attributes",
-        default=False)
-    parser.add_option(
-        "-t", "--valueTable",
-        dest="ignore_valuetables",
-        action="store_true",
-        help="check changed valuetables",
-        default=False)
-
-    (cmdlineOptions, args) = parser.parse_args()
-
-    if len(args) < 2:
-        parser.print_help()
-        sys.exit(1)
-
-    matrix1 = args[0]
-    matrix2 = args[1]
-
-    verbosity = cmdlineOptions.verbosity
-    if cmdlineOptions.silent:
+    if silent:
         # Only print ERROR messages (ignore import warnings)
         verbosity = -1
     canmatrix.log.set_log_level(logger, verbosity)
@@ -102,25 +64,25 @@ def main():  # type: () -> int
     import canmatrix.formats  # due this import we need the import alias for log module
 
     logger.info("Importing " + matrix1 + " ... ")
-    db1 = next(iter(canmatrix.formats.loadp(matrix1).values()))
+    db1 = canmatrix.formats.loadp_flat(matrix1)
     logger.info("%d Frames found" % (db1.frames.__len__()))
 
     logger.info("Importing " + matrix2 + " ... ")
-    db2 = next(iter(canmatrix.formats.loadp(matrix2).values()))
+    db2 = canmatrix.formats.loadp_flat(matrix2)
     logger.info("%d Frames found" % (db2.frames.__len__()))
 
     ignore = {}  # type: typing.Dict[str, typing.Union[str, bool]]
 
-    if not cmdlineOptions.check_comments:
+    if not check_comments:
         ignore["comment"] = "*"
 
-    if not cmdlineOptions.check_attributes:
+    if not check_attributes:
         ignore["ATTRIBUTE"] = "*"
 
-    if cmdlineOptions.ignore_valuetables:
+    if ignore_valuetables:
         ignore["VALUETABLES"] = True
 
-    if cmdlineOptions.frames:
+    if frames:
         only_in_matrix1 = [
             frame.name
             for frame in db1.frames
@@ -144,4 +106,4 @@ def main():  # type: () -> int
 
 # to be run as module `python -m canmatrix.compare`, NOT as script with argument `canmatrix/compare.py`
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.exit(cli_compare())
