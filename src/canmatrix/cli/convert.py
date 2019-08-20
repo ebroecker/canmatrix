@@ -91,6 +91,7 @@ def get_formats():
 @click.option('--xlsMotorolaBitFormat', 'xlsMotorolaBitFormat', default="msbreverse", help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")
 @click.option('--additionalFrameAttributes', 'additionalFrameAttributes', default = "", help="append columns to csv/xls(x), example: is_fd")
 @click.option('--additionalSignalAttributes', 'additionalSignalAttributes', default = "", help="append columns to csv/xls(x), example: is_signed,attributes[\"GenSigStartValue\"]")
+@click.option('--xlsValuesInSeperateLines/--no-xlsValuesInSeperateLines', 'xlsValuesInSeperateLines', default = False, help="Excel format: create seperate line for each value of signal value table\tdefault: False")
 # json switches
 @click.option('--jsonExportCanard/--no-jsonExportCanard', 'jsonExportCanard', default=False, help="Export Canard compatible json format")
 @click.option('--jsonExportAll/--no-jsonExportAll', 'jsonExportAll', default=False, help="Export more data to json format")
