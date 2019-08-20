@@ -143,6 +143,13 @@ def main():  # type: () -> int
     parser.add_option("", "--xlsMotorolaBitFormat",
                       dest="xlsMotorolaBitFormat", default="msbreverse",
                       help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")
+
+    parser.add_option("", "--xlsValuesInSeperateLines", action="store_true",
+                      dest="xlsValuesInSeperateLines", default=False,
+                      help="Excel format: create seperate line for each value of signal value table\tdefault: False")
+
+
+
     parser.add_option("", "--jsonExportCanard",
                       dest="jsonCanard", action="store_true", default=False,
                       help="Export Canard compatible json format")
