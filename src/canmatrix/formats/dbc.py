@@ -117,7 +117,7 @@ def dump(in_db, f, **options):
 
     dbc_export_encoding = options.get("dbcExportEncoding", 'iso-8859-1')
     dbc_export_comment_encoding = options.get("dbcExportCommentEncoding",  dbc_export_encoding)
-    ignore_encoding_errors= options.get("ignoreExportEncodingErrors",  "")
+    ignore_encoding_errors= options.get("ignoreEncodingErrors",  "")
     write_val_table = options.get("writeValTable", True)
     compatibility = options.get('compatibility', True)
 

@@ -198,7 +198,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         out_dbs[name] = db
 
     if 'force_output' in options and options['force_output'] is not None:
-        canmatrix.formats.dumpp(out_dbs, out_file_name, exportType=options[
+        canmatrix.formats.dumpp(out_dbs, out_file_name, export_type=options[
                                 'force_output'], **options)
     else:
         canmatrix.formats.dumpp(out_dbs, out_file_name, **options)
