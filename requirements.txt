@@ -1,3 +1,4 @@
+click
 lxml
 xlwt
 xlrd

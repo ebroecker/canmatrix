@@ -66,6 +66,7 @@ def create_dbc_with_special_char():
 
     db = canmatrix.CanMatrix()
     db.add_frame(myFrame)
+    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
     canmatrix.formats.dumpp({"": db}, outFile, dbcExportEncoding='iso-8859-1',
                             dbcExportCommentEncoding='iso-8859-1')
     return outFile
@@ -74,3 +75,62 @@ def test_ignore_encoding_errors(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     normal_result = run("--ignoreEncodingErrors","--dbcExportEncoding", "ascii", inputFile, "tmp2.dbc")
     assert 'INFO - convert - done' in normal_result.errlines[-1]
+
+def test_delete_obsolete_defines(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--deleteObsoleteDefines", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "BA_DEF_" not in content
+    normal_result = run(inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "BA_DEF_" in content
+
+def test_delete_ecu(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--deleteEcu","testBU", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "testBU" not in content
+
+def test_rename_ecu(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--renameEcu","testBU:renamedECU", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "testBU" not in content
+        assert "renamedECU" in content
+
+def test_delete_signal(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--deleteSignal","someTestSignal", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "someTestSignal" not in content
+
+def test_rename_signal(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--renameSignal","someTestSignal:renamedSignal", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "someTestSignal" not in content
+        assert "renamedSignal" in content
+
+def test_delete_frame(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--deleteFrame","testFrame1", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "testFrame1" not in content
+
+def test_rename_frame(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--renameFrame","testFrame1:renamedFrame", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "testFrame1" not in content
+        assert "renamedFrame" in content
+
+#todo deleteZeroSignals
+#todo deleteSignalAttributes
