@@ -132,5 +132,53 @@ def test_rename_frame(tmpdir, run):
         assert "testFrame1" not in content
         assert "renamedFrame" in content
 
+def test_add_frame_receiver(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--addFrameReceiver","testFrame1:newECU", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "recBU,newECU" in content
+
+def test_change_frame_id(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--changeFrameId","291:666", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "BO_ 666" in content
+
+def test_set_frame_fd(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    deleted_result = run("--setFrameFd","testFrame1", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert 'BA_ "VFrameFormat" BO_ 291 14' in content
+    deleted_result = run("--unsetFrameFd","testFrame1", "tmp2.dbc", "tmp3.dbc")
+    with open("tmp3.dbc","r") as fd:
+        content = fd.read()
+        assert 'BA_ "VFrameFormat" BO_ 291 14' not in content
+
+def test_recalc_dlc(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    result = run("--recalcDLC","max", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "testFrame1: 8" in content
+
+    result = run("--recalcDLC","force", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "testFrame1: 2" in content
+
+def test_skip_long_dlc(tmpdir, run):
+    inputFile = create_dbc_with_special_char()
+    result = run("--skipLongDlc", "7", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "someTestSignal" not in content
+
+
+
+
 #todo deleteZeroSignals
 #todo deleteSignalAttributes
+#todo cutLongFrames

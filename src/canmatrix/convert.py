@@ -141,6 +141,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                 frame_ptr = db.frame_by_name(frame_name)
                 if frame_ptr is not None:
                     frame_ptr.is_fd = False
+                    frame_ptr.del_attribute("VFrameFormat")
 
         if 'skipLongDlc' in options and options['skipLongDlc'] is not None:
             delete_frame_list = []  # type: typing.List[cm.Frame]
