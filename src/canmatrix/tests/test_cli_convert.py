@@ -79,43 +79,43 @@ def test_ignore_encoding_errors(tmpdir, run):
 def test_delete_obsolete_defines(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     deleted_result = run("--deleteObsoleteDefines", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "BA_DEF_" not in content
+        assert b"BA_DEF_" not in content
     normal_result = run(inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "BA_DEF_" in content
+        assert b"BA_DEF_" in content
 
 def test_delete_ecu(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     deleted_result = run("--deleteEcu","testBU", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "testBU" not in content
+        assert b"testBU" not in content
 
 def test_rename_ecu(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     deleted_result = run("--renameEcu","testBU:renamedECU", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "testBU" not in content
-        assert "renamedECU" in content
+        assert b"testBU" not in content
+        assert b"renamedECU" in content
 
 def test_delete_signal(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     deleted_result = run("--deleteSignal","someTestSignal", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "someTestSignal" not in content
+        assert b"someTestSignal" not in content
 
 def test_rename_signal(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     deleted_result = run("--renameSignal","someTestSignal:renamedSignal", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "someTestSignal" not in content
-        assert "renamedSignal" in content
+        assert b"someTestSignal" not in content
+        assert b"renamedSignal" in content
 
 def test_delete_frame(tmpdir, run):
     inputFile = create_dbc_with_special_char()
@@ -127,47 +127,47 @@ def test_delete_frame(tmpdir, run):
 def test_rename_frame(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     deleted_result = run("--renameFrame","testFrame1:renamedFrame", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "testFrame1" not in content
-        assert "renamedFrame" in content
+        assert b"testFrame1" not in content
+        assert b"renamedFrame" in content
 
 def test_add_frame_receiver(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     deleted_result = run("--addFrameReceiver","testFrame1:newECU", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "recBU,newECU" in content
+        assert b"recBU,newECU" in content
 
 def test_change_frame_id(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     deleted_result = run("--changeFrameId","291:666", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "BO_ 666" in content
+        assert b"BO_ 666" in content
 
 def test_set_frame_fd(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     deleted_result = run("--setFrameFd","testFrame1", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert 'BA_ "VFrameFormat" BO_ 291 14' in content
+        assert b'BA_ "VFrameFormat" BO_ 291 14' in content
     deleted_result = run("--unsetFrameFd","testFrame1", "tmp2.dbc", "tmp3.dbc")
-    with open("tmp3.dbc","r") as fd:
+    with open("tmp3.dbc","rb") as fd:
         content = fd.read()
-        assert 'BA_ "VFrameFormat" BO_ 291 14' not in content
+        assert b'BA_ "VFrameFormat" BO_ 291 14' not in content
 
 def test_recalc_dlc(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     result = run("--recalcDLC","max", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "testFrame1: 8" in content
+        assert b"testFrame1: 8" in content
 
     result = run("--recalcDLC","force", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "testFrame1: 2" in content
+        assert b"testFrame1: 2" in content
 
 def test_skip_long_dlc(tmpdir, run):
     inputFile = create_dbc_with_special_char()
