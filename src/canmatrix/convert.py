@@ -84,7 +84,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                             canmatrix.copy.copy_ecu_with_frames(
                                 mergeOpt.split('=')[1], db_temp_list[dbTemp], db)
                         if mergeOpt.split('=')[0] == "frame":
-                            frame_to_copy = dbs[name].frame_by_name(mergeOpt.split('=')[1])
+                            frame_to_copy = db_temp_list[name].frame_by_name(mergeOpt.split('=')[1])
                             canmatrix.copy.copy_frame(frame_to_copy.arbitration_id, db_temp_list[dbTemp], db)
 
         if 'renameEcu' in options and options['renameEcu'] is not None:
