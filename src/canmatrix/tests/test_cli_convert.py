@@ -290,15 +290,15 @@ def test_merge(tmpdir, run):
         assert b"BO_ 293" in content
 
     result = run("--merge", inputFile1 + ":ecu=testBU", inputFile2, "tmp3.dbc")
-    with open("tmp3.dbc", "r") as fd:
+    with open("tmp3.dbc", "rb") as fd:
         content = fd.read()
-        assert "BO_ 291" in content
-        assert "BO_ 292" in content
-        assert "BO_ 293" in content
+        assert b"BO_ 291" in content
+        assert b"BO_ 292" in content
+        assert b"BO_ 293" in content
 
     result = run("--merge", inputFile1 + ":frame=testFrame1", inputFile2, "tmp4.dbc")
-    with open("tmp4.dbc", "r") as fd:
+    with open("tmp4.dbc", "rb") as fd:
         content = fd.read()
-        assert "BO_ 291" in content
-        assert "BO_ 292" in content
-        assert "BO_ 293" in content
+        assert b"BO_ 291" in content
+        assert b"BO_ 292" in content
+        assert b"BO_ 293" in content
