@@ -182,3 +182,4 @@ def test_skip_long_dlc(tmpdir, run):
 #todo deleteZeroSignals
 #todo deleteSignalAttributes
 #todo cutLongFrames
+#todo deleteFrameAttributes
