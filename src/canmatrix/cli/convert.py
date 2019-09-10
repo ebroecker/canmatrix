@@ -46,7 +46,7 @@ def get_formats():
 @click.command()
 # global switches
 @click.option('-v', '--verbose', 'verbosity', count=True, default=1)
-@click.option('-s', '--silent/--no-silent', default=False, help="don't print status messages to stdout. (only errors)")
+@click.option('-s', '--silent/--no-silent', is_flag=True, default=False, help="don't print status messages to stdout. (only errors)")
 @click.option('-f', '--force_output', help="enforce output format, ignoring output file extension (e.g., -f csv).\nSupported formats for writing:\n" + get_formats()[1])
 @click.option('-i', '--input_format', 'import_type', help="give hint for input format\nSupported formats for reading:\n" + get_formats()[0])
 @click.option('--ignoreEncodingErrors/--no-ignoreEncodingErrors', 'ignoreEncodingErrors', default=False, help="ignore character encoding errors during export (dbc,dbf,sym)")
@@ -112,13 +112,14 @@ def cli_convert(infile, outfile, silent, verbosity, **options):  # type: () -> i
 
     \n"""
 
-    canmatrix.log.setup_logger()
+    root_logger = canmatrix.log.setup_logger()
 
     if silent == True:
         # only print error messages, ignore verbosity flag
         verbosity = -1
+        options["silent"] = True
 
-    canmatrix.log.set_log_level(logger, verbosity)
+    canmatrix.log.set_log_level(root_logger, verbosity)
     if options["ignoreEncodingErrors"]:
         options["ignoreEncodingErrors"] = "ignore"
     else:

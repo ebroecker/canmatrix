@@ -84,7 +84,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                             canmatrix.copy.copy_ecu_with_frames(
                                 mergeOpt.split('=')[1], db_temp_list[dbTemp], db)
                         if mergeOpt.split('=')[0] == "frame":
-                            frame_to_copy = dbs[name].frame_by_name(mergeOpt.split('=')[1])
+                            frame_to_copy = db_temp_list[name].frame_by_name(mergeOpt.split('=')[1])
                             canmatrix.copy.copy_frame(frame_to_copy.arbitration_id, db_temp_list[dbTemp], db)
 
         if 'renameEcu' in options and options['renameEcu'] is not None:
@@ -141,6 +141,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                 frame_ptr = db.frame_by_name(frame_name)
                 if frame_ptr is not None:
                     frame_ptr.is_fd = False
+                    frame_ptr.del_attribute("VFrameFormat")
 
         if 'skipLongDlc' in options and options['skipLongDlc'] is not None:
             delete_frame_list = []  # type: typing.List[cm.Frame]
@@ -198,7 +199,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         out_dbs[name] = db
 
     if 'force_output' in options and options['force_output'] is not None:
-        canmatrix.formats.dumpp(out_dbs, out_file_name, exportType=options[
+        canmatrix.formats.dumpp(out_dbs, out_file_name, export_type=options[
                                 'force_output'], **options)
     else:
         canmatrix.formats.dumpp(out_dbs, out_file_name, **options)

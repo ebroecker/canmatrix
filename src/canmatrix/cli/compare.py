@@ -38,8 +38,8 @@ logger = logging.getLogger(__name__)
 @click.option('-v', '--verbose', 'verbosity', help="Output verbosity", count=True, default=1)
 @click.option('-s', '--silent', is_flag=True, default=False, help="don't print status messages to stdout. (only errors)")
 @click.option('-f', '--frames', is_flag=True, default=False, help="show list of frames")
-@click.option('-c', '--comments', 'check_comments', is_flag=True, default=False, help="ignore changed comments")
-@click.option('-a', '--attributes', 'check_attributes', is_flag=True, default=False, help="ignore changed attributes")
+@click.option('-c', '--comments', 'check_comments', is_flag=True, default=False, help="look for changed comments")
+@click.option('-a', '--attributes', 'check_attributes', is_flag=True, default=False, help="look for changed attributes")
 @click.option('-t', '--valueTable', 'ignore_valuetables', is_flag=True, default=False, help="ignore changed valuetables")
 @click.argument('matrix1', required=1)
 @click.argument('matrix2', required=1)
@@ -51,14 +51,14 @@ def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attri
     """
 
     import canmatrix.log
-    canmatrix.log.setup_logger()
+    root_logger = canmatrix.log.setup_logger()
 
 
 
     if silent:
         # Only print ERROR messages (ignore import warnings)
         verbosity = -1
-    canmatrix.log.set_log_level(logger, verbosity)
+    canmatrix.log.set_log_level(root_logger, verbosity)
 
     # import only after setting log level, to also disable warning messages in silent mode.
     import canmatrix.formats  # due this import we need the import alias for log module
