@@ -177,17 +177,17 @@ def test_cut_long_frames(tmpdir, run):
         content = fd.read()
         assert "someTestSignal" not in content
     result = run("--cutLongFrames", "2", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "someTestSignal" in content
+        assert b"someTestSignal" in content
 
 def test_copy_signals(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     result = run("--signals", "someTestSignal", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "someTestSignal" in content
-        assert "VECTOR__INDEPENDENT_SIG_MSG" in content
+        assert b"someTestSignal" in content
+        assert b"VECTOR__INDEPENDENT_SIG_MSG" in content
 
 
 def create_dbc():
@@ -248,11 +248,11 @@ def test_copy_ecus(tmpdir, run):
 
 def test_copy_frames(tmpdir, run):
     inputFile = create_dbc()
-    result = run("--frames", "testFrame1", inputFile, "tmp2.dbc")
-    with open("tmp2.dbc","r") as fd:
+    result = run("--frames", "testFrame3", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","rb") as fd:
         content = fd.read()
-        assert "testFrame2" not in content
-        assert "testFrame3" in content
+        assert b"testFrame2" not in content
+        assert b"testFrame3" in content
 
 def test_delete_frame_attributes(tmpdir, run):
     inputFile = create_dbc()
@@ -283,11 +283,11 @@ def test_merge(tmpdir, run):
     if inputFile1[1] == ":":
         inputFile1 = inputFile1[2:]
     result = run("--merge", inputFile1, inputFile2, "tmp2.dbc")
-    with open("tmp2.dbc", "r") as fd:
+    with open("tmp2.dbc", "rb") as fd:
         content = fd.read()
-        assert "BO_ 291" in content
-        assert "BO_ 292" in content
-        assert "BO_ 293" in content
+        assert b"BO_ 291" in content
+        assert b"BO_ 292" in content
+        assert b"BO_ 293" in content
 
     result = run("--merge", inputFile1 + ":ecu=testBU", inputFile2, "tmp3.dbc")
     with open("tmp3.dbc", "r") as fd:
