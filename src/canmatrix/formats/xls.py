@@ -338,6 +338,7 @@ def read_additional_signal_attributes(signal, attribute_name, attribute_value):
     else:
         pass
 
+
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")

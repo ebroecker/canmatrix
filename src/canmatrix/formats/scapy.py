@@ -22,12 +22,15 @@
 # this script exports scapy python files
 # https://scapy.readthedocs.io/en/latest/advanced_usage.html#automotive-usage
 
-extension = "py"
 import textwrap
+import typing
+
+import canmatrix
+
+extension = "py"
 
 
-
-def get_fmt(signal):
+def get_fmt(signal):  # type: (canmatrix.Signal) -> str
 
     if signal.is_little_endian:
         fmt = "<"
@@ -43,8 +46,7 @@ def get_fmt(signal):
     return fmt
 
 
-
-def dump(db, f, **options):
+def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
     scapy_decoder = textwrap.dedent("""    #!/usr/bin/env python
     # -*- coding: utf-8 -*-
     from scapy.packet import Packet
