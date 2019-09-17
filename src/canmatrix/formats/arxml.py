@@ -123,11 +123,11 @@ def get_base_type_of_signal(signal):
 
 
 def dump(dbs, f, **options):
-    # type: (canmatrix.cancluster.CanCluster, typing.IO, **str) -> None
+    # type: (typing.Mapping[str, canmatrix.CanMatrix], typing.IO, **str) -> None
     ar_version = options.get("arVersion", "3.2.3")
 
     for name in dbs:
-        db = dbs[name]  # type: canmatrix.CanMatrix
+        db = dbs[name]
         for frame in db.frames:
             for signal in frame.signals:
                 for rec in signal.receivers:
@@ -968,8 +968,9 @@ def eval_type_of_signal(type_encoding, base_type, ns):
         is_signed = False  # signed
     return is_signed, is_float
 
-def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_factory, bit_offset = 0):
-    # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, str, _MultiplexId, typing.Callable) -> None
+
+def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_factory, bit_offset=0):
+    # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, str, _MultiplexId, typing.Callable, int) -> None
     """Add signals from xml to the Frame."""
     global signal_rxs
     group_id = 1
@@ -1235,12 +1236,11 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ro
             get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, selector_id.text, float_factory)
 
 
-
 def get_frame_from_container_ipdu(pdu, target_frame, root_or_cache, ns, float_factory):
     target_frame.is_fd = True
     pdus = get_children(pdu, "CONTAINED-PDU-TRIGGERING", root_or_cache, ns)
     signal_group_id = 1
-    singnals_grouped = []
+    singnals_grouped = []  # type: typing.List[str]
     header_type = get_child(pdu, "HEADER-TYPE", root_or_cache, ns).text
     if header_type == "SHORT-HEADER":
         header_length = 32

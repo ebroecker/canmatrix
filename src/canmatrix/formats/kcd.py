@@ -120,11 +120,11 @@ def create_signal(signal, node_list, type_enums):
 
 
 def dump(dbs, f, **_options):
-    # type: (canmatrix.cancluster.CanCluster, typing.IO, **typing.Any) -> None
+    # type: (typing.Mapping[str, canmatrix.CanMatrix], typing.IO, **typing.Any) -> None
     signal_type_enums = {}
     cluster = canmatrix.cancluster.CanCluster(dbs)
     for name in cluster:  # type: str
-        db = cluster[name]
+        db = cluster[name]  # type: canmatrix.CanMatrix
         for (typename, define) in list(db.signal_defines.items()):
             defines = re.split(r"\s+", define.definition)  # type: typing.Sequence[str]
             define_type = defines[0]
@@ -171,7 +171,7 @@ def dump(dbs, f, **_options):
         if name:
             bus.set("name", name)
 
-        for frame in db.frames:  # type: canmatrix.Frame
+        for frame in db.frames:
             message = etree.Element(
                 'Message',
                 id="0x%03X" % frame.arbitration_id.id,

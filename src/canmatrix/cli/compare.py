@@ -29,10 +29,10 @@ import sys
 import typing
 import click
 
-import attr
 import canmatrix.compare
 
 logger = logging.getLogger(__name__)
+
 
 @click.command()
 @click.option('-v', '--verbose', 'verbosity', help="Output verbosity", count=True, default=1)
@@ -41,9 +41,9 @@ logger = logging.getLogger(__name__)
 @click.option('-c', '--comments', 'check_comments', is_flag=True, default=False, help="look for changed comments")
 @click.option('-a', '--attributes', 'check_attributes', is_flag=True, default=False, help="look for changed attributes")
 @click.option('-t', '--valueTable', 'ignore_valuetables', is_flag=True, default=False, help="ignore changed valuetables")
-@click.argument('matrix1', required=1)
-@click.argument('matrix2', required=1)
-def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attributes, ignore_valuetables, frames):  # type: () -> int
+@click.argument('matrix1', required=True)
+@click.argument('matrix2', required=True)
+def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attributes, ignore_valuetables, frames):
     """
         canmatrix.cli.compare [options] matrix1 matrix2
 
@@ -52,8 +52,6 @@ def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attri
 
     import canmatrix.log
     root_logger = canmatrix.log.setup_logger()
-
-
 
     if silent:
         # Only print ERROR messages (ignore import warnings)

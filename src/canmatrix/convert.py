@@ -26,7 +26,7 @@ import logging
 import sys
 import typing
 
-import canmatrix.canmatrix as cm
+import canmatrix
 import canmatrix.copy
 import canmatrix.formats
 import canmatrix.log
@@ -42,25 +42,25 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
 
     logger.info("Exporting " + out_file_name + " ... ")
 
-    out_dbs = {}
+    out_dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
     for name in dbs:
         db = None
 
         if 'ecus' in options and options['ecus'] is not None:
             ecu_list = options['ecus'].split(',')
-            db = cm.CanMatrix()
+            db = canmatrix.CanMatrix()
             for ecu in ecu_list:
                 canmatrix.copy.copy_ecu_with_frames(ecu, dbs[name], db)
         if 'frames' in options and options['frames'] is not None:
             frame_list = options['frames'].split(',')
-            db = cm.CanMatrix()
-            for frame_name in frame_list:  # type: str
-                frame_to_copy = dbs[name].frame_by_name(frame_name)  # type: cm.Frame
+            db = canmatrix.CanMatrix()
+            for frame_name in frame_list:
+                frame_to_copy = dbs[name].frame_by_name(frame_name)
                 canmatrix.copy.copy_frame(frame_to_copy.arbitration_id, dbs[name], db)
         if options.get('signals', False):
             signal_list = options['signals'].split(',')
-            db = cm.CanMatrix()
-            for signal_name in signal_list:  # type: str
+            db = canmatrix.CanMatrix()
+            for signal_name in signal_list:
                 canmatrix.copy.copy_signal(signal_name, dbs[name], db)
 
         if db is None:
@@ -110,8 +110,8 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             for touple in touples:
                 (frameName, ecu) = touple.split(':')
                 frames = db.glob_frames(frameName)
-                for frame in frames:  # type: cm.Frame
-                    for signal in frame.signals:  # type: cm.Signal
+                for frame in frames:
+                    for signal in frame.signals:
                         signal.add_receiver(ecu)
                     frame.update_receiver()
 
@@ -123,7 +123,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             change_tuples = options['changeFrameId'].split(',')
             for renameTuple in change_tuples:
                 old, new = renameTuple.split(':')
-                frame = db.frame_by_id(cm.ArbitrationId(int(old)))
+                frame = db.frame_by_id(canmatrix.ArbitrationId(int(old)))
                 if frame is not None:
                     frame.arbitration_id.id = int(new)
                 else:
@@ -144,20 +144,22 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                     frame_ptr.del_attribute("VFrameFormat")
 
         if 'skipLongDlc' in options and options['skipLongDlc'] is not None:
-            delete_frame_list = []  # type: typing.List[cm.Frame]
-            for frame in db.frames:
-                if frame.size > int(options['skipLongDlc']):
-                    delete_frame_list.append(frame)
+            delete_frame_list = [
+                frame
+                for frame in db.frames
+                if frame.size > int(options['skipLongDlc'])
+            ]
             for frame in delete_frame_list:
                 db.del_frame(frame)
 
         if 'cutLongFrames' in options and options['cutLongFrames'] is not None:
             for frame in db.frames:
                 if frame.size > int(options['cutLongFrames']):
-                    delete_signal_list = []
-                    for sig in frame.signals:
-                        if sig.get_startbit() + int(sig.size) > int(options['cutLongFrames'])*8:
-                            delete_signal_list.append(sig)
+                    delete_signal_list = [
+                        sig
+                        for sig in frame.signals
+                        if sig.get_startbit() + int(sig.size) > int(options['cutLongFrames'])*8
+                    ]
                     for sig in delete_signal_list:
                         frame.signals.remove(sig)
                     frame.size = 0

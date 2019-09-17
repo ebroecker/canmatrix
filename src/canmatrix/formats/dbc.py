@@ -101,7 +101,7 @@ def create_attribute_string(attribute, attribute_class, name, value, is_string):
 
 
 def create_comment_string(comment_class, comment_ident, comment, export_encoding, export_comment_encoding, ignore_encoding_errors):
-    # type: (str, str, str, str, str) -> bytes
+    # type: (str, str, str, str, str, str) -> bytes
     if len(comment) == 0:
         return b""
     comment_string = ("CM_ " + comment_class + " " + comment_ident + ' "').encode(export_encoding, 'ignore')

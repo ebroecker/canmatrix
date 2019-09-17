@@ -26,12 +26,14 @@ from __future__ import print_function
 
 import logging
 import sys
-import typing
+
 import click
 
 import canmatrix.convert
+import canmatrix.log
 
 logger = logging.getLogger(__name__)
+
 
 def get_formats():
     input = ""
@@ -42,6 +44,7 @@ def get_formats():
         if 'dump' in features:
             output += suppFormat + "\n"
     return (input, output)
+
 
 @click.command()
 # global switches
@@ -100,10 +103,10 @@ def get_formats():
 #sym switches
 @click.option('--symExportEncoding',    'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
 # in and out file
-@click.argument('infile', required=1)
-@click.argument('outfile', required=1)
-
-def cli_convert(infile, outfile, silent, verbosity, **options):  # type: () -> int
+@click.argument('infile', required=True)
+@click.argument('outfile', required=True)
+#
+def cli_convert(infile, outfile, silent, verbosity, **options):
     """
     canmatrix.cli.convert [options] import-file export-file
 
@@ -114,7 +117,7 @@ def cli_convert(infile, outfile, silent, verbosity, **options):  # type: () -> i
 
     root_logger = canmatrix.log.setup_logger()
 
-    if silent == True:
+    if silent is True:
         # only print error messages, ignore verbosity flag
         verbosity = -1
         options["silent"] = True

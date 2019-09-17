@@ -813,7 +813,7 @@ class Frame(object):
     @property
     def priority(self):  # type: () -> int
         """Get J1939 priority."""
-        return self.arbitration_id.j1939_prio
+        return self.arbitration_id.j1939_priority
 
     @priority.setter
     def priority(self, value):  # type: (int) -> None
@@ -1294,15 +1294,13 @@ class Frame(object):
 
         if self.is_complex_multiplexed:
             decoded_values = dict()
-            filtered_signals = []
-            filtered_signals += self._filter_signals_for_multiplexer(None, None)
+            filtered_signals = self._filter_signals_for_multiplexer(None, None)
 
             multiplex_name = None
             multiplex_value = None
 
             while self._has_sub_multiplexer(multiplex_name):
-                multiplex_name, multiplex_value = self._get_sub_multiplexer(multiplex_name, multiplex_value,
-                                                                      decoded)
+                multiplex_name, multiplex_value = self._get_sub_multiplexer(multiplex_name, multiplex_value, decoded)
                 decoded_values[multiplex_name] = decoded[multiplex_name]
                 filtered_signals += self._filter_signals_for_multiplexer(multiplex_name, multiplex_value)
 
@@ -1343,7 +1341,7 @@ class Define(object):
         :param str definition: definition string. Ex: "INT -5 10"
         """
         definition = definition.strip()
-        self.definition = definition  # type: str
+        self.definition = definition
         self.type = None  # type: typing.Optional[str]
         self.defaultValue = None  # type: typing.Any
 
@@ -1561,40 +1559,34 @@ class CanMatrix(object):
     def delete_obsolete_defines(self):  # type: () -> None
         """Delete all unused Defines.
 
-        Delete them from frameDefines, buDefines and signalDefines.
+        Delete them from frame_defines, ecu_defines and signal_defines.
         """
         defines_to_delete = set()  # type: typing.Set[str]
-        for frameDef in self.frame_defines:  # type: str
-            found = False
+        for frameDef in self.frame_defines:
             for frame in self.frames:
                 if frameDef in frame.attributes:
-                    found = True
                     break
-            if not found:
+            else:
                 defines_to_delete.add(frameDef)
         for element in defines_to_delete:
             del self.frame_defines[element]
         defines_to_delete = set()
         for ecu_define in self.ecu_defines:
-            found = False
             for ecu in self.ecus:
                 if ecu_define in ecu.attributes:
-                    found = True
                     break
-            if not found:
+            else:
                 defines_to_delete.add(ecu_define)
         for element in defines_to_delete:
             del self.ecu_defines[element]
 
         defines_to_delete = set()
         for signal_define in self.signal_defines:
-            found = False
             for frame in self.frames:
                 for signal in frame.signals:
                     if signal_define in signal.attributes:
-                        found = True
                         break
-            if not found:
+            else:
                 defines_to_delete.add(signal_define)
         for element in defines_to_delete:
             del self.signal_defines[element]
