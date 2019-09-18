@@ -8,8 +8,7 @@ def test_scapy_frame_exists():
     outscapy = io.BytesIO()
     canmatrix.formats.dump(db, outscapy, "scapy")
 
-    assert "class some_frame(Packet):" in outscapy.getvalue().decode("utf8")
-    assert "class DBC(CAN)" in outscapy.getvalue().decode("utf8")
+    assert "class some_frame(SignalPacket):" in outscapy.getvalue().decode("utf8")
 
 def test_scapy_signal_exists():
     db = canmatrix.CanMatrix()

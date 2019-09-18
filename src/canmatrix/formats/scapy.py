@@ -53,20 +53,11 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     from scapy.packet import bind_layers
     from scapy.fields import *
     from scapy.layers.can import *
-    class DBC(CAN):
-        name = 'DBC'
-        fields_desc = [
-            FlagsField('flags', 0, 3, ['error',
-                                       'remote_transmission_request',
-                                       'extended']),
-            XBitField('arbitration_id', 0, 29),
-            ByteField('length', None),
-            ThreeBytesField('reserved', 0),
-        ]
+    
     """)
 
     for frame in db.frames:
-        scapy_decoder += "class " + frame.name + "(Packet):\n"
+        scapy_decoder += "class " + frame.name + "(SignalPacket):\n"
         scapy_decoder += "    fields_desc = [ \n"
 
         for signal in frame.signals:
@@ -77,10 +68,10 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
 
     for frame in db.frames:
         if frame.arbitration_id.extended:
-            scapy_decoder += "bind_layers(DBC, " + frame.name + ", arbitration_id = " + hex(
+            scapy_decoder += "bind_layers(SignalHeader, " + frame.name + ", identifier = " + hex(
                 frame.arbitration_id.id) + ", flags = extended)\n"
         else:
-            scapy_decoder += "bind_layers(DBC, " + frame.name + ", arbitration_id = " + hex(
+            scapy_decoder += "bind_layers(SignalHeader, " + frame.name + ", identifier = " + hex(
                 frame.arbitration_id.id) + ")\n"
 
     f.write(scapy_decoder.encode("utf8"))
