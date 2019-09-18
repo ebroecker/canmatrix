@@ -23,13 +23,14 @@
 # this script exports canmatrix-objects to a CSV file. (Based on xlsx)
 # Author: Martin Hoffmann (m8ddin@gmail.com)
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 import collections
 import csv
 import logging
 import sys
 import typing
+from builtins import *
 
 import canmatrix.formats.xls_common
 

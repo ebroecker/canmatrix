@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
+
+from builtins import *
+
+import attr
+import pathlib2
 
 import canmatrix.formats
-import pathlib2
-import attr
+
 
 @attr.s
 class j1939_decoder(object):

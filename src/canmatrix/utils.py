@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function
+
 import csv
 import shlex
 import sys
 import typing
+from builtins import *
 
 
 def quote_aware_space_split(in_line):  # type: (str) -> typing.List[str]

@@ -26,23 +26,20 @@
 
 # TODO: Definitions should be disassembled
 
-from __future__ import division, absolute_import
+from __future__ import absolute_import, division, print_function
 
 import decimal
 import fnmatch
+import itertools
 import logging
 import math
 import struct
 import typing
-from itertools import chain
+from builtins import *
 
-try:
-    from itertools import zip_longest as zip_longest
-except ImportError:
-    from itertools import izip_longest as zip_longest  # type: ignore
-
-from past.builtins import basestring
 import attr
+from future.moves.itertools import zip_longest
+from past.builtins import basestring
 
 import canmatrix.copy
 import canmatrix.types
@@ -1057,7 +1054,7 @@ class Frame(object):
                     big_bit_signals.append(signal)
 
         little_bits_iter = reversed(tuple(grouper(little_bits, 8)))
-        little_bits = list(chain(*little_bits_iter))
+        little_bits = list(itertools.chain(*little_bits_iter))
 
         return_list = [
             little + big
@@ -1119,7 +1116,7 @@ class Frame(object):
 
                     big_bits[most:least] = bits
         little_bits_iter = reversed(tuple(grouper(little_bits, 8)))
-        little_bits = list(chain(*little_bits_iter))
+        little_bits = list(itertools.chain(*little_bits_iter))
         bitstring = ''.join(
             next(x for x in (l, b, '0') if x is not None)
             # l if l != ' ' else (b if b != ' ' else '0')

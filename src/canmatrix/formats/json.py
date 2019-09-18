@@ -24,7 +24,7 @@
 # json-files are the can-matrix-definitions of the CANard-project
 # (https://github.com/ericevenchick/CANard)
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 import json
 import sys
