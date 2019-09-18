@@ -33,8 +33,6 @@ from builtins import *
 
 import canmatrix
 
-extension = 'json'
-
 
 def dump(db, f, **options):
     # type: (canmatrix.CanMatrix, typing.BinaryIO, **str) -> None
