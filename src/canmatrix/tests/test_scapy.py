@@ -1,6 +1,6 @@
 import  canmatrix.formats.scapy
 import io
-
+import os
 
 def test_scapy_frame_exists():
     db = canmatrix.CanMatrix()
@@ -8,8 +8,18 @@ def test_scapy_frame_exists():
     outscapy = io.BytesIO()
     canmatrix.formats.dump(db, outscapy, "scapy")
 
-    assert "class some_frame(Packet):" in outscapy.getvalue().decode("utf8")
-    assert "class DBC(CAN)" in outscapy.getvalue().decode("utf8")
+    assert "class some_frame(SignalPacket):" in outscapy.getvalue().decode("utf8")
+
+
+def test_scapy_muliplexed_frame():
+    here = os.path.dirname(os.path.realpath(__file__))
+    db = canmatrix.formats.loadp_flat(os.path.join(here, "test_frame_decoding.dbc"))
+    outscapy = io.BytesIO()
+    canmatrix.formats.dump(db, outscapy, "scapy")
+    assert "ConditionalField" in outscapy.getvalue().decode("utf8")
+    assert "myMuxer == 0" in outscapy.getvalue().decode("utf8")
+    assert "myMuxer == 1" in outscapy.getvalue().decode("utf8")
+
 
 def test_scapy_signal_exists():
     db = canmatrix.CanMatrix()

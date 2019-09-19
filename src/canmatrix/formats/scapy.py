@@ -45,6 +45,10 @@ def get_fmt(signal):  # type: (canmatrix.Signal) -> str
         fmt += "B"
     return fmt
 
+def signal_field_line(signal):
+    return   u'SignalField("{}", default=0, start={}, size={}, scaling={}, offset={}, unit="{}", fmt="{}"),'.format(
+        signal.name, signal.get_startbit(bit_numbering=1), signal.size, signal.factor, signal.offset,
+        signal.unit, get_fmt(signal))
 
 def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
     scapy_decoder = textwrap.dedent("""    #!/usr/bin/env python
@@ -53,34 +57,32 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     from scapy.packet import bind_layers
     from scapy.fields import *
     from scapy.layers.can import *
-    class DBC(CAN):
-        name = 'DBC'
-        fields_desc = [
-            FlagsField('flags', 0, 3, ['error',
-                                       'remote_transmission_request',
-                                       'extended']),
-            XBitField('arbitration_id', 0, 29),
-            ByteField('length', None),
-            ThreeBytesField('reserved', 0),
-        ]
     """)
 
     for frame in db.frames:
-        scapy_decoder += "class " + frame.name + "(Packet):\n"
+        scapy_decoder += "class " + frame.name + "(SignalPacket):\n"
         scapy_decoder += "    fields_desc = [ \n"
 
-        for signal in frame.signals:
-            scapy_decoder += u'        SignalField("{}", default=0, start={}, size={}, scaling={}, offset={}, unit="{}", fmt="{}"),\n'.format(
-                signal.name, signal.get_startbit(bit_numbering=1), signal.size, signal.factor, signal.offset,
-                signal.unit, get_fmt(signal))
+        if frame.is_multiplexed and not frame.is_complex_multiplexed:
+            multiplexer = frame.get_multiplexer
+            scapy_decoder += u'        ' + signal_field_line(multiplexer) + '\n'
+            for signal in frame.signals:
+                if signal != multiplexer and signal.mux_val is not None:
+                    scapy_decoder += u'        ConditionalField(' + signal_field_line(signal) + ' lambda p: p.{} == {}),\n'.format(multiplexer.name, signal.mux_val)
+                elif signal != multiplexer:
+                    scapy_decoder += u'        ' + signal_field_line(signal) + '\n'
+
+        else:
+            for signal in frame.signals:
+                scapy_decoder += u'        ' + signal_field_line(signal) + '\n'
         scapy_decoder += "    ]\n\n"
 
     for frame in db.frames:
         if frame.arbitration_id.extended:
-            scapy_decoder += "bind_layers(DBC, " + frame.name + ", arbitration_id = " + hex(
+            scapy_decoder += "bind_layers(SignalHeader, " + frame.name + ", identifier  = " + hex(
                 frame.arbitration_id.id) + ", flags = extended)\n"
         else:
-            scapy_decoder += "bind_layers(DBC, " + frame.name + ", arbitration_id = " + hex(
+            scapy_decoder += "bind_layers(SignalHeader, " + frame.name + ", identifier  = " + hex(
                 frame.arbitration_id.id) + ")\n"
 
     f.write(scapy_decoder.encode("utf8"))
