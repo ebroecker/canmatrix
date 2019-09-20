@@ -33,7 +33,7 @@ def test_export_with_jsonall(default_matrix):
     """Check the jsonAll doesn't raise and export some additional field."""
     matrix = default_matrix
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonAll=True)
+    canmatrix.formats.dump(matrix, out_file, "json", jsonAll=True)
     data = out_file.getvalue().decode("utf-8")
     assert "my_value1" in data
     assert "my_value2" in data
@@ -42,7 +42,7 @@ def test_export_with_jsonall(default_matrix):
 def test_export_additional_frame_info(default_matrix):
     matrix = default_matrix
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "cmjson", additionalFrameAttributes="my_attribute1")
+    canmatrix.formats.dump(matrix, out_file, "json", additionalFrameAttributes="my_attribute1")
     data = out_file.getvalue().decode("utf-8")
     assert "my_value1" in data
 
@@ -57,7 +57,7 @@ def test_export_long_signal_names():
     frame.add_signal(signal)
 
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonAll=True)
+    canmatrix.formats.dump(matrix, out_file, "json", jsonAll=True)
     data = json.loads(out_file.getvalue().decode("utf-8"))
 
     assert data['messages'][0]['signals'][0]['name'] == long_signal_name
@@ -70,7 +70,7 @@ def test_export_min_max():
     frame.add_signal(signal)
     matrix.add_frame(frame)
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonAll=True)
+    canmatrix.formats.dump(matrix, out_file, "json", jsonAll=True)
     data = json.loads(out_file.getvalue().decode("utf-8"))
     assert(data['messages'][0]['signals'][0]['min'] == '-5')
     assert(data['messages'][0]['signals'][0]['max'] == '42')
@@ -106,7 +106,7 @@ def test_import_min_max():
             }
         ]
     }"""
-    matrix = canmatrix.formats.loads_flat(json_input, "cmjson", jsonAll=True)
+    matrix = canmatrix.formats.loads_flat(json_input, "json", jsonAll=True)
     assert matrix.frames[0].signals[0].min == -5
     assert matrix.frames[0].signals[0].max == 42
 
@@ -140,7 +140,7 @@ def test_import_native():
             }
         ]
     }"""
-    matrix = canmatrix.formats.loads_flat(json_input, "cmjson", jsonAll=True)
+    matrix = canmatrix.formats.loads_flat(json_input, "json", jsonAll=True)
     assert matrix.frames[0].signals[0].min == -4.2
     assert matrix.frames[0].signals[0].max == 42
     assert matrix.frames[0].signals[0].factor == 0.123
@@ -153,7 +153,7 @@ def test_export_native():
     frame.add_signal(signal)
     matrix.add_frame(frame)
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonNativeTypes=True)
+    canmatrix.formats.dump(matrix, out_file, "json", jsonNativeTypes=True)
     data = json.loads(out_file.getvalue().decode("utf-8"))
     assert (data['messages'][0]['signals'][0]['factor'] == 0.123)
     assert (data['messages'][0]['signals'][0]['offset'] == 1)
@@ -165,7 +165,7 @@ def test_export_all_native():
     frame.add_signal(signal)
     matrix.add_frame(frame)
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "cmjson", jsonAll=True, jsonNativeTypes=True)
+    canmatrix.formats.dump(matrix, out_file, "json", jsonAll=True, jsonNativeTypes=True)
     data = json.loads(out_file.getvalue().decode("utf-8"))
     assert (data['messages'][0]['signals'][0]['min'] == -4.2)
     assert (data['messages'][0]['signals'][0]['max'] == 42)

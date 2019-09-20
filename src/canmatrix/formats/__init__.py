@@ -13,7 +13,7 @@ else:
     import StringIO
 
 logger = logging.getLogger(__name__)
-moduleList = ["arxml", "cmcsv", "dbc", "dbf", "cmjson",
+moduleList = ["arxml", "csv", "dbc", "dbf", "json",
               "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy"]
 loadedFormats = []
 supportedFormats = {}  # type: typing.MutableMapping[str, typing.MutableSequence[str]]

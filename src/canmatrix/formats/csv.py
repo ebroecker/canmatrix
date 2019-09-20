@@ -36,8 +36,6 @@ import canmatrix.formats.xls_common
 logger = logging.getLogger(__name__)
 CsvDataType = typing.Union[str, int]
 
-extension = 'csv'
-
 
 class CsvRow:
     def __init__(self):  # type: () -> None
