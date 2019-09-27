@@ -69,7 +69,7 @@ class CsvRow:
     def as_list(self):  # type: () -> typing.List[str]
         # Generate list of single cells in the row till highest index (dictionary key)
         # Empty cells (non-existent keys) are generated as empty string
-        return [str(self._row_dict[x])
+        return [self._row_dict[x]
                 for x in range(0, max(self._row_dict) + 1)]
 
     def to_csv(self, delimiter=','):  # type: (str) -> str
