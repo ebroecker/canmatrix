@@ -121,4 +121,20 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
 
     wireshark_dissector += "end\n"
 
+    wireshark_dissector += textwrap.dedent("""
+    local can_database_decoder = Proto.new("CanSignalDecoder", "Can Signal Decoder")
+    can_database_can_id = ProtoField.uint32("can.frame.arbitration_id", "can_id", base.HEX)
+    can_database_decoder.fields = {can_database_can_id}
+
+    local f_can_id = Field.new("can.id")
+
+    function can_database_decoder.dissector(buffer, pinfo, tree)
+      local can_id = f_can_id()
+      local pktlen = buffer:reported_length_remaining()
+      add_frame_info(can_id.tvb:le_uint(), buffer(0, pktlen), pktlen, tree)
+    end
+
+    DissectorTable.get("can.subdissector"):add_for_decode_as(can_database_decoder)
+    """)
+
     f.write(wireshark_dissector.encode("utf8"))
