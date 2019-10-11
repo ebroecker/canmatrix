@@ -19,6 +19,7 @@ can_frame_dlc  = ProtoField.uint8("can.frame.dlc", "dlc", base.DEC)
 can_frame_pdu = ProtoField.uint64("can.frame.pdu", "pdu", base.HEX)
 can_frame.fields = {can_frame_id, can_frame_is_extended, can_frame_dlc, can_frame_pdu}
 
+--- select your database - generated with canmatrix  here [canconvert some.dbc can_database.lua]
 require "can_database"
             
 debug_example_protocol = false                                                       
