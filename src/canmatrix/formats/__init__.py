@@ -14,7 +14,7 @@ else:
 
 logger = logging.getLogger(__name__)
 moduleList = ["arxml", "csv", "dbc", "dbf", "json",
-              "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy", "lua"]
+              "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy", "wireshark"]
 loadedFormats = []
 supportedFormats = {}  # type: typing.MutableMapping[str, typing.MutableSequence[str]]
 extensionMapping = {}
