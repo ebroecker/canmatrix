@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from importlib import import_module
-import sys
+from __future__ import absolute_import, division, print_function
+
+import importlib
 import logging
 import os
+import sys
 import typing
 
 import canmatrix
 import canmatrix.cancluster
+
 if sys.version_info > (3, 0):
     import io
 else:
@@ -21,7 +24,7 @@ extensionMapping = {}
 
 for module in moduleList:
     try:
-        import_module("canmatrix.formats." + module)
+        importlib.import_module("canmatrix.formats." + module)
         loadedFormats.append(module)
     except ImportError:
         logger.info("%s is not supported", module)

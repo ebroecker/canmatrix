@@ -24,8 +24,7 @@
 # kcd-files are the can-matrix-definitions of the kayak
 # (http://kayak.2codeornot2code.org/)
 
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division, print_function
 
 import decimal
 import os
@@ -33,7 +32,7 @@ import re
 import typing
 from builtins import *
 
-from lxml import etree
+import lxml.etree
 
 import canmatrix
 import canmatrix.cancluster
@@ -41,7 +40,7 @@ import canmatrix.cancluster
 clusterExporter = 1
 clusterImporter = 1
 
-_Element = etree._Element
+_Element = lxml.etree._Element
 
 
 def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
@@ -50,7 +49,7 @@ def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
 
 def create_signal(signal, node_list, type_enums):
     # type: (canmatrix.Signal, typing.Mapping[str, int], typing.Mapping[str, typing.Sequence[str]]) -> _Element
-    xml_signal = etree.Element(
+    xml_signal = lxml.etree.Element(
         'Signal',
         name=signal.name,
         offset=str(signal.get_startbit()))
@@ -72,18 +71,18 @@ def create_signal(signal, node_list, type_enums):
         comment += "\n" + more_comments
 
     if comment:
-        notes = etree.Element('Notes')
+        notes = lxml.etree.Element('Notes')
         notes.text = comment
         xml_signal.append(notes)
 
-    consumer = etree.Element('Consumer')
+    consumer = lxml.etree.Element('Consumer')
     for receiver in signal.receivers:
         if receiver in node_list and len(receiver) > 1:
-            node_ref = etree.Element('NodeRef', id=str(node_list[receiver]))
+            node_ref = lxml.etree.Element('NodeRef', id=str(node_list[receiver]))
             consumer.append(node_ref)
         if len(consumer) > 0:  # if consumer has children
             xml_signal.append(consumer)
-    value = etree.Element('Value')
+    value = lxml.etree.Element('Value')
     if signal.is_float:
         if signal.size > 32:
             value.set('type', "double")
@@ -107,9 +106,9 @@ def create_signal(signal, node_list, type_enums):
         xml_signal.append(value)
 
     if signal.values:  # signal has value table
-        label_set = etree.Element('LabelSet')
+        label_set = lxml.etree.Element('LabelSet')
         for table_value, table_name in sorted(signal.values.items(), key=lambda x: int(x[0])):
-            label = etree.Element(
+            label = lxml.etree.Element(
                 'Label',
                 name=table_name.replace('"', ''),
                 value=str(table_value))
@@ -135,15 +134,15 @@ def dump(dbs, f, **_options):
             signal_type_enums[typename] = enum_literals
 
     # create XML
-    root = etree.Element('NetworkDefinition')  # type: _Element
+    root = lxml.etree.Element('NetworkDefinition')  # type: _Element
     root.set("xmlns", "http://kayak.2codeornot2code.org/1.0")
     ns_xsi = "{http://www.w3.org/2001/XMLSchema-instance}"
     root.set(ns_xsi + "schemaLocation", "Definition.xsd")
 
-    # root.append(etree.Element('Document'))
+    # root.append(lxml.etree.Element('Document'))
     # another child with text
 
-    child = etree.Element('Document')
+    child = lxml.etree.Element('Document')
     child.set("name", "Some Document Name")
     child.text = 'some text'
     root.append(child)
@@ -152,7 +151,7 @@ def dump(dbs, f, **_options):
     element_id = 1
     node_list = {}  # type: typing.MutableMapping[str, int]
     for ecu in cluster.ecus:
-        node = etree.Element('Node', name=ecu.name, id="%d" % element_id)
+        node = lxml.etree.Element('Node', name=ecu.name, id="%d" % element_id)
         root.append(node)
         node_list[ecu.name] = element_id
         element_id += 1
@@ -160,9 +159,9 @@ def dump(dbs, f, **_options):
         db = cluster[name]
         # Bus
         if 'Baudrate' in db.attributes:
-            bus = etree.Element('Bus', baudrate=db.attributes['Baudrate'])
+            bus = lxml.etree.Element('Bus', baudrate=db.attributes['Baudrate'])
         else:
-            bus = etree.Element('Bus')
+            bus = lxml.etree.Element('Bus')
 
         if not name:
             (path, ext) = os.path.splitext(f.name)
@@ -172,7 +171,7 @@ def dump(dbs, f, **_options):
             bus.set("name", name)
 
         for frame in db.frames:
-            message = etree.Element(
+            message = lxml.etree.Element(
                 'Message',
                 id="0x%03X" % frame.arbitration_id.id,
                 name=frame.name,
@@ -186,16 +185,16 @@ def dump(dbs, f, **_options):
                     message.set("triggered", "true")
                     message.set("interval", "%d" % int(cycle_time))
 
-            comment_elem = etree.Element('Notes')
+            comment_elem = lxml.etree.Element('Notes')
             if frame.comment is not None:
                 comment_elem.text = frame.comment
                 message.append(comment_elem)
 
-            producer = etree.Element('Producer')
+            producer = lxml.etree.Element('Producer')
 
             for transmitter in frame.transmitters:
                 if transmitter in node_list and len(transmitter) > 1:
-                    node_ref = etree.Element(
+                    node_ref = lxml.etree.Element(
                         'NodeRef',
                         id=str(node_list[transmitter]))
                     producer.append(node_ref)
@@ -208,19 +207,19 @@ def dump(dbs, f, **_options):
             multiplexor_elem = None
             for signal in frame.signals:
                 if signal.multiplex is not None and signal.multiplex == 'Multiplexor':
-                    multiplexor_elem = etree.Element(
+                    multiplexor_elem = lxml.etree.Element(
                         'Multiplex',
                         name=signal.name,
                         offset=str(signal.get_startbit()),
                         length=str(int(signal.size)))
-                    value = etree.Element('Value')
+                    value = lxml.etree.Element('Value')
                     if float(signal.min) != 0:
                         value.set('min', "%g" % signal.min)  # type: ignore
                     if float(signal.max) != 1:
                         value.set('max', "%g" % signal.max)
-                    label_set = etree.Element('LabelSet')
+                    label_set = lxml.etree.Element('LabelSet')
                     for valueVal, valName in sorted(signal.values.items(), key=lambda x: int(x[0])):
-                        label = etree.Element(
+                        label = lxml.etree.Element(
                             'Label',
                             name=valName.replace('"', ''),
                             value=str(valueVal))
@@ -230,7 +229,7 @@ def dump(dbs, f, **_options):
                 # ticker all potential muxgroups
                 for i in range(0, 1 << int(multiplexor_elem.get('length'))):
                     empty = 0
-                    muxgroup = etree.Element('MuxGroup', count=str(i))
+                    muxgroup = lxml.etree.Element('MuxGroup', count=str(i))
                     for signal in frame.signals:
                         if signal.multiplex is not None and signal.multiplex == i:
                             sig = create_signal(signal, node_list, signal_type_enums)
@@ -251,7 +250,7 @@ def dump(dbs, f, **_options):
             bus.append(message)
 
         root.append(bus)
-    f.write(etree.tostring(root, pretty_print=True))
+    f.write(lxml.etree.tostring(root, pretty_print=True))
 
 
 def parse_signal(signal, mux, namespace, nodelist, float_factory):
@@ -347,7 +346,7 @@ def load(f, **options):
     # type: (typing.IO, **typing.Any) -> typing.Dict[str, canmatrix.CanMatrix]
     float_factory = options.get("float_factory", default_float_factory)  # type: typing.Callable
     dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
-    tree = etree.parse(f)
+    tree = lxml.etree.parse(f)
     root = tree.getroot()
     namespace = "{" + tree.xpath('namespace-uri(.)') + "}"
 

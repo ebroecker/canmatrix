@@ -24,16 +24,14 @@
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 # currently Support for Autosar 3.2 and 4.0-4.3 is planned
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 import decimal
 import logging
 import typing
 from builtins import *
 
-from lxml import etree
+import lxml.etree
 
 import canmatrix
 import canmatrix.types
@@ -47,7 +45,7 @@ clusterImporter = 1
 
 
 class ArTree(object):
-    def __init__(self, name="", ref=None):  # type: (str, etree._Element) -> None
+    def __init__(self, name="", ref=None):  # type: (str, lxml.etree._Element) -> None
         self._name = name
         self._ref = ref
         self._array = []  # type: typing.List[ArTree]
@@ -65,12 +63,12 @@ class ArTree(object):
         return None
 
     @property
-    def ref(self):  # type: () -> etree._Element
+    def ref(self):  # type: () -> lxml.etree._Element
         return self._ref
 
 
 # for typing only
-_Element = etree._Element
+_Element = lxml.etree._Element
 _DocRoot = typing.Union[_Element, ArTree]
 _MultiplexId = typing.Union[str, int, None]
 _FloatFactory = typing.Callable[[typing.Any], typing.Any]
@@ -78,7 +76,7 @@ _FloatFactory = typing.Callable[[typing.Any], typing.Any]
 
 def create_sub_element(parent, element_name, text=None):
     # type: (_Element, str, typing.Optional[str]) -> _Element
-    sn = etree.SubElement(parent, element_name)
+    sn = lxml.etree.SubElement(parent, element_name)
     if text is not None:
         sn.text = str(text)
     return sn
@@ -135,7 +133,7 @@ def dump(dbs, f, **options):
 
     if ar_version[0] == "3":
         xsi = 'http://www.w3.org/2001/XMLSchema-instance'
-        root = etree.Element(
+        root = lxml.etree.Element(
             'AUTOSAR',
             nsmap={
                 None: 'http://autosar.org/' + ar_version,
@@ -145,7 +143,7 @@ def dump(dbs, f, **options):
         top_level_packages = create_sub_element(root, 'TOP-LEVEL-PACKAGES')
     else:
         xsi = 'http://www.w3.org/2001/XMLSchema-instance'
-        root = etree.Element(
+        root = lxml.etree.Element(
             'AUTOSAR',
             nsmap={
                 None: "http://autosar.org/schema/r4.0",
@@ -760,7 +758,7 @@ def dump(dbs, f, **options):
                 ipdu_ref.set('DEST', "I-SIGNAL-I-PDU")
                 ipdu_ref.text = "/PDU/PDU_" + frame_name
 
-    f.write(etree.tostring(root, pretty_print=True, xml_declaration=True))
+    f.write(lxml.etree.tostring(root, pretty_print=True, xml_declaration=True))
 
 
 ###################################
@@ -1000,7 +998,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
 
         base_type = get_child(isignal, "BASE-TYPE", root_or_cache, ns)
         try:
-            type_encoding = get_child(base_type,"BASE-TYPE-ENCODING", root_or_cache, ns).text
+            type_encoding = get_child(base_type, "BASE-TYPE-ENCODING", root_or_cache, ns).text
         except AttributeError:
             type_encoding = "None"
         signal_name = None  # type: typing.Optional[str]
@@ -1192,6 +1190,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
                 new_signal.add_attribute("LongName", signal_name)
             frame.add_signal(new_signal)
 
+
 def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, root_or_cache, ns, float_factory):
     selector_byte_order = get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER", root_or_cache, ns)
     selector_len = get_child(pdu, "SELECTOR-FIELD-LENGTH", root_or_cache, ns)
@@ -1244,8 +1243,8 @@ def get_frame_from_container_ipdu(pdu, target_frame, root_or_cache, ns, float_fa
     header_type = get_child(pdu, "HEADER-TYPE", root_or_cache, ns).text
     if header_type == "SHORT-HEADER":
         header_length = 32
-        target_frame.add_signal(canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex ="Multiplexor", is_little_endian = True))
-        target_frame.add_signal(canmatrix.Signal(start_bit=24, size= 8, name="Header_DLC", is_little_endian = True))
+        target_frame.add_signal(canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor", is_little_endian=True))
+        target_frame.add_signal(canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=True))
     elif header_type == "LONG-HEADER":
         header_length = 64
         target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor",
@@ -1254,7 +1253,7 @@ def get_frame_from_container_ipdu(pdu, target_frame, root_or_cache, ns, float_fa
     else:
         raise("header " + header_type + " not supported for containers yet")
         # none type
-        #TODO
+        # TODO
 
     for cpdu in pdus:
         ipdu = get_child(cpdu, "I-PDU", root_or_cache, ns)
@@ -1264,7 +1263,7 @@ def get_frame_from_container_ipdu(pdu, target_frame, root_or_cache, ns, float_fa
             elif header_type == "LONG-HEADER":
                 header_id = get_child(ipdu, "HEADER-ID-LONG-HEADER", root_or_cache, ns).text
             else:
-                #none type
+                # none type
                 pass
         except AttributeError:
             header_id = "0"
@@ -1285,6 +1284,7 @@ def get_frame_from_container_ipdu(pdu, target_frame, root_or_cache, ns, float_fa
             target_frame.add_signal_group("HEARDER_ID_" + str(header_id), signal_group_id, new_signals)
             singnals_grouped += new_signals
             signal_group_id += 1
+
 
 def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset, repeating_time, root_or_cache, time_period, ns, float_factory):
     if cyclic_timing is not None and event_timing is not None:
@@ -1602,7 +1602,7 @@ def load(file, **options):
 
     result = {}
     logger.debug("Read arxml ...")
-    tree = etree.parse(file)
+    tree = lxml.etree.parse(file)
 
     root = tree.getroot()  # type: _Element
     logger.debug(" Done\n")
@@ -1650,7 +1650,7 @@ def load(file, **options):
     logger.debug("%d I-SIGNAL-TO-I-PDU-MAPPING in arxml...", len(sig_ipdu))
 
     if ignore_cluster_info is True:
-        ccs = [etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
+        ccs = [lxml.etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
     else:
         ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
     for cc in ccs:  # type: _Element

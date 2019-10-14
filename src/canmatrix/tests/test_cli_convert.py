@@ -1,7 +1,11 @@
-import pytest
-import pathlib2
+# -*- coding: utf-8 -*-
 import sys
+
+import pathlib2
+import pytest
+
 import canmatrix.formats
+
 pytest_plugins = ["pytester"]
 
 

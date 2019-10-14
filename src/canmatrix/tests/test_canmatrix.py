@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import pytest
 import decimal
+
+import pytest
+from builtins import *
 
 import canmatrix.canmatrix
 

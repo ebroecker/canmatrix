@@ -23,8 +23,7 @@
 # this script exports sym-files from a canmatrix-object
 # sym-files are the can-matrix-definitions of the Peak Systems Tools
 
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division, print_function
 
 import collections
 import decimal
