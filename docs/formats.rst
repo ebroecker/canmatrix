@@ -15,16 +15,17 @@ There are several importers (read) and exporters (write) for this object.
     * .sym [peak](http://www.peak-system.com) pcan can description
 
 * supported file formats for export:
-
- * .dbc
- * .dbf
- * .kcd
- * .xls(x)
- * .json [Canard](https://github.com/ericevenchick/CANard) (open source!)
- * .arxml (very basic implementation)
- * .yaml (dump of the python object)
- * .sym
- * .xml fibex
+    * .dbc
+    * .dbf
+    * .kcd
+    * .xls(x)
+    * .json [Canard](https://github.com/ericevenchick/CANard) (open source!)
+    * .arxml (very basic implementation)
+    * .yaml (dump of the python object)
+    * .sym
+    * .xml fibex
+    * .py [scapy] (https://scapy.net/) scapy can message decoder
+    * .lua [wireshark] wireshark can subdissector
 
 
 Export
@@ -73,3 +74,52 @@ ______
 |xls(x)|+   |+    |+            |+        |+        |         |        |+        |p      |p      |          |p           |             |
 +------+----+-----+-------------+---------+---------+---------+--------+---------+-------+-------+----------+------------+-------------+
 
+
+Scapy Export
+____________
+
+Create can frame decoder for some can definition
+
+Example:
+
+    $ canconvert source.dbc target.py
+
+in scapy use like this:
+
+.. code-block:: python
+
+    load_contrib("target")
+    sock = CANSocket("can0", basecls=DBC)
+    pkt = sock.recv()
+
+
+Wireshark Dissector
+___________________
+
+    $ canconvert source.dbc target.py
+
+Example:
+
+    $ canconvert source.sdbc target.lua
+
+in wireshark use like this:
+
+    $ wireshark -X lua_script:target.lua
+
+    Linux socketcan can directly traced with wireshark. In wireshark select some can frame.
+    Right-click and select *decode as* and select *SIGNALDECODE* as subdissector
+
+    *dissect_canneloni.lua* in the canmatrix example folder shows an example for decoding can
+    frames which are packet in UDP frames by cannelone (https://github.com/mguentner/cannelloni, https://github.com/PhilippFux/cannelloni)
+
+    you could use it like:
+
+    .. code-block:: bash
+
+        $ chdir canmatrix/examples
+        $ canconvert some.dbc can_database.lua
+        $ wireshark wireshark -X lua_script:dissect_cannelloni.lua
+
+    note: default cannelloni is mapped to UDP port 3333, you have to change it
+
+    note: *can_database* is hard coded in *dissect_cannelloni.lua*, you can customize it there
