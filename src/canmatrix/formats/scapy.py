@@ -22,8 +22,11 @@
 # this script exports scapy python files
 # https://scapy.readthedocs.io/en/latest/advanced_usage.html#automotive-usage
 
+from __future__ import absolute_import, division, print_function
+
 import textwrap
 import typing
+from builtins import *
 
 import canmatrix
 

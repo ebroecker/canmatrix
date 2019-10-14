@@ -25,11 +25,12 @@
 # only (fibex: Field Bus Exchange Format //
 # https://de.wikipedia.org/wiki/Field_Bus_Exchange_Format)
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 import typing
 from builtins import *
-from lxml import etree
+
+import lxml.etree
 
 import canmatrix
 
@@ -45,20 +46,20 @@ ns_xsi = "{%s}" % xsi
 extension = "xml"
 
 # noinspection PyProtectedMember
-_Element = etree._Element
+_Element = lxml.etree._Element
 
 
 def create_short_name_desc(parent, short_name, desc):
     # type: (_Element, str, str) -> None
-    short_name_elem = etree.SubElement(parent, ns_ho + "SHORT-NAME")
+    short_name_elem = lxml.etree.SubElement(parent, ns_ho + "SHORT-NAME")
     short_name_elem.text = short_name
-    desc_elem = etree.SubElement(parent, ns_ho + "DESC")
+    desc_elem = lxml.etree.SubElement(parent, ns_ho + "DESC")
     desc_elem.text = desc
 
 
 def create_sub_element_fx(parent, element_name, element_text=None):
     # type: (_Element, str, typing.Optional[str]) -> _Element
-    new = etree.SubElement(parent, ns_fx + element_name)
+    new = lxml.etree.SubElement(parent, ns_fx + element_name)
     if element_text is not None:
         new.text = element_text
     return new
@@ -66,7 +67,7 @@ def create_sub_element_fx(parent, element_name, element_text=None):
 
 def create_sub_element_ho(parent, element_name, element_text=None):
     # type: (_Element, str, typing.Optional[str]) -> _Element
-    new = etree.SubElement(parent, ns_ho + element_name)
+    new = lxml.etree.SubElement(parent, ns_ho + element_name)
     if element_text is not None:
         new.text = element_text
     return new
@@ -75,7 +76,7 @@ def create_sub_element_ho(parent, element_name, element_text=None):
 def dump(db, f, **options):
     # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
     ns_map = {"fx": fx, "ho": ho, "can": can, "xsi": xsi}
-    root = etree.Element(ns_fx + "FIBEX", nsmap=ns_map)
+    root = lxml.etree.Element(ns_fx + "FIBEX", nsmap=ns_map)
     root.attrib[
         '{{{pre}}}schemaLocation'.format(
             pre=xsi)] = 'http://www.asam.net/xml/fbx ..\\..\\xml_schema\\fibex.xsd http://www.asam.net/xml/fbx/can  ..\\..\\xml_schema\\fibex4can.xsd'
@@ -96,7 +97,7 @@ def dump(db, f, **options):
     # CLUSTERS
     #
     clusters = create_sub_element_fx(elements, "CLUSTERS")
-    cluster = etree.SubElement(clusters, ns_fx + "CLUSTER")
+    cluster = lxml.etree.SubElement(clusters, ns_fx + "CLUSTER")
     cluster.set('ID', 'canCluster1')
     create_short_name_desc(cluster, "clusterShort", "clusterDesc")
     create_sub_element_fx(cluster, "SPEED", "500")
@@ -200,7 +201,7 @@ def dump(db, f, **options):
                 if bu.name in signal.receivers:
                     input_port = create_sub_element_fx(input_ports, "INPUT-PORT")
                     input_port.set("ID", "INP_" + signal.name)
-                    desc = etree.SubElement(input_port, ns_ho + "DESC")
+                    desc = lxml.etree.SubElement(input_port, ns_ho + "DESC")
                     desc.text = signal.comment
                     signal_ref = create_sub_element_fx(input_port, "SIGNAL-REF")
                     signal_ref.set("ID-REF", "SIG_" + signal.name)
@@ -210,7 +211,7 @@ def dump(db, f, **options):
                 for signal in frame.signals:
                     output_port = create_sub_element_fx(input_ports, "OUTPUT-PORT")
                     output_port.set("ID", "OUTP_" + signal.name)
-                    desc = etree.SubElement(output_port, ns_ho + "DESC")
+                    desc = lxml.etree.SubElement(output_port, ns_ho + "DESC")
                     desc.text = "signalcomment"
                     signal_ref = create_sub_element_fx(output_port, "SIGNAL-REF")
                     signal_ref.set("ID-REF", "SIG_" + signal.name)
@@ -230,7 +231,7 @@ def dump(db, f, **options):
     #
     # PROCESSING-INFORMATION
     #
-    proc_info = etree.SubElement(elements, ns_fx + "PROCESSING-INFORMATION", nsmap={"ho": ho})
+    proc_info = lxml.etree.SubElement(elements, ns_fx + "PROCESSING-INFORMATION", nsmap={"ho": ho})
     unit_spec = create_sub_element_ho(proc_info, "UNIT-SPEC")
     for frame in db.frames:
         for signal in frame.signals:
@@ -286,4 +287,4 @@ def dump(db, f, **options):
     #
     # requirements = createSubElementFx(elements,  "REQUIREMENTS")
 
-    f.write(etree.tostring(root, pretty_print=True))
+    f.write(lxml.etree.tostring(root, pretty_print=True))
