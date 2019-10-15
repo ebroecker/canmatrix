@@ -259,7 +259,7 @@ Title=\"canmatrix-Export\"
                                 first = 1
                             mux_out += "DLC=%d\n" % frame.size
                             if frame.cycle_time != 0:
-                                mux_out += "CycleTime=" + str(frame.cycle_time) + "\n"
+                                mux_out += "CycleTime=" + str(frame.effective_cycle_time) + "\n"
 
                             mux_name = frame.mux_names.get(i, mux_signal.name + "%d" % i)
 
@@ -298,7 +298,7 @@ Title=\"canmatrix-Export\"
                 output += id_type
                 output += "DLC=%d\n" % frame.size
                 if frame.cycle_time != 0:
-                    output += "CycleTime=" + str(frame.cycle_time) + "\n"
+                    output += "CycleTime=" + str(frame.effective_cycle_time) + "\n"
                 for signal in frame.signals:
                     output += create_signal(db, signal)
                 output += "\n"

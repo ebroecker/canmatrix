@@ -996,8 +996,11 @@ def test_effective_cycle_time():
     sig2.cycle_time = 2
     assert frame.effective_cycle_time == 1
 
-    sig1.cycle_time = 3
+    sig1.cycle_time = 4
     assert frame.effective_cycle_time == 2
+
+    sig1.cycle_time = 3
+    assert frame.effective_cycle_time == 1
 
     frame.cycle_time = 1
     assert frame.effective_cycle_time == 1

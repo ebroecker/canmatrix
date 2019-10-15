@@ -179,9 +179,9 @@ def dump(dbs, f, **_options):
 
             if frame.arbitration_id.extended == 1:
                 message.set("format", "extended")
-            if frame.cycle_time != 0:
+            if frame.effective_cycle_time != 0:
                 message.set("triggered", "true")
-                message.set("interval", "%d" % int(frame.cycle_time))
+                message.set("interval", "%d" % int(frame.effective_cycle_time))
 
             comment_elem = lxml.etree.Element('Notes')
             if frame.comment is not None:
@@ -367,7 +367,7 @@ def load(f, **options):
             new_frame = canmatrix.Frame(message.get('name'))
 
             if 'triggered' in message.attrib:
-                new_frame.cycle_time = message.get('interval')
+                new_frame.cycle_time = int(message.get('interval'))
 
             if 'length' in message.attrib:
                 dlc = int(message.get('length'))
