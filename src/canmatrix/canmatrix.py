@@ -33,6 +33,7 @@ import fnmatch
 import itertools
 import logging
 import math
+import fractions
 import struct
 import typing
 from builtins import *
@@ -834,15 +835,16 @@ class Frame(object):
 
     @property
     def effective_cycle_time(self):
+        """Calculate effective cycle time for frame, depending on singal cycle times"""
         min_cycle_time_list = [y for y in [x.cycle_time for x in self.signals] + [self.cycle_time] if y != 0]
         if len(min_cycle_time_list) == 0:
             return 0
         elif len(min_cycle_time_list) == 1:
             return min_cycle_time_list[0]
         else:
-            gcd = math.gcd(min_cycle_time_list[0],min_cycle_time_list[1])
+            gcd = fractions.gcd(min_cycle_time_list[0],min_cycle_time_list[1])
             for i in range(2,len(min_cycle_time_list)):
-                gcd = math.gcd(gcd, min_cycle_time_list[i])
+                gcd = fractions.gcd(gcd, min_cycle_time_list[i])
             return gcd
         #    return min(min_cycle_time_list)
 
