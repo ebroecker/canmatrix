@@ -38,9 +38,7 @@ def get_frame_info(db, frame):
     # frame-Name
     ret_array.append(frame.name)
 
-    if "GenMsgCycleTime" in db.frame_defines:
-        # determine cycle-time
-        ret_array.append(frame.attribute("GenMsgCycleTime", db=db))
+    ret_array.append(frame.cycle_time)
 
     # determine send-type
     if "GenMsgSendType" in db.frame_defines:

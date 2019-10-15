@@ -179,11 +179,9 @@ def dump(dbs, f, **_options):
 
             if frame.arbitration_id.extended == 1:
                 message.set("format", "extended")
-            if "GenMsgCycleTime" in db.frame_defines:
-                cycle_time = frame.attribute("GenMsgCycleTime", db=db)
-                if cycle_time is not None and int(cycle_time) > 0:
-                    message.set("triggered", "true")
-                    message.set("interval", "%d" % int(cycle_time))
+            if frame.cycle_time != 0:
+                message.set("triggered", "true")
+                message.set("interval", "%d" % int(frame.cycle_time))
 
             comment_elem = lxml.etree.Element('Notes')
             if frame.comment is not None:
@@ -357,7 +355,6 @@ def load(f, **options):
     counter = 0
     for bus in buses:
         db = canmatrix.CanMatrix()
-        db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
         for node in nodes:
             db.ecus.append(canmatrix.Ecu(node.get('name')))
             node_list[node.get('id')] = node.get('name')
@@ -370,7 +367,7 @@ def load(f, **options):
             new_frame = canmatrix.Frame(message.get('name'))
 
             if 'triggered' in message.attrib:
-                new_frame.add_attribute("GenMsgCycleTime", message.get('interval'))
+                new_frame.cycle_time = message.get('interval')
 
             if 'length' in message.attrib:
                 dlc = int(message.get('length'))

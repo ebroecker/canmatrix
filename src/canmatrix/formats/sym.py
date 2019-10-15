@@ -258,10 +258,8 @@ Title=\"canmatrix-Export\"
                                 mux_out += id_type
                                 first = 1
                             mux_out += "DLC=%d\n" % frame.size
-                            if "GenMsgCycleTime" in db.frame_defines:
-                                cycle_time = frame.attribute("GenMsgCycleTime", db=db)
-                                if cycle_time is not None:
-                                    mux_out += "CycleTime=" + str(cycle_time) + "\n"
+                            if frame.cycle_time != 0:
+                                mux_out += "CycleTime=" + str(frame.cycle_time) + "\n"
 
                             mux_name = frame.mux_names.get(i, mux_signal.name + "%d" % i)
 
@@ -299,10 +297,8 @@ Title=\"canmatrix-Export\"
                 output += name
                 output += id_type
                 output += "DLC=%d\n" % frame.size
-                if "GenMsgCycleTime" in db.frame_defines:
-                    cycle_time = frame.attribute("GenMsgCycleTime", db=db)
-                    if cycle_time is not None:
-                        output += "CycleTime=" + str(cycle_time) + "\n"
+                if frame.cycle_time != 0:
+                    output += "CycleTime=" + str(frame.cycle_time) + "\n"
                 for signal in frame.signals:
                     output += create_signal(db, signal)
                 output += "\n"
@@ -330,7 +326,6 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     frame = None
 
     db = canmatrix.CanMatrix()
-    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
     db.add_frame_defines("Receivable", 'BOOL False True')
     db.add_frame_defines("Sendable", 'BOOL False True')
     db.add_signal_defines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
@@ -605,9 +600,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     frame.size = int(line.split('=')[1])
 
                 elif line.startswith('CycleTime'):
-                    frame.add_attribute(
-                        "GenMsgCycleTime",
-                        line.split('=')[1].strip())
+                    frame.cycle_time = int(line.split('=')[1].strip())
                 #        else:
                 #                print line
                 # else:

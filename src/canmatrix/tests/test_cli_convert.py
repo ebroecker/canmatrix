@@ -64,7 +64,7 @@ def create_dbc_with_special_char():
 
     db = canmatrix.CanMatrix()
     db.add_frame(myFrame)
-    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+    db.add_frame_defines("SomeUnneededDefine", 'INT 0 65535')
     canmatrix.formats.dumpp({"": db}, outFile, dbcExportEncoding='iso-8859-1',
                             dbcExportCommentEncoding='iso-8859-1')
     return outFile
