@@ -1397,7 +1397,7 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
 
     store_frame_timings(new_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset, repeating_time, root_or_cache, time_period, ns, float_factory)
 
-    if pdu.tag == ns + "CONTAINER-I-PDU":
+    if pdu.tag == "CONTAINER-I-PDU":
         get_frame_from_container_ipdu(pdu, new_frame, root_or_cache, ns, float_factory)
 
     else:
