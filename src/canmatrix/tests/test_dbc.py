@@ -319,3 +319,39 @@ def test_signal_definition_with_spaces_iss358():
     SG_ AccSts : 62|3@0+ (1.0, 0.0) [0.0|0.0] "" VDDM
     ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+
+
+def test_cycle_time_handling():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 17 Frame_1: 8 Vector__XXX
+        SG_ sig2 : 8|8@1- (1,0) [0|0] "" Vector__XXX
+        SG_ sig1 : 0|8@1- (1,0) [0|0] "" Vector__XXX
+        
+        
+        BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+        BA_DEF_ SG_  "GenSigCycleTime" INT 0 3600000;
+        BA_DEF_DEF_  "GenMsgCycleTime" 0;
+        BA_DEF_DEF_  "GenSigCycleTime" 0;
+        BA_ "GenMsgCycleTime" BO_ 17 100;
+        BA_ "GenSigCycleTime" SG_ 17 sig2 20;
+        BA_ "GenSigCycleTime" SG_ 17 sig1 10;
+    ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+
+    assert matrix.frames[0].cycle_time == 100
+    assert matrix.frames[0].signal_by_name("sig1").cycle_time == 10
+    assert matrix.frames[0].signal_by_name("sig2").cycle_time == 20
+
+    assert "GenMsgCycleTime" not in matrix.frame_defines
+
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(matrix, outdbc, "dbc")
+
+    assert 'BA_ "GenMsgCycleTime" BO_ 17 100;' in outdbc.getvalue().decode('utf8')
+    assert 'BA_ "GenSigCycleTime" SG_ 17 sig2 20;' in outdbc.getvalue().decode('utf8')
+    assert 'BA_ "GenSigCycleTime" SG_ 17 sig1 10;' in outdbc.getvalue().decode('utf8')
+
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump({"aa":matrix}, outdbc, "kcd")
+
+    print("BEEP")

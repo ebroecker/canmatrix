@@ -985,3 +985,27 @@ def test_canmatrix_del_frame_by_instance(empty_matrix):
     empty_matrix.del_frame(f1)
     assert empty_matrix.frames == [f2]
 
+def test_effective_cycle_time():
+    frame = canmatrix.Frame()
+    sig1 = canmatrix.Signal(name = "s1", cycle_time=1)
+    sig2 = canmatrix.Signal(name = "s2", cycle_time=0)
+    frame.add_signal(sig1)
+    frame.add_signal(sig2)
+    assert frame.effective_cycle_time == 1
+
+    sig2.cycle_time = 2
+    assert frame.effective_cycle_time == 1
+
+    sig1.cycle_time = 4
+    assert frame.effective_cycle_time == 2
+
+    sig1.cycle_time = 3
+    assert frame.effective_cycle_time == 1
+
+    frame.cycle_time = 1
+    assert frame.effective_cycle_time == 1
+
+    frame.cycle_time = 0
+    sig1.cycle_time = 0
+    sig2.cycle_time = 0
+    assert frame.effective_cycle_time == 0

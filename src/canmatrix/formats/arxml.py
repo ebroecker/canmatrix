@@ -1316,11 +1316,11 @@ def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay
 
     value = get_child(repeating_time, "VALUE", root_or_cache, ns)
     if value is not None:
-        target_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
+        target_frame.cycle_time = int(float_factory(value.text) * 1000)
     elif cyclic_timing is not None:
         value = get_child(time_period, "VALUE", root_or_cache, ns)
         if value is not None:
-            target_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
+            target_frame.cycle_time = int(float_factory(value.text) * 1000)
 
 
 def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_factory):
@@ -1659,7 +1659,6 @@ def load(file, **options):
         db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
         db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
         db.add_signal_defines("LongName", 'STRING')
-        db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
         db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
         db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
         db.add_frame_defines("GenMsgStartValue", 'STRING')

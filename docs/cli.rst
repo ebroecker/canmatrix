@@ -414,6 +414,8 @@ ____________________
 
 
 * yaml
+* scapy
+* lua
 * json:
 
  --jsonExportCanard

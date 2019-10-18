@@ -351,7 +351,6 @@ def load(file, **options):
     # Defines not imported...
     # db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
     # db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
-    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
     db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
@@ -452,7 +451,7 @@ def load(file, **options):
                 cycle_time = int(cycle_time)
             except:
                 cycle_time = 0
-            new_frame.add_attribute("GenMsgCycleTime", str(int(cycle_time)))
+            new_frame.cycle_time = cycle_time
 
             for additional_index in additional_inputs:
                 if "frame" in additional_inputs[additional_index]:

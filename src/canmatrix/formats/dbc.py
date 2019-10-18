@@ -226,7 +226,12 @@ def dump(in_db, f, **options):
 
         numbered_names = collections.OrderedDict()  # type: ignore
 
+        if frame.cycle_time != 0:
+            frame.add_attribute("GenMsgCycleTime", frame.cycle_time)
+
         for signal in frame.signals:
+            if signal.cycle_time != 0:
+                signal.add_attribute("GenSigCycleTime", signal.cycle_time)
             name = normalized_names[signal]
             if compatibility:
                 name = re.sub("[^A-Za-z0-9]", whitespace_replacement, name)
@@ -237,6 +242,13 @@ def dump(in_db, f, **options):
                 # TODO: pad to 01 in case of 10+ instances, for example?
                 name += str(duplicate_signal_counter[name] - 1)
             output_names[frame][signal] = name
+
+    if max([x.cycle_time for x in db.frames]) > 0:
+        db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+    if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
+        db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
+
+
 
     # Frames
     for frame in db.frames:
@@ -905,6 +917,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             ecu.name = ecu.attributes.get("SystemNodeLongSymbol")[1:-1]
             ecu.del_attribute("SystemNodeLongSymbol")
     for frame in db.frames:
+        frame.cycle_time = int(frame.attributes.get("GenMsgCycleTime", 0))
         if frame.attributes.get("SystemMessageLongSymbol", None) is not None:
             frame.name = frame.attributes.get("SystemMessageLongSymbol")[1:-1]
             frame.del_attribute("SystemMessageLongSymbol")
@@ -917,6 +930,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         #     frame.extended = 1
 
         for signal in frame.signals:
+            signal.cycle_time = int(signal.attributes.get("GenSigCycleTime", 0))
             if signal.attribute("SystemSignalLongSymbol") is not None:
                 signal.name = signal.attribute("SystemSignalLongSymbol")[1:-1]
                 signal.del_attribute("SystemSignalLongSymbol")
@@ -947,9 +961,15 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             frame.is_fd = True
         if "J1939PG" in frame.attributes.get("VFrameFormat", ""):
             frame.is_j1939 = True
-
     db.update_ecu_list()
     db.del_ecu("Vector__XXX")
+    db.del_frame_attributes(["GenMsgCycleTime"])
+    db.del_signal_attributes(["GenSigCycleTime"])
+    if "GenMsgCycleTime" in db.frame_defines:
+        del (db.frame_defines["GenMsgCycleTime"])
+    if "GenSigCycleTime" in db.signal_defines:
+        del (db.signal_defines["GenSigCycleTime"])
+
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
     if free_signals_dummy_frame is not None and free_signals_dummy_frame.arbitration_id.id == 0x40000000:
         db.signals = free_signals_dummy_frame.signals

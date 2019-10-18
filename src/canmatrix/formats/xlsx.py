@@ -402,7 +402,6 @@ def load(filename, **options):
     letter_index += ["%s%s" % (a, b) for a in all_letters for b in all_letters]
 
     # Defines not imported...
-    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
     db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
@@ -465,7 +464,7 @@ def load(filename, **options):
                 if launch_type not in launch_types:
                     launch_types.append(launch_type)
 
-            new_frame.add_attribute("GenMsgCycleTime", cycle_time)
+            new_frame.cycle_time = cycle_time
 
         # new signal detected
         if 'Signal Name' in row and row['Signal Name'] != signal_name:

@@ -67,9 +67,9 @@ db.ecu_by_name("testBU").add_comment("sender ECU")
 db.ecu_by_name("testBU").add_attribute("NetworkNode", 0x111)
 db.ecu_by_name("recBU").add_comment("receiver ECU")
 
-db.frame_by_name("testFrame1").add_attribute("GenMsgCycleTime", 100)
+db.frame_by_name("testFrame1").cycle_time = 100
 
-db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+
 db.add_ecu_defines("NetworkNode", 'INT 0 65535')
 
 

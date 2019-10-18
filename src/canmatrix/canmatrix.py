@@ -33,6 +33,7 @@ import fnmatch
 import itertools
 import logging
 import math
+import fractions
 import struct
 import typing
 from builtins import *
@@ -164,6 +165,8 @@ class Signal(object):
     # offset = attr.ib(converter=float_factory, default=0.0)  # type: float # ??
     calc_min_for_none = attr.ib(default=True)  # type: bool
     calc_max_for_none = attr.ib(default=True)  # type: bool
+
+    cycle_time = attr.ib(default=0)  # type: int
 
     min = attr.ib(
         converter=lambda value, float_factory=float_factory: (
@@ -754,6 +757,8 @@ class Frame(object):
     receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
 
+    cycle_time = attr.ib(default=0)  # type: int
+
     is_j1939 = attr.ib(default=False)  # type: bool
     # ('cycleTime', '_cycleTime', int, None),
     # ('sendType', '_sendType', str, None),
@@ -828,27 +833,30 @@ class Frame(object):
         self.arbitration_id.j1939_source = value
 
 
-    # @property
-    # def cycleTime(self):
-    #    if self._cycleTime is None:
-    #        self._cycleTime = self.attribute("GenMsgCycleTime")
-    #    return self._cycleTime
-    #
+    @property
+    def effective_cycle_time(self):
+        """Calculate effective cycle time for frame, depending on singal cycle times"""
+        min_cycle_time_list = [y for y in [x.cycle_time for x in self.signals] + [self.cycle_time] if y != 0]
+        if len(min_cycle_time_list) == 0:
+            return 0
+        elif len(min_cycle_time_list) == 1:
+            return min_cycle_time_list[0]
+        else:
+            gcd = fractions.gcd(min_cycle_time_list[0],min_cycle_time_list[1])
+            for i in range(2,len(min_cycle_time_list)):
+                gcd = fractions.gcd(gcd, min_cycle_time_list[i])
+            return gcd
+        #    return min(min_cycle_time_list)
+
     # @property
     # def sendType(self, db = None):
     #    if self._sendType is None:
     #        self._sendType = self.attribute("GenMsgSendType")
     #    return self._sendType
     #
-    # @cycleTime.setter
-    # def cycleTime(self, value):
-    #    self._cycleTime = value
-    #    self.attributes["GenMsgCycleTime"] = value
-    #
     # @sendType.setter
     # def sendType(self, value):
     #    self._sendType = value
-    #    self.attributes["GenMsgCycleTime"] = value
 
     def attribute(self, attribute_name, db=None, default=None):
         # type: (str, typing.Optional[CanMatrix], typing.Any) -> typing.Any
