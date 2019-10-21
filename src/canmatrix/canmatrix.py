@@ -842,9 +842,9 @@ class Frame(object):
         elif len(min_cycle_time_list) == 1:
             return min_cycle_time_list[0]
         else:
-            gcd = math.gcd(min_cycle_time_list[0],min_cycle_time_list[1])
+            gcd = canmatrix.utils.get_gcd(min_cycle_time_list[0],min_cycle_time_list[1])
             for i in range(2,len(min_cycle_time_list)):
-                gcd = math.gcd(gcd, min_cycle_time_list[i])
+                gcd = canmatrix.utils.get_gcd(gcd, min_cycle_time_list[i])
             return gcd
         #    return min(min_cycle_time_list)
 
