@@ -566,7 +566,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         # signal.add_comment(comment)
                         # ... (1 / ...) because this somehow made 59.8/0.1 be 598.0 rather than 597.9999999999999
                         if start_value is not None:
-                            signal.initial_value = start_value
+                            signal.initial_value = float_factory(start_value)
                         frame.add_signal(signal)
                     if long_name is not None:
                         signal.add_attribute("LongName", long_name)
