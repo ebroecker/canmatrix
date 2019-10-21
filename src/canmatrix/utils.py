@@ -7,7 +7,7 @@ import sys
 import typing
 from builtins import *
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3, 5):
     import math
 else:
     import fractions
@@ -56,7 +56,7 @@ def get_gcd(value1, value2):  # type (int,int) -> (int)
     :return: cvt of value 1 and value 2
     """
 
-    if sys.version_info >= (3, 0):
+    if sys.version_info >= (3, 5):
         return math.gcd(value1, value2)
     else:
         return fractions.gcd(value1, value2)
