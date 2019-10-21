@@ -629,13 +629,13 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         frame.is_complex_multiplexed = True
 
             elif decoded.startswith("BO_TX_BU_ "):
-                regexp = re.compile(r"^BO_TX_BU_ ([0-9]+) *: *(.+);")
+                regexp = re.compile(r"^BO_TX_BU_ ([0-9]+) *: *(.+) *;")
                 temp = regexp.match(decoded)
                 frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
                 for ecu_name in temp.group(2).split(','):
                     frame.add_transmitter(ecu_name)
             elif decoded.startswith("CM_ SG_ "):
-                pattern = r"^CM_ +SG_ +(\w+) +(\w+) +\"(.*)\";"
+                pattern = r"^CM_ +SG_ +(\w+) +(\w+) +\"(.*)\" *;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
@@ -670,7 +670,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         follow_up = _FollowUps.SIGNAL_COMMENT
 
             elif decoded.startswith("CM_ BO_ "):
-                pattern = r"^CM_ +BO_ +(\w+) +\"(.*)\";"
+                pattern = r"^CM_ +BO_ +(\w+) +\"(.*)\" *;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
@@ -702,7 +702,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                                 (i, line))
                         follow_up = _FollowUps.FRAME_COMMENT
             elif decoded.startswith("CM_ BU_ "):
-                pattern = r"^CM_ +BU_ +(\w+) +\"(.*)\";"
+                pattern = r"^CM_ +BU_ +(\w+) +\"(.*)\" *;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
@@ -744,7 +744,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             db.ecus.append(canmatrix.Ecu(ele))
 
             elif decoded.startswith("VAL_ "):
-                regexp = re.compile(r"^VAL_ +(\w+) +(\w+) +(.*);")
+                regexp = re.compile(r"^VAL_ +(\w+) +(\w+) +(.*) *;")
                 temp = regexp.match(decoded)
                 if temp:
                     frame_id = temp.group(1)
@@ -764,7 +764,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         logger.info("Warning: environment variables currently not supported")
 
             elif decoded.startswith("VAL_TABLE_ "):
-                regexp = re.compile(r"^VAL_TABLE_ +(\w+) +(.*);")
+                regexp = re.compile(r"^VAL_TABLE_ +(\w+) +(.*) *;")
                 temp = regexp.match(decoded)
                 if temp:
                     table_name = temp.group(1)
@@ -801,7 +801,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         db.add_env_defines(temp.group(1), temp_raw.group(2).decode(dbc_import_encoding))
 
             elif decoded.startswith("BA_DEF_ "):
-                pattern = r"^BA_DEF_ +\"(.+?)\" +(.+);"
+                pattern = r"^BA_DEF_ +\"(.+?)\" +(.+) *;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)
@@ -815,23 +815,23 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 tempba = regexp.match(decoded)
 
                 if tempba.group(1).strip().startswith("BO_ "):
-                    regexp = re.compile(r"^BA_ +\"(.+?)\" +BO_ +(\d+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +BO_ +(\d+) +(.+) *;")
                     temp = regexp.match(decoded)
                     get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).add_attribute(
                         temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("SG_ "):
-                    regexp = re.compile(r"^BA_ +\"(.+?)\" +SG_ +(\d+) +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +SG_ +(\d+) +(\w+) +(.+) *;")
                     temp = regexp.match(decoded)
                     if temp is not None:
                         get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).signal_by_name(
                             temp.group(3)).add_attribute(temp.group(1), temp.group(4))
                 elif tempba.group(1).strip().startswith("EV_ "):
-                    regexp = re.compile(r"^BA_ +\"(.+?)\" +EV_ +(\w+) +(.*);")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +EV_ +(\w+) +(.*) *;")
                     temp = regexp.match(decoded)
                     if temp is not None:
                         db.add_env_attribute(temp.group(2), temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("BU_ "):
-                    regexp = re.compile(r"^BA_ +\"(.*?)\" +BU_ +(\w+) +(.+);")
+                    regexp = re.compile(r"^BA_ +\"(.*?)\" +BU_ +(\w+) +(.+) *;")
                     temp = regexp.match(decoded)
                     db.ecu_by_name(
                         temp.group(2)).add_attribute(
@@ -839,13 +839,13 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         temp.group(3))
                 else:
                     regexp = re.compile(
-                        r"^BA_ +\"([A-Za-z0-9\-_]+)\" +([\"\w\-\.]+);")
+                        r"^BA_ +\"([A-Za-z0-9\-_]+)\" +([\"\w\-\.]+) *;")
                     temp = regexp.match(decoded)
                     if temp:
                         db.add_attribute(temp.group(1), temp.group(2))
 
             elif decoded.startswith("SIG_GROUP_ "):
-                regexp = re.compile(r"^SIG_GROUP_ +(\w+) +(\w+) +(\w+) +\:(.*);")
+                regexp = re.compile(r"^SIG_GROUP_ +(\w+) +(\w+) +(\w+) +\:(.*) *;")
                 temp = regexp.match(decoded)
                 frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
                 if frame is not None:
@@ -853,7 +853,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     frame.add_signal_group(temp.group(2), temp.group(3), signal_array)  # todo wrong annotation in canmatrix? Id is a string?
 
             elif decoded.startswith("SIG_VALTYPE_ "):
-                regexp = re.compile(r"^SIG_VALTYPE_ +(\w+) +(\w+)\s*\:(.*);")
+                regexp = re.compile(r"^SIG_VALTYPE_ +(\w+) +(\w+)\s*\:(.*) *;")
                 temp = regexp.match(decoded)
                 frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
                 if frame:
@@ -862,7 +862,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     #                SIG_VALTYPE_ 0 float : 1;
 
             elif decoded.startswith("BA_DEF_DEF_ "):
-                pattern = r"^BA_DEF_DEF_ +\"(.+?)\" +(.+?)\;"
+                pattern = r"^BA_DEF_DEF_ +\"(.+?)\" +(.+?) *;"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(decoded)

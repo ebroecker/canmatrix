@@ -53,6 +53,17 @@ def test_create_comment_string():
     test_string = canmatrix.formats.dbc.create_comment_string("BO_", "ident", "some comment", "utf8", "utf8", "")
     assert test_string == b'CM_ BO_ ident "some comment";\n'
 
+def test_parse_comment_from_dbc():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 1 someFrame: 1 someEcu
+         SG_ someSignal: 1|2@0+ (1,0) [0|0] ""  CCL_TEST
+
+        CM_ SG_ 1 someSignal "resistance setting (0-100%)" ; 
+        ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc)
+    assert matrix.frames[0].signals[0].comment == "resistance setting (0-100%)"
+    print("BEEP")
 
 def test_long_frame_name_imports():
     long_frame_name = u'A_VERY_LONG_FRAME_NAME_WHICH_SHOULD_BE_SPLIT_SOMEHOW'
