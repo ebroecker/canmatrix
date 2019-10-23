@@ -115,9 +115,10 @@ def dump(in_db, f, **options):
 
     dbc_export_encoding = options.get("dbcExportEncoding", 'iso-8859-1')
     dbc_export_comment_encoding = options.get("dbcExportCommentEncoding",  dbc_export_encoding)
+    compatibility = options.get('compatibility', True)
+    dbc_unique_signal_names_per_frame = options.get("dbcUniqueSignalNames", compatibility)
     ignore_encoding_errors= options.get("ignoreEncodingErrors",  "")
     write_val_table = options.get("writeValTable", True)
-    compatibility = options.get('compatibility', True)
 
     whitespace_replacement = options.get("whitespaceReplacement", '_')
     if whitespace_replacement in ['', None] or {' ', '\t'}.intersection(whitespace_replacement):
@@ -238,7 +239,7 @@ def dump(in_db, f, **options):
                 if name[0].isdigit():
                     name = whitespace_replacement + name
             duplicate_signal_counter[name] += 1
-            if duplicate_signal_totals[name] > 1:
+            if dbc_unique_signal_names_per_frame and duplicate_signal_totals[name] > 1:
                 # TODO: pad to 01 in case of 10+ instances, for example?
                 name += str(duplicate_signal_counter[name] - 1)
             output_names[frame][signal] = name
