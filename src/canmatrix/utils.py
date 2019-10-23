@@ -7,6 +7,12 @@ import sys
 import typing
 from builtins import *
 
+if sys.version_info >= (3, 5):
+    import math
+else:
+    import fractions
+
+
 
 def quote_aware_space_split(in_line):  # type: (str) -> typing.List[str]
     if sys.version_info >= (3, 0):  # is there a clean way to to it?
@@ -39,3 +45,18 @@ def guess_value(text_value):  # type: (str) -> str
     elif text_value in ["true", "on"]:
         return "1"
     return text_value
+
+
+def get_gcd(value1, value2):  # type (int,int) -> (int)
+    """
+    Get greatest common divisor of value1 and value2
+
+    :param value1: int value 1
+    :param value2: int value 2
+    :return: cvt of value 1 and value 2
+    """
+
+    if sys.version_info >= (3, 5):
+        return math.gcd(value1, value2)
+    else:
+        return fractions.gcd(value1, value2)

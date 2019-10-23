@@ -33,7 +33,6 @@ import fnmatch
 import itertools
 import logging
 import math
-import fractions
 import struct
 import typing
 from builtins import *
@@ -167,6 +166,7 @@ class Signal(object):
     calc_max_for_none = attr.ib(default=True)  # type: bool
 
     cycle_time = attr.ib(default=0)  # type: int
+    initial_value = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: canmatrix.types.PhysicalValue
 
     min = attr.ib(
         converter=lambda value, float_factory=float_factory: (
@@ -396,7 +396,7 @@ class Signal(object):
         :rtype: int or decimal.Decimal
         """
         if value is None:
-            return int(self.attributes.get('GenSigStartValue', 0))
+            value = self.initial_value
 
         if isinstance(value, basestring):
             for value_key, value_string in self.values.items():
@@ -842,9 +842,9 @@ class Frame(object):
         elif len(min_cycle_time_list) == 1:
             return min_cycle_time_list[0]
         else:
-            gcd = fractions.gcd(min_cycle_time_list[0],min_cycle_time_list[1])
+            gcd = canmatrix.utils.get_gcd(min_cycle_time_list[0],min_cycle_time_list[1])
             for i in range(2,len(min_cycle_time_list)):
-                gcd = fractions.gcd(gcd, min_cycle_time_list[i])
+                gcd = canmatrix.utils.get_gcd(gcd, min_cycle_time_list[i])
             return gcd
         #    return min(min_cycle_time_list)
 

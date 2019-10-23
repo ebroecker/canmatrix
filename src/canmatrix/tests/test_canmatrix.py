@@ -43,24 +43,22 @@ def test_encode_signal():
     assert s4.phys2raw(s4.min) == 0
 
     s5 = canmatrix.canmatrix.Signal('signal', size=8, offset=2)
-    assert s5.phys2raw() == 0
+    assert s5.phys2raw() == -2
     assert s5.phys2raw(10) == 8
     assert s5.phys2raw(s5.max) == 127
     assert s5.phys2raw(s5.min) == -128
 
     s6 = canmatrix.canmatrix.Signal('signal', size=8, is_signed=False, offset=5)
-    assert s6.phys2raw() == 0
+    assert s6.phys2raw() == -5
     assert s6.phys2raw(10) == 5
     assert s6.phys2raw(s6.max) == 255
     assert s6.phys2raw(s6.min) == 0
 
-    s7 = canmatrix.canmatrix.Signal('signal', size=8)
-    s7.add_attribute('GenSigStartValue', '5')
+    s7 = canmatrix.canmatrix.Signal('signal', size=8, initial_value=5)
     assert s7.phys2raw() == 5
 
-    s8 = canmatrix.canmatrix.Signal('signal', size=8, is_signed=False, offset=5)
-    s8.add_attribute('GenSigStartValue', '5')
-    assert s8.phys2raw() == 5
+    s8 = canmatrix.canmatrix.Signal('signal', size=8, is_signed=False, offset=5, initial_value=5)
+    assert s8.phys2raw() == 0
 
     s9 = canmatrix.canmatrix.Signal('signal', size=16, is_signed=False, factor='0.001')
     assert s9.phys2raw() == 0
