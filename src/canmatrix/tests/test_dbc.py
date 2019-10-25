@@ -63,7 +63,17 @@ def test_parse_comment_from_dbc():
 
     matrix = canmatrix.formats.dbc.load(dbc)
     assert matrix.frames[0].signals[0].comment == "resistance setting (0-100%)"
-    print("BEEP")
+
+def test_parse_multi_line_comment():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 1 someFrame: 1 someEcu
+         SG_ someSignal: 1|2@0+ (1,0) [0|0] ""  CCL_TEST
+
+        CM_ SG_ 1 someSignal "Debug request message from the ECU to the BMS.
+** ignore for now, more definition to be provided in Rev 14 regarding which messages to change if we have this debug flag implemented. " ;
+        ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc)
+    assert matrix.frames[0].signals[0].comment == 'Debug request message from the ECU to the BMS.\n** ignore for now, more definition to be provided in Rev 14 regarding which messages to change if we have this debug flag implemented. "'
 
 def test_long_frame_name_imports():
     long_frame_name = u'A_VERY_LONG_FRAME_NAME_WHICH_SHOULD_BE_SPLIT_SOMEHOW'

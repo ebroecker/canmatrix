@@ -501,7 +501,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     comment += "\n" + l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
-                if l.endswith(b'";'):
+                if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if signal is not None:
                         signal.add_comment(comment[0:-2])
@@ -511,7 +511,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     comment += "\n" + l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
-                if l.endswith(b'";'):
+                if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if frame is not None:
                         frame.add_comment(comment[0:-2])
@@ -522,7 +522,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
-                if l.endswith(b'";'):
+                if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if board_unit is not None:
                         board_unit.add_comment(comment[0:-2])
