@@ -363,7 +363,7 @@ def test_cycle_time_handling():
     assert matrix.frames[0].signal_by_name("sig1").cycle_time == 10
     assert matrix.frames[0].signal_by_name("sig2").cycle_time == 20
 
-    assert "GenMsgCycleTime" not in matrix.frame_defines
+#    assert "GenMsgCycleTime" not in matrix.frame_defines
 
     outdbc = io.BytesIO()
     canmatrix.formats.dump(matrix, outdbc, "dbc")
@@ -374,6 +374,21 @@ def test_cycle_time_handling():
 
     outdbc = io.BytesIO()
     canmatrix.formats.dump({"aa":matrix}, outdbc, "kcd")
+
+def test_keep_cycle_time_defines():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 17 Frame_1: 8 Vector__XXX
+        SG_ sig1 : 0|8@1- (1,0) [0|0] "" Vector__XXX
+        
+        BA_DEF_ BO_ "GenMsgCycleTime" INT 0 50000 ;
+        BA_DEF_DEF_ "GenMsgCycleTime" 0 ;
+    ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(matrix, outdbc, "dbc")
+    assert 'BA_DEF_ BO_ "GenMsgCycleTime" INT 0 50000' in outdbc.getvalue().decode('utf8')
+    assert 'BA_DEF_DEF_ "GenMsgCycleTime" 0' in outdbc.getvalue().decode('utf8')
 
 def test_unique_signal_names():
     db = canmatrix.CanMatrix()

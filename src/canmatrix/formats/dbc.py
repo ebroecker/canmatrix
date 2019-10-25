@@ -964,12 +964,12 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             frame.is_j1939 = True
     db.update_ecu_list()
     db.del_ecu("Vector__XXX")
-    db.del_frame_attributes(["GenMsgCycleTime"])
-    db.del_signal_attributes(["GenSigCycleTime"])
-    if "GenMsgCycleTime" in db.frame_defines:
-        del (db.frame_defines["GenMsgCycleTime"])
-    if "GenSigCycleTime" in db.signal_defines:
-        del (db.signal_defines["GenSigCycleTime"])
+#    db.del_frame_attributes(["GenMsgCycleTime"])
+#    db.del_signal_attributes(["GenSigCycleTime"])
+#    if "GenMsgCycleTime" in db.frame_defines:
+#        del (db.frame_defines["GenMsgCycleTime"])
+#    if "GenSigCycleTime" in db.signal_defines:
+#        del (db.signal_defines["GenSigCycleTime"])
 
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
     if free_signals_dummy_frame is not None and free_signals_dummy_frame.arbitration_id.id == 0x40000000:
