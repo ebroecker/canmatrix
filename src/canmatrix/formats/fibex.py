@@ -139,6 +139,25 @@ def dump(db, f, **options):
         function_refs = create_sub_element_fx(ecu, "FUNCTION-REFS")
         func_ref = create_sub_element_fx(function_refs, "FUNCTION-REF")
         func_ref.set("ID-REF", "FCT_" + bu.name)
+        
+        connectors = create_sub_element_fx(ecu, "CONNECTORS")
+        connector = create_sub_element_fx(connectors, "CONNECTOR")
+        
+        inputs = create_sub_element_fx(connector, "INPUTS")
+        for frame in db.frames:
+            if bu.name in frame.receivers:
+                input_port = create_sub_element_fx(inputs, "INPUT-PORT")
+                frame_triggering_ref = create_sub_element_fx(input_port, "FRAME-TRIGGERING-REF")
+                frame_triggering_ref.set("ID-REF", "FT_" + frame.name)
+                
+        outputs = create_sub_element_fx(connector, "OUTPUTS")
+        for frame in db.frames:
+            if bu.name in frame.transmitters:
+                input_port = create_sub_element_fx(outputs, "OUTPUT-PORT")
+                frame_triggering_ref = create_sub_element_fx(input_port, "FRAME-TRIGGERING-REF")
+                frame_triggering_ref.set("ID-REF", "FT_" + frame.name)
+                
+        
         # ignore CONTROLERS/CONTROLER
 
     #
@@ -168,7 +187,7 @@ def dump(db, f, **options):
                 create_sub_element_fx(
                     signal_instance, "IS-HIGH-LOW-BYTE-ORDER", "true")
             signal_ref = create_sub_element_fx(signal_instance, "SIGNAL-REF")
-            signal_ref.set("ID-REF", signal.name)
+            signal_ref.set("ID-REF", "SIG_" + signal.name)
 
     # FRAMES
     #
@@ -176,7 +195,7 @@ def dump(db, f, **options):
     for frame in db.frames:
         frame_element = create_sub_element_fx(frames, "FRAME")
         frame_element.set("ID", "FRAME_" + frame.name)
-        create_short_name_desc(frame_element, "FRAME_" + frame.name, frame.comment)
+        create_short_name_desc(frame_element, frame.name, frame.comment)
         create_sub_element_fx(frame_element, "BYTE-LENGTH", str(frame.size))  # DLC
         create_sub_element_fx(frame_element, "PDU-TYPE", "APPLICATION")
         pdu_instances = create_sub_element_fx(frame_element, "PDU-INSTANCES")
@@ -206,10 +225,11 @@ def dump(db, f, **options):
                     signal_ref = create_sub_element_fx(input_port, "SIGNAL-REF")
                     signal_ref.set("ID-REF", "SIG_" + signal.name)
 
+        output_ports = create_sub_element_fx(function, "OUTPUT-PORTS")
         for frame in db.frames:
             if bu.name in frame.transmitters:
                 for signal in frame.signals:
-                    output_port = create_sub_element_fx(input_ports, "OUTPUT-PORT")
+                    output_port = create_sub_element_fx(output_ports, "OUTPUT-PORT")
                     output_port.set("ID", "OUTP_" + signal.name)
                     desc = lxml.etree.SubElement(output_port, ns_ho + "DESC")
                     desc.text = "signalcomment"
@@ -219,8 +239,8 @@ def dump(db, f, **options):
     #
     # SIGNALS
     #
+    signals = create_sub_element_fx(elements, "SIGNALS")
     for frame in db.frames:
-        signals = create_sub_element_fx(elements, "SIGNALS")
         for signal in frame.signals:
             signal_element = create_sub_element_fx(signals, "SIGNAL")
             signal_element.set("ID", "SIG_" + signal.name)
@@ -231,7 +251,7 @@ def dump(db, f, **options):
     #
     # PROCESSING-INFORMATION
     #
-    proc_info = lxml.etree.SubElement(elements, ns_fx + "PROCESSING-INFORMATION", nsmap={"ho": ho})
+    proc_info = lxml.etree.SubElement(root, ns_fx + "PROCESSING-INFORMATION", nsmap={"ho": ho})
     unit_spec = create_sub_element_ho(proc_info, "UNIT-SPEC")
     for frame in db.frames:
         for signal in frame.signals:
@@ -251,7 +271,10 @@ def dump(db, f, **options):
                 signal.name,
                 "Coding for " +
                 signal.name)
-            # ignore CODE-TYPE
+                
+            coded = create_sub_element_ho(coding, "CODED-TYPE")
+            create_sub_element_ho(coded, "BIT-LENGTH", str(signal.size))
+            
             compu_methods = create_sub_element_ho(coding, "COMPU-METHODS")
             compu_method = create_sub_element_ho(compu_methods, "COMPU-METHOD")
             create_sub_element_ho(
