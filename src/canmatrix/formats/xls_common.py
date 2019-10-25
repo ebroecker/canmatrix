@@ -85,16 +85,7 @@ def get_signal(db, sig, motorola_bit_format):
     front_array.append(sig.size)
 
     # start-value of signal available
-    if "GenSigStartValue" in db.signal_defines:
-        if db.signal_defines["GenSigStartValue"].definition == "STRING":
-            front_array.append(sig.attribute("GenSigStartValue", db=db))
-        elif db.signal_defines["GenSigStartValue"].definition == "INT" \
-                or db.signal_defines["GenSigStartValue"].definition == "HEX":
-            front_array.append("%Xh" % sig.attribute("GenSigStartValue", db=db))
-        else:
-            front_array.append(" ")
-    else:
-        front_array.append(" ")
+    front_array.append(sig.initial_value)
 
     # SNA-value of signal available
     if "GenSigSNA" in db.signal_defines:

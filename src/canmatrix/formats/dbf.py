@@ -329,6 +329,14 @@ def dump(mydb, f, **options):
 
     out_str += str(len(db.frames)) + "\n"
 
+    if max([x.cycle_time for x in db.frames]) > 0:
+        db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+    if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
+        db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
+
+    if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
+        db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
+
     # Frames
     for frame in db.frames:
         if frame.is_complex_multiplexed:
@@ -338,7 +346,7 @@ def dump(mydb, f, **options):
         # Name unMsgId m_ucLength m_ucNumOfSignals m_cDataFormat m_cFrameFormat? m_txNode
         # m_cDataFormat Data format: 1-Intel, 0-Motorola -- always 1 original converter decides based on signal count.
         # cFrameFormat Standard 'S' Extended 'X'
-        extended = 'x' if frame.arbitration_id.extended == 1 else 'S'
+        extended = 'X' if frame.arbitration_id.extended == 1 else 'S'
         out_str += "[START_MSG] " + frame.name + \
             ",%d,%d,%d,1,%c," % (frame.arbitration_id.id, frame.size, len(frame.signals), extended)
         if not frame.transmitters:
@@ -467,7 +475,7 @@ def dump(mydb, f, **options):
         default_val = define.defaultValue
         if default_val is None:
             default_val = "0"
-        out_str += '"' + data_type + '",' + define.definition.replace(' ', ',') + ',' + default_val + '\n'
+        out_str += '"' + data_type + '",'  + define.definition.replace(' ', ',') + '\n'  # + ',' + default_val + '\n'
 
     out_str += "[END_PARAM_MSG]\n"
 
