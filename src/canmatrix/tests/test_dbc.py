@@ -73,7 +73,8 @@ def test_parse_multi_line_comment():
 ** ignore for now, more definition to be provided in Rev 14 regarding which messages to change if we have this debug flag implemented. " ;
         ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc)
-    assert matrix.frames[0].signals[0].comment == 'Debug request message from the ECU to the BMS.\n** ignore for now, more definition to be provided in Rev 14 regarding which messages to change if we have this debug flag implemented. "'
+    assert matrix.frames[0].signals[0].comment == 'Debug request message from the ECU to the BMS.\n** ignore for now, more definition to be provided in Rev 14 regarding which messages to change if we have this debug flag implemented. '
+
 
 def test_long_frame_name_imports():
     long_frame_name = u'A_VERY_LONG_FRAME_NAME_WHICH_SHOULD_BE_SPLIT_SOMEHOW'

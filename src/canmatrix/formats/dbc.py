@@ -504,7 +504,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if signal is not None:
-                        signal.add_comment(comment[0:-2])
+                        signal.add_comment(comment[:-1].strip()[:-1])
                 continue
             elif follow_up == _FollowUps.FRAME_COMMENT:
                 try:
@@ -514,7 +514,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if frame is not None:
-                        frame.add_comment(comment[0:-2])
+                        frame.add_comment(comment[:-1].strip()[:-1])
                 continue
             elif follow_up == _FollowUps.BOARD_UNIT_COMMENT:
                 try:
@@ -525,7 +525,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if board_unit is not None:
-                        board_unit.add_comment(comment[0:-2])
+                        board_unit.add_comment(comment[:-1].strip()[:-1])
                 continue
             decoded = l.decode(dbc_import_encoding).strip()
             if decoded.startswith("BO_ "):
