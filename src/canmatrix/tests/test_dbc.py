@@ -366,6 +366,23 @@ def test_cycle_time_handling():
     outdbc = io.BytesIO()
     canmatrix.formats.dump({"aa":matrix}, outdbc, "kcd")
 
+def test_unique_signal_names():
+    db = canmatrix.CanMatrix()
+    frame = canmatrix.Frame("some Frame")
+    frame.add_signal(canmatrix.Signal("signal_name", size=1, start_bit=1))
+    frame.add_signal(canmatrix.Signal("signal_name", size=2, start_bit=9))
+    db.add_frame(frame)
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(db, outdbc, "dbc")
+    assert "signal_name0" in outdbc.getvalue().decode('utf8')
+    assert "signal_name1" in outdbc.getvalue().decode('utf8')
+
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(db, outdbc, "dbc", dbcUniqueSignalNames=False)
+    assert "signal_name0" not in outdbc.getvalue().decode('utf8')
+    assert "signal_name1" not in outdbc.getvalue().decode('utf8')
+    assert "signal_name" in outdbc.getvalue().decode('utf8')
+
 def test_signal_inital_value():
     dbc = io.BytesIO(textwrap.dedent(u'''\
         BO_ 17 Frame_1: 8 Vector__XXX
