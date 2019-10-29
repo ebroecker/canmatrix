@@ -172,9 +172,10 @@ def dump(db, f, **options):
         create_sub_element_fx(pdu, "PDU-TYPE", "APPLICATION")
         signal_instances = create_sub_element_fx(pdu, "SIGNAL-INSTANCES")
         for signal in frame.signals:
+            signal_id = frame.name + "." + signal.name
             signal_instance = create_sub_element_fx(
                 signal_instances, "SIGNAL-INSTANCE")
-            signal_instance.set("ID", "PDUINST_" + signal.name)
+            signal_instance.set("ID", "PDUINST_" + signal_id)
             # startBit: TODO - find out correct BYTEORDER ...
             create_sub_element_fx(signal_instance, "BIT-POSITION",
                                   str(signal.start_bit))
@@ -187,7 +188,7 @@ def dump(db, f, **options):
                 create_sub_element_fx(
                     signal_instance, "IS-HIGH-LOW-BYTE-ORDER", "true")
             signal_ref = create_sub_element_fx(signal_instance, "SIGNAL-REF")
-            signal_ref.set("ID-REF", "SIG_" + signal.name)
+            signal_ref.set("ID-REF", "SIG_" + signal_id)
 
     # FRAMES
     #
@@ -217,24 +218,26 @@ def dump(db, f, **options):
         input_ports = create_sub_element_fx(function, "INPUT-PORTS")
         for frame in db.frames:
             for signal in frame.signals:
+                signal_id = frame.name + "." + signal.name
                 if bu.name in signal.receivers:
                     input_port = create_sub_element_fx(input_ports, "INPUT-PORT")
-                    input_port.set("ID", "INP_" + signal.name)
+                    input_port.set("ID", "INP_" + signal_id)
                     desc = lxml.etree.SubElement(input_port, ns_ho + "DESC")
                     desc.text = signal.comment
                     signal_ref = create_sub_element_fx(input_port, "SIGNAL-REF")
-                    signal_ref.set("ID-REF", "SIG_" + signal.name)
+                    signal_ref.set("ID-REF", "SIG_" + signal_id)
 
         output_ports = create_sub_element_fx(function, "OUTPUT-PORTS")
         for frame in db.frames:
             if bu.name in frame.transmitters:
                 for signal in frame.signals:
+                    signal_id = frame.name + "." + signal.name
                     output_port = create_sub_element_fx(output_ports, "OUTPUT-PORT")
-                    output_port.set("ID", "OUTP_" + signal.name)
+                    output_port.set("ID", "OUTP_" + signal_id)
                     desc = lxml.etree.SubElement(output_port, ns_ho + "DESC")
                     desc.text = "signalcomment"
                     signal_ref = create_sub_element_fx(output_port, "SIGNAL-REF")
-                    signal_ref.set("ID-REF", "SIG_" + signal.name)
+                    signal_ref.set("ID-REF", "SIG_" + frame.name + "_" + signal_id)
 
     #
     # SIGNALS
@@ -242,11 +245,12 @@ def dump(db, f, **options):
     signals = create_sub_element_fx(elements, "SIGNALS")
     for frame in db.frames:
         for signal in frame.signals:
+            signal_id = frame.name + "." + signal.name
             signal_element = create_sub_element_fx(signals, "SIGNAL")
-            signal_element.set("ID", "SIG_" + signal.name)
+            signal_element.set("ID", "SIG_" + signal_id)
             create_short_name_desc(signal_element, signal.name, signal.comment)
             coding_ref = create_sub_element_fx(signal_element, "CODING-REF")
-            coding_ref.set("ID-REF", "CODING_" + signal.name)
+            coding_ref.set("ID-REF", "CODING_" + signal_id)
 
     #
     # PROCESSING-INFORMATION
@@ -255,22 +259,24 @@ def dump(db, f, **options):
     unit_spec = create_sub_element_ho(proc_info, "UNIT-SPEC")
     for frame in db.frames:
         for signal in frame.signals:
+            signal_id = frame.name + "." + signal.name
             unit = create_sub_element_ho(unit_spec, "UNIT")
-            unit.set("ID", "UNIT_" + signal.name)
+            unit.set("ID", "UNIT_" + signal_id)
             create_sub_element_ho(unit, "SHORT-NAME", signal.name)
             create_sub_element_ho(unit, "DISPLAY-NAME", signal.unit)
 
     codings = create_sub_element_fx(proc_info, "CODINGS")
     for frame in db.frames:
         for signal in frame.signals:
+            signal_id = frame.name + "." + signal.name
             coding = create_sub_element_fx(codings, "CODING")
-            coding.set("ID", "CODING_" + signal.name)
+            coding.set("ID", "CODING_" + signal_id)
             create_short_name_desc(
                 coding,
                 "CODING_" +
-                signal.name,
+                signal_id,
                 "Coding for " +
-                signal.name)
+                signal_id)
                 
             coded = create_sub_element_ho(coding, "CODED-TYPE")
             create_sub_element_ho(coded, "BIT-LENGTH", str(signal.size))
@@ -284,7 +290,7 @@ def dump(db, f, **options):
                 signal.name)
             create_sub_element_ho(compu_method, "CATEGORY", "LINEAR")
             unit_ref = create_sub_element_ho(compu_method, "UNIT-REF")
-            unit_ref.set("ID-REF", "UNIT_" + signal.name)
+            unit_ref.set("ID-REF", "UNIT_" + signal_id)
             compu_internal_to_phys = create_sub_element_ho(
                 compu_method, "COMPU-INTERNAL-TO-PHYS")
             compu_scales = create_sub_element_ho(
