@@ -76,6 +76,7 @@ setup(
       install_requires = [
         "attrs>=18.1.0",
         "bitstruct",
+        "click",
         "future",
         "pathlib2",
         "typing; python_version < '3.5'",
@@ -97,7 +98,7 @@ setup(
     packages = find_packages("src"),
     package_dir = {"": "src"},
     package_data = {"canmatrix" : ["tests/*.dbc", "tests/*.arxml", "j1939.dbc"]},
-    entry_points={'console_scripts': ['cancompare = canmatrix.cli.compare:main',
-                                      'canconvert = canmatrix.cli.convert:main']}
+    entry_points={'console_scripts': ['cancompare = canmatrix.cli.compare:cli_compare',
+                                      'canconvert = canmatrix.cli.convert:cli_convert']}
 )
 

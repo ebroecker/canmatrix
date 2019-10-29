@@ -322,7 +322,6 @@ def parse_value_name_column(value_name, value_str, signal_size, float_factory):
 
 
 def read_additional_signal_attributes(signal, attribute_name, attribute_value):
-    attribute_mapping = {"initial_value": "GenSigStartValue"}
     if not attribute_name.startswith("signal"):
         return
     if attribute_name.replace("signal.", "") in vars(signal):
@@ -330,10 +329,6 @@ def read_additional_signal_attributes(signal, attribute_name, attribute_value):
         command_str += str(attribute_value)
         if len(str(attribute_value)) > 0:
             exec(command_str)
-    elif attribute_name.replace("signal.", "") in attribute_mapping:
-        signal_attribute = attribute_mapping[attribute_name.replace("signal.", "")]
-        if len(str(attribute_value)) > 0:
-            signal.add_attribute(signal_attribute, attribute_value)
     else:
         pass
 
@@ -356,7 +351,6 @@ def load(file, **options):
     db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
     # db.addFrameDefines("GenMsgStartValue",  'STRING')
     launch_types = []  # type: typing.List[str]
-    db.add_signal_defines("GenSigStartValue", 'HEX 0 4294967295')
     db.add_signal_defines("GenSigSNA", 'STRING')
 
     # eval search for correct columns:

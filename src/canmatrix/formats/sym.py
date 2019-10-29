@@ -152,19 +152,11 @@ def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) 
                     key, val) in sorted(
                     signal.values.items())) + ")"
 
-    if "GenSigStartValue" in db.signal_defines:
-        gen_sig_start_val = signal.attribute("GenSigStartValue", db=db)
-        if gen_sig_start_val is not None:
-            factory = (
-                signal.float_factory
-                if signal.is_float
-                else int
-            )
-            default = factory(gen_sig_start_val) * signal.factor  # type: ignore
-            min_ok = signal.min is None or default >= signal.min
-            max_ok = signal.max is None or default <= signal.max
-            if min_ok and max_ok:
-                output += "/d:{} ".format(default)
+    default = signal.initial_value  # type: ignore
+    min_ok = signal.min is None or default >= signal.min
+    max_ok = signal.max is None or default <= signal.max
+    if min_ok and max_ok:
+        output += "/d:{} ".format(default)
 
     long_name = signal.attributes.get('LongName')
     if long_name is not None:
@@ -328,7 +320,6 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     db = canmatrix.CanMatrix()
     db.add_frame_defines("Receivable", 'BOOL False True')
     db.add_frame_defines("Sendable", 'BOOL False True')
-    db.add_signal_defines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
     db.add_signal_defines("HexadecimalOutput", 'BOOL False True')
     db.add_signal_defines("DisplayDecimalPlaces", 'INT 0 65535')
     db.add_signal_defines("LongName", 'STR')
@@ -575,8 +566,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         # signal.add_comment(comment)
                         # ... (1 / ...) because this somehow made 59.8/0.1 be 598.0 rather than 597.9999999999999
                         if start_value is not None:
-                            start_value = float_factory(start_value) * (1 / float_factory(factor))
-                            signal.add_attribute("GenSigStartValue", str(start_value))
+                            signal.initial_value = float_factory(start_value)
                         frame.add_signal(signal)
                     if long_name is not None:
                         signal.add_attribute("LongName", long_name)

@@ -3,7 +3,7 @@ import io
 import textwrap
 import string
 import pytest
-
+import decimal
 import canmatrix.formats.dbc
 
 
@@ -364,7 +364,9 @@ def test_cycle_time_handling():
     assert matrix.frames[0].signal_by_name("sig1").cycle_time == 10
     assert matrix.frames[0].signal_by_name("sig2").cycle_time == 20
 
+
 #    assert "GenMsgCycleTime" not in matrix.frame_defines
+#    assert "GenSigCycleTime" not in matrix.signal_defines
 
     outdbc = io.BytesIO()
     canmatrix.formats.dump(matrix, outdbc, "dbc")
@@ -407,3 +409,20 @@ def test_unique_signal_names():
     assert "signal_name0" not in outdbc.getvalue().decode('utf8')
     assert "signal_name1" not in outdbc.getvalue().decode('utf8')
     assert "signal_name" in outdbc.getvalue().decode('utf8')
+
+def test_signal_inital_value():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 17 Frame_1: 8 Vector__XXX
+        SG_ sig1 : 0|8@1- (1,0) [0|0] "" Vector__XXX
+
+
+        BA_DEF_ SG_  "GenSigStartValue" FLOAT 0 100000000000;
+        BA_ "GenSigStartValue" SG_ 17 sig1 2.7;
+    ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.frames[0].signal_by_name("sig1").initial_value == decimal.Decimal("2.7")
+    assert "GenSigStartValue" not in matrix.signal_defines
+
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(matrix, outdbc, "dbc")
+    assert 'BA_ "GenSigStartValue" SG_ 17 sig1 2.7;' in outdbc.getvalue().decode('utf8')

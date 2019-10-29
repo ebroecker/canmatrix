@@ -233,6 +233,9 @@ def dump(in_db, f, **options):
         for signal in frame.signals:
             if signal.cycle_time != 0:
                 signal.add_attribute("GenSigCycleTime", signal.cycle_time)
+            if signal.initial_value != 0:
+                signal.add_attribute("GenSigStartValue", signal.initial_value)
+
             name = normalized_names[signal]
             if compatibility:
                 name = re.sub("[^A-Za-z0-9]", whitespace_replacement, name)
@@ -248,6 +251,9 @@ def dump(in_db, f, **options):
         db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
     if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
         db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
+
+    if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
+        db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
 
 
 
@@ -931,6 +937,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         #     frame.extended = 1
 
         for signal in frame.signals:
+            signal.initial_value = float_factory(signal.attributes.get("GenSigStartValue", "0"))
             signal.cycle_time = int(signal.attributes.get("GenSigCycleTime", 0))
             if signal.attribute("SystemSignalLongSymbol") is not None:
                 signal.name = signal.attribute("SystemSignalLongSymbol")[1:-1]
@@ -964,12 +971,16 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             frame.is_j1939 = True
     db.update_ecu_list()
     db.del_ecu("Vector__XXX")
+
 #    db.del_frame_attributes(["GenMsgCycleTime"])
 #    db.del_signal_attributes(["GenSigCycleTime"])
+#    db.del_signal_attributes(["GenSigStartValue"])
 #    if "GenMsgCycleTime" in db.frame_defines:
 #        del (db.frame_defines["GenMsgCycleTime"])
 #    if "GenSigCycleTime" in db.signal_defines:
 #        del (db.signal_defines["GenSigCycleTime"])
+#    if "GenSigStartValue" in db.signal_defines:
+#        del (db.signal_defines["GenSigStartValue"])
 
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
     if free_signals_dummy_frame is not None and free_signals_dummy_frame.arbitration_id.id == 0x40000000:
