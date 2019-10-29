@@ -1179,10 +1179,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
 
             if initvalue is not None and initvalue.text is not None:
                 initvalue.text = canmatrix.utils.guess_value(initvalue.text)
-                new_signal._initValue = float_factory(initvalue.text)
-                new_signal.add_attribute("GenSigStartValue", str(new_signal._initValue))
-            else:
-                new_signal._initValue = 0
+                new_signal.initial_value = float_factory(initvalue.text)
 
             for key, value in list(values.items()):
                 new_signal.add_values(key, value)
@@ -1206,7 +1203,7 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ro
         is_little_endian=is_little_endian,
         multiplex="Multiplexor")
 
-    multiplexor._initValue = 0
+    multiplexor.initial_value = 0
     target_frame.add_signal(multiplexor)
     static_part = get_child(pdu, "STATIC-PART", root_or_cache, ns)
     ipdu = get_child(static_part, "I-PDU", root_or_cache, ns)
@@ -1673,7 +1670,6 @@ def load(file, **options):
         db.add_frame_defines(
             "GenMsgSendType",
             'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
-        db.add_signal_defines("GenSigStartValue", 'HEX 0 4294967295')
 
         if ignore_cluster_info is True:
             can_frame_trig = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
@@ -1749,7 +1745,7 @@ def load(file, **options):
             sig_value_hash = dict()
             for sig in frame.signals:
                 try:
-                    sig_value_hash[sig.name] = sig._initValue
+                    sig_value_hash[sig.name] = sig.phys2raw()
                 except AttributeError:
                     sig_value_hash[sig.name] = 0
             frame_data = frame.encode(sig_value_hash)

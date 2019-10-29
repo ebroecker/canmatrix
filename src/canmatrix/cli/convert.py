@@ -83,6 +83,7 @@ def get_formats():
 @click.option('--dbcImportCommentEncoding', 'dbcImportCommentEncoding', default="iso-8859-1", help="Import charset of Comments in dbc\ndefault iso-8859-1")
 @click.option('--dbcExportEncoding', 'dbcExportEncoding', default="iso-8859-1", help="Export charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")
 @click.option('--dbcExportCommentEncoding', 'dbcExportCommentEncoding', default="iso-8859-1", help="Export charset of comments in dbc\ndefault iso-8859-1")
+@click.option('--dbcUniqueSignalNames/--no-dbcUniqueSignalNames', 'dbcUniqueSignalNames', default=True, help="Check if signal names are unique per frame")
 # dbf switches
 @click.option('--dbfImportEncoding', 'dbfImportEncoding', default="iso-8859-1", help="Import charset of dbf, maybe utf-8\ndefault iso-8859-1")
 @click.option('--dbfExportEncoding', 'dbfExportEncoding', default="iso-8859-1", help="Export charset of dbf, maybe utf-8\ndefault iso-8859-1")
