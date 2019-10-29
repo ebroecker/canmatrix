@@ -507,20 +507,20 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     comment += "\n" + l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
-                if l.endswith(b'";'):
+                if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if signal is not None:
-                        signal.add_comment(comment[0:-2])
+                        signal.add_comment(comment[:-1].strip()[:-1])
                 continue
             elif follow_up == _FollowUps.FRAME_COMMENT:
                 try:
                     comment += "\n" + l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
-                if l.endswith(b'";'):
+                if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if frame is not None:
-                        frame.add_comment(comment[0:-2])
+                        frame.add_comment(comment[:-1].strip()[:-1])
                 continue
             elif follow_up == _FollowUps.BOARD_UNIT_COMMENT:
                 try:
@@ -528,10 +528,10 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
-                if l.endswith(b'";'):
+                if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if board_unit is not None:
-                        board_unit.add_comment(comment[0:-2])
+                        board_unit.add_comment(comment[:-1].strip()[:-1])
                 continue
             decoded = l.decode(dbc_import_encoding).strip()
             if decoded.startswith("BO_ "):
@@ -971,15 +971,16 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             frame.is_j1939 = True
     db.update_ecu_list()
     db.del_ecu("Vector__XXX")
-    db.del_frame_attributes(["GenMsgCycleTime"])
-    db.del_signal_attributes(["GenSigCycleTime"])
-    db.del_signal_attributes(["GenSigStartValue"])
-    if "GenMsgCycleTime" in db.frame_defines:
-        del (db.frame_defines["GenMsgCycleTime"])
-    if "GenSigCycleTime" in db.signal_defines:
-        del (db.signal_defines["GenSigCycleTime"])
-    if "GenSigStartValue" in db.signal_defines:
-        del (db.signal_defines["GenSigStartValue"])
+
+#    db.del_frame_attributes(["GenMsgCycleTime"])
+#    db.del_signal_attributes(["GenSigCycleTime"])
+#    db.del_signal_attributes(["GenSigStartValue"])
+#    if "GenMsgCycleTime" in db.frame_defines:
+#        del (db.frame_defines["GenMsgCycleTime"])
+#    if "GenSigCycleTime" in db.signal_defines:
+#        del (db.signal_defines["GenSigCycleTime"])
+#    if "GenSigStartValue" in db.signal_defines:
+#        del (db.signal_defines["GenSigStartValue"])
 
     free_signals_dummy_frame = db.frame_by_name("VECTOR__INDEPENDENT_SIG_MSG")
     if free_signals_dummy_frame is not None and free_signals_dummy_frame.arbitration_id.id == 0x40000000:

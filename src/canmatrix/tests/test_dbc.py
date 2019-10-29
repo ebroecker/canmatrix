@@ -63,7 +63,18 @@ def test_parse_comment_from_dbc():
 
     matrix = canmatrix.formats.dbc.load(dbc)
     assert matrix.frames[0].signals[0].comment == "resistance setting (0-100%)"
-    print("BEEP")
+
+def test_parse_multi_line_comment():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 1 someFrame: 1 someEcu
+         SG_ someSignal: 1|2@0+ (1,0) [0|0] ""  CCL_TEST
+
+        CM_ SG_ 1 someSignal "Debug request message from the ECU to the BMS.
+** ignore for now, more definition to be provided in Rev 14 regarding which messages to change if we have this debug flag implemented. " ;
+        ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc)
+    assert matrix.frames[0].signals[0].comment == 'Debug request message from the ECU to the BMS.\n** ignore for now, more definition to be provided in Rev 14 regarding which messages to change if we have this debug flag implemented. '
+
 
 def test_long_frame_name_imports():
     long_frame_name = u'A_VERY_LONG_FRAME_NAME_WHICH_SHOULD_BE_SPLIT_SOMEHOW'
@@ -353,8 +364,9 @@ def test_cycle_time_handling():
     assert matrix.frames[0].signal_by_name("sig1").cycle_time == 10
     assert matrix.frames[0].signal_by_name("sig2").cycle_time == 20
 
-    assert "GenMsgCycleTime" not in matrix.frame_defines
-    assert "GenSigCycleTime" not in matrix.signal_defines
+
+#    assert "GenMsgCycleTime" not in matrix.frame_defines
+#    assert "GenSigCycleTime" not in matrix.signal_defines
 
     outdbc = io.BytesIO()
     canmatrix.formats.dump(matrix, outdbc, "dbc")
@@ -365,6 +377,21 @@ def test_cycle_time_handling():
 
     outdbc = io.BytesIO()
     canmatrix.formats.dump({"aa":matrix}, outdbc, "kcd")
+
+def test_keep_cycle_time_defines():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 17 Frame_1: 8 Vector__XXX
+        SG_ sig1 : 0|8@1- (1,0) [0|0] "" Vector__XXX
+        
+        BA_DEF_ BO_ "GenMsgCycleTime" INT 0 50000 ;
+        BA_DEF_DEF_ "GenMsgCycleTime" 0 ;
+    ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(matrix, outdbc, "dbc")
+    assert 'BA_DEF_ BO_ "GenMsgCycleTime" INT 0 50000' in outdbc.getvalue().decode('utf8')
+    assert 'BA_DEF_DEF_ "GenMsgCycleTime" 0' in outdbc.getvalue().decode('utf8')
 
 def test_unique_signal_names():
     db = canmatrix.CanMatrix()
@@ -394,9 +421,8 @@ def test_signal_inital_value():
     ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].signal_by_name("sig1").initial_value == decimal.Decimal("2.7")
-    assert "GenSigStartValue" not in matrix.signal_defines
+#    assert "GenSigStartValue" not in matrix.signal_defines
 
     outdbc = io.BytesIO()
     canmatrix.formats.dump(matrix, outdbc, "dbc")
     assert 'BA_ "GenSigStartValue" SG_ 17 sig1 2.7;' in outdbc.getvalue().decode('utf8')
-
