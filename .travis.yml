@@ -39,7 +39,6 @@ script:
 deploy:
   provider: pypi
   user: ebroecker
-  password: 
   on:
     tags: true
     branch: master 
