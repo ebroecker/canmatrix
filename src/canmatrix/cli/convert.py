@@ -70,7 +70,7 @@ def get_formats():
 @click.option('--skipLongDlc', 'skipLongDlc', help="skip all Frames with dlc bigger than given threshold")
 @click.option('--cutLongFrames',  'cutLongFrames', help="cut all signals out of Frames with dlc bigger than given threshold")
 @click.option('--deleteFrameAttributes', 'deleteFrameAttributes', help="delete attributes from all frames\nExample --deleteFrameAttributes GenMsgSomeVar,CycleTime")
-@click.option('--ecus', help="Copy only given ECUs (comma separated list) to target matrix")
+@click.option('--ecus', help="Copy only given ECUs (comma separated list) to target matrix; suffix 'rx' or 'tx' for selection: Example: --ecus FirstEcu:rx,SecondEcu:tx,ThirdEcu")
 @click.option('--frames', help="Copy only given Frames (comma separated list) to target matrix")
 @click.option('--signals', help="Copy only given Signals (comma separated list) to target matrix just as 'free' signals without containing frame")
 @click.option('--merge', help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
