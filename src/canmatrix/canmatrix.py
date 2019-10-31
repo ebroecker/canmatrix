@@ -1439,6 +1439,9 @@ class CanMatrix(object):
     env_vars = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.MutableMapping]
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
 
+    baudrate = attr.ib(default=0)  # type:int
+    fd_baudrate = attr.ib(default=0)  # type:int
+
     load_errors = attr.ib(factory=list)  # type: typing.MutableSequence[Exception]
 
     def __iter__(self):  # type: () -> typing.Iterator[Frame]
