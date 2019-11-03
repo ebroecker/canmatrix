@@ -194,7 +194,7 @@ def test_copy_signals(tmpdir, run):
         assert b"VECTOR__INDEPENDENT_SIG_MSG" in content
 
 
-def create_dbc():
+def create_dbc(additionalReceiver = []):
     outFile = str(here / "tmpb.dbc")
     myFrame = canmatrix.Frame("testFrame3", arbitration_id=canmatrix.arbitration_id_converter(0x124), size=8, transmitters=["testBU"])
     mySignal = canmatrix.Signal("someTestSignal",
@@ -218,7 +218,7 @@ def create_dbc():
                       offset=1.0,
                       min=0,
                       max=500,
-                      receivers=["recBU2"])
+                      receivers=["recBU2"] + additionalReceiver)
     myFrame2.add_signal(mySignal2)
     mySignal3 = canmatrix.Signal("zeroSignal",
                       start_bit=20,
@@ -249,6 +249,22 @@ def test_copy_ecus(tmpdir, run):
         content = fd.read()
         assert "testBU2" not in content
         assert "testBU" in content
+
+def test_copy_ecus_rx(tmpdir, run):
+    inputFile = create_dbc()
+    result = run("--ecus", "recBU:rx", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "recBU2" not in content
+        assert "recBU" in content
+
+def test_copy_ecus_tx(tmpdir, run):
+    inputFile = create_dbc(additionalReceiver = ["testBU"])
+    result = run("--ecus", "testBU:tx", inputFile, "tmp2.dbc")
+    with open("tmp2.dbc","r") as fd:
+        content = fd.read()
+        assert "testFrame2" not in content
+        assert "testFrame3" in content
 
 def test_copy_frames(tmpdir, run):
     inputFile = create_dbc()

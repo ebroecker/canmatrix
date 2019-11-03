@@ -242,6 +242,15 @@ This is some *lite* ECU-Extract.
 
     $ canconvert --ecus=FRONT_ECU,REAR_ECU source.dbc target.dbc
 
+**extract matrix with frames which FRONT_ECU receives and with frames REAR_ECUS transmits:**
+
+::
+
+    $ canconvert --ecus=FRONT_ECU:rx,REAR_ECU:tx source.dbc target.dbc
+
+
+
+
 **extract frame[s] out of matrix:**
 
 ::
