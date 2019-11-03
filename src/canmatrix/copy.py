@@ -65,7 +65,7 @@ def copy_ecu(ecu_or_glob, source_db, target_db):
                     target_db.ecu_defines[attribute].update()
 
 
-def copy_ecu_with_frames(ecu_or_glob, source_db, target_db):
+def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True):
     # type: (typing.Union[canmatrix.Ecu, str], canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
     """
     Copy ECU(s) identified by Name or as Object from source CAN matrix to target CAN matrix.
@@ -87,16 +87,18 @@ def copy_ecu_with_frames(ecu_or_glob, source_db, target_db):
         target_db.add_ecu(copy.deepcopy(ecu))
 
         # copy tx-frames
-        for frame in source_db.frames:
-            if ecu.name in frame.transmitters:
-                copy_frame(frame.arbitration_id, source_db, target_db)
+        if tx is True:
+            for frame in source_db.frames:
+                if ecu.name in frame.transmitters:
+                    copy_frame(frame.arbitration_id, source_db, target_db)
 
         # copy rx-frames
-        for frame in source_db.frames:
-            for signal in frame.signals:
-                if ecu.name in signal.receivers:
-                    copy_frame(frame.arbitration_id, source_db, target_db)
-                    break
+        if rx is True:
+            for frame in source_db.frames:
+                for signal in frame.signals:
+                    if ecu.name in signal.receivers:
+                        copy_frame(frame.arbitration_id, source_db, target_db)
+                        break
 
         # copy all ECU defines
         for attribute in ecu.attributes:

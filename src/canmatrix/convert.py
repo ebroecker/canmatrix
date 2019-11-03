@@ -46,20 +46,23 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
     for name in dbs:
         db = None
 
-        if 'ecus' in options and options['ecus'] is not None:
+        if options.get('ecus', False):
             ecu_list = options['ecus'].split(',')
             db = canmatrix.CanMatrix()
+            direction = None
             for ecu in ecu_list:
-                canmatrix.copy.copy_ecu_with_frames(ecu, dbs[name], db)
-        if 'frames' in options and options['frames'] is not None:
+                if ":" in ecu:
+                    ecu, direction = ecu.split(":")
+                canmatrix.copy.copy_ecu_with_frames(ecu, dbs[name], db, rx=(direction != "tx"), tx=(direction != "rx"))
+        if options.get('frames', False):
             frame_list = options['frames'].split(',')
-            db = canmatrix.CanMatrix()
+            db = canmatrix.CanMatrix() if db is None else db
             for frame_name in frame_list:
                 frame_to_copy = dbs[name].frame_by_name(frame_name)
                 canmatrix.copy.copy_frame(frame_to_copy.arbitration_id, dbs[name], db)
         if options.get('signals', False):
             signal_list = options['signals'].split(',')
-            db = canmatrix.CanMatrix()
+            db = canmatrix.CanMatrix() if db is None else db
             for signal_name in signal_list:
                 canmatrix.copy.copy_signal(signal_name, dbs[name], db)
 
