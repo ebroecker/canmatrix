@@ -215,10 +215,15 @@ def dump(dbs, f, **options):
                 pdu_triggering_ref = create_sub_element(pdu_triggering_ref_conditional, 'PDU-TRIGGERING-REF')
                 pdu_triggering_ref.set('DEST', 'PDU-TRIGGERING')
 
+
             if frame.arbitration_id.extended is False:
                 create_sub_element(can_frame_triggering, 'CAN-ADDRESSING-MODE', 'STANDARD')
             else:
                 create_sub_element(can_frame_triggering, 'CAN-ADDRESSING-MODE', 'EXTENDED')
+
+            if frame.is_fd:
+                create_sub_element(can_frame_triggering, 'CAN-FRAME-RX-BEHAVIOR', "CAN-FD")
+                create_sub_element(can_frame_triggering, 'CAN-FRAME-RX-BEHAVIOR', "CAN-FD")
             create_sub_element(can_frame_triggering, 'IDENTIFIER', str(frame.arbitration_id.id))
 
             pdu_triggering_ref.text = "/Cluster/CAN/IPDUTRIGG_{0}".format(frame.name)
@@ -1324,6 +1329,10 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
     # type: (_Element, _DocRoot, dict, str, typing.Callable) -> typing.Union[canmatrix.Frame, None]
     global pdu_frame_mapping
     address_mode = get_child(frame_triggering, "CAN-ADDRESSING-MODE", root_or_cache, ns)
+    frame_rx_behaviour_elem = get_child(frame_triggering, "CAN-FRAME-RX-BEHAVIOR", root_or_cache, ns)
+    frame_tx_behaviour_elem = get_child(frame_triggering, "CAN-FRAME-TX-BEHAVIOR", root_or_cache, ns)
+    is_fd_elem = get_child(frame_triggering, "CAN-FD-FRAME-SUPPORT", root_or_cache, ns)
+
     arb_id = get_child(frame_triggering, "IDENTIFIER", root_or_cache, ns)
     frame_elem = get_child(frame_triggering, "FRAME", root_or_cache, ns)
 
@@ -1377,6 +1386,13 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
         new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=True)
     else:
         new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=False)
+
+    if (frame_rx_behaviour_elem is not None and frame_rx_behaviour_elem.text == 'CAN-FD') or \
+        (frame_tx_behaviour_elem is not None and frame_tx_behaviour_elem.text == 'CAN-FD') or \
+        (is_fd_elem is not None and is_fd_elem.text == 'TRUE'):
+        new_frame.is_fd = True
+    else:
+        new_frame.is_fd = False
 
     timing_spec = get_child(pdu, "I-PDU-TIMING-SPECIFICATION", root_or_cache, ns)
     if timing_spec is None:
@@ -1669,10 +1685,19 @@ def load(file, **options):
             bus_name = ""
         else:
             speed = get_child(cc, "SPEED", search_point, ns)
+            baudrate_elem = cc.find(".//" + ns + "BAUDRATE")
+            fd_baudrate_elem = cc.find(".//" + ns + "CAN-FD-BAUDRATE")
+
+            speed = baudrate_elem is speed is None
+
             logger.debug("Busname: " + get_element_name(cc, ns))
 
             bus_name = get_element_name(cc, ns)
             if speed is not None:
+                db.baudrate = speed
+            if fd_baudrate_elem is not None:
+                db.fd_baudrate = fd_baudrate_elem.text
+
                 logger.debug(" Speed: " + speed.text)
 
             physical_channels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")  # type: _Element
@@ -1680,6 +1705,7 @@ def load(file, **options):
                 logger.error("PHYSICAL-CHANNELS not found")
 
             nm_lower_id = get_child(cc, "NM-LOWER-CAN-ID", search_point, ns)
+
 
             physical_channel = get_child(physical_channels, "PHYSICAL-CHANNEL", search_point, ns)
             if physical_channel is None:

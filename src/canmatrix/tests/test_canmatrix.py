@@ -1007,3 +1007,10 @@ def test_effective_cycle_time():
     sig1.cycle_time = 0
     sig2.cycle_time = 0
     assert frame.effective_cycle_time == 0
+
+def test_baudrate():
+    cm = canmatrix.CanMatrix()
+    cm.baudrate = 500000
+    assert cm.baudrate == 500000
+    cm.fd_baudrate = 1000000
+    assert cm.fd_baudrate == 1000000
