@@ -39,7 +39,7 @@ script:
 deploy:
   provider: pypi
   user: ebroecker
+  skip_existing: true
   on:
     tags: true
     branch: master 
-    skip_existing: true
