@@ -319,8 +319,8 @@ class Signal(object):
                 start_bit -= delta - 1
                 size -= delta
 
-                # if there still bits to handle this means we are the LSB of
-                # byte N and we need to the MSB of byte N+1
+                # if there still bits to handle this means we are at the LSB
+                # of byte N and we need to jump to the MSB of byte N+1
                 if size > 0:
                     start_bit += 15
         # if given start_bit is for the end of signal data (lsbit),
