@@ -309,7 +309,20 @@ class Signal(object):
         """
         # bit numbering not consistent with byte order. reverse
         if bitNumbering is not None and bitNumbering != self.is_little_endian:
-            start_bit = start_bit - (start_bit % 8) + 7 - (start_bit % 8)
+            size = self.size
+            while size > 0:
+                # see how many bits are left from the current byte
+                rest = start_bit % 8
+                delta = min(size, rest + 1)
+
+                # move start bit towards the LSB of the current byte
+                start_bit -= delta - 1
+                size -= delta
+
+                # if there still bits to handle this means we are the LSB of
+                # byte N and we need to the MSB of byte N+1
+                if size > 0:
+                    start_bit += 15
         # if given start_bit is for the end of signal data (lsbit),
         # convert to start of signal data (msbit)
         if startLittle is True and self.is_little_endian is False:
