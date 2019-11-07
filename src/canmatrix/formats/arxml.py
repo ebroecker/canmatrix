@@ -1598,6 +1598,169 @@ def extract_cm_from_ecuc(com_module, root_or_cache, ns):
     db.recalc_dlc(strategy="max")
     return {"": db}
 
+def decode_ethernet_helper(root, root_or_cache, ns, float_factory):
+    found_matrixes = {}
+    ecs = root.findall('.//' + ns + 'ETHERNET-CLUSTER')
+    for ec in ecs:
+        baudrate_elem = ec.find(".//" + ns + "BAUDRATE")
+        physical_channels = ec.findall('.//' + ns + "ETHERNET-PHYSICAL-CHANNEL")
+        for pc in physical_channels:
+            db = canmatrix.CanMatrix()
+            db.baudrate = baudrate_elem.text if baudrate_elem is not None else 0
+            db.add_signal_defines("LongName", 'STRING')
+            channel_name = get_element_name(pc, ns)
+            found_matrixes[channel_name] = db
+            ipdu_triggerings = pc.findall('.//' + ns + "PDU-TRIGGERING")
+
+            #network_endpoints = pc.findall('.//' + ns + "NETWORK-ENDPOINT")
+            for ipdu_triggering in ipdu_triggerings:
+                ipdu = get_child(ipdu_triggering, "I-PDU", root_or_cache, ns)
+                ipdu_name = get_element_name(ipdu, ns)
+                target_frame = canmatrix.Frame(name = ipdu_name)
+                pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+                get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, None, float_factory)
+                db.add_frame(target_frame)
+    return found_matrixes
+
+def decode_flexray_helper(root, root_or_cache, ns, float_factory):
+    found_matrixes = {}
+    fcs = root.findall('.//' + ns + 'FLEXRAY-CLUSTER')
+    for fc in fcs:
+        physical_channels = fc.findall('.//' + ns + "FLEXRAY-PHYSICAL-CHANNEL")
+        for pc in physical_channels:
+            db = canmatrix.CanMatrix()
+            db.add_signal_defines("LongName", 'STRING')
+            channel_name = get_element_name(pc, ns)
+            found_matrixes[channel_name] = db
+
+            frames = pc.findall('.//' + ns + "FLEXRAY-FRAME-TRIGGERING")
+            for frame in frames:
+                slotId = int(get_child(frame, "SLOT-ID", root_or_cache, ns).text)
+
+                ipdu_triggerings = get_children(frame, "I-PDU-TRIGGERING", root_or_cache, ns)
+                    #pc.findall('.//' + ns + "I-PDU-TRIGGERING")
+
+                #network_endpoints = pc.findall('.//' + ns + "NETWORK-ENDPOINT")
+                for ipdu_triggering in ipdu_triggerings:
+                    ipdu = get_child(ipdu_triggering, "I-PDU", root_or_cache, ns)
+                    ipdu_name = get_element_name(ipdu, ns)
+                    target_frame = canmatrix.Frame(name = ipdu_name, arbitration_id=slotId)
+                    pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+                    get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, None, float_factory)
+                    db.add_frame(target_frame)
+    return found_matrixes
+
+
+def decode_can_helper(root, root_or_cache, ns, float_factory, ignore_cluster_info):
+    found_matrixes = {}
+    if ignore_cluster_info is True:
+        ccs = [lxml.etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
+    else:
+        ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
+    for cc in ccs:  # type: _Element
+        db = canmatrix.CanMatrix()
+        # Defines not jet imported...
+        db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
+        db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
+        db.add_signal_defines("LongName", 'STRING')
+        db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
+        db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
+        db.add_frame_defines("GenMsgStartValue", 'STRING')
+        db.add_frame_defines("GenMsgStartDelayTime", 'INT 0 65535')
+        db.add_frame_defines(
+            "GenMsgSendType",
+            'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
+
+        if ignore_cluster_info is True:
+            can_frame_trig = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
+            bus_name = ""
+        else:
+            speed = get_child(cc, "SPEED", root_or_cache, ns)
+            baudrate_elem = cc.find(".//" + ns + "BAUDRATE")
+            fd_baudrate_elem = cc.find(".//" + ns + "CAN-FD-BAUDRATE")
+
+            speed = baudrate_elem is speed is None
+
+            logger.debug("Busname: " + get_element_name(cc, ns))
+
+            bus_name = get_element_name(cc, ns)
+            if speed is not None:
+                db.baudrate = speed
+            if fd_baudrate_elem is not None:
+                db.fd_baudrate = fd_baudrate_elem.text
+
+                logger.debug(" Speed: " + speed.text)
+
+            physical_channels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")  # type: _Element
+            if physical_channels is None:
+                logger.error("PHYSICAL-CHANNELS not found")
+
+            nm_lower_id = get_child(cc, "NM-LOWER-CAN-ID", root_or_cache, ns)
+
+            physical_channel = get_child(physical_channels, "PHYSICAL-CHANNEL", root_or_cache, ns)
+            if physical_channel is None:
+                physical_channel = get_child(physical_channels, "CAN-PHYSICAL-CHANNEL", root_or_cache, ns)
+            if physical_channel is None:
+                logger.error("PHYSICAL-CHANNEL not found")
+            can_frame_trig = get_children(physical_channel, "CAN-FRAME-TRIGGERING", root_or_cache, ns)
+            if can_frame_trig is None:
+                logger.error("CAN-FRAME-TRIGGERING not found")
+            else:
+                logger.debug("%d frames found in arxml", len(can_frame_trig))
+
+        multiplex_translation = {}  # type: typing.Dict[str, str]
+        for frameTrig in can_frame_trig:  # type: _Element
+            frame = get_frame(frameTrig, root_or_cache, multiplex_translation, ns, float_factory)
+            if frame is not None:
+                db.add_frame(frame)
+
+        if ignore_cluster_info is True:
+            pass
+            # no support for signal direction
+        else:
+            isignal_triggerings = find_children_by_path(physical_channel, "I-SIGNAL-TRIGGERING", root_or_cache, ns)
+            for sig_trig in isignal_triggerings:
+                isignal = get_child(sig_trig, 'SIGNAL', root_or_cache, ns)
+                if isignal is None:
+                    isignal = get_child(sig_trig, 'I-SIGNAL', root_or_cache, ns)
+                if isignal is None:
+                    sig_trig_text = get_element_name(sig_trig, ns) if sig_trig is not None else "None"
+                    logger.debug("load: no isignal for %s", sig_trig_text)
+                    continue
+
+                port_ref = get_children(sig_trig, "I-SIGNAL-PORT", root_or_cache, ns)
+
+                for port in port_ref:
+                    comm_direction = get_child(port, "COMMUNICATION-DIRECTION", root_or_cache, ns)
+                    if comm_direction is not None and comm_direction.text == "IN":
+                        sys_signal = get_child(isignal, "SYSTEM-SIGNAL", root_or_cache, ns)
+                        ecu_name = get_element_name(port.getparent().getparent().getparent().getparent(), ns)
+                        # port points in ECU; probably more stable to go up
+                        # from each ECU than to go down in XML...
+                        if sys_signal in signal_rxs:
+                            signal_rxs[sys_signal].add_receiver(ecu_name)
+                            # find ECUs:
+        nodes = root.findall('.//' + ns + 'ECU-INSTANCE')
+        for node in nodes:  # type: _Element
+            ecu = process_ecu(node, db, root_or_cache, multiplex_translation, ns)
+            desc = get_child(node, "DESC", root_or_cache, ns)
+            l2 = get_child(desc, "L-2", root_or_cache, ns)
+            if l2 is not None:
+                ecu.add_comment(l2.text)
+
+            db.add_ecu(ecu)
+
+        for frame in db.frames:
+            sig_value_hash = dict()
+            for sig in frame.signals:
+                try:
+                    sig_value_hash[sig.name] = sig.phys2raw()
+                except AttributeError:
+                    sig_value_hash[sig.name] = 0
+            frame_data = frame.encode(sig_value_hash)
+            frame.add_attribute("GenMsgStartValue", "".join(["%02x" % x for x in frame_data]))
+        found_matrixes[bus_name] = db
+    return found_matrixes
 
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> typing.Dict[str, canmatrix.CanMatrix]
@@ -1612,6 +1775,9 @@ def load(file, **options):
     float_factory = options.get("float_factory", default_float_factory)  # type: typing.Callable
     ignore_cluster_info = options.get("arxmlIgnoreClusterInfo", False)
     use_ar_xpath = options.get("arxmlUseXpath", False)
+
+    decode_ethernet = options.get("decode_ethernet", False)
+    decode_flexray = options.get("decode_flexray", False)
 
     result = {}
     logger.debug("Read arxml ...")
@@ -1662,112 +1828,12 @@ def load(file, **options):
     sig_ipdu = root.findall('.//' + ns + 'I-SIGNAL-TO-I-PDU-MAPPING')
     logger.debug("%d I-SIGNAL-TO-I-PDU-MAPPING in arxml...", len(sig_ipdu))
 
-    if ignore_cluster_info is True:
-        ccs = [lxml.etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
-    else:
-        ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
-    for cc in ccs:  # type: _Element
-        db = canmatrix.CanMatrix()
-# Defines not jet imported...
-        db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
-        db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
-        db.add_signal_defines("LongName", 'STRING')
-        db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
-        db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
-        db.add_frame_defines("GenMsgStartValue", 'STRING')
-        db.add_frame_defines("GenMsgStartDelayTime", 'INT 0 65535')
-        db.add_frame_defines(
-            "GenMsgSendType",
-            'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
+    if decode_ethernet:
+        result.update(decode_ethernet_helper(root, search_point, ns, float_factory))
 
-        if ignore_cluster_info is True:
-            can_frame_trig = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
-            bus_name = ""
-        else:
-            speed = get_child(cc, "SPEED", search_point, ns)
-            baudrate_elem = cc.find(".//" + ns + "BAUDRATE")
-            fd_baudrate_elem = cc.find(".//" + ns + "CAN-FD-BAUDRATE")
+    if decode_flexray:
+        result.update(decode_flexray_helper(root, search_point, ns, float_factory))
 
-            speed = baudrate_elem is speed is None
+    result.update(decode_can_helper(root, search_point, ns, float_factory, ignore_cluster_info))
 
-            logger.debug("Busname: " + get_element_name(cc, ns))
-
-            bus_name = get_element_name(cc, ns)
-            if speed is not None:
-                db.baudrate = speed
-            if fd_baudrate_elem is not None:
-                db.fd_baudrate = fd_baudrate_elem.text
-
-                logger.debug(" Speed: " + speed.text)
-
-            physical_channels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")  # type: _Element
-            if physical_channels is None:
-                logger.error("PHYSICAL-CHANNELS not found")
-
-            nm_lower_id = get_child(cc, "NM-LOWER-CAN-ID", search_point, ns)
-
-
-            physical_channel = get_child(physical_channels, "PHYSICAL-CHANNEL", search_point, ns)
-            if physical_channel is None:
-                physical_channel = get_child(physical_channels, "CAN-PHYSICAL-CHANNEL", search_point, ns)
-            if physical_channel is None:
-                logger.error("PHYSICAL-CHANNEL not found")
-            can_frame_trig = get_children(physical_channel, "CAN-FRAME-TRIGGERING", search_point, ns)
-            if can_frame_trig is None:
-                logger.error("CAN-FRAME-TRIGGERING not found")
-            else:
-                logger.debug("%d frames found in arxml", len(can_frame_trig))
-
-        multiplex_translation = {}  # type: typing.Dict[str, str]
-        for frameTrig in can_frame_trig:  # type: _Element
-            frame = get_frame(frameTrig, search_point, multiplex_translation, ns, float_factory)
-            if frame is not None:
-                db.add_frame(frame)
-                
-        if ignore_cluster_info is True:
-            pass
-            # no support for signal direction
-        else:
-            isignal_triggerings = find_children_by_path(physical_channel, "I-SIGNAL-TRIGGERING", search_point, ns)
-            for sig_trig in isignal_triggerings:
-                isignal = get_child(sig_trig, 'SIGNAL', search_point, ns)
-                if isignal is None:
-                    isignal = get_child(sig_trig, 'I-SIGNAL', search_point, ns)
-                if isignal is None:
-                    sig_trig_text = get_element_name(sig_trig, ns) if sig_trig is not None else "None"
-                    logger.debug("load: no isignal for %s", sig_trig_text)
-                    continue
-
-                port_ref = get_children(sig_trig, "I-SIGNAL-PORT", search_point, ns)
-
-                for port in port_ref:
-                    comm_direction = get_child(port, "COMMUNICATION-DIRECTION", search_point, ns)
-                    if comm_direction is not None and comm_direction.text == "IN":
-                        sys_signal = get_child(isignal, "SYSTEM-SIGNAL", search_point, ns)
-                        ecu_name = get_element_name(port.getparent().getparent().getparent().getparent(), ns)
-                        # port points in ECU; probably more stable to go up
-                        # from each ECU than to go down in XML...
-                        if sys_signal in signal_rxs:
-                            signal_rxs[sys_signal].add_receiver(ecu_name)
-    # find ECUs:
-        nodes = root.findall('.//' + ns + 'ECU-INSTANCE')
-        for node in nodes:  # type: _Element
-            ecu = process_ecu(node, db, search_point, multiplex_translation, ns)
-            desc = get_child(node, "DESC", search_point, ns)
-            l2 = get_child(desc, "L-2", search_point, ns)
-            if l2 is not None:
-                ecu.add_comment(l2.text)
-
-            db.add_ecu(ecu)
-
-        for frame in db.frames:
-            sig_value_hash = dict()
-            for sig in frame.signals:
-                try:
-                    sig_value_hash[sig.name] = sig.phys2raw()
-                except AttributeError:
-                    sig_value_hash[sig.name] = 0
-            frame_data = frame.encode(sig_value_hash)
-            frame.add_attribute("GenMsgStartValue", "".join(["%02x" % x for x in frame_data]))
-        result[bus_name] = db
     return result
