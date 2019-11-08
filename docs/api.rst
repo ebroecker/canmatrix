@@ -7,10 +7,10 @@ ____________
 .. automodule:: canmatrix.canmatrix
     :members:
 
-.. automodule:: canmatrix.canmatrix
+.. automodule:: canmatrix.Ecu
     :members:
 
-.. automodule:: canmatrix.Ecu
+.. automodule:: canmatrix.Frame
     :members:
 
 .. automodule:: canmatrix.Signal
@@ -29,9 +29,6 @@ ____________
     :members:
 
 .. automodule:: canmatrix.ArbitrationId
-    :members:
-
-.. automodule:: canmatrix.Frame
     :members:
 
 .. automodule:: canmatrix.Define
