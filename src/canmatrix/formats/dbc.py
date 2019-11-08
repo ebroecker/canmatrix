@@ -247,13 +247,14 @@ def dump(in_db, f, **options):
                 name += str(duplicate_signal_counter[name] - 1)
             output_names[frame][signal] = name
 
-    if max([x.cycle_time for x in db.frames]) > 0:
-        db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
-    if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
-        db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
+    if len(db.frames) > 0:
+        if max([x.cycle_time for x in db.frames]) > 0:
+            db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+        if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
+            db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
 
-    if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
-        db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
+        if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
+            db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
 
 
 
