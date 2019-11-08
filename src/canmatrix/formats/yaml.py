@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -23,8 +23,7 @@
 # yaml-files are just object-dumps human readable.
 # This export is complete, no information lost
 
-
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 import copy
 import typing
@@ -79,13 +78,17 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     return db
 
 
+T = typing.TypeVar('T')
+
+
 def _constructor(loader, node, cls, mapping=None):
+    # type: (typing.Any, typing.Any, typing.Type[T], typing.Mapping) -> T
     d = {k.lstrip('_'): v for k, v in loader.construct_mapping(node).items()}
     name = d.pop('name')
     if mapping:
         for old, new in mapping.items():
             d[new] = d.pop(old)
-    return cls(name, **d)
+    return cls(name, **d)  # type: ignore
 
 
 def _frame_constructor(loader, node):
@@ -108,7 +111,7 @@ def _signal_constructor(loader, node):
             'startbit': 'startBit',  # todo shall probably be updated to match current names like start_bit
             'signalsize': 'signalSize',
         },
-    )  # type: canmatrix.Signal
+    )
 
     if not signal.is_little_endian:
         signal.set_startbit(

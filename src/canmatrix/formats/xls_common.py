@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -19,7 +19,11 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
+from __future__ import absolute_import, division, print_function
+
 import typing
+from builtins import *
+
 import canmatrix
 
 
@@ -34,9 +38,7 @@ def get_frame_info(db, frame):
     # frame-Name
     ret_array.append(frame.name)
 
-    if "GenMsgCycleTime" in db.frame_defines:
-        # determine cycle-time
-        ret_array.append(frame.attribute("GenMsgCycleTime", db=db))
+    ret_array.append(frame.effective_cycle_time)
 
     # determine send-type
     if "GenMsgSendType" in db.frame_defines:
@@ -83,16 +85,7 @@ def get_signal(db, sig, motorola_bit_format):
     front_array.append(sig.size)
 
     # start-value of signal available
-    if "GenSigStartValue" in db.signal_defines:
-        if db.signal_defines["GenSigStartValue"].definition == "STRING":
-            front_array.append(sig.attribute("GenSigStartValue", db=db))
-        elif db.signal_defines["GenSigStartValue"].definition == "INT" \
-                or db.signal_defines["GenSigStartValue"].definition == "HEX":
-            front_array.append("%Xh" % sig.attribute("GenSigStartValue", db=db))
-        else:
-            front_array.append(" ")
-    else:
-        front_array.append(" ")
+    front_array.append(sig.initial_value)
 
     # SNA-value of signal available
     if "GenSigSNA" in db.signal_defines:

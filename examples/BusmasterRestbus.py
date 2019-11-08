@@ -171,10 +171,10 @@ def ticker_ecus(db, dbcname):
         bu._cycles = {}
         for frame in db.frames:
             if bu.name in frame.transmitters:
-                if "GenMsgCycleTime" in frame.attributes and "GenMsgStartValue" in frame.attributes:
+                if frame.effective_cycle_time != 0 and "GenMsgStartValue" in frame.attributes:
                     data = frame.attributes["GenMsgStartValue"][1:-2]
                     dlc = (math.floor(len(data) / 2))
-                    cycleTime = int(frame.attributes["GenMsgCycleTime"])
+                    cycleTime = frame.effective_cycle_time
                     if float(cycleTime) > 0:
                         if cycleTime in bu._cycles:
                             bu._cycles[cycleTime].append(frame.arbitration_id.id)

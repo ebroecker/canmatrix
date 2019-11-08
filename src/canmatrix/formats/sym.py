@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -23,8 +23,7 @@
 # this script exports sym-files from a canmatrix-object
 # sym-files are the can-matrix-definitions of the Peak Systems Tools
 
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division, print_function
 
 import collections
 import decimal
@@ -111,7 +110,7 @@ def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) 
     else:
         output += "signed "
     start_bit = signal.get_startbit()
-    if signal.is_little_endian == 0:
+    if not signal.is_little_endian:
         # Motorola
         output += "%d,%d -m " % (start_bit, signal.size)
     else:
@@ -153,19 +152,11 @@ def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) 
                     key, val) in sorted(
                     signal.values.items())) + ")"
 
-    if "GenSigStartValue" in db.signal_defines:
-        gen_sig_start_val = signal.attribute("GenSigStartValue", db=db)
-        if gen_sig_start_val is not None:
-            factory = (
-                signal.float_factory
-                if signal.is_float
-                else int
-            )
-            default = factory(gen_sig_start_val) * signal.factor  # type: ignore
-            min_ok = signal.min is None or default >= signal.min
-            max_ok = signal.max is None or default <= signal.max
-            if min_ok and max_ok:
-                output += "/d:{} ".format(default)
+    default = signal.initial_value  # type: ignore
+    min_ok = signal.min is None or default >= signal.min
+    max_ok = signal.max is None or default <= signal.max
+    if min_ok and max_ok:
+        output += "/d:{} ".format(default)
 
     long_name = signal.attributes.get('LongName')
     if long_name is not None:
@@ -185,6 +176,7 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     global enum_dict
     global enums
     sym_encoding = options.get('symExportEncoding', 'iso-8859-1')
+    ignore_encoding_errors = options.get("ignoreExportEncodingErrors", "")
 
     enum_dict = {}
     enums = "{ENUMS}\n"
@@ -192,7 +184,7 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     header = """FormatVersion=5.0 // Do not edit this line!
 Title=\"canmatrix-Export\"
 """
-    f.write(header.encode(sym_encoding))
+    f.write(header.encode(sym_encoding, ignore_encoding_errors))
 
     def send_receive(for_frame):
         return (
@@ -258,10 +250,8 @@ Title=\"canmatrix-Export\"
                                 mux_out += id_type
                                 first = 1
                             mux_out += "DLC=%d\n" % frame.size
-                            if "GenMsgCycleTime" in db.frame_defines:
-                                cycle_time = frame.attribute("GenMsgCycleTime", db=db)
-                                if cycle_time is not None:
-                                    mux_out += "CycleTime=" + str(cycle_time) + "\n"
+                            if frame.cycle_time != 0:
+                                mux_out += "CycleTime=" + str(frame.effective_cycle_time) + "\n"
 
                             mux_name = frame.mux_names.get(i, mux_signal.name + "%d" % i)
 
@@ -299,17 +289,15 @@ Title=\"canmatrix-Export\"
                 output += name
                 output += id_type
                 output += "DLC=%d\n" % frame.size
-                if "GenMsgCycleTime" in db.frame_defines:
-                    cycle_time = frame.attribute("GenMsgCycleTime", db=db)
-                    if cycle_time is not None:
-                        output += "CycleTime=" + str(cycle_time) + "\n"
+                if frame.cycle_time != 0:
+                    output += "CycleTime=" + str(frame.effective_cycle_time) + "\n"
                 for signal in frame.signals:
                     output += create_signal(db, signal)
                 output += "\n"
     enums += '\n'.join(sorted(enum_dict.values()))
     # write output file
-    f.write((enums + '\n').encode(sym_encoding))
-    f.write(output.encode(sym_encoding))
+    f.write((enums + '\n').encode(sym_encoding, ignore_encoding_errors))
+    f.write(output.encode(sym_encoding, ignore_encoding_errors))
 
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
@@ -330,10 +318,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     frame = None
 
     db = canmatrix.CanMatrix()
-    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
     db.add_frame_defines("Receivable", 'BOOL False True')
     db.add_frame_defines("Sendable", 'BOOL False True')
-    db.add_signal_defines("GenSigStartValue", 'FLOAT -3.4E+038 3.4E+038')
     db.add_signal_defines("HexadecimalOutput", 'BOOL False True')
     db.add_signal_defines("DisplayDecimalPlaces", 'INT 0 65535')
     db.add_signal_defines("LongName", 'STR')
@@ -580,8 +566,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         # signal.add_comment(comment)
                         # ... (1 / ...) because this somehow made 59.8/0.1 be 598.0 rather than 597.9999999999999
                         if start_value is not None:
-                            start_value = float_factory(start_value) * (1 / float_factory(factor))
-                            signal.add_attribute("GenSigStartValue", str(start_value))
+                            signal.initial_value = float_factory(start_value)
                         frame.add_signal(signal)
                     if long_name is not None:
                         signal.add_attribute("LongName", long_name)
@@ -605,9 +590,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     frame.size = int(line.split('=')[1])
 
                 elif line.startswith('CycleTime'):
-                    frame.add_attribute(
-                        "GenMsgCycleTime",
-                        line.split('=')[1].strip())
+                    frame.cycle_time = int(line.split('=')[1].strip())
                 #        else:
                 #                print line
                 # else:

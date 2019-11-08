@@ -35,3 +35,11 @@ install:
 script:
   - tox
   - tox -e codecov
+
+deploy:
+  provider: pypi
+  user: ebroecker
+  skip_existing: true
+  on:
+    tags: true
+    branch: master 

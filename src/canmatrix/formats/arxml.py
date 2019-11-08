@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -25,16 +24,14 @@
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 # currently Support for Autosar 3.2 and 4.0-4.3 is planned
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 import decimal
 import logging
 import typing
 from builtins import *
 
-from lxml import etree
+import lxml.etree
 
 import canmatrix
 import canmatrix.types
@@ -48,7 +45,7 @@ clusterImporter = 1
 
 
 class ArTree(object):
-    def __init__(self, name="", ref=None):  # type: (str, etree._Element) -> None
+    def __init__(self, name="", ref=None):  # type: (str, lxml.etree._Element) -> None
         self._name = name
         self._ref = ref
         self._array = []  # type: typing.List[ArTree]
@@ -66,12 +63,12 @@ class ArTree(object):
         return None
 
     @property
-    def ref(self):  # type: () -> etree._Element
+    def ref(self):  # type: () -> lxml.etree._Element
         return self._ref
 
 
 # for typing only
-_Element = etree._Element
+_Element = lxml.etree._Element
 _DocRoot = typing.Union[_Element, ArTree]
 _MultiplexId = typing.Union[str, int, None]
 _FloatFactory = typing.Callable[[typing.Any], typing.Any]
@@ -79,7 +76,7 @@ _FloatFactory = typing.Callable[[typing.Any], typing.Any]
 
 def create_sub_element(parent, element_name, text=None):
     # type: (_Element, str, typing.Optional[str]) -> _Element
-    sn = etree.SubElement(parent, element_name)
+    sn = lxml.etree.SubElement(parent, element_name)
     if text is not None:
         sn.text = str(text)
     return sn
@@ -124,11 +121,11 @@ def get_base_type_of_signal(signal):
 
 
 def dump(dbs, f, **options):
-    # type: (canmatrix.cancluster.CanCluster, typing.IO, **str) -> None
+    # type: (typing.Mapping[str, canmatrix.CanMatrix], typing.IO, **str) -> None
     ar_version = options.get("arVersion", "3.2.3")
 
     for name in dbs:
-        db = dbs[name]  # type: canmatrix.CanMatrix
+        db = dbs[name]
         for frame in db.frames:
             for signal in frame.signals:
                 for rec in signal.receivers:
@@ -136,7 +133,7 @@ def dump(dbs, f, **options):
 
     if ar_version[0] == "3":
         xsi = 'http://www.w3.org/2001/XMLSchema-instance'
-        root = etree.Element(
+        root = lxml.etree.Element(
             'AUTOSAR',
             nsmap={
                 None: 'http://autosar.org/' + ar_version,
@@ -146,7 +143,7 @@ def dump(dbs, f, **options):
         top_level_packages = create_sub_element(root, 'TOP-LEVEL-PACKAGES')
     else:
         xsi = 'http://www.w3.org/2001/XMLSchema-instance'
-        root = etree.Element(
+        root = lxml.etree.Element(
             'AUTOSAR',
             nsmap={
                 None: "http://autosar.org/schema/r4.0",
@@ -218,10 +215,15 @@ def dump(dbs, f, **options):
                 pdu_triggering_ref = create_sub_element(pdu_triggering_ref_conditional, 'PDU-TRIGGERING-REF')
                 pdu_triggering_ref.set('DEST', 'PDU-TRIGGERING')
 
+
             if frame.arbitration_id.extended is False:
                 create_sub_element(can_frame_triggering, 'CAN-ADDRESSING-MODE', 'STANDARD')
             else:
                 create_sub_element(can_frame_triggering, 'CAN-ADDRESSING-MODE', 'EXTENDED')
+
+            if frame.is_fd:
+                create_sub_element(can_frame_triggering, 'CAN-FRAME-RX-BEHAVIOR', "CAN-FD")
+                create_sub_element(can_frame_triggering, 'CAN-FRAME-RX-BEHAVIOR', "CAN-FD")
             create_sub_element(can_frame_triggering, 'IDENTIFIER', str(frame.arbitration_id.id))
 
             pdu_triggering_ref.text = "/Cluster/CAN/IPDUTRIGG_{0}".format(frame.name)
@@ -675,7 +677,7 @@ def dump(dbs, f, **options):
                     create_sub_element(frame_port, 'SHORT-NAME', frame.name)
                     create_sub_element(frame_port, 'COMMUNICATION-DIRECTION', 'IN')
                     rec_temp = 1
-                    if ecu.name + "_Tx" not in rx_ipdu_groups:
+                    if ecu.name + "_Rx" not in rx_ipdu_groups:
                         rx_ipdu_groups[ecu.name + "_Rx"] = []
                     rx_ipdu_groups[ecu.name + "_Rx"].append(frame.name)
 
@@ -761,7 +763,7 @@ def dump(dbs, f, **options):
                 ipdu_ref.set('DEST', "I-SIGNAL-I-PDU")
                 ipdu_ref.text = "/PDU/PDU_" + frame_name
 
-    f.write(etree.tostring(root, pretty_print=True, xml_declaration=True))
+    f.write(lxml.etree.tostring(root, pretty_print=True, xml_declaration=True))
 
 
 ###################################
@@ -928,9 +930,14 @@ def decode_compu_method(compu_method, root_or_cache, ns, float_factory):
             numerator = get_children(numerator_parent, "V", root_or_cache, ns)
             denominator_parent = get_child(rational, "COMPU-DENOMINATOR", root_or_cache, ns)
             denominator = get_children(denominator_parent, "V", root_or_cache, ns)
-
-            factor = float_factory(numerator[1].text) / float_factory(denominator[0].text)
-            offset = float_factory(numerator[0].text) / float_factory(denominator[0].text)
+            try:
+                factor = float_factory(numerator[1].text) / float_factory(denominator[0].text)
+                offset = float_factory(numerator[0].text) / float_factory(denominator[0].text)
+            except decimal.DivisionByZero:
+                if numerator[0].text != denominator[0].text or numerator[1].text != denominator[1].text:
+                    logger.warning("ARXML signal scaling: polynom is not supported and it is replaced by factor=1 and offset =0.")
+                factor = float_factory(1)
+                offset = float_factory(0)
         else:
             const = get_child(compu_scale, "COMPU-CONST", root_or_cache, ns)
             # add value
@@ -939,8 +946,34 @@ def decode_compu_method(compu_method, root_or_cache, ns, float_factory):
     return values, factor, offset, unit, const
 
 
-def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_factory):
-    # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, str, _MultiplexId, typing.Callable) -> None
+def eval_type_of_signal(type_encoding, base_type, ns):
+    if type_encoding == "NONE":
+        is_signed = False
+        is_float = False
+    elif type_encoding == "2C":
+        is_signed = True
+        is_float = False
+    elif type_encoding == "IEEE754" or type_encoding == "SINGLE" or type_encoding == "DOUBLE":
+        is_signed = True
+        is_float = True
+    elif type_encoding == "BOOLEAN":
+        is_signed = False
+        is_float = False
+    elif base_type is not None:
+        is_float = False
+        type_name = get_element_name(base_type, ns)
+        if type_name[0] == 'u':
+            is_signed = False  # unsigned
+        else:
+            is_signed = True  # signed
+    else:
+        is_float = False
+        is_signed = False  # signed
+    return is_signed, is_float
+
+
+def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_factory, bit_offset=0):
+    # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, str, _MultiplexId, typing.Callable, int) -> None
     """Add signals from xml to the Frame."""
     global signal_rxs
     group_id = 1
@@ -969,12 +1002,17 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
                 frame.name, get_child(signal, "SHORT-NAME", root_or_cache, ns).text)
 
         base_type = get_child(isignal, "BASE-TYPE", root_or_cache, ns)
+        try:
+            type_encoding = get_child(base_type, "BASE-TYPE-ENCODING", root_or_cache, ns).text
+        except AttributeError:
+            type_encoding = "None"
         signal_name = None  # type: typing.Optional[str]
         signal_name_elem = get_child(isignal, "LONG-NAME", root_or_cache, ns)
         if signal_name_elem is not None:
             signal_name_elem = get_child(signal_name_elem, "L-4", root_or_cache, ns)
             if signal_name_elem is not None:
                 signal_name = signal_name_elem.text
+
         system_signal = get_child(isignal, "SYSTEM-SIGNAL", root_or_cache, ns)
         if system_signal is None:
             logger.debug('Frame %s, signal %s has no system-signal', frame.name, isignal.tag)
@@ -1016,21 +1054,14 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
                 if base_type is None:
                     base_type = get_child(test_signal, "BASE-TYPE", root_or_cache, ns)
 
-
-
             lower = get_child(data_constr, "LOWER-LIMIT", root_or_cache, ns)
             upper = get_child(data_constr, "UPPER-LIMIT", root_or_cache, ns)
             encoding = None  # TODO - find encoding in AR4
         else:
             lower = get_child(datatype, "LOWER-LIMIT", root_or_cache, ns)
             upper = get_child(datatype, "UPPER-LIMIT", root_or_cache, ns)
-            encoding = get_child(datatype, "ENCODING", root_or_cache, ns)
+            type_encoding = get_child(datatype, "ENCODING", root_or_cache, ns)
 
-        if encoding is not None and (encoding.text == "SINGLE" or encoding.text == "DOUBLE"):
-            is_float = True
-        else:
-            is_float = False
-        
         if lower is not None and upper is not None:
             signal_min = float_factory(lower.text)
             signal_max = float_factory(upper.text)
@@ -1075,14 +1106,8 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
 
         if base_type is None:
             base_type = get_child(datdefprops, "BASE-TYPE", root_or_cache, ns)
-        if base_type is not None:
-            type_name = get_element_name(base_type, ns)
-            if type_name[0] == 'u':
-                is_signed = False  # unsigned
-            else:
-                is_signed = True  # signed
-        else:
-            is_signed = True  # signed
+
+        (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type, ns)
 
         if unit_elem is not None:
             longname = get_child(unit_elem, "LONG-NAME", root_or_cache, ns)
@@ -1127,7 +1152,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
         if start_bit is not None:
             new_signal = canmatrix.Signal(
                 name.text,
-                start_bit=int(start_bit.text),
+                start_bit=int(start_bit.text) + bit_offset,
                 size=int(length.text),
                 is_little_endian=is_little_endian,
                 is_signed=is_signed,
@@ -1144,9 +1169,9 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
             if signal_max is not None:
                 new_signal.max = signal_max
 
-            if new_signal.is_little_endian == 0:
+            if not new_signal.is_little_endian:
                 # startbit of motorola coded signals are MSB in arxml
-                new_signal.set_startbit(int(start_bit.text), bitNumbering=1)
+                new_signal.set_startbit(int(start_bit.text) + bit_offset, bitNumbering=1)
 
             # save signal, to determin receiver-ECUs for this signal later
             signal_rxs[system_signal] = new_signal
@@ -1159,10 +1184,7 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
 
             if initvalue is not None and initvalue.text is not None:
                 initvalue.text = canmatrix.utils.guess_value(initvalue.text)
-                new_signal._initValue = float_factory(initvalue.text)
-                new_signal.add_attribute("GenSigStartValue", str(new_signal._initValue))
-            else:
-                new_signal._initValue = 0
+                new_signal.initial_value = float_factory(initvalue.text)
 
             for key, value in list(values.items()):
                 new_signal.add_values(key, value)
@@ -1171,10 +1193,146 @@ def get_signals(signal_array, frame, root_or_cache, ns, multiplex_id, float_fact
             frame.add_signal(new_signal)
 
 
+def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, root_or_cache, ns, float_factory):
+    selector_byte_order = get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER", root_or_cache, ns)
+    selector_len = get_child(pdu, "SELECTOR-FIELD-LENGTH", root_or_cache, ns)
+    selector_start = get_child(pdu, "SELECTOR-FIELD-START-POSITION", root_or_cache, ns)
+    is_little_endian = False
+    if selector_byte_order.text == 'MOST-SIGNIFICANT-BYTE-LAST':
+        is_little_endian = True
+    is_signed = False  # unsigned
+    multiplexor = canmatrix.Signal(
+        "Multiplexor",
+        start_bit=int(selector_start.text),
+        size=int(selector_len.text),
+        is_little_endian=is_little_endian,
+        multiplex="Multiplexor")
+
+    multiplexor.initial_value = 0
+    target_frame.add_signal(multiplexor)
+    static_part = get_child(pdu, "STATIC-PART", root_or_cache, ns)
+    ipdu = get_child(static_part, "I-PDU", root_or_cache, ns)
+    if ipdu is not None:
+        pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
+        pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+        get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, None, float_factory)
+        multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
+
+    dynamic_part = get_child(pdu, "DYNAMIC-PART", root_or_cache, ns)
+    #               segmentPositions = arGetChild(dynamic_part, "SEGMENT-POSITIONS", arDict, ns)
+    #               segmentPosition = arGetChild(segmentPositions, "SEGMENT-POSITION", arDict, ns)
+    #               byteOrder = arGetChild(segmentPosition, "SEGMENT-BYTE-ORDER", arDict, ns)
+    #               segLength = arGetChild(segmentPosition, "SEGMENT-LENGTH", arDict, ns)
+    #               segPos = arGetChild(segmentPosition, "SEGMENT-POSITION", arDict, ns)
+    dynamic_part_alternatives = get_child(dynamic_part, "DYNAMIC-PART-ALTERNATIVES", root_or_cache, ns)
+    dynamic_part_alternative_list = get_children(dynamic_part_alternatives, "DYNAMIC-PART-ALTERNATIVE",
+                                                 root_or_cache, ns)
+    for alternative in dynamic_part_alternative_list:
+        selector_id = get_child(alternative, "SELECTOR-FIELD-CODE", root_or_cache, ns)
+        ipdu = get_child(alternative, "I-PDU", root_or_cache, ns)
+        multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
+        if ipdu is not None:
+            pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
+            pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+            get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, selector_id.text, float_factory)
+
+
+def get_frame_from_container_ipdu(pdu, target_frame, root_or_cache, ns, float_factory):
+    target_frame.is_fd = True
+    pdus = get_children(pdu, "CONTAINED-PDU-TRIGGERING", root_or_cache, ns)
+    signal_group_id = 1
+    singnals_grouped = []  # type: typing.List[str]
+    header_type = get_child(pdu, "HEADER-TYPE", root_or_cache, ns).text
+    if header_type == "SHORT-HEADER":
+        header_length = 32
+        target_frame.add_signal(canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor", is_little_endian=True))
+        target_frame.add_signal(canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=True))
+    elif header_type == "LONG-HEADER":
+        header_length = 64
+        target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor",
+                                                 is_little_endian=True))
+        target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=True))
+    else:
+        raise("header " + header_type + " not supported for containers yet")
+        # none type
+        # TODO
+
+    for cpdu in pdus:
+        ipdu = get_child(cpdu, "I-PDU", root_or_cache, ns)
+        try:
+            if header_type == "SHORT-HEADER":
+                header_id = get_child(ipdu, "HEADER-ID-SHORT-HEADER", root_or_cache, ns).text
+            elif header_type == "LONG-HEADER":
+                header_id = get_child(ipdu, "HEADER-ID-LONG-HEADER", root_or_cache, ns).text
+            else:
+                # none type
+                pass
+        except AttributeError:
+            header_id = "0"
+        if header_id.startswith("0x"):
+            header_id = int(header_id, 16)
+        else:
+            header_id = int(header_id)
+
+        # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
+        pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+        # TODO
+        if pdu_sig_mapping:
+            get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, header_id, float_factory, bit_offset=header_length)
+            new_signals = []
+            for signal in target_frame:
+                if signal.name not in singnals_grouped and signal.name is not "Header_ID" and signal.name is not "Header_DLC":
+                    new_signals.append(signal.name)
+            target_frame.add_signal_group("HEARDER_ID_" + str(header_id), signal_group_id, new_signals)
+            singnals_grouped += new_signals
+            signal_group_id += 1
+
+
+def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset, repeating_time, root_or_cache, time_period, ns, float_factory):
+    if cyclic_timing is not None and event_timing is not None:
+        target_frame.add_attribute("GenMsgSendType", "cyclicAndSpontanX")  # CycleAndSpontan
+        if minimum_delay is not None:
+            target_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
+        if repeats is not None:
+            target_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+    elif cyclic_timing is not None:
+        target_frame.add_attribute("GenMsgSendType", "cyclicX")  # CycleX
+        if minimum_delay is not None:
+            target_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
+        if repeats is not None:
+            target_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+    else:
+        target_frame.add_attribute("GenMsgSendType", "spontanX")  # Spontan
+        if minimum_delay is not None:
+            target_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
+        if repeats is not None:
+            target_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+
+    if starting_time is not None:
+        value = get_child(starting_time, "VALUE", root_or_cache, ns)
+        target_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
+    elif cyclic_timing is not None:
+        value = get_child(time_offset, "VALUE", root_or_cache, ns)
+        if value is not None:
+            target_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
+
+    value = get_child(repeating_time, "VALUE", root_or_cache, ns)
+    if value is not None:
+        target_frame.cycle_time = int(float_factory(value.text) * 1000)
+    elif cyclic_timing is not None:
+        value = get_child(time_period, "VALUE", root_or_cache, ns)
+        if value is not None:
+            target_frame.cycle_time = int(float_factory(value.text) * 1000)
+
+
 def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_factory):
     # type: (_Element, _DocRoot, dict, str, typing.Callable) -> typing.Union[canmatrix.Frame, None]
     global pdu_frame_mapping
     address_mode = get_child(frame_triggering, "CAN-ADDRESSING-MODE", root_or_cache, ns)
+    frame_rx_behaviour_elem = get_child(frame_triggering, "CAN-FRAME-RX-BEHAVIOR", root_or_cache, ns)
+    frame_tx_behaviour_elem = get_child(frame_triggering, "CAN-FRAME-TX-BEHAVIOR", root_or_cache, ns)
+    is_fd_elem = get_child(frame_triggering, "CAN-FD-FRAME-SUPPORT", root_or_cache, ns)
+
     arb_id = get_child(frame_triggering, "IDENTIFIER", root_or_cache, ns)
     frame_elem = get_child(frame_triggering, "FRAME", root_or_cache, ns)
 
@@ -1192,7 +1350,9 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
         pdu = get_child(pdu_mapping, "PDU", root_or_cache, ns)  # SIGNAL-I-PDU
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
+            payload = get_child(pdu, "PAYLOAD", root_or_cache, ns)
+            pdu = get_child(payload, "I-PDU", root_or_cache, ns)
+            # logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
 
         pdu_frame_mapping[pdu] = get_element_name(frame_elem, ns)
 
@@ -1217,46 +1377,7 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
         logger.debug(get_element_name(pdu, ns))
 
     if pdu is not None and "MULTIPLEXED-I-PDU" in pdu.tag:
-        selector_byte_order = get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER", root_or_cache, ns)
-        selector_len = get_child(pdu, "SELECTOR-FIELD-LENGTH", root_or_cache, ns)
-        selector_start = get_child(pdu, "SELECTOR-FIELD-START-POSITION", root_or_cache, ns)
-        is_little_endian = False
-        if selector_byte_order.text == 'MOST-SIGNIFICANT-BYTE-LAST':
-            is_little_endian = True
-        is_signed = False  # unsigned
-        multiplexor = canmatrix.Signal(
-            "Multiplexor",
-            start_bit=int(selector_start.text),
-            size=int(selector_len.text),
-            is_little_endian=is_little_endian,
-            multiplex="Multiplexor")
-
-        multiplexor._initValue = 0
-        new_frame.add_signal(multiplexor)
-        static_part = get_child(pdu, "STATIC-PART", root_or_cache, ns)
-        ipdu = get_child(static_part, "I-PDU", root_or_cache, ns)
-        if ipdu is not None:
-            pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
-            pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
-            get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
-            multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
-
-        dynamic_part = get_child(pdu, "DYNAMIC-PART", root_or_cache, ns)
-#               segmentPositions = arGetChild(dynamic_part, "SEGMENT-POSITIONS", arDict, ns)
-#               segmentPosition = arGetChild(segmentPositions, "SEGMENT-POSITION", arDict, ns)
-#               byteOrder = arGetChild(segmentPosition, "SEGMENT-BYTE-ORDER", arDict, ns)
-#               segLength = arGetChild(segmentPosition, "SEGMENT-LENGTH", arDict, ns)
-#               segPos = arGetChild(segmentPosition, "SEGMENT-POSITION", arDict, ns)
-        dynamic_part_alternatives = get_child(dynamic_part, "DYNAMIC-PART-ALTERNATIVES", root_or_cache, ns)
-        dynamic_part_alternative_list = get_children(dynamic_part_alternatives, "DYNAMIC-PART-ALTERNATIVE", root_or_cache, ns)
-        for alternative in dynamic_part_alternative_list:
-            selector_id = get_child(alternative, "SELECTOR-FIELD-CODE", root_or_cache, ns)
-            ipdu = get_child(alternative, "I-PDU", root_or_cache, ns)
-            multiplex_translation[get_element_name(ipdu, ns)] = get_element_name(pdu, ns)
-            if ipdu is not None:
-                pdu_sig_mappings = get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
-                pdu_sig_mapping = get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
-                get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, selector_id.text, float_factory)
+        get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, root_or_cache, ns, float_factory)
 
     if new_frame.comment is None:
         new_frame.add_comment(get_element_desc(pdu, root_or_cache, ns))
@@ -1265,6 +1386,13 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
         new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=True)
     else:
         new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=False)
+
+    if (frame_rx_behaviour_elem is not None and frame_rx_behaviour_elem.text == 'CAN-FD') or \
+        (frame_tx_behaviour_elem is not None and frame_tx_behaviour_elem.text == 'CAN-FD') or \
+        (is_fd_elem is not None and is_fd_elem.text == 'TRUE'):
+        new_frame.is_fd = True
+    else:
+        new_frame.is_fd = False
 
     timing_spec = get_child(pdu, "I-PDU-TIMING-SPECIFICATION", root_or_cache, ns)
     if timing_spec is None:
@@ -1280,69 +1408,36 @@ def get_frame(frame_triggering, root_or_cache, multiplex_translation, ns, float_
     time_offset = get_child(cyclic_timing, "TIME-OFFSET", root_or_cache, ns)
     time_period = get_child(cyclic_timing, "TIME-PERIOD", root_or_cache, ns)
 
-    if cyclic_timing is not None and event_timing is not None:
-        new_frame.add_attribute("GenMsgSendType", "cyclicAndSpontanX")        # CycleAndSpontan
-        if minimum_delay is not None:
-            new_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
-        if repeats is not None:
-            new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
-    elif cyclic_timing is not None:
-        new_frame.add_attribute("GenMsgSendType", "cyclicX")  # CycleX
-        if minimum_delay is not None:
-            new_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
-        if repeats is not None:
-            new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+    store_frame_timings(new_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset, repeating_time, root_or_cache, time_period, ns, float_factory)
+
+    if pdu.tag == ns + "CONTAINER-I-PDU":
+        get_frame_from_container_ipdu(pdu, new_frame, root_or_cache, ns, float_factory)
+
     else:
-        new_frame.add_attribute("GenMsgSendType", "spontanX")  # Spontan
-        if minimum_delay is not None:
-            new_frame.add_attribute("GenMsgDelayTime", str(int(float_factory(minimum_delay.text) * 1000)))
-        if repeats is not None:
-            new_frame.add_attribute("GenMsgNrOfRepetitions", repeats.text)
+        pdu_sig_mapping = get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
+        if pdu_sig_mapping:
+            get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
+        # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
+        else:  # AR 4.2
+            pdu_trigs = get_children(frame_triggering, "PDU-TRIGGERINGS", root_or_cache, ns)
+            if pdu_trigs is not None:
+                for pdu_trig in pdu_trigs:
+                    trig_ref_cond = get_child(pdu_trig, "PDU-TRIGGERING-REF-CONDITIONAL", root_or_cache, ns)
+                    trigs = get_child(trig_ref_cond, "PDU-TRIGGERING", root_or_cache, ns)
+                    ipdus = get_child(trigs, "I-PDU", root_or_cache, ns)
 
-    if starting_time is not None:
-        value = get_child(starting_time, "VALUE", root_or_cache, ns)
-        new_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
-    elif cyclic_timing is not None:
-        value = get_child(time_offset, "VALUE", root_or_cache, ns)
-        if value is not None:
-            new_frame.add_attribute("GenMsgStartDelayTime", str(int(float_factory(value.text) * 1000)))
+                    signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
+                    if signal_to_pdu_maps is None:
+                        signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-I-PDU-MAPPINGS", root_or_cache, ns)
 
-    value = get_child(repeating_time, "VALUE", root_or_cache, ns)
-    if value is not None:
-        new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
-    elif cyclic_timing is not None:
-        value = get_child(time_period, "VALUE", root_or_cache, ns)
-        if value is not None:
-            new_frame.add_attribute("GenMsgCycleTime", str(int(float_factory(value.text) * 1000)))
-
-
-#    pdu_sig_mappings = get_child(pdu, "SIGNAL-TO-PDU-MAPPINGS", arDict, ns)
-#    if not pdu_sig_mappings:
-#        logger.debug("Frame %s no SIGNAL-TO-PDU-MAPPINGS found", new_frame.name)
-    pdu_sig_mapping = get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
-    if pdu_sig_mapping:
-        get_signals(pdu_sig_mapping, new_frame, root_or_cache, ns, None, float_factory)
-
-    # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
-    else:  # AR 4.2
-        pdu_trigs = get_children(frame_triggering, "PDU-TRIGGERINGS", root_or_cache, ns)
-        if pdu_trigs is not None:
-            for pdu_trig in pdu_trigs:
-                trig_ref_cond = get_child(pdu_trig, "PDU-TRIGGERING-REF-CONDITIONAL", root_or_cache, ns)
-                trigs = get_child(trig_ref_cond, "PDU-TRIGGERING", root_or_cache, ns)
-                ipdus = get_child(trigs, "I-PDU", root_or_cache, ns)
-
-                signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS", root_or_cache, ns)
-                if signal_to_pdu_maps is None:
-                    signal_to_pdu_maps = get_child(ipdus, "I-SIGNAL-TO-I-PDU-MAPPINGS", root_or_cache, ns)
-
-                if signal_to_pdu_maps is None:
-                    logger.debug("AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!",
-                                 get_element_name(ipdus, ns))
-                # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                get_signals(signal_to_pdu_maps, new_frame, root_or_cache, ns, None, float_factory)  # todo BUG expects list, not item
-        else:
-            logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
+                    if signal_to_pdu_maps is None:
+                        logger.debug("AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!",
+                                     get_element_name(ipdus, ns))
+                    # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+                    get_signals(signal_to_pdu_maps, new_frame, root_or_cache, ns, None, float_factory)  # todo BUG expects list, not item
+            else:
+                logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
+    new_frame.fit_dlc()
     return new_frame
 
 
@@ -1520,7 +1615,7 @@ def load(file, **options):
 
     result = {}
     logger.debug("Read arxml ...")
-    tree = etree.parse(file)
+    tree = lxml.etree.parse(file)
 
     root = tree.getroot()  # type: _Element
     logger.debug(" Done\n")
@@ -1568,7 +1663,7 @@ def load(file, **options):
     logger.debug("%d I-SIGNAL-TO-I-PDU-MAPPING in arxml...", len(sig_ipdu))
 
     if ignore_cluster_info is True:
-        ccs = [etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
+        ccs = [lxml.etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
     else:
         ccs = root.findall('.//' + ns + 'CAN-CLUSTER')
     for cc in ccs:  # type: _Element
@@ -1577,7 +1672,6 @@ def load(file, **options):
         db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
         db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
         db.add_signal_defines("LongName", 'STRING')
-        db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
         db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
         db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
         db.add_frame_defines("GenMsgStartValue", 'STRING')
@@ -1585,17 +1679,25 @@ def load(file, **options):
         db.add_frame_defines(
             "GenMsgSendType",
             'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
-        db.add_signal_defines("GenSigStartValue", 'HEX 0 4294967295')
 
         if ignore_cluster_info is True:
             can_frame_trig = root.findall('.//' + ns + 'CAN-FRAME-TRIGGERING')
             bus_name = ""
         else:
             speed = get_child(cc, "SPEED", search_point, ns)
+            baudrate_elem = cc.find(".//" + ns + "BAUDRATE")
+            fd_baudrate_elem = cc.find(".//" + ns + "CAN-FD-BAUDRATE")
+
+            speed = baudrate_elem is speed is None
+
             logger.debug("Busname: " + get_element_name(cc, ns))
 
             bus_name = get_element_name(cc, ns)
             if speed is not None:
+                db.baudrate = speed
+            if fd_baudrate_elem is not None:
+                db.fd_baudrate = fd_baudrate_elem.text
+
                 logger.debug(" Speed: " + speed.text)
 
             physical_channels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")  # type: _Element
@@ -1603,6 +1705,7 @@ def load(file, **options):
                 logger.error("PHYSICAL-CHANNELS not found")
 
             nm_lower_id = get_child(cc, "NM-LOWER-CAN-ID", search_point, ns)
+
 
             physical_channel = get_child(physical_channels, "PHYSICAL-CHANNEL", search_point, ns)
             if physical_channel is None:
@@ -1660,7 +1763,10 @@ def load(file, **options):
         for frame in db.frames:
             sig_value_hash = dict()
             for sig in frame.signals:
-                sig_value_hash[sig.name] = sig._initValue
+                try:
+                    sig_value_hash[sig.name] = sig.phys2raw()
+                except AttributeError:
+                    sig_value_hash[sig.name] = 0
             frame_data = frame.encode(sig_value_hash)
             frame.add_attribute("GenMsgStartValue", "".join(["%02x" % x for x in frame_data]))
         result[bus_name] = db

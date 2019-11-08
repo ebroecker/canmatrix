@@ -1,5 +1,8 @@
-import pytest
+# -*- coding: utf-8 -*-
 import decimal
+
+import pytest
+from builtins import *
 
 import canmatrix.canmatrix
 
@@ -40,24 +43,22 @@ def test_encode_signal():
     assert s4.phys2raw(s4.min) == 0
 
     s5 = canmatrix.canmatrix.Signal('signal', size=8, offset=2)
-    assert s5.phys2raw() == 0
+    assert s5.phys2raw() == -2
     assert s5.phys2raw(10) == 8
     assert s5.phys2raw(s5.max) == 127
     assert s5.phys2raw(s5.min) == -128
 
     s6 = canmatrix.canmatrix.Signal('signal', size=8, is_signed=False, offset=5)
-    assert s6.phys2raw() == 0
+    assert s6.phys2raw() == -5
     assert s6.phys2raw(10) == 5
     assert s6.phys2raw(s6.max) == 255
     assert s6.phys2raw(s6.min) == 0
 
-    s7 = canmatrix.canmatrix.Signal('signal', size=8)
-    s7.add_attribute('GenSigStartValue', '5')
+    s7 = canmatrix.canmatrix.Signal('signal', size=8, initial_value=5)
     assert s7.phys2raw() == 5
 
-    s8 = canmatrix.canmatrix.Signal('signal', size=8, is_signed=False, offset=5)
-    s8.add_attribute('GenSigStartValue', '5')
-    assert s8.phys2raw() == 5
+    s8 = canmatrix.canmatrix.Signal('signal', size=8, is_signed=False, offset=5, initial_value=5)
+    assert s8.phys2raw() == 0
 
     s9 = canmatrix.canmatrix.Signal('signal', size=16, is_signed=False, factor='0.001')
     assert s9.phys2raw() == 0
@@ -459,6 +460,40 @@ def test_frame_compute_dlc():
     frame.calc_dlc()
     assert frame.size == 2
 
+def test_frame_fit_dlc():
+    frame = canmatrix.canmatrix.Frame()
+    for i in range(1,9):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == i
+    for i in range(9,13):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 12
+    for i in range(13,17):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 16
+    for i in range(17,21):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 20
+    for i in range(21,25):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 24
+    for i in range(25,33):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 32
+    for i in range(33,49):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 48
+    for i in range(49,65):
+        frame.size = i
+        frame.fit_dlc()
+        assert frame.size == 64
 
 def test_frame_find_unused_bits():
     frame = canmatrix.canmatrix.Frame(size=1)
@@ -556,22 +591,13 @@ def test_frame_not_multiplexed():
     frame.add_signal(canmatrix.canmatrix.Signal(name="some"))
     assert not frame.is_multiplexed
 
-
 def test_frame_calc_j1939_id():
     # we have to set all j1939 properties in the __init__ otherwise the setters crash
-    frame = canmatrix.canmatrix.Frame(j1939_source=0x11, j1939_pgn=0xFFFF, j1939_prio=0)
+    frame = canmatrix.canmatrix.Frame()
     frame.source = 0x22
     frame.pgn = 0xAAAA
     frame.priority = 3
-    assert hex(frame.arbitration_id.id) == hex(0x0CAAAA22)
-
-
-def test_frame_get_j1939_properties():
-    frame = canmatrix.canmatrix.Frame(j1939_source=0x11, j1939_pgn=0xFFFF, j1939_prio=1)
-    frame.recalc_J1939_id()  # pgn property is computed from id!
-    assert frame.pgn == frame.j1939_pgn
-    assert frame.source == frame.j1939_source
-    assert frame.priority == frame.j1939_prio
+    assert frame.arbitration_id.id == 0xcaa0022
 
 
 def test_frame_add_transmitter(empty_frame):
@@ -804,6 +830,23 @@ def test_Arbitration_id():
     assert id_from_int_extended == id_extended
     assert id_from_int_extended != id_standard
 
+def test_arbitration_id_is_instance():
+    frame1 = canmatrix.Frame(name = "Frame1")
+    frame2 = canmatrix.Frame(name = "Frame1")
+
+    frame1.arbitration_id.id = 42
+
+    assert frame1.arbitration_id.id == 42
+    assert frame2.arbitration_id.id == 0
+
+def test_arbitration_id_j1939_direct_setters():
+    arb_id = canmatrix.ArbitrationId(0)
+    arb_id.pgn = 0xF1AA
+    arb_id.j1939_source = 0x22
+    arb_id.j1939_priority = 3
+    assert arb_id.pgn == 0xF1AA
+    assert arb_id.j1939_source == 0x22
+    assert arb_id.j1939_priority == 3
 
 @pytest.fixture
 def empty_matrix():
@@ -940,3 +983,34 @@ def test_canmatrix_del_frame_by_instance(empty_matrix):
     empty_matrix.del_frame(f1)
     assert empty_matrix.frames == [f2]
 
+def test_effective_cycle_time():
+    frame = canmatrix.Frame()
+    sig1 = canmatrix.Signal(name = "s1", cycle_time=1)
+    sig2 = canmatrix.Signal(name = "s2", cycle_time=0)
+    frame.add_signal(sig1)
+    frame.add_signal(sig2)
+    assert frame.effective_cycle_time == 1
+
+    sig2.cycle_time = 2
+    assert frame.effective_cycle_time == 1
+
+    sig1.cycle_time = 4
+    assert frame.effective_cycle_time == 2
+
+    sig1.cycle_time = 3
+    assert frame.effective_cycle_time == 1
+
+    frame.cycle_time = 1
+    assert frame.effective_cycle_time == 1
+
+    frame.cycle_time = 0
+    sig1.cycle_time = 0
+    sig2.cycle_time = 0
+    assert frame.effective_cycle_time == 0
+
+def test_baudrate():
+    cm = canmatrix.CanMatrix()
+    cm.baudrate = 500000
+    assert cm.baudrate == 500000
+    cm.fd_baudrate = 1000000
+    assert cm.fd_baudrate == 1000000

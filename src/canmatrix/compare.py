@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -21,13 +19,12 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 import logging
-import optparse
 import sys
 import typing
+from builtins import *
 
 import attr
 

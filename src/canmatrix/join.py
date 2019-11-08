@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function
 
 import typing
+from builtins import *
 
 import canmatrix
 import canmatrix.formats
@@ -29,12 +31,12 @@ def ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y):
 
 
 def join_frame_by_signal_start_bit(files):  # type: (typing.List[str]) -> canmatrix.CanMatrix
-    target_db = next(iter(canmatrix.formats.loadp(files.pop(0)).values()))  # type: canmatrix.CanMatrix
+    target_db = next(iter(canmatrix.formats.loadp(files.pop(0)).values()))
 
     pgn_x, id_x = list_pgn(db=target_db)
 
     for f in files:
-        source_db = next(iter(canmatrix.formats.loadp(f).values()))  # type: canmatrix.CanMatrix
+        source_db = next(iter(canmatrix.formats.loadp(f).values()))
         pgn_y, id_y = list_pgn(db=source_db)
 
         same_pgn = ids_sharing_same_pgn(id_x, pgn_x, id_y, pgn_y)
@@ -44,7 +46,7 @@ def join_frame_by_signal_start_bit(files):  # type: (typing.List[str]) -> canmat
             target_fr = target_db.frame_by_id(id_a)
             source_fr = source_db.frame_by_id(id_b)
 
-            signal_to_add = []  # type: typing.List[canmatrix.Signal]
+            signal_to_add = []
             for sig_t in target_fr.signals:
                 for sig_s in source_fr.signals:
                     # print(sig.name)
@@ -58,7 +60,7 @@ def join_frame_by_signal_start_bit(files):  # type: (typing.List[str]) -> canmat
 
 def rename_frame_with_id(source_db):  # type: (canmatrix.CanMatrix) -> None
     for frameSc in source_db.frames:
-        _, pgn, sa = frameSc.arbitration_id.j1939_tuple()
+        _, pgn, sa = frameSc.arbitration_id.j1939_tuple
 
         extension = "__{pgn:#04X}_{sa:#02X}_{sa:03d}d".format(pgn=pgn, sa=sa)
         new_name = frameSc.name + extension
@@ -95,7 +97,7 @@ def join_frame_for_manufacturer(db, files):  # type: (canmatrix.CanMatrix, typin
             target_fr = db.frame_by_id(idx)
             source_fr = source_db.frame_by_id(idy)
 
-            _, pgn, sa = target_fr.arbitration_id.j1939_tuple()
+            _, pgn, sa = target_fr.arbitration_id.j1939_tuple
             if sa < 128:
                 print('less', target_fr.name)
                 to_add = []

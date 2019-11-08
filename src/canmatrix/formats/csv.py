@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -23,20 +23,19 @@
 # this script exports canmatrix-objects to a CSV file. (Based on xlsx)
 # Author: Martin Hoffmann (m8ddin@gmail.com)
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 import collections
 import csv
 import logging
 import sys
 import typing
+from builtins import *
 
 import canmatrix.formats.xls_common
 
 logger = logging.getLogger(__name__)
 CsvDataType = typing.Union[str, int]
-
-extension = 'csv'
 
 
 class CsvRow:
@@ -70,7 +69,7 @@ class CsvRow:
     def as_list(self):  # type: () -> typing.List[str]
         # Generate list of single cells in the row till highest index (dictionary key)
         # Empty cells (non-existent keys) are generated as empty string
-        return [str(self._row_dict[x])
+        return [self._row_dict[x]
                 for x in range(0, max(self._row_dict) + 1)]
 
     def to_csv(self, delimiter=','):  # type: (str) -> str

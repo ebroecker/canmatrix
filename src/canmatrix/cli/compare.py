@@ -21,106 +21,67 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 import logging
-import optparse
 import sys
 import typing
+from builtins import *
 
-import attr
+import click
+
 import canmatrix.compare
 
 logger = logging.getLogger(__name__)
 
 
-def main():  # type: () -> int
-    import canmatrix.log
-    canmatrix.log.setup_logger()
+@click.command()
+@click.option('-v', '--verbose', 'verbosity', help="Output verbosity", count=True, default=1)
+@click.option('-s', '--silent', is_flag=True, default=False, help="don't print status messages to stdout. (only errors)")
+@click.option('-f', '--frames', is_flag=True, default=False, help="show list of frames")
+@click.option('-c', '--comments', 'check_comments', is_flag=True, default=False, help="look for changed comments")
+@click.option('-a', '--attributes', 'check_attributes', is_flag=True, default=False, help="look for changed attributes")
+@click.option('-t', '--valueTable', 'ignore_valuetables', is_flag=True, default=False, help="ignore changed valuetables")
+@click.argument('matrix1', required=True)
+@click.argument('matrix2', required=True)
+def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attributes, ignore_valuetables, frames):
+    """
+        canmatrix.cli.compare [options] matrix1 matrix2
 
-    usage = """
-    %prog [options] cancompare matrix1 matrix2
-
-    matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml
+        matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
     """
 
-    parser = optparse.OptionParser(usage=usage)
-    parser.add_option(
-        "-s",
-        dest="silent",
-        action="store_true",
-        help="don't print status messages to stdout. (only errors)",
-        default=False)
-    parser.add_option(
-        "-v",
-        dest="verbosity",
-        action="count",
-        help="Output verbosity",
-        default=0)
-    parser.add_option(
-        "-f", "--frames",
-        dest="frames",
-        action="store_true",
-        help="show list of frames",
-        default=False)
-    parser.add_option(
-        "-c", "--comments",
-        dest="check_comments",
-        action="store_true",
-        help="check changed comments",
-        default=False)
-    parser.add_option(
-        "-a", "--attributes",
-        dest="check_attributes",
-        action="store_true",
-        help="check changed attributes",
-        default=False)
-    parser.add_option(
-        "-t", "--valueTable",
-        dest="ignore_valuetables",
-        action="store_true",
-        help="check changed valuetables",
-        default=False)
+    import canmatrix.log
+    root_logger = canmatrix.log.setup_logger()
 
-    (cmdlineOptions, args) = parser.parse_args()
-
-    if len(args) < 2:
-        parser.print_help()
-        sys.exit(1)
-
-    matrix1 = args[0]
-    matrix2 = args[1]
-
-    verbosity = cmdlineOptions.verbosity
-    if cmdlineOptions.silent:
+    if silent:
         # Only print ERROR messages (ignore import warnings)
         verbosity = -1
-    canmatrix.log.set_log_level(logger, verbosity)
+    canmatrix.log.set_log_level(root_logger, verbosity)
 
     # import only after setting log level, to also disable warning messages in silent mode.
     import canmatrix.formats  # due this import we need the import alias for log module
 
     logger.info("Importing " + matrix1 + " ... ")
-    db1 = next(iter(canmatrix.formats.loadp(matrix1).values()))
+    db1 = canmatrix.formats.loadp_flat(matrix1)
     logger.info("%d Frames found" % (db1.frames.__len__()))
 
     logger.info("Importing " + matrix2 + " ... ")
-    db2 = next(iter(canmatrix.formats.loadp(matrix2).values()))
+    db2 = canmatrix.formats.loadp_flat(matrix2)
     logger.info("%d Frames found" % (db2.frames.__len__()))
 
     ignore = {}  # type: typing.Dict[str, typing.Union[str, bool]]
 
-    if not cmdlineOptions.check_comments:
+    if not check_comments:
         ignore["comment"] = "*"
 
-    if not cmdlineOptions.check_attributes:
+    if not check_attributes:
         ignore["ATTRIBUTE"] = "*"
 
-    if cmdlineOptions.ignore_valuetables:
+    if ignore_valuetables:
         ignore["VALUETABLES"] = True
 
-    if cmdlineOptions.frames:
+    if frames:
         only_in_matrix1 = [
             frame.name
             for frame in db1.frames
@@ -144,4 +105,4 @@ def main():  # type: () -> int
 
 # to be run as module `python -m canmatrix.compare`, NOT as script with argument `canmatrix/compare.py`
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.exit(cli_compare())

@@ -1,27 +1,30 @@
-#!env python
-from importlib import import_module
-import sys
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function
+
+import importlib
 import logging
 import os
+import sys
 import typing
 
 import canmatrix
 import canmatrix.cancluster
+
 if sys.version_info > (3, 0):
     import io
 else:
     import StringIO
 
 logger = logging.getLogger(__name__)
-moduleList = ["arxml", "cmcsv", "dbc", "dbf", "cmjson",
-              "kcd", "fibex", "sym", "xls", "xlsx", "yaml"]
+moduleList = ["arxml", "csv", "dbc", "dbf", "json",
+              "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy", "wireshark"]
 loadedFormats = []
 supportedFormats = {}  # type: typing.MutableMapping[str, typing.MutableSequence[str]]
 extensionMapping = {}
 
 for module in moduleList:
     try:
-        import_module("canmatrix.formats." + module)
+        importlib.import_module("canmatrix.formats." + module)
         loadedFormats.append(module)
     except ImportError:
         logger.info("%s is not supported", module)
@@ -39,7 +42,7 @@ for loadedModule in loadedFormats:
         supportedFormats[loadedModule].append("clusterExporter")
     if "extension" in dir(moduleInstance):
         supportedFormats[loadedModule].append("extension")
-        extensionMapping[loadedModule] = moduleInstance.extension
+        extensionMapping[loadedModule] = moduleInstance.extension  # type: ignore
     else:
         extensionMapping[loadedModule] = loadedModule
 
@@ -101,7 +104,7 @@ def load_flat(file_object, import_type, key="", **options):
 
 
 def dump(can_matrix_or_cluster, file_object, export_type, **options):
-    # type: (typing.Union[canmatrix.CanMatrix, canmatrix.cancluster.CanCluster], typing.IO, str, **str) -> None
+    # type: (typing.Union[canmatrix.CanMatrix, typing.Mapping[str, canmatrix.CanMatrix]], typing.IO, str, **str) -> None
     module_instance = sys.modules["canmatrix.formats." + export_type]
     if isinstance(can_matrix_or_cluster, canmatrix.CanMatrix):
         module_instance.dump(can_matrix_or_cluster, file_object, **options)  # type: ignore
@@ -110,7 +113,7 @@ def dump(can_matrix_or_cluster, file_object, export_type, **options):
 
 
 def dumpp(can_cluster, path, export_type=None, **options):
-    # type: (canmatrix.cancluster.CanCluster, str, str, **str) -> None
+    # type: (typing.Mapping[str, canmatrix.CanMatrix], str, str, **str) -> None
     if not export_type:
         for key, extension in extensionMapping.items():
             if path.lower().endswith("." + extension) and "dump" in supportedFormats[key]:

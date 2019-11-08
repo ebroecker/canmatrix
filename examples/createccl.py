@@ -99,9 +99,9 @@ def main():
             txDict[frame] = sendIndex
             sendIndex += 1
 #            print frame.name
-#            if "GenMsgCycleTime" in frame.attributes and int(frame.attributes["GenMsgCycleTime"]) != 0:
+#            if  frame.effective_cycletime != 0:
 #                print frame.name,
-#                print frame.attributes["GenMsgCycleTime"]
+#                print frame.effective_cycletime
 #            ccl_h += createStoreMacrosForFrame(frame, "_" + frame.name + "_")
 
     tempStr = ""

@@ -6,3 +6,4 @@ toml==0.10.0
 tox==3.7.0
 typing==3.6.6; python_version < '3.5'
 virtualenv==16.4.1
+click==7.0

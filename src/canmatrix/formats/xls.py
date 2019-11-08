@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -23,13 +23,12 @@
 # this script exports xls-files from a canmatrix-object
 # xls-files are the can-matrix-definitions displayed in Excel
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 import decimal
 import logging
 import typing
+from builtins import *
 
 import past.builtins
 import xlrd
@@ -322,6 +321,18 @@ def parse_value_name_column(value_name, value_str, signal_size, float_factory):
     return mini, maxi, offset, value_table
 
 
+def read_additional_signal_attributes(signal, attribute_name, attribute_value):
+    if not attribute_name.startswith("signal"):
+        return
+    if attribute_name.replace("signal.", "") in vars(signal):
+        command_str = attribute_name + "="
+        command_str += str(attribute_value)
+        if len(str(attribute_value)) > 0:
+            exec(command_str)
+    else:
+        pass
+
+
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
@@ -335,13 +346,11 @@ def load(file, **options):
     # Defines not imported...
     # db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
     # db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
-    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
     db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
     # db.addFrameDefines("GenMsgStartValue",  'STRING')
     launch_types = []  # type: typing.List[str]
-    # db.addSignalDefines("GenSigStartValue", 'HEX 0 4294967295')
     db.add_signal_defines("GenSigSNA", 'STRING')
 
     # eval search for correct columns:
@@ -421,21 +430,22 @@ def load(file, **options):
             if frame_id.endswith("xh"):
                 new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True)
             else:
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=False)
+                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-1], 16), extended=False)
             db.add_frame(new_frame)
 
             # eval launch_type
             if launch_type is not None:
-                new_frame.add_attribute("GenMsgSendType", launch_type)
-                if launch_type not in launch_types:
-                    launch_types.append(launch_type)
+                if len(launch_type) > 0:
+                    new_frame.add_attribute("GenMsgSendType", launch_type)
+                    if launch_type not in launch_types:
+                        launch_types.append(launch_type)
 
             # eval cycle time
             try:
                 cycle_time = int(cycle_time)
             except:
                 cycle_time = 0
-            new_frame.add_attribute("GenMsgCycleTime", str(int(cycle_time)))
+            new_frame.cycle_time = cycle_time
 
             for additional_index in additional_inputs:
                 if "frame" in additional_inputs[additional_index]:
@@ -506,11 +516,7 @@ def load(file, **options):
 
                 for additional_index in additional_inputs:  # todo explain this possibly dangerous code with eval
                     if "signal" in additional_inputs[additional_index]:
-                        command_str = additional_inputs[additional_index].replace("signal", "new_signal")
-                        command_str += "="
-                        command_str += str(sh.cell(row_num, additional_index).value)
-                        if len(str(sh.cell(row_num, additional_index).value)) > 0:
-                            exec(command_str)
+                        read_additional_signal_attributes(new_signal, additional_inputs[additional_index], sh.cell(row_num, additional_index).value)
 
                 new_frame.add_signal(new_signal)
                 new_signal.add_comment(signal_comment)

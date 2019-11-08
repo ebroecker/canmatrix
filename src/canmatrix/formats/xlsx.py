@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -23,12 +23,11 @@
 # this script exports xls-files from a canmatrix-object
 # xls-files are the can-matrix-definitions displayed in Excel
 
-
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division, print_function
 
 import logging
 import typing
+from builtins import *
 
 import xlsxwriter
 
@@ -104,8 +103,10 @@ def write_excel_line(worksheet, row, col, row_array, style):
 def dump(db, filename, **options):
     # type: (canmatrix.CanMatrix, str, **str) -> None
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
+    values_in_seperate_lines = options.get("xlsValuesInSeperateLines", True)
     additional_signal_columns = [x for x in options.get("additionalAttributes", "").split(",") if x]
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
+
 
     head_top = [
         'ID',
@@ -244,7 +245,7 @@ def dump(db, filename, **options):
                 signal_style = sty_norm
 
             # valuetable available?
-            if len(sig.values) > 0:
+            if len(sig.values) > 0 and not values_in_seperate_lines:
                 value_style = signal_style
                 # iterate over values in valuetable
                 for val in sorted(sig.values.keys()):
@@ -263,6 +264,7 @@ def dump(db, filename, **options):
                     for item in additional_signal_columns:
                         temp = getattr(sig, item, "")
                         back_row.append(temp)
+
 
                     write_excel_line(worksheet, row, col + 2, back_row, signal_style)
                     write_excel_line(worksheet, row, col, [val, sig.values[val]], value_style)
@@ -299,7 +301,8 @@ def dump(db, filename, **options):
                     back_row.append(temp)
 
                 write_excel_line(worksheet, row, col, back_row, signal_style)
-
+                if len(sig.values) > 0:
+                    write_excel_line(worksheet, row, col, ["\n".join(["{}: {}".format(a,b) for (a,b) in sig.values.items()])], signal_style)
                 # next row
                 row += 1
                 # set style to normal - without border
@@ -399,7 +402,6 @@ def load(filename, **options):
     letter_index += ["%s%s" % (a, b) for a in all_letters for b in all_letters]
 
     # Defines not imported...
-    db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
     db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
@@ -462,7 +464,7 @@ def load(filename, **options):
                 if launch_type not in launch_types:
                     launch_types.append(launch_type)
 
-            new_frame.add_attribute("GenMsgCycleTime", cycle_time)
+            new_frame.cycle_time = cycle_time
 
         # new signal detected
         if 'Signal Name' in row and row['Signal Name'] != signal_name:

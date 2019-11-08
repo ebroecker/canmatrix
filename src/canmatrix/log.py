@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -23,7 +22,7 @@
 # Configurable logging
 # Author: Martin Hoffmann (m8ddin@gmail.com)
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 import logging
 

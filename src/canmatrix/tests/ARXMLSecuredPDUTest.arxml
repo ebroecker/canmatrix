@@ -1,0 +1,362 @@
+<?xml version='1.0' encoding='ASCII'?>
+<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://autosar.org/3.2.3" xsi:schemaLocation="http://autosar.org/3.2.3 AUTOSAR_323.xsd">
+  <TOP-LEVEL-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Cluster</SHORT-NAME>
+      <ELEMENTS>
+        <CAN-CLUSTER>
+          <SHORT-NAME>CAN</SHORT-NAME>
+          <PHYSICAL-CHANNELS>
+            <PHYSICAL-CHANNEL>
+              <SHORT-NAME>CAN</SHORT-NAME>
+              <FRAME-TRIGGERINGSS>
+                <CAN-FRAME-TRIGGERING>
+                  <SHORT-NAME>testFrame1</SHORT-NAME>
+                  <FRAME-PORT-REFS>
+                    <FRAME-PORT-REF DEST="FRAME-PORT">/ECU/testBU/CN_testBU/testFrame1</FRAME-PORT-REF>
+                    <FRAME-PORT-REF DEST="FRAME-PORT">/ECU/recBU/CN_recBU/testFrame1</FRAME-PORT-REF>
+                  </FRAME-PORT-REFS>
+                  <FRAME-REF DEST="FRAME">/Frame/FRAME_testFrame1_SEC</FRAME-REF>
+                  <I-PDU-TRIGGERING-REFS>
+                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/IPDUTRIGG_testFrame1</I-PDU-TRIGGERING-REF>
+                  </I-PDU-TRIGGERING-REFS>
+                  <CAN-ADDRESSING-MODE>STANDARD</CAN-ADDRESSING-MODE>
+                  <IDENTIFIER>291</IDENTIFIER>
+                </CAN-FRAME-TRIGGERING>
+                <CAN-FRAME-TRIGGERING>
+                  <SHORT-NAME>extendedFrame</SHORT-NAME>
+                  <FRAME-PORT-REFS>
+                    <FRAME-PORT-REF DEST="FRAME-PORT">/ECU/testBU/CN_testBU/extendedFrame</FRAME-PORT-REF>
+                  </FRAME-PORT-REFS>
+                  <FRAME-REF DEST="FRAME">/Frame/FRAME_extendedFrame</FRAME-REF>
+                  <I-PDU-TRIGGERING-REFS>
+                    <I-PDU-TRIGGERING-REF DEST="I-PDU-TRIGGERING">/Cluster/CAN/IPDUTRIGG_extendedFrame</I-PDU-TRIGGERING-REF>
+                  </I-PDU-TRIGGERING-REFS>
+                  <CAN-ADDRESSING-MODE>EXTENDED</CAN-ADDRESSING-MODE>
+                  <IDENTIFIER>18</IDENTIFIER>
+                </CAN-FRAME-TRIGGERING>
+              </FRAME-TRIGGERINGSS>
+              <I-PDU-TRIGGERINGS>
+                <I-PDU-TRIGGERING>
+                  <SHORT-NAME>IPDUTRIGG_testFrame1</SHORT-NAME>
+                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_testFrame1</I-PDU-REF>
+                </I-PDU-TRIGGERING>
+                <I-PDU-TRIGGERING>
+                  <SHORT-NAME>IPDUTRIGG_extendedFrame</SHORT-NAME>
+                  <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_extendedFrame</I-PDU-REF>
+                </I-PDU-TRIGGERING>
+              </I-PDU-TRIGGERINGS>
+              <I-SIGNAL-TRIGGERINGS>
+                <I-SIGNAL-TRIGGERING>
+                  <SHORT-NAME>someTestSignal</SHORT-NAME>
+                  <I-SIGNAL-PORT-REFS>
+                    <I-SIGNAL-PORT-REF DEST="SIGNAL-PORT">/ECU/recBU/CN_recBU/someTestSignal</I-SIGNAL-PORT-REF>
+                  </I-SIGNAL-PORT-REFS>
+                  <SIGNAL-REF DEST="I-SIGNAL">/ISignal/someTestSignal</SIGNAL-REF>
+                </I-SIGNAL-TRIGGERING>
+                <I-SIGNAL-TRIGGERING>
+                  <SHORT-NAME>Signal</SHORT-NAME>
+                  <I-SIGNAL-PORT-REFS>
+                    <I-SIGNAL-PORT-REF DEST="SIGNAL-PORT">/ECU/recBU/CN_recBU/Signal</I-SIGNAL-PORT-REF>
+                  </I-SIGNAL-PORT-REFS>
+                  <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Signal</SIGNAL-REF>
+                </I-SIGNAL-TRIGGERING>
+              </I-SIGNAL-TRIGGERINGS>
+            </PHYSICAL-CHANNEL>
+          </PHYSICAL-CHANNELS>
+        </CAN-CLUSTER>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>Frame</SHORT-NAME>
+      <ELEMENTS>
+        <FRAME>
+          <SHORT-NAME>FRAME_testFrame1_SEC</SHORT-NAME>
+          <DESC>
+            <L-2 L="FOR-ALL">Multi
+Line
+Frame comment</L-2>
+          </DESC>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
+          <PDU-TO-FRAME-MAPPINGS>
+            <PDU-TO-FRAME-MAPPING>
+              <SHORT-NAME>securedTestFrame</SHORT-NAME>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
+              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/secPdu</PDU-REF>
+              <START-POSITION>0</START-POSITION>
+            </PDU-TO-FRAME-MAPPING>
+          </PDU-TO-FRAME-MAPPINGS>
+        </FRAME>
+        <FRAME>
+          <SHORT-NAME>FRAME_extendedFrame</SHORT-NAME>
+          <FRAME-LENGTH>8</FRAME-LENGTH>
+          <PDU-TO-FRAME-MAPPINGS>
+            <PDU-TO-FRAME-MAPPING>
+              <SHORT-NAME>extendedFrame</SHORT-NAME>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
+              <PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_extendedFrame</PDU-REF>
+              <START-POSITION>0</START-POSITION>
+            </PDU-TO-FRAME-MAPPING>
+          </PDU-TO-FRAME-MAPPINGS>
+        </FRAME>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>PDU</SHORT-NAME>
+      <ELEMENTS>
+        <SECURED-I-PDU>
+            <SHORT-NAME>secPdu</SHORT-NAME>
+            <PAYLOAD-REF>/PDU/myPayLoad</PAYLOAD-REF>
+        </SECURED-I-PDU>
+        <PAYLOAD>
+            <SHORT-NAME>myPayLoad</SHORT-NAME>
+            <I-PDU-REF>/PDU/PDU_testFrame1</I-PDU-REF>
+        </PAYLOAD>
+        <SIGNAL-I-PDU>
+          <SHORT-NAME>PDU_testFrame1</SHORT-NAME>
+          <LENGTH>64</LENGTH>
+          <SIGNAL-TO-PDU-MAPPINGS>
+            <I-SIGNAL-TO-I-PDU-MAPPING>
+              <SHORT-NAME>someTestSignal</SHORT-NAME>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-FIRST</PACKING-BYTE-ORDER>
+              <SIGNAL-REF DEST="I-SIGNAL">/ISignal/someTestSignal</SIGNAL-REF>
+              <START-POSITION>3</START-POSITION>
+            </I-SIGNAL-TO-I-PDU-MAPPING>
+            <I-SIGNAL-TO-I-PDU-MAPPING>
+              <SHORT-NAME>Signal</SHORT-NAME>
+              <PACKING-BYTE-ORDER>MOST-SIGNIFICANT-BYTE-LAST</PACKING-BYTE-ORDER>
+              <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Signal</SIGNAL-REF>
+              <START-POSITION>20</START-POSITION>
+            </I-SIGNAL-TO-I-PDU-MAPPING>
+          </SIGNAL-TO-PDU-MAPPINGS>
+        </SIGNAL-I-PDU>
+        <SIGNAL-I-PDU>
+          <SHORT-NAME>PDU_extendedFrame</SHORT-NAME>
+          <LENGTH>64</LENGTH>
+          <SIGNAL-TO-PDU-MAPPINGS/>
+        </SIGNAL-I-PDU>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>ISignal</SHORT-NAME>
+      <ELEMENTS>
+        <I-SIGNAL>
+          <SHORT-NAME>someTestSignal</SHORT-NAME>
+          <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/someTestSignal</SYSTEM-SIGNAL-REF>
+        </I-SIGNAL>
+        <I-SIGNAL>
+          <SHORT-NAME>Signal</SHORT-NAME>
+          <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/Signal/Signal</SYSTEM-SIGNAL-REF>
+        </I-SIGNAL>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>Signal</SHORT-NAME>
+      <ELEMENTS>
+        <SYSTEM-SIGNAL>
+          <SHORT-NAME>someTestSignal</SHORT-NAME>
+          <DESC>
+            <L-2 L="FOR-ALL">Multi
+Line
+Signal comment with a-umlaut: &#228;</L-2>
+          </DESC>
+          <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/someTestSignal</DATA-TYPE-REF>
+          <LENGTH>11</LENGTH>
+        </SYSTEM-SIGNAL>
+        <SYSTEM-SIGNAL>
+          <SHORT-NAME>Signal</SHORT-NAME>
+          <DATA-TYPE-REF DEST="INTEGER-TYPE">/DataType/Signal</DATA-TYPE-REF>
+          <LENGTH>3</LENGTH>
+        </SYSTEM-SIGNAL>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>DataType</SHORT-NAME>
+      <ELEMENTS>
+        <INTEGER-TYPE>
+          <SHORT-NAME>someTestSignal</SHORT-NAME>
+          <SW-DATA-DEF-PROPS>
+            <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/someTestSignal</COMPU-METHOD-REF>
+          </SW-DATA-DEF-PROPS>
+        </INTEGER-TYPE>
+        <INTEGER-TYPE>
+          <SHORT-NAME>Signal</SHORT-NAME>
+          <SW-DATA-DEF-PROPS>
+            <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataType/Semantics/Signal</COMPU-METHOD-REF>
+          </SW-DATA-DEF-PROPS>
+        </INTEGER-TYPE>
+      </ELEMENTS>
+      <SUB-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Semantics</SHORT-NAME>
+          <ELEMENTS>
+            <COMPU-METHOD>
+              <SHORT-NAME>someTestSignal</SHORT-NAME>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <COMPU-RATIONAL-COEFFS>
+                      <COMPU-NUMERATOR>
+                        <V>1</V>
+                        <V>5</V>
+                      </COMPU-NUMERATOR>
+                      <COMPU-DENOMINATOR>
+                        <V>1</V>
+                      </COMPU-DENOMINATOR>
+                    </COMPU-RATIONAL-COEFFS>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+            <COMPU-METHOD>
+              <SHORT-NAME>Signal</SHORT-NAME>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">one</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>1</LOWER-LIMIT>
+                    <UPPER-LIMIT>1</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>one</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">two</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>2</LOWER-LIMIT>
+                    <UPPER-LIMIT>2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>two</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <DESC>
+                      <L-2 L="FOR-ALL">three</L-2>
+                    </DESC>
+                    <LOWER-LIMIT>3</LOWER-LIMIT>
+                    <UPPER-LIMIT>3</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>three</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <COMPU-RATIONAL-COEFFS>
+                      <COMPU-NUMERATOR>
+                        <V>0</V>
+                        <V>1</V>
+                      </COMPU-NUMERATOR>
+                      <COMPU-DENOMINATOR>
+                        <V>1</V>
+                      </COMPU-DENOMINATOR>
+                    </COMPU-RATIONAL-COEFFS>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Unit</SHORT-NAME>
+          <ELEMENTS>
+            <UNIT>
+              <SHORT-NAME>someTestSignal</SHORT-NAME>
+              <DISPLAY-NAME>specialCharUnit&#176;$</DISPLAY-NAME>
+            </UNIT>
+            <UNIT>
+              <SHORT-NAME>Signal</SHORT-NAME>
+              <DISPLAY-NAME>someUnit</DISPLAY-NAME>
+            </UNIT>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </SUB-PACKAGES>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>ECU</SHORT-NAME>
+      <ELEMENTS>
+        <ECU-INSTANCE>
+          <SHORT-NAME>testBU</SHORT-NAME>
+          <DESC>
+            <L-2 L="FOR-ALL">sender ECU</L-2>
+          </DESC>
+          <ASSOCIATED-I-PDU-GROUP-REFS>
+            <ASSOCIATED-I-PDU-GROUP-REF DEST="I-PDU-GROUP">/IPDUGroup/testBU_Tx</ASSOCIATED-I-PDU-GROUP-REF>
+          </ASSOCIATED-I-PDU-GROUP-REFS>
+          <CONNECTORS>
+            <COMMUNICATION-CONNECTOR>
+              <SHORT-NAME>CN_testBU</SHORT-NAME>
+              <ECU-COMM-PORT-INSTANCES>
+                <FRAME-PORT>
+                  <SHORT-NAME>testFrame1</SHORT-NAME>
+                  <COMMUNICATION-DIRECTION>OUT</COMMUNICATION-DIRECTION>
+                </FRAME-PORT>
+                <SIGNAL-PORT>
+                  <SHORT-NAME>someTestSignal</SHORT-NAME>
+                  <COMMUNICATION-DIRECTION>OUT</COMMUNICATION-DIRECTION>
+                </SIGNAL-PORT>
+                <SIGNAL-PORT>
+                  <SHORT-NAME>Signal</SHORT-NAME>
+                  <COMMUNICATION-DIRECTION>OUT</COMMUNICATION-DIRECTION>
+                </SIGNAL-PORT>
+                <FRAME-PORT>
+                  <SHORT-NAME>extendedFrame</SHORT-NAME>
+                  <COMMUNICATION-DIRECTION>OUT</COMMUNICATION-DIRECTION>
+                </FRAME-PORT>
+              </ECU-COMM-PORT-INSTANCES>
+            </COMMUNICATION-CONNECTOR>
+          </CONNECTORS>
+        </ECU-INSTANCE>
+        <ECU-INSTANCE>
+          <SHORT-NAME>recBU</SHORT-NAME>
+          <DESC>
+            <L-2 L="FOR-ALL">receiver ECU</L-2>
+          </DESC>
+          <ASSOCIATED-I-PDU-GROUP-REFS>
+            <ASSOCIATED-I-PDU-GROUP-REF DEST="I-PDU-GROUP">/IPDUGroup/recBU_Rx</ASSOCIATED-I-PDU-GROUP-REF>
+          </ASSOCIATED-I-PDU-GROUP-REFS>
+          <CONNECTORS>
+            <COMMUNICATION-CONNECTOR>
+              <SHORT-NAME>CN_recBU</SHORT-NAME>
+              <ECU-COMM-PORT-INSTANCES>
+                <FRAME-PORT>
+                  <SHORT-NAME>testFrame1</SHORT-NAME>
+                  <COMMUNICATION-DIRECTION>IN</COMMUNICATION-DIRECTION>
+                </FRAME-PORT>
+                <SIGNAL-PORT>
+                  <SHORT-NAME>someTestSignal</SHORT-NAME>
+                  <COMMUNICATION-DIRECTION>IN</COMMUNICATION-DIRECTION>
+                </SIGNAL-PORT>
+                <SIGNAL-PORT>
+                  <SHORT-NAME>Signal</SHORT-NAME>
+                  <COMMUNICATION-DIRECTION>IN</COMMUNICATION-DIRECTION>
+                </SIGNAL-PORT>
+              </ECU-COMM-PORT-INSTANCES>
+            </COMMUNICATION-CONNECTOR>
+          </CONNECTORS>
+        </ECU-INSTANCE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>IPDUGroup</SHORT-NAME>
+      <ELEMENTS>
+        <I-PDU-GROUP>
+          <SHORT-NAME>testBU_Tx</SHORT-NAME>
+          <COMMUNICATION-DIRECTION>OUT</COMMUNICATION-DIRECTION>
+          <I-PDU-REFS>
+            <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_testFrame1</I-PDU-REF>
+            <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_extendedFrame</I-PDU-REF>
+          </I-PDU-REFS>
+        </I-PDU-GROUP>
+        <I-PDU-GROUP>
+          <SHORT-NAME>recBU_Rx</SHORT-NAME>
+          <COMMUNICATION-DIRECTION>IN</COMMUNICATION-DIRECTION>
+          <I-PDU-REFS>
+            <I-PDU-REF DEST="SIGNAL-I-PDU">/PDU/PDU_testFrame1</I-PDU-REF>
+          </I-PDU-REFS>
+        </I-PDU-GROUP>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </TOP-LEVEL-PACKAGES>
+</AUTOSAR>
