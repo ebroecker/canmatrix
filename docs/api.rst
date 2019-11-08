@@ -6,7 +6,37 @@ ____________
 
 .. automodule:: canmatrix.canmatrix
     :members:
-    
+
+.. automodule:: canmatrix.canmatrix
+    :members:
+
+.. automodule:: canmatrix.Ecu
+    :members:
+
+.. automodule:: canmatrix.Signal
+    :members:
+
+.. automodule:: canmatrix.SignalGroup
+    :members:
+
+.. automodule:: canmatrix.DecodedSignal
+    :members:
+
+.. automodule:: canmatrix.unpack_bitstring
+    :members:
+
+.. automodule:: canmatrix.pack_bitstring
+    :members:
+
+.. automodule:: canmatrix.ArbitrationId
+    :members:
+
+.. automodule:: canmatrix.Frame
+    :members:
+
+.. automodule:: canmatrix.Define
+    :members:
+
 cancluster.py
 _____________
 
