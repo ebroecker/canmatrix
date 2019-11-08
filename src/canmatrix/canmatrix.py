@@ -985,9 +985,9 @@ class Frame(object):
         :param any value: attribute value
         """
         try:
-            self.attributes[attribute] = str(value)
+            self.attributes[attribute] = str(value).strip()
         except UnicodeDecodeError:
-            self.attributes[attribute] = value
+            self.attributes[attribute] = value.strip()
 
     def del_attribute(self, attribute):
         # type: (str) -> typing.Any
