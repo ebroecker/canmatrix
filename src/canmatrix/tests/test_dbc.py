@@ -337,10 +337,14 @@ def test_j1939_frametype():
 def test_attributes_with_spaces_before_semicolumn():
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BO_ 8 Frame_1: 8 Vector__XXX
+    BO_ 9 Frame_2: 8 Vector__XXX
+    BA_DEF_ BO_ "someAttribute" STRING ;
     BA_ "someAttribute" BO_ 8 "str" ;
+    BA_DEF_DEF_ "someAttribute" "asd" ;
     ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
-    assert matrix.frames[0].attributes["someAttribute"] == '"str"'
+    assert matrix.frames[0].attributes["someAttribute"] == 'str'
+    assert matrix.frames[1].attribute("someAttribute", matrix) == 'asd'
 
 def test_cycle_time_handling():
     dbc = io.BytesIO(textwrap.dedent(u'''\
