@@ -250,7 +250,7 @@ def dump(in_db, f, **options):
     if len(db.frames) > 0:
         if max([x.cycle_time for x in db.frames]) > 0:
             db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
-        if len(db.signals) > 0:
+        if len([s for f in db.frames for s in f.signals]) > 0:
             if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
                 db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
 
