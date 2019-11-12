@@ -170,13 +170,16 @@ def copy_frame(frame_id, source_db, target_db):
                     copy_ecu(source_ecu, source_db, target_db)
 
         # copy all frame-defines
-        attributes = frame.attributes
-        for attribute in attributes:
+        for attribute in source_db.frame_defines:
             if attribute not in target_db.frame_defines:
                 target_db.add_frame_defines(
                     copy.deepcopy(attribute), copy.deepcopy(source_db.frame_defines[attribute].definition))
                 target_db.add_define_default(
                     copy.deepcopy(attribute), copy.deepcopy(source_db.frame_defines[attribute].defaultValue))
+            # only default value exists in source but is different to default value in target
+            if attribute not in frame.attributes and \
+                    frame.attribute(attribute, source_db) != frame.attribute(attribute, target_db):
+                target_db.frame_by_id(frame.arbitration_id).add_attribute(attribute, frame.attribute(attribute, source_db))
             # update enum data types if needed:
             if source_db.frame_defines[attribute].type == 'ENUM':
                 temp_attr = frame.attribute(attribute, db=source_db)
@@ -187,7 +190,7 @@ def copy_frame(frame_id, source_db, target_db):
         # trigger all signals of Frame
         for sig in frame.signals:
             # delete all 'unknown' attributes
-            for attribute in sig.attributes:
+            for attribute in source_db.signal_defines:
                 target_db.add_signal_defines(
                     copy.deepcopy(attribute), copy.deepcopy(source_db.signal_defines[attribute].definition))
                 target_db.add_define_default(
@@ -198,5 +201,9 @@ def copy_frame(frame_id, source_db, target_db):
                     if temp_attr not in target_db.signal_defines[attribute].values:
                         target_db.signal_defines[attribute].values.append(copy.deepcopy(temp_attr))
                         target_db.signal_defines[attribute].update()
+            # only default value exists in source but is different to default value in target
+            if attribute not in sig.attributes and \
+                    sig.attribute(attribute, source_db) != sig.attribute(attribute, target_db):
+                target_db.frame_by_id(frame.arbitration_id).signal_by_name(sig.name).add_attribute(attribute, sig.attribute(attribute, source_db))
 
     return True

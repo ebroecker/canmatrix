@@ -988,6 +988,8 @@ class Frame(object):
             self.attributes[attribute] = str(value)
         except UnicodeDecodeError:
             self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def del_attribute(self, attribute):
         # type: (str) -> typing.Any
