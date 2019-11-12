@@ -75,3 +75,31 @@ def test_copy_ecu_with_attributes():
     assert len(matrix1.ecus) == 1
     assert matrix1.ecu_by_name("ECU") is not None
     assert matrix1.ecu_by_name("ECU").attribute("Node Address") == 42
+
+def test_copy_frame_default_attributes():
+    source = canmatrix.canmatrix.CanMatrix()
+    frame1 = canmatrix.canmatrix.Frame("Frame1", arbitration_id=1)
+    signal = canmatrix.canmatrix.Signal("Signal1")
+    frame1.add_signal(canmatrix.canmatrix.Signal("SomeSignal"))
+    frame1.add_signal(signal)
+    source.add_frame(frame1)
+    source.add_frame_defines("some_attribute", "STRING")
+    source.add_define_default("some_attribute", "source_frame_default")
+    source.add_signal_defines("some_signal_attribute", "STRING")
+    source.add_define_default("some_signal_attribute", "source_sig_default")
+
+    #test if default value only defined in source and copied to target
+    target = canmatrix.canmatrix.CanMatrix()
+    canmatrix.copy.copy_frame(frame1.arbitration_id, source, target)
+    assert target.frames[0].attribute("some_attribute", target) == "source_frame_default"
+    assert target.frames[0].signals[0].attribute("some_signal_attribute", target) == "source_sig_default"
+
+    # test if define already exists, but has another default value:
+    target2 = canmatrix.canmatrix.CanMatrix()
+    target2.add_frame_defines("some_attribute", "STRING")
+    target2.add_define_default("some_attribute", "target_frame_default")
+    target2.add_signal_defines("some_signal_attribute", "STRING")
+    target2.add_define_default("some_signal_attribute", "target_sig_default")
+    canmatrix.copy.copy_frame(frame1.arbitration_id, source, target2)
+    assert target2.frames[0].attribute("some_attribute", target2) == "source_frame_default"
+    assert target2.frames[0].signals[0].attribute("some_signal_attribute", target2) == "source_sig_default"
