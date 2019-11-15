@@ -895,7 +895,7 @@ signal_rxs = {}  # type: typing.Dict[_Element, canmatrix.Signal]
 def get_sys_signals(sys_signal, sys_signal_array, frame, group_id, ns):
     # type: (_Element, typing.Sequence[_Element], canmatrix.Frame, int, str) -> None
     members = [get_element_name(signal, ns) for signal in sys_signal_array]
-    frame.add_signal_group(get_element_name(sys_signal, ns), 1, members)  # todo use group_id instead of 1?
+    frame.add_signal_group(get_element_name(sys_signal, ns), group_id, members)  # todo use group_id instead of 1?
 
 
 def decode_compu_method(compu_method, root_or_cache, ns, float_factory):
@@ -1625,6 +1625,8 @@ def decode_ethernet_helper(root, root_or_cache, ns, float_factory):
 def decode_flexray_helper(root, root_or_cache, ns, float_factory):
     found_matrixes = {}
     fcs = root.findall('.//' + ns + 'FLEXRAY-CLUSTER')
+    frame_counter = 0
+
     for fc in fcs:
         physical_channels = fc.findall('.//' + ns + "FLEXRAY-PHYSICAL-CHANNEL")
         for pc in physical_channels:
@@ -1635,21 +1637,25 @@ def decode_flexray_helper(root, root_or_cache, ns, float_factory):
 
             frames = pc.findall('.//' + ns + "FLEXRAY-FRAME-TRIGGERING")
             for frame in frames:
-                slotId = int(get_child(frame, "SLOT-ID", root_or_cache, ns).text)
-
+                slot_id = int(get_child(frame, "SLOT-ID", root_or_cache, ns).text)
+                base_cycle = get_child(frame, "BASE-CYCLE", root_or_cache, ns)
                 ipdu_triggerings = get_children(frame, "I-PDU-TRIGGERING", root_or_cache, ns)
-                    #pc.findall('.//' + ns + "I-PDU-TRIGGERING")
-
-                #network_endpoints = pc.findall('.//' + ns + "NETWORK-ENDPOINT")
+                frame_repetition_cycle = find_children_by_path(frame, "CYCLE-REPETITION/CYCLE-REPETITION", root_or_cache, ns)[0]
+                network_endpoints = pc.findall('.//' + ns + "NETWORK-ENDPOINT")
+                frame_size = int(find_children_by_path(frame, "FRAME/FRAME-LENGTH", root_or_cache, ns)[0].text)
                 for ipdu_triggering in ipdu_triggerings:
+                    ipdu_triggering_name = get_element_name(ipdu_triggering, ns)
                     ipdu = get_child(ipdu_triggering, "I-PDU", root_or_cache, ns)
+                    pdu_type = get_child(ipdu_triggering, "I-PDU-REF", root_or_cache, ns).attrib["DEST"]
+                    ipdu_length = int(get_child(ipdu, "LENGTH", root_or_cache, ns).text)
+                    pdu_port_type = get_child(ipdu_triggering, "I-PDU-PORT-REF", root_or_cache, ns).attrib["DEST"]
                     ipdu_name = get_element_name(ipdu, ns)
-                    target_frame = canmatrix.Frame(name = ipdu_name, arbitration_id=slotId)
+                    frame_counter += 1;
+                    target_frame = canmatrix.Frame(name = ipdu_name, arbitration_id=frame_counter, size=ipdu_length)
                     pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING", root_or_cache, ns)
                     get_signals(pdu_sig_mapping, target_frame, root_or_cache, ns, None, float_factory)
                     db.add_frame(target_frame)
     return found_matrixes
-
 
 def decode_can_helper(root, root_or_cache, ns, float_factory, ignore_cluster_info):
     found_matrixes = {}
