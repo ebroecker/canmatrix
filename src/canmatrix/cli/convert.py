@@ -55,6 +55,7 @@ def get_formats():
 # manipulation and filter switches
 @click.option('--deleteObsoleteDefines/--no-deleteObsoleteDefines', 'deleteObsoleteDefines', default=False, help="delete defines from all ECUs, frames and Signals\nExample --deleteObsoleteDefines")
 @click.option('--deleteEcu', 'deleteEcu', help="delete Ecu form databases. (comma separated list)\nSyntax: --deleteEcu=myEcu,mySecondEcu")
+@click.option('--deleteObsoleteEcus/--no-deleteObsoleteEcus', 'deleteObsoleteEcus', default=False, help="delete ECUs which are not references as transmitter or receiver\nExample --deleteObsoleteEcus")
 @click.option('--renameEcu', 'renameEcu', help="rename Ecu form databases. (comma separated list)\nSyntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu")
 @click.option('--deleteSignal', 'deleteSignal', help="delete Signal form databases. (comma separated list)\nSyntax: --deleteSignal=mySignal1,mySecondSignal")
 @click.option('--renameSignal', 'renameSignal', help="rename Signal form databases. (comma separated list)\nSyntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal")
