@@ -201,9 +201,9 @@ def copy_frame(frame_id, source_db, target_db):
                     if temp_attr not in target_db.signal_defines[attribute].values:
                         target_db.signal_defines[attribute].values.append(copy.deepcopy(temp_attr))
                         target_db.signal_defines[attribute].update()
-            # only default value exists in source but is different to default value in target
-            if attribute not in sig.attributes and \
+                # only default value exists in source but is different to default value in target
+                if attribute not in sig.attributes and \
                     sig.attribute(attribute, source_db) != sig.attribute(attribute, target_db):
-                target_db.frame_by_id(frame.arbitration_id).signal_by_name(sig.name).add_attribute(attribute, sig.attribute(attribute, source_db))
+                    target_db.frame_by_id(frame.arbitration_id).signal_by_name(sig.name).add_attribute(attribute, sig.attribute(attribute, source_db))
 
     return True
