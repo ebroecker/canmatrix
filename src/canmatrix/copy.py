@@ -177,7 +177,7 @@ def copy_frame(frame_id, source_db, target_db):
                 target_db.add_define_default(
                     copy.deepcopy(attribute), copy.deepcopy(source_db.frame_defines[attribute].defaultValue))
             # only default value exists in source but is different to default value in target
-            if attribute not in frame.attributes and \
+            if attribute not in frame.attributes and frame.attribute(attribute, source_db) is not None and \
                     frame.attribute(attribute, source_db) != frame.attribute(attribute, target_db):
                 target_db.frame_by_id(frame.arbitration_id).add_attribute(attribute, frame.attribute(attribute, source_db))
             # update enum data types if needed:
@@ -202,7 +202,7 @@ def copy_frame(frame_id, source_db, target_db):
                         target_db.signal_defines[attribute].values.append(copy.deepcopy(temp_attr))
                         target_db.signal_defines[attribute].update()
                 # only default value exists in source but is different to default value in target
-                if attribute not in sig.attributes and \
+                if attribute not in sig.attributes and sig.attribute(attribute, source_db) is not None and \
                     sig.attribute(attribute, source_db) != sig.attribute(attribute, target_db):
                     target_db.frame_by_id(frame.arbitration_id).signal_by_name(sig.name).add_attribute(attribute, sig.attribute(attribute, source_db))
 
