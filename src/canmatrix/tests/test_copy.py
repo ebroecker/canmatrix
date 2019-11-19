@@ -87,12 +87,16 @@ def test_copy_frame_default_attributes():
     source.add_define_default("some_attribute", "source_frame_default")
     source.add_signal_defines("some_signal_attribute", "STRING")
     source.add_define_default("some_signal_attribute", "source_sig_default")
+    source.add_frame_defines("some_attribute_without_default", "STRING")
 
     #test if default value only defined in source and copied to target
     target = canmatrix.canmatrix.CanMatrix()
+    target.add_frame_defines("some_attribute_without_default", "STRING")
+    target.add_define_default("some_attribute_without_default", "0")
     canmatrix.copy.copy_frame(frame1.arbitration_id, source, target)
     assert target.frames[0].attribute("some_attribute", target) == "source_frame_default"
     assert target.frames[0].signals[0].attribute("some_signal_attribute", target) == "source_sig_default"
+    assert target.frames[0].attribute("some_attribute_without_default", target) == "0"
 
     # test if define already exists, but has another default value:
     target2 = canmatrix.canmatrix.CanMatrix()
