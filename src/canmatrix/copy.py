@@ -30,7 +30,6 @@ import canmatrix
 
 logger = logging.getLogger(__name__)
 
-
 def copy_ecu(ecu_or_glob, source_db, target_db):
     # type: (typing.Union[canmatrix.Ecu, str], canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
     """
@@ -51,12 +50,16 @@ def copy_ecu(ecu_or_glob, source_db, target_db):
         target_db.add_ecu(copy.deepcopy(ecu))
 
         # copy all ecu-defines
-        for attribute in ecu.attributes:
+        for attribute in source_db.ecu_defines:
             if attribute not in target_db.ecu_defines:
                 target_db.add_ecu_defines(
                     copy.deepcopy(attribute), copy.deepcopy(source_db.ecu_defines[attribute].definition))
                 target_db.add_define_default(
                     copy.deepcopy(attribute), copy.deepcopy(source_db.ecu_defines[attribute].defaultValue))
+            # only default value exists in source but is different to default value in target
+            if attribute not in ecu.attributes and ecu.attribute(attribute, source_db) is not None and \
+                    ecu.attribute(attribute, source_db) != ecu.attribute(attribute, target_db):
+                target_db.ecu_by_name(ecu.name).add_attribute(attribute, ecu.attribute(attribute, source_db))
             # update enum data types if needed:
             if source_db.ecu_defines[attribute].type == 'ENUM':
                 temp_attr = ecu.attribute(attribute, db=source_db)
@@ -83,8 +86,7 @@ def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True):
 
     for ecu in ecu_list:
         logger.info("Copying ECU " + ecu.name)
-
-        target_db.add_ecu(copy.deepcopy(ecu))
+        copy_ecu(ecu, source_db, target_db)
 
         # copy tx-frames
         if tx is True:
@@ -100,21 +102,6 @@ def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True):
                         copy_frame(frame.arbitration_id, source_db, target_db)
                         break
 
-        # copy all ECU defines
-        for attribute in ecu.attributes:
-            if attribute not in target_db.ecu_defines:
-                target_db.add_ecu_defines(
-                    copy.deepcopy(attribute), copy.deepcopy(source_db.ecu_defines[attribute].definition))
-                target_db.add_define_default(
-                    copy.deepcopy(attribute), copy.deepcopy(source_db.ecu_defines[attribute].defaultValue))
-            # update enum-data types if needed:
-            if source_db.ecu_defines[attribute].type == 'ENUM':
-                temp_attr = ecu.attribute(attribute, db=source_db)
-                if temp_attr not in target_db.ecu_defines[attribute].values:
-                    target_db.ecu_defines[attribute].values.append(copy.deepcopy(temp_attr))
-                    target_db.ecu_defines[attribute].update()
-
-
 def copy_signal(signal_glob, source_db, target_db):
     # type: (str, canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
     """
@@ -127,7 +114,8 @@ def copy_signal(signal_glob, source_db, target_db):
     """
     for frame in source_db.frames:
         for signal in frame.glob_signals(signal_glob):
-            target_db.add_signal(signal)
+            target_db.add_signal(copy.deepcopy(signal))
+
 
 
 def copy_frame(frame_id, source_db, target_db):
