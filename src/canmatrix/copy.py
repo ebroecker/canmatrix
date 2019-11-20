@@ -48,9 +48,10 @@ def copy_ecu(ecu_or_glob, source_db, target_db):
 
     for ecu in ecu_list:
         target_db.add_ecu(copy.deepcopy(ecu))
-
         # copy all ecu-defines
         for attribute in source_db.ecu_defines:
+            if ecu.attribute(attribute, source_db) is None:
+                continue
             if attribute not in target_db.ecu_defines:
                 target_db.add_ecu_defines(
                     copy.deepcopy(attribute), copy.deepcopy(source_db.ecu_defines[attribute].definition))
@@ -102,6 +103,7 @@ def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True):
                         copy_frame(frame.arbitration_id, source_db, target_db)
                         break
 
+
 def copy_signal(signal_glob, source_db, target_db):
     # type: (str, canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
     """
@@ -113,8 +115,26 @@ def copy_signal(signal_glob, source_db, target_db):
     :param target_db: Destination CAN matrix
     """
     for frame in source_db.frames:
-        for signal in frame.glob_signals(signal_glob):
-            target_db.add_signal(copy.deepcopy(signal))
+        for source_signal in frame.glob_signals(signal_glob):
+            target_signal = copy.deepcopy(source_signal)
+            target_db.add_signal(target_signal)
+
+            for attribute in source_db.signal_defines:
+                target_db.add_signal_defines(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.signal_defines[attribute].definition))
+                target_db.add_define_default(
+                    copy.deepcopy(attribute), copy.deepcopy(source_db.signal_defines[attribute].defaultValue))
+                # update enum data types if needed:
+                if source_db.signal_defines[attribute].type == 'ENUM':
+                    temp_attr = source_signal.attribute(attribute, db=source_db)
+                    if temp_attr not in target_db.signal_defines[attribute].values:
+                        target_db.signal_defines[attribute].values.append(copy.deepcopy(temp_attr))
+                        target_db.signal_defines[attribute].update()
+                # only default value exists in source but is different to default value in target
+                if attribute not in source_signal.attributes and source_signal.attribute(attribute, source_db) is not None and \
+                    source_signal.attribute(attribute, source_db) != source_signal.attribute(attribute, target_db):
+                    target_signal.add_attribute(attribute, source_signal.attribute(attribute, source_db))
+
 
 
 
@@ -159,6 +179,8 @@ def copy_frame(frame_id, source_db, target_db):
 
         # copy all frame-defines
         for attribute in source_db.frame_defines:
+            if frame.attribute(attribute, source_db) is None:
+                continue
             if attribute not in target_db.frame_defines:
                 target_db.add_frame_defines(
                     copy.deepcopy(attribute), copy.deepcopy(source_db.frame_defines[attribute].definition))
@@ -179,6 +201,8 @@ def copy_frame(frame_id, source_db, target_db):
         for sig in frame.signals:
             # delete all 'unknown' attributes
             for attribute in source_db.signal_defines:
+                if sig.attribute(attribute, source_db) is None:
+                    continue
                 target_db.add_signal_defines(
                     copy.deepcopy(attribute), copy.deepcopy(source_db.signal_defines[attribute].definition))
                 target_db.add_define_default(
