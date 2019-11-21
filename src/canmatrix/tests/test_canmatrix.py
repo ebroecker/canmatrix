@@ -943,6 +943,21 @@ def test_canmatrix_del_ecu_by_instance(empty_matrix):
     assert empty_matrix.ecus == [ecu2]
 
 
+def test_canmatrix_del_obsolete_ecus(empty_matrix):
+    empty_matrix.add_ecu(canmatrix.Ecu(name="Ecu1"))
+    empty_matrix.add_ecu(canmatrix.Ecu(name="Ecu2"))
+    frame1 = canmatrix.Frame(name="frame1", transmitters=["Ecu1"])
+    frame1.add_signal(canmatrix.Signal("signal1", receivers=["Ecu2"]))
+    empty_matrix.add_frame(frame1)
+    empty_matrix.delete_obsolete_ecus()
+    assert "Ecu1" in [ecu.name for ecu in empty_matrix.ecus]
+    assert "Ecu2" in [ecu.name for ecu in empty_matrix.ecus]
+    frame1.del_transmitter("Ecu1")
+    empty_matrix.delete_obsolete_ecus()
+    assert "Ecu1" not in [ecu.name for ecu in empty_matrix.ecus]
+    assert "Ecu2" in [ecu.name for ecu in empty_matrix.ecus]
+
+
 def test_canmatrix_rename_frame_by_name(empty_matrix):
     f = canmatrix.Frame(name="F1")
     empty_matrix.add_frame(f)

@@ -1692,7 +1692,7 @@ def decode_can_helper(root, root_or_cache, ns, float_factory, ignore_cluster_inf
             baudrate_elem = cc.find(".//" + ns + "BAUDRATE")
             fd_baudrate_elem = cc.find(".//" + ns + "CAN-FD-BAUDRATE")
 
-            speed = baudrate_elem is speed is None
+            speed = baudrate_elem if speed is None else speed
 
             logger.debug("Busname: " + get_element_name(cc, ns))
 
