@@ -1688,7 +1688,7 @@ def load(file, **options):
             baudrate_elem = cc.find(".//" + ns + "BAUDRATE")
             fd_baudrate_elem = cc.find(".//" + ns + "CAN-FD-BAUDRATE")
 
-            speed = baudrate_elem is speed is None
+            speed = baudrate_elem if speed is None else speed
 
             logger.debug("Busname: " + get_element_name(cc, ns))
 
