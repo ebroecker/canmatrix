@@ -39,7 +39,7 @@ def dump(db, f, **options):
 
     export_canard = options.get('jsonCanard', False)
     motorola_bit_format = options.get('jsonMotorolaBitFormat', "lsb")
-    export_all = options.get('jsonExportAll', False)
+    export_all = options.get('jsonAll', False)
     native_types = options.get('jsonNativeTypes', False)
     number_converter = float if native_types else str
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]

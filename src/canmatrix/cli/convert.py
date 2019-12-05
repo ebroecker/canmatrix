@@ -97,7 +97,7 @@ def get_formats():
 @click.option('--xlsValuesInSeperateLines/--no-xlsValuesInSeperateLines', 'xlsValuesInSeperateLines', default = False, help="Excel format: create seperate line for each value of signal value table\tdefault: False")
 # json switches
 @click.option('--jsonExportCanard/--no-jsonExportCanard', 'jsonExportCanard', default=False, help="Export Canard compatible json format")
-@click.option('--jsonExportAll/--no-jsonExportAll', 'jsonExportAll', default=False, help="Export more data to json format")
+@click.option('--jsonExportAll/--no-jsonExportAll', 'jsonAll', default=False, help="Export more data to json format")
 @click.option('--jsonMotorolaBitFormat', 'jsonMotorolaBitFormat', default="lsb", help="Json format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
 @click.option('--jsonNativeTypes/--no-jsonNativeTypes', 'jsonNativeTypes', default=False, help="Uses native json representation for decimals instead of string.")
 #sym switches
