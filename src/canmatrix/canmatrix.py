@@ -1567,6 +1567,17 @@ class CanMatrix(object):
         if name in self.global_defines:
             self.global_defines[name].set_default(value)
 
+    def delete_obsolete_ecus(self):  # type: () -> None
+        """Delete all unused ECUs
+        """
+        used_ecus = [ecu for f in self.frames for ecu in f.transmitters]
+        used_ecus += [ecu for f in self.frames for ecu in f.receivers]
+        used_ecus += [ecu for f in self.frames for s in f.signals for ecu in s.receivers]
+        used_ecus += [ecu for s in self.signals for ecu in s.receivers]
+        ecus_to_delete = [ecu.name for ecu in self.ecus if ecu.name not in used_ecus]
+        for ecu in ecus_to_delete:
+            self.del_ecu(ecu)
+
     def delete_obsolete_defines(self):  # type: () -> None
         """Delete all unused Defines.
 
