@@ -918,7 +918,8 @@ def decode_compu_method(compu_method, root_or_cache, ns, float_factory):
         # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
         # keyword definition. 06Jun16
         #####################################################################################################
-        if ll is not None and desc is not None and int(float_factory(ul.text)) == int(float_factory(ll.text)):
+     
+        if ll is not None and desc is not None and int(ul.text, 0) == int(ll.text, 0):
             #####################################################################################################
             #####################################################################################################
             values[ll.text] = desc
