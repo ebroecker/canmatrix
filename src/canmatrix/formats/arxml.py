@@ -1687,18 +1687,21 @@ def load(file, **options):
             speed = get_child(cc, "SPEED", search_point, ns)
             baudrate_elem = cc.find(".//" + ns + "BAUDRATE")
             fd_baudrate_elem = cc.find(".//" + ns + "CAN-FD-BAUDRATE")
-
-            speed = baudrate_elem if speed is None else speed
+            # speed = baudrate_elem.text is speed is None
 
             logger.debug("Busname: " + get_element_name(cc, ns))
 
             bus_name = get_element_name(cc, ns)
             if speed is not None:
-                db.baudrate = speed
+                db.baudrate = speed.text              
+            elif baudrate_elem is not None:
+                db.baudrate = baudrate_elem.text
+
+            logger.debug("Baudrate: "+ db.baudrate)
             if fd_baudrate_elem is not None:
                 db.fd_baudrate = fd_baudrate_elem.text
 
-                logger.debug(" Speed: " + speed.text)
+        
 
             physical_channels = cc.find('.//' + ns + "PHYSICAL-CHANNELS")  # type: _Element
             if physical_channels is None:
