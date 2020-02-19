@@ -1694,11 +1694,11 @@ def load(file, **options):
 
             bus_name = get_element_name(cc, ns)
             if speed is not None:
-                db.baudrate = speed.text              
+                db.baudrate = int(speed.text)
             elif baudrate_elem is not None:
-                db.baudrate = baudrate_elem.text
+                db.baudrate = int(baudrate_elem.text)
 
-            logger.debug("Baudrate: "+ db.baudrate)
+            logger.debug("Baudrate: ", db.baudrate)
             if fd_baudrate_elem is not None:
                 db.fd_baudrate = fd_baudrate_elem.text
 
