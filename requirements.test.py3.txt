@@ -2,6 +2,7 @@ atomicwrites==1.1.5
 attrs==18.1.0
 bitstruct==4.0.0
 -e .[test]
+colorama==0.4.1; python_version == '3.4'
 coverage==4.5.1
 future==0.16.0
 more-itertools==4.3.0

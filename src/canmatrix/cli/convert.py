@@ -93,16 +93,16 @@ def get_formats():
 @click.option('--symExportEncoding', 'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
 # xls/csv switches
 @click.option('--xlsMotorolaBitFormat', 'xlsMotorolaBitFormat', default="msbreverse", help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")
-@click.option('--additionalFrameAttributes', 'additionalFrameAttributes', default = "", help="append columns to csv/xls(x), example: is_fd")
-@click.option('--additionalSignalAttributes', 'additionalSignalAttributes', default = "", help="append columns to csv/xls(x), example: is_signed,attributes[\"GenSigStartValue\"]")
+@click.option('--additionalFrameAttributes', 'additionalFrameAttributes', default="", help="append columns to csv/xls(x), example: is_fd")
+@click.option('--additionalSignalAttributes', 'additionalSignalAttributes', default="", help="append columns to csv/xls(x), example: is_signed,attributes[\"GenSigStartValue\"]")
 @click.option('--xlsValuesInSeperateLines/--no-xlsValuesInSeperateLines', 'xlsValuesInSeperateLines', default = False, help="Excel format: create seperate line for each value of signal value table\tdefault: False")
 # json switches
 @click.option('--jsonExportCanard/--no-jsonExportCanard', 'jsonExportCanard', default=False, help="Export Canard compatible json format")
-@click.option('--jsonExportAll/--no-jsonExportAll', 'jsonAll', default=False, help="Export more data to json format")
+@click.option('--jsonExportAll/--no-jsonExportAll', 'jsonExportAll', default=False, help="Export more data to json format")
 @click.option('--jsonMotorolaBitFormat', 'jsonMotorolaBitFormat', default="lsb", help="Json format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
 @click.option('--jsonNativeTypes/--no-jsonNativeTypes', 'jsonNativeTypes', default=False, help="Uses native json representation for decimals instead of string.")
 #sym switches
-@click.option('--symExportEncoding',    'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
+@click.option('--symExportEncoding', 'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
 # in and out file
 @click.argument('infile', required=True)
 @click.argument('outfile', required=True)
