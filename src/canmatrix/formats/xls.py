@@ -116,8 +116,8 @@ def dump(db, file, **options):
                 ' Signal Not Available', 'Byteorder']
     head_tail = ['Value',   'Name / Phys. Range', 'Function / Increment Unit']
 
-    if len(options.get("additionalAttributes", "")) > 0:
-        additional_signal_columns = options.get("additionalAttributes").split(",")  # type: typing.List[str]
+    if len(options.get("additionalSignalAttributes", "")) > 0:
+        additional_signal_columns = options.get("additionalSignalAttributes").split(",")  # type: typing.List[str]
     else:
         additional_signal_columns = []  # ["attributes['DisplayDecimalPlaces']"]
 
