@@ -104,7 +104,7 @@ def dump(db, filename, **options):
     # type: (canmatrix.CanMatrix, str, **str) -> None
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
     values_in_seperate_lines = options.get("xlsValuesInSeperateLines", True)
-    additional_signal_columns = [x for x in options.get("additionalAttributes", "").split(",") if x]
+    additional_signal_columns = [x for x in options.get("additionalSignalAttributes", "").split(",") if x]
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
 
 
