@@ -1688,7 +1688,6 @@ def load(file, **options):
             speed = get_child(cc, "SPEED", search_point, ns)
             baudrate_elem = cc.find(".//" + ns + "BAUDRATE")
             fd_baudrate_elem = cc.find(".//" + ns + "CAN-FD-BAUDRATE")
-            # speed = baudrate_elem.text is speed is None
 
             logger.debug("Busname: " + get_element_name(cc, ns))
 
