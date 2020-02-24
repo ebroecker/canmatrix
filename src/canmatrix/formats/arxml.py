@@ -1697,7 +1697,7 @@ def load(file, **options):
             elif baudrate_elem is not None:
                 db.baudrate = int(baudrate_elem.text)
 
-            logger.debug("Baudrate: ", db.baudrate)
+            logger.debug("Baudrate: "+ str(db.baudrate))
             if fd_baudrate_elem is not None:
                 db.fd_baudrate = fd_baudrate_elem.text
 
