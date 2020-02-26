@@ -915,8 +915,9 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             print("error with line no: %d" % i)
             print(line)
 # Backtracking
-
-    for env_var_name, env_var in db.env_vars.items():
+    env_var_names = list(db.env_vars.keys())
+    for env_var_name in env_var_names:
+        env_var = db.env_vars[env_var_name]
         if 'SystemEnvVarLongSymbol' in env_var.get("attributes", ""):
             long_name = env_var["attributes"]["SystemEnvVarLongSymbol"][1:-1]
             del(env_var["attributes"]["SystemEnvVarLongSymbol"])
