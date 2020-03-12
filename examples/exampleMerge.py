@@ -31,7 +31,7 @@ db3 = canmatrix.CanMatrix()
 #
 
 # Copy Can-ID 1234 from second CAN-Matrix to target-Matrix
-canmatrix.copy.copy_frame(1234, db2, db3)
+canmatrix.copy.copy_frame(canmatrix.ArbitrationId(100), db2, db3)
 
 # Copy frame "Engine_123" from first CAN-Matrix to target-Matrix
 canmatrix.copy.copy_frame("Engine_123", db1, db3)
