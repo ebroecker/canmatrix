@@ -10,7 +10,14 @@ def test_utils_guess_value():
     assert canmatrix.utils.guess_value("False") == "0"
     assert canmatrix.utils.guess_value("faLse") == "0"
 
+
 def test_decode_number():
     assert canmatrix.utils.decode_number("0x10") == 16
     assert canmatrix.utils.decode_number("0b10") == 2
     assert canmatrix.utils.decode_number("10") == 10
+
+
+def test_quote_aware_comma_split():
+    example = '"a,b", c"d,e", f'
+    split = canmatrix.utils.quote_aware_comma_split(example)
+    assert split == ['a,b', 'c"d,e"', 'f']

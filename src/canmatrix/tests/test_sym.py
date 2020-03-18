@@ -141,3 +141,61 @@ def tests_parse_float(variable_type, bit_length):
     frame = matrix.frames[0]
     signal = frame.signals[0]
     assert signal.is_float
+
+
+def tests_value_tables():
+    f = io.BytesIO(
+        textwrap.dedent(
+            '''\
+            FormatVersion=5.0 // Do not edit this line!
+            Title="AFE_CAN_ID0"
+            
+            {ENUMS}
+            enum State(0="Power On Reset, and a quoted comma", 1="Ready,set,go", 2="Following",3="Fault",
+              4="Forming", 5="N/A", 6="N/A",7="N/A",8="N/A",9="N/A", 10="N/A",11="N/A", 
+              12="N/A", 13="N/A",14="N/A", 15="N/A")
+            enum Relay(0="Open", 1="Closed",2="Error",3="N/A")
+
+            {SENDRECEIVE}
+            [StatusBits]
+            ID=0CFFC3F7h
+            Type=Extended
+            DLC=8
+            Var=State_status unsigned 0,16 /e:State
+            Var=MX2Permissive_status unsigned 32,16 /e:Relay
+            '''
+        ).encode('utf-8'),
+    )
+
+    matrix = canmatrix.formats.sym.load(f)
+
+    assert matrix.load_errors == []
+
+    expected = {
+        'Relay': {
+            0: 'Open',
+            1: 'Closed',
+            2: 'Error',
+            3: 'N/A',
+        },
+        'State': {
+            0:"Power On Reset, and a quoted comma",
+            1: "Ready,set,go",
+            2: "Following",
+            3: "Fault",
+            4: "Forming",
+            5: "N/A",
+            6: "N/A",
+            7: "N/A",
+            8: "N/A",
+            9: "N/A",
+            10: "N/A",
+            11: "N/A",
+            12: "N/A",
+            13: "N/A",
+            14: "N/A",
+            15: "N/A",
+        }
+    }
+
+    assert matrix.value_tables == expected
