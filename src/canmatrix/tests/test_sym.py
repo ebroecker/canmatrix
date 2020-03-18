@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import io
+import sys
 import textwrap
+import traceback
 
 import pytest
 
@@ -141,3 +143,29 @@ def tests_parse_float(variable_type, bit_length):
     frame = matrix.frames[0]
     signal = frame.signals[0]
     assert signal.is_float
+
+
+def tests_parsing_errors():
+    f = io.BytesIO(
+        textwrap.dedent(
+            '''\
+            FormatVersion=5.0 // Do not edit this line!
+            Title="a file"
+
+            {SEND}
+
+            [pass]
+            DLC=8
+            Var=Password unsigned 16,a16
+            '''
+        ).encode('utf-8'),
+    )
+
+    matrix = canmatrix.formats.sym.load(f)
+
+    [error] = matrix.load_errors
+
+    assert isinstance(error, canmatrix.formats.sym.ParsingError)
+
+    if sys.version_info >= (3, 5):
+        assert isinstance(error.original, traceback.TracebackException)
