@@ -597,11 +597,16 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 #        print "Unrecognized line: " + l + " (%d) " % i
         except Exception as e:
             if not isinstance(e, ParsingError):
+                if sys.version_info > (3, 5):
+                    original = traceback.TracebackException.from_exception(e)
+                else:
+                    original = e
+
                 e = ParsingError(
                     message=str(e),
                     line_number=line_count,
                     line=line,
-                    original=traceback.TracebackException.from_exception(e),
+                    original=original,
                 )
 
             db.load_errors.append(e)
