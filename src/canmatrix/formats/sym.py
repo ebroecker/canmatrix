@@ -33,6 +33,7 @@ import typing
 from builtins import *
 
 import attr
+import re
 
 import canmatrix
 import canmatrix.utils
@@ -323,6 +324,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     db.add_signal_defines("HexadecimalOutput", 'BOOL False True')
     db.add_signal_defines("DisplayDecimalPlaces", 'INT 0 65535')
     db.add_signal_defines("LongName", 'STR')
+    
+    kvpair_splitting_pattern = re.compile(r'(\",)(\d+=)')
 
     for line_count, line in enumerate(f, 1):
         try:
@@ -360,7 +363,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     line = line.split('//')[0]
                     temp_array = line[5:].strip().rstrip(')').split('(', 1)
                     val_table_name = temp_array[0]
-                    split = canmatrix.utils.quote_aware_comma_split(temp_array[1])
+                    split = canmatrix.utils.quote_aware_space_split(re.sub(kvpair_splitting_pattern, r'\1 \2', temp_array[1]))
                     temp_array = [s.rstrip(',') for s in split]
                     temp_val_table = {}
                     for entry in temp_array:
