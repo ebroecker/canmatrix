@@ -151,8 +151,8 @@ def tests_value_tables():
             Title="AFE_CAN_ID0"
             
             {ENUMS}
-            enum State(0="Power On Reset, and a quoted comma", 1="Ready,set,go", 2="Following",3="Fault",
-              4="Forming", 5="N/A", 6="N/A",7="N/A",8="N/A",9="N/A", 10="N/A",11="N/A", 
+            enum State(0="Power On Reset, and a quoted comma", 1=",Ready,set,go", 2="Following",3="Fault",
+              4="Forming" , 5="N/A", 6="N/A",7="N/A",8="N/A",9="N/A", 10="N/A",11="N/A",
               12="N/A", 13="N/A",14="N/A", 15="N/A")
             enum Relay(0="Open", 1="Closed",2="Error",3="N/A")
 
@@ -180,7 +180,7 @@ def tests_value_tables():
         },
         'State': {
             0:"Power On Reset, and a quoted comma",
-            1: "Ready,set,go",
+            1: ",Ready,set,go",
             2: "Following",
             3: "Fault",
             4: "Forming",
