@@ -597,7 +597,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 #        print "Unrecognized line: " + l + " (%d) " % i
         except Exception as e:
             if not isinstance(e, ParsingError):
-                ParsingError(
+                e = ParsingError(
                     message=str(e),
                     line_number=line_count,
                     line=line,
