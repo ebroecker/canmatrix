@@ -601,7 +601,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     message=str(e),
                     line_number=line_count,
                     line=line,
-                    original=e,
+                    original=traceback.TracebackException.from_exception(e),
                 )
 
             db.load_errors.append(e)
