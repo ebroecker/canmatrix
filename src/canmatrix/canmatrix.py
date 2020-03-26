@@ -711,7 +711,7 @@ class ArbitrationId(object):
         else:
             return self.id
 
-    def __eq__(self, other):
+    def __eq__(self, other):  # type: (ArbitrationId) -> ArbitrationId
         return (
             self.id == other.id
             and (
@@ -720,6 +720,34 @@ class ArbitrationId(object):
                 or self.extended == other.extended
             )
         )
+
+    def __le__(self, other):
+        if not self.extended and other.extended:
+            return True
+        if self.extended and not other.extended:
+            return False
+        return self.id <= other.id
+
+    def __lt__(self, other):
+        if not self.extended and other.extended:
+            return True
+        if self.extended and not other.extended:
+            return False
+        return self.id < other.id
+
+    def __ge__(self, other):
+        if not self.extended and other.extended:
+            return False
+        if self.extended and not other.extended:
+            return True
+        return self.id >= other.id
+
+    def __gt__(self, other):
+        if not self.extended and other.extended:
+            return False
+        if self.extended and not other.extended:
+            return True
+        return self.id > other.id
 
 
 @attr.s(cmp=False)
