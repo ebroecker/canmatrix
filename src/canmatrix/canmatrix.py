@@ -587,10 +587,14 @@ class ArbitrationId(object):
     compound_extended_mask = (1 << 31)
 
     id = attr.ib(default=None)
-    extended = attr.ib(default=None)
+    extended = attr.ib(default=False)  # type: bool
 
     def __attrs_post_init__(self):
-        if self.extended is None or self.extended:
+        if self.extended is None:
+            # Mimicking old behaviour for now -- remove in the future
+            self.extended = True
+            logger.warning("Please set 'extended' attribute as a boolean")
+        if self.extended:
             mask = self.extended_id_mask
         else:
             mask = self.standard_id_mask
@@ -712,14 +716,7 @@ class ArbitrationId(object):
             return self.id
 
     def __eq__(self, other):  # type: (ArbitrationId) -> ArbitrationId
-        return (
-            self.id == other.id
-            and (
-                self.extended is None
-                or other.extended is None
-                or self.extended == other.extended
-            )
-        )
+        return self.id == other.id and self.extended == other.extended
 
     def __le__(self, other):
         if not self.extended and other.extended:

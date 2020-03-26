@@ -811,7 +811,7 @@ def test_decoded_signal_named_value():
 def test_Arbitration_id():
     id_standard = canmatrix.ArbitrationId(id=0x1, extended=False)
     id_extended = canmatrix.ArbitrationId(id=0x1, extended=True)
-    id_unknown = canmatrix.ArbitrationId(id=0x1, extended=None)
+    id_unknown = canmatrix.ArbitrationId(id=0x1, extended=None)  # Defaults to True
 
     id_from_int_standard = canmatrix.ArbitrationId.from_compound_integer(1)
     id_from_int_extended = canmatrix.ArbitrationId.from_compound_integer(1 | 1 << 31)
@@ -823,7 +823,7 @@ def test_Arbitration_id():
     assert id_extended.id == 1
     assert id_unknown.id == 1
     assert id_standard != id_extended
-    assert id_standard == id_unknown
+    assert id_standard != id_unknown
     assert id_extended == id_unknown
     assert id_from_int_standard == id_standard
     assert id_from_int_standard != id_extended
@@ -847,6 +847,20 @@ def test_arbitration_id_j1939_direct_setters():
     assert arb_id.pgn == 0xF1AA
     assert arb_id.j1939_source == 0x22
     assert arb_id.j1939_priority == 3
+
+def test_arbitration_id_comparators():
+    id_standard_1 = canmatrix.ArbitrationId(id=0x1, extended=False)
+    id_standard_2 = canmatrix.ArbitrationId(id=0x2, extended=False)
+    id_extended_1 = canmatrix.ArbitrationId(id=0x1, extended=True)
+    id_extended_2 = canmatrix.ArbitrationId(id=0x2, extended=True)
+
+    assert id_extended_1 > id_standard_2
+    sorting_results = sorted((
+        id_extended_1, id_standard_2, id_extended_2, id_standard_1))
+    assert sorting_results[0] == id_standard_1
+    assert sorting_results[1] == id_standard_2
+    assert sorting_results[2] == id_extended_1
+    assert sorting_results[3] == id_extended_2
 
 @pytest.fixture
 def empty_matrix():
