@@ -35,6 +35,7 @@ import logging
 import math
 import struct
 import typing
+import warnings
 from builtins import *
 
 import attr
@@ -580,7 +581,7 @@ def pack_bitstring(length, is_float, value, signed):
     return bitstring
 
 
-@attr.s(cmp=False)
+@attr.s
 class ArbitrationId(object):
     standard_id_mask = ((1 << 11) - 1)
     extended_id_mask = ((1 << 29) - 1)
@@ -593,7 +594,11 @@ class ArbitrationId(object):
         if self.extended is None:
             # Mimicking old behaviour for now -- remove in the future
             self.extended = True
-            logger.warning("Please set 'extended' attribute as a boolean")
+            warnings.warn(
+                "Please set 'extended' attribute as a boolean instead of "
+                "None when creating an instance of ArbitrationId class",
+                DeprecationWarning
+            )
         if self.extended:
             mask = self.extended_id_mask
         else:
@@ -714,37 +719,6 @@ class ArbitrationId(object):
             return self.id | self.compound_extended_mask
         else:
             return self.id
-
-    def __eq__(self, other):  # type: (ArbitrationId) -> ArbitrationId
-        return self.id == other.id and self.extended == other.extended
-
-    def __le__(self, other):
-        if not self.extended and other.extended:
-            return True
-        if self.extended and not other.extended:
-            return False
-        return self.id <= other.id
-
-    def __lt__(self, other):
-        if not self.extended and other.extended:
-            return True
-        if self.extended and not other.extended:
-            return False
-        return self.id < other.id
-
-    def __ge__(self, other):
-        if not self.extended and other.extended:
-            return False
-        if self.extended and not other.extended:
-            return True
-        return self.id >= other.id
-
-    def __gt__(self, other):
-        if not self.extended and other.extended:
-            return False
-        if self.extended and not other.extended:
-            return True
-        return self.id > other.id
 
 
 @attr.s(cmp=False)

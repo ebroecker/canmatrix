@@ -854,12 +854,11 @@ def test_arbitration_id_comparators():
     id_extended_1 = canmatrix.ArbitrationId(id=0x1, extended=True)
     id_extended_2 = canmatrix.ArbitrationId(id=0x2, extended=True)
 
-    assert id_extended_1 > id_standard_2
     sorting_results = sorted((
         id_extended_1, id_standard_2, id_extended_2, id_standard_1))
     assert sorting_results[0] == id_standard_1
-    assert sorting_results[1] == id_standard_2
-    assert sorting_results[2] == id_extended_1
+    assert sorting_results[1] == id_extended_1
+    assert sorting_results[2] == id_standard_2
     assert sorting_results[3] == id_extended_2
 
 @pytest.fixture
