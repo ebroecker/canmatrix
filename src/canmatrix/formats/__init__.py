@@ -27,7 +27,7 @@ for module in moduleList:
         importlib.import_module("canmatrix.formats." + module)
         loadedFormats.append(module)
     except ImportError:
-        logger.info("%s is not supported", module)
+        logger.exception("%s is not supported", module)
 
 for loadedModule in loadedFormats:
     supportedFormats[loadedModule] = []
