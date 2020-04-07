@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import io
+import sys
 import textwrap
 
 import pytest
@@ -167,6 +168,8 @@ def test_unterminated_enum():
     matrix = canmatrix.formats.sym.load(f)
 
     assert len(matrix.load_errors) == 1
-
-    assert isinstance(matrix.load_errors[0], EOFError)
+    if sys.version_info > (3, 0):
+        assert isinstance(matrix.load_errors[0], EOFError)
+    else:
+        assert isinstance(matrix.load_errors[0], StopIteration)
 
