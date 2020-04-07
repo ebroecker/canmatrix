@@ -141,3 +141,32 @@ def tests_parse_float(variable_type, bit_length):
     frame = matrix.frames[0]
     signal = frame.signals[0]
     assert signal.is_float
+
+def test_unterminated_enum():
+    f = io.BytesIO(
+        textwrap.dedent(
+            '''\
+            FormatVersion=5.0 // Do not edit this line!
+            Title="Untitled
+            
+            {ENUMS}
+            enum Categories(0="Animal", 1="Vegetable", 3="Mineral"
+            
+            {SENDRECEIVE}
+            
+            [Symbol1]
+            ID=000h
+            DLC=8
+            Var=Signal unsigned 0,16
+            
+            '''
+        ).encode('utf-8'),
+    )
+    # Missing ')' at the end of enum used to cause infinite loop
+
+    matrix = canmatrix.formats.sym.load(f)
+
+    assert len(matrix.load_errors) == 1
+
+    assert isinstance(matrix.load_errors[0], EOFError)
+

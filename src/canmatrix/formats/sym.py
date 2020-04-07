@@ -354,9 +354,12 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     while not line[5:].strip().endswith(')'):
                         line = line.split('//')[0]
                         if sys.version_info > (3, 0):  # is there a clean way to to it?
-                            line += ' ' + f.readline().decode(sym_import_encoding).strip()
+                            next_line = f.readline().decode(sym_import_encoding)
                         else:
-                            line += ' ' + next(f).decode(sym_import_encoding).strip()
+                            next_line = next(f).decode(sym_import_encoding)
+                        if next_line is "":
+                            raise EOFError("Reached EOF before finding terminator for enum :\"{}\"".format(line))
+                        line += next_line.strip()
                     line = line.split('//')[0]
                     temp_array = line[5:].strip().rstrip(')').split('(', 1)
                     val_table_name = temp_array[0]
