@@ -333,6 +333,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 continue
             if line[0:6] == "Title=":
                 title = line[6:].strip('"')
+                db.add_global_defines("Title", "STRING")
+                db.global_defines['Title'].set_default("canmatrix-Export")
                 db.add_attribute("Title", title)
             # switch mode:
             if line[0:7] == "{ENUMS}":

@@ -185,7 +185,7 @@ def test_title_read_and_write():
     )
 
     matrix = canmatrix.formats.sym.load(f)
-    assert matrix.attributes.get("Title") == "An Example Title"
+    assert matrix.attribute("Title") == "An Example Title"
     f_out = io.BytesIO()
     canmatrix.formats.sym.dump(matrix, f_out)
     assert f_out.getvalue().decode('utf-8').splitlines()[1] == 'Title="An Example Title"'
