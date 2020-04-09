@@ -181,9 +181,10 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     enum_dict = {}
     enums = "{ENUMS}\n"
 
-    header = """FormatVersion=5.0 // Do not edit this line!
-Title=\"canmatrix-Export\"
-"""
+    header = """\
+FormatVersion=5.0 // Do not edit this line!
+Title=\"{}\"
+""".format(db.attribute("Title", "canmatrix-Export"))
     f.write(header.encode(sym_encoding, ignore_encoding_errors))
 
     def send_receive(for_frame):
@@ -330,7 +331,9 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             # ignore empty line:
             if line.__len__() == 0:
                 continue
-
+            if line[0:6] == "Title=":
+                title = line[6:].strip('"')
+                db.add_attribute("Title", title)
             # switch mode:
             if line[0:7] == "{ENUMS}":
                 mode = Mode.enums

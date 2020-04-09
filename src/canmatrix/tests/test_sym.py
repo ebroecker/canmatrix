@@ -173,3 +173,19 @@ def test_unterminated_enum():
     else:
         assert isinstance(matrix.load_errors[0], StopIteration)
 
+def test_title_read_and_write():
+    f = io.BytesIO(
+        textwrap.dedent(
+            '''\
+            FormatVersion=5.0 // Do not edit this line!
+            Title="An Example Title"
+            
+            '''
+        ).encode('utf-8'),
+    )
+
+    matrix = canmatrix.formats.sym.load(f)
+    assert matrix.attributes.get("Title") == "An Example Title"
+    f_out = io.BytesIO()
+    canmatrix.formats.sym.dump(matrix, f_out)
+    assert f_out.getvalue().decode('utf-8').splitlines()[1] == 'Title="An Example Title"'
