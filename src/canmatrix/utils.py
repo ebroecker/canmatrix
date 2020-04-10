@@ -21,11 +21,29 @@ def quote_aware_space_split(in_line):  # type: (str) -> typing.List[str]
 
 
 def quote_aware_comma_split(string):  # type: (str) -> typing.List[str]
-    if sys.version_info >= (3, 0):
-        temp = list(csv.reader([string], skipinitialspace=True))
-    else:
-        temp = list(csv.reader([string.encode("utf8")], skipinitialspace=True))
-    return temp[0]
+    """
+    Split a string containing comma separated list of fields.
+    Removing surrounding whitespace, to allow fields to be separated by ", ".
+    Preserves double quotes within fields and suppresses comma separators which are within double quoted sections.
+    :param string: 'a,  "b, c", d',
+             ['a', '"b, c"', 'd']),
+    :return:
+    """
+    fields = []
+    quoted = False
+    field = ""
+    for char in string:
+        if char == ',':
+            if not quoted:
+                fields.append(field.strip())
+                field = ""
+                continue
+        if char == '"':
+            quoted = not quoted
+        field += char
+    if field:
+        fields.append(field.strip())
+    return fields
 
 
 def guess_value(text_value):  # type: (str) -> str
