@@ -24,25 +24,33 @@ def quote_aware_comma_split(string):  # type: (str) -> typing.List[str]
     """
     Split a string containing comma separated list of fields.
     Removing surrounding whitespace, to allow fields to be separated by ", ".
-    Preserves double quotes within fields and suppresses comma separators which are within double quoted sections.
-    :param string: 'a,  "b, c", d',
-             ['a', '"b, c"', 'd']),
-    :return:
+    Preserves double quotes within fields, but not double quotes surrounding fields.
+    Suppresses comma separators which are within double quoted sections.
+    :param string: ('a,  b", c", "d"',
+    :return: ['a', 'b", c"', 'd']),
     """
     fields = []
     quoted = False
     field = ""
+    # Separate string by unquoted commas
     for char in string:
         if char == ',':
             if not quoted:
-                fields.append(field.strip())
+                fields.append(field)
                 field = ""
                 continue
         if char == '"':
             quoted = not quoted
         field += char
     if field:
-        fields.append(field.strip())
+        fields.append(field)
+    # Remove surrounding whitespace from fields
+    fields = [f.strip() for f in fields]
+    # Remove "" that surround entire fields
+    for i, f in enumerate(fields):
+        if len(f) > 1:
+            if f.startswith('"') and f.endswith('"'):
+                fields[i] = f[1:-1]
     return fields
 
 

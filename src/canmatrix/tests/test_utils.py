@@ -28,14 +28,14 @@ def test_decode_number():
             ('a,  b, c, d',
              ["a", "b", "c", "d"]),
 
-            ('a,  "b, c", "d"',
-             ['a', '"b, c"', '"d"']),
+            ('a,  b", c", "d"',
+             ['a', 'b", c"', 'd']),
 
             ('0="a",  1=b, 3="c"d, 4=e',
              ['0="a"',  '1=b', '3="c"d', '4=e']),
 
             ('"a,b",","b,c","\'\'d"e',
-             ['"a,b"', '","b', 'c","\'\'d\"e']),
+             ['a,b', '","b', 'c","\'\'d\"e']),
     )
 )
 def test_quote_aware_comma_split_function(input_string, expected_list):
