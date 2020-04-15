@@ -181,9 +181,10 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     enum_dict = {}
     enums = "{ENUMS}\n"
 
-    header = """FormatVersion=5.0 // Do not edit this line!
-Title=\"canmatrix-Export\"
-"""
+    header = """\
+FormatVersion=5.0 // Do not edit this line!
+Title=\"{}\"
+""".format(db.attribute("Title", "canmatrix-Export"))
     f.write(header.encode(sym_encoding, ignore_encoding_errors))
 
     def send_receive(for_frame):
@@ -330,7 +331,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             # ignore empty line:
             if line.__len__() == 0:
                 continue
-
+            if line[0:6] == "Title=":
+                title = line[6:].strip('"')
+                db.add_global_defines("Title", "STRING")
+                db.global_defines['Title'].set_default("canmatrix-Export")
+                db.add_attribute("Title", title)
             # switch mode:
             if line[0:7] == "{ENUMS}":
                 mode = Mode.enums
@@ -363,7 +368,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     line = line.split('//')[0]
                     temp_array = line[5:].strip().rstrip(')').split('(', 1)
                     val_table_name = temp_array[0]
-                    split = canmatrix.utils.quote_aware_space_split(temp_array[1])
+                    split = canmatrix.utils.quote_aware_comma_split(temp_array[1])
                     temp_array = [s.rstrip(',') for s in split]
                     temp_val_table = {}
                     for entry in temp_array:

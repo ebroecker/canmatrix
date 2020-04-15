@@ -173,3 +173,48 @@ def test_unterminated_enum():
     else:
         assert isinstance(matrix.load_errors[0], StopIteration)
 
+
+def test_title_read_and_write():
+    f = io.BytesIO(
+        textwrap.dedent(
+            '''\
+            FormatVersion=5.0 // Do not edit this line!
+            Title="An Example Title"
+
+            '''
+        ).encode('utf-8'),
+    )
+
+    matrix = canmatrix.formats.sym.load(f)
+    assert matrix.attribute("Title") == "An Example Title"
+    f_out = io.BytesIO()
+    canmatrix.formats.sym.dump(matrix, f_out)
+    assert f_out.getvalue().decode('utf-8').splitlines()[1] == 'Title="An Example Title"'
+
+@pytest.mark.parametrize(
+    'enum_str, enum_dict, enum_label',
+    (
+        ('enum Animal(0="Dog", 1="Cat", 2="Fox")', {"Animal": {0: "Dog", 1: "Cat", 2: "Fox"}}, "Simple enum"),
+        ('''\
+enum Animal(0="Dog", //A Comment
+1="Cat",
+2="Fox")''',
+         {"Animal": {0: "Dog", 1: "Cat", 2: "Fox"}}, "Multiline enum"),
+        ('enum Animal(0="Dog",1="Cat",2="Fox")', {"Animal": {0: "Dog", 1: "Cat", 2: "Fox"}}, "No Space  in Separator"),
+    )
+)
+def test_enums_read(enum_str, enum_dict, enum_label):
+        f = io.BytesIO('''\
+FormatVersion=5.0 // Do not edit this line!
+Title="An Example Title"
+
+{{ENUMS}}
+{}
+'''.format(enum_str).encode('utf-8'),
+        )
+
+        matrix = canmatrix.formats.sym.load(f)
+        assert matrix.load_errors == [], "Failed to load canmatrix, when testing enum case : '{}'".format(enum_label)
+        assert matrix.value_tables == enum_dict, "Enum not parsed correctly : '{}'".format(enum_label)
+        f_out = io.BytesIO()
+        canmatrix.formats.sym.dump(matrix, f_out)
