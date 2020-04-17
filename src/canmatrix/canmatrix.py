@@ -1568,10 +1568,11 @@ class CanMatrix(object):
         """
         if attributeName in self.attributes:
             return self.attributes[attributeName]
-        else:
-            if attributeName in self.global_defines:
+        elif attributeName in self.global_defines:
                 define = self.global_defines[attributeName]
                 return define.defaultValue
+        else:
+            return default
 
     def add_value_table(self, name, valueTable):  # type: (str, typing.Mapping) -> None
         """Add named value table.

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import io
+import sys
 import textwrap
 
 import pytest
@@ -141,3 +142,79 @@ def tests_parse_float(variable_type, bit_length):
     frame = matrix.frames[0]
     signal = frame.signals[0]
     assert signal.is_float
+
+def test_unterminated_enum():
+    f = io.BytesIO(
+        textwrap.dedent(
+            '''\
+            FormatVersion=5.0 // Do not edit this line!
+            Title="Untitled
+            
+            {ENUMS}
+            enum Categories(0="Animal", 1="Vegetable", 3="Mineral"
+            
+            {SENDRECEIVE}
+            
+            [Symbol1]
+            ID=000h
+            DLC=8
+            Var=Signal unsigned 0,16
+            
+            '''
+        ).encode('utf-8'),
+    )
+    # Missing ')' at the end of enum used to cause infinite loop
+
+    matrix = canmatrix.formats.sym.load(f)
+
+    assert len(matrix.load_errors) == 1
+    if sys.version_info > (3, 0):
+        assert isinstance(matrix.load_errors[0], EOFError)
+    else:
+        assert isinstance(matrix.load_errors[0], StopIteration)
+
+
+def test_title_read_and_write():
+    f = io.BytesIO(
+        textwrap.dedent(
+            '''\
+            FormatVersion=5.0 // Do not edit this line!
+            Title="An Example Title"
+
+            '''
+        ).encode('utf-8'),
+    )
+
+    matrix = canmatrix.formats.sym.load(f)
+    assert matrix.attribute("Title") == "An Example Title"
+    f_out = io.BytesIO()
+    canmatrix.formats.sym.dump(matrix, f_out)
+    assert f_out.getvalue().decode('utf-8').splitlines()[1] == 'Title="An Example Title"'
+
+@pytest.mark.parametrize(
+    'enum_str, enum_dict, enum_label',
+    (
+        ('enum Animal(0="Dog", 1="Cat", 2="Fox")', {"Animal": {0: "Dog", 1: "Cat", 2: "Fox"}}, "Simple enum"),
+        ('''\
+enum Animal(0="Dog", //A Comment
+1="Cat",
+2="Fox")''',
+         {"Animal": {0: "Dog", 1: "Cat", 2: "Fox"}}, "Multiline enum"),
+        ('enum Animal(0="Dog",1="Cat",2="Fox")', {"Animal": {0: "Dog", 1: "Cat", 2: "Fox"}}, "No Space  in Separator"),
+    )
+)
+def test_enums_read(enum_str, enum_dict, enum_label):
+        f = io.BytesIO('''\
+FormatVersion=5.0 // Do not edit this line!
+Title="An Example Title"
+
+{{ENUMS}}
+{}
+'''.format(enum_str).encode('utf-8'),
+        )
+
+        matrix = canmatrix.formats.sym.load(f)
+        assert matrix.load_errors == [], "Failed to load canmatrix, when testing enum case : '{}'".format(enum_label)
+        assert matrix.value_tables == enum_dict, "Enum not parsed correctly : '{}'".format(enum_label)
+        f_out = io.BytesIO()
+        canmatrix.formats.sym.dump(matrix, f_out)

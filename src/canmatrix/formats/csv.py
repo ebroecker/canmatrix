@@ -116,7 +116,7 @@ def dump(db, file_object, delimiter=',', **options):
         'is signed']
     head_tail = ['Name / Phys. Range', 'Function / Increment Unit', 'Value']
 
-    additional_signal_columns = options.get("additionalAttributes", "").split(",")
+    additional_signal_columns = options.get("additionalSignalAttributes", "").split(",")
     additional_frame_columns = options.get("additionalFrameAttributes", "").split(",")
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
 
