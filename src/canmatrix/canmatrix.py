@@ -610,7 +610,9 @@ class ArbitrationId(object):
         # Made up of PDU-S (8-15), PDU-F (16-23), Data Page (24) & Extended Data Page (25)
         # If PDU-F >= 240 the PDU-S is interpreted as Group Extension
         # If PDU-F < 240 the PDU-S is interpreted as a Destination Address
-        _pgn = self.j1939_ps
+        _pgn = 0
+        if self.j1939_pdu_format == 2:
+            _pgn += self.j1939_ps
         _pgn += self.j1939_pf << 8
         _pgn += self.j1939_dp << 16
         _pgn += self.j1939_edp << 17
@@ -638,7 +640,7 @@ class ArbitrationId(object):
     def j1939_destination(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
-        if self.j1939_pf < 240:
+        if self.j1939_pdu_format == 1:
             destination = self.j1939_ps
         else:
             destination = None
@@ -666,6 +668,10 @@ class ArbitrationId(object):
         if not self.extended:
             raise J1939needsExtendedIdetifier
         return (self.id >> 16) & 0xFF
+
+    @property
+    def j1939_pdu_format(self):
+        return 1 if (self.j1939_pf < 240) else 2
 
     @property
     def j1939_dp(self):

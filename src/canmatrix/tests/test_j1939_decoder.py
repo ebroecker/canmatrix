@@ -54,17 +54,15 @@ def test_j1939_decoder():
              can_data[i], matrix)
 
     print ("-------- test data -------- ")
-    test_frames = collections.OrderedDict ([
-        (0xcef27fd , "fffae1ff00ffff"),
-        (0xcffcafd , "c0fffffffffff800"),
-        (0xcf00203 , "cc00000000b812ff"),
-        (0xfe4a03 , "fffcffffffffffff"),
-        (0xc010305 , "ccfffaffff204e0a"),
-        (0x0CF00400, "F4DEDE3028FFF0FF")])
+    test_frames = collections.OrderedDict([
+        (0xcef27fd, ("fffae1ff00ffff", "")),
+        (0xcffcafd, ("c0fffffffffff800", "")),
+        (0xcf00203, ("cc00000000b812ff", "J1939 known: ETC1")),
+        (0xfe4a03, ("fffcffffffffffff", "J1939 known: ETC7")),
+        (0xc010305, ("ccfffaffff204e0a", "J1939 known: TC1")),
+        (0x0CF00400, ("F4DEDE3028FFF0FF", "J1939 known: EEC1"))])
 
-    expected = ["EEC1","TC1","ETC7","ETC1"]
-    for arb_id, asc_data in test_frames.items():
+    for arb_id, (asc_data, expected) in test_frames.items():
         (type, signals) = t.decode(canmatrix.ArbitrationId(id=arb_id, extended=True),
                                    bytearray.fromhex(asc_data), matrix)
-        if type is not None and "J1939 known" in type:
-            assert expected.pop() in type
+        assert expected in type
