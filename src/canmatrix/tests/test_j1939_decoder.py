@@ -27,19 +27,19 @@ def test_j1939_decoder():
     t = canmatrix.j1939_decoder.j1939_decoder()
 
     #  BAM
-    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xec0000, extended= True),
+    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xecFF00, extended= True),
         bytearray([0x20,10,0,1,0xff,0x66,0x1,0]), matrix)
     assert "BAM " in type
  #   print (type, signals)
 
     # data 1
-    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xeb0000, extended= True),
+    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xebFF00, extended= True),
         bytearray([0x0,1,1,1,1,1,1,1]), matrix)
     assert "BAM data" in type
     #print (type, signals)
 
     # data 2
-    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xeb0000, extended= True),
+    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xebFF00, extended= True),
         bytearray([0x1,1,1,1,1,1,1,1]), matrix)
     assert "BAM last data" in type
 #    print (type, signals)
