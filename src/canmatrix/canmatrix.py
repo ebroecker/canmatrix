@@ -606,25 +606,25 @@ class ArbitrationId(object):
     def pgn(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
+        # PGN is bits 8-25 of the 29-Bit Extended CAN-ID
+        # Made up of PDU-S (8-15), PDU-F (16-23), Data Page (24) & Extended Data Page (25)
+        # If PDU-F >= 240 the PDU-S is interpreted as Group Extension
+        # If PDU-F < 240 the PDU-S is interpreted as a Destination Address
+        _pgn = 0
+        if self.j1939_pdu_format == 2:
+            _pgn += self.j1939_ps
+        _pgn += self.j1939_pf << 8
+        _pgn += self.j1939_dp << 16
+        _pgn += self.j1939_edp << 17
 
-        ps = (self.id >> 8) & 0xFF
-        pf = (self.id >> 16) & 0xFF
-        _pgn = pf << 8
-        if pf >= 240:
-            _pgn += ps
         return _pgn
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
         self.extended = True
-        ps = value & 0xff
-        pf = (value >> 8) & 0xFF
-        _pgn = pf << 8
-        if pf >= 240:
-            _pgn += ps
-
-        self.id &= 0xff0000ff
-        self.id |= (_pgn & 0xffff) << 8  # default pgn is None -> mypy reports error
+        _pgn = value & 0x3FFFF
+        self.id &= 0xfc0000ff
+        self.id |= (_pgn << 8 & 0x3FFFF00)  # default pgn is None -> mypy reports error
 
 
 
@@ -640,7 +640,7 @@ class ArbitrationId(object):
     def j1939_destination(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
-        if self.j1939_pf < 240:
+        if self.j1939_pdu_format == 1:
             destination = self.j1939_ps
         else:
             destination = None
@@ -670,10 +670,20 @@ class ArbitrationId(object):
         return (self.id >> 16) & 0xFF
 
     @property
+    def j1939_pdu_format(self):
+        return 1 if (self.j1939_pf < 240) else 2
+
+    @property
+    def j1939_dp(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 24) & 0x1
+
+    @property
     def j1939_edp(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
-        return (self.id >> 24) & 0x03
+        return (self.id >> 25) & 0x1
 
     @property
     def j1939_priority(self):
@@ -684,7 +694,7 @@ class ArbitrationId(object):
     @j1939_priority.setter
     def j1939_priority(self, value):  # type: (int) -> None
         self.extended = True
-        self.id = (self.id & 0x2ffffff) | ((value & 0x7) << 26)
+        self.id = (self.id & 0x3ffffff) | ((value & 0x7) << 26)
 
     @property
     def j1939_str(self):  # type: () -> str

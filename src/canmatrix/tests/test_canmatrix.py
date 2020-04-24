@@ -597,8 +597,58 @@ def test_frame_calc_j1939_id():
     frame.source = 0x22
     frame.pgn = 0xAAAA
     frame.priority = 3
-    assert frame.arbitration_id.id == 0xcaa0022
+    assert frame.arbitration_id.id == 0xCAAAA22
 
+@pytest.mark.parametrize(
+    'priority, pgn, source, id',
+    (
+        (0, 0, 0, 0),
+        (1, 1, 1, 0x4000101),
+        (2, 2, 2, 0x8000202),
+        (3, 0xAAAA, 0x22, 0xCAAAA22),
+        (0, 0x1F004, 0xEE, 0x1F004EE),
+        (3, 0x1F004, 0xEE, 0xDF004EE),
+        (7, 0x1FFFF, 0xFF, 0x1DFFFFFF),
+        (3, 0, 0xB, 0xC00000B),
+        (3, 0xEF27, 0xFD, 0xCEF27FD),
+        (3, 0xFFCA, 0xFD, 0xCFFCAFD),
+        (3, 0, 3, 0xC000003),
+        (3, 0xF002, 3, 0xCF00203),
+        (6, 0xFE4A, 3, 0x18FE4A03),
+        (3, 0x103, 5, 0xC010305),
+    ), )
+def test_frame_j1939_id_from_components(priority, pgn, source, id):
+    # we have to set all j1939 properties in the __init__ otherwise the setters crash
+    frame = canmatrix.canmatrix.Frame()
+    frame.source = source
+    frame.pgn = pgn
+    frame.priority = priority
+    assert hex(frame.arbitration_id.id) == hex(id)
+
+@pytest.mark.parametrize(
+    'priority, pgn, source, id',
+    (
+        (0, 0, 0, 0),
+        (1, 0, 1, 0x4000101),
+        (2, 0, 2, 0x8000202),
+        (3, 0xAA00, 0x22, 0xCAAAA22),
+        (0, 0x1F004, 0xEE, 0x1F004EE),
+        (3, 0x1F004, 0xEE, 0xDF004EE),
+        (7, 0x1FFFF, 0xFF, 0x1DFFFFFF),
+        (3, 0, 0xB, 0xC00000B),
+        (3, 0xEF00, 0xFD, 0xCEF27FD),
+        (3, 0xFFCA, 0xFD, 0xCFFCAFD),
+        (3, 0, 3, 0xC000003),
+        (3, 0xF002, 3, 0xCF00203),
+        (6, 0xFE4A, 3, 0x18FE4A03),
+        (3, 0x100, 5, 0xC010305),
+    ), )
+def test_frame_decode_j1939_id(source, pgn, priority, id):
+    # we have to set all j1939 properties in the __init__ otherwise the setters crash
+    frame = canmatrix.canmatrix.Frame(arbitration_id=canmatrix.ArbitrationId(id=id, extended=True))
+    assert hex(frame.source) == hex(source)
+    assert hex(frame.pgn) == hex(pgn)
+    assert hex(frame.priority) == hex(priority)
 
 def test_frame_add_transmitter(empty_frame):
     empty_frame.add_transmitter("BCM")
@@ -781,18 +831,15 @@ def test_canid_parse_values():
     can_id = canmatrix.ArbitrationId(id=0x01ABCD02, extended=True)
     assert can_id.j1939_source == 0x02
     assert can_id.j1939_destination == 0xcd
-    assert can_id.j1939_pgn == 0xAB00
+    assert can_id.j1939_pgn == 0x1AB00
     assert can_id.j1939_destination == 0xCD
     assert can_id.j1939_priority == 0
-    assert can_id.j1939_tuple == (0xCD, 0xAB00, 2)
+    assert can_id.j1939_tuple == (0xCD, 0x1AB00, 2)
 
-    test_data = {0xc00000b : 0,  0xcef27fd : 61184,  0xcffcafd : 65482, 0xc000003 : 0, 0xcf00203 : 61442, 0x18fe4a03 : 65098, 0xc010305 : 256}
-    for canId, pgn in test_data.items():
-        assert canmatrix.ArbitrationId(id=canId, extended=True).pgn == pgn
 
 def test_canid_repr():
     can_id = canmatrix.ArbitrationId(id=0x01ABCD02, extended=True)
-    assert can_id.j1939_str == "DA:0xCD PGN:0xAB00 SA:0x02"
+    assert can_id.j1939_str == "DA:0xCD PGN:0x1AB00 SA:0x02"
 
 
 # DecodedSignal tests
@@ -878,7 +925,7 @@ def test_canmatrix_get_frame_by_pgn(empty_matrix, empty_frame):
     empty_frame.arbitration_id.id = 0xA123456
     empty_frame.arbitration_id.extended = True
     empty_matrix.add_frame(empty_frame)
-    assert empty_matrix.frame_by_pgn(0x1234) == empty_frame
+    assert empty_matrix.frame_by_pgn(0x21234) == empty_frame
 
 def test_canmatrix_get_frame_by_wrong_pgn(empty_matrix, empty_frame):
     empty_frame.arbitration_id.id = 0xAB123456
