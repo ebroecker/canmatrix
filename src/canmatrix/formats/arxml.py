@@ -216,7 +216,8 @@ class Earxml:
         if not ret:  # no direct element - get references
             ret_list = self.findall(tag_name + '-REF', parent)
             ret = [self.get_short_name_path(item.text) for item in ret_list]
-            raise "use follow_all_ref!"
+            if len(ret) > 0:
+                raise "use follow_all_ref!"
         return ret
 
     def build_ar_tree(self):
@@ -1003,7 +1004,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         motorola = ea.get_child(signal, "PACKING-BYTE-ORDER")
         start_bit = ea.get_child(signal, "START-POSITION")
 
-        isignal = ea.get_child(signal, "SIGNAL")
+        isignal = ea.follow_ref(signal, "SIGNAL-REF")
         if isignal is None:
             #isignal = ea.get_child(signal, "I-SIGNAL")
             isignal = ea.follow_ref(signal, "I-SIGNAL-REF")
@@ -1065,7 +1066,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         signal_description = ea.get_element_desc(system_signal)
 
-        datatype = ea.get_child(system_signal, "DATA-TYPE")
+        datatype = ea.follow_ref(system_signal, "DATA-TYPE-REF")
         if datatype is None:  # AR4?
             data_constr = None
             compu_method = None
@@ -1093,7 +1094,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         datdefprops = ea.get_child(datatype, "SW-DATA-DEF-PROPS")
 
         if compu_method is None:
-            compu_method = ea.get_child(datdefprops, "COMPU-METHOD")
+            compu_method = ea.follow_ref(datdefprops, "COMPU-METHOD-REF")
         if compu_method is None:  # AR4
             compu_method = ea.get_child(isignal, "COMPU-METHOD")
             base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")
@@ -1262,7 +1263,8 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
 
 def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
     target_frame.is_fd = True
-    pdus = ea.get_children(pdu, "CONTAINED-PDU-TRIGGERING")
+    #pdus = ea.get_children(pdu, "CONTAINED-PDU-TRIGGERING")
+    pdus = ea.follow_all_ref(pdu, "CONTAINED-PDU-TRIGGERING-REF")
     signal_group_id = 1
     singnals_grouped = []  # type: typing.List[str]
     header_type = ea.get_child(pdu, "HEADER-TYPE").text
@@ -1281,7 +1283,7 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
         # TODO
 
     for cpdu in pdus:
-        ipdu = ea.get_child(cpdu, "I-PDU")
+        ipdu = ea.follow_ref(cpdu, "I-PDU-REF")
         try:
             if header_type == "SHORT-HEADER":
                 header_id = ea.get_child(ipdu, "HEADER-ID-SHORT-HEADER").text
@@ -1373,8 +1375,8 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
         pdu = ea.follow_ref(pdu_mapping, "PDU-REF")  # SIGNAL-I-PDU
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            payload = ea.get_child(pdu, "PAYLOAD")
-            pdu = ea.get_child(payload, "I-PDU")
+            payload = ea.follow_ref(pdu, "PAYLOAD-REF")
+            pdu = ea.follow_ref(payload, "I-PDU-REF")
             # logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
 
         pdu_frame_mapping[pdu] = ea.get_element_name(frame_elem)
@@ -1438,17 +1440,19 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
         get_frame_from_container_ipdu(pdu, new_frame, ea, float_factory)
 
     else:
-        pdu_sig_mapping = ea.get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING")
+        pdu_sig_mapping = ea.follow_all_ref(pdu, "I-SIGNAL-TO-I-PDU-MAPPING-REF")
+        if len(pdu_sig_mapping) == 0:
+            pdu_sig_mapping = ea.get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING")
         if pdu_sig_mapping:
             get_signals(pdu_sig_mapping, new_frame, ea, None, float_factory)
         # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
         else:  # AR 4.2
-            pdu_trigs = ea.get_children(frame_triggering, "PDU-TRIGGERINGS")
+            pdu_trigs = ea.follow_all_ref(frame_triggering, "PDU-TRIGGERINGS-REF")
             if pdu_trigs is not None:
                 for pdu_trig in pdu_trigs:
                     trig_ref_cond = ea.get_child(pdu_trig, "PDU-TRIGGERING-REF-CONDITIONAL")
-                    trigs = ea.get_child(trig_ref_cond, "PDU-TRIGGERING")
-                    ipdus = ea.get_child(trigs, "I-PDU")
+                    trigs = ea.follow_ref(trig_ref_cond, "PDU-TRIGGERING-REF")
+                    ipdus = ea.follow_ref(trigs, "I-PDU-REF")
 
                     signal_to_pdu_maps = ea.get_child(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS")
                     if signal_to_pdu_maps is None:
@@ -1483,7 +1487,7 @@ def process_ecu(ecu_elem, db, ea, multiplex_translation):
     assoc_refs = ea.get_child(ecu_elem, "ASSOCIATED-I-PDU-GROUP-REFS")
 
     if assoc_refs is not None:
-        assoc = ea.get_children(assoc_refs, "ASSOCIATED-I-PDU-GROUP")
+        assoc = ea.follow_all_ref(assoc_refs, "ASSOCIATED-I-PDU-GROUP-REF")
     else:  # AR4
         assoc_refs = ea.get_child(ecu_elem, "ASSOCIATED-COM-I-PDU-GROUP-REFS")
         assoc = ea.follow_all_ref(assoc_refs, "ASSOCIATED-COM-I-PDU-GROUP-REF")
@@ -1498,7 +1502,7 @@ def process_ecu(ecu_elem, db, ea, multiplex_translation):
         pdu_refs = ea.get_child(ref, "I-PDU-REFS")
         if pdu_refs is not None:  # AR3
             # local defined pdus
-            pdus = ea.get_children(pdu_refs, "I-PDU")
+            pdus = ea.follow_all_ref(pdu_refs, "I-PDU-REF")
             for pdu in pdus:
                 if pdu in pdu_frame_mapping:
                     if direction.text == "IN":
@@ -1601,7 +1605,7 @@ def extract_cm_from_ecuc(com_module, ea):
             db.add_frame(frame)
             all_references = ea.get_children(container, "ECUC-REFERENCE-VALUE")
             for reference in all_references:
-                value = ea.get_child(reference, "VALUE")
+                value = ea.follow_ref(reference, "VALUE-REF")
                 if value is not None:
                     signal_definition = value.find('./' + ea.ns + "DEFINITION-REF")
                     if signal_definition.text.endswith("ComSignal"):
@@ -1746,7 +1750,7 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         else:
             isignal_triggerings = ea.find_children_by_path(physical_channel, "I-SIGNAL-TRIGGERING")
             for sig_trig in isignal_triggerings:
-                isignal = ea.get_child(sig_trig, 'SIGNAL')
+                isignal = ea.follow_ref(sig_trig, 'SIGNAL-REF')
                 if isignal is None:
                     isignal = ea.follow_ref(sig_trig, 'I-SIGNAL-REF')
                 if isignal is None:
