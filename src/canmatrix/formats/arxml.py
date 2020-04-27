@@ -1305,7 +1305,7 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
             get_signals(pdu_sig_mapping, target_frame, ea, header_id, float_factory, bit_offset=header_length)
             new_signals = []
             for signal in target_frame:
-                if signal.name not in singnals_grouped and signal.name is not "Header_ID" and signal.name is not "Header_DLC":
+                if signal.name not in singnals_grouped and signal.name != "Header_ID" and signal.name != "Header_DLC":
                     new_signals.append(signal.name)
             target_frame.add_signal_group("HEARDER_ID_" + str(header_id), signal_group_id, new_signals)
             singnals_grouped += new_signals
