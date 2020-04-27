@@ -344,7 +344,11 @@ class Signal(object):
             if self.is_float
             else int
         )
-        rawRange = 2 ** (self.size - (1 if self.is_signed else 0))
+        size_to_calc = self.size if self.size <= 128 else 128
+        if size_to_calc != self.size:
+            logger.info("max calculation for {} not possible using 128 as base for max value".format(self.size))
+        rawRange = 2 ** (size_to_calc - (1 if self.is_signed else 0))
+
         return (
             factory(-rawRange if self.is_signed else 0),
             factory(rawRange - 1),
