@@ -8,13 +8,13 @@ matrix:
       env: TOXENV=dist
     - python: 2.7
     - python: pypy
-    - python: 3.4
     - python: 3.5
     - python: pypy3.5
     - python: 3.6
     - python: 3.7
       dist: xenial
       sudo: true
+    - python: 3.8
     - python: 2.7
       env: TOXENV=old_tests
     - python: 3.7
