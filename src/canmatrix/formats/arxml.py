@@ -1006,7 +1006,6 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         isignal = ea.follow_ref(signal, "SIGNAL-REF")
         if isignal is None:
-            #isignal = ea.get_child(signal, "I-SIGNAL")
             isignal = ea.follow_ref(signal, "I-SIGNAL-REF")
 
         if isignal is None:
@@ -1370,9 +1369,9 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
 
     if frame_elem is not None:
         dlc_elem = ea.get_child(frame_elem, "FRAME-LENGTH")
-        pdu_mappings = ea.get_child(frame_elem, "PDU-TO-FRAME-MAPPINGS")
-        pdu_mapping = ea.get_child(pdu_mappings, "PDU-TO-FRAME-MAPPING")
-        pdu = ea.follow_ref(pdu_mapping, "PDU-REF")  # SIGNAL-I-PDU
+       # pdu_mapping = ea.get_child(frame_elem, "PDU-TO-FRAME-MAPPING")
+       # pdu = ea.follow_ref(pdu_mapping, "PDU-REF")  # SIGNAL-I-PDU
+        pdu = ea.follow_ref(frame_elem, "PDU-REF")  # SIGNAL-I-PDU
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
             payload = ea.follow_ref(pdu, "PAYLOAD-REF")
@@ -1388,9 +1387,8 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF", frame_name_elem.text)
-        ipdu_triggering_refs = ea.get_child(frame_triggering, "I-PDU-TRIGGERING-REFS")
-        ipdu_triggering = ea.get_child(ipdu_triggering_refs, "I-PDU-TRIGGERING")
-        pdu = ea.get_child(ipdu_triggering, "I-PDU")
+        ipdu_triggering = ea.follow_ref(frame_triggering, "I-PDU-TRIGGERING-REF")
+        pdu = ea.follow_ref(ipdu_triggering, "I-PDU-REF")
         if pdu is None:
             pdu = ea.get_child(ipdu_triggering, "I-SIGNAL-I-PDU")  # AR4.2
         dlc_elem = ea.get_child(pdu, "LENGTH")
@@ -1747,7 +1745,7 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         if ignore_cluster_info is True:
             pass
             # no support for signal direction
-        else:
+        else:  # find signal senders/receivers...
             isignal_triggerings = ea.find_children_by_path(physical_channel, "I-SIGNAL-TRIGGERING")
             for sig_trig in isignal_triggerings:
                 isignal = ea.follow_ref(sig_trig, 'SIGNAL-REF')
