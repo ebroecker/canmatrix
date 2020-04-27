@@ -937,7 +937,7 @@ def decode_compu_method(compu_method, ea, float_factory):
         # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
         # keyword definition. 06Jun16
         #####################################################################################################
-        if ll is not None and desc is not None and int(float_factory(ul.text)) == int(float_factory(ll.text)):
+        if ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text) == canmatrix.utils.decode_number(ll.text):
             #####################################################################################################
             #####################################################################################################
             values[ll.text] = desc
@@ -1211,7 +1211,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 new_signal.initial_value = float_factory(initvalue.text)
 
             for key, value in list(values.items()):
-                new_signal.add_values(key, value)
+                new_signal.add_values(canmatrix.utils.decode_number(key), value)
             if signal_name is not None:
                 new_signal.add_attribute("LongName", signal_name)
             frame.add_signal(new_signal)

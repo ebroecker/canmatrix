@@ -37,9 +37,9 @@ import canmatrix
 def dump(db, f, **options):
     # type: (canmatrix.CanMatrix, typing.BinaryIO, **str) -> None
 
-    export_canard = options.get('jsonCanard', False)
+    export_canard = options.get('jsonExportCanard', False)
     motorola_bit_format = options.get('jsonMotorolaBitFormat', "lsb")
-    export_all = options.get('jsonAll', False)
+    export_all = options.get('jsonExportAll', False)
     native_types = options.get('jsonNativeTypes', False)
     number_converter = float if native_types else str
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
