@@ -155,6 +155,8 @@ class Signal(object):
 
     mux_value = attr.ib(default=None)
     is_float = attr.ib(default=False)  # type: bool
+    is_ascii = attr.ib(default=False)  # type: bool
+    type_label = attr.ib(default="")
     enumeration = attr.ib(default=None)  # type: typing.Optional[str]
     comments = attr.ib(factory=dict)  # type: typing.MutableMapping[int, str]
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]

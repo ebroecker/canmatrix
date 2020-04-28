@@ -2,6 +2,7 @@
 import io
 import sys
 import textwrap
+from itertools import chain
 
 import pytest
 
@@ -218,3 +219,101 @@ Title="An Example Title"
         assert matrix.value_tables == enum_dict, "Enum not parsed correctly : '{}'".format(enum_label)
         f_out = io.BytesIO()
         canmatrix.formats.sym.dump(matrix, f_out)
+
+
+def test_types_read():
+    f = io.BytesIO('''\
+FormatVersion=5.0 // Do not edit this line!
+Title="Types Test"
+
+{ENUMS}
+enum EnumAnimals(0="Cat", // An enum value for cats
+  1="Dog", // An enum value for dogs
+  2="Horse", 3="Monkey", 
+  4="Lion")// An enum with a comment for the final value
+
+{SENDRECEIVE}
+
+[SymbolLengths]
+ID=000h
+DLC=8
+Var="1Bit" unsigned 0,1
+Var="3Bits" unsigned 1,3
+Var="4Bits" unsigned 4,4
+Var="21Bits" unsigned 8,21
+Var="6Bits" unsigned 29,6
+Var="29Bits" unsigned 35,29
+
+[SymbolTypes]
+ID=001h
+DLC=8
+Var=Bit bit 0,1
+Var=Char char 1,8
+Var=String string 16,16
+Var=Signed signed 32,4
+Var=Unsigned unsigned 36,4
+'''  # Var=Enum EnumAnimals 40,4
+                   '''
+Var=Raw raw 48,16
+
+[SymbolDouble]
+ID=002h
+DLC=8
+Var=Double double 0,64	// Must be 8 Bytes according to PCAN Symbol Editor V5
+
+[SymbolFloat]
+ID=003h
+DLC=4
+Var=Float float 0,32	// Must be 4 Bytes according to PCAN Symbol Editor V5
+'''.encode('utf-8'),
+                   )
+    matrix = canmatrix.formats.sym.load(f)
+    # Check no errors loading the matrix
+    assert matrix.load_errors == []
+
+    f_out = io.BytesIO()
+    canmatrix.formats.sym.dump(matrix, f_out)
+    f_out_bytes = f_out.getvalue()
+    f_out_string = f_out_bytes.decode("utf-8")
+
+    # Check that types are preserved when saving back to .SYM format
+    assert "Var=Bit bit" in f_out_string
+    assert "Var=Char char" in f_out_string
+    assert "Var=String string" in f_out_string
+    assert "Var=Signed signed" in f_out_string
+    assert 'Var="21Bits" unsigned' in f_out_string
+    assert 'Var=Float float' in f_out_string
+    assert 'Var=Double double' in f_out_string
+
+    # Read matrix back in to check all symbols/frames preserved
+    f_in = io.BytesIO(f_out_bytes)
+    new_matrix = canmatrix.formats.sym.load(f_in)
+
+    # Check no errors loading the matrix
+    assert new_matrix.load_errors == []
+
+    # Check that both matrices have the same Frames
+    frames = [f.name for f in matrix.frames]
+    new_frames = [f.name for f in new_matrix.frames]
+    assert sorted(frames) == sorted(new_frames)
+
+    # Check that both matrices have the same signals, and that all the expected signals are present
+    signals = chain(*[[s.name for s in frame.signals] for frame in matrix.frames])
+    new_signals = chain(*[[s.name for s in frame.signals] for frame in new_matrix.frames])
+    assert sorted(signals) == sorted(new_signals) == sorted([
+                                                            "1Bit",
+                                                            "3Bits",
+                                                            "4Bits",
+                                                            "21Bits",
+                                                            "6Bits",
+                                                            "29Bits",
+                                                            "Bit",
+                                                            "Char",
+                                                            "String",
+                                                            "Signed",
+                                                            "Unsigned",
+                                                            "Raw",
+                                                            "Double",
+                                                            "Float", ])
+
+
