@@ -104,7 +104,12 @@ def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) 
     global enums
     global enum_dict
     output = ""
-    if signal.name.isidentifier():
+    if sys.version_info > (3, 0):
+        quote_name = signal.name.isidentifier()
+    else:
+        from future.utils import isidentifier
+        quote_name = isidentifier(signal.name)
+    if quote_name:
         output += "Var=%s " % signal.name
     else:
         output += 'Var="%s" ' % signal.name
@@ -435,10 +440,6 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         is_signed = False
 
                         type_label = temp_array[1]
-
-                        if not type_label.isidentifier():
-                            print(type_label)
-                            print()
 
                         if type_label == 'unsigned':
                             pass
