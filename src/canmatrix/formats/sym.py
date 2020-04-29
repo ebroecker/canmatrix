@@ -105,14 +105,14 @@ def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) 
     global enum_dict
     output = ""
     if sys.version_info > (3, 0):
-        quote_name = signal.name.isidentifier()
+        quote_name = not signal.name.isidentifier()
     else:
         from future.utils import isidentifier
-        quote_name = isidentifier(signal.name)
+        quote_name = not isidentifier(signal.name)
     if quote_name:
-        output += "Var=%s " % signal.name
-    else:
         output += 'Var="%s" ' % signal.name
+    else:
+        output += "Var=%s " % signal.name
     if signal.type_label:
         output += signal.type_label + " "
     else:
