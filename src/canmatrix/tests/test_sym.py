@@ -212,13 +212,49 @@ Title="An Example Title"
 {{ENUMS}}
 {}
 '''.format(enum_str).encode('utf-8'),
-        )
+    )
 
         matrix = canmatrix.formats.sym.load(f)
         assert matrix.load_errors == [], "Failed to load canmatrix, when testing enum case : '{}'".format(enum_label)
         assert matrix.value_tables == enum_dict, "Enum not parsed correctly : '{}'".format(enum_label)
-        f_out = io.BytesIO()
-        canmatrix.formats.sym.dump(matrix, f_out)
+
+
+def test_enums_export():
+    f = io.BytesIO('''\
+FormatVersion=5.0 // Do not edit this line!
+Title="An Example Title"
+
+{ENUMS}
+enum Animal(0="Dog",1="Cat",2="Fox")
+
+{SENDRECEIVE}
+
+[Frame1]
+ID=000h
+DLC=8
+Var=Signal1 unsigned 0,16
+'''.encode('utf-8'),
+    )
+
+    matrix = canmatrix.formats.sym.load(f)
+    assert matrix.load_errors == [], "Failed to load canmatrix"
+
+    # Add an enum to Signal1
+    matrix.frame_by_name("Frame1").signal_by_name("Signal1").enumeration = "Plants"
+    matrix.frame_by_name("Frame1").signal_by_name("Signal1").values = {0: "Grass", 1: "Flower", 2: "Tree"}
+
+    # Export and reimport
+    f_out = io.BytesIO()
+    canmatrix.formats.sym.dump(matrix, f_out)
+    f_in = io.BytesIO(f_out.getvalue())
+    new_matrix = canmatrix.formats.sym.load(f_in)
+
+    # Check that Enums from Enums table exported and reimported correctly
+    assert new_matrix.value_tables["Animal"] == {0: "Dog", 1: "Cat", 2: "Fox"}
+
+    # Check that Enums from a Signal.Values property exported and reimported correctly
+    assert new_matrix.value_tables["Plants"] == {0: "Grass", 1: "Flower", 2: "Tree"}
+
 
 
 def test_types_read():

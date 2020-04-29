@@ -38,8 +38,6 @@ import canmatrix
 import canmatrix.utils
 
 logger = logging.getLogger(__name__)
-enum_dict = {}  # type: typing.Dict[str, str]
-enums = "{ENUMS}\n"
 
 
 def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
@@ -101,8 +99,6 @@ def format_float(f):  # type: (typing.Any) -> str
 
 
 def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) -> str
-    global enums
-    global enum_dict
     output = ""
     if sys.version_info > (3, 0):
         quote_name = not signal.name.isidentifier()
@@ -159,12 +155,7 @@ def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) 
             val_tab_name = signal.name
 
         output += "/e:%s " % val_tab_name
-        if val_tab_name not in enum_dict:
-            enum_dict[val_tab_name] = "enum " + val_tab_name + "(" + ', '.join(
-                '%s="%s"' %
-                (key, val) for (
-                    key, val) in sorted(
-                    signal.values.items())) + ")"
+
 
     default = signal.initial_value  # type: ignore
     min_ok = signal.min is None or default >= signal.min
@@ -182,17 +173,31 @@ def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) 
     output += "\n"
     return output
 
+def create_enum_from_signal_values(signal):
+    enum_dict = {}
+    if len(signal.values) > 0:
+        val_tab_name = signal.enumeration
+        if val_tab_name is None:
+            val_tab_name = signal.name
+
+        if val_tab_name not in enum_dict:
+            enum_dict[val_tab_name] = "enum " + val_tab_name + "(" + ', '.join(
+                '%s="%s"' %
+                (key, val) for (
+                    key, val) in sorted(
+                    signal.values.items())) + ")"
+    return enum_dict
 
 def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
     """
     export canmatrix-object as .sym file (compatible to PEAK-Systems)
     """
-    global enum_dict
-    global enums
     sym_encoding = options.get('symExportEncoding', 'iso-8859-1')
     ignore_encoding_errors = options.get("ignoreExportEncodingErrors", "")
 
     enum_dict = {}
+    for enum_name, enum_values in db.value_tables.items():
+        enum_dict[enum_name] = "enum {}({})".format(enum_name, ', '.join('{}="{}"'.format(*items) for items in sorted(enum_values.items())))
     enums = "{ENUMS}\n"
 
     header = """\
@@ -308,6 +313,7 @@ Title=\"{}\"
                     output += "CycleTime=" + str(frame.effective_cycle_time) + "\n"
                 for signal in frame.signals:
                     output += create_signal(db, signal)
+                    enum_dict.update(create_enum_from_signal_values(signal))
                 output += "\n"
     enums += '\n'.join(sorted(enum_dict.values()))
     # write output file
