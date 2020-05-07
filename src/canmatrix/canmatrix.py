@@ -35,6 +35,7 @@ import logging
 import math
 import struct
 import typing
+import warnings
 from builtins import *
 
 import attr
@@ -582,17 +583,25 @@ def pack_bitstring(length, is_float, value, signed):
     return bitstring
 
 
-@attr.s(cmp=False)
+@attr.s
 class ArbitrationId(object):
     standard_id_mask = ((1 << 11) - 1)
     extended_id_mask = ((1 << 29) - 1)
     compound_extended_mask = (1 << 31)
 
     id = attr.ib(default=None)
-    extended = attr.ib(default=None)
+    extended = attr.ib(default=False)  # type: bool
 
     def __attrs_post_init__(self):
-        if self.extended is None or self.extended:
+        if self.extended is None:
+            # Mimicking old behaviour for now -- remove in the future
+            self.extended = True
+            warnings.warn(
+                "Please set 'extended' attribute as a boolean instead of "
+                "None when creating an instance of ArbitrationId class",
+                DeprecationWarning
+            )
+        if self.extended:
             mask = self.extended_id_mask
         else:
             mask = self.standard_id_mask
@@ -722,16 +731,6 @@ class ArbitrationId(object):
             return self.id | self.compound_extended_mask
         else:
             return self.id
-
-    def __eq__(self, other):
-        return (
-            self.id == other.id
-            and (
-                self.extended is None
-                or other.extended is None
-                or self.extended == other.extended
-            )
-        )
 
 
 @attr.s(cmp=False)
