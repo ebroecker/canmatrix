@@ -69,7 +69,7 @@ def copy_ecu(ecu_or_glob, source_db, target_db):
                     target_db.ecu_defines[attribute].update()
 
 
-def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True):
+def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True, direct_ecu_only=True):
     # type: (typing.Union[canmatrix.Ecu, str], canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
     """
     Copy ECU(s) identified by Name or as Object from source CAN matrix to target CAN matrix.
@@ -78,6 +78,8 @@ def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True):
     :param ecu_or_glob: Ecu instance or glob pattern for Ecu name
     :param source_db: Source CAN matrix
     :param target_db: Destination CAN matrix
+    :param rx: copy rx-Frames (default: True)
+    :param tx: copy tx-Frames (default: True)
     """
     # check whether ecu_or_glob is object or symbolic name
     if isinstance(ecu_or_glob, canmatrix.Ecu):
@@ -103,6 +105,21 @@ def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True):
                         copy_frame(frame.arbitration_id, source_db, target_db)
                         break
 
+    target_db.update_ecu_list()
+
+    if direct_ecu_only:
+        # delete ecu-names if not direct in communication to ecu
+        ecus_to_delete = []
+        for ecu in target_db.ecus:
+            if ecu not in ecu_list:  # ecu is not a wanted ecu
+                found = False
+                for frame in target_db.frames:
+                    if ecu.name in frame.transmitters:
+                        found = True  # ecu is a sender of a received frame
+                if not found:
+                    ecus_to_delete.append(ecu)
+        for ecu in ecus_to_delete:
+            target_db.del_ecu(ecu)
 
 def copy_signal(signal_glob, source_db, target_db):
     # type: (str, canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
