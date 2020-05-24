@@ -440,6 +440,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
                     is_float = False
                     is_ascii = False
+                    enumeration = None
                     if index_offset != 1:
                         is_signed = True
                     else:
@@ -459,7 +460,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             is_float = True
                         elif type_label in ['char', 'string']:
                             is_ascii = True
-                            pass
+                        elif type_label in db.value_tables.keys():
+                            enumeration = type_label
                         else:
                             raise ValueError('Unknown type \'{}\' found'.format(type_label))
 
@@ -582,6 +584,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             multiplex=multiplexor,
                             comment=comment,
                             type_label=type_label,
+                            enumeration=enumeration,
                             **extras)
                         if min_value is not None:
                             signal.min = float_factory(min_value)

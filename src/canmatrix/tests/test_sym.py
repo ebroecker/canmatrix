@@ -288,8 +288,8 @@ Var=Char char 1,8
 Var=String string 16,16
 Var=Signed signed 32,4
 Var=Unsigned unsigned 36,4
-'''  # Var=Enum EnumAnimals 40,4
-                   '''
+Var=Enum EnumAnimals 40,4
+
 Var=Raw raw 48,16
 
 [SymbolDouble]
@@ -348,6 +348,7 @@ Var=Float float 0,32	// Must be 4 Bytes according to PCAN Symbol Editor V5
                                                             "String",
                                                             "Signed",
                                                             "Unsigned",
+                                                            "Enum",
                                                             "Raw",
                                                             "Double",
                                                             "Float", ])
