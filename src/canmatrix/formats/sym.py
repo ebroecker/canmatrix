@@ -302,6 +302,7 @@ Title=\"{}\"
                         for signal in frame.signals:
                             if signal.multiplex == i or signal.multiplex is None:
                                 mux_out += create_signal(db, signal)
+                                enum_dict.update(create_enum_from_signal_values(signal))
                         output += mux_out + "\n"
 
             else:
