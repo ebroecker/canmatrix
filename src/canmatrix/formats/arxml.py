@@ -1041,7 +1041,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         if system_signal is None:
             logger.debug('Frame %s, signal %s has no system-signal', frame.name, isignal.tag)
 
-        if "SYSTEM-SIGNAL-GROUP" in system_signal.tag:
+        if system_signal is not None and "SYSTEM-SIGNAL-GROUP" in system_signal.tag:
             system_signals = ea.find_children_by_path(system_signal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL")
             get_sys_signals(system_signal, system_signals, frame, group_id, ns)
             group_id = group_id + 1
@@ -1168,6 +1168,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         if name is None:
             logger.debug('no name for signal given')
+            name = ea.get_child(isignal, "SHORT-NAME")
         if start_bit is None:
             logger.debug('no startBit for signal given')
         if length is None:
@@ -1255,8 +1256,7 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
         ipdu = ea.get_child(alternative, "I-PDU")
         multiplex_translation[ea.get_element_name(ipdu)] = ea.get_element_name(pdu)
         if ipdu is not None:
-            pdu_sig_mappings = ea.get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS")
-            pdu_sig_mapping = ea.get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING")
+            pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
             get_signals(pdu_sig_mapping, target_frame, ea, selector_id.text, float_factory)
 
 
