@@ -78,7 +78,6 @@ class Earxml:
     def __init__(self, use_ar_xpath):
         self.xml_element_cache = dict()  # type: typing.Dict[str, _Element]
         self.use_ar_xpath = use_ar_xpath
-        self.xml_element_cache = {}
 
     def open(self, filename):
         self.tree = lxml.etree.parse(filename)
@@ -87,6 +86,7 @@ class Earxml:
 
         self.ns = "{" + self.tree.xpath('namespace-uri(.)') + "}"  # type: str
         self.nsp = self.tree.xpath('namespace-uri(.)')
+
     def findall(self, xpath, start_element=None):
         if start_element is None:
             start_element = self.root
@@ -113,12 +113,17 @@ class Earxml:
         return xpath
 
     def get_short_name_path(self, shortname_path):
+        if shortname_path in self.xml_element_cache:
+            return self.xml_element_cache[shortname_path]
+
         if self.use_ar_xpath:
             namespace_map = {'A': self.ns[1:-1]}
             base_xpath = self.ar_path_to_x_path(shortname_path)
             temp = self.tree.xpath(base_xpath, namespaces=namespace_map)
             if len(temp) > 0:
+                self.xml_element_cache[shortname_path] = temp[0]
                 return temp[0]
+            self.xml_element_cache[shortname_path] = temp[0]
             return temp
         else:
             return self.get_shortname_path_from_artree(shortname_path)
@@ -1013,7 +1018,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             if isignal is not None:
                 logger.debug("get_signals: found I-SIGNAL-GROUP ")
 
-                isignal_array = ea.find_children_by_path(isignal, "I-SIGNAL")
+                isignal_array = ea.follow_ref(isignal, "I-SIGNAL-REF")
                 system_signal_array = [ea.follow_ref(isignal, "SYSTEM-SIGNAL-REF") for isignal in isignal_array]
                 system_signal_group = ea.follow_ref(isignal, "SYSTEM-SIGNAL-GROUP-REF")
                 get_sys_signals(system_signal_group, system_signal_array, frame, group_id, ea)
@@ -1252,7 +1257,7 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
     dynamic_part_alternative_list = ea.get_children(dynamic_part_alternatives, "DYNAMIC-PART-ALTERNATIVE")
     for alternative in dynamic_part_alternative_list:
         selector_id = ea.get_child(alternative, "SELECTOR-FIELD-CODE")
-        ipdu = ea.get_child(alternative, "I-PDU")
+        ipdu = ea.follow_ref(alternative, "I-PDU-REF")
         multiplex_translation[ea.get_element_name(ipdu)] = ea.get_element_name(pdu)
         if ipdu is not None:
             pdu_sig_mappings = ea.get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS")
@@ -1277,9 +1282,8 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
                                                  is_little_endian=True))
         target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=True))
     else:
-        raise("header " + header_type + " not supported for containers yet")
-        # none type
-        # TODO
+        header_length = 0
+       
 
     for cpdu in pdus:
         ipdu = ea.follow_ref(cpdu, "I-PDU-REF")
@@ -1290,14 +1294,18 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
                 header_id = ea.get_child(ipdu, "HEADER-ID-LONG-HEADER").text
             else:
                 # none type
+                header_id = None
                 pass
         except AttributeError:
-            header_id = "0"
-        if header_id.startswith("0x"):
-            header_id = int(header_id, 16)
-        else:
-            header_id = int(header_id)
+            header_id = None
+        if header_id is not None:
+            if header_id.startswith("0x"):
+                header_id = int(header_id, 16)
+            else:
+                header_id = int(header_id)
 
+        if header_id == 3739136:
+            print ("BEEP")
         # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
         # TODO
@@ -1307,7 +1315,10 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
             for signal in target_frame:
                 if signal.name not in singnals_grouped and signal.name != "Header_ID" and signal.name != "Header_DLC":
                     new_signals.append(signal.name)
-            target_frame.add_signal_group("HEARDER_ID_" + str(header_id), signal_group_id, new_signals)
+            if header_id is None:
+                target_frame.add_signal_group(ea.get_short_name(ipdu), signal_group_id, new_signals)
+            else:
+                target_frame.add_signal_group("HEARDER_ID_" + str(header_id), signal_group_id, new_signals)
             singnals_grouped += new_signals
             signal_group_id += 1
 
@@ -1372,6 +1383,10 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
        # pdu_mapping = ea.get_child(frame_elem, "PDU-TO-FRAME-MAPPING")
        # pdu = ea.follow_ref(pdu_mapping, "PDU-REF")  # SIGNAL-I-PDU
         pdu = ea.follow_ref(frame_elem, "PDU-REF")  # SIGNAL-I-PDU
+
+     #   sn = get_child(pdu, "SHORT-NAME", root_or_cache, ns)
+     #   if "BMS_ENERGY_Container_ST3" in sn.text:
+     #       print("BEEP")
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
             payload = ea.follow_ref(pdu, "PAYLOAD-REF")
