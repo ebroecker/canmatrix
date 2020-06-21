@@ -996,6 +996,10 @@ def eval_type_of_signal(type_encoding, base_type, ea):
         is_signed = False  # signed
     return is_signed, is_float
 
+def ar_byteorder_is_little(in_string):
+    if in_string == 'MOST-SIGNIFICANT-BYTE-LAST':
+        return True
+    return False
 
 def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0):
     # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, str, _MultiplexId, typing.Callable, int) -> None
@@ -1166,8 +1170,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         is_little_endian = False
         if motorola is not None:
-            if motorola.text == 'MOST-SIGNIFICANT-BYTE-LAST':
-                is_little_endian = True
+            is_little_endian = ar_byteorder_is_little(motorola.text)
         else:
             logger.debug('no name byte order for signal' + name.text)
 
@@ -1226,9 +1229,9 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
     selector_byte_order = ea.get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER")
     selector_len = ea.get_child(pdu, "SELECTOR-FIELD-LENGTH")
     selector_start = ea.get_child(pdu, "SELECTOR-FIELD-START-POSITION")
-    is_little_endian = False
-    if selector_byte_order.text == 'MOST-SIGNIFICANT-BYTE-LAST':
-        is_little_endian = True
+
+    is_little_endian = ar_byteorder_is_little(selector_byte_order.text)
+
     is_signed = False  # unsigned
     multiplexor = canmatrix.Signal(
         "Multiplexor",
@@ -1264,23 +1267,44 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
             pdu_sig_mapping = ea.get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING")
             get_signals(pdu_sig_mapping, target_frame, ea, selector_id.text, float_factory)
 
+def containters_are_little_endian(ea):
+    container_i_pdu_header_byte_orders = ea.findall("CONTAINER-I-PDU-HEADER-BYTE-ORDER")
+    if len(container_i_pdu_header_byte_orders) > 0:
+        return ar_byteorder_is_little(container_i_pdu_header_byte_orders[0].text)
+
 
 def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
+    headers_are_littleendian = containters_are_little_endian(ea)
     target_frame.is_fd = True
     #pdus = ea.get_children(pdu, "CONTAINED-PDU-TRIGGERING")
     pdus = ea.follow_all_ref(pdu, "CONTAINED-PDU-TRIGGERING-REF")
     signal_group_id = 1
     singnals_grouped = []  # type: typing.List[str]
     header_type = ea.get_child(pdu, "HEADER-TYPE").text
+
+
     if header_type == "SHORT-HEADER":
+        if headers_are_littleendian:
+            target_frame.add_signal(
+                canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor",
+                                 is_little_endian=True))
+            target_frame.add_signal(canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=True))
+        else:
+            target_frame.add_signal(
+                canmatrix.Signal(start_bit=target_frame.size*8-24, size=24, name="Header_ID", multiplex="Multiplexor",
+                                 is_little_endian=False))
+            target_frame.add_signal(canmatrix.Signal(start_bit=target_frame.size*8-24-8, size=8, name="Header_DLC", is_little_endian=False))
         header_length = 32
-        target_frame.add_signal(canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor", is_little_endian=True))
-        target_frame.add_signal(canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=True))
+
     elif header_type == "LONG-HEADER":
+        if headers_are_littleendian:
+            target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor", is_little_endian=True))
+            target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=True))
+        else:
+            target_frame.add_signal(canmatrix.Signal(start_bit=target_frame.size*8-32, size=32, name="Header_ID", multiplex="Multiplexor",
+                                                     is_little_endian=False))
+            target_frame.add_signal(canmatrix.Signal(start_bit=target_frame.size*8-32-32, size=32, name="Header_DLC", is_little_endian=False))
         header_length = 64
-        target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor",
-                                                 is_little_endian=True))
-        target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=True))
     else:
         header_length = 0
        
@@ -1304,8 +1328,11 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
             else:
                 header_id = int(header_id)
 
-        if header_id == 3739136:
-            print ("BEEP")
+        if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
+            payload = ea.follow_ref(pdu, "PAYLOAD-REF")
+            ipdu = ea.follow_ref(payload, "I-PDU-REF")
+
+
         # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
         # TODO
