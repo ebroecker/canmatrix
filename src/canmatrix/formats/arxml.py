@@ -1329,7 +1329,7 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
                 header_id = int(header_id)
 
         if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
-            payload = ea.follow_ref(pdu, "PAYLOAD-REF")
+            payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
             ipdu = ea.follow_ref(payload, "I-PDU-REF")
 
 
@@ -1345,7 +1345,10 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
             if header_id is None:
                 target_frame.add_signal_group(ea.get_short_name(ipdu), signal_group_id, new_signals)
             else:
-                target_frame.add_signal_group("HEARDER_ID_" + str(header_id), signal_group_id, new_signals)
+                sg_group_name =  ea.get_short_name(ipdu)
+                if len(sg_group_name) == 0:
+                    sg_group_name = "HEARDER_ID_" + str(header_id)
+                target_frame.add_signal_group(sg_group_name, signal_group_id, new_signals)
             singnals_grouped += new_signals
             signal_group_id += 1
 
@@ -1396,6 +1399,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
     is_fd_elem = ea.get_child(frame_triggering, "CAN-FD-FRAME-SUPPORT")
 
     arb_id = ea.get_child(frame_triggering, "IDENTIFIER")
+
     frame_elem = ea.follow_ref(frame_triggering, "FRAME-REF")
 
     frame_name_elem = ea.get_child(frame_triggering, "SHORT-NAME")
@@ -1820,8 +1824,9 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
 
             db.add_ecu(ecu)
 
-        if 0:
-        #for frame in db.frames:
+        #if 0:
+        #TODO
+        for frame in db.frames:
             sig_value_hash = dict()
             for sig in frame.signals:
                 try:
