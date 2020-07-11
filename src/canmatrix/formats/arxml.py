@@ -1284,16 +1284,19 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
 
 
     if header_type == "SHORT-HEADER":
-        if headers_are_littleendian:
+        if headers_are_littleendian:  # INTEL
             target_frame.add_signal(
                 canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor",
                                  is_little_endian=True))
             target_frame.add_signal(canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=True))
-        else:
-            target_frame.add_signal(
-                canmatrix.Signal(start_bit=target_frame.size*8-24, size=24, name="Header_ID", multiplex="Multiplexor",
-                                 is_little_endian=False))
-            target_frame.add_signal(canmatrix.Signal(start_bit=target_frame.size*8-24-8, size=8, name="Header_DLC", is_little_endian=False))
+        else:  # Motorola
+            header_id_signal= canmatrix.Signal(start_bit=target_frame.size*8-24, size=24, name="Header_ID", multiplex="Multiplexor",
+                                 is_little_endian=False)
+            header_id_signal.set_startbit(target_frame.size*8-24, bitNumbering=1)
+            target_frame.add_signal(header_id_signal)
+            header_dlc_signal = canmatrix.Signal(start_bit=target_frame.size*8-24-8, size=8, name="Header_DLC", is_little_endian=False)
+            header_dlc_signal.set_startbit(target_frame.size*8-24, bitNumbering=1)
+            target_frame.add_signal(header_dlc_signal)
         header_length = 32
 
     elif header_type == "LONG-HEADER":
