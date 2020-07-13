@@ -1292,10 +1292,8 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
         else:  # Motorola
             header_id_signal= canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor",
                                  is_little_endian=False)
-    #        header_id_signal.set_startbit(0)
             target_frame.add_signal(header_id_signal)
-            header_dlc_signal = canmatrix.Signal(start_bit=32, size=8, name="Header_DLC", is_little_endian=False)
-   #         header_dlc_signal.set_startbit(32)
+            header_dlc_signal = canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=False)
             target_frame.add_signal(header_dlc_signal)
         header_length = 32
 
@@ -1304,9 +1302,9 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
             target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor", is_little_endian=True))
             target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=True))
         else:
-            target_frame.add_signal(canmatrix.Signal(start_bit=target_frame.size*8-32, size=32, name="Header_ID", multiplex="Multiplexor",
+            target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor",
                                                      is_little_endian=False))
-            target_frame.add_signal(canmatrix.Signal(start_bit=target_frame.size*8-32-32, size=32, name="Header_DLC", is_little_endian=False))
+            target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=False))
         header_length = 64
     else:
         header_length = 0
