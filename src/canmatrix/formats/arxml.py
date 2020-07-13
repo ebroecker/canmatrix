@@ -928,6 +928,9 @@ def decode_compu_method(compu_method, ea, float_factory):
     values = {}
     factor = float_factory(1.0)
     offset = float_factory(0)
+    if compu_method is None:
+        return values, factor, offset, None, None
+
     unit = ea.follow_ref(compu_method, "UNIT-REF")
     const = None
     compu_scales = ea.find_children_by_path(compu_method, "COMPU-INTERNAL-TO-PHYS/COMPU-SCALES/COMPU-SCALE")
@@ -1052,7 +1055,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         if "SYSTEM-SIGNAL-GROUP" in system_signal.tag:
             system_signals = ea.find_children_by_path(system_signal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL")
-            get_sys_signals(system_signal, system_signals, frame, group_id, ns)
+            get_sys_signals(system_signal, system_signals, frame, group_id, ea.ns)
             group_id = group_id + 1
             continue
 
@@ -1101,7 +1104,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         datdefprops = ea.get_child(datatype, "SW-DATA-DEF-PROPS")
 
-        if compu_method is None:
+        if compu_method is None and datdefprops is not None:
             compu_method = ea.follow_ref(datdefprops, "COMPU-METHOD-REF")
         if compu_method is None:  # AR4
             compu_method = ea.get_child(isignal, "COMPU-METHOD")
