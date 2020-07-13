@@ -1292,10 +1292,10 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
         else:  # Motorola
             header_id_signal= canmatrix.Signal(start_bit=target_frame.size*8-24, size=24, name="Header_ID", multiplex="Multiplexor",
                                  is_little_endian=False)
-            header_id_signal.set_startbit(target_frame.size*8-24, bitNumbering=1)
+            header_id_signal.set_startbit(target_frame.size*8-24)
             target_frame.add_signal(header_id_signal)
             header_dlc_signal = canmatrix.Signal(start_bit=target_frame.size*8-24-8, size=8, name="Header_DLC", is_little_endian=False)
-            header_dlc_signal.set_startbit(target_frame.size*8-24, bitNumbering=1)
+            header_dlc_signal.set_startbit(target_frame.size*8-32)
             target_frame.add_signal(header_dlc_signal)
         header_length = 32
 
