@@ -1107,7 +1107,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         if compu_method is None and datdefprops is not None:
             compu_method = ea.follow_ref(datdefprops, "COMPU-METHOD-REF")
         if compu_method is None:  # AR4
-            compu_method = ea.get_child(isignal, "COMPU-METHOD")
+            compu_method = ea.follow_ref(isignal, "COMPU-METHOD-REF")
             base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")
             encoding = ea.get_child(base_type, "BASE-TYPE-ENCODING")
             if encoding is not None and encoding.text == "IEEE754":
@@ -1128,7 +1128,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         #####################################################################################################
         if compu_method is None:
             logger.debug('No Compmethod found!! - fuzzy search in syssignal.')
-            compu_method = ea.get_child(system_signal, "COMPU-METHOD")
+            compu_method = ea.follow_ref(system_signal, "COMPU-METHOD-REF")
 
         # decode compuMethod:
         (values, factor, offset, unit_elem, const) = decode_compu_method(compu_method, ea, float_factory)
@@ -1664,25 +1664,51 @@ def extract_cm_from_ecuc(com_module, ea):
 
 def decode_ethernet_helper(ea, float_factory):
     found_matrixes = {}
+
+    socket_connetions = ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER")
+    pdu_triggering_header_id_map = {}
+    # network_endpoints = pc.findall('.//' + ns + "NETWORK-ENDPOINT")
+    for socket_connetion in socket_connetions:
+        header_id = ea.get_child(socket_connetion, "HEADER-ID")
+        ipdu_triggering = ea.follow_ref(socket_connetion, "PDU-TRIGGERING-REF")
+        try:
+            pdu_triggering_header_id_map[ipdu_triggering] = header_id.text
+        except:
+            pass
+
+
     ecs = ea.findall('ETHERNET-CLUSTER')
     for ec in ecs:
         baudrate_elem = ea.find("BAUDRATE", ec)
         physical_channels = ea.findall("ETHERNET-PHYSICAL-CHANNEL", ec)
         for pc in physical_channels:
-            db = canmatrix.CanMatrix()
+            db = canmatrix.CanMatrix(type=canmatrix.matrix_class.SOMEIP)
             db.baudrate = baudrate_elem.text if baudrate_elem is not None else 0
             db.add_signal_defines("LongName", 'STRING')
             channel_name = ea.get_element_name(pc)
             found_matrixes[channel_name] = db
-            ipdu_triggerings = ea.findall("PDU-TRIGGERING", pc)
 
-            #network_endpoints = pc.findall('.//' + ns + "NETWORK-ENDPOINT")
-            for ipdu_triggering in ipdu_triggerings:
+            for socket_connetion in ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER", pc):
+                header_id = ea.get_child(socket_connetion, "HEADER-ID")
+                ipdu_triggering = ea.follow_ref(socket_connetion, "PDU-TRIGGERING-REF")
+#            for ipdu_triggering in ea.findall("PDU-TRIGGERING", pc):
                 ipdu = ea.follow_ref(ipdu_triggering, "I-PDU-REF")
+                if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
+                    payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
+                    ipdu = ea.follow_ref(payload, "I-PDU-REF")
+
                 ipdu_name = ea.get_element_name(ipdu)
                 logger.info("ETH PDU " + ipdu_name + " found")
                 target_frame = canmatrix.Frame(name = ipdu_name)
-                pdu_sig_mapping = ea.follow_all_ref(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING-REF")
+                try:
+                    target_frame.header_id = int(header_id.text)
+                except:
+                    try:
+                        target_frame.header_id = int(pdu_triggering_header_id_map[ipdu_triggering])
+                    except:
+                        target_frame.header_id = 0
+#                    continue
+                pdu_sig_mapping = ea.findall("I-SIGNAL-TO-I-PDU-MAPPING", ipdu)
                 get_signals(pdu_sig_mapping, target_frame, ea, None, float_factory)
                 db.add_frame(target_frame)
     return found_matrixes
