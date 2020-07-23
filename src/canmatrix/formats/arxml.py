@@ -1000,7 +1000,7 @@ def eval_type_of_signal(type_encoding, base_type, ea):
     return is_signed, is_float
 
 def ar_byteorder_is_little(in_string):
-    if in_string == 'MOST-SIGNIFICANT-BYTE-LAST':
+    if in_string == 'MOST-SIGNIFICANT-BYTE-LAST' or in_string == 'OPAQUE':
         return True
     return False
 
