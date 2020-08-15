@@ -1332,16 +1332,22 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
             else:
                 header_id = int(header_id)
 
+        offset = 0
         if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
             payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
             ipdu = ea.follow_ref(payload, "I-PDU-REF")
+#            length = ea.get_child(ipdu, "LENGTH").text
+            try:
+                offset = int(ea.get_child(ipdu, "OFFSET").text)*8
+            except:
+                offset = 0
 
 
         # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
         # TODO
         if pdu_sig_mapping:
-            get_signals(pdu_sig_mapping, target_frame, ea, header_id, float_factory, bit_offset=header_length)
+            get_signals(pdu_sig_mapping, target_frame, ea, header_id, float_factory, bit_offset=header_length+offset)
             new_signals = []
             for signal in target_frame:
                 if signal.name not in singnals_grouped and signal.name != "Header_ID" and signal.name != "Header_DLC":
