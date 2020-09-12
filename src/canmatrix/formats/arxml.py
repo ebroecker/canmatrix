@@ -1225,7 +1225,9 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 new_signal.add_values(canmatrix.utils.decode_number(key), value)
             if signal_name is not None:
                 new_signal.add_attribute("LongName", signal_name)
-            frame.add_signal(new_signal)
+            existing_signal = frame.signal_by_name(new_signal.name)
+            if existing_signal is None:
+                frame.add_signal(new_signal)
 
 
 def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea, float_factory):
@@ -1337,12 +1339,10 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
             payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
             ipdu = ea.follow_ref(payload, "I-PDU-REF")
 #            length = ea.get_child(ipdu, "LENGTH").text
-            try:
-                offset = int(ea.get_child(ipdu, "OFFSET").text)*8
-            except:
-                offset = 0
-
-
+        try:
+            offset = int(ea.get_child(ipdu, "OFFSET").text)*8
+        except:
+            offset = 0
         # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
         # TODO
