@@ -429,3 +429,12 @@ def test_signal_inital_value():
     outdbc = io.BytesIO()
     canmatrix.formats.dump(matrix, outdbc, "dbc")
     assert 'BA_ "GenSigStartValue" SG_ 17 sig1 2.7;' in outdbc.getvalue().decode('utf8')
+
+def test_missing_space():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 17 Frame_1: 8 Vector__XXX
+        SG_ sig1 : 0|8@1-(1,0)[0|0] "" Vector__XXX
+        ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.frames[0].signals[0].name == "sig1"
+
