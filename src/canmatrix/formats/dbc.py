@@ -247,13 +247,15 @@ def dump(in_db, f, **options):
                 name += str(duplicate_signal_counter[name] - 1)
             output_names[frame][signal] = name
 
-    if max([x.cycle_time for x in db.frames]) > 0:
-        db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
-    if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
-        db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
+    if len(db.frames) > 0:
+        if max([x.cycle_time for x in db.frames]) > 0:
+            db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+        if len([s for fr in db.frames for s in fr.signals]) > 0:
+            if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
+                db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
 
-    if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
-        db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
+            if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
+                db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
 
 
 
@@ -507,7 +509,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     comment += "\n" + l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
-                if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
+                if re.match(r'.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if signal is not None:
                         signal.add_comment(comment[:-1].strip()[:-1])
@@ -517,7 +519,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     comment += "\n" + l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
-                if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
+                if re.match(r'.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if frame is not None:
                         frame.add_comment(comment[:-1].strip()[:-1])
@@ -528,7 +530,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         l.decode(dbc_comment_encoding).replace('\\"', '"')
                 except:
                     logger.error("Error decoding line: %d (%s)" % (i, line))
-                if re.match('.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
+                if re.match(r'.*" *;\Z',l.decode(dbc_import_encoding).strip()) is not None:
                     follow_up = _FollowUps.NOTHING
                     if board_unit is not None:
                         board_unit.add_comment(comment[:-1].strip()[:-1])
@@ -543,7 +545,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 db.frames.append(frame)
                 add_frame_by_id(frame)
             elif decoded.startswith("SG_ "):
-                pattern = r"^SG_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+), *([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
+                pattern = r"^SG_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) *\(([0-9.+\-eE]+), *([0-9.+\-eE]+)\) *\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
                 regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
@@ -575,7 +577,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     frame.add_signal(temp_signal)
     #                db.frames.addSignalToLastFrame(tempSig)
                 else:
-                    pattern = r"^SG_ +(.+?) +(.+?) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
+                    pattern = r"^SG_ +(.+?) +(.+?) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) *\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) *\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                     regexp = re.compile(pattern)
                     regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                     temp = regexp.match(decoded)
@@ -785,7 +787,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 substring = decoded[7:].strip()
                 define_type = substring[:3]
                 substring = substring[3:].strip()
-                pattern = r"^\"(.+?)\" +(.+);"
+                pattern = r"^\"(.+?)\" +(.+); *"
                 regexp = re.compile(pattern)
                 regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                 temp = regexp.match(substring)
@@ -816,23 +818,23 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 tempba = regexp.match(decoded)
 
                 if tempba.group(1).strip().startswith("BO_ "):
-                    regexp = re.compile(r"^BA_ +\"(.+?)\" +BO_ +(\d+) +(.+) *;")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +BO_ +(\d+) +(.+) *; *")
                     temp = regexp.match(decoded)
                     get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).add_attribute(
                         temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("SG_ "):
-                    regexp = re.compile(r"^BA_ +\"(.+?)\" +SG_ +(\d+) +(\w+) +(.+) *;")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +SG_ +(\d+) +(\w+) +(.+) *; *")
                     temp = regexp.match(decoded)
                     if temp is not None:
                         get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).signal_by_name(
                             temp.group(3)).add_attribute(temp.group(1), temp.group(4))
                 elif tempba.group(1).strip().startswith("EV_ "):
-                    regexp = re.compile(r"^BA_ +\"(.+?)\" +EV_ +(\w+) +(.*) *;")
+                    regexp = re.compile(r"^BA_ +\"(.+?)\" +EV_ +(\w+) +(.*) *; *")
                     temp = regexp.match(decoded)
                     if temp is not None:
                         db.add_env_attribute(temp.group(2), temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("BU_ "):
-                    regexp = re.compile(r"^BA_ +\"(.*?)\" +BU_ +(\w+) +(.+) *;")
+                    regexp = re.compile(r"^BA_ +\"(.*?)\" +BU_ +(\w+) +(.+) *; *")
                     temp = regexp.match(decoded)
                     db.ecu_by_name(
                         temp.group(2)).add_attribute(
@@ -840,13 +842,13 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         temp.group(3))
                 else:
                     regexp = re.compile(
-                        r"^BA_ +\"([A-Za-z0-9\-_]+)\" +([\"\w\-\.]+) *;")
+                        r"^BA_ +\"([A-Za-z0-9\-_]+)\" +([\"\w\-\.]+) *; *")
                     temp = regexp.match(decoded)
                     if temp:
                         db.add_attribute(temp.group(1), temp.group(2))
 
             elif decoded.startswith("SIG_GROUP_ "):
-                regexp = re.compile(r"^SIG_GROUP_ +(\w+) +(\w+) +(\w+) +\:(.*) *;")
+                regexp = re.compile(r"^SIG_GROUP_ +(\w+) +(\w+) +(\w+) +\:(.*) *; *")
                 temp = regexp.match(decoded)
                 frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
                 if frame is not None:
@@ -854,7 +856,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     frame.add_signal_group(temp.group(2), temp.group(3), signal_array)  # todo wrong annotation in canmatrix? Id is a string?
 
             elif decoded.startswith("SIG_VALTYPE_ "):
-                regexp = re.compile(r"^SIG_VALTYPE_ +(\w+) +(\w+)\s*\:(.*) *;")
+                regexp = re.compile(r"^SIG_VALTYPE_ +(\w+) +(\w+)\s*\:(.*) *; *")
                 temp = regexp.match(decoded)
                 frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
                 if frame:
@@ -872,7 +874,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     db.add_define_default(temp.group(1),
                                           temp_raw.group(2).decode(dbc_import_encoding))
             elif decoded.startswith("SG_MUL_VAL_ "):
-                pattern = r"^SG_MUL_VAL_ +([0-9]+) +([\w\-]+) +([\w\-]+) +(.*) *;"
+                pattern = r"^SG_MUL_VAL_ +([0-9]+) +([\w\-]+) +([\w\-]+) +(.*) *; *"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
                 if temp:
@@ -891,7 +893,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             mux_val_max_number = int(mux_val_max)
                             signal.mux_val_grp.append([mux_val_min_number, mux_val_max_number])
             elif decoded.startswith("EV_ "):
-                pattern = r"^EV_ +([\w\-\_]+?) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*?)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([\w\-]+?) +(.*);"
+                pattern = r"^EV_ +([\w\-\_]+?) *\: +([0-9]+) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*?)\" +([0-9.+\-eE]+) +([0-9.+\-eE]+) +([\w\-]+?) +(.*); *"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
 
@@ -913,8 +915,9 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             print("error with line no: %d" % i)
             print(line)
 # Backtracking
-
-    for env_var_name, env_var in db.env_vars.items():
+    env_var_names = list(db.env_vars.keys())
+    for env_var_name in env_var_names:
+        env_var = db.env_vars[env_var_name]
         if 'SystemEnvVarLongSymbol' in env_var.get("attributes", ""):
             long_name = env_var["attributes"]["SystemEnvVarLongSymbol"][1:-1]
             del(env_var["attributes"]["SystemEnvVarLongSymbol"])

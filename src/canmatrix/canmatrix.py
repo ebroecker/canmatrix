@@ -35,6 +35,7 @@ import logging
 import math
 import struct
 import typing
+import warnings
 from builtins import *
 
 import attr
@@ -128,7 +129,8 @@ class Signal(object):
     Signal has following attributes:
 
     * name
-    * start_bit, size (in Bits)
+    * start_bit (internal start_bit, see get/set_startbit also)
+    * size (in Bits)
     * is_little_endian (1: Intel, 0: Motorola)
     * is_signed (bool)
     * factor, offset, min, max
@@ -154,6 +156,8 @@ class Signal(object):
 
     mux_value = attr.ib(default=None)
     is_float = attr.ib(default=False)  # type: bool
+    is_ascii = attr.ib(default=False)  # type: bool
+    type_label = attr.ib(default="")
     enumeration = attr.ib(default=None)  # type: typing.Optional[str]
     comments = attr.ib(factory=dict)  # type: typing.MutableMapping[int, str]
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
@@ -579,17 +583,25 @@ def pack_bitstring(length, is_float, value, signed):
     return bitstring
 
 
-@attr.s(cmp=False)
+@attr.s
 class ArbitrationId(object):
     standard_id_mask = ((1 << 11) - 1)
     extended_id_mask = ((1 << 29) - 1)
     compound_extended_mask = (1 << 31)
 
     id = attr.ib(default=None)
-    extended = attr.ib(default=None)
+    extended = attr.ib(default=False)  # type: bool
 
     def __attrs_post_init__(self):
-        if self.extended is None or self.extended:
+        if self.extended is None:
+            # Mimicking old behaviour for now -- remove in the future
+            self.extended = True
+            warnings.warn(
+                "Please set 'extended' attribute as a boolean instead of "
+                "None when creating an instance of ArbitrationId class",
+                DeprecationWarning
+            )
+        if self.extended:
             mask = self.extended_id_mask
         else:
             mask = self.standard_id_mask
@@ -605,25 +617,25 @@ class ArbitrationId(object):
     def pgn(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
+        # PGN is bits 8-25 of the 29-Bit Extended CAN-ID
+        # Made up of PDU-S (8-15), PDU-F (16-23), Data Page (24) & Extended Data Page (25)
+        # If PDU-F >= 240 the PDU-S is interpreted as Group Extension
+        # If PDU-F < 240 the PDU-S is interpreted as a Destination Address
+        _pgn = 0
+        if self.j1939_pdu_format == 2:
+            _pgn += self.j1939_ps
+        _pgn += self.j1939_pf << 8
+        _pgn += self.j1939_dp << 16
+        _pgn += self.j1939_edp << 17
 
-        ps = (self.id >> 8) & 0xFF
-        pf = (self.id >> 16) & 0xFF
-        _pgn = pf << 8
-        if pf >= 240:
-            _pgn += ps
         return _pgn
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
         self.extended = True
-        ps = value & 0xff
-        pf = (value >> 8) & 0xFF
-        _pgn = pf << 8
-        if pf >= 240:
-            _pgn += ps
-
-        self.id &= 0xff0000ff
-        self.id |= (_pgn & 0xffff) << 8  # default pgn is None -> mypy reports error
+        _pgn = value & 0x3FFFF
+        self.id &= 0xfc0000ff
+        self.id |= (_pgn << 8 & 0x3FFFF00)  # default pgn is None -> mypy reports error
 
 
 
@@ -639,7 +651,7 @@ class ArbitrationId(object):
     def j1939_destination(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
-        if self.j1939_pf < 240:
+        if self.j1939_pdu_format == 1:
             destination = self.j1939_ps
         else:
             destination = None
@@ -669,10 +681,20 @@ class ArbitrationId(object):
         return (self.id >> 16) & 0xFF
 
     @property
+    def j1939_pdu_format(self):
+        return 1 if (self.j1939_pf < 240) else 2
+
+    @property
+    def j1939_dp(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 24) & 0x1
+
+    @property
     def j1939_edp(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
-        return (self.id >> 24) & 0x03
+        return (self.id >> 25) & 0x1
 
     @property
     def j1939_priority(self):
@@ -683,7 +705,7 @@ class ArbitrationId(object):
     @j1939_priority.setter
     def j1939_priority(self, value):  # type: (int) -> None
         self.extended = True
-        self.id = (self.id & 0x2ffffff) | ((value & 0x7) << 26)
+        self.id = (self.id & 0x3ffffff) | ((value & 0x7) << 26)
 
     @property
     def j1939_str(self):  # type: () -> str
@@ -709,16 +731,6 @@ class ArbitrationId(object):
             return self.id | self.compound_extended_mask
         else:
             return self.id
-
-    def __eq__(self, other):
-        return (
-            self.id == other.id
-            and (
-                self.extended is None
-                or other.extended is None
-                or self.extended == other.extended
-            )
-        )
 
 
 @attr.s(cmp=False)
@@ -987,6 +999,8 @@ class Frame(object):
             self.attributes[attribute] = str(value)
         except UnicodeDecodeError:
             self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def del_attribute(self, attribute):
         # type: (str) -> typing.Any
@@ -1482,10 +1496,11 @@ class CanMatrix(object):
         """
         if attributeName in self.attributes:
             return self.attributes[attributeName]
-        else:
-            if attributeName in self.global_defines:
+        elif attributeName in self.global_defines:
                 define = self.global_defines[attributeName]
                 return define.defaultValue
+        else:
+            return default
 
     def add_value_table(self, name, valueTable):  # type: (str, typing.Mapping) -> None
         """Add named value table.
@@ -1563,6 +1578,17 @@ class CanMatrix(object):
             self.ecu_defines[name].set_default(value)
         if name in self.global_defines:
             self.global_defines[name].set_default(value)
+
+    def delete_obsolete_ecus(self):  # type: () -> None
+        """Delete all unused ECUs
+        """
+        used_ecus = [ecu for f in self.frames for ecu in f.transmitters]
+        used_ecus += [ecu for f in self.frames for ecu in f.receivers]
+        used_ecus += [ecu for f in self.frames for s in f.signals for ecu in s.receivers]
+        used_ecus += [ecu for s in self.signals for ecu in s.receivers]
+        ecus_to_delete = [ecu.name for ecu in self.ecus if ecu.name not in used_ecus]
+        for ecu in ecus_to_delete:
+            self.del_ecu(ecu)
 
     def delete_obsolete_defines(self):  # type: () -> None
         """Delete all unused Defines.

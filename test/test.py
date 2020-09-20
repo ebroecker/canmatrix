@@ -84,7 +84,7 @@ def run_tests():
                 out_file = os.path.join(directory, out_file)
                 canmatrix.convert.convert(in_file, out_file)
 
-    exit_code = subprocess.call(['diff', '-r', 'reference', 'converted'])
+    exit_code = subprocess.call(['diff', '-qr', 'reference', 'converted'])
 
     if exit_code:
         # difference found

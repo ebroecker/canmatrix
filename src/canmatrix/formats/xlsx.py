@@ -104,7 +104,7 @@ def dump(db, filename, **options):
     # type: (canmatrix.CanMatrix, str, **str) -> None
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
     values_in_seperate_lines = options.get("xlsValuesInSeperateLines", True)
-    additional_signal_columns = [x for x in options.get("additionalAttributes", "").split(",") if x]
+    additional_signal_columns = [x for x in options.get("additionalSignalAttributes", "").split(",") if x]
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
 
 
@@ -199,8 +199,7 @@ def dump(db, filename, **options):
     logger.debug("DEBUG: Length of db.frames is %d", len(db.frames))
     for frame in db.frames:
         if frame.is_complex_multiplexed:
-            logger.error("Export complex multiplexers is not supported - ignoring frame %s", frame.name)
-            continue
+            logger.error("Export complex multiplexers is not supported - frame %s might be uncomplete", frame.name)
         frame_hash[int(frame.arbitration_id.id)] = frame
 
     # set row to first Frame (row = 0 is header)

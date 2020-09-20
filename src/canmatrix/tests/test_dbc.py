@@ -333,15 +333,18 @@ def test_j1939_frametype():
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].is_j1939 == False
 
-def test_signal_definition_with_spaces_iss358():
-    dbc = io.BytesIO(textwrap.dedent(u'''\
-    BU_: someOtherEcu
 
-    BO_ 123 someFrame: 1 someOtherEcu
-    SG_ AccSts : 62|3@0+ (1.0, 0.0) [0.0|0.0] "" VDDM
+def test_attributes_with_spaces_before_semicolumn():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    BO_ 8 Frame_1: 8 Vector__XXX
+    BO_ 9 Frame_2: 8 Vector__XXX
+    BA_DEF_ BO_ "someAttribute" STRING ;
+    BA_ "someAttribute" BO_ 8 "str" ;
+    BA_DEF_DEF_ "someAttribute" "asd" ;
     ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
-
+    assert matrix.frames[0].attributes["someAttribute"] == 'str'
+    assert matrix.frames[1].attribute("someAttribute", matrix) == 'asd'
 
 def test_cycle_time_handling():
     dbc = io.BytesIO(textwrap.dedent(u'''\
@@ -465,4 +468,14 @@ def test_candbpp_startbit():
     assert matrix.frames[0].signal_by_name("SIG8").get_startbit(True, False) == 34
     assert matrix.frames[0].signal_by_name("SIG9").get_startbit(True, False) == 18
     assert matrix.frames[0].signal_by_name("SIG10").get_startbit(True, False) == 4
+    
+    
+def test_missing_space():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 17 Frame_1: 8 Vector__XXX
+        SG_ sig1 : 0|8@1-(1,0)[0|0] "" Vector__XXX
+        ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.frames[0].signals[0].name == "sig1"
+
 
