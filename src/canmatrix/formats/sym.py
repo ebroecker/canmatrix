@@ -383,7 +383,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             next_line = f.readline().decode(sym_import_encoding)
                         else:
                             next_line = next(f).decode(sym_import_encoding)
-                        if next_line is "":
+                        if next_line == "":
                             raise EOFError("Reached EOF before finding terminator for enum :\"{}\"".format(line))
                         line += next_line.strip()
                     line = line.split('//')[0]

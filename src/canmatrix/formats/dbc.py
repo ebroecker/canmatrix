@@ -165,7 +165,7 @@ def dump(in_db, f, **options):
         db.add_frame(free_signals_dummy_frame)
 
     # shorten long environment variable names
-    for env_var_name in db.env_vars:
+    for env_var_name in copy.deepcopy(db.env_vars):
         if len(env_var_name) > 32:
             db.add_env_attribute(env_var_name, "SystemEnvVarLongSymbol", env_var_name)
             db.env_vars[env_var_name[:32]] = db.env_vars.pop(env_var_name)
