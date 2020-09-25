@@ -938,7 +938,7 @@ def decode_compu_method(compu_method, ea, float_factory):
         # Modification to support sourcing the COMPU_METHOD info from the Vector NETWORK-REPRESENTATION-PROPS
         # keyword definition. 06Jun16
         #####################################################################################################
-        if ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text) == canmatrix.utils.decode_number(ll.text):
+        if ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text, float_factory) == canmatrix.utils.decode_number(ll.text, float_factory):
             #####################################################################################################
             #####################################################################################################
             values[ll.text] = desc
