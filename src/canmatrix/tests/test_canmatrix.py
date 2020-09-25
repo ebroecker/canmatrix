@@ -243,6 +243,9 @@ def test_signal_get_startbit():
 def test_signal_get_startbit_conversion():
     signal_big = canmatrix.canmatrix.Signal(start_bit=2, size=16, is_little_endian=False)
     assert signal_big.get_startbit(start_little=True) == 17  # looking for "end" of the signal: 2 + (16 - 1)
+
+    signal_big = canmatrix.canmatrix.Signal(start_bit=32, size=4, is_little_endian=False)
+    assert signal_big.get_startbit(bit_numbering=True, start_little=True) == 36
     # TODO add test for reversed endianning
 
 
