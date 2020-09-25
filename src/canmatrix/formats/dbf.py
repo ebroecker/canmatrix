@@ -68,7 +68,7 @@ def decode_define(line):  # type: (str) -> typing.Tuple[str, str, str]
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     dbf_import_encoding = options.get("dbfImportEncoding", 'iso-8859-1')
     float_factory = options.get('float_factory', default_float_factory)
-
+    is_j1939 = False
     db = canmatrix.CanMatrix()
 
     mode = ''
@@ -172,6 +172,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 db.add_define_default(name, default)
 
         else:
+            if line.startswith("[PROTOCOL]") and "J1939" in line:
+                is_j1939 = True
             if line.startswith("[START_DESC_SIG]"):
                 mode = 'SignalDescription'
 
@@ -219,7 +221,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         name,
                         size=int(size),
                         transmitters=transmitters))
-                new_frame.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(arb_id))
+                
+                if is_j1939:
+                    new_frame.arbitration_id.pgn = int(arb_id)
+                else:
+                    new_frame.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(arb_id))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")
