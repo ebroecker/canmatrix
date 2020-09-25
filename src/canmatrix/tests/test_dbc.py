@@ -429,3 +429,53 @@ def test_signal_inital_value():
     outdbc = io.BytesIO()
     canmatrix.formats.dump(matrix, outdbc, "dbc")
     assert 'BA_ "GenSigStartValue" SG_ 17 sig1 2.7;' in outdbc.getvalue().decode('utf8')
+
+
+def test_candbpp_startbit():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 1809 MSG: 8 DEV2
+ SG_ SIG1 : 39|4@0+ (1,0) [0|1] ""  DEV1
+ SG_ SIG2 : 52|1@0+ (1,0) [0|1] ""  DEV1
+ SG_ SIG3 : 51|12@0+ (0.1,0) [0|360] "°"  DEV1
+ SG_ SIG4 : 6|1@0+ (1,0) [0|1] ""  DEV1
+ SG_ SIG5 : 5|1@0+ (1,0) [0|1] ""  DEV1
+ SG_ SIG6 : 23|3@0+ (1,0) [0|1] ""  DEV1
+ SG_ SIG7 : 7|1@0+ (1,0) [0|1] ""  DEV1
+ SG_ SIG8 : 34|11@0+ (0.1,-102.4) [-32|32] "A"  DEV1
+ SG_ SIG9 : 18|11@0+ (0.1,-102.4) [-62.5|62.5] "A"  DEV1
+ SG_ SIG10 : 4|13@0+ (0.1,0) [350|450] "V"  DEV1
+    ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    # Motorola forward LSB
+    assert matrix.frames[0].signal_by_name("SIG1").get_startbit(True, True) == 36
+    assert matrix.frames[0].signal_by_name("SIG2").get_startbit(True, True) == 52
+    assert matrix.frames[0].signal_by_name("SIG3").get_startbit(True, True) == 56
+    assert matrix.frames[0].signal_by_name("SIG4").get_startbit(True, True) == 6
+    assert matrix.frames[0].signal_by_name("SIG5").get_startbit(True, True) == 5
+    assert matrix.frames[0].signal_by_name("SIG6").get_startbit(True, True) == 21
+    assert matrix.frames[0].signal_by_name("SIG7").get_startbit(True, True) == 7
+    assert matrix.frames[0].signal_by_name("SIG8").get_startbit(True, True) == 40
+    assert matrix.frames[0].signal_by_name("SIG9").get_startbit(True, True) == 24
+    assert matrix.frames[0].signal_by_name("SIG10").get_startbit(True, True) == 8
+    # Motorola forward MSB
+    assert matrix.frames[0].signal_by_name("SIG1").get_startbit(True, False) == 39
+    assert matrix.frames[0].signal_by_name("SIG2").get_startbit(True, False) == 52
+    assert matrix.frames[0].signal_by_name("SIG3").get_startbit(True, False) == 51
+    assert matrix.frames[0].signal_by_name("SIG4").get_startbit(True, False) == 6
+    assert matrix.frames[0].signal_by_name("SIG5").get_startbit(True, False) == 5
+    assert matrix.frames[0].signal_by_name("SIG6").get_startbit(True, False) == 23
+    assert matrix.frames[0].signal_by_name("SIG7").get_startbit(True, False) == 7
+    assert matrix.frames[0].signal_by_name("SIG8").get_startbit(True, False) == 34
+    assert matrix.frames[0].signal_by_name("SIG9").get_startbit(True, False) == 18
+    assert matrix.frames[0].signal_by_name("SIG10").get_startbit(True, False) == 4
+    
+    
+def test_missing_space():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 17 Frame_1: 8 Vector__XXX
+        SG_ sig1 : 0|8@1-(1,0)[0|0] "" Vector__XXX
+        ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.frames[0].signals[0].name == "sig1"
+
+

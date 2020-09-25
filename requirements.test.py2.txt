@@ -7,9 +7,9 @@ funcsigs==1.0.2
 future==0.16.0
 more-itertools==4.3.0
 pathlib2==2.3.2
-pluggy==0.7.1
+pluggy==0.12.0
 py==1.5.4
-pytest==4.0.0
+pytest==4.6.0
 scandir==1.9.0
 six==1.11.0
 tox==3.2.1
