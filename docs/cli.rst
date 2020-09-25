@@ -418,8 +418,9 @@ ____________________
 * arxml:
 
   --arxmlIgnoreClusterInfo
-
                         Ignore any can cluster info from arxml; Import all frames in one matrix default 0
+  --arxmlExportVersion
+                        Ignore any can cluster info from arxml; set arxml version to either 3.2.3 or 4.1.0, default is 3.2.3 
 
 
 * yaml
