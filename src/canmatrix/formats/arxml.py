@@ -1213,7 +1213,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 new_signal.initial_value = float_factory(initvalue.text)
 
             for key, value in list(values.items()):
-                new_signal.add_values(canmatrix.utils.decode_number(key), value)
+                new_signal.add_values(canmatrix.utils.decode_number(key, float_factory), value)
             if signal_name is not None:
                 new_signal.add_attribute("LongName", signal_name)
             frame.add_signal(new_signal)
@@ -1708,7 +1708,7 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
             baudrate_elem = ea.find("BAUDRATE", cc)
             fd_baudrate_elem = ea.find("CAN-FD-BAUDRATE", cc)
 
-            logger.debug("Busname: " + get_element_name(cc, ns))
+            logger.debug("Busname: " + ea.get_element_name(cc))
 
             bus_name = ea.get_element_name(cc)
             if speed is not None:
