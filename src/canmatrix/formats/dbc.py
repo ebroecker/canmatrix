@@ -117,7 +117,7 @@ def dump(in_db, f, **options):
     dbc_export_comment_encoding = options.get("dbcExportCommentEncoding",  dbc_export_encoding)
     compatibility = options.get('compatibility', True)
     dbc_unique_signal_names_per_frame = options.get("dbcUniqueSignalNames", compatibility)
-    ignore_encoding_errors= options.get("ignoreEncodingErrors",  "")
+    ignore_encoding_errors= options.get("ignoreEncodingErrors",  "ignore")
     write_val_table = options.get("writeValTable", True)
 
     whitespace_replacement = options.get("whitespaceReplacement", '_')
@@ -424,8 +424,11 @@ def dump(in_db, f, **options):
                      frame.arbitration_id.to_compound_integer() +
                      output_names[frame][signal]).encode(dbc_export_encoding, ignore_encoding_errors))
                 for attr_name, val in sorted(signal.values.items(), key=lambda x: int(x[0])):
+                    if '"' in val:
+                        val = val.replace('"', '\\"')
                     f.write(
                         (' ' + str(attr_name) + ' "' + val + '"').encode(dbc_export_encoding, ignore_encoding_errors))
+
                 f.write(";\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     # SIG_VALTYPE

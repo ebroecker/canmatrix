@@ -316,7 +316,7 @@ def dump(mydb, f, **options):
     # create copy because export changes database
     db = copy.deepcopy(mydb)
     dbf_export_encoding = options.get("dbfExportEncoding", 'iso-8859-1')
-    ignore_encoding_errors = options.get("ignoreExportEncodingErrors", "")
+    ignore_encoding_errors = options.get("ignoreEncodingErrors", "")
     db.enum_attribs_to_keys()
     if len(db.signals) > 0:
         free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG")
