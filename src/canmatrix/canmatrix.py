@@ -857,6 +857,8 @@ class Frame(object):
     # ('sendType', '_sendType', str, None),
 
     pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
+    header_id = attr.ib(default=None)  #type: int
+    # header_id
 
 
     @property
@@ -1522,6 +1524,12 @@ class Define(object):
             return
         self.definition = 'ENUM "' + '","' .join(self.values) +'"'
 
+import enum
+
+class matrix_class(enum.Enum):
+    CAN = 1
+    FLEXRAY = 2
+    SOMEIP = 3
 
 @attr.s(cmp=False)
 class CanMatrix(object):
@@ -1537,6 +1545,7 @@ class CanMatrix(object):
     value_tables (global defined values)
     """
 
+    type = attr.ib(default=matrix_class.CAN)  #type: matrix_class
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
     ecus = attr.ib(factory=list)  # type: typing.MutableSequence[Ecu]
     frames = attr.ib(factory=list)  # type: typing.MutableSequence[Frame]

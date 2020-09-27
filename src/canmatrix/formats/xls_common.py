@@ -30,11 +30,18 @@ import canmatrix
 def get_frame_info(db, frame):
     # type: (canmatrix.CanMatrix, canmatrix.Frame) -> typing.List[str]
     ret_array = []  # type: typing.List[str]
-    # frame-id
-    if frame.arbitration_id.extended:
-        ret_array.append("%3Xxh" % frame.arbitration_id.id)
-    else:
-        ret_array.append("%3Xh" % frame.arbitration_id.id)
+
+    if db.type == canmatrix.matrix_class.CAN:
+        # frame-id
+        if frame.arbitration_id.extended:
+            ret_array.append("%3Xxh" % frame.arbitration_id.id)
+        else:
+            ret_array.append("%3Xh" % frame.arbitration_id.id)
+    elif db.type == canmatrix.matrix_class.FLEXRAY:
+        ret_array.append("TODO")
+    elif db.type == canmatrix.matrix_class.SOMEIP:
+        ret_array.append("%3Xh" % frame.header_id)
+
     # frame-Name
     ret_array.append(frame.name)
 

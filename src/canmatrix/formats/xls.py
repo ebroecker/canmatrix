@@ -172,15 +172,21 @@ def dump(db, file, **options):
     worksheet.col(head_start + 1).width = 5555
 
     frame_hash = {}
-    logger.debug("Length of db.frames is %d", len(db.frames))
-    for frame in db.frames:
-        if frame.is_complex_multiplexed:
-            logger.error("export complex multiplexers is not supported - ignoring frame %s", frame.name)
-            continue
-        frame_hash[int(frame.arbitration_id.id)] = frame
+    if db.type == canmatrix.matrix_class.CAN:
+        logger.debug("Length of db.frames is %d", len(db.frames))
+        for frame in db.frames:
+            if frame.is_complex_multiplexed:
+                logger.error("export complex multiplexers is not supported - ignoring frame %s", frame.name)
+                continue
+            frame_hash[int(frame.arbitration_id.id)] = frame
+    else:
+        frame_hash = {a.name:a for a in db.frames}
+
 
     # set row to first Frame (row = 0 is header)
     row = 1
+
+
 
     # iterate over the frames
     for idx in sorted(frame_hash.keys()):
