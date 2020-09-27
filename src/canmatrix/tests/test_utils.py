@@ -2,7 +2,7 @@
 import pytest
 
 import canmatrix.utils
-
+import decimal
 
 def test_utils_guess_value():
     assert canmatrix.utils.guess_value("true") == "1"
@@ -14,10 +14,10 @@ def test_utils_guess_value():
 
 
 def test_decode_number():
-    assert canmatrix.utils.decode_number("0x10") == 16
-    assert canmatrix.utils.decode_number("0b10") == 2
-    assert canmatrix.utils.decode_number("10") == 10
-
+    assert canmatrix.utils.decode_number("0x10", decimal.Decimal) == 16
+    assert canmatrix.utils.decode_number("0b10", decimal.Decimal) == 2
+    assert canmatrix.utils.decode_number("10", decimal.Decimal) == 10
+    assert canmatrix.utils.decode_number("1023.0", decimal.Decimal) == 1023.0
 
 @pytest.mark.parametrize(
     'input_string, expected_list',

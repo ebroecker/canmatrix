@@ -296,7 +296,7 @@ class Signal(object):
         :param int or str value: signal value (0xFF)
         :param str valueName: Human readable value description ("Init")
         """
-        self.values[int(value)] = valueName
+        self.values[int(str(value), 0)] = valueName
 
     def set_startbit(self, start_bit, bitNumbering=None, startLittle=None):
         """
