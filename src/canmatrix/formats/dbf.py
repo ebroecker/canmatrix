@@ -337,10 +337,12 @@ def dump(mydb, f, **options):
 
     if max([x.cycle_time for x in db.frames]) > 0:
         db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
-    if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
+    cycle_times_of_all_singals = [x.cycle_time for y in db.frames for x in y.signals]
+    if len(cycle_times_of_all_singals) > 0 and max(cycle_times_of_all_singals) > 0:
         db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
 
-    if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
+    initial_values_of_all_singals = [x.initial_value for y in db.frames for x in y.signals]
+    if len(initial_values_of_all_singals) > 0 and (max(initial_values_of_all_singals) > 0 or min(initial_values_of_all_singals)) < 0:
         db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
 
     # Frames
