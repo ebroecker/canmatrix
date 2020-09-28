@@ -1848,9 +1848,9 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         else:  # find signal senders/receivers...
             isignal_triggerings = ea.find_children_by_path(physical_channel, "I-SIGNAL-TRIGGERING")
             for sig_trig in isignal_triggerings:
-                isignal = ea.follow_ref(sig_trig, 'SIGNAL-REF')
+                isignal = ea.follow_ref(sig_trig, 'SIGNAL-REF') # AR 3.2
                 if isignal is None:
-                    isignal = ea.follow_ref(sig_trig, 'I-SIGNAL-REF')
+                    isignal = ea.follow_ref(sig_trig, 'I-SIGNAL-REF') # AR4
                 if isignal is None:
                     sig_trig_text = ea.get_element_name(sig_trig) if sig_trig is not None else "None"
                     logger.debug("load: no isignal for %s", sig_trig_text)
