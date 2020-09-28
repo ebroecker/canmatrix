@@ -195,12 +195,15 @@ def dump(db, filename, **options):
 
     write_excel_line(worksheet, 0, 0, row_array, sty_header)
 
-    frame_hash = {}
-    logger.debug("DEBUG: Length of db.frames is %d", len(db.frames))
-    for frame in db.frames:
-        if frame.is_complex_multiplexed:
-            logger.error("Export complex multiplexers is not supported - frame %s might be uncomplete", frame.name)
-        frame_hash[int(frame.arbitration_id.id)] = frame
+    if db.type == canmatrix.matrix_class.CAN:
+        frame_hash = {}
+        logger.debug("DEBUG: Length of db.frames is %d", len(db.frames))
+        for frame in db.frames:
+            if frame.is_complex_multiplexed:
+                logger.error("Export complex multiplexers is not supported - frame %s might be uncomplete", frame.name)
+            frame_hash[int(frame.arbitration_id.id)] = frame
+    else:
+        frame_hash = {a.name:a for a in db.frames}
 
     # set row to first Frame (row = 0 is header)
     row = 1
