@@ -335,8 +335,10 @@ def dump(mydb, f, **options):
 
     out_str += str(len(db.frames)) + "\n"
 
-    if max([x.cycle_time for x in db.frames]) > 0:
+    cycle_times_of_all_frames = [x.cycle_time for x in db.frames]
+    if len(cycle_times_of_all_frames) > 0 and max(cycle_times_of_all_frames ) > 0:
         db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
+
     cycle_times_of_all_singals = [x.cycle_time for y in db.frames for x in y.signals]
     if len(cycle_times_of_all_singals) > 0 and max(cycle_times_of_all_singals) > 0:
         db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
