@@ -193,7 +193,7 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     export canmatrix-object as .sym file (compatible to PEAK-Systems)
     """
     sym_encoding = options.get('symExportEncoding', 'iso-8859-1')
-    ignore_encoding_errors = options.get("ignoreEncodingErrors", "")
+    ignore_encoding_errors = options.get("ignoreEncodingErrors", "strict")
 
     enum_dict = {}
     for enum_name, enum_values in db.value_tables.items():
