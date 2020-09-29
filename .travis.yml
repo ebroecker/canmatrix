@@ -38,6 +38,7 @@ deploy:
   provider: pypi
   user: ebroecker
   skip_existing: true
+  skip_cleanup: true
   on:
     tags: true
     branch: master 
