@@ -21,11 +21,37 @@ def quote_aware_space_split(in_line):  # type: (str) -> typing.List[str]
 
 
 def quote_aware_comma_split(string):  # type: (str) -> typing.List[str]
-    if sys.version_info >= (3, 0):
-        temp = list(csv.reader([string], skipinitialspace=True))
-    else:
-        temp = list(csv.reader([string.encode("utf8")], skipinitialspace=True))
-    return temp[0]
+    """
+    Split a string containing comma separated list of fields.
+    Removing surrounding whitespace, to allow fields to be separated by ", ".
+    Preserves double quotes within fields, but not double quotes surrounding fields.
+    Suppresses comma separators which are within double quoted sections.
+    :param string: ('a,  b", c", "d"',
+    :return: ['a', 'b", c"', 'd']),
+    """
+    fields = []
+    quoted = False
+    field = ""
+    # Separate string by unquoted commas
+    for char in string:
+        if char == ',':
+            if not quoted:
+                fields.append(field)
+                field = ""
+                continue
+        if char == '"':
+            quoted = not quoted
+        field += char
+    if field:
+        fields.append(field)
+    # Remove surrounding whitespace from fields
+    fields = [f.strip() for f in fields]
+    # Remove "" that surround entire fields
+    for i, f in enumerate(fields):
+        if len(f) > 1:
+            if f.startswith('"') and f.endswith('"'):
+                fields[i] = f[1:-1]
+    return fields
 
 
 def guess_value(text_value):  # type: (str) -> str
@@ -60,3 +86,25 @@ def get_gcd(value1, value2):  # type (int,int) -> (int)
         return math.gcd(value1, value2)
     else:
         return fractions.gcd(value1, value2)
+
+def decode_number(value, float_factory):  # type(string) -> (int)
+    """
+    Decode string to integer and guess correct base
+    :param value: string input value
+    :return: integer
+    """
+
+    value = value.strip()
+
+    if '.' in value:
+        return float_factory(value)
+
+    base = 10
+    if len(value) > 1 and value[1] == 'b':  # bin coded
+        base = 2
+        value = value[2:]
+    if len(value) > 1 and value[1] == 'x':  # hex coded
+        base = 16
+        value = value[2:]
+
+    return int(value, base)

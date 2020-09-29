@@ -55,6 +55,7 @@ def get_formats():
 # manipulation and filter switches
 @click.option('--deleteObsoleteDefines/--no-deleteObsoleteDefines', 'deleteObsoleteDefines', default=False, help="delete defines from all ECUs, frames and Signals\nExample --deleteObsoleteDefines")
 @click.option('--deleteEcu', 'deleteEcu', help="delete Ecu form databases. (comma separated list)\nSyntax: --deleteEcu=myEcu,mySecondEcu")
+@click.option('--deleteObsoleteEcus/--no-deleteObsoleteEcus', 'deleteObsoleteEcus', default=False, help="delete ECUs which are not references as transmitter or receiver\nExample --deleteObsoleteEcus")
 @click.option('--renameEcu', 'renameEcu', help="rename Ecu form databases. (comma separated list)\nSyntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu")
 @click.option('--deleteSignal', 'deleteSignal', help="delete Signal form databases. (comma separated list)\nSyntax: --deleteSignal=mySignal1,mySecondSignal")
 @click.option('--renameSignal', 'renameSignal', help="rename Signal form databases. (comma separated list)\nSyntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal")
@@ -76,8 +77,11 @@ def get_formats():
 @click.option('--merge', help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
 # arxml switches
 @click.option('--arxmlIgnoreClusterInfo/--no-arxmlIgnoreClusterInfo', 'arxmlIgnoreClusterInfo', default=False, help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault False")
-@click.option('--arxmlUseXpath(--no-arxmlUseXpath', 'arxmlUseXpath', default=False, help="Use experimental Xpath-Implementation for resolving AR-Paths; \ndefault False")
+@click.option('--arxmlUseXpath/--no-arxmlUseXpath', 'arxmlUseXpath', default=False, help="Use experimental Xpath-Implementation for resolving AR-Paths; \ndefault False")
 @click.option('--arxmlExportVersion', 'arVersion',  default="3.2.3", help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 3.2.3")
+@click.option('--arxmlFlexray/--no-arxmlFlexray', 'decode_flexray', default = False, help="EXPERIMENTAL: import basic flexray data from ARXML")
+@click.option('--arxmlEthernet/--no-arxmlFlexray', 'decode_ethernet', default = False, help="EXPERIMENTAL: import basic ethernet data from ARXML")
+
 # dbc switches
 @click.option('--dbcImportEncoding', 'dbcImportEncoding', default="iso-8859-1", help="Import charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")
 @click.option('--dbcImportCommentEncoding', 'dbcImportCommentEncoding', default="iso-8859-1", help="Import charset of Comments in dbc\ndefault iso-8859-1")
@@ -92,8 +96,8 @@ def get_formats():
 @click.option('--symExportEncoding', 'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
 # xls/csv switches
 @click.option('--xlsMotorolaBitFormat', 'xlsMotorolaBitFormat', default="msbreverse", help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")
-@click.option('--additionalFrameAttributes', 'additionalFrameAttributes', default = "", help="append columns to csv/xls(x), example: is_fd")
-@click.option('--additionalSignalAttributes', 'additionalSignalAttributes', default = "", help="append columns to csv/xls(x), example: is_signed,attributes[\"GenSigStartValue\"]")
+@click.option('--additionalFrameAttributes', 'additionalFrameAttributes', default="", help="append columns to csv/xls(x), example: is_fd")
+@click.option('--additionalSignalAttributes', 'additionalSignalAttributes', default="", help="append columns to csv/xls(x), example: is_signed,attributes[\"GenSigStartValue\"]")
 @click.option('--xlsValuesInSeperateLines/--no-xlsValuesInSeperateLines', 'xlsValuesInSeperateLines', default = False, help="Excel format: create seperate line for each value of signal value table\tdefault: False")
 # json switches
 @click.option('--jsonExportCanard/--no-jsonExportCanard', 'jsonExportCanard', default=False, help="Export Canard compatible json format")
@@ -101,7 +105,7 @@ def get_formats():
 @click.option('--jsonMotorolaBitFormat', 'jsonMotorolaBitFormat', default="lsb", help="Json format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
 @click.option('--jsonNativeTypes/--no-jsonNativeTypes', 'jsonNativeTypes', default=False, help="Uses native json representation for decimals instead of string.")
 #sym switches
-@click.option('--symExportEncoding',    'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
+@click.option('--symExportEncoding', 'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
 # in and out file
 @click.argument('infile', required=True)
 @click.argument('outfile', required=True)
@@ -126,7 +130,7 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
     if options["ignoreEncodingErrors"]:
         options["ignoreEncodingErrors"] = "ignore"
     else:
-        options["ignoreEncodingErrors"] = ""
+        options["ignoreEncodingErrors"] = "strict"
 
     canmatrix.convert.convert(infile, outfile, **options)
     return 0

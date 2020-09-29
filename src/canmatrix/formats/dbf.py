@@ -68,7 +68,7 @@ def decode_define(line):  # type: (str) -> typing.Tuple[str, str, str]
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     dbf_import_encoding = options.get("dbfImportEncoding", 'iso-8859-1')
     float_factory = options.get('float_factory', default_float_factory)
-
+    is_j1939 = False
     db = canmatrix.CanMatrix()
 
     mode = ''
@@ -172,6 +172,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 db.add_define_default(name, default)
 
         else:
+            if line.startswith("[PROTOCOL]") and "J1939" in line:
+                is_j1939 = True
             if line.startswith("[START_DESC_SIG]"):
                 mode = 'SignalDescription'
 
@@ -219,7 +221,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         name,
                         size=int(size),
                         transmitters=transmitters))
-                new_frame.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(arb_id))
+                
+                if is_j1939:
+                    new_frame.arbitration_id.pgn = int(arb_id)
+                else:
+                    new_frame.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(arb_id))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")
@@ -310,7 +316,7 @@ def dump(mydb, f, **options):
     # create copy because export changes database
     db = copy.deepcopy(mydb)
     dbf_export_encoding = options.get("dbfExportEncoding", 'iso-8859-1')
-    ignore_encoding_errors = options.get("ignoreExportEncodingErrors", "")
+    ignore_encoding_errors = options.get("ignoreEncodingErrors", "strict")
     db.enum_attribs_to_keys()
     if len(db.signals) > 0:
         free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG")
@@ -329,12 +335,16 @@ def dump(mydb, f, **options):
 
     out_str += str(len(db.frames)) + "\n"
 
-    if max([x.cycle_time for x in db.frames]) > 0:
+    cycle_times_of_all_frames = [x.cycle_time for x in db.frames]
+    if len(cycle_times_of_all_frames) > 0 and max(cycle_times_of_all_frames ) > 0:
         db.add_frame_defines("GenMsgCycleTime", 'INT 0 65535')
-    if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
+
+    cycle_times_of_all_singals = [x.cycle_time for y in db.frames for x in y.signals]
+    if len(cycle_times_of_all_singals) > 0 and max(cycle_times_of_all_singals) > 0:
         db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
 
-    if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
+    initial_values_of_all_singals = [x.initial_value for y in db.frames for x in y.signals]
+    if len(initial_values_of_all_singals) > 0 and (max(initial_values_of_all_singals) > 0 or min(initial_values_of_all_singals)) < 0:
         db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
 
     # Frames

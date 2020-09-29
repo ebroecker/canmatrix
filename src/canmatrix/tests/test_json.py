@@ -13,6 +13,8 @@ import canmatrix.formats
 def default_matrix():
     matrix = canmatrix.canmatrix.CanMatrix()
     some_define = canmatrix.Define("INT 0 65535")
+    matrix.add_value_table("Options", {0: "North", 1: "South", 2: "East", 3: "West"})
+
     frame = canmatrix.canmatrix.Frame(name="test_frame", arbitration_id=10)
     frame.add_attribute("my_attribute1", "my_value1")
     signal = canmatrix.canmatrix.Signal(name="test_signal", size=8)
@@ -30,13 +32,15 @@ def default_matrix():
 
 
 def test_export_with_jsonall(default_matrix):
-    """Check the jsonAll doesn't raise and export some additional field."""
+    """Check the jsonExportAll doesn't raise and export some additional field."""
     matrix = default_matrix
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "json", jsonAll=True)
+    canmatrix.formats.dump(matrix, out_file, "json", jsonExportAll=True)
     data = out_file.getvalue().decode("utf-8")
     assert "my_value1" in data
     assert "my_value2" in data
+    assert "enumerations" in data
+    assert "North" in data
 
 
 def test_export_additional_frame_info(default_matrix):
@@ -57,7 +61,7 @@ def test_export_long_signal_names():
     frame.add_signal(signal)
 
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "json", jsonAll=True)
+    canmatrix.formats.dump(matrix, out_file, "json", jsonExportAll=True)
     data = json.loads(out_file.getvalue().decode("utf-8"))
 
     assert data['messages'][0]['signals'][0]['name'] == long_signal_name
@@ -70,7 +74,7 @@ def test_export_min_max():
     frame.add_signal(signal)
     matrix.add_frame(frame)
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "json", jsonAll=True)
+    canmatrix.formats.dump(matrix, out_file, "json", jsonExportAll=True)
     data = json.loads(out_file.getvalue().decode("utf-8"))
     assert(data['messages'][0]['signals'][0]['min'] == '-5')
     assert(data['messages'][0]['signals'][0]['max'] == '42')
@@ -106,7 +110,7 @@ def test_import_min_max():
             }
         ]
     }"""
-    matrix = canmatrix.formats.loads_flat(json_input, "json", jsonAll=True)
+    matrix = canmatrix.formats.loads_flat(json_input, "json", jsonExportAll=True)
     assert matrix.frames[0].signals[0].min == -5
     assert matrix.frames[0].signals[0].max == 42
 
@@ -140,11 +144,54 @@ def test_import_native():
             }
         ]
     }"""
-    matrix = canmatrix.formats.loads_flat(json_input, "json", jsonAll=True)
+    matrix = canmatrix.formats.loads_flat(json_input, "json", jsonExportAll=True)
     assert matrix.frames[0].signals[0].min == -4.2
     assert matrix.frames[0].signals[0].max == 42
     assert matrix.frames[0].signals[0].factor == 0.123
     assert matrix.frames[0].signals[0].offset == 1
+
+
+def test_import_export_enums():
+    json_input = """{
+        "enumerations": {
+            "Options": {
+                "0": "North",
+                "1": "East",
+                "2": "South",
+                "3": "West"
+            }
+        },
+        "messages": [
+            {
+                "attributes": {},
+                "comment": "",
+                "id": 10,
+                "is_extended_frame": false,
+                "length": 6,
+                "name": "test_frame",
+                "signals": [
+                    {
+                        "attributes": {},
+                        "name": "someSigName",
+                        "bit_length": 40,
+                        "is_signed": true,
+                        "start_bit": 0
+                    }
+                ]
+            }
+        ]
+    }"""
+    matrix = canmatrix.formats.loads_flat(json_input, "json")
+    assert matrix.value_tables == {"Options": {0: "North", 1: "East", 2: "South", 3: "West"}}
+
+    f_out = io.BytesIO()
+    canmatrix.formats.json.dump(matrix, f_out, jsonExportAll=True)
+
+    f_in = io.BytesIO(f_out.getvalue())
+    new_matrix = canmatrix.formats.json.load(f_in)
+
+    assert new_matrix.value_tables == {"Options": {0: "North", 1: "East", 2: "South", 3: "West"}}
+
 
 def test_export_native():
     matrix = canmatrix.canmatrix.CanMatrix()
@@ -165,12 +212,9 @@ def test_export_all_native():
     frame.add_signal(signal)
     matrix.add_frame(frame)
     out_file = io.BytesIO()
-    canmatrix.formats.dump(matrix, out_file, "json", jsonAll=True, jsonNativeTypes=True)
+    canmatrix.formats.dump(matrix, out_file, "json", jsonExportAll=True, jsonNativeTypes=True)
     data = json.loads(out_file.getvalue().decode("utf-8"))
     assert (data['messages'][0]['signals'][0]['min'] == -4.2)
     assert (data['messages'][0]['signals'][0]['max'] == 42)
     assert (data['messages'][0]['signals'][0]['factor'] == 0.123)
     assert (data['messages'][0]['signals'][0]['offset'] == 1)
-
-
-

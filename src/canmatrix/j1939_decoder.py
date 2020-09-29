@@ -78,7 +78,6 @@ class j1939_decoder(object):
 
         elif arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(0xEBFF).pgn:
             # transfer data
-
             self._data = self._data + can_data[1:min(8, self.bytes_left + 1)]
             self.bytes_left = max(self.bytes_left - 7, 0)
 

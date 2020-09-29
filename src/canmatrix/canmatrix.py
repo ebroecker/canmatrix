@@ -35,6 +35,7 @@ import logging
 import math
 import struct
 import typing
+import warnings
 from builtins import *
 
 import attr
@@ -155,6 +156,8 @@ class Signal(object):
 
     mux_value = attr.ib(default=None)
     is_float = attr.ib(default=False)  # type: bool
+    is_ascii = attr.ib(default=False)  # type: bool
+    type_label = attr.ib(default="")
     enumeration = attr.ib(default=None)  # type: typing.Optional[str]
     comments = attr.ib(factory=dict)  # type: typing.MutableMapping[int, str]
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
@@ -293,7 +296,7 @@ class Signal(object):
         :param int or str value: signal value (0xFF)
         :param str valueName: Human readable value description ("Init")
         """
-        self.values[int(value)] = valueName
+        self.values[int(str(value), 0)] = valueName
 
     def set_startbit(self, start_bit, bitNumbering=None, startLittle=None):
         """
@@ -344,7 +347,11 @@ class Signal(object):
             if self.is_float
             else int
         )
-        rawRange = 2 ** (self.size - (1 if self.is_signed else 0))
+        size_to_calc = self.size if self.size <= 128 else 128
+        if size_to_calc != self.size:
+            logger.info("max calculation for {} not possible using 128 as base for max value".format(self.size))
+        rawRange = 2 ** (size_to_calc - (1 if self.is_signed else 0))
+
         return (
             factory(-rawRange if self.is_signed else 0),
             factory(rawRange - 1),
@@ -580,17 +587,25 @@ def pack_bitstring(length, is_float, value, signed):
     return bitstring
 
 
-@attr.s(cmp=False)
+@attr.s
 class ArbitrationId(object):
     standard_id_mask = ((1 << 11) - 1)
     extended_id_mask = ((1 << 29) - 1)
     compound_extended_mask = (1 << 31)
 
     id = attr.ib(default=None)
-    extended = attr.ib(default=None)
+    extended = attr.ib(default=False)  # type: bool
 
     def __attrs_post_init__(self):
-        if self.extended is None or self.extended:
+        if self.extended is None:
+            # Mimicking old behaviour for now -- remove in the future
+            self.extended = True
+            warnings.warn(
+                "Please set 'extended' attribute as a boolean instead of "
+                "None when creating an instance of ArbitrationId class",
+                DeprecationWarning
+            )
+        if self.extended:
             mask = self.extended_id_mask
         else:
             mask = self.standard_id_mask
@@ -606,25 +621,25 @@ class ArbitrationId(object):
     def pgn(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
+        # PGN is bits 8-25 of the 29-Bit Extended CAN-ID
+        # Made up of PDU-S (8-15), PDU-F (16-23), Data Page (24) & Extended Data Page (25)
+        # If PDU-F >= 240 the PDU-S is interpreted as Group Extension
+        # If PDU-F < 240 the PDU-S is interpreted as a Destination Address
+        _pgn = 0
+        if self.j1939_pdu_format == 2:
+            _pgn += self.j1939_ps
+        _pgn += self.j1939_pf << 8
+        _pgn += self.j1939_dp << 16
+        _pgn += self.j1939_edp << 17
 
-        ps = (self.id >> 8) & 0xFF
-        pf = (self.id >> 16) & 0xFF
-        _pgn = pf << 8
-        if pf >= 240:
-            _pgn += ps
         return _pgn
 
     @pgn.setter
     def pgn(self, value):  # type: (int) -> None
         self.extended = True
-        ps = value & 0xff
-        pf = (value >> 8) & 0xFF
-        _pgn = pf << 8
-        if pf >= 240:
-            _pgn += ps
-
-        self.id &= 0xff0000ff
-        self.id |= (_pgn & 0xffff) << 8  # default pgn is None -> mypy reports error
+        _pgn = value & 0x3FFFF
+        self.id &= 0xfc0000ff
+        self.id |= (_pgn << 8 & 0x3FFFF00)  # default pgn is None -> mypy reports error
 
 
 
@@ -640,7 +655,7 @@ class ArbitrationId(object):
     def j1939_destination(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
-        if self.j1939_pf < 240:
+        if self.j1939_pdu_format == 1:
             destination = self.j1939_ps
         else:
             destination = None
@@ -670,10 +685,20 @@ class ArbitrationId(object):
         return (self.id >> 16) & 0xFF
 
     @property
+    def j1939_pdu_format(self):
+        return 1 if (self.j1939_pf < 240) else 2
+
+    @property
+    def j1939_dp(self):
+        if not self.extended:
+            raise J1939needsExtendedIdetifier
+        return (self.id >> 24) & 0x1
+
+    @property
     def j1939_edp(self):
         if not self.extended:
             raise J1939needsExtendedIdetifier
-        return (self.id >> 24) & 0x03
+        return (self.id >> 25) & 0x1
 
     @property
     def j1939_priority(self):
@@ -684,7 +709,7 @@ class ArbitrationId(object):
     @j1939_priority.setter
     def j1939_priority(self, value):  # type: (int) -> None
         self.extended = True
-        self.id = (self.id & 0x2ffffff) | ((value & 0x7) << 26)
+        self.id = (self.id & 0x3ffffff) | ((value & 0x7) << 26)
 
     @property
     def j1939_str(self):  # type: () -> str
@@ -720,6 +745,73 @@ class ArbitrationId(object):
                 or self.extended == other.extended
             )
         )
+
+@attr.s(cmp=False)
+class Pdu(object):
+    """
+    Represents a PDU.
+
+    PDUs are hierarchical groups of signals which are needed to represent Flexray busses
+    Whereas a PDU is the same than a frame on CAN bus, at flexray a frame may consist of
+    multiple PDUs (a bit like multiple signal layout for multiplexed can frames).
+    This class is only used for flexray busses.
+    """
+
+    name = attr.ib(default="")  # type: str
+    size = attr.ib(default=0)  # type: int
+    triggering_name = attr.ib(default="")  # type: str
+    pdu_type = attr.ib(default="")  # type: str
+    port_type = attr.ib(default="")  # type: str
+    signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
+    signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
+
+    def add_signal(self, signal):
+        # type: (Signal) -> Signal
+        """
+        Add Signal to Pdu.
+
+        :param Signal signal: Signal to be added.
+        :return: the signal added.
+        """
+        self.signals.append(signal)
+        return self.signals[len(self.signals) - 1]
+    def add_signal_group(self, Name, Id, signalNames):
+        # type: (str, int, typing.Sequence[str]) -> None
+        """Add new SignalGroup to the Frame. Add given signals to the group.
+
+        :param str Name: Group name
+        :param int Id: Group id
+        :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
+        """
+        newGroup = SignalGroup(Name, Id)
+        self.signalGroups.append(newGroup)
+        for signal in signalNames:
+            signal = signal.strip()
+            if signal.__len__() == 0:
+                continue
+            signalId = self.signal_by_name(signal)
+            if signalId is not None:
+                newGroup.add_signal(signalId)
+
+    def get_signal_group_for_signal(self, signal_to_find):
+        for signal_group in self.signalGroups:
+            for signal in signal_group:
+                if signal == signal_to_find:
+                    return signal_group
+        return None
+
+    def signal_by_name(self, name):
+        # type: (str) -> typing.Union[Signal, None]
+        """
+        Get signal by name.
+
+        :param str name: signal name to be found.
+        :return: signal with given name or None if not found
+        """
+        for signal in self.signals:
+            if signal.name == name:
+                return signal
+        return None
 
 
 @attr.s(cmp=False)
@@ -763,6 +855,11 @@ class Frame(object):
     is_j1939 = attr.ib(default=False)  # type: bool
     # ('cycleTime', '_cycleTime', int, None),
     # ('sendType', '_sendType', str, None),
+
+    pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
+    header_id = attr.ib(default=None)  #type: int
+    # header_id
+
 
     @property
     def is_multiplexed(self):  # type: () -> bool
@@ -879,6 +976,7 @@ class Frame(object):
 
     def __iter__(self):  # type: () -> typing.Iterator[Signal]
         """Iterator over all signals."""
+
         return iter(self.signals)
 
     def add_signal_group(self, Name, Id, signalNames):
@@ -911,6 +1009,18 @@ class Frame(object):
             if signalGroup.name == name:
                 return signalGroup
         return None
+
+    def add_pdu(self, pdu):
+        # type: (Pdu) -> Pdu
+        """
+        Add Pdu to Frame.
+
+        :param Pdu pdu: Pdu to be added.
+        :return: the pdu added.
+        """
+        self.pdus.append(pdu)
+        return self.pdus[len(self.pdus) - 1]
+
 
     def add_signal(self, signal):
         # type: (Signal) -> Signal
@@ -1414,6 +1524,12 @@ class Define(object):
             return
         self.definition = 'ENUM "' + '","' .join(self.values) +'"'
 
+import enum
+
+class matrix_class(enum.Enum):
+    CAN = 1
+    FLEXRAY = 2
+    SOMEIP = 3
 
 @attr.s(cmp=False)
 class CanMatrix(object):
@@ -1429,6 +1545,7 @@ class CanMatrix(object):
     value_tables (global defined values)
     """
 
+    type = attr.ib(default=matrix_class.CAN)  #type: matrix_class
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
     ecus = attr.ib(factory=list)  # type: typing.MutableSequence[Ecu]
     frames = attr.ib(factory=list)  # type: typing.MutableSequence[Frame]
@@ -1485,10 +1602,11 @@ class CanMatrix(object):
         """
         if attributeName in self.attributes:
             return self.attributes[attributeName]
-        else:
-            if attributeName in self.global_defines:
+        elif attributeName in self.global_defines:
                 define = self.global_defines[attributeName]
                 return define.defaultValue
+        else:
+            return default
 
     def add_value_table(self, name, valueTable):  # type: (str, typing.Mapping) -> None
         """Add named value table.
@@ -1566,6 +1684,17 @@ class CanMatrix(object):
             self.ecu_defines[name].set_default(value)
         if name in self.global_defines:
             self.global_defines[name].set_default(value)
+
+    def delete_obsolete_ecus(self):  # type: () -> None
+        """Delete all unused ECUs
+        """
+        used_ecus = [ecu for f in self.frames for ecu in f.transmitters]
+        used_ecus += [ecu for f in self.frames for ecu in f.receivers]
+        used_ecus += [ecu for f in self.frames for s in f.signals for ecu in s.receivers]
+        used_ecus += [ecu for s in self.signals for ecu in s.receivers]
+        ecus_to_delete = [ecu.name for ecu in self.ecus if ecu.name not in used_ecus]
+        for ecu in ecus_to_delete:
+            self.del_ecu(ecu)
 
     def delete_obsolete_defines(self):  # type: () -> None
         """Delete all unused Defines.

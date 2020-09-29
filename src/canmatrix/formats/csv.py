@@ -31,6 +31,7 @@ import logging
 import sys
 import typing
 from builtins import *
+import re
 
 import canmatrix.formats.xls_common
 
@@ -92,7 +93,7 @@ def write_ecu_matrix(ecu_name_list, sig, frame, row, col):
         elif ecu_name in frame.transmitters:
             row[col] = "s"
         else:
-            pass
+            row[col] = ""
         col += 1
     return col
 
@@ -195,10 +196,23 @@ def dump(db, file_object, delimiter=',', **options):
                     signal_row += ("s" if sig.is_signed else "u")
 
                     col = head_top.__len__()
-                    write_ecu_matrix(ecu_name_list, sig, frame, signal_row, col)
+                    col = write_ecu_matrix(ecu_name_list, sig, frame, signal_row, col)
+
+                    if float(sig.min) != 0 or float(sig.max) != 1.0:
+                        back.insert(0, str("%g..%g" % (sig.min, sig.max)))  # type: ignore
+                    elif float(sig.min) == 0 and float(sig.max) == 1.0:
+                        back.insert(0, str("%g..%g" % (sig.min, sig.max)))  # type: ignore
+                    else:
+                        back.insert(0, "")
+                    '''
+                    back += additional_frame_info
+                    for item in additional_signal_columns:
+                        temp = getattr(sig, item, "")
+                        back.append(temp)
+                    '''
+                    temp = ", ".join(["{}: {}".format(a, b) for (a, b) in sig.values.items()])
+                    back.append(temp)
                     signal_row += back
-                    # write Value
-                    signal_row += [val, sig.values[val]]
 
                     signal_row += additional_frame_info
                     for item in additional_signal_columns:
@@ -219,13 +233,23 @@ def dump(db, file_object, delimiter=',', **options):
                 signal_row += ("s" if sig.is_signed else "u")
 
                 col = head_top.__len__()
-                write_ecu_matrix(ecu_name_list, sig, frame, signal_row, col)
-                signal_row += back
+                col = write_ecu_matrix(ecu_name_list, sig, frame, signal_row, col)
 
-                if sig.min is not None or sig.max is not None:
-                    signal_row += [str("{}..{}".format(sig.min, sig.max))]
+                if float(sig.min) != 0 or float(sig.max) != 1.0:
+                    back.insert(0, str("%g..%g" % (sig.min, sig.max)))  # type: ignore
+                elif float(sig.min) == 0 and float(sig.max) == 1.0:
+                    back.insert(0, str("%g..%g" % (sig.min, sig.max)))  # type: ignore
                 else:
-                    signal_row += [""]
+                    back.insert(0, "")
+                '''
+                back += additional_frame_info
+                for item in additional_signal_columns:
+                    temp = getattr(sig, item, "")
+                    back.append(temp)
+                '''
+                temp = ", ".join(["{}: {}".format(a, b) for (a, b) in sig.values.items()])
+                back.append(temp)
+                signal_row += back
 
                 signal_row += additional_frame_info
                 for item in additional_signal_columns:

@@ -117,7 +117,7 @@ def dump(in_db, f, **options):
     dbc_export_comment_encoding = options.get("dbcExportCommentEncoding",  dbc_export_encoding)
     compatibility = options.get('compatibility', True)
     dbc_unique_signal_names_per_frame = options.get("dbcUniqueSignalNames", compatibility)
-    ignore_encoding_errors= options.get("ignoreEncodingErrors",  "")
+    ignore_encoding_errors= options.get("ignoreEncodingErrors",  "ignore")
     write_val_table = options.get("writeValTable", True)
 
     whitespace_replacement = options.get("whitespaceReplacement", '_')
@@ -165,7 +165,7 @@ def dump(in_db, f, **options):
         db.add_frame(free_signals_dummy_frame)
 
     # shorten long environment variable names
-    for env_var_name in db.env_vars:
+    for env_var_name in copy.deepcopy(db.env_vars):
         if len(env_var_name) > 32:
             db.add_env_attribute(env_var_name, "SystemEnvVarLongSymbol", env_var_name)
             db.env_vars[env_var_name[:32]] = db.env_vars.pop(env_var_name)
@@ -424,8 +424,11 @@ def dump(in_db, f, **options):
                      frame.arbitration_id.to_compound_integer() +
                      output_names[frame][signal]).encode(dbc_export_encoding, ignore_encoding_errors))
                 for attr_name, val in sorted(signal.values.items(), key=lambda x: int(x[0])):
+                    if '"' in val:
+                        val = val.replace('"', '\\"')
                     f.write(
                         (' ' + str(attr_name) + ' "' + val + '"').encode(dbc_export_encoding, ignore_encoding_errors))
+
                 f.write(";\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
     # SIG_VALTYPE
@@ -545,7 +548,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 db.frames.append(frame)
                 add_frame_by_id(frame)
             elif decoded.startswith("SG_ "):
-                pattern = r"^SG_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+), *([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
+                pattern = r"^SG_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) *\(([0-9.+\-eE]+), *([0-9.+\-eE]+)\) *\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
                 regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
@@ -577,7 +580,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     frame.add_signal(temp_signal)
     #                db.frames.addSignalToLastFrame(tempSig)
                 else:
-                    pattern = r"^SG_ +(.+?) +(.+?) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) +\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) +\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
+                    pattern = r"^SG_ +(.+?) +(.+?) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) *\(([0-9.+\-eE]+),([0-9.+\-eE]+)\) *\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                     regexp = re.compile(pattern)
                     regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                     temp = regexp.match(decoded)
@@ -915,8 +918,9 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             print("error with line no: %d" % i)
             print(line)
 # Backtracking
-
-    for env_var_name, env_var in db.env_vars.items():
+    env_var_names = list(db.env_vars.keys())
+    for env_var_name in env_var_names:
+        env_var = db.env_vars[env_var_name]
         if 'SystemEnvVarLongSymbol' in env_var.get("attributes", ""):
             long_name = env_var["attributes"]["SystemEnvVarLongSymbol"][1:-1]
             del(env_var["attributes"]["SystemEnvVarLongSymbol"])

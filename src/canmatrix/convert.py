@@ -195,6 +195,10 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                 'deleteObsoleteDefines']:
             db.delete_obsolete_defines()
 
+        if 'deleteObsoleteEcus' in options and options[
+                'deleteObsoleteEcus']:
+            db.delete_obsolete_ecus()
+
         if 'recalcDLC' in options and options['recalcDLC']:
             db.recalc_dlc(options['recalcDLC'])
 
