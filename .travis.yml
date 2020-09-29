@@ -36,7 +36,7 @@ script:
 
 deploy:
   provider: pypi
-  username: ebroecker
+  username: travis-ci-canmatrix-deploy
   skip_existing: true
   skip_cleanup: true
   on:
