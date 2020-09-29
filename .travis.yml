@@ -36,7 +36,7 @@ script:
 
 deploy:
   provider: pypi
-  user: ebroecker
+  username: ebroecker
   skip_existing: true
   skip_cleanup: true
   on:
