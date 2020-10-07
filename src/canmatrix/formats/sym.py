@@ -442,7 +442,10 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     is_float = False
                     is_ascii = False
                     enumeration = None
-                    if index_offset != 1:
+
+                    if tmp_mux == "Mux":
+                        is_signed = False
+                    elif index_offset != 1 :
                         is_signed = True
                     else:
                         is_signed = False
