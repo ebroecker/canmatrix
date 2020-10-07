@@ -3,6 +3,7 @@ import io
 import sys
 import textwrap
 from itertools import chain
+from pprint import pprint
 
 import pytest
 
@@ -353,4 +354,47 @@ Var=Float float 0,32	// Must be 4 Bytes according to PCAN Symbol Editor V5
                                                             "Double",
                                                             "Float", ])
 
+@pytest.mark.parametrize(
+    'var_name,data,raw_value',
+    (
+        ('VarMux1',   bytearray([1,  12,  0,  0,  0,  0,  0,  0]), 12),
+        ('VarMux2',   bytearray([2,  0,  0,  0,  23,  0,  0,  0]), 23),
+        ('VarMux200', bytearray([200,  0,  0,  0,  0,  0,  34,  0]), 34),
+    )
+)
+def test_mux_decode(var_name,data,raw_value):
+    f = io.BytesIO('''\
+    FormatVersion=5.0 // Do not edit this line!
+    Title="Types Test"
 
+FormatVersion=5.0 // Do not edit this line!
+Title="Test Symbols File"
+
+{SENDRECEIVE}
+
+[MuxTestFrame]
+ID=002h
+DLC=8
+Mux=Mux1 0,8 1 
+Var=VarMux1 unsigned 8,8
+
+[MuxTestFrame]
+DLC=8
+Mux=Mux2 0,8 2 
+Var=VarMux2 unsigned 32,8
+
+[MuxTestFrame]
+DLC=8
+Mux=Mux200 0,8 C8h
+Var=VarMux200 unsigned 48,8
+    '''.encode('utf-8'),
+                   )
+
+    matrix = canmatrix.formats.sym.load(f)
+    # Check no errors loading the matrix
+    assert matrix.load_errors == []
+
+    frame = matrix.frame_by_name("MuxTestFrame")
+    r = frame.decode(data)
+    assert var_name in r.keys(), "Signal {}, not decoded. Only : {}".format(var_name, ','.join(r for r in r.keys()))
+    assert r[var_name].raw_value == raw_value
