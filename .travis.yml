@@ -36,8 +36,9 @@ script:
 
 deploy:
   provider: pypi
-  user: ebroecker
+  username: __token__
   skip_existing: true
+  skip_cleanup: true
   on:
     tags: true
     branch: master 
