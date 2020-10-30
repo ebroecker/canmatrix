@@ -130,7 +130,7 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
     if options["ignoreEncodingErrors"]:
         options["ignoreEncodingErrors"] = "ignore"
     else:
-        options["ignoreEncodingErrors"] = ""
+        options["ignoreEncodingErrors"] = "strict"
 
     canmatrix.convert.convert(infile, outfile, **options)
     return 0
