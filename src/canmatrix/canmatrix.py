@@ -1351,35 +1351,18 @@ class Frame(object):
 
             return returnDict
 
-    def _has_sub_multiplexer(self, parent_multiplexer_name):
+    def _get_sub_multiplexer(self, parent_multiplexer_name, parent_multiplexer_value):
         """
-        check if any sub-multiplexer in frame
-        used for complex-multiplexed frame decoding
-
-        :param parent_multiplexer_name: string with name of parent multiplexer
-        :return: True or False
-        """
-        for signal in self.signals:
-            if signal.is_multiplexer and signal.muxer_for_signal == parent_multiplexer_name:
-                return True
-        return False
-
-    def _get_sub_multiplexer(self, parent_multiplexer_name, parent_multiplexer_value, decoded):
-        """
-        get any sub-multiplexer in frame for decoded data
-        return multiplexers name and value
-        used for complex-multiplexed frame decoding
+        get any sub-multiplexer in frame used
+        for complex-multiplexed frame decoding
 
         :param parent_multiplexer_name: string with name of parent multiplexer
         :param parent_multiplexer_value: raw_value (int) of parent multiplexer
-        :param decoded: OrderedDictionary which is returned from canmatrix.Frame.unpack
-        :return: muxer_name and muxer_value
+        :return: muxer signal or None
         """
         for signal in self.signals:
             if signal.is_multiplexer and signal.muxer_for_signal == parent_multiplexer_name and signal.multiplexer_value_in_range(parent_multiplexer_value):
-                muxer_value = decoded[signal.name].raw_value
-                muxer_name = signal.name
-                return muxer_name, muxer_value
+                return signal
 
     def _filter_signals_for_multiplexer(self, multiplexer_name, multiplexer_value):
         """
@@ -1417,10 +1400,14 @@ class Frame(object):
             multiplex_name = None
             multiplex_value = None
 
-            while self._has_sub_multiplexer(multiplex_name):
-                multiplex_name, multiplex_value = self._get_sub_multiplexer(multiplex_name, multiplex_value, decoded)
-                decoded_values[multiplex_name] = decoded[multiplex_name]
+            sub_multiplexer = self._get_sub_multiplexer(multiplex_name, multiplex_value)
+            while sub_multiplexer is not None:
+                multiplex_name = sub_multiplexer.name
+                multiplex_signal = decoded_values[multiplex_name] = decoded[multiplex_name]
+                multiplex_value = multiplex_signal.raw_value
                 filtered_signals += self._filter_signals_for_multiplexer(multiplex_name, multiplex_value)
+
+                sub_multiplexer = self._get_sub_multiplexer(multiplex_name, multiplex_value)
 
             for signal in filtered_signals:
                 decoded_values[signal.name] = decoded[signal.name]
