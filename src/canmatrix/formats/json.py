@@ -93,6 +93,7 @@ def dump(db, f, **options):
             symbolic_frame = {"name": frame.name,
                               "id": int(frame.arbitration_id.id),
                               "is_extended_frame": frame.arbitration_id.extended,
+                              "is_fd": frame.is_fd,
                               "signals": symbolic_signals}
             frame_attributes = {
                 attr: frame.attribute(attr)
@@ -146,6 +147,7 @@ def dump(db, f, **options):
                 {"name": frame.name,
                  "id": int(frame.arbitration_id.id),
                  "is_extended_frame": frame.arbitration_id.extended,
+                 "is_fd": frame.is_fd,
                  "signals": symbolic_signals,
                  "attributes": frame_attributes,
                  "comment": frame.comment,
