@@ -763,6 +763,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             sg = frame.signal_by_name(signal_name)
                             for i in range(math.floor(len(temp_list) / 2)):
                                 val = temp_list[i * 2 + 1]
+                                val = val.replace('\\"', '"')
                                 if sg:
                                     sg.add_values(temp_list[i * 2], val)
                         except:

@@ -486,6 +486,6 @@ def test_escaped_quotes():
         VAL_ 17 Signal 0 "zero" 1 "one " 2 "string with \\"escaped\\" double quotes";
         ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
-    assert matrix.frames[0].signals[0].values[2] == 'string with \\"escaped\\" double quotes'
+    assert matrix.frames[0].signals[0].values[2] == 'string with "escaped" double quotes'
 
 
