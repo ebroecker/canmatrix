@@ -20,6 +20,26 @@ def quote_aware_space_split(in_line):  # type: (str) -> typing.List[str]
     return [item.decode('utf-8') for item in shlex.split(in_line.strip().encode('utf-8'))]
 
 
+# https://stackoverflow.com/questions/18092354/python-split-string-without-splitting-escaped-character
+def escape_aware_split(string, delimiter):
+    if len(delimiter) != 1:
+        raise ValueError('Invalid delimiter: ' + delimiter)
+    ln = len(string)
+    i = 0
+    j = 0
+    while j < ln:
+        if string[j] == '\\':
+            if j + 1 >= ln:
+                yield string[i:j]
+                return
+            j += 1
+        elif string[j] == delimiter:
+            yield string[i:j]
+            i = j + 1
+        j += 1
+    yield string[i:j]
+
+
 def quote_aware_comma_split(string):  # type: (str) -> typing.List[str]
     """
     Split a string containing comma separated list of fields.
