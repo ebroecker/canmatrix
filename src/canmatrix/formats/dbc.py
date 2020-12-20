@@ -35,7 +35,7 @@ import typing
 from builtins import *
 
 import canmatrix
-
+import canmatrix.utils
 logger = logging.getLogger(__name__)
 
 
@@ -755,13 +755,15 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 if temp:
                     frame_id = temp.group(1)
                     signal_name = temp.group(2)
-                    temp_list = temp.group(3).split('"')
+                    temp_list = list(canmatrix.utils.escape_aware_split(temp.group(3), '"'))
+
                     if frame_id.isnumeric():  # value for Frame
                         try:
                             frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frame_id)))
                             sg = frame.signal_by_name(signal_name)
                             for i in range(math.floor(len(temp_list) / 2)):
                                 val = temp_list[i * 2 + 1]
+                                val = val.replace('\\"', '"')
                                 if sg:
                                     sg.add_values(temp_list[i * 2], val)
                         except:

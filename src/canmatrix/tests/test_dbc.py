@@ -478,4 +478,14 @@ def test_missing_space():
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].signals[0].name == "sig1"
 
+def test_escaped_quotes():
+    dbc = io.BytesIO(textwrap.dedent(r'''
+        BO_ 17 Frame_1: 8 Vector__XXX
+        SG_ Signal : 0|8@1-(1,0)[0|0] "" Vector__XXX
+        
+        VAL_ 17 Signal 0 "zero" 1 "one " 2 "string with \"escaped\" double quotes";
+        ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.frames[0].signals[0].values[2] == r'string with "escaped" double quotes'
+
 

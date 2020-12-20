@@ -88,6 +88,7 @@ def test_import_min_max():
                 "comment": "",
                 "id": 10,
                 "is_extended_frame": false,
+                "is_fd": false,
                 "length": 6,
                 "name": "test_frame",
                 "signals": [
@@ -122,6 +123,7 @@ def test_import_native():
                 "comment": "",
                 "id": 10,
                 "is_extended_frame": false,
+                "is_fd": false,
                 "length": 6,
                 "name": "test_frame",
                 "signals": [
@@ -167,6 +169,7 @@ def test_import_export_enums():
                 "comment": "",
                 "id": 10,
                 "is_extended_frame": false,
+                "is_fd": false,
                 "length": 6,
                 "name": "test_frame",
                 "signals": [
@@ -218,3 +221,4 @@ def test_export_all_native():
     assert (data['messages'][0]['signals'][0]['max'] == 42)
     assert (data['messages'][0]['signals'][0]['factor'] == 0.123)
     assert (data['messages'][0]['signals'][0]['offset'] == 1)
+    assert (data['messages'][0]['is_fd'] is False)
