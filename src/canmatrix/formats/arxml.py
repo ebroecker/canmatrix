@@ -1732,6 +1732,7 @@ def decode_ethernet_helper(ea, float_factory):
                 pdu_sig_mapping = ea.findall("I-SIGNAL-TO-I-PDU-MAPPING", ipdu)
 
                 get_signals(pdu_sig_mapping, target_frame, ea, None, float_factory)
+                target_frame.update_receiver()
                 db.add_frame(target_frame)
     return found_matrixes
 
@@ -1750,14 +1751,14 @@ def decode_flexray_helper(ea, float_factory):
             found_matrixes[channel_name] = db
 
             frames = ea.findall("FLEXRAY-FRAME-TRIGGERING", pc)
-            for frame in frames:
+            for frame_element in frames:
                 frame_counter += 1
-                slot_id = int(ea.get_child(frame, "SLOT-ID").text)
-                base_cycle = ea.get_child(frame, "BASE-CYCLE").text
-                ipdu_triggerings = ea.get_children(frame, "I-PDU-TRIGGERING")
-                frame_repetition_cycle = ea.find_children_by_path(frame, "CYCLE-REPETITION/CYCLE-REPETITION")[0].text
-                network_endpoints = pc.findall('.//' + ns + "NETWORK-ENDPOINT")
-                frame_size = int(ea.find_children_by_path(frame, "FRAME/FRAME-LENGTH")[0].text)
+                slot_id = int(ea.get_child(frame_element, "SLOT-ID").text)
+                base_cycle = ea.get_child(frame_element, "BASE-CYCLE").text
+                ipdu_triggerings = ea.get_children(frame_element, "I-PDU-TRIGGERING")
+                frame_repetition_cycle = ea.find_children_by_path(frame_element, "CYCLE-REPETITION/CYCLE-REPETITION")[0].text
+                network_endpoints = pc.findall('.//' + ea.ns + "NETWORK-ENDPOINT")
+                frame_size = int(ea.find_children_by_path(frame_element, "FRAME/FRAME-LENGTH")[0].text)
                 frame = canmatrix.Frame(size = frame_size, arbitration_id = frame_counter)
                 frame.slot_id = slot_id
                 frame.base_cycle = base_cycle
@@ -1888,7 +1889,10 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
                     sig_value_hash[sig.name] = 0
             frame_data = frame.encode(sig_value_hash)
             frame.add_attribute("GenMsgStartValue", "".join(["%02x" % x for x in frame_data]))
+            frame.update_receiver()
         found_matrixes[bus_name] = db
+
+
     return found_matrixes
 
 def load(file, **options):

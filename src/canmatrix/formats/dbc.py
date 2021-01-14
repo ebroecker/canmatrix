@@ -932,7 +932,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             ecu.name = ecu.attributes.get("SystemNodeLongSymbol")[1:-1]
             ecu.del_attribute("SystemNodeLongSymbol")
     for frame in db.frames:
-        frame.cycle_time = int(frame.attributes.get("GenMsgCycleTime", 0))
+        frame.cycle_time = int(float(frame.attributes.get("GenMsgCycleTime", 0)))
         if frame.attributes.get("SystemMessageLongSymbol", None) is not None:
             frame.name = frame.attributes.get("SystemMessageLongSymbol")[1:-1]
             frame.del_attribute("SystemMessageLongSymbol")
