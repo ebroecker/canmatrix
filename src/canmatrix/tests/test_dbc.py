@@ -496,7 +496,7 @@ def test_float_cycle_time():
         SG_ sig1 : 0|8@1- (1,0) [0|0] "" Vector__XXX
 
 
-        BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+        BA_DEF_ BO_  "GenMsgCycleTime" INT 10 3600000;
         BA_ "GenMsgCycleTime" BO_ 17 100.0;
 ''').encode('utf-8'))
 
@@ -504,6 +504,5 @@ def test_float_cycle_time():
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
 
     assert matrix.frames[0].cycle_time == 100
-    assert matrix.frames[0].signal_by_name("sig1").cycle_time == 10
-    assert matrix.frames[0].signal_by_name("sig2").cycle_time == 20
+
 
