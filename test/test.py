@@ -44,6 +44,9 @@ def run_tests():
     export_types.sort()
     # TODO: support testing of xlsx
     # export_types.remove('xlsx')
+    if "xlsx" in import_types:
+        # todo issue #541
+        import_types.remove("xlsx")
     if "fibex" in export_types:
         export_types.remove('fibex')
 

@@ -35,7 +35,7 @@ import typing
 from builtins import *
 
 import canmatrix
-
+import canmatrix.utils
 logger = logging.getLogger(__name__)
 
 
@@ -755,13 +755,15 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 if temp:
                     frame_id = temp.group(1)
                     signal_name = temp.group(2)
-                    temp_list = temp.group(3).split('"')
+                    temp_list = list(canmatrix.utils.escape_aware_split(temp.group(3), '"'))
+
                     if frame_id.isnumeric():  # value for Frame
                         try:
                             frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frame_id)))
                             sg = frame.signal_by_name(signal_name)
                             for i in range(math.floor(len(temp_list) / 2)):
                                 val = temp_list[i * 2 + 1]
+                                val = val.replace('\\"', '"')
                                 if sg:
                                     sg.add_values(temp_list[i * 2], val)
                         except:
@@ -930,7 +932,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             ecu.name = ecu.attributes.get("SystemNodeLongSymbol")[1:-1]
             ecu.del_attribute("SystemNodeLongSymbol")
     for frame in db.frames:
-        frame.cycle_time = int(frame.attributes.get("GenMsgCycleTime", 0))
+        frame.cycle_time = int(float(frame.attributes.get("GenMsgCycleTime", 0)))
         if frame.attributes.get("SystemMessageLongSymbol", None) is not None:
             frame.name = frame.attributes.get("SystemMessageLongSymbol")[1:-1]
             frame.del_attribute("SystemMessageLongSymbol")

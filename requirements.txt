@@ -1,7 +1,7 @@
 click
 lxml
 xlwt
-xlrd
+xlrd==1.2.0
 xlsxwriter
 pyyaml
 future
