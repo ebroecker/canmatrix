@@ -6,6 +6,7 @@ xlsxwriter
 pyyaml
 future
 attrs>=18.1.0
+ldfparser
 typing; python_version < '3.5'
 pathlib2
 enum34; python_version <= '2.7'

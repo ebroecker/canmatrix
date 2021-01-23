@@ -20,3 +20,4 @@ xlrd==1.2.0
 click==7.0
 lxml==4.6.2
 enum34==1.1.10
+ldfparser

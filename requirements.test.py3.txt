@@ -21,3 +21,4 @@ lxml==4.6.2
 click==7.0
 xlsxwriter==1.2.8
 pyaml==20.4.0
+ldfparser

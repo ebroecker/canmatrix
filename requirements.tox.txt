@@ -9,3 +9,4 @@ virtualenv==16.4.1
 click==7.0
 enum34==1.1.10; python_version <= '2.7'
 xlrd==1.2.0
+ldfparser
