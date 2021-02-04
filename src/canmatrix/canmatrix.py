@@ -121,7 +121,7 @@ def normalize_value_table(table):  # type: (typing.Mapping) -> typing.MutableMap
     return {int(k): v for k, v in table.items()}
 
 
-@attr.s(cmp=False)
+@attr.s(eq=False)
 class Signal(object):
     """
     Represents a Signal in CAN Matrix.
@@ -449,7 +449,7 @@ class Signal(object):
         return self.name
 
 
-@attr.s(cmp=False)
+@attr.s(eq=False)
 class SignalGroup(object):
     """
     Represents signal-group, containing multiple Signals.
@@ -746,7 +746,7 @@ class ArbitrationId(object):
             )
         )
 
-@attr.s(cmp=False)
+@attr.s(eq=False)
 class Pdu(object):
     """
     Represents a PDU.
@@ -814,7 +814,7 @@ class Pdu(object):
         return None
 
 
-@attr.s(cmp=False)
+@attr.s(eq=False)
 class Frame(object):
     """
     Represents CAN Frame.
@@ -1518,7 +1518,7 @@ class matrix_class(enum.Enum):
     FLEXRAY = 2
     SOMEIP = 3
 
-@attr.s(cmp=False)
+@attr.s(eq=False)
 class CanMatrix(object):
     """
     The Can-Matrix-Object
