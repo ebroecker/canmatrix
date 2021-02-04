@@ -87,14 +87,15 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                                          name="Diag_Reqest", size=8)
     service_id = canmatrix.canmatrix.Signal("service_id", start_bit=8, size=8)
     tx_frame.add_signal(service_id)
-    service_id.is_multiplexer = True
+    service_id.multiplex = 'Multiplexor'
 
     for mux_val in info_struct:
         request_id_signal = canmatrix.canmatrix.Signal("service_{:02x}".format(mux_val), start_bit=16, multiplex=mux_val)
         for value in info_struct[mux_val]:
             request_id_signal.add_values(value, info_struct[mux_val][value]["name"])
             request_id_signal.size = info_struct[mux_val][value]["bit_length"]
-        tx_frame.add_signal(request_id_signal)
+        if request_id_signal.size > 0:
+            tx_frame.add_signal(request_id_signal)
     db.add_frame(tx_frame)
 
 
@@ -106,7 +107,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                                          name="Diag_Response", size=8)
     service_id = canmatrix.canmatrix.Signal("service_id", start_bit=0, size=8)
     tx_frame.add_signal(service_id)
-    service_id.is_multiplexer = True
+    service_id.multiplex = 'Multiplexor'
     for mux_val in info_struct:
         if mux_val != 0x7f:
             request_id_signal = canmatrix.canmatrix.Signal("service_{:02x}".format(mux_val-0x40), start_bit=16,
@@ -118,7 +119,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         for value in info_struct[mux_val]:
             request_id_signal.add_values(value, info_struct[mux_val][value]["name"])
             request_id_signal.size = info_struct[mux_val][value]["bit_length"]
-        tx_frame.add_signal(request_id_signal)
+        if request_id_signal.size > 0:
+            tx_frame.add_signal(request_id_signal)
     db.add_frame(tx_frame)
 
     return db
