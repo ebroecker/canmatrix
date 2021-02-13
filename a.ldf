@@ -1,0 +1,141 @@
+/*******************************************************/
+/* This is the example LDF from LIN 2.2A specification */
+/*******************************************************/
+
+// Source: https://lin-cia.org/fileadmin/microsites/lin-cia.org/resources/documents/LIN_2.2A.pdf
+
+LIN_description_file;
+LIN_protocol_version = "2.2";
+LIN_language_version = "2.2";
+LIN_speed = 19.2 kbps;
+Channel_name = "DB";
+
+Nodes {
+	Master: CEM, 5 ms, 0.1 ms;
+	Slaves: LSM, RSM;
+}
+
+Signals {
+	InternalLightsRequest: 2, 0, CEM, LSM, RSM;
+	RightIntLightsSwitch: 8, 0, RSM, CEM;
+	LeftIntLightsSwitch: 8, 0, LSM, CEM;
+	LSMerror: 1, 0, LSM, CEM;
+	RSMerror: 1, 0, RSM, CEM;
+	IntTest: 2, 0, LSM, CEM;
+}
+
+Frames {
+	CEM_Frm1: 0x01, CEM, 1 {
+		InternalLightsRequest, 0;
+	}
+	LSM_Frm1: 0x02, LSM, 2 {
+		LeftIntLightsSwitch, 8;
+	}
+	LSM_Frm2: 0x03, LSM, 1 {
+		LSMerror, 0;
+		IntTest, 1;
+	}
+	RSM_Frm1: 0x04, RSM, 2 {
+		RightIntLightsSwitch, 8;
+	}
+	RSM_Frm2: 0x05, RSM, 1 {
+		RSMerror, 0;
+	}
+}
+
+Event_triggered_frames {
+	Node_Status_Event : Collision_resolver, 0x06, RSM_Frm1, LSM_Frm1;
+}
+
+Node_attributes {
+	RSM {
+		LIN_protocol = "2.0";
+		configured_NAD = 0x20;
+		product_id = 0x4E4E, 0x4553, 1;
+		response_error = RSMerror;
+		P2_min = 150 ms;
+		ST_min = 50 ms;
+		configurable_frames {
+			Node_Status_Event=0x000; CEM_Frm1 = 0x0001; RSM_Frm1 = 0x0002;
+			RSM_Frm2 = 0x0003;
+		}
+	}
+	LSM {
+		LIN_protocol = "2.2";
+		configured_NAD = 0x21;
+		initial_NAD = 0x01;
+		product_id = 0x4A4F, 0x4841;
+		response_error = LSMerror;
+		fault_state_signals = IntTest;
+		P2_min = 150 ms;
+		ST_min = 50 ms;
+		configurable_frames {
+			Node_Status_Event;
+			CEM_Frm1;
+			LSM_Frm1;
+			LSM_Frm2;
+		}
+	}
+}
+
+Schedule_tables {
+	Configuration_Schedule {
+		AssignNAD {LSM} delay 15 ms;
+		AssignFrameIdRange {LSM, 0} delay 15 ms;
+		AssignFrameId {RSM, CEM_Frm1} delay 15 ms;
+		AssignFrameId {RSM, RSM_Frm1} delay 15 ms;
+		AssignFrameId {RSM, RSM_Frm2} delay 15 ms;
+	}
+	Normal_Schedule {
+		CEM_Frm1 delay 15 ms;
+		LSM_Frm2 delay 15 ms;
+		RSM_Frm2 delay 15 ms;
+		Node_Status_Event delay 10 ms;
+	}
+	MRF_schedule {
+		MasterReq delay 10 ms;
+	}
+	SRF_schedule {
+		SlaveResp delay 10 ms;
+	}
+	Collision_resolver { // Keep timing of other frames if collision
+		CEM_Frm1 delay 15 ms;
+		LSM_Frm2 delay 15 ms;
+		RSM_Frm2 delay 15 ms;
+		RSM_Frm1 delay 10 ms; // Poll the RSM node
+		CEM_Frm1 delay 15 ms;
+		LSM_Frm2 delay 15 ms;
+		RSM_Frm2 delay 15 ms;
+		LSM_Frm1 delay 10 ms; // Poll the LSM node
+	}
+}
+
+Signal_encoding_types {
+	Dig2Bit {
+		logical_value, 0, "off";
+		logical_value, 1, "on";
+		logical_value, 2, "error";
+		logical_value, 3, "void";
+	}
+	ErrorEncoding {
+		logical_value, 0, "OK";
+		logical_value, 1, "error";
+	}
+	FaultStateEncoding {
+		logical_value, 0, "No test result";
+		logical_value, 1, "failed";
+		logical_value, 2, "passed";
+		logical_value, 3, "not used";
+	}
+	LightEncoding {
+		logical_value, 0, "Off";
+		physical_value, 1, 254, 1, 100, "lux";
+		logical_value, 255, "error";
+	}
+}
+Signal_representation {
+	Dig2Bit: InternalLightsRequest;
+	ErrorEncoding: RSMerror, LSMerror;
+	FaultStateEncoding: IntError;
+	LightEncoding: RightIntLightsSwitch, LefttIntLightsSwitch;
+}

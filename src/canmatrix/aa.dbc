@@ -1,0 +1,35 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: CGW VCVCCU 
+
+
+BO_ 2566856834 VCVCCU_Requests: 9 CGW
+ SG_ VCVCCU_Inlet_MotorRequest : 50|2@0+ (1,0) [0|3] "" VCVCCU
+ SG_ VCVCCU_ChargeUnit_Request : 52|2@0+ (1,0) [0|3] "" VCVCCU
+ SG_ VCVCCU_RTC_TimerValue : 47|8@0+ (1,0) [0|254] "min" VCVCCU
+ SG_ VCVCCU_RTC_TimerRequest : 37|2@0+ (1,0) [0|3] "" VCVCCU
+ SG_ VCVCCU_PlugLock_MotorRequest : 35|3@0+ (1,0) [0|7] "" VCVCCU
+ SG_ VCVCCU_LED2_Request : 23|8@0+ (0.5,0) [0|100] "%" VCVCCU
+ SG_ VCVCCU_LED1_Request : 15|8@0+ (0.5,0) [0|100] "%" VCVCCU
+ SG_ VCVCCU_LED0_Request : 7|8@0+ (0.5,0) [0|100] "%" VCVCCU
+ SG_ VCVCCU_HighSideOut4_Request : 39|2@0+ (1,0) [0|3] "" VCVCCU
+ SG_ VCVCCU_HighSideOut3_Request : 25|2@0+ (1,0) [0|3] "" VCVCCU
+ SG_ VCVCCU_HighSideOut2_Request : 27|2@0+ (1,0) [0|3] "" VCVCCU
+ SG_ VCVCCU_HighSideOut1_Request : 29|2@0+ (1,0) [0|3] "" VCVCCU
+ SG_ VCVCCU_HighSideOut0_Request : 31|2@0+ (1,0) [0|3] "" VCVCCU
+ SG_ VCVCCU_ControlPilot_ChargeModeRe : 55|3@0+ (1,0) [0|7] "" VCVCCU
+
+
+CM_ BO_ 419373186  "";
+
+
+
+
+
+
+

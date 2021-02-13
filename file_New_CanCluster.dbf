@@ -1,0 +1,132 @@
+//******************************BUSMASTER Messages and signals Database ******************************//
+
+[DATABASE_VERSION] 1.3
+
+[PROTOCOL] CAN
+
+[BUSMASTER_VERSION] [1.7.2]
+[NUMBER_OF_MESSAGES] 5
+[START_MSG] Frame_With_Container,100,8,8,1,S,Vector__XXX
+[START_SIGNALS] Header_ID,24,3,0,I,8388607.0,-8388608.0,0,0,1,,M,
+[START_SIGNALS] Header_DLC,8,4,0,I,127.0,-128.0,0,0,1,,,
+[START_SIGNALS] PDU_Contained_1_Signal1_905db81da40081cb,8,5,0,U,255.0,0.0,0,0,1,,m15,
+[START_SIGNALS] PDU_Contained_1_Signal2_560dca45b917ac81,16,7,0,U,65535.0,0.0,0,0,1,,m15,
+[START_SIGNALS] PDU_Contained_1_Signal3_c2518f7b986c2257,8,8,0,U,255.0,0.0,0,0,1,,m15,
+[START_SIGNALS] Contained_PDU_2_NewSignal_4521aa60e6ed341c,16,6,0,U,65535.0,0.0,0,0,1,,m16,
+[START_SIGNALS] Contained_PDU_2_NewSignal_1_7013bc93a91870d1,16,8,0,U,65535.0,0.0,0,0,1,,m16,
+[START_SIGNALS] PDU3_NewSignal_663edd1f1125ded2,8,5,0,U,255.0,0.0,0,0,1,,m17,
+[END_MSG]
+
+[START_MSG] PDU_Frame,101,2,2,1,S,Vector__XXX
+[START_SIGNALS] PDU_NewSignal_adf0210fbe6c5cec,8,1,0,U,255.0,0.0,1,0,1,,,
+[START_SIGNALS] PDU_NewSignal_1_a340d33220b108d5,8,2,0,U,255.0,0.0,1,0,1,,,
+[END_MSG]
+
+[START_MSG] TestFrame,99,5,11,1,S,Vector__XXX
+[START_SIGNALS] Header_ID,24,3,0,I,8388607.0,-8388608.0,0,0,1,,M,
+[START_SIGNALS] Header_DLC,8,4,0,I,127.0,-128.0,0,0,1,,,
+[START_SIGNALS] 1bit_6e81c7874a94126b,1,5,0,U,1.0,0.0,0,0,1,,m5,
+[START_SIGNALS] 2bits_648803615523b604,2,5,1,U,3.0,0.0,0,0,1,,m5,
+[START_SIGNALS] 3bits_9c83fdb894ed05bf,3,5,3,U,7.0,0.0,0,0,1,,m5,
+[START_SIGNALS] 2bits2_0ed8412ba478bbdc,2,5,6,U,3.0,0.0,0,0,1,,m5,
+[START_SIGNALS] SmallSignalsPDUIntel_NewSignal1_7ca0913a74a189fa,1,5,0,U,1.0,0.0,1,0,1,,m6,
+[START_SIGNALS] SmallSignalsPDUIntel_NewSignal2_efd2350a025ed292,2,5,1,U,3.0,0.0,1,0,1,,m6,
+[START_SIGNALS] SmallSignalsPDUIntel_NewSignal3_3864388f1c22f038,3,5,3,U,7.0,0.0,1,0,1,,m6,
+[START_SIGNALS] SmallSignalsPDUIntel_NewSignal2_2_7976cc7aa716cfde,2,5,6,U,3.0,0.0,1,0,1,,m6,
+[START_SIGNALS] SmallSignalsContainer_NewPDU_NewSignal_3f03f2fd574a4fce,8,5,0,U,255.0,0.0,1,0,1,,,
+[END_MSG]
+
+[START_MSG] Trame4PDUS,1,6,7,1,S,Vector__XXX
+[START_SIGNALS] Header_ID,24,3,0,I,8388607.0,-8388608.0,0,0,1,,M,
+[START_SIGNALS] Header_DLC,8,4,0,I,127.0,-128.0,0,0,1,,,
+[START_SIGNALS] PDU1_NewSignal_a4ef752e6cbdffff,8,5,0,U,255.0,0.0,0,0,1,,m10,
+[START_SIGNALS] PDU2_NewSignal_b45992d48685ea1e,8,5,0,U,255.0,0.0,0,0,1,,m11,
+[START_SIGNALS] PDU2_NewSignal_1_da3a4ef278f76687,8,6,0,U,255.0,0.0,0,0,1,,m11,
+[START_SIGNALS] PD_NewSignal_925527ee06ca0d25,8,5,0,U,255.0,0.0,0,0,1,,m12,
+[START_SIGNALS] PDU4_NewSignal_74daf6dbae331632,8,5,0,U,255.0,0.0,0,0,1,,m20,
+[END_MSG]
+
+[START_MSG] Trame2PDUs,2,5,4,1,S,Vector__XXX
+[START_SIGNALS] Header_ID,24,3,0,I,8388607.0,-8388608.0,0,0,1,,M,
+[START_SIGNALS] Header_DLC,8,4,0,I,127.0,-128.0,0,0,1,,,
+[START_SIGNALS] PDU5_NewSignal_6a23afcdd65a64d4,8,5,0,U,255.0,0.0,0,0,1,,m50,
+[START_SIGNALS] PDU6_NewSignal_525b3b193f364475,8,5,0,U,255.0,0.0,0,0,1,,m60,
+[END_MSG]
+
+[NODE] Sender
+[START_DESC]
+
+[START_DESC_MSG]
+100 S "";
+101 S "";
+99 S "";
+1 S "";
+2 S "";
+[END_DESC_MSG]
+[START_DESC_NODE]
+[END_DESC_NODE]
+[START_DESC_SIG]
+100 S PDU_Contained_1_Signal1_905db81da40081cb "";
+100 S PDU_Contained_1_Signal2_560dca45b917ac81 "";
+100 S PDU_Contained_1_Signal3_c2518f7b986c2257 "";
+100 S Contained_PDU_2_NewSignal_4521aa60e6ed341c "";
+100 S Contained_PDU_2_NewSignal_1_7013bc93a91870d1 "";
+100 S PDU3_NewSignal_663edd1f1125ded2 "";
+101 S PDU_NewSignal_adf0210fbe6c5cec "";
+101 S PDU_NewSignal_1_a340d33220b108d5 "";
+99 S 1bit_6e81c7874a94126b "";
+99 S 2bits_648803615523b604 "";
+99 S 3bits_9c83fdb894ed05bf "";
+99 S 2bits2_0ed8412ba478bbdc "";
+99 S SmallSignalsPDUIntel_NewSignal1_7ca0913a74a189fa "";
+99 S SmallSignalsPDUIntel_NewSignal2_efd2350a025ed292 "";
+99 S SmallSignalsPDUIntel_NewSignal3_3864388f1c22f038 "";
+99 S SmallSignalsPDUIntel_NewSignal2_2_7976cc7aa716cfde "";
+99 S SmallSignalsContainer_NewPDU_NewSignal_3f03f2fd574a4fce "";
+1 S PDU1_NewSignal_a4ef752e6cbdffff "";
+1 S PDU2_NewSignal_b45992d48685ea1e "";
+1 S PDU2_NewSignal_1_da3a4ef278f76687 "";
+1 S PD_NewSignal_925527ee06ca0d25 "";
+1 S PDU4_NewSignal_74daf6dbae331632 "";
+2 S PDU5_NewSignal_6a23afcdd65a64d4 "";
+2 S PDU6_NewSignal_525b3b193f364475 "";
+[END_DESC_SIG]
+[END_DESC]
+
+[START_PARAM]
+[START_PARAM_NET]
+[END_PARAM_NET]
+[START_PARAM_NODE]
+"NWM-Knoten",ENUM,,"nein","ja",0
+"NWM-Stationsadresse",HEX,0,63,0
+[END_PARAM_NODE]
+[START_PARAM_MSG]
+"GenMsgDelayTime",INT,0,65535
+"GenMsgNrOfRepetitions",INT,0,65535
+"GenMsgSendType",ENUM,,"cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"
+"GenMsgStartDelayTime",INT,0,65535
+"GenMsgStartValue",STRING
+[END_PARAM_MSG]
+[START_PARAM_SIG]
+"LongName",STRING,0
+[END_PARAM_SIG]
+[START_PARAM_VAL]
+[START_PARAM_NODE_VAL]
+Sender,"NWM-Knoten","0"
+Sender,"NWM-Stationsadresse","0"
+[END_PARAM_NODE_VAL]
+[START_PARAM_MSG_VAL]
+100,S,"GenMsgSendType","1"
+100,S,"GenMsgStartValue","00000000000000000000000000000000"
+101,S,"GenMsgSendType","1"
+101,S,"GenMsgStartValue","0000"
+99,S,"GenMsgSendType","1"
+99,S,"GenMsgStartValue","00000000000000000000000000000000"
+1,S,"GenMsgSendType","1"
+1,S,"GenMsgStartValue","0000000000000000000000000000000000000000000000000000000000000000"
+2,S,"GenMsgSendType","1"
+2,S,"GenMsgStartValue","0000000000000000000000000000000000000000000000000000000000000000"
+[END_PARAM_MSG_VAL]
+[START_PARAM_SIG_VAL]
+[END_PARAM_SIG_VAL]
+[END_PARAM_VAL]

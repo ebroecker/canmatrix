@@ -1,0 +1,86 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: Sender 
+
+
+BO_ 100 Frame_With_Container: 16 Vector__XXX
+ SG_ PDU_Contained_1_Signal1_905db81d : 7|8@0- (1,0) [-128|127] "" Vector__XXX
+ SG_ PDU_Contained_1_Signal2_560dca45 : 15|16@0- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ PDU_Contained_1_Signal3_c2518f7b : 31|8@0- (1,0) [-128|127] "" Vector__XXX
+ SG_ Contained_PDU_2_NewSignal_4521aa : 7|16@0- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Contained_PDU_2_NewSignal_1_7013 : 23|16@0- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ PDU3_NewSignal_663edd1f1125ded2 : 7|8@0- (1,0) [-128|127] "" Vector__XXX
+
+BO_ 101 PDU_Frame: 2 Vector__XXX
+ SG_ PDU_NewSignal_adf0210fbe6c5cec : 0|8@1- (1,0) [-128|127] "" Vector__XXX
+ SG_ PDU_NewSignal_1_a340d33220b108d5 : 8|8@1- (1,0) [-128|127] "" Vector__XXX
+
+BO_ 99 TestFrame: 15 Vector__XXX
+ SG_ 1bit_6e81c7874a94126b : 0|1@0- (1,0) [-1|0] "" Vector__XXX
+ SG_ 2bits_648803615523b604 : 2|2@0- (1,0) [-2|1] "" Vector__XXX
+ SG_ 3bits_9c83fdb894ed05bf : 5|3@0- (1,0) [-4|3] "" Vector__XXX
+ SG_ 2bits2_0ed8412ba478bbdc : 7|2@0- (1,0) [-2|1] "" Vector__XXX
+ SG_ SmallSignalsPDUIntel_NewSignal1_ : 0|1@1- (1,0) [-1|0] "" Vector__XXX
+ SG_ SmallSignalsPDUIntel_NewSignal2_0 : 1|2@1- (1,0) [-2|1] "" Vector__XXX
+ SG_ SmallSignalsPDUIntel_NewSignal3_ : 3|3@1- (1,0) [-4|3] "" Vector__XXX
+ SG_ SmallSignalsPDUIntel_NewSignal2_1 : 6|2@1- (1,0) [-2|1] "" Vector__XXX
+ SG_ SmallSignalsContainer_NewPDU_New : 0|8@1- (1,0) [-128|127] "" Vector__XXX
+
+BO_ 1 Trame4PDUS: 30 Vector__XXX
+ SG_ PDU1_NewSignal_a4ef752e6cbdffff : 7|8@0- (1,0) [-128|127] "" Vector__XXX
+ SG_ PDU2_NewSignal_b45992d48685ea1e : 7|8@0- (1,0) [-128|127] "" Vector__XXX
+ SG_ PDU2_NewSignal_1_da3a4ef278f7668 : 15|8@0- (1,0) [-128|127] "" Vector__XXX
+ SG_ PD_NewSignal_925527ee06ca0d25 : 7|8@0- (1,0) [-128|127] "" Vector__XXX
+ SG_ PDU4_NewSignal_74daf6dbae331632 : 7|8@0- (1,0) [-128|127] "" Vector__XXX
+
+BO_ 2 Trame2PDUs: 32 Vector__XXX
+ SG_ PDU5_NewSignal_6a23afcdd65a64d4 : 7|8@0- (1,0) [-128|127] "" Vector__XXX
+ SG_ PDU6_NewSignal_525b3b193f364475 : 7|8@0- (1,0) [-128|127] "" Vector__XXX
+
+
+
+
+
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
+BA_DEF_ BO_ "GenMsgDelayTime" INT 0 65535;
+BA_DEF_ BO_ "GenMsgNrOfRepetitions" INT 0 65535;
+BA_DEF_ BO_ "GenMsgSendType" ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";
+BA_DEF_ BO_ "GenMsgStartDelayTime" INT 0 65535;
+BA_DEF_ BO_ "GenMsgStartValue" STRING;
+BA_DEF_ SG_ "GenSigStartValue" HEX 0 4294967295;
+BA_DEF_ SG_ "LongName" STRING;
+BA_DEF_ SG_ "SystemSignalLongSymbol" STRING;
+BA_DEF_ BU_ "NWM-Knoten" ENUM  "nein","ja";
+BA_DEF_ BU_ "NWM-Stationsadresse" HEX 0 63;
+BA_ "NWM-Knoten" BU_ Sender 0;
+BA_ "NWM-Stationsadresse" BU_ Sender 0;
+
+
+BA_ "GenMsgSendType" BO_ 100 1;
+BA_ "GenMsgStartValue" BO_ 100 "00000000000000000000000000000000";
+BA_ "GenMsgSendType" BO_ 101 1;
+BA_ "GenMsgStartValue" BO_ 101 "0000";
+BA_ "GenMsgSendType" BO_ 99 1;
+BA_ "GenMsgStartValue" BO_ 99 "000000000000000000000000000000";
+BA_ "GenMsgSendType" BO_ 1 1;
+BA_ "GenMsgStartValue" BO_ 1 "000000000000000000000000000000000000000000000000000000000000";
+BA_ "GenMsgSendType" BO_ 2 1;
+BA_ "GenMsgStartValue" BO_ 2 "0000000000000000000000000000000000000000000000000000000000000000";
+
+BA_ "SystemSignalLongSymbol" SG_ 100 PDU_Contained_1_Signal1_905db81d "PDU_Contained_1_Signal1_905db81da40081cb";
+BA_ "SystemSignalLongSymbol" SG_ 100 PDU_Contained_1_Signal2_560dca45 "PDU_Contained_1_Signal2_560dca45b917ac81";
+BA_ "SystemSignalLongSymbol" SG_ 100 PDU_Contained_1_Signal3_c2518f7b "PDU_Contained_1_Signal3_c2518f7b986c2257";
+BA_ "SystemSignalLongSymbol" SG_ 100 Contained_PDU_2_NewSignal_4521aa "Contained_PDU_2_NewSignal_4521aa60e6ed341c";
+BA_ "SystemSignalLongSymbol" SG_ 100 Contained_PDU_2_NewSignal_1_7013 "Contained_PDU_2_NewSignal_1_7013bc93a91870d1";
+BA_ "SystemSignalLongSymbol" SG_ 99 SmallSignalsPDUIntel_NewSignal1_ "SmallSignalsPDUIntel_NewSignal1_7ca0913a74a189fa";
+BA_ "SystemSignalLongSymbol" SG_ 99 SmallSignalsPDUIntel_NewSignal2_0 "SmallSignalsPDUIntel_NewSignal2_efd2350a025ed292";
+BA_ "SystemSignalLongSymbol" SG_ 99 SmallSignalsPDUIntel_NewSignal3_ "SmallSignalsPDUIntel_NewSignal3_3864388f1c22f038";
+BA_ "SystemSignalLongSymbol" SG_ 99 SmallSignalsPDUIntel_NewSignal2_1 "SmallSignalsPDUIntel_NewSignal2_2_7976cc7aa716cfde";
+BA_ "SystemSignalLongSymbol" SG_ 99 SmallSignalsContainer_NewPDU_New "SmallSignalsContainer_NewPDU_NewSignal_3f03f2fd574a4fce";
+BA_ "SystemSignalLongSymbol" SG_ 1 PDU2_NewSignal_1_da3a4ef278f7668 "PDU2_NewSignal_1_da3a4ef278f76687";
+

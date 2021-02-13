@@ -1,0 +1,38 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: 
+
+
+BO_ 1 CEM_Frm1: 1 CEM
+ SG_ InternalLightsRequest : 0|2@1- (1,0) [0|0] "" LSM,RSM
+
+BO_ 2 LSM_Frm1: 2 LSM
+ SG_ LeftIntLightsSwitch : 8|8@1- (1,0) [0|0] "" CEM
+
+BO_ 3 LSM_Frm2: 1 LSM
+ SG_ LSMerror : 0|1@1- (1,0) [0|0] "" CEM
+ SG_ IntTest : 1|2@1- (1,0) [0|0] "" CEM
+
+BO_ 4 RSM_Frm1: 2 RSM
+ SG_ RightIntLightsSwitch : 8|8@1- (1,100) [1|254] "lux" CEM
+
+BO_ 5 RSM_Frm2: 1 RSM
+ SG_ RSMerror : 0|1@1- (1,0) [0|0] "" CEM
+
+
+
+
+
+
+
+
+
+VAL_ 1 InternalLightsRequest 0 "off" 1 "on" 2 "error" 3 "void";
+VAL_ 3 LSMerror 0 "OK" 1 "error";
+VAL_ 4 RightIntLightsSwitch 0 "Off" 255 "error";
+VAL_ 5 RSMerror 0 "OK" 1 "error";

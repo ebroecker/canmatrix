@@ -118,7 +118,7 @@ def decode_compumethod(eo : OdxReader, compu_method, category):
     return compu_info
 
 
-def get_struct(eo: OdxReader, struct_name):
+def get_struct(eo: OdxReader, struct_name, offset_bit=0):
     struct = eo.id_links[struct_name]
 
     byte_size = eo.find("BYTE-SIZE", struct)
@@ -135,7 +135,7 @@ def get_struct(eo: OdxReader, struct_name):
         param_name = eo.get_short_name(param)
         byte_pos = eo.find("BYTE-POSITION", param)
         bit_pos = eo.find("BIT-POSITION", param)
-        start_bit = int(byte_pos.text)*8
+        start_bit = int(byte_pos.text)*8 + offset_bit
         if bit_pos is not None:
             start_bit += int(bit_pos.text)
         data_dict["_members"][param_name] = {"bit_pos": start_bit}
@@ -157,7 +157,7 @@ def get_struct(eo: OdxReader, struct_name):
                     data_dict["_members"][param_name]["unit"] = display_name_element.text
                 # ignore type for now...
             else:
-                data_dict["_members"][param_name] = get_struct(eo, ref.attrib["ID-REF"])
+                data_dict["_members"][param_name] = get_struct(eo, ref.attrib["ID-REF"], start_bit)
     return data_dict
 
 
@@ -221,12 +221,16 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     db = canmatrix.canmatrix.CanMatrix()
     eo = OdxReader()
     eo.open(f)
-
-
-
+# 22, 2E write by id, 2f, InputOutputControlByIdent, 31 Routine Control,
+    # functional_canid_container = eo.root.xpath("//COMPARAM-REF[@ID-REF='COMPARAM-SPEC.UDS_CPS.COMPARAM.FunctionalRequestCANID']")
     ### request
-    info_struct = {} # get_odx_info(eo, "REQUEST")
+    pyhs_canid_container = eo.root.xpath("//COMPARAM-REF[@ID-REF='COMPARAM-SPEC.UDS_CPS.COMPARAM.PhysicalRequestCANID']")
+    if len(pyhs_canid_container) > 0:
+        value = eo.find("VALUE", pyhs_canid_container[0])
+        if value is not None:
+            tx_can_id = int(value.text, 16)
 
+    info_struct = {} # get_odx_info(eo, "REQUEST")
     tx_frame = canmatrix.canmatrix.Frame(arbitration_id=canmatrix.arbitration_id_converter(tx_can_id),
                                          name="Diag_Reqest", size=8)
 
@@ -251,17 +255,24 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         if request_id_signal.size > 0:
             tx_frame.add_signal(request_id_signal)
 
-#    db.add_frame(tx_frame)
+    db.add_frame(tx_frame)
 
 
     ### response
     info_struct = get_odx_info(eo, "POS-RESPONSE" )
 #    info_struct.update(get_odx_info(eo, "NEG-RESPONSE"))
 
+    pyhs_canid_container = eo.root.xpath("//COMPARAM-REF[@ID-REF='COMPARAM-SPEC.UDS_CPS.COMPARAM.PhysicalResponseCANID']")
+    if len(pyhs_canid_container) > 0:
+        value = eo.find("VALUE", pyhs_canid_container[0])
+        if value is not None:
+            rx_can_id = int(value.text, 16)
     tx_frame = canmatrix.canmatrix.Frame(arbitration_id=canmatrix.arbitration_id_converter(rx_can_id),
                                          name="Diag_Response", size=8)
 
-    service_id = canmatrix.canmatrix.Signal("service_{:x}_muxer".format(decode_service+0x40), start_bit=8, size=16)
+    tp_info = canmatrix.canmatrix.Signal("tp_length", start_bit=0, size=8)
+    tx_frame.add_signal(tp_info)
+    service_id = canmatrix.canmatrix.Signal("service_{:x}_muxer".format(decode_service+0x40), start_bit=8, size=24)
     tx_frame.add_signal(service_id)
     service_id.multiplex = 'Multiplexor'
     service_id.is_signed = False
@@ -271,12 +282,12 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         did_info = info_struct[mux_val]
         did_vars = flatten_did_info(did_info)
         for var in did_vars:
-            new_signal = canmatrix.canmatrix.Signal(var, start_bit=32, multiplex=mux_val)
+            new_signal = canmatrix.canmatrix.Signal(var, multiplex=mux_val)
             if "bit_size" in did_vars[var]:
                 new_signal.size = did_vars[var]["bit_size"]
             else:
                 new_signal.size = 1
-            new_signal.start_bit = did_vars[var]["bit_pos"] + 24
+            new_signal.start_bit = did_vars[var]["bit_pos"] + 32
             new_signal.is_signed = False
             if "compu_method" in did_vars[var]:
                 if did_vars[var]["compu_method"]["type"] == "LINEAR":
@@ -292,6 +303,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 new_signal.unit = did_vars[var]["unit"]
 
             tx_frame.add_signal(new_signal)
+
     db.add_frame(tx_frame)
 
     return db

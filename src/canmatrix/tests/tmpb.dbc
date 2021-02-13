@@ -1,0 +1,29 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: 
+
+
+BO_ 292 testFrame3: 8 testBU
+ SG_ someTestSignal : 7|11@0+ (5,1) [0|500] "" recBU
+
+BO_ 293 testFrame2: 8 testBU2
+ SG_ someTestSignal2 : 8|11@0+ (5,1) [0|500] "" recBU2
+ SG_ zeroSignal : 19|0@0+ (5,1) [0|500] "" recBU2
+
+
+
+
+
+BA_DEF_ BO_ "myAttribute" INT -5 10;
+BA_DEF_ SG_ "mySignalAttribute" INT 0 65535;
+
+
+BA_ "myAttribute" BO_ 293 42;
+
+BA_ "mySignalAttribute" SG_ 293 zeroSignal 7;
+
