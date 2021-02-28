@@ -467,7 +467,7 @@ def load(file, **options):
             receiver = []
             start_byte = int(sh.cell(row_num, index['startbyte']).value)
             start_bit = int(sh.cell(row_num, index['startbit']).value)
-            signal_name = sh.cell(row_num, index['signalName']).value
+            signal_name = sh.cell(row_num, index['signalName']).value.strip()
             signal_comment = sh.cell(
                 row_num, index['signalComment']).value.strip()
             signal_length = int(sh.cell(row_num, index['signalLength']).value)
