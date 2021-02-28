@@ -1344,7 +1344,7 @@ class Frame(object):
 
             unpacked = self.bitstring_to_signal_list(self.signals, big, little)
 
-            returnDict= dict()
+            returnDict = dict()
 
             for s, v in zip(self.signals, unpacked):
                 returnDict[s.name] = DecodedSignal(v, s)
@@ -2087,6 +2087,15 @@ class CanMatrix(object):
         :return: A byte string of the packed values.
         """
         return self.frame_by_id(frame_id).encode(data)
+
+    def decode_pycan(self, pycan_msg):
+        """Return OrderedDictionary with Signal Name: object decodedSignal
+
+        :param pycan_msg: python-can message
+        :return: OrderedDictionary
+        """
+        canmatrix_arbitration_id = canmatrix.ArbitrationId(pycan_msg.arbitration_id, extended=pycan_msg.is_extended_id)
+        return self.decode(canmatrix_arbitration_id, pycan_msg.data)
 
     def decode(self, frame_id, data):  # type: (ArbitrationId, bytes) -> typing.Mapping[str, typing.Any]
         """Return OrderedDictionary with Signal Name: object decodedSignal
