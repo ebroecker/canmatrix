@@ -256,9 +256,13 @@ Title=\"{}\"
                     if signal.multiplex == 'Multiplexor':
                         mux_signal = signal
 
-                # ticker all possible mux-groups as i (0 - 2^ (number of bits of multiplexor))
                 first = 0
-                for i in range(0, 1 << int(mux_signal.size)):
+                # find all used muxer-values
+                multiplexer_list = set([a.multiplex for a in frame.signals])
+                # ticker all used muxer-values only
+                for i in multiplexer_list:
+                    if type(i) != int:
+                        continue
                     found = 0
                     mux_out = ""
                     # ticker all signals
