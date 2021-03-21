@@ -71,14 +71,16 @@ def compare_db(db1, db2, ignore=None):
     if ignore is None:
         ignore = dict()
     for f1 in db1.frames:
-        f2 = db2.frame_by_id(f1.arbitration_id)
-        if f2 is None:
+        f2 = db2.frame_by_name(f1.name)
+        f2id = db2.frame_by_id(f1.arbitration_id)
+        if f2id is None and f2 is None:
             result.add_child(CompareResult("deleted", "FRAME", f1))
         else:
             result.add_child(compare_frame(f1, f2, ignore))
     for f2 in db2.frames:
-        f1 = db1.frame_by_id(f2.arbitration_id)
-        if f1 is None:
+        f1 = db1.frame_by_name(f2.name)
+        f1id = db1.frame_by_id(f2.arbitration_id)
+        if f1id is None and f1 is None:
             result.add_child(CompareResult("added", "FRAME", f2))
 
     if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
