@@ -86,14 +86,11 @@ setup(
     ],
     extras_require = {
         "arxml": ["lxml"],
-        "kcd": ["lxml"],
-        "fibex": ["lxml"],
-        "xls": ["xlrd", "xlwt"],
-        "xlsx": ["xlsxwriter"],
-        "yaml": ["pyyaml"],
         "dbc": [],
         "dbf": [],
+        "fibex": ["lxml"],
         "json": [],
+        "kcd": ["lxml"],
         "sym": [],
         "test": [
             "coverage",
@@ -102,6 +99,9 @@ setup(
             "pytest",
             "tox",
         ],
+        "xls": ["xlrd", "xlwt"],
+        "xlsx": ["xlsxwriter"],
+        "yaml": ["pyyaml"],
     },
 
     packages = find_packages("src"),
