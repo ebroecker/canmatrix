@@ -11,6 +11,7 @@ environment:
     - TOXENV: py36
     - TOXENV: py37
     - TOXENV: py38
+    - TOXENV: py39
     - TOXENV: pypy3
 
 matrix:
@@ -29,7 +30,7 @@ install:
   - py -3.6 -m venv "%VENV%"
   - "%VENV%\\Scripts\\activate"
   - python -c "import sys; print(sys.version)"
-  - pip install -r requirements.tox.txt
+  - pip install tox
   - ps: Update-AppveyorBuild -Version "v$(python get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
 
 build_script:
