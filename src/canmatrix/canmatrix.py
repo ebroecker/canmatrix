@@ -39,8 +39,8 @@ import warnings
 from builtins import *
 
 import attr
-from future.moves.itertools import zip_longest
 from past.builtins import basestring
+from six.moves import zip_longest
 
 import canmatrix.copy
 import canmatrix.types
@@ -1512,6 +1512,7 @@ class Define(object):
         self.definition = 'ENUM "' + '","' .join(self.values) +'"'
 
 import enum
+
 
 class matrix_class(enum.Enum):
     CAN = 1

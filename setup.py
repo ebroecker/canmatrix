@@ -57,8 +57,8 @@ Programming Language :: Python :: 3.6
 Programming Language :: Python :: 3.7
 """
 
-import sys
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
+
 import versioneer
 
 doclines = __doc__.split("\n")
@@ -80,8 +80,9 @@ setup(
         "attrs>=18.1.0",
         "bitstruct",
         "click",
-        "future",
+        "future; python_version <= '2.7'",
         "pathlib2",
+        "six",
         "typing; python_version < '3.5'",
     ],
     extras_require = {
@@ -104,4 +105,3 @@ setup(
     entry_points={'console_scripts': ['cancompare = canmatrix.cli.compare:cli_compare',
                                       'canconvert = canmatrix.cli.convert:cli_convert']}
 )
-
