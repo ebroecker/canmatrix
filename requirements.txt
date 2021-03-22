@@ -6,6 +6,6 @@ lxml
 pyyaml
 six
 typing; python_version < '3.5'
-xlrd==1.2.0
+xlrd
 xlsxwriter
 xlwt
