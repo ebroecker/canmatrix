@@ -15,9 +15,9 @@ except ImportError:
 
 @attr.s
 class j1939_decoder(object):
-    binary_io = read_binary(__name__.rpartition('.')[0], "j1939.dbc")
+    string = read_binary(__name__.rpartition('.')[0], "j1939.dbc")
     j1939_db = canmatrix.formats.loads_flat(
-        binary_io, import_type="dbc", dbcImportEncoding="utf8"
+        string, import_type="dbc", dbcImportEncoding="utf8"
     )
     length = attr.ib(default=0)  # type: int
     count_succesive_frames = attr.ib(default=0)  # type: int

@@ -1,6 +1,6 @@
 attrs>=18.1.0
 click
-enum34; python_version <= '2.7'
+enum34; python_version < '3.4'
 future
 lxml
 pyyaml

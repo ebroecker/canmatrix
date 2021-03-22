@@ -79,7 +79,7 @@ setup(
     install_requires = [
         "attrs>=18.1.0",
         "click",
-        "enum34; python_version <= '2.7'",
+        "enum34; python_version < '3.4'",
         "future",
         "six",
         "typing; python_version < '3.5'",
