@@ -1,11 +1,16 @@
-import pytest
-import pathlib2
 import sys
+
 import canmatrix.formats
+import pytest
+
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
+
 pytest_plugins = ["pytester"]
+here = Path(__file__).parent
 
-
-here = pathlib2.Path(__file__).parent
 
 @pytest.fixture
 def run(testdir):

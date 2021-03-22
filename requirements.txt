@@ -1,11 +1,11 @@
+attrs>=18.1.0
 click
+enum34; python_version <= '2.7'
+future
 lxml
-xlwt
+pyyaml
+six
+typing; python_version < '3.5'
 xlrd==1.2.0
 xlsxwriter
-pyyaml
-future
-attrs>=18.1.0
-typing; python_version < '3.5'
-pathlib2
-enum34; python_version <= '2.7'
+xlwt

@@ -76,12 +76,11 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-      install_requires = [
+    install_requires = [
         "attrs>=18.1.0",
-        "bitstruct",
         "click",
-        "future; python_version <= '2.7'",
-        "pathlib2",
+        "enum34; python_version <= '2.7'",
+        "future",
         "six",
         "typing; python_version < '3.5'",
     ],
@@ -96,7 +95,13 @@ setup(
         "dbf": [],
         "json": [],
         "sym": [],
-        "test": ["coverage", "pytest", "pytest-cov", "tox"],
+        "test": [
+            "coverage",
+            "pathlib2; python_version < '3.4'",
+            "pytest-cov",
+            "pytest",
+            "tox",
+        ],
     },
 
     packages = find_packages("src"),
