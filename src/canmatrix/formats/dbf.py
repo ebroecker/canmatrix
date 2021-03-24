@@ -330,7 +330,7 @@ def dump(mydb, f, **options):
 
 [PROTOCOL] CAN
 
-[BUSMASTER_VERSION] [1.7.2]
+[BUSMASTER_VERSION] [3.2.2]
 [NUMBER_OF_MESSAGES] """
 
     out_str += str(len(db.frames)) + "\n"
@@ -354,11 +354,11 @@ def dump(mydb, f, **options):
             continue
 
         # Name unMsgId m_ucLength m_ucNumOfSignals m_cDataFormat m_cFrameFormat? m_txNode
-        # m_cDataFormat Data format: 1-Intel, 0-Motorola -- always 1 original converter decides based on signal count.
+        # m_cDataFormat Data format: 1-Intel, 0-Motorola.
         # cFrameFormat Standard 'S' Extended 'X'
         extended = 'X' if frame.arbitration_id.extended == 1 else 'S'
         out_str += "[START_MSG] " + frame.name + \
-            ",%d,%d,%d,1,%c," % (frame.arbitration_id.id, frame.size, len(frame.signals), extended)
+            ",%d,%d,%d,0,%c," % (frame.arbitration_id.id, frame.size, len(frame.signals), extended)
         if not frame.transmitters:
             frame.add_transmitter("Vector__XXX")
 # DBF does not support multiple Transmitters
@@ -394,7 +394,7 @@ def dump(mydb, f, **options):
                                             which_byte,
                                             int(signal.get_startbit(bit_numbering=1,
                                                                     start_little=True)) % 8,
-                                            sign) + '{},{}'.format(float(signal.max) / float(signal.factor),
+                                            sign) + '{:g},{:g}'.format(float(signal.max) / float(signal.factor),
                                                                    float(signal.min) / float(signal.factor))
 
             out_str += ",%d,%s,%s" % (signal.is_little_endian, signal.offset, signal.factor)
