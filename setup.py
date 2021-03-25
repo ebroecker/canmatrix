@@ -57,8 +57,8 @@ Programming Language :: Python :: 3.6
 Programming Language :: Python :: 3.7
 """
 
-import sys
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
+
 import versioneer
 
 doclines = __doc__.split("\n")
@@ -76,26 +76,26 @@ setup(
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-      install_requires = [
+    install_requires = [
         "attrs>=18.1.0",
-        "bitstruct",
         "click",
+        "enum34; python_version < '3.4'",
         "future",
-        "pathlib2",
+        "six",
         "typing; python_version < '3.5'",
     ],
     extras_require = {
         "arxml": ["lxml"],
-        "kcd": ["lxml"],
+        "dbc": [],
+        "dbf": [],
         "fibex": ["lxml"],
+        "json": [],
+        "kcd": ["lxml"],
+        "sym": [],
+        "test": ["pathlib2; python_version < '3.4'", "pytest"],
         "xls": ["xlrd", "xlwt"],
         "xlsx": ["xlsxwriter"],
         "yaml": ["pyyaml"],
-        "dbc": [],
-        "dbf": [],
-        "json": [],
-        "sym": [],
-        "test": ["coverage", "pytest", "pytest-cov", "tox"],
     },
 
     packages = find_packages("src"),
@@ -104,4 +104,3 @@ setup(
     entry_points={'console_scripts': ['cancompare = canmatrix.cli.compare:cli_compare',
                                       'canconvert = canmatrix.cli.convert:cli_convert']}
 )
-

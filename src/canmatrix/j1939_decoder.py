@@ -4,16 +4,21 @@ from __future__ import absolute_import, division, print_function
 from builtins import *
 
 import attr
-import pathlib2
 
 import canmatrix.formats
+
+try:
+    from importlib.resources import read_binary
+except ImportError:
+    from pkgutil import get_data as read_binary
 
 
 @attr.s
 class j1939_decoder(object):
-    here = pathlib2.Path(__file__).parent
-
-    j1939_db = canmatrix.formats.loadp_flat(str(here / "j1939.dbc"), dbcImportEncoding = "utf8")
+    string = read_binary(__name__.rpartition('.')[0], "j1939.dbc")
+    j1939_db = canmatrix.formats.loads_flat(
+        string, import_type="dbc", dbcImportEncoding="utf8"
+    )
     length = attr.ib(default=0)  # type: int
     count_succesive_frames = attr.ib(default=0)  # type: int
     transfered_pgn = attr.ib(default=0)  # type: int
