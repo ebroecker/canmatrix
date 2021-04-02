@@ -55,6 +55,8 @@ Programming Language :: Python :: 3.4
 Programming Language :: Python :: 3.5
 Programming Language :: Python :: 3.6
 Programming Language :: Python :: 3.7
+Programming Language :: Python :: 3.8
+Programming Language :: Python :: 3.9
 """
 
 from setuptools import find_packages, setup
@@ -77,7 +79,7 @@ setup(
     license = "BSD",
     platforms = ["any"],
     install_requires = [
-        "attrs>=18.1.0",
+        "attrs>=19.2.0",
         "click",
         "enum34; python_version < '3.4'",
         "future",
