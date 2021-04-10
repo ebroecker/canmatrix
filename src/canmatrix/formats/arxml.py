@@ -213,7 +213,7 @@ class Earxml:
             if reference is not None:
                 ret = self.get_short_name_path(reference.text)
                 if ret is None:
-                    return None
+                    raise "use follow_ref!"
         return ret
 
     def get_children(self, parent, tag_name):
@@ -224,8 +224,8 @@ class Earxml:
         if not ret:  # no direct element - get references
             ret_list = self.findall(tag_name + '-REF', parent)
             ret = [self.get_short_name_path(item.text) for item in ret_list]
-            if len(ret) == 0:
-                return []
+            if len(ret) > 0:
+                raise "use follow_all_ref!"
         return ret
 
     def build_ar_tree(self):
