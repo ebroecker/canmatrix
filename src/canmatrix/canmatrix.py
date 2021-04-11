@@ -405,6 +405,8 @@ class Signal(object):
         """
         if value is None:
             value = self.initial_value
+            if not (self.min <= value <= self.max):
+                value = self.min
 
         if isinstance(value, basestring):
             for value_key, value_string in self.values.items():
