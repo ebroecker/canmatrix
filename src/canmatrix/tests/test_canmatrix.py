@@ -49,7 +49,7 @@ def test_encode_signal():
     assert s5.phys2raw(s5.min) == -128
 
     s6 = canmatrix.canmatrix.Signal('signal', size=8, is_signed=False, offset=5)
-    assert s6.phys2raw() == -5
+    assert s6.phys2raw() == 0
     assert s6.phys2raw(10) == 5
     assert s6.phys2raw(s6.max) == 255
     assert s6.phys2raw(s6.min) == 0
