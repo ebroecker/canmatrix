@@ -233,8 +233,8 @@ def dump(in_db, f, **options):
         for signal in frame.signals:
             if signal.cycle_time != 0:
                 signal.add_attribute("GenSigCycleTime", signal.cycle_time)
-            if signal.initial_value != 0:
-                signal.add_attribute("GenSigStartValue", signal.initial_value)
+            if signal.phys2raw(None) != 0:
+                signal.add_attribute("GenSigStartValue", signal.phys2raw(None))
 
             name = normalized_names[signal]
             if compatibility:
@@ -254,7 +254,7 @@ def dump(in_db, f, **options):
             if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
                 db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
 
-            if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
+            if max([x.phys2raw(None) for y in db.frames for x in y.signals]) > 0 or min([x.phys2raw(None) for y in db.frames for x in y.signals]) < 0:
                 db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
 
 
@@ -945,7 +945,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         #     frame.extended = 1
 
         for signal in frame.signals:
-            signal.initial_value = float_factory(signal.attributes.get("GenSigStartValue", "0"))
+            gen_sig_start_value = float_factory(signal.attributes.get("GenSigStartValue", "0"))
+            signal.initial_value = (gen_sig_start_value * signal.factor) + signal.offset
             signal.cycle_time = int(signal.attributes.get("GenSigCycleTime", 0))
             if signal.attribute("SystemSignalLongSymbol") is not None:
                 signal.name = signal.attribute("SystemSignalLongSymbol")[1:-1]
