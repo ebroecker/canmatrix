@@ -1062,7 +1062,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         if system_signal is not None and "SYSTEM-SIGNAL-GROUP" in system_signal.tag:
             system_signals = ea.find_children_by_path(system_signal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL")
-            get_sys_signals(system_signal, system_signals, frame, group_id, ns)
+            get_sys_signals(system_signal, system_signals, frame, group_id, ea)
 
             group_id = group_id + 1
             continue
@@ -1231,7 +1231,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
             if initvalue is not None and initvalue.text is not None:
                 initvalue.text = canmatrix.utils.guess_value(initvalue.text)
-                new_signal.initial_value = float_factory(initvalue.text)
+                new_signal.initial_value = (float_factory(initvalue.text) * factor) + offset
 
             for key, value in list(values.items()):
                 new_signal.add_values(canmatrix.utils.decode_number(key, float_factory), value)
