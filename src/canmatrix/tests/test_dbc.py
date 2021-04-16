@@ -421,6 +421,8 @@ def test_signal_inital_value():
 
         BA_DEF_ SG_  "GenSigStartValue" FLOAT 0 100000000000;
         BA_ "GenSigStartValue" SG_ 17 sig1 2.7;
+        
+        SIG_VALTYPE_ 17 sig1 : 1;
     ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].signal_by_name("sig1").initial_value == decimal.Decimal("2.7")
