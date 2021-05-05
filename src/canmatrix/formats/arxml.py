@@ -1044,7 +1044,7 @@ def ar_byteorder_is_little(in_string):
 
 
 def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0):
-    # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, int, typing.Callable, int) -> None
+    # type: (typing.Sequence[_Element], canmatrix.Frame, Earxml, int, typing.Callable, int) -> None
     """Add signals from xml to the Frame."""
     global signal_rxs
     group_id = 1
@@ -1104,14 +1104,6 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         if length is None:
             length = ea.get_child(system_signal, "LENGTH")
 
-        name = ea.get_child(system_signal, "SHORT-NAME")
-        unit_element = ea.get_child(isignal, "UNIT")
-        display_name = ea.get_child(unit_element, "DISPLAY-NAME")
-        if display_name is not None:
-            signal_unit = display_name.text
-        else:
-            signal_unit = ""
-
         signal_min = None  # type: canmatrix.types.OptionalPhysicalValue
         signal_max = None  # type: canmatrix.types.OptionalPhysicalValue
         receiver = []  # type: typing.List[str]
@@ -1165,6 +1157,8 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 except:
                     logger.debug('No valid compu method found for this - check ARXML file!!')
                     compu_method = None
+        if compu_method is None:
+            logger.error('No valid compu method found for this - check ARXML file!!')
         #####################################################################################################
         # no found compu-method fuzzy search in systemsignal:
         #####################################################################################################
@@ -1186,6 +1180,13 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             base_type = ea.get_child(datdefprops, "BASE-TYPE")
 
         (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type, ea)
+
+        unit_element = ea.get_child(isignal, "UNIT")
+        display_name = ea.get_child(unit_element, "DISPLAY-NAME")
+        if display_name is not None:
+            signal_unit = display_name.text
+        else:
+            signal_unit = ""
 
         if unit_elem is not None:
             longname = ea.get_child(unit_elem, "LONG-NAME")
@@ -1213,15 +1214,16 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         else:
             initvalue = None
 
+        isignal_name = ea.get_short_name(isignal)
+        system_signal_name = ea.get_short_name(system_signal)
+        compu_name = ea.get_short_name(compu_method)
+        name = isignal_name if isignal_name else system_signal_name
         is_little_endian = False
         if motorola is not None:
             is_little_endian = ar_byteorder_is_little(motorola.text)
         else:
-            logger.debug('no name byte order for signal' + name.text)
+            logger.debug('no name byte order for signal' + name)
 
-        if name is None:
-            logger.debug('no name for signal given')
-            name = ea.get_child(isignal, "SHORT-NAME")
         if start_bit is None:
             logger.debug('no startBit for signal given')
         if length is None:
@@ -1229,7 +1231,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         if start_bit is not None:
             new_signal = canmatrix.Signal(
-                name.text,
+                name,
                 start_bit=int(start_bit.text) + bit_offset,
                 size=int(length.text) if length is not None else 0,
                 is_little_endian=is_little_endian,
@@ -1267,6 +1269,12 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 new_signal.add_values(canmatrix.utils.decode_number(key, float_factory), value)
             if signal_name is not None:
                 new_signal.add_attribute("LongName", signal_name)
+            if compu_name is not None and compu_name:
+                new_signal.add_attribute("CompuMethodName", compu_name)
+            if isignal_name is not None and isignal_name:
+                new_signal.add_attribute("ISignalName", isignal_name)
+            if system_signal_name is not None and system_signal_name:
+                new_signal.add_attribute("ShortName", system_signal_name)
             existing_signal = frame.signal_by_name(new_signal.name)
             if existing_signal is None:
                 frame.add_signal(new_signal)
