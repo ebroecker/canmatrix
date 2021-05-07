@@ -206,6 +206,13 @@ this will remove signales ``mySignal`` and ``mySignal2`` in ``source.dbc`` and s
 this will load ``source.dbc`` and rename signals ``mySignal`` in ``myNewSignal``  and ``mySignal2`` in ``myNewSignal2``.
 The result is stored in ``target.dlc``.
 
+::
+
+  $ canconvert --signalNameFromAttrib=CompuMethodName source.ARXML target.dbc
+
+this will load ``source.arxml`` and create ``target.dlc`` while all signals are named from CompuMethodName in ARXML.
+Also known values from ARXML are SysSignalName and ISignalName
+
 **canFD:**
 
 ::
@@ -361,6 +368,11 @@ ____________________
 
                         rename Signal form databases. (comma separated list) Syntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal
 
+  --signalNameFromAttrib=ATTRIBUTENAME
+
+                        change signal_name to given signal attribute Syntax: --signalNameFromAttrib=SysSignalName
+                        Example --signalNameFromAttrib SysSignalName
+                        ARXML known Attributes: SysSignalName, ISignalName, CompuMethodName
 
 
 * dbc:
@@ -407,10 +419,10 @@ ____________________
 
                         Excel format for startbit of motorola coded signals. Valid values: msb, lsb, msbreverse default msbreverse. [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
 
-* csv:
+* csv/xls/xlsx:
 
-  --csvAdditionalSignalAttributes
-                        append additional signal-collums to csv, example:
+  --additionalSignalAttributes//--additionalFrameAttributes
+                        append additional signal/frame-colums to csv, example:
                         is_signed,attributes["GenSigStartValue"]
 
 

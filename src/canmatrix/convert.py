@@ -202,6 +202,10 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         if 'recalcDLC' in options and options['recalcDLC']:
             db.recalc_dlc(options['recalcDLC'])
 
+        if options.get('signalNameFromAttrib') is not None:
+            for signal in [b for a in db for b in a.signals]:
+                signal.name = signal.attributes.get(options.get('signalNameFromAttrib'), signal.name)
+
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))
 
