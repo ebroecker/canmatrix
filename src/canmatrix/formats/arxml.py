@@ -45,33 +45,8 @@ clusterExporter = 1
 clusterImporter = 1
 
 
-class ArTree(object):
-    def __init__(self, name="", ref=None):  # type: (str, lxml.etree._Element) -> None
-        self._name = name
-        self._ref = ref
-        self._array = []  # type: typing.List[ArTree]
-        self._names = {}  # type: typing.Dict[str, ArTree]
-
-    def append_child(self, name, child):  # type: (str, typing.Any) -> ArTree
-        """Append new child and return it."""
-        temp = ArTree(name, child)
-        self._array.append(temp)
-        self._names[name] = temp
-        return temp
-
-    def get_child_by_name(self, name):  # type: (str) -> typing.Union[ArTree, None]
-        if name in self._names:
-            return self._names[name]
-        return None
-
-    @property
-    def ref(self):  # type: () -> lxml.etree._Element
-        return self._ref
-
-
 # for typing only
 _Element = lxml.etree._Element
-_DocRoot = typing.Union[_Element, ArTree]
 _MultiplexId = typing.Union[str, int, None]
 _FloatFactory = typing.Callable[[typing.Any], typing.Any]
 
@@ -81,6 +56,25 @@ class Earxml:
         self.xml_element_cache = dict()  # type: typing.Dict[str, _Element]
         self.use_ar_xpath = use_ar_xpath
         self.xml_element_cache = {}
+        self.path_cache = {}
+
+    def fill_caches(self, start_element=None, ar_path=""):
+        if start_element is None:
+            start_element = self.root
+            self.path_cache = {}
+        if start_element.tag == self.ns + "SHORT-NAME":
+            return start_element.text
+        for sub_element in start_element:
+            text = sub_element.text
+            if text is not None and len(text) > 0 and text.startswith('/'):
+                if text not in self.path_cache:
+                    self.path_cache[text] = []
+                self.path_cache[text].append(sub_element)
+            new_ar_path = self.fill_caches(sub_element, ar_path)
+            if new_ar_path != "":
+                ar_path += '/' + new_ar_path
+                self.xml_element_cache[ar_path] = start_element
+        return ''
 
     def open(self, filename):
         self.tree = lxml.etree.parse(filename)
@@ -89,6 +83,8 @@ class Earxml:
 
         self.ns = "{" + self.tree.xpath('namespace-uri(.)') + "}"  # type: str
         self.nsp = self.tree.xpath('namespace-uri(.)')
+        if not self.use_ar_xpath:
+            self.fill_caches()
 
     def findall(self, xpath, start_element=None):
         if start_element is None:
@@ -128,9 +124,7 @@ class Earxml:
                 self.xml_element_cache[shortname_path] = temp[0]
                 return temp[0]
             return None
-        else:
-            return self.get_shortname_path_from_artree(shortname_path)
-        return elems
+        return None
 
     def get_short_name(self, element):
         # type: (_Element, str) -> str
@@ -162,17 +156,6 @@ class Earxml:
     def get_sub_by_name(self, start_element, name):
         return self.find(name, start_element)
 
-    def fill_tree_from_xml(self, tag, tree_point):
-        # type: (_Element, ArTree, str) -> None
-        """Parse the xml tree into ArTree objects."""
-        for child in tag:  # type: _Element
-            name_elem = child.find('./' + self.ns + 'SHORT-NAME')
-            # long_name = child.find('./' + namespace + 'LONG-NAME')
-            if name_elem is not None and child is not None:
-                self.fill_tree_from_xml(child, tree_point.append_child(name_elem.text, child))
-            if name_elem is None and child is not None:
-                self.fill_tree_from_xml(child, tree_point)
-
     def find_children_by_path(self, from_element, path):
         # type: (_Element, str, _DocRoot, str) -> typing.Sequence[_Element]
         path_elements = path.split('/')
@@ -189,17 +172,6 @@ class Earxml:
         if name is not None and name.text is not None:
             return name.text
         return ""
-
-    def get_shortname_path_from_artree(self, path):
-        # type: (ArTree, str) -> typing.Optional[_Element]
-        """Get element from ArTree by path."""
-        ptr = self.ar_tree
-        for name in path.split('/'):
-            if ptr is None:
-                return None
-            if name.strip():
-                ptr = ptr.get_child_by_name(name)
-        return ptr.ref if ptr else None
 
     def get_child(self, parent, tag_name):
         # type: (_Element, str, _DocRoot, str) -> typing.Optional[_Element]
@@ -227,19 +199,6 @@ class Earxml:
                 raise "use follow_all_ref!"
         return ret
 
-    def build_ar_tree(self):
-        top_level_packages = self.find('TOP-LEVEL-PACKAGES')
-
-        if top_level_packages is None:
-            # no "TOP-LEVEL-PACKAGES found, try root
-            top_level_packages = self.root
-
-        if self.use_ar_xpath:
-            search_point = top_level_packages  # type: typing.Union[_Element, ArTree]
-        else:
-            self.ar_tree = ArTree()
-            self.fill_tree_from_xml(top_level_packages, self.ar_tree)
-
     def get_element_desc(self, element):
         # type: (_Element, _DocRoot, str) -> str
         """Get element description from XML."""
@@ -264,7 +223,6 @@ class Earxml:
         else:
             return None
 
-
 def create_sub_element(parent, element_name, text=None, dest=None):
     # type: (_Element, str, typing.Optional[str]) -> _Element
     sn = lxml.etree.SubElement(parent, element_name)
@@ -273,7 +231,6 @@ def create_sub_element(parent, element_name, text=None, dest=None):
     if dest is not None:
         sn.set("DEST", dest)
     return sn
-
 
 def get_base_type_of_signal(signal):
     # type: (canmatrix.Signal) -> typing.Tuple[str, int]
@@ -1274,7 +1231,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             if isignal_name is not None and isignal_name:
                 new_signal.add_attribute("ISignalName", isignal_name)
             if system_signal_name is not None and system_signal_name:
-                new_signal.add_attribute("ShortName", system_signal_name)
+                new_signal.add_attribute("SysSignalName", system_signal_name)
             existing_signal = frame.signal_by_name(new_signal.name)
             if existing_signal is None:
                 frame.add_signal(new_signal)
@@ -1298,7 +1255,7 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
     multiplexor.initial_value = 0
     target_frame.add_signal(multiplexor)
     static_part = ea.get_child(pdu, "STATIC-PART")
-    ipdu = ea.get_child(static_part, "I-PDU")
+    ipdu = ea.follow_ref(static_part, "I-PDU-REF")
     if ipdu is not None:
         pdu_sig_mappings = ea.get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS")
         pdu_sig_mapping = ea.get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING")
@@ -1938,10 +1895,8 @@ def load(file, **options):
     ea = Earxml(use_ar_xpath)
     ea.open(file)
 
-    logger.debug("Build arTree ...")
 
-    ea.build_ar_tree()
-    com_module = ea.get_short_name_path("ActiveEcuC/Com")
+    com_module = ea.get_short_name_path("/ActiveEcuC/Com")
 
     if com_module is not None and len(com_module) > 0:
         logger.info("seems to be a ECUC arxml. Very limited support for extracting canmatrix.")
@@ -1961,5 +1916,7 @@ def load(file, **options):
         result.update(decode_flexray_helper(ea, float_factory))
 
     result.update(decode_can_helper(ea, float_factory, ignore_cluster_info))
+
+
 
     return result

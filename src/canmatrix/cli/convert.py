@@ -75,6 +75,10 @@ def get_formats():
 @click.option('--frames', help="Copy only given Frames (comma separated list) to target matrix")
 @click.option('--signals', help="Copy only given Signals (comma separated list) to target matrix just as 'free' signals without containing frame")
 @click.option('--merge', help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
+@click.option('--signalNameFromAttrib', 'signalNameFromAttrib', help="change signal_name to given signal attribute\n\
+Example --signal_name_from_attrib SysSignalName\nARXML known Attributes: SysSignalName, ISignalName, CompuMethodName", default=None)
+
+
 # arxml switches
 @click.option('--arxmlIgnoreClusterInfo/--no-arxmlIgnoreClusterInfo', 'arxmlIgnoreClusterInfo', default=False, help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault False")
 @click.option('--arxmlUseXpath/--no-arxmlUseXpath', 'arxmlUseXpath', default=False, help="Use experimental Xpath-Implementation for resolving AR-Paths; \ndefault False")
