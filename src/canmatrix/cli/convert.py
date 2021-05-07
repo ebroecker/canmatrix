@@ -59,6 +59,8 @@ def get_formats():
 @click.option('--renameEcu', 'renameEcu', help="rename Ecu form databases. (comma separated list)\nSyntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu")
 @click.option('--deleteSignal', 'deleteSignal', help="delete Signal form databases. (comma separated list)\nSyntax: --deleteSignal=mySignal1,mySecondSignal")
 @click.option('--renameSignal', 'renameSignal', help="rename Signal form databases. (comma separated list)\nSyntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal")
+@click.option('--signalNameFromAttrib', 'signalNameFromAttrib', help="change signal_name to given signal attribute\n\
+Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalName, ISignalName, CompuMethodName", default=None)
 @click.option('--deleteZeroSignals/--no-deleteZeroSignals', 'deleteZeroSignals', default=False, help="delete zero length signals (signals with 0 bit length) from matrix\ndefault False")
 @click.option('--deleteSignalAttributes', 'deleteSignalAttributes', help="delete attributes from all signals\nExample --deleteSignalAttributes GenMsgSomeVar,CycleTime")
 @click.option('--deleteFrame', 'deleteFrame', help="delete Frame form databases. (comma separated list)\nSyntax: --deleteFrame=myFrame1,mySecondFrame")
@@ -75,8 +77,7 @@ def get_formats():
 @click.option('--frames', help="Copy only given Frames (comma separated list) to target matrix")
 @click.option('--signals', help="Copy only given Signals (comma separated list) to target matrix just as 'free' signals without containing frame")
 @click.option('--merge', help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
-@click.option('--signalNameFromAttrib', 'signalNameFromAttrib', help="change signal_name to given signal attribute\n\
-Example --signal_name_from_attrib SysSignalName\nARXML known Attributes: SysSignalName, ISignalName, CompuMethodName", default=None)
+
 
 
 # arxml switches
