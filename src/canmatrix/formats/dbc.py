@@ -398,8 +398,11 @@ def dump(in_db, f, **options):
                 name = output_names[frame][signal]
                 if isinstance(val, float):
                     val = format_float(val)
-                f.write(create_attribute_string(attrib, "SG_", '%d ' % frame.arbitration_id.to_compound_integer() + name, val,
-                                                db.signal_defines[attrib].type == "STRING").encode(dbc_export_encoding, ignore_encoding_errors))
+                if attrib in db.signal_defines:
+                    f.write(create_attribute_string(
+                        attrib, "SG_", '%d ' % frame.arbitration_id.to_compound_integer() + name, val,
+                        db.signal_defines[attrib].type == "STRING").encode(dbc_export_encoding, ignore_encoding_errors)
+                    )
 
     f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
