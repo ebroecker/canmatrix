@@ -21,6 +21,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+import copy
 import logging
 import sys
 import typing
@@ -33,6 +34,32 @@ import canmatrix.log
 
 logger = logging.getLogger(__name__)
 sys.path.append('..')  # todo remove?
+
+
+def convert_pdu_container_to_multiplexed(frame):  # type: (canmatrix.Frame) -> canmatrix.Frame
+    new_frame = copy.deepcopy(frame)
+    if not frame.is_pdu_container:
+        return new_frame
+    header_id_signal = new_frame.signal_by_name("Header_ID")
+    header_dlc_signal = new_frame.signal_by_name("Header_DLC")
+    if header_id_signal is None or header_dlc_signal is None:
+        raise ValueError("Missing Header_ID or Header_DLC signal for {}".format(frame.name))
+    header_id_signal.multiplex_setter("Multiplexor")
+    bit_offset = header_id_signal.size + header_dlc_signal.size
+    for sg_id, pdu in enumerate(new_frame.pdus):
+        mux_val = pdu.id
+        signal_group = []
+        for signal in pdu.signals:
+            signal.multiplex_setter(mux_val)
+            signal.start_bit += bit_offset
+            signal_group.append(signal.name)
+            new_frame.add_signal(signal)
+        signal_group_name = pdu.name
+        if len(signal_group_name) == 0:
+            signal_group_name = "HEARDER_ID_" + str(mux_val)
+        new_frame.add_signal_group(signal_group_name, sg_id + 1, signal_group)
+    new_frame.pdus = []
+    return new_frame
 
 
 def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> None
@@ -201,6 +228,20 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
 
         if 'recalcDLC' in options and options['recalcDLC']:
             db.recalc_dlc(options['recalcDLC'])
+
+        # PDU contained frames handling
+        if options.get('ignorePduContainer'):
+            for frame in db:
+                if frame.is_pdu_container:
+                    db.del_frame(frame)
+        else:
+            # convert PDU contained frames to multiplexed frame
+            for frame in db:
+                if frame.is_pdu_container:
+                    logger.warning("%s converted to Multiplexed frame", frame.name)
+                    new_frame = convert_pdu_container_to_multiplexed(frame)
+                    db.del_frame(frame)
+                    db.add_frame(new_frame)
 
         if options.get('signalNameFromAttrib') is not None:
             for signal in [b for a in db for b in a.signals]:

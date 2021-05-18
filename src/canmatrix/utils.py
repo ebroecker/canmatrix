@@ -107,6 +107,7 @@ def get_gcd(value1, value2):  # type (int,int) -> (int)
     else:
         return fractions.gcd(value1, value2)
 
+
 def decode_number(value, float_factory):  # type(string) -> (int)
     """
     Decode string to integer and guess correct base

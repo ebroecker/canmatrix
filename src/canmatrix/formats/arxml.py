@@ -1001,7 +1001,7 @@ def ar_byteorder_is_little(in_string):
 
 
 def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0):
-    # type: (typing.Sequence[_Element], canmatrix.Frame, Earxml, int, typing.Callable, int) -> None
+    # type: (typing.Sequence[_Element], typing.Union[canmatrix.Frame, canmatrix.Pdu], Earxml, int, typing.Callable, int) -> None
     """Add signals from xml to the Frame."""
     global signal_rxs
     group_id = 1
@@ -1292,41 +1292,41 @@ def containters_are_little_endian(ea):
 
 def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_are_littleendian):
     target_frame.is_fd = True
-    # pdus = ea.get_children(pdu, "CONTAINED-PDU-TRIGGERING")
     pdus = ea.follow_all_ref(pdu, "CONTAINED-PDU-TRIGGERING-REF")
-    signal_group_id = 1
-    singnals_grouped = []  # type: typing.List[str]
     header_type = ea.get_child(pdu, "HEADER-TYPE").text
 
-    if header_type == "SHORT-HEADER":
-        if headers_are_littleendian:  # INTEL
-            target_frame.add_signal(
-                canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor",
-                                 is_little_endian=True))
-            target_frame.add_signal(canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=True))
-        else:  # Motorola
-            header_id_signal = canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor",
-                                                is_little_endian=False)
-            target_frame.add_signal(header_id_signal)
-            header_dlc_signal = canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=False)
-            target_frame.add_signal(header_dlc_signal)
-        header_length = 32
-
-    elif header_type == "LONG-HEADER":
-        if headers_are_littleendian:
-            target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor",
-                                                     is_little_endian=True))
-            target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=True))
-        else:
-            target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor",
-                                                     is_little_endian=False))
-            target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=False))
-        header_length = 64
-    else:
-        header_length = 0
-
+    header_type_params = {
+        "SHORT-HEADER": (24, 8),
+        "LONG-HEADER": (32, 32),
+    }
+    if header_type in header_type_params:
+        mux_size = header_type_params[header_type]
+        target_frame.add_signal(
+            canmatrix.Signal(
+                start_bit=0, size=mux_size[0], name="Header_ID", is_little_endian=headers_are_littleendian
+            )
+        )
+        target_frame.add_signal(
+            canmatrix.Signal(
+                start_bit=mux_size[0], size=mux_size[1], name="Header_DLC", is_little_endian=headers_are_littleendian
+            )
+        )
     for cpdu in pdus:
         ipdu = ea.follow_ref(cpdu, "I-PDU-REF")
+        timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATION")
+        if timing_spec is None:
+            timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATIONS")
+        cyclic_timing = ea.get_child(timing_spec, "CYCLIC-TIMING")
+        repeating_time = ea.get_child(cyclic_timing, "REPEATING-TIME")
+        cycle_time = 0
+        value = ea.get_child(repeating_time, "VALUE")
+        if value is not None:
+            cycle_time = int(float_factory(value.text) * 1000)
+        else:
+            time_period = ea.get_child(cyclic_timing, "TIME-PERIOD")
+            value = ea.get_child(time_period, "VALUE")
+            if value is not None:
+                cycle_time = int(float_factory(value.text) * 1000)
         try:
             if header_type == "SHORT-HEADER":
                 header_id = ea.get_child(ipdu, "HEADER-ID-SHORT-HEADER").text
@@ -1335,44 +1335,36 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
             else:
                 # none type
                 header_id = None
-                pass
         except AttributeError:
             header_id = None
         if header_id is not None:
-            if header_id.startswith("0x"):
-                header_id = int(header_id, 16)
-            else:
-                header_id = int(header_id)
+            header_id = int(header_id, 0)
 
-        offset = 0
         if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
             payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
             ipdu = ea.follow_ref(payload, "I-PDU-REF")
-        #            length = ea.get_child(ipdu, "LENGTH").text
         try:
             offset = int(ea.get_child(ipdu, "OFFSET").text) * 8
         except:
             offset = 0
-        # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
+
+        try:
+            pdu_type = ipdu.attrib["DEST"]
+        except KeyError:
+            pdu_type = ""
+        try:
+            pdu_port_type = ea.get_child(cpdu, "I-PDU-PORT-REF").attrib["DEST"]
+        except (AttributeError, KeyError):
+            pdu_port_type = ""
+        ipdu_length = int(ea.get_child(ipdu, "LENGTH").text)
+        ipdu_name = ea.get_element_name(ipdu)
+        ipdu_triggering_name = ea.get_element_name(cpdu)
+        target_pdu = canmatrix.Pdu(name=ipdu_name, size=ipdu_length, id=header_id,
+                                   triggering_name=ipdu_triggering_name, pdu_type=pdu_type,
+                                   port_type=pdu_port_type, cycle_time=cycle_time)
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
-        # TODO
-        if pdu_sig_mapping:
-
-            get_signals(pdu_sig_mapping, target_frame, ea, header_id, float_factory, bit_offset=header_length + offset)
-
-            new_signals = []
-            for signal in target_frame:
-                if signal.name not in singnals_grouped and signal.name != "Header_ID" and signal.name != "Header_DLC":
-                    new_signals.append(signal.name)
-            if header_id is None:
-                target_frame.add_signal_group(ea.get_short_name(ipdu), signal_group_id, new_signals)
-            else:
-                sg_group_name = ea.get_short_name(ipdu)
-                if len(sg_group_name) == 0:
-                    sg_group_name = "HEARDER_ID_" + str(header_id)
-                target_frame.add_signal_group(sg_group_name, signal_group_id, new_signals)
-            singnals_grouped += new_signals
-            signal_group_id += 1
+        get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory, bit_offset=offset)
+        target_frame.add_pdu(target_pdu)
 
 
 def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset,
@@ -1463,9 +1455,6 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     else:
         logger.debug(ea.get_element_name(pdu))
 
-    if pdu is not None and "MULTIPLEXED-I-PDU" in pdu.tag:
-        get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, ea, float_factory)
-
     if new_frame.comment is None:
         new_frame.add_comment(ea.get_element_desc(pdu))
 
@@ -1502,9 +1491,10 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     store_frame_timings(new_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset,
                         repeating_time, ea, time_period, float_factory)
 
-    if pdu.tag == ea.ns + "CONTAINER-I-PDU":
+    if pdu is not None and "MULTIPLEXED-I-PDU" in pdu.tag:
+        get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, ea, float_factory)
+    elif pdu is not None and pdu.tag == ea.ns + "CONTAINER-I-PDU":
         get_frame_from_container_ipdu(pdu, new_frame, ea, float_factory, headers_are_littleendian)
-
     else:
         pdu_sig_mapping = ea.follow_all_ref(pdu, "I-SIGNAL-TO-I-PDU-MAPPING-REF")
         if len(pdu_sig_mapping) == 0:
@@ -1532,6 +1522,11 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
                                 float_factory)  # todo BUG expects list, not item
             else:
                 logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
+    if new_frame.is_pdu_container and new_frame.cycle_time == 0:
+        cycle_times = {pdu.cycle_time for pdu in new_frame.pdus}
+        if len(cycle_times) > 1:
+            logger.warning("%s is contained pdu frame with different cycle times", new_frame.cycle_time)
+        new_frame.cycle_time = min(cycle_times)
     new_frame.fit_dlc()
     if frame_elem is not None:
         frames_cache[frame_elem] = new_frame
@@ -1784,7 +1779,7 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
 
             logger.debug("Baudrate: " + str(db.baudrate))
             if fd_baudrate_elem is not None:
-                db.fd_baudrate = fd_baudrate_elem.text
+                db.fd_baudrate = int(fd_baudrate_elem.text)
 
             physical_channels = ea.find("PHYSICAL-CHANNELS", cc)  # type: _Element
             if physical_channels is None:
@@ -1824,6 +1819,8 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
                             db.add_ecu(ecu)
                 db.add_frame(frame)
         for frame in db.frames:
+            if frame.is_pdu_container:
+                continue
             sig_value_hash = dict()
             for sig in frame.signals:
                 sig.receivers = list(set(frame.receivers).intersection(sig.receivers))
