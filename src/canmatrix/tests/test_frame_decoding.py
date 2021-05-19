@@ -5,6 +5,9 @@ import os.path
 import textwrap
 import io
 
+from canmatrix.convert import convert_pdu_container_to_multiplexed
+
+
 def load_dbc():
     here = os.path.dirname(os.path.realpath(__file__))
     return canmatrix.formats.loadp_flat(os.path.join(here, "test_frame_decoding.dbc"))
@@ -100,6 +103,7 @@ def test_decode_with_dbc_multiplex():
     assert decoded2["muxSig8"].raw_value == -8
     assert decoded2["muxSig9"].raw_value == 0x20
 
+
 def test_decode_complex_multiplexed():
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BO_ 2024 OBD2: 8 Vector__XXX
@@ -117,3 +121,151 @@ def test_decode_complex_multiplexed():
     decoded = matrix.decode(canmatrix.ArbitrationId(2024),bytearray([0x03,0x41,0x0d,0x00,0xaa,0xaa,0xaa,0xaa]))
     assert decoded["Vehicle_speed"].raw_value == 0
     assert "MAF_air_flow_rate" not in decoded
+
+
+def test_decode_pdu_container():
+    frame_id = canmatrix.ArbitrationId(id=10, extended=False)
+    frame = canmatrix.Frame(
+        arbitration_id=frame_id,
+        name="test",
+    )
+    s1 = canmatrix.Signal(
+        name="Header_ID",
+        size=24,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    s1.set_startbit(7, bitNumbering=1)
+    s2 = canmatrix.Signal(
+        name="Header_DLC",
+        size=8,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    s2.set_startbit(7+24, bitNumbering=1)
+    frame.add_signal(s1)
+    frame.add_signal(s2)
+    # PDU 1
+    pdu1 = canmatrix.Pdu(
+        name="pdu1",
+        id=10,
+        size=2,
+    )
+    ps11 = canmatrix.Signal(
+        name="s11",
+        size=8,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    ps11.set_startbit(7+0, bitNumbering=1)
+    ps12 = canmatrix.Signal(
+        name="s12",
+        size=8,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    ps12.set_startbit(7+8, bitNumbering=1)
+    pdu1.add_signal(ps11)
+    pdu1.add_signal(ps12)
+    frame.add_pdu(pdu1)
+    # PDU 2
+    pdu2 = canmatrix.Pdu(
+        name="pdu2",
+        id=11,
+        size=2,
+    )
+    ps21 = canmatrix.Signal(
+        name="s21",
+        size=8,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    ps21.set_startbit(7+0, bitNumbering=1)
+    ps22 = canmatrix.Signal(
+        name="s22",
+        size=8,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    ps22.set_startbit(7+8, bitNumbering=1)
+    pdu2.add_signal(ps21)
+    pdu2.add_signal(ps22)
+    frame.add_pdu(pdu2)
+    frame.calc_dlc()
+    data = bytearray([0, 0, 10, 2, 10, 13, 0, 0, 11, 2, 25, 30])
+    decoded = frame.decode(data)
+    assert decoded["pdus"][0]["pdu1"]["s11"].raw_value == 10
+    assert decoded["pdus"][0]["pdu1"]["s12"].raw_value == 13
+    assert decoded["pdus"][1]["pdu2"]["s21"].raw_value == 25
+    assert decoded["pdus"][1]["pdu2"]["s22"].raw_value == 30
+
+
+def test_pdu_container_decoding_without_header():
+    frame = canmatrix.Frame(
+        name="frame",
+        size=8,
+    )
+    pdu = canmatrix.Pdu(
+        name="pdu",
+        size=8,
+    )
+    frame.add_pdu(pdu)
+    data = bytearray([0] * frame.size)
+    with pytest.raises(canmatrix.DecodingConatainerPdu):
+        frame.decode(data)
+
+
+def test_decoding_between_multiplexed_and_container_pdu():
+    frame_id = canmatrix.ArbitrationId(id=10, extended=False)
+    frame = canmatrix.Frame(
+        arbitration_id=frame_id,
+        name="test",
+    )
+    s1 = canmatrix.Signal(
+        name="Header_ID",
+        size=24,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    s1.set_startbit(7, bitNumbering=1)
+    s2 = canmatrix.Signal(
+        name="Header_DLC",
+        size=8,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    s2.set_startbit(7+24, bitNumbering=1)
+    frame.add_signal(s1)
+    frame.add_signal(s2)
+    # PDU 1
+    pdu1 = canmatrix.Pdu(
+        name="pdu1",
+        id=10,
+        size=2,
+    )
+    ps11 = canmatrix.Signal(
+        name="s11",
+        size=8,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    ps11.set_startbit(7+0, bitNumbering=1)
+    ps12 = canmatrix.Signal(
+        name="s12",
+        size=8,
+        is_signed=False,
+        is_little_endian=False,
+    )
+    ps12.set_startbit(7+8, bitNumbering=1)
+    pdu1.add_signal(ps11)
+    pdu1.add_signal(ps12)
+    frame.add_pdu(pdu1)
+    frame.calc_dlc()
+    data = bytearray([0, 0, 10, 2, 125, 200])
+    decoded = frame.decode(data)
+    assert decoded["pdus"][0]["pdu1"]["s11"].raw_value == 125
+    assert decoded["pdus"][0]["pdu1"]["s12"].raw_value == 200
+    new_frame = convert_pdu_container_to_multiplexed(frame)
+    decoded = new_frame.decode(data)
+    assert decoded["s11"].raw_value == 125
+    assert decoded["s12"].raw_value == 200
