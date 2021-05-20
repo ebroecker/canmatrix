@@ -230,18 +230,21 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             db.recalc_dlc(options['recalcDLC'])
 
         # PDU contained frames handling
+        frame_pdu_container_list = [
+            frame
+            for frame in db.frames
+            if frame.is_pdu_container
+        ]
         if options.get('ignorePduContainer'):
-            for frame in db:
-                if frame.is_pdu_container:
-                    db.del_frame(frame)
+            for frame in frame_pdu_container_list:
+                db.del_frame(frame)
         else:
             # convert PDU contained frames to multiplexed frame
-            for frame in db:
-                if frame.is_pdu_container:
-                    logger.warning("%s converted to Multiplexed frame", frame.name)
-                    new_frame = convert_pdu_container_to_multiplexed(frame)
-                    db.del_frame(frame)
-                    db.add_frame(new_frame)
+            for frame in frame_pdu_container_list:
+                logger.warning("%s converted to Multiplexed frame", frame.name)
+                new_frame = convert_pdu_container_to_multiplexed(frame)
+                db.del_frame(frame)
+                db.add_frame(new_frame)
 
         if options.get('signalNameFromAttrib') is not None:
             for signal in [b for a in db for b in a.signals]:
