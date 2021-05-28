@@ -326,9 +326,9 @@ class Signal(object):
         if startLittle is True and self.is_little_endian is False:
             start_bit = start_bit + 1 - self.size
         if start_bit < 0:
-            print("wrong start_bit found Signal: %s Startbit: %d" %
-                  (self.name, start_bit))
-            raise StartbitLowerZero
+            raise StartbitLowerZero(
+                "wrong start_bit found Signal: %s Startbit: %d" % (self.name, start_bit)
+            )
         self.start_bit = start_bit
 
     def get_startbit(self, bit_numbering=None, start_little=None):
@@ -1386,15 +1386,18 @@ class Frame(object):
 
         rx_length = len(data)
         if rx_length != self.size and report_error:
-            print(
-                'Received message 0x{self.arbitration_id.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
-            raise DecodingFrameLength
+            raise DecodingFrameLength(
+                'Received message 0x{self.arbitration_id.id:08X} '
+                'with length {rx_length}, expected {self.size}'.format(**locals())
+            )
         elif self.is_pdu_container:
             header_id_signal = self.signal_by_name("Header_ID")
             header_dlc_signal = self.signal_by_name("Header_DLC")
             if header_id_signal is None or header_dlc_signal is None:
-                print('Received message 0x{:08X} without Header_ID or Header_DLC signal'.format(self.arbitration_id.id))
-                raise DecodingConatainerPdu
+                raise DecodingConatainerPdu(
+                    'Received message 0x{:08X} without Header_ID or '
+                    'Header_DLC signal'.format(self.arbitration_id.id)
+                )
             # TODO: may be we need to check that ID/DLC signals are contiguous
             header_size = header_id_signal.size + header_dlc_signal.size
             little, big = self.bytes_to_bitstrings(data)
