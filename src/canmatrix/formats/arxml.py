@@ -1311,8 +1311,12 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
                 start_bit=mux_size[0], size=mux_size[1], name="Header_DLC", is_little_endian=headers_are_littleendian
             )
         )
+    ipdus_refs = []
     for cpdu in pdus:
         ipdu = ea.follow_ref(cpdu, "I-PDU-REF")
+        if ipdu in ipdus_refs:
+            continue
+        ipdus_refs.append(ipdu)
         timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATION")
         if timing_spec is None:
             timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATIONS")
