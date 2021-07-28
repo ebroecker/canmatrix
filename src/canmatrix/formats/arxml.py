@@ -1115,7 +1115,8 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                     logger.debug('No valid compu method found for this - check ARXML file!!')
                     compu_method = None
         if compu_method is None:
-            logger.error('No valid compu method found for this - check ARXML file!!')
+            logger.error('No valid compu method found for isignal/systemsignal {}/{} - check ARXML file!!'
+                         .format(ea.get_short_name(isignal), ea.get_short_name(system_signal)))
         #####################################################################################################
         # no found compu-method fuzzy search in systemsignal:
         #####################################################################################################
@@ -1345,8 +1346,10 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
             header_id = int(header_id, 0)
 
         if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
+            secured_i_pdu_name = ea.get_element_name(ipdu)
             payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
             ipdu = ea.follow_ref(payload, "I-PDU-REF")
+            logger.info("found secured pdu '%s', dissolved to '%s'", secured_i_pdu_name, ea.get_element_name(ipdu))
         try:
             offset = int(ea.get_child(ipdu, "OFFSET").text) * 8
         except:
@@ -1432,9 +1435,10 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         pdu = ea.follow_ref(frame_elem, "PDU-REF")  # SIGNAL-I-PDU
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
+            secured_i_pdu_name = ea.get_element_name(pdu)
             payload = ea.follow_ref(pdu, "PAYLOAD-REF")
             pdu = ea.follow_ref(payload, "I-PDU-REF")
-            # logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
+            logger.info("found secured pdu '%s', dissolved to '%s'", secured_i_pdu_name, ea.get_element_name(pdu))
 
         pdu_frame_mapping[pdu] = ea.get_element_name(frame_elem)
 
@@ -1457,7 +1461,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     if pdu is None:
         logger.error("pdu is None")
     else:
-        logger.debug(ea.get_element_name(pdu))
+        logger.debug("PDU: " + ea.get_element_name(pdu))
 
     if new_frame.comment is None:
         new_frame.add_comment(ea.get_element_desc(pdu))
@@ -1529,7 +1533,8 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     if new_frame.is_pdu_container and new_frame.cycle_time == 0:
         cycle_times = {pdu.cycle_time for pdu in new_frame.pdus}
         if len(cycle_times) > 1:
-            logger.warning("%s is contained pdu frame with different cycle times", new_frame.cycle_time)
+            logger.warning("%s is pdu-container(frame) with different cycle times (%s), frame cycle-time: %s",
+                           new_frame.name, cycle_times, new_frame.cycle_time)
         new_frame.cycle_time = min(cycle_times)
     new_frame.fit_dlc()
     if frame_elem is not None:
