@@ -906,10 +906,22 @@ signal_rxs = {}  # type: typing.Dict[_Element, typing.List[str]]
 frames_cache = {}  # type: typing.Dict[_Element, canmatrix.Frame]
 
 
-def get_sys_signals(sys_signal, sys_signal_array, frame, group_id, ea):
+def get_signalgrp_and_signals(sys_signal, sys_signal_array, frame, group_id, ea):
     # type: (_Element, typing.Sequence[_Element], canmatrix.Frame, int, str) -> None
     members = [ea.get_element_name(signal) for signal in sys_signal_array]
-    frame.add_signal_group(ea.get_element_name(sys_signal), group_id, members)
+
+    # get data related to E2E-Protection
+    transform_ele = ea.follow_ref(sys_signal, "TRANSFORMER-REF")
+    e2e_transform = None
+    if transform_ele is not None:
+        e2e_transform = {
+            'profile': ea.get_child(transform_ele, "PROFILE-NAME").text,
+        }
+        data_id_elems = ea.get_children(ea.get_child(sys_signal, "TRANSFORMATION-I-SIGNAL-PROPSS"), "DATA-ID")
+        if data_id_elems is not None:
+            e2e_transform['data_ids'] = [int(x.text) for x in data_id_elems]
+
+    frame.add_signal_group(ea.get_element_name(sys_signal), group_id, members, e2e_transform)
 
 
 def decode_compu_method(compu_method, ea, float_factory):
@@ -1020,12 +1032,8 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             isignal = ea.follow_ref(signal, "I-SIGNAL-GROUP-REF")
             if isignal is not None:
                 logger.debug("get_signals: found I-SIGNAL-GROUP ")
-
-                isignal_array = ea.follow_ref(isignal, "I-SIGNAL-REF")
-
-                system_signal_array = [ea.follow_ref(isignal, "SYSTEM-SIGNAL-REF") for isignal in isignal_array]
-                system_signal_group = ea.follow_ref(isignal, "SYSTEM-SIGNAL-GROUP-REF")
-                get_sys_signals(system_signal_group, system_signal_array, frame, group_id, ea)
+                isignal_array = ea.follow_all_ref(isignal, "I-SIGNAL-REF")
+                get_signalgrp_and_signals(isignal, isignal_array, frame, group_id, ea)
                 group_id = group_id + 1
                 continue
         if isignal is None:
@@ -1052,7 +1060,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         if system_signal is not None and "SYSTEM-SIGNAL-GROUP" in system_signal.tag:
             system_signals = ea.find_children_by_path(system_signal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL")
-            get_sys_signals(system_signal, system_signals, frame, group_id, ea)
+            get_signalgrp_and_signals(system_signal, system_signals, frame, group_id, ea)
 
             group_id = group_id + 1
             continue

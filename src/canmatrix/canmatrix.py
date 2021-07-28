@@ -465,6 +465,7 @@ class SignalGroup(object):
     name = attr.ib()  # type: str
     id = attr.ib()  # type: int
     signals = attr.ib(factory=list, repr=False)  # type: typing.MutableSequence[Signal]
+    e2e_trans = attr.ib(default=None)
 
     def add_signal(self, signal):  # type: (Signal) -> None
         """Add a Signal to SignalGroup.
@@ -996,7 +997,7 @@ class Frame(object):
 
         return iter(self.signals)
 
-    def add_signal_group(self, Name, Id, signalNames):
+    def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
         # type: (str, int, typing.Sequence[str]) -> None
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
@@ -1004,7 +1005,7 @@ class Frame(object):
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = SignalGroup(Name, Id)
+        newGroup = SignalGroup(Name, Id, e2e_trans=e2e_trans)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
