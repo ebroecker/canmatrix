@@ -49,7 +49,8 @@ import canmatrix.utils
 if attr.__version__ < '17.4.0':  # type: ignore
     raise RuntimeError("need attrs >= 17.4.0")
 logger = logging.getLogger(__name__)
-defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
+# defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
+defaultFloatFactory = float  # HoPHiL: use float for the moment. because msgpack cant serialize decimal
 
 
 class ExceptionTemplate(Exception):

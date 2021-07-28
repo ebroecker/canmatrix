@@ -40,7 +40,8 @@ logger = logging.getLogger(__name__)
 
 
 def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
-    return decimal.Decimal(value)
+    # return decimal.Decimal(value)
+    return float(value)  # HoPHiL: use float for the moment. because msgpack cant serialize decimal
 
 
 def normalize_name(name, whitespace_replacement):  # type: (str, str) -> str

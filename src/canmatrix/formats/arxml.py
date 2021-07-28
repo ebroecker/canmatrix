@@ -39,7 +39,8 @@ import canmatrix.types
 import canmatrix.utils
 
 logger = logging.getLogger(__name__)
-default_float_factory = decimal.Decimal
+# default_float_factory = decimal.Decimal
+default_float_factory = float  # HoPHiL: use float for the moment. because msgpack cant serialize decimal
 
 clusterExporter = 1
 clusterImporter = 1
