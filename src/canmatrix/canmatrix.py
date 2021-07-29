@@ -789,7 +789,7 @@ class Pdu(object):
         """
         self.signals.append(signal)
         return self.signals[len(self.signals) - 1]
-    def add_signal_group(self, Name, Id, signalNames):
+    def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
         # type: (str, int, typing.Sequence[str]) -> None
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
@@ -797,7 +797,7 @@ class Pdu(object):
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = SignalGroup(Name, Id)
+        newGroup = SignalGroup(Name, Id, e2e_trans=e2e_trans)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
