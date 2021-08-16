@@ -114,7 +114,8 @@ def decode_number(value, float_factory):  # type(string) -> (int)
     :param value: string input value
     :return: integer
     """
-
+    if value is None:
+        return 0
     value = value.strip()
 
     if '.' in value:
