@@ -42,10 +42,11 @@ def convert_pdu_container_to_multiplexed(frame):  # type: (canmatrix.Frame) -> c
         return new_frame
     header_id_signal = new_frame.signal_by_name("Header_ID")
     header_dlc_signal = new_frame.signal_by_name("Header_DLC")
-    if header_id_signal is None or header_dlc_signal is None:
-        raise ValueError("Missing Header_ID or Header_DLC signal for {}".format(frame.name))
-    header_id_signal.multiplex_setter("Multiplexor")
-    bit_offset = header_id_signal.size + header_dlc_signal.size
+    if header_id_signal is not None and header_dlc_signal is not None:
+        header_id_signal.multiplex_setter("Multiplexor")
+        bit_offset = header_id_signal.size + header_dlc_signal.size
+    else:
+        bit_offset = 0
     for sg_id, pdu in enumerate(new_frame.pdus):
         mux_val = pdu.id
         signal_group = []
