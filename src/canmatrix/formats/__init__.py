@@ -8,6 +8,7 @@ import sys
 import typing
 from builtins import str
 from io import BytesIO
+import sys
 
 import canmatrix
 import canmatrix.cancluster
@@ -19,6 +20,10 @@ moduleList = ["arxml", "csv", "dbc", "dbf", "json", "ldf",
 loadedFormats = []
 supportedFormats = {}  # type: typing.MutableMapping[str, typing.MutableSequence[str]]
 extensionMapping = {}
+
+if sys.version_info[0] < 3:
+    moduleList.remove("ldf")
+    moduleList.remove("odx")
 
 for module in moduleList:
     try:
