@@ -600,6 +600,9 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         if value_table_name is not None:
                             signal.values = db.value_tables[value_table_name]
                             signal.enumeration = value_table_name
+                        if enumeration is not None:
+                            signal.values = db.value_tables[enumeration]
+                            signal.enumeration = value_table_name
                         # signal.add_comment(comment)
                         # ... (1 / ...) because this somehow made 59.8/0.1 be 598.0 rather than 597.9999999999999
                         if start_value is not None:
