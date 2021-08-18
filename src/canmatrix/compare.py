@@ -71,14 +71,19 @@ def compare_db(db1, db2, ignore=None):
     if ignore is None:
         ignore = dict()
     for f1 in db1.frames:
-        f2 = db2.frame_by_id(f1.arbitration_id)
+        f2 = db2.frame_by_name(f1.name)
+        f2id = db2.frame_by_id(f1.arbitration_id)
         if f2 is None:
-            result.add_child(CompareResult("deleted", "FRAME", f1))
+            if f2id is None:
+                result.add_child(CompareResult("deleted", "FRAME", f1))
+            else:
+                result.add_child(compare_frame(f1, f2id, ignore))
         else:
             result.add_child(compare_frame(f1, f2, ignore))
     for f2 in db2.frames:
-        f1 = db1.frame_by_id(f2.arbitration_id)
-        if f1 is None:
+        f1 = db1.frame_by_name(f2.name)
+        f1id = db1.frame_by_id(f2.arbitration_id)
+        if f1id is None and f1 is None:
             result.add_child(CompareResult("added", "FRAME", f2))
 
     if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
@@ -310,6 +315,13 @@ def compare_frame(f1, f2, ignore=None):
                     "dlc: %d" %
                     f1.size, "dlc: %d" %
                     f2.size]))
+    if f1.arbitration_id.id != f2.arbitration_id.id:
+        result.add_child(
+            CompareResult(
+                "changed", "ID", f1, [
+                    "ID: %xh" %
+                    f1.arbitration_id.id, "ID: %xh" %
+                    f2.arbitration_id.id]))
     if f1.arbitration_id.extended != f2.arbitration_id.extended:
         result.add_child(
             CompareResult(

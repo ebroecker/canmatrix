@@ -233,8 +233,8 @@ def dump(in_db, f, **options):
         for signal in frame.signals:
             if signal.cycle_time != 0:
                 signal.add_attribute("GenSigCycleTime", signal.cycle_time)
-            if signal.initial_value != 0:
-                signal.add_attribute("GenSigStartValue", signal.initial_value)
+            if signal.phys2raw(None) != 0:
+                signal.add_attribute("GenSigStartValue", signal.phys2raw(None))
 
             name = normalized_names[signal]
             if compatibility:
@@ -254,7 +254,7 @@ def dump(in_db, f, **options):
             if max([x.cycle_time for y in db.frames for x in y.signals]) > 0:
                 db.add_signal_defines("GenSigCycleTime", 'INT 0 65535')
 
-            if max([x.initial_value for y in db.frames for x in y.signals]) > 0 or min([x.initial_value for y in db.frames for x in y.signals]) < 0:
+            if max([x.phys2raw(None) for y in db.frames for x in y.signals]) > 0 or min([x.phys2raw(None) for y in db.frames for x in y.signals]) < 0:
                 db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
 
 
@@ -398,8 +398,11 @@ def dump(in_db, f, **options):
                 name = output_names[frame][signal]
                 if isinstance(val, float):
                     val = format_float(val)
-                f.write(create_attribute_string(attrib, "SG_", '%d ' % frame.arbitration_id.to_compound_integer() + name, val,
-                                                db.signal_defines[attrib].type == "STRING").encode(dbc_export_encoding, ignore_encoding_errors))
+                if attrib in db.signal_defines:
+                    f.write(create_attribute_string(
+                        attrib, "SG_", '%d ' % frame.arbitration_id.to_compound_integer() + name, val,
+                        db.signal_defines[attrib].type == "STRING").encode(dbc_export_encoding, ignore_encoding_errors)
+                    )
 
     f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
@@ -548,11 +551,15 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 db.frames.append(frame)
                 add_frame_by_id(frame)
             elif decoded.startswith("SG_ "):
+                original_line = l
+                if decoded.strip().endswith(r'"'):
+                    decoded += r" Vector__XXX"
+                    original_line += b" Vector__XXX"
                 pattern = r"^SG_ +(\w+) *: *(\d+)\|(\d+)@(\d+)([\+|\-]) *\(([0-9.+\-eE]+), *([0-9.+\-eE]+)\) *\[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] +\"(.*)\" +(.*)"
                 regexp = re.compile(pattern)
                 temp = regexp.match(decoded)
                 regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
-                temp_raw = regexp_raw.match(l)
+                temp_raw = regexp_raw.match(original_line)
                 if temp:
                     receiver = [b.strip() for b in temp.group(11).split(',')]
 
@@ -584,7 +591,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     regexp = re.compile(pattern)
                     regexp_raw = re.compile(pattern.encode(dbc_import_encoding))
                     temp = regexp.match(decoded)
-                    temp_raw = regexp_raw.match(l)
+                    temp_raw = regexp_raw.match(original_line)
                     receiver = [b.strip() for b in temp.group(12).split(',')]
                     multiplex = temp.group(2)  # type: str
 
@@ -932,7 +939,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             ecu.name = ecu.attributes.get("SystemNodeLongSymbol")[1:-1]
             ecu.del_attribute("SystemNodeLongSymbol")
     for frame in db.frames:
-        frame.cycle_time = int(frame.attributes.get("GenMsgCycleTime", 0))
+        frame.cycle_time = int(float(frame.attributes.get("GenMsgCycleTime", 0)))
         if frame.attributes.get("SystemMessageLongSymbol", None) is not None:
             frame.name = frame.attributes.get("SystemMessageLongSymbol")[1:-1]
             frame.del_attribute("SystemMessageLongSymbol")
@@ -945,7 +952,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         #     frame.extended = 1
 
         for signal in frame.signals:
-            signal.initial_value = float_factory(signal.attributes.get("GenSigStartValue", "0"))
+            gen_sig_start_value = float_factory(signal.attributes.get("GenSigStartValue", "0"))
+            signal.initial_value = (gen_sig_start_value * signal.factor) + signal.offset
             signal.cycle_time = int(signal.attributes.get("GenSigCycleTime", 0))
             if signal.attribute("SystemSignalLongSymbol") is not None:
                 signal.name = signal.attribute("SystemSignalLongSymbol")[1:-1]

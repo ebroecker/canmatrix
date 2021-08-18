@@ -421,6 +421,8 @@ def test_signal_inital_value():
 
         BA_DEF_ SG_  "GenSigStartValue" FLOAT 0 100000000000;
         BA_ "GenSigStartValue" SG_ 17 sig1 2.7;
+        
+        SIG_VALTYPE_ 17 sig1 : 1;
     ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].signal_by_name("sig1").initial_value == decimal.Decimal("2.7")
@@ -489,3 +491,27 @@ def test_escaped_quotes():
     assert matrix.frames[0].signals[0].values[2] == r'string with "escaped" double quotes'
 
 
+def test_float_cycle_time():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 17 Frame_1: 8 Vector__XXX
+        SG_ sig2 : 8|8@1- (1,0) [0|0] "" Vector__XXX
+        SG_ sig1 : 0|8@1- (1,0) [0|0] "" Vector__XXX
+
+        BA_DEF_ BO_  "GenMsgCycleTime" INT 10 3600000;
+        BA_ "GenMsgCycleTime" BO_ 17 100.0;
+            ''').encode('utf-8'))
+
+
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+
+    assert matrix.frames[0].cycle_time == 100
+
+
+def test_without_ecu():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+            BO_ 17 Frame_1: 8 Vector__XXX
+            SG_ A_B_C_D_E: 39|16@0+ (0.01,0) [0|655.35] "km/h"
+    ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    matrix.frames[0].signals[0].name == "A_B_C_D_E"

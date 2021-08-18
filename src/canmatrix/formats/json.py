@@ -93,6 +93,7 @@ def dump(db, f, **options):
             symbolic_frame = {"name": frame.name,
                               "id": int(frame.arbitration_id.id),
                               "is_extended_frame": frame.arbitration_id.extended,
+                              "is_fd": frame.is_fd,
                               "signals": symbolic_signals}
             frame_attributes = {
                 attr: frame.attribute(attr)
@@ -140,12 +141,18 @@ def dump(db, f, **options):
                     symbolic_signal["multiplex"] = signal.multiplex
                 if signal.unit:
                     symbolic_signal["unit"] = signal.unit
+                if signal.muxer_for_signal is not None:
+                    symbolic_signal["muxer_for_signal"] = signal.muxer_for_signal
+                if signal.mux_val_grp:
+                    symbolic_signal["mux_val_grp"] = signal.mux_val_grp
+
                 symbolic_signals.append(symbolic_signal)
 
             export_dict['messages'].append(
                 {"name": frame.name,
                  "id": int(frame.arbitration_id.id),
                  "is_extended_frame": frame.arbitration_id.extended,
+                 "is_fd": frame.is_fd,
                  "signals": symbolic_signals,
                  "attributes": frame_attributes,
                  "comment": frame.comment,

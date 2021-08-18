@@ -80,6 +80,11 @@ Note: in case of ``.arxml`` there can be multiple can databases in.
 Thus the target ``target.dbc`` may in this case be called ``BUS-NAME-IN-ARXML_target.dbc``.
 There will be one target ``.dbc`` for each database in ``.arxml``.
 
+Note: in case of ``.arxml`` CAN Frames can be in the Container PDU format.
+In this case by default all PDU contained frame are converted to multiplexed frame.
+This can be avoided with ``--ignorePduContainer/--no-ignorePduContainer`` option and
+PDU contained frames will be dropped
+
 You can even convert to the same format:
 
 **convert dbc file to dbc:**
@@ -205,6 +210,13 @@ this will remove signales ``mySignal`` and ``mySignal2`` in ``source.dbc`` and s
 
 this will load ``source.dbc`` and rename signals ``mySignal`` in ``myNewSignal``  and ``mySignal2`` in ``myNewSignal2``.
 The result is stored in ``target.dlc``.
+
+::
+
+  $ canconvert --signalNameFromAttrib=CompuMethodName source.ARXML target.dbc
+
+this will load ``source.arxml`` and create ``target.dlc`` while all signals are named from CompuMethodName in ARXML.
+Also known values from ARXML are SysSignalName and ISignalName
 
 **canFD:**
 
@@ -361,6 +373,11 @@ ____________________
 
                         rename Signal form databases. (comma separated list) Syntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal
 
+  --signalNameFromAttrib=ATTRIBUTENAME
+
+                        change signal_name to given signal attribute Syntax: --signalNameFromAttrib=SysSignalName
+                        Example --signalNameFromAttrib SysSignalName
+                        ARXML known Attributes: SysSignalName, ISignalName, CompuMethodName
 
 
 * dbc:
@@ -407,10 +424,10 @@ ____________________
 
                         Excel format for startbit of motorola coded signals. Valid values: msb, lsb, msbreverse default msbreverse. [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
 
-* csv:
+* csv/xls/xlsx:
 
-  --csvAdditionalSignalAttributes
-                        append additional signal-collums to csv, example:
+  --additionalSignalAttributes//--additionalFrameAttributes
+                        append additional signal/frame-colums to csv, example:
                         is_signed,attributes["GenSigStartValue"]
 
 
