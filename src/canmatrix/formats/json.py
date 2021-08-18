@@ -141,6 +141,11 @@ def dump(db, f, **options):
                     symbolic_signal["multiplex"] = signal.multiplex
                 if signal.unit:
                     symbolic_signal["unit"] = signal.unit
+                if signal.muxer_for_signal is not None:
+                    symbolic_signal["muxer_for_signal"] = signal.muxer_for_signal
+                if signal.mux_val_grp:
+                    symbolic_signal["mux_val_grp"] = signal.mux_val_grp
+
                 symbolic_signals.append(symbolic_signal)
 
             export_dict['messages'].append(

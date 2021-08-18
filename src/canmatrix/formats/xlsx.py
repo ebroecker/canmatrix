@@ -288,7 +288,7 @@ def dump(db, filename, **options):
 
                 col = head_start
                 col = write_ecu_matrix(ecu_list, sig, frame, worksheet, row, col, frame_style)
-                (frontRow, back_row) = canmatrix.formats.xls_common.get_signal(db, sig, motorola_bit_format)
+                (frontRow, back_row) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format)
                 write_excel_line(worksheet, row, front_col, frontRow, signal_style)
 
                 if float(sig.min) != 0 or float(sig.max) != 1.0:

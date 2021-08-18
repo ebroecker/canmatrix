@@ -1088,7 +1088,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             if isignal is not None:
                 logger.debug("get_signals: found I-SIGNAL-GROUP ")
 
-                isignal_array = ea.follow_ref(isignal, "I-SIGNAL-REF")
+                isignal_array = ea.follow_all_ref(isignal, "I-SIGNAL-REF")
 
                 system_signal_array = [ea.follow_ref(isignal, "SYSTEM-SIGNAL-REF") for isignal in isignal_array]
                 system_signal_group = ea.follow_ref(isignal, "SYSTEM-SIGNAL-GROUP-REF")
@@ -1185,7 +1185,8 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                     logger.debug('No valid compu method found for this - check ARXML file!!')
                     compu_method = None
         if compu_method is None:
-            logger.error('No valid compu method found for this - check ARXML file!!')
+            logger.error('No valid compu method found for isignal/systemsignal {}/{} - check ARXML file!!'
+                         .format(ea.get_short_name(isignal), ea.get_short_name(system_signal)))
         #####################################################################################################
         # no found compu-method fuzzy search in systemsignal:
         #####################################################################################################
@@ -1295,7 +1296,11 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
             if initvalue is not None and initvalue.text is not None:
                 initvalue.text = canmatrix.utils.guess_value(initvalue.text)
-                new_signal.initial_value = (float_factory(initvalue.text) * factor) + offset
+
+                try:
+                    new_signal.initial_value = (float_factory(initvalue.text) * factor) + offset
+                except decimal.InvalidOperation:
+                    logger.error("could not decode value {}".format(initvalue.text))
 
             for key, value in list(values.items()):
                 new_signal.add_values(canmatrix.utils.decode_number(key, float_factory), value)
@@ -1420,8 +1425,10 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
             header_id = int(header_id, 0)
 
         if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
+            secured_i_pdu_name = ea.get_element_name(ipdu)
             payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
             ipdu = ea.follow_ref(payload, "I-PDU-REF")
+            logger.info("found secured pdu '%s', dissolved to '%s'", secured_i_pdu_name, ea.get_element_name(ipdu))
         try:
             offset = int(ea.get_child(ipdu, "OFFSET").text) * 8
         except:
@@ -1509,7 +1516,6 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
             pdu = ea.selector(pdu, ">PAYLOAD-REF>I-PDU-REF")[0]
             # logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
 
-
         new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text))
         comment = ea.get_element_desc(frame_elem)
         if comment is not None:
@@ -1531,7 +1537,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     if pdu is None:
         logger.error("pdu is None")
     else:
-        logger.debug(ea.get_element_name(pdu))
+        logger.debug("PDU: " + ea.get_element_name(pdu))
 
     if new_frame.comment is None:
         new_frame.add_comment(ea.get_element_desc(pdu))
@@ -1602,7 +1608,8 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     if new_frame.is_pdu_container and new_frame.cycle_time == 0:
         cycle_times = {pdu.cycle_time for pdu in new_frame.pdus}
         if len(cycle_times) > 1:
-            logger.warning("%s is contained pdu frame with different cycle times", new_frame.cycle_time)
+            logger.warning("%s is pdu-container(frame) with different cycle times (%s), frame cycle-time: %s",
+                           new_frame.name, cycle_times, new_frame.cycle_time)
         new_frame.cycle_time = min(cycle_times)
     new_frame.fit_dlc()
     if frame_elem is not None:
