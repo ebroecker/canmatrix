@@ -5,6 +5,7 @@ future
 lxml
 pyyaml
 six
+ldfparser
 typing; python_version < '3.5'
 xlrd
 xlsxwriter
