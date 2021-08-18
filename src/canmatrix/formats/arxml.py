@@ -1021,7 +1021,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             if isignal is not None:
                 logger.debug("get_signals: found I-SIGNAL-GROUP ")
 
-                isignal_array = ea.follow_ref(isignal, "I-SIGNAL-REF")
+                isignal_array = ea.follow_all_ref(isignal, "I-SIGNAL-REF")
 
                 system_signal_array = [ea.follow_ref(isignal, "SYSTEM-SIGNAL-REF") for isignal in isignal_array]
                 system_signal_group = ea.follow_ref(isignal, "SYSTEM-SIGNAL-GROUP-REF")
