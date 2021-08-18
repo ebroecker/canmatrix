@@ -107,13 +107,15 @@ def get_gcd(value1, value2):  # type (int,int) -> (int)
     else:
         return fractions.gcd(value1, value2)
 
+
 def decode_number(value, float_factory):  # type(string) -> (int)
     """
     Decode string to integer and guess correct base
     :param value: string input value
     :return: integer
     """
-
+    if value is None:
+        return 0
     value = value.strip()
 
     if '.' in value:

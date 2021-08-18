@@ -508,3 +508,11 @@ def test_float_cycle_time():
     assert matrix.frames[0].cycle_time == 100
 
 
+def test_without_ecu():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+            BO_ 17 Frame_1: 8 Vector__XXX
+            SG_ A_B_C_D_E: 39|16@0+ (0.01,0) [0|655.35] "km/h"
+    ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    matrix.frames[0].signals[0].name == "A_B_C_D_E"

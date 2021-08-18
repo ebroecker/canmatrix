@@ -80,6 +80,11 @@ Note: in case of ``.arxml`` there can be multiple can databases in.
 Thus the target ``target.dbc`` may in this case be called ``BUS-NAME-IN-ARXML_target.dbc``.
 There will be one target ``.dbc`` for each database in ``.arxml``.
 
+Note: in case of ``.arxml`` CAN Frames can be in the Container PDU format.
+In this case by default all PDU contained frame are converted to multiplexed frame.
+This can be avoided with ``--ignorePduContainer/--no-ignorePduContainer`` option and
+PDU contained frames will be dropped
+
 You can even convert to the same format:
 
 **convert dbc file to dbc:**

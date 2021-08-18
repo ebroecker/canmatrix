@@ -51,9 +51,11 @@ if attr.__version__ < '17.4.0':  # type: ignore
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
 
+
 class ExceptionTemplate(Exception):
     def __call__(self, *args):
         return self.__class__(*(self.args + args))
+
 
 class StartbitLowerZero(ExceptionTemplate): pass
 class EncodingComplexMultiplexed(ExceptionTemplate): pass
@@ -62,6 +64,8 @@ class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
 class ArbitrationIdOutOfRange(ExceptionTemplate): pass
 class J1939needsExtendedIdetifier(ExceptionTemplate): pass
+class DecodingConatainerPdu(ExceptionTemplate): pass
+class EncodingConatainerPdu(ExceptionTemplate): pass
 
 
 def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
@@ -296,7 +300,10 @@ class Signal(object):
         :param int or str value: signal value (0xFF)
         :param str valueName: Human readable value description ("Init")
         """
-        self.values[int(str(value), 0)] = valueName
+        if isinstance(value, defaultFloatFactory):
+            self.values[value.to_integral()] = valueName
+        else:
+            self.values[int(str(value), 0)] = valueName
 
     def set_startbit(self, start_bit, bitNumbering=None, startLittle=None):
         """
@@ -319,9 +326,9 @@ class Signal(object):
         if startLittle is True and self.is_little_endian is False:
             start_bit = start_bit + 1 - self.size
         if start_bit < 0:
-            print("wrong start_bit found Signal: %s Startbit: %d" %
-                  (self.name, start_bit))
-            raise StartbitLowerZero
+            raise StartbitLowerZero(
+                "wrong start_bit found Signal: %s Startbit: %d" % (self.name, start_bit)
+            )
         self.start_bit = start_bit
 
     def get_startbit(self, bit_numbering=None, start_little=None):
@@ -393,7 +400,6 @@ class Signal(object):
         rawMax = self.calculate_raw_range()[1]
 
         return self.offset + (self.float_factory(rawMax) * self.factor)
-
 
     def phys2raw(self, value=None):
         # type: (canmatrix.types.OptionalPhysicalValue) -> canmatrix.types.RawValue
@@ -537,6 +543,7 @@ def grouper(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
     return zip_longest(*args, fillvalue=fillvalue)
 
+
 def unpack_bitstring(length, is_float, is_signed, bits):
     # type: (int, bool, bool, typing.Any) -> typing.Union[float, int]
     """
@@ -564,6 +571,7 @@ def unpack_bitstring(length, is_float, is_signed, bits):
 
     return value
 
+
 def pack_bitstring(length, is_float, value, signed):
     """
     returns a value in bits
@@ -583,7 +591,7 @@ def pack_bitstring(length, is_float, value, signed):
         x = bytearray(struct.pack(float_type, value))
         bitstring = ''.join('{:08b}'.format(b) for b in x)
     else:
-        b = '{:0{}b}'.format(int((2<<length )+ value), length)
+        b = '{:0{}b}'.format(int((2 << length) + value), length)
         bitstring = b[-length:]
 
     return bitstring
@@ -748,6 +756,7 @@ class ArbitrationId(object):
             )
         )
 
+
 @attr.s(eq=False)
 class Pdu(object):
     """
@@ -761,11 +770,13 @@ class Pdu(object):
 
     name = attr.ib(default="")  # type: str
     size = attr.ib(default=0)  # type: int
+    id = attr.ib(default=0)  # type: int
     triggering_name = attr.ib(default="")  # type: str
     pdu_type = attr.ib(default="")  # type: str
     port_type = attr.ib(default="")  # type: str
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
+    cycle_time = attr.ib(default=0)  # type: int
 
     def add_signal(self, signal):
         # type: (Signal) -> Signal
@@ -862,7 +873,6 @@ class Frame(object):
     header_id = attr.ib(default=None)  #type: int
     # header_id
 
-
     @property
     def is_multiplexed(self):  # type: () -> bool
         """Frame is multiplexed if at least one of its signals is a multiplexer."""
@@ -902,7 +912,13 @@ class Frame(object):
                 muxed_signals.append(sig)
         return muxed_signals
 
+    @property
+    def is_pdu_container(self):  # type: () -> bool
+        return len(self.pdus) > 0
 
+    @property
+    def get_pdu_id_values(self):  # type: () -> typing.Sequence[int]
+        return list({pdu.id for pdu in self.pdus})
 
     @property
     def pgn(self):  # type: () -> int
@@ -932,7 +948,6 @@ class Frame(object):
         """Set J1939 source."""
         self.arbitration_id.j1939_source = value
 
-
     @property
     def effective_cycle_time(self):
         """Calculate effective cycle time for frame, depending on singal cycle times"""
@@ -942,8 +957,8 @@ class Frame(object):
         elif len(min_cycle_time_list) == 1:
             return min_cycle_time_list[0]
         else:
-            gcd = canmatrix.utils.get_gcd(min_cycle_time_list[0],min_cycle_time_list[1])
-            for i in range(2,len(min_cycle_time_list)):
+            gcd = canmatrix.utils.get_gcd(min_cycle_time_list[0], min_cycle_time_list[1])
+            for i in range(2, len(min_cycle_time_list)):
                 gcd = canmatrix.utils.get_gcd(gcd, min_cycle_time_list[i])
             return gcd
         #    return min(min_cycle_time_list)
@@ -1023,6 +1038,31 @@ class Frame(object):
         self.pdus.append(pdu)
         return self.pdus[len(self.pdus) - 1]
 
+    def pdu_by_name(self, name):
+        # type: (str) -> typing.Union[Pdu, None]
+        """Get PDU.
+
+        :param str name: PDU name
+        :return: PDU by name or None if not found.
+        :rtype: Pdu
+        """
+        for pdu in self.pdus:
+            if pdu.name == name:
+                return pdu
+        return None
+
+    def pdu_by_id(self, pdu_id):
+        # type: (int) -> typing.Union[Pdu, None]
+        """Get PDU.
+
+        :param int pdu_id: PDU id
+        :return: PDU by id or None if not found.
+        :rtype: Pdu
+        """
+        for pdu in self.pdus:
+            if pdu.id == pdu_id:
+                return pdu
+        return None
 
     def add_signal(self, signal):
         # type: (Signal) -> Signal
@@ -1133,7 +1173,11 @@ class Frame(object):
         for sig in self.signals:
             if sig.get_startbit() + int(sig.size) > max_bit:
                 max_bit = sig.get_startbit() + int(sig.size)
-        max_byte = int(math.ceil(max_bit / 8))
+        max_byte = (max_bit + 7) // 8
+        if self.is_pdu_container:
+            max_byte *= len(self.pdus)
+            for pdu in self.pdus:
+                max_byte += pdu.size
         self.size = max(self.size, max_byte)
 
     def fit_dlc(self):
@@ -1263,6 +1307,8 @@ class Frame(object):
 
         if self.is_complex_multiplexed:
             raise EncodingComplexMultiplexed
+        elif self.is_pdu_container:
+            raise EncodingConatainerPdu  # TODO add encoding
         elif self.is_multiplexed:
             # search for mulitplexer-signal
             for signal in self.signals:
@@ -1285,7 +1331,8 @@ class Frame(object):
             data = newData
         return self.signals_to_bytes(data)
 
-    def bytes_to_bitstrings(self, data):
+    @staticmethod
+    def bytes_to_bitstrings(data):
         # type: (bytes) -> typing.Tuple[str, str]
         """Return two arrays big and little containing bits of given data (bytearray)
 
@@ -1299,19 +1346,21 @@ class Frame(object):
 
         return little, big
 
-    def bitstring_to_signal_list(self, signals, big, little):
-        # type: (typing.Sequence[Signal], str, str) -> typing.Sequence[canmatrix.types.RawValue]
+    @staticmethod
+    def bitstring_to_signal_list(signals, big, little, size):
+        # type: (typing.Sequence[Signal], str, str, int) -> typing.Sequence[canmatrix.types.RawValue]
         """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
 
         :param signals: Iterable of signals (class signal) to decode from frame.
         :param big: bytearray of bits (big endian).
         :param little: bytearray of bits (little endian).
+        :param size: number of bits.
         :return: array with raw values (same order like signals)
         """
         unpacked = []
         for signal in signals:
             if signal.is_little_endian:
-                least = self.size * 8 - signal.start_bit
+                least = size - signal.start_bit
                 most = least - signal.size
 
                 bits = little[most:least]
@@ -1320,7 +1369,6 @@ class Frame(object):
                 least = most + signal.size
 
                 bits = big[most:least]
-
             unpacked.append(unpack_bitstring(signal.size, signal.is_float, signal.is_signed, bits))
 
         return unpacked
@@ -1338,20 +1386,73 @@ class Frame(object):
 
         rx_length = len(data)
         if rx_length != self.size and report_error:
-            print(
-                'Received message 0x{self.arbitration_id.id:08X} with length {rx_length}, expected {self.size}'.format(**locals()))
-            raise DecodingFrameLength
+            raise DecodingFrameLength(
+                'Received message 0x{self.arbitration_id.id:08X} '
+                'with length {rx_length}, expected {self.size}'.format(**locals())
+            )
+        elif self.is_pdu_container:
+            header_id_signal = self.signal_by_name("Header_ID")
+            header_dlc_signal = self.signal_by_name("Header_DLC")
+            if header_id_signal is None or header_dlc_signal is None:
+                raise DecodingConatainerPdu(
+                    'Received message 0x{:08X} without Header_ID or '
+                    'Header_DLC signal'.format(self.arbitration_id.id)
+                )
+            # TODO: may be we need to check that ID/DLC signals are contiguous
+            header_size = header_id_signal.size + header_dlc_signal.size
+            little, big = self.bytes_to_bitstrings(data)
+            size = self.size * 8
+            return_dict = dict({"pdus": []})
+            # decode signal which are not in PDUs
+            signals = [s for s in self.signals if s not in [header_id_signal, header_dlc_signal]]
+            if signals:
+                unpacked = self.bitstring_to_signal_list(signals, big, little, size)
+                for s, v in zip(signals, unpacked):
+                    return_dict[s.name] = DecodedSignal(v, s)
+            # decode PDUs
+            offset = header_id_signal.start_bit
+            header_signals = [header_id_signal, header_dlc_signal]
+            while (offset + header_size) < size:
+                unpacked = self.bitstring_to_signal_list(
+                    header_signals,
+                    big[offset:offset + header_size],
+                    little[size - offset - header_size:size - offset],
+                    header_size
+                )
+                offset += header_size
+                pdu_id = unpacked[0]
+                pdu_dlc = unpacked[1]
+                for s, v in zip(header_signals, unpacked):
+                    if s.name not in return_dict:
+                        return_dict[s.name] = []
+                    return_dict[s.name].append(DecodedSignal(v, s))
+                pdu = self.pdu_by_id(pdu_id)
+                if pdu is None:
+                    return_dict['pdus'].append(None)
+                else:
+                    unpacked = self.bitstring_to_signal_list(
+                        pdu.signals,
+                        big[offset:offset + pdu_dlc * 8],
+                        little[size - offset - pdu_dlc * 8:size - offset],
+                        pdu_dlc * 8
+                    )
+                    pdu_dict = dict()
+                    for s, v in zip(pdu.signals, unpacked):
+                        pdu_dict[s.name] = DecodedSignal(v, s)
+                    return_dict["pdus"].append({pdu.name: pdu_dict})
+                offset += (pdu_dlc * 8)
+            return return_dict
         else:
             little, big = self.bytes_to_bitstrings(data)
 
-            unpacked = self.bitstring_to_signal_list(self.signals, big, little)
+            unpacked = self.bitstring_to_signal_list(self.signals, big, little, self.size * 8)
 
-            returnDict = dict()
+            return_dict = dict()
 
             for s, v in zip(self.signals, unpacked):
-                returnDict[s.name] = DecodedSignal(v, s)
+                return_dict[s.name] = DecodedSignal(v, s)
 
-            return returnDict
+            return return_dict
 
     def _get_sub_multiplexer(self, parent_multiplexer_name, parent_multiplexer_value):
         """
@@ -1868,7 +1969,12 @@ class CanMatrix(object):
                 for sig in frame.signals:
                     if sig.get_startbit() + int(sig.size) > maxBit:
                         maxBit = sig.get_startbit() + int(sig.size)
-                frame.size = math.ceil(maxBit / 8)
+                max_byte = (maxBit + 7) // 8
+                if frame.is_pdu_container:
+                    max_byte *= len(frame.pdus)
+                    for pdu in self.pdus:
+                        max_byte += pdu.size
+                frame.size = max_byte
 
     def rename_ecu(self, ecu_or_name, new_name):  # type: (typing.Union[Ecu, str], str) -> None
         """Rename ECU in the Matrix. Update references in all Frames.
