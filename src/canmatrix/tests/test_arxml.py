@@ -27,6 +27,7 @@ def test_get_signals_from_container_i_pdu():
     assert matrix["New_CanCluster"].frames[0].pdus[0].signals[0].attributes["SysSignalName"] == 'PDU_Contained_1_Signal1_905db81da40081cb'
 
 
+
 def test_get_signals_from_secured_pdu():
     here = Path(__file__).parent
     matrix = canmatrix.formats.arxml.load(str(here / "ARXMLSecuredPDUTest.arxml"))
