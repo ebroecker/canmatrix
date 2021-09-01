@@ -30,7 +30,7 @@ from builtins import *
 import canmatrix
 import canmatrix.copy
 import canmatrix.formats
-import canmatrix.log
+import canmatrix.logd
 
 logger = logging.getLogger(__name__)
 sys.path.append('..')  # todo remove?
@@ -250,6 +250,19 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         if options.get('signalNameFromAttrib') is not None:
             for signal in [b for a in db for b in a.signals]:
                 signal.name = signal.attributes.get(options.get('signalNameFromAttrib'), signal.name)
+
+        # Max Signal Value Calculation , if max value is 0
+        if options.get('calcSignalMax') is not None and options['calcSignalMax']:
+            for signal in [b for a in db for b in a.signals]:
+                if float(signal.max) == 0.0 or signal.max is None:
+                    signal.calc_max_for_none = True
+                    signal.set_max(None)
+
+        # Max Signal Value Calculation
+        if options.get('recalcSignalMax') is not None and options['recalcSignalMax']:
+            for signal in [b for a in db for b in a.signals]:
+                signal.calc_max_for_none = True
+                signal.set_max(None)
 
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))
