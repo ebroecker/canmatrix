@@ -30,7 +30,7 @@ from builtins import *
 import canmatrix
 import canmatrix.copy
 import canmatrix.formats
-import canmatrix.logd
+import canmatrix.log
 
 logger = logging.getLogger(__name__)
 sys.path.append('..')  # todo remove?
