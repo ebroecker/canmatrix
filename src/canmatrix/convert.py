@@ -254,7 +254,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         # Max Signal Value Calculation , if max value is 0
         if options.get('calcSignalMax') is not None and options['calcSignalMax']:
             for signal in [b for a in db for b in a.signals]:
-                if float(signal.max) == 0.0 or signal.max is None:
+                if signal.max == 0 or signal.max is None:
                     signal.calc_max_for_none = True
                     signal.set_max(None)
 
