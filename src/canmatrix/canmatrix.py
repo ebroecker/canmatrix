@@ -1516,7 +1516,7 @@ class Frame(object):
                 decoded_values[signal.name] = decoded[signal.name]
             return decoded_values
 
-        elif self.is_multiplexed:
+        elif self.is_multiplexed and not self.is_pdu_container:
             decoded_values = dict()
             # find multiplexer and decode only its value:
 
