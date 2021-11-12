@@ -1,10 +1,10 @@
 attrs>=19.2.0
 click
 enum34; python_version < '3.4'
+ldfparser
 lxml
 pyyaml
 six
-ldfparser
 typing; python_version < '3.5'
 xlrd
 xlsxwriter

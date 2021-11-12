@@ -92,6 +92,7 @@ setup(
         "fibex": ["lxml"],
         "json": [],
         "kcd": ["lxml"],
+        "ldf": ["ldfparser"],
         "sym": [],
         "test": ["pathlib2; python_version < '3.4'", "pytest"],
         "xls": ["xlrd", "xlwt"],
