@@ -82,7 +82,6 @@ setup(
         "attrs>=19.2.0",
         "click",
         "enum34; python_version < '3.4'",
-        "future",
         "six",
         "typing; python_version < '3.5'",
     ],

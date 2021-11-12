@@ -31,9 +31,9 @@ import logging
 import sys
 import typing
 from builtins import *
+from keyword import iskeyword
 
 import attr
-
 import canmatrix
 import canmatrix.utils
 
@@ -100,12 +100,7 @@ def format_float(f):  # type: (typing.Any) -> str
 
 def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) -> str
     output = ""
-    if sys.version_info > (3, 0):
-        quote_name = not signal.name.isidentifier()
-    else:
-        from future.utils import isidentifier
-        quote_name = not isidentifier(signal.name)
-    if quote_name:
+    if not iskeyword(signal.name):
         output += 'Var="%s" ' % signal.name
     else:
         output += "Var=%s " % signal.name
