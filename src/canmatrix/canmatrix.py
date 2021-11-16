@@ -1817,8 +1817,8 @@ class CanMatrix(object):
                 for signal in frame.signals:
                     if signal_define in signal.attributes:
                         break
-            else:
-                defines_to_delete.add(signal_define)
+                else:
+                    defines_to_delete.add(signal_define)
         for element in defines_to_delete:
             del self.signal_defines[element]
 
