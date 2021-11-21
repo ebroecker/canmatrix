@@ -100,7 +100,7 @@ setup(
         "sym": [],
         "test": ["pathlib2; python_version < '3.4'", "pytest"],
         "wireshark": [],
-        "xls": ["xlrd", "xlwt"],
+        "xls": ["xlrd==1.2.0", "xlwt"],
         "xlsx": ["xlsxwriter"],
         "yaml": ["pyyaml"],
     },
