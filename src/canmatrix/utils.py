@@ -5,6 +5,7 @@ import csv
 import shlex
 import sys
 import typing
+from string import hexdigits
 from builtins import *
 
 if sys.version_info >= (3, 5):
@@ -90,6 +91,12 @@ def guess_value(text_value):  # type: (str) -> str
         return "0"
     elif text_value in ["true", "on"]:
         return "1"
+    elif text_value[:2] == "0b":
+        if text_value[2:].isdecimal():
+            return str(int(text_value[2:], 2))
+    elif text_value[:2] == "0x":
+        if all([f in hexdigits for f in text_value[2:]]):
+            return str(int(text_value[2:], 16))
     return text_value
 
 
