@@ -30,6 +30,7 @@ import typing
 from builtins import *
 
 import xlsxwriter
+import openpyxl
 
 import canmatrix
 import canmatrix.formats.xls_common
@@ -320,89 +321,16 @@ def dump(db, filename, **options):
     workbook.close()
 
 
-def read_xlsx(file, **args):
-    # type: (typing.Any, **typing.Any) -> typing.Tuple[typing.Dict[typing.Any, str], typing.List[typing.Dict[str, str]]]
-    # from: Hooshmand zandi http://stackoverflow.com/a/16544219
-    import zipfile
-    from xml.etree.ElementTree import iterparse
-
-    sheet = args.get("sheet", 1)
-    is_header = args.get("header", False)
-
-    rows = []  # type: typing.List[typing.Dict[str, str]]
-    row = {}
-    header = {}
-    z = zipfile.ZipFile(file)
-
-    # Get shared strings
-    strings = [el.text for e, el
-               in iterparse(z.open('xl/sharedStrings.xml'))
-               if el.tag.endswith('}t')
-               ]  # type: typing.List[str]
-    value = ''
-
-    # Open specified worksheet
-    for e, el in iterparse(z.open('xl/worksheets/sheet%d.xml' % sheet)):
-        # get value or index to shared strings
-        if el.tag.endswith('}v'):                                   # <v>84</v>
-            value = el.text
-        if el.tag.endswith(
-                '}c'):                                   # <c r="A3" t="s"><v>84</v></c>
-            # If value is a shared string, use value as an index
-
-            if el.attrib.get('t') == 's':
-                value = strings[int(value)]
-
-            # split the row/col information so that the row letter(s) can be separate
-            letter = el.attrib['r']  # type: str         # AZ22
-            while letter[-1].isdigit():
-                letter = letter[:-1]
-
-            # if it is the first row, then create a header hash for the names that COULD be used
-            if not rows:
-                header[letter] = value.strip()
-            else:
-                if value != '':
-                    # if there is a header row, use the first row's names as the row hash index
-                    if is_header is True and letter in header:
-                        row[header[letter]] = value
-                    else:
-                        row[letter] = value
-
-            value = ''
-        if el.tag.endswith('}row'):
-            rows.append(row)
-            row = {}
-    z.close()
-    return header, rows
-
-
-def get_if_possible(row, value, default=None):
-    # type: (typing.Mapping[str, str], str, typing.Optional[str]) -> typing.Union[str, None]
-    if value in row:
-        return row[value].strip()
-    else:
-        return default
-
-
-def load(filename, **options):
+def load(file, **options):
     # type: (typing.BinaryIO, **str) -> canmatrix.CanMatrix
-    # use xlrd excel reader if available, because its more robust
-    if options.get('xlsxLegacy', False) is True:
-        logger.error("xlsx: using legacy xlsx-reader - please get xlrd working for better results!")
-    else:
-        import canmatrix.formats.xls as xls_loader  # we need alias, otherwise we hide the globally imported canmatrix
-        return xls_loader.load(filename, **options)
+
+    all_ecu_names = []
 
     # else use this hack to read xlsx
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
-
-    sheet = read_xlsx(filename, sheet=1, header=True)
+    workbook = openpyxl.open(file)
+    sheet = workbook._sheets[0]
     db = canmatrix.CanMatrix()
-    all_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    letter_index = list(all_letters)
-    letter_index += ["%s%s" % (a, b) for a in all_letters for b in all_letters]
-
     # Defines not imported...
     db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
@@ -412,24 +340,20 @@ def load(filename, **options):
     db.add_signal_defines("GenSigSNA", 'STRING')
 
     ecu_start = ecu_end = 0
-    if 'Byteorder' in list(sheet[0].values()):
-        for key in sheet[0]:
-            if sheet[0][key].strip() == 'Byteorder':
-                ecu_start = letter_index.index(key) + 1
-                break
-    else:
-        for key in sheet[0]:
-            if sheet[0][key].strip() == 'Signal Not Available':
-                ecu_start = letter_index.index(key) + 1
 
-    for key in sheet[0]:
-        if sheet[0][key].strip() == 'Value':
-            ecu_end = letter_index.index(key)
+    column_heads = [sheet.cell(1,a).value for a in range(1, sheet.max_column)]
+
+    if 'Byteorder' in column_heads:
+        ecu_start = column_heads.index('Byteorder') + 1
+    else:
+        ecu_start = column_heads.index('Signal Not Available') + 1
+
+    ecu_end = column_heads.index('Value')
 
     # ECUs:
     for x in range(ecu_start, ecu_end):
-        db.add_ecu(canmatrix.Ecu(sheet[0][letter_index[x]]))
-
+        db.add_ecu(canmatrix.Ecu(column_heads[x]))
+        all_ecu_names.append(column_heads[x])
     # initialize:
     frame_id = None
     signal_name = ""
@@ -437,15 +361,22 @@ def load(filename, **options):
     new_frame = None  # type: typing.Optional[canmatrix.Frame]
     new_signal = None  # type: typing.Optional[canmatrix.Signal]
 
-    for row in sheet[1]:
+    def get_if_possible(my_row, my_value, default=None):
+        if my_value in column_heads and my_row[column_heads.index(my_value)].value is not None:
+            return my_row[column_heads.index(my_value)].value
+        else:
+            return default
+
+    for row in sheet.rows:
         # ignore empty row
-        if 'ID' not in row:
+        if row[column_heads.index('ID')].value is None or row[column_heads.index('ID')].value == 'ID':
             continue
-        # new frame detected
-        if row['ID'] != frame_id:
+
+            # new frame detected
+        if row[column_heads.index('ID')].value != frame_id:
             # new Frame
-            frame_id = row['ID']
-            frame_name = row['Frame Name']
+            frame_id = row[column_heads.index('ID')].value
+            frame_name = row[column_heads.index('Frame Name')].value
             cycle_time = get_if_possible(row, 'Cycle Time [ms]', '0')
             launch_type = get_if_possible(row, 'Launch Type')
             dlc = 8
@@ -453,8 +384,7 @@ def load(filename, **options):
             # launch_param = str(int(launch_param))
 
             if frame_id.endswith("xh"):
-                new_frame = canmatrix.Frame(frame_name, arbitration_id=int(frame_id[:-2], 16), size=dlc)
-                new_frame.arbitration_id.extended = True
+                new_frame = canmatrix.Frame(frame_name, canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True), size=dlc)
             else:
                 new_frame = canmatrix.Frame(frame_name, arbitration_id=int(frame_id[:-1], 16), size=dlc)
 
@@ -469,13 +399,13 @@ def load(filename, **options):
             new_frame.cycle_time = cycle_time
 
         # new signal detected
-        if 'Signal Name' in row and row['Signal Name'] != signal_name:
+        if get_if_possible(row, 'Signal Name') != signal_name:
             receiver = []  # type: typing.List[str]
-            start_byte = int(row["Signal Byte No."])
-            start_bit = int(row['Signal Bit No.'])
-            signal_name = row['Signal Name']
+            start_byte = int(get_if_possible(row, 'Signal Byte No.', "0"))
+            start_bit = int(get_if_possible(row, 'Signal Bit No.', "0"))
+            signal_name = get_if_possible(row, 'Signal Name')
             signal_comment = get_if_possible(row, 'Signal Function')
-            signal_length = int(row['Signal Length [Bit]'])
+            signal_length = int(get_if_possible(row, 'Signal Length [Bit]', 0))
             # signal_default = get_if_possible(row, 'Signal Default')
             # signal_sna = get_if_possible(row, 'Signal Not Available')
             multiplex = None  # type: typing.Union[str, int, None]
@@ -498,8 +428,7 @@ def load(filename, **options):
             is_signed = False
 
             if signal_name != "-":
-                for x in range(ecu_start, ecu_end):
-                    ecu_name = sheet[0][letter_index[x]].strip()
+                for ecu_name in all_ecu_names:
                     ecu_sender_receiver = get_if_possible(row, ecu_name)
                     if ecu_sender_receiver is not None:
                         if 's' in ecu_sender_receiver:
@@ -526,10 +455,13 @@ def load(filename, **options):
                             bitNumbering=1,
                             startLittle=True
                         )
-                new_frame.add_signal(new_signal)
-                new_signal.add_comment(signal_comment)
+                if signal_name is not None:
+                    new_frame.add_signal(new_signal)
+                    new_signal.add_comment(signal_comment)
                 # function = get_if_possible(row, 'Function / Increment Unit')
         value = get_if_possible(row, 'Value')
+        if value is not None:
+            value = str(value)
         value_name = get_if_possible(row, 'Name / Phys. Range')
 
         if value_name == 0 or value_name is None:
