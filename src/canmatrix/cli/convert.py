@@ -90,6 +90,7 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--checkFloatingSignals/--no-checkFloatingSignals', 'checkFloatingSignals', default = False, help="if checkFloatingSignals is set, then unassigned signals to a frame/message will be warned \tdefault: False")
 
 
+
 # arxml switches
 @click.option('--arxmlIgnoreClusterInfo/--no-arxmlIgnoreClusterInfo', 'arxmlIgnoreClusterInfo', default=False, help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault False")
 @click.option('--arxmlExportVersion', 'arVersion',  default="3.2.3", help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 3.2.3")
@@ -103,6 +104,9 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--dbcExportEncoding', 'dbcExportEncoding', default="iso-8859-1", help="Export charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")
 @click.option('--dbcExportCommentEncoding', 'dbcExportCommentEncoding', default="iso-8859-1", help="Export charset of comments in dbc\ndefault iso-8859-1")
 @click.option('--dbcUniqueSignalNames/--no-dbcUniqueSignalNames', 'dbcUniqueSignalNames', default=True, help="Check if signal names are unique per frame")
+@click.option('--convertToExtended/--no-convertToExtended', 'convertToExtended', default = False, help="if convertToExtended is set , then the canmatrix will convert the dbc to extended format \tdefault: False")
+@click.option('--convertToJ1939/--no-convertToJ1939', 'convertToJ1939', default = False, help="if convertToJ1939 is set , then the canmatrix will convert the dbc to J1939 format \tdefault: False")
+
 # dbf switches
 @click.option('--dbfImportEncoding', 'dbfImportEncoding', default="iso-8859-1", help="Import charset of dbf, maybe utf-8\ndefault iso-8859-1")
 @click.option('--dbfExportEncoding', 'dbfExportEncoding', default="iso-8859-1", help="Export charset of dbf, maybe utf-8\ndefault iso-8859-1")

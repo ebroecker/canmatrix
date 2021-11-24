@@ -307,6 +307,18 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                     if signal.unit is "" and len(signal.values) == 0:
                         logger.warning("Please add value table for the signal %s or add appropriate Unit", (frame.name+"::"+signal.name))
 
+        # Convert dbc from J1939 to Extended format
+        if options.get('convertToExtended') is not None and options['convertToExtended']:
+            for frame in db.frames:
+                frame.is_j1939=False
+            db.add_attribute("ProtocolType","ExtendedCAN")
+
+        # Convert dbc from Extended to J1939 format
+        if options.get('convertToJ1939') is not None and options['convertToJ1939']:
+            for frame in db.frames:
+                frame.is_j1939=True
+            db.add_attribute("ProtocolType","J1939")
+
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))
 
