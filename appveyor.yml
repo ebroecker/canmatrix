@@ -1,8 +1,6 @@
 skip_branch_with_pr: true
 
 environment:
-  VENV: "%APPVEYOR_BUILD_FOLDER%\\venv"
-
   matrix:
     - TOXENV: dist
     - TOXENV: py27
@@ -23,14 +21,10 @@ matrix:
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 init:
   - ps: if (Get-ChildItem Env:ENABLE_RDP -ErrorAction SilentlyContinue) {iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))} else {echo RDP not enabled}
-  - echo "TOXENV- %TOXENV%"
 
 install:
   - if "%TOXENV%"=="pypy" choco install python.pypy
   - if "%TOXENV%"=="pypy3" choco install python.pypy3
-  - py -m venv "%VENV%"
-  - "%VENV%\\Scripts\\activate"
-  - py -c "import sys; print(sys.version)"
   - py -m pip install tox
   - ps: Update-AppveyorBuild -Version "v$(py get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
 
