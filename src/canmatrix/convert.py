@@ -42,10 +42,11 @@ def convert_pdu_container_to_multiplexed(frame):  # type: (canmatrix.Frame) -> c
         return new_frame
     header_id_signal = new_frame.signal_by_name("Header_ID")
     header_dlc_signal = new_frame.signal_by_name("Header_DLC")
-    if header_id_signal is None or header_dlc_signal is None:
-        raise ValueError("Missing Header_ID or Header_DLC signal for {}".format(frame.name))
-    header_id_signal.multiplex_setter("Multiplexor")
-    bit_offset = header_id_signal.size + header_dlc_signal.size
+    if header_id_signal is not None and header_dlc_signal is not None:
+        header_id_signal.multiplex_setter("Multiplexor")
+        bit_offset = header_id_signal.size + header_dlc_signal.size
+    else:
+        bit_offset = 0
     for sg_id, pdu in enumerate(new_frame.pdus):
         mux_val = pdu.id
         signal_group = []
@@ -249,6 +250,19 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         if options.get('signalNameFromAttrib') is not None:
             for signal in [b for a in db for b in a.signals]:
                 signal.name = signal.attributes.get(options.get('signalNameFromAttrib'), signal.name)
+
+        # Max Signal Value Calculation , if max value is 0
+        if options.get('calcSignalMax') is not None and options['calcSignalMax']:
+            for signal in [b for a in db for b in a.signals]:
+                if signal.max == 0 or signal.max is None:
+                    signal.calc_max_for_none = True
+                    signal.set_max(None)
+
+        # Max Signal Value Calculation
+        if options.get('recalcSignalMax') is not None and options['recalcSignalMax']:
+            for signal in [b for a in db for b in a.signals]:
+                signal.calc_max_for_none = True
+                signal.set_max(None)
 
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))

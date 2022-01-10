@@ -1517,7 +1517,7 @@ class Frame(object):
                 decoded_values[signal.name] = decoded[signal.name]
             return decoded_values
 
-        elif self.is_multiplexed:
+        elif self.is_multiplexed and not self.is_pdu_container:
             decoded_values = dict()
             # find multiplexer and decode only its value:
 
@@ -1818,8 +1818,8 @@ class CanMatrix(object):
                 for signal in frame.signals:
                     if signal_define in signal.attributes:
                         break
-            else:
-                defines_to_delete.add(signal_define)
+                else:
+                    defines_to_delete.add(signal_define)
         for element in defines_to_delete:
             del self.signal_defines[element]
 

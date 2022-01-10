@@ -57,6 +57,7 @@ Programming Language :: Python :: 3.6
 Programming Language :: Python :: 3.7
 Programming Language :: Python :: 3.8
 Programming Language :: Python :: 3.9
+Programming Language :: Python :: 3.10
 """
 
 from setuptools import find_packages, setup
@@ -72,7 +73,7 @@ setup(
     maintainer = "Eduard Broecker",
     maintainer_email = "eduard@gmx.de",
     url = "http://github.com/ebroecker/canmatrix",
-    classifiers = filter(None, classifiers.split("\n")),
+    classifiers = list(filter(None, classifiers.split("\n"))),
     description = doclines[0],
     keywords = "CAN dbc arxml kcd dbf sym",
     long_description = "\n".join(doclines[2:]),
@@ -88,13 +89,18 @@ setup(
     ],
     extras_require = {
         "arxml": ["lxml"],
+        "csv": [],
         "dbc": [],
         "dbf": [],
         "fibex": ["lxml"],
         "json": [],
         "kcd": ["lxml"],
+        "ldf": ["ldfparser"],
+        "odx": ["lxml"],
+        "scapy": [],
         "sym": [],
         "test": ["pathlib2; python_version < '3.4'", "pytest"],
+        "wireshark": [],
         "xls": ["xlrd", "xlwt"],
         "xlsx": ["xlsxwriter"],
         "yaml": ["pyyaml"],

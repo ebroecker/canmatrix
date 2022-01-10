@@ -13,8 +13,9 @@ import canmatrix
 import canmatrix.cancluster
 
 logger = logging.getLogger(__name__)
-moduleList = ["arxml", "csv", "dbc", "dbf", "json",
-              "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy", "wireshark"]
+moduleList = ["arxml", "csv", "dbc", "dbf", "json", "ldf",
+              "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy", "wireshark", "odx"]
+
 loadedFormats = []
 supportedFormats = {}  # type: typing.MutableMapping[str, typing.MutableSequence[str]]
 extensionMapping = {}

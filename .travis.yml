@@ -22,6 +22,7 @@ matrix:
     - python: 3.6
       env: TOXENV=mypy
     - python: 3.9
+    - python: 3.10
 
   allow_failures:
     - python: 3.6  # until we solve all typing issues

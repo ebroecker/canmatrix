@@ -78,11 +78,12 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--signals', help="Copy only given Signals (comma separated list) to target matrix just as 'free' signals without containing frame")
 @click.option('--merge', help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
 @click.option('--ignorePduContainer/--no-ignorePduContainer', 'ignorePduContainer', default = False, help="Ignore any Frame with PDU container; if no export as multiplexed Frames\ndefault False")
+@click.option('--calcSignalMax/--no-calcSignalMax', 'calcSignalMax', default = False, help="Calculate Signals Maximum Physical Value; If maximum value is set to 0\ndefault False")
+@click.option('--recalcSignalMax/--no-recalcSignalMax', 'recalcSignalMax', default = False, help="Recalculate Signals Maximum Physical Value for the entire database\ndefault False")
 
 
 # arxml switches
 @click.option('--arxmlIgnoreClusterInfo/--no-arxmlIgnoreClusterInfo', 'arxmlIgnoreClusterInfo', default=False, help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault False")
-@click.option('--arxmlUseXpath/--no-arxmlUseXpath', 'arxmlUseXpath', default=False, help="Use experimental Xpath-Implementation for resolving AR-Paths; \ndefault False")
 @click.option('--arxmlExportVersion', 'arVersion',  default="3.2.3", help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 3.2.3")
 @click.option('--arxmlFlexray/--no-arxmlFlexray', 'decode_flexray', default = False, help="EXPERIMENTAL: import basic flexray data from ARXML")
 @click.option('--arxmlEthernet/--no-arxmlEthernet', 'decode_ethernet', default = False, help="EXPERIMENTAL: import basic ethernet data from ARXML")

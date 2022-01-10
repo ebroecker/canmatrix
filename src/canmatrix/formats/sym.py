@@ -256,9 +256,13 @@ Title=\"{}\"
                     if signal.multiplex == 'Multiplexor':
                         mux_signal = signal
 
-                # ticker all possible mux-groups as i (0 - 2^ (number of bits of multiplexor))
                 first = 0
-                for i in range(0, 1 << int(mux_signal.size)):
+                # find all used muxer-values
+                multiplexer_list = set([a.multiplex for a in frame.signals])
+                # ticker all used muxer-values only
+                for i in multiplexer_list:
+                    if type(i) != int:
+                        continue
                     found = 0
                     mux_out = ""
                     # ticker all signals
@@ -599,6 +603,9 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             signal.set_startbit(start_bit)
                         if value_table_name is not None:
                             signal.values = db.value_tables[value_table_name]
+                            signal.enumeration = value_table_name
+                        if enumeration is not None:
+                            signal.values = db.value_tables[enumeration]
                             signal.enumeration = value_table_name
                         # signal.add_comment(comment)
                         # ... (1 / ...) because this somehow made 59.8/0.1 be 598.0 rather than 597.9999999999999

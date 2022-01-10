@@ -60,8 +60,8 @@ def get_frame_info(db, frame):
     return ret_array
 
 
-def get_signal(db, sig, motorola_bit_format):
-    # type: (canmatrix.CanMatrix, canmatrix.Signal, str) -> typing.Tuple[typing.List, typing.List]
+def get_signal(db, frame, sig, motorola_bit_format):
+    # type: (canmatrix.CanMatrix, canmatrix.Frame, canmatrix.Signal, str) -> typing.Tuple[typing.List, typing.List]
     front_array = []  # type: typing.List[typing.Union[str, float]]
     back_array = []
     if motorola_bit_format == "msb":
@@ -82,10 +82,15 @@ def get_signal(db, sig, motorola_bit_format):
     comment = sig.comment if sig.comment else ""
 
     # eval multiplex-info
-    if sig.multiplex == 'Multiplexor':
-        comment = "Mode Signal: " + comment
-    elif sig.multiplex is not None:
-        comment = "Mode " + str(sig.multiplex) + ":" + comment
+    if frame.is_complex_multiplexed:
+        for signal in frame.signals:
+            if signal.muxer_for_signal is not None:
+                comment = "Mode {} = {}".format(sig.muxer_for_signal, sig.multiplex)
+    else:
+        if sig.multiplex == 'Multiplexor':
+            comment = "Mode Signal: " + comment
+        elif sig.multiplex is not None:
+            comment = "Mode " + str(sig.multiplex) + ":" + comment
 
     # write comment and size of signal in sheet
     front_array.append(comment)

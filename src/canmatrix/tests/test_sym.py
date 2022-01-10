@@ -398,3 +398,22 @@ Var=VarMux200 unsigned 48,8
     r = frame.decode(data)
     assert var_name in r.keys(), "Signal {}, not decoded. Only : {}".format(var_name, ','.join(r for r in r.keys()))
     assert r[var_name].raw_value == raw_value
+
+
+def test_sym_val_table():
+    sym = io.BytesIO(textwrap.dedent(u'''\
+        FormatVersion=5.0 // Do not edit this line!
+        Title="Test-CAN"
+
+        {ENUMS}
+        enum Status_val(0="R", 1="B", 2="E")
+
+        {SENDRECEIVE}
+
+        [Flow_extCAN]
+        ID=700h
+        DLC=6
+        Var=status Status_val 36,2
+        ''').encode('utf-8'))
+    matrix = canmatrix.formats.sym.load(sym)
+    assert matrix.frames[0].signals[0].values == {0: 'R', 1: 'B', 2: 'E'}

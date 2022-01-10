@@ -191,7 +191,7 @@ def dump(db, file_object, delimiter=',', **options):
                     signal_row = CsvRow()
                     signal_row += canmatrix.formats.xls_common.get_frame_info(db, frame)
 
-                    (front, back) = canmatrix.formats.xls_common.get_signal(db, sig, motorola_bit_format)
+                    (front, back) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format)
                     signal_row += front
                     signal_row += ("s" if sig.is_signed else "u")
 
@@ -228,7 +228,7 @@ def dump(db, file_object, delimiter=',', **options):
                 signal_row = CsvRow()
                 signal_row += canmatrix.formats.xls_common.get_frame_info(db, frame)
 
-                (front, back) = canmatrix.formats.xls_common.get_signal(db, sig, motorola_bit_format)
+                (front, back) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format)
                 signal_row += front
                 signal_row += ("s" if sig.is_signed else "u")
 
