@@ -55,10 +55,13 @@ Programming Language :: Python :: 3.4
 Programming Language :: Python :: 3.5
 Programming Language :: Python :: 3.6
 Programming Language :: Python :: 3.7
+Programming Language :: Python :: 3.8
+Programming Language :: Python :: 3.9
+Programming Language :: Python :: 3.10
 """
 
-import sys
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
+
 import versioneer
 
 doclines = __doc__.split("\n")
@@ -70,32 +73,37 @@ setup(
     maintainer = "Eduard Broecker",
     maintainer_email = "eduard@gmx.de",
     url = "http://github.com/ebroecker/canmatrix",
-    classifiers = filter(None, classifiers.split("\n")),
+    classifiers = list(filter(None, classifiers.split("\n"))),
     description = doclines[0],
     keywords = "CAN dbc arxml kcd dbf sym",
     long_description = "\n".join(doclines[2:]),
     license = "BSD",
     platforms = ["any"],
-      install_requires = [
-        "attrs>=18.1.0",
-        "bitstruct",
+    install_requires = [
+        "attrs>=19.2.0",
         "click",
+        "enum34; python_version < '3.4'",
         "future",
-        "pathlib2",
+        "six",
         "typing; python_version < '3.5'",
     ],
     extras_require = {
         "arxml": ["lxml"],
-        "kcd": ["lxml"],
+        "csv": [],
+        "dbc": [],
+        "dbf": [],
         "fibex": ["lxml"],
+        "json": [],
+        "kcd": ["lxml"],
+        "ldf": ["ldfparser"],
+        "odx": ["lxml"],
+        "scapy": [],
+        "sym": [],
+        "test": ["pathlib2; python_version < '3.4'", "pytest"],
+        "wireshark": [],
         "xls": ["xlrd", "xlwt"],
         "xlsx": ["xlsxwriter"],
         "yaml": ["pyyaml"],
-        "dbc": [],
-        "dbf": [],
-        "json": [],
-        "sym": [],
-        "test": ["coverage", "pytest", "pytest-cov", "tox"],
     },
 
     packages = find_packages("src"),
@@ -104,4 +112,3 @@ setup(
     entry_points={'console_scripts': ['cancompare = canmatrix.cli.compare:cli_compare',
                                       'canconvert = canmatrix.cli.convert:cli_convert']}
 )
-

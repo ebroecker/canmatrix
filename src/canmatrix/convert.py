@@ -21,6 +21,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+import copy
 import logging
 import sys
 import typing
@@ -33,6 +34,33 @@ import canmatrix.log
 
 logger = logging.getLogger(__name__)
 sys.path.append('..')  # todo remove?
+
+
+def convert_pdu_container_to_multiplexed(frame):  # type: (canmatrix.Frame) -> canmatrix.Frame
+    new_frame = copy.deepcopy(frame)
+    if not frame.is_pdu_container:
+        return new_frame
+    header_id_signal = new_frame.signal_by_name("Header_ID")
+    header_dlc_signal = new_frame.signal_by_name("Header_DLC")
+    if header_id_signal is not None and header_dlc_signal is not None:
+        header_id_signal.multiplex_setter("Multiplexor")
+        bit_offset = header_id_signal.size + header_dlc_signal.size
+    else:
+        bit_offset = 0
+    for sg_id, pdu in enumerate(new_frame.pdus):
+        mux_val = pdu.id
+        signal_group = []
+        for signal in pdu.signals:
+            signal.multiplex_setter(mux_val)
+            signal.start_bit += bit_offset
+            signal_group.append(signal.name)
+            new_frame.add_signal(signal)
+        signal_group_name = pdu.name
+        if len(signal_group_name) == 0:
+            signal_group_name = "HEARDER_ID_" + str(mux_val)
+        new_frame.add_signal_group(signal_group_name, sg_id + 1, signal_group)
+    new_frame.pdus = []
+    return new_frame
 
 
 def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> None
@@ -201,6 +229,95 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
 
         if 'recalcDLC' in options and options['recalcDLC']:
             db.recalc_dlc(options['recalcDLC'])
+
+        # PDU contained frames handling
+        frame_pdu_container_list = [
+            frame
+            for frame in db.frames
+            if frame.is_pdu_container
+        ]
+        if options.get('ignorePduContainer'):
+            for frame in frame_pdu_container_list:
+                db.del_frame(frame)
+        else:
+            # convert PDU contained frames to multiplexed frame
+            for frame in frame_pdu_container_list:
+                logger.warning("%s converted to Multiplexed frame", frame.name)
+                new_frame = convert_pdu_container_to_multiplexed(frame)
+                db.del_frame(frame)
+                db.add_frame(new_frame)
+
+        if options.get('signalNameFromAttrib') is not None:
+            for signal in [b for a in db for b in a.signals]:
+                signal.name = signal.attributes.get(options.get('signalNameFromAttrib'), signal.name)
+
+        # Max Signal Value Calculation , if max value is 0
+        if options.get('calcSignalMax') is not None and options['calcSignalMax']:
+            for signal in [b for a in db for b in a.signals]:
+                if signal.max == 0 or signal.max is None:
+                    signal.calc_max_for_none = True
+                    signal.set_max(None)
+
+        # Max Signal Value Calculation
+        if options.get('recalcSignalMax') is not None and options['recalcSignalMax']:
+            for signal in [b for a in db for b in a.signals]:
+                signal.calc_max_for_none = True
+                signal.set_max(None)
+
+        # Delete Unassigned Signals to a Valid Frame/Message
+        if options.get('deleteFloatingSignals') is not None and options['deleteFloatingSignals']:
+            for frame in db.frames:
+                if frame.name == 'VECTOR__INDEPENDENT_SIG_MSG':
+                    for signal in frame:
+                        db.del_signal(signal)
+                        logger.info("Deleted %s",(frame.name+"::"+signal.name))
+                    db.del_frame(frame)
+
+        # Check & Warn for Receiver Node against signals
+        if options.get('checkSignalReceiver') is not None and options['checkSignalReceiver']:
+            for frame in db.frames:
+                for signal in frame:
+                    if len(signal.receivers) == 0:
+                        logger.warning("Please add Receiver for the signal %s ",(frame.name+"::"+signal.name))
+
+        # Check & Warn Unassigned Signals to a Valid Frame/Message
+        if options.get('checkFloatingSignals') is not None and options['checkFloatingSignals']:
+            for frame in db.frames:
+                if frame.name == 'VECTOR__INDEPENDENT_SIG_MSG':
+                    for signal in frame:
+                        logger.warning("Please map the signal %s to a valid frame or delete by deleteFloatingSignals", signal.name)
+
+        # Check & Warn for Frame/Messages without Transmitter Node
+        if options.get('checkFloatingFrames') is not None and options['checkFloatingFrames']:
+            for frame in db.frames:
+                if len(frame.transmitters) is 0:
+                    logger.warning("No Transmitter Node Found for Frame %s", frame.name)
+
+        # Check & Warn for Signals with Min/Max set to 0
+        if options.get('checkSignalRange') is not None and options['checkSignalRange']:
+            for frame in db.frames:
+                for signal in frame.signals:
+                    if (signal.phys2raw(signal.max) - signal.phys2raw(signal.min)) is 0:
+                        logger.warning("Invalid Min , Max value of %s", (frame.name+"::"+signal.name))
+
+        # Check for Signals without unit and Value table , the idea is to improve signal readability
+        if options.get('checkSignalUnit') is not None and options['checkSignalUnit']:
+            for frame in db.frames:
+                for signal in frame:
+                    if signal.unit is "" and len(signal.values) == 0:
+                        logger.warning("Please add value table for the signal %s or add appropriate Unit", (frame.name+"::"+signal.name))
+
+        # Convert dbc from J1939 to Extended format
+        if options.get('convertToExtended') is not None and options['convertToExtended']:
+            for frame in db.frames:
+                frame.is_j1939=False
+            db.add_attribute("ProtocolType","ExtendedCAN")
+
+        # Convert dbc from Extended to J1939 format
+        if options.get('convertToJ1939') is not None and options['convertToJ1939']:
+            for frame in db.frames:
+                frame.is_j1939=True
+            db.add_attribute("ProtocolType","J1939")
 
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))

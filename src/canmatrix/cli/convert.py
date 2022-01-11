@@ -59,6 +59,8 @@ def get_formats():
 @click.option('--renameEcu', 'renameEcu', help="rename Ecu form databases. (comma separated list)\nSyntax: --renameEcu=myOldEcu:myNewEcu,mySecondEcu:mySecondNewEcu")
 @click.option('--deleteSignal', 'deleteSignal', help="delete Signal form databases. (comma separated list)\nSyntax: --deleteSignal=mySignal1,mySecondSignal")
 @click.option('--renameSignal', 'renameSignal', help="rename Signal form databases. (comma separated list)\nSyntax: --renameSignal=myOldSignal:myNewSignal,mySecondSignal:mySecondNewSignal")
+@click.option('--signalNameFromAttrib', 'signalNameFromAttrib', help="change signal_name to given signal attribute\n\
+Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalName, ISignalName, CompuMethodName", default=None)
 @click.option('--deleteZeroSignals/--no-deleteZeroSignals', 'deleteZeroSignals', default=False, help="delete zero length signals (signals with 0 bit length) from matrix\ndefault False")
 @click.option('--deleteSignalAttributes', 'deleteSignalAttributes', help="delete attributes from all signals\nExample --deleteSignalAttributes GenMsgSomeVar,CycleTime")
 @click.option('--deleteFrame', 'deleteFrame', help="delete Frame form databases. (comma separated list)\nSyntax: --deleteFrame=myFrame1,mySecondFrame")
@@ -75,12 +77,25 @@ def get_formats():
 @click.option('--frames', help="Copy only given Frames (comma separated list) to target matrix")
 @click.option('--signals', help="Copy only given Signals (comma separated list) to target matrix just as 'free' signals without containing frame")
 @click.option('--merge', help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
+@click.option('--ignorePduContainer/--no-ignorePduContainer', 'ignorePduContainer', default = False, help="Ignore any Frame with PDU container; if no export as multiplexed Frames\ndefault False")
+@click.option('--calcSignalMax/--no-calcSignalMax', 'calcSignalMax', default = False, help="Calculate Signals Maximum Physical Value; If maximum value is set to 0\ndefault False")
+@click.option('--recalcSignalMax/--no-recalcSignalMax', 'recalcSignalMax', default = False, help="Recalculate Signals Maximum Physical Value for the entire database\ndefault False")
+@click.option('--deleteFloatingSignals/--no-deleteFloatingSignals', 'deleteFloatingSignals', default = False, help="if deleteFloatingSignals is set , then unassigned signals to a frame/message will be deleted \tdefault: False")
+
+#Frame/Signal Check switches
+@click.option('--checkFloatingFrames/--no-checkFloatingFrames', 'checkFloatingFrames', default = False, help="if checkFloatingFrames is set, CAN message/frame without sender node will be warned .\tdefault: False")
+@click.option('--checkSignalRange/--no-checkSignalRange', 'checkSignalRange', default = False, help="if checkSignalRange is set, then signals consisting raw min/max value set to 0 will be warned. \tdefault: False ")
+@click.option('--checkSignalUnit/--no-checkSignalUnit', 'checkSignalUnit', default = False, help="if checkSignalUnit is set , then signals without units and value table will be warned. \tdefault: False")
+@click.option('--checkSignalReceiver/--no-checkSignalReceiver', 'checkSignalReceiver', default = False, help="if checkSignalReceiver is set, then signals without an assigned Receiver will be warned \tdefault: False")
+@click.option('--checkFloatingSignals/--no-checkFloatingSignals', 'checkFloatingSignals', default = False, help="if checkFloatingSignals is set, then unassigned signals to a frame/message will be warned \tdefault: False")
+
+
 # arxml switches
 @click.option('--arxmlIgnoreClusterInfo/--no-arxmlIgnoreClusterInfo', 'arxmlIgnoreClusterInfo', default=False, help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault False")
-@click.option('--arxmlUseXpath/--no-arxmlUseXpath', 'arxmlUseXpath', default=False, help="Use experimental Xpath-Implementation for resolving AR-Paths; \ndefault False")
 @click.option('--arxmlExportVersion', 'arVersion',  default="3.2.3", help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 3.2.3")
 @click.option('--arxmlFlexray/--no-arxmlFlexray', 'decode_flexray', default = False, help="EXPERIMENTAL: import basic flexray data from ARXML")
-@click.option('--arxmlEthernet/--no-arxmlFlexray', 'decode_ethernet', default = False, help="EXPERIMENTAL: import basic ethernet data from ARXML")
+@click.option('--arxmlEthernet/--no-arxmlEthernet', 'decode_ethernet', default = False, help="EXPERIMENTAL: import basic ethernet data from ARXML")
+
 
 # dbc switches
 @click.option('--dbcImportEncoding', 'dbcImportEncoding', default="iso-8859-1", help="Import charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")
@@ -88,6 +103,9 @@ def get_formats():
 @click.option('--dbcExportEncoding', 'dbcExportEncoding', default="iso-8859-1", help="Export charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")
 @click.option('--dbcExportCommentEncoding', 'dbcExportCommentEncoding', default="iso-8859-1", help="Export charset of comments in dbc\ndefault iso-8859-1")
 @click.option('--dbcUniqueSignalNames/--no-dbcUniqueSignalNames', 'dbcUniqueSignalNames', default=True, help="Check if signal names are unique per frame")
+@click.option('--convertToExtended/--no-convertToExtended', 'convertToExtended', default = False, help="if convertToExtended is set , then the canmatrix will convert the dbc to extended format \tdefault: False")
+@click.option('--convertToJ1939/--no-convertToJ1939', 'convertToJ1939', default = False, help="if convertToJ1939 is set , then the canmatrix will convert the dbc to J1939 format \tdefault: False")
+
 # dbf switches
 @click.option('--dbfImportEncoding', 'dbfImportEncoding', default="iso-8859-1", help="Import charset of dbf, maybe utf-8\ndefault iso-8859-1")
 @click.option('--dbfExportEncoding', 'dbfExportEncoding', default="iso-8859-1", help="Export charset of dbf, maybe utf-8\ndefault iso-8859-1")

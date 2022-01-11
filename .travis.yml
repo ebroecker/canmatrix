@@ -21,14 +21,15 @@ matrix:
       env: TOXENV=old_tests
     - python: 3.6
       env: TOXENV=mypy
+    - python: 3.9
+    - python: 3.10
 
   allow_failures:
     - python: 3.6  # until we solve all typing issues
       env: TOXENV=mypy
 
 install:
-  - pip install tox-travis
-  - pip install -r requirements.tox.txt
+  - pip install tox tox-travis
 
 script:
   - tox
@@ -41,4 +42,4 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    branch: master 
+    branch: master

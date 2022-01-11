@@ -27,6 +27,7 @@
 from __future__ import absolute_import, division, print_function
 
 import decimal
+import copy
 import logging
 import typing
 from builtins import *
@@ -36,6 +37,7 @@ import lxml.etree
 import canmatrix
 import canmatrix.types
 import canmatrix.utils
+import re
 
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
@@ -44,42 +46,33 @@ clusterExporter = 1
 clusterImporter = 1
 
 
-class ArTree(object):
-    def __init__(self, name="", ref=None):  # type: (str, lxml.etree._Element) -> None
-        self._name = name
-        self._ref = ref
-        self._array = []  # type: typing.List[ArTree]
-
-    def append_child(self, name, child):  # type: (str, typing.Any) -> ArTree
-        """Append new child and return it."""
-        temp = ArTree(name, child)
-        self._array.append(temp)
-        return temp
-
-    def get_child_by_name(self, name):  # type: (str) -> typing.Union[ArTree, None]
-        for child in self._array:
-            if child._name == name:
-                return child
-        return None
-
-    @property
-    def ref(self):  # type: () -> lxml.etree._Element
-        return self._ref
-
-
 # for typing only
 _Element = lxml.etree._Element
-_DocRoot = typing.Union[_Element, ArTree]
 _MultiplexId = typing.Union[str, int, None]
 _FloatFactory = typing.Callable[[typing.Any], typing.Any]
 
-
 class Earxml:
-    def __init__(self, use_ar_xpath):
+    def __init__(self):
         self.xml_element_cache = dict()  # type: typing.Dict[str, _Element]
-        self.use_ar_xpath = use_ar_xpath
-        self.xml_element_cache = {}
+        self.path_cache = {}
 
+    def fill_caches(self, start_element=None, ar_path=""):
+        if start_element is None:
+            start_element = self.root
+            self.path_cache = {}
+        if start_element.tag == self.ns + "SHORT-NAME":
+            return start_element.text
+        for sub_element in start_element:
+            text = sub_element.text
+            if text is not None and len(text) > 0 and text.startswith('/'):
+                if text not in self.path_cache:
+                    self.path_cache[text] = []
+                self.path_cache[text].append(sub_element)
+            new_ar_path = self.fill_caches(sub_element, ar_path)
+            if new_ar_path != "":
+                ar_path += '/' + new_ar_path
+                self.xml_element_cache[ar_path] = start_element
+        return ''
 
     def open(self, filename):
         self.tree = lxml.etree.parse(filename)
@@ -88,6 +81,7 @@ class Earxml:
 
         self.ns = "{" + self.tree.xpath('namespace-uri(.)') + "}"  # type: str
         self.nsp = self.tree.xpath('namespace-uri(.)')
+        self.fill_caches()
 
     def findall(self, xpath, start_element=None):
         if start_element is None:
@@ -99,7 +93,8 @@ class Earxml:
             start_element = self.root
         return start_element.find('.//' + self.ns + xpath)
 
-    def ar_path_to_x_path(self, ar_path, dest_element=None):
+    @staticmethod
+    def ar_path_to_x_path(ar_path, dest_element=None):
         # type: (str, typing.Optional[str]) -> str
         """Get path in translation-dictionary."""
         ar_path_elements = ar_path.strip('/').split('/')
@@ -114,27 +109,46 @@ class Earxml:
 
         return xpath
 
+    def get_short_name_path_of_element(self, xml_element):
+        path = ""
+        while xml_element != self.root:
+            current_short_name = self.get_short_name(xml_element)
+            if len(current_short_name) > 0:
+                path = "/" + current_short_name + path
+            xml_element = xml_element.getparent()
+        return path.strip()
+
+    def get_referencable_parent(self, xml_element):
+        path = ""
+        while xml_element != self.root:
+            current_short_name = self.get_short_name(xml_element)
+            if len(current_short_name) > 0:
+                return xml_element
+            xml_element = xml_element.getparent()
+        return xml_element
+
+    def find_references_of_type(self, element, xml_tag, referencable_parent=False):
+        referencing_elements = []
+        current_ar_path = self.get_short_name_path_of_element(element)
+
+        for reference in self.path_cache[current_ar_path]:
+            element = self.get_referencable_parent(reference)
+            if element.tag == self.ns + xml_tag:
+                referencing_elements.append(reference)
+        if referencable_parent:
+            referencing_elements = [self.get_referencable_parent(a) for a in referencing_elements]
+        return referencing_elements
+
     def get_short_name_path(self, shortname_path):
         if shortname_path in self.xml_element_cache:
             return self.xml_element_cache[shortname_path]
 
-        if self.use_ar_xpath:
-            namespace_map = {'A': self.ns[1:-1]}
-            base_xpath = self.ar_path_to_x_path(shortname_path)
-            temp = self.tree.xpath(base_xpath, namespaces=namespace_map)
-            if len(temp) > 0:
-                self.xml_element_cache[shortname_path] = temp[0]
-                return temp[0]
-            self.xml_element_cache[shortname_path] = temp[0]
-            return temp
-        else:
-            return self.get_shortname_path_from_artree(shortname_path)
-        return elems
-
     def get_short_name(self, element):
         # type: (_Element, str) -> str
         """Get element short name."""
-        name = self.find('SHORT-NAME', element)
+        if element is None:
+            return ""
+        name = element.find('./' + self.ns + 'SHORT-NAME')
         if name is not None and name.text is not None:
             return name.text
         return ""
@@ -155,23 +169,11 @@ class Earxml:
         target_elements = [self.get_short_name_path(item.text) for item in ref_elements]
         return target_elements
 
-
     def get_all_sub_by_name(self, start_element, name):
         return self.findall(name, start_element)
 
     def get_sub_by_name(self, start_element, name):
         return self.find(name, start_element)
-
-    def fill_tree_from_xml(self, tag, tree_point):
-        # type: (_Element, ArTree, str) -> None
-        """Parse the xml tree into ArTree objects."""
-        for child in tag:  # type: _Element
-            name_elem = child.find('./' + self.ns + 'SHORT-NAME')
-            # long_name = child.find('./' + namespace + 'LONG-NAME')
-            if name_elem is not None and child is not None:
-                self.fill_tree_from_xml(child, tree_point.append_child(name_elem.text, child))
-            if name_elem is None and child is not None:
-                self.fill_tree_from_xml(child, tree_point)
 
     def find_children_by_path(self, from_element, path):
         # type: (_Element, str, _DocRoot, str) -> typing.Sequence[_Element]
@@ -190,17 +192,6 @@ class Earxml:
             return name.text
         return ""
 
-    def get_shortname_path_from_artree(self, path):
-        # type: (ArTree, str) -> typing.Optional[_Element]
-        """Get element from ArTree by path."""
-        ptr = self.ar_tree
-        for name in path.split('/'):
-            if ptr is None:
-                return None
-            if name.strip():
-                ptr = ptr.get_child_by_name(name)
-        return ptr.ref if ptr else None
-
     def get_child(self, parent, tag_name):
         # type: (_Element, str, _DocRoot, str) -> typing.Optional[_Element]
         """Get first sub-child or referenced sub-child with given name."""
@@ -211,7 +202,7 @@ class Earxml:
         if ret is None:  # no direct element - try reference
             reference = self.find(tag_name + '-REF', parent)
             if reference is not None:
-                ret = self.get_short_name_path(reference.text)
+                # ret = self.get_short_name_path(reference.text)
                 raise "use follow_ref!"
         return ret
 
@@ -227,19 +218,6 @@ class Earxml:
                 raise "use follow_all_ref!"
         return ret
 
-    def build_ar_tree(self):
-        top_level_packages = self.find('TOP-LEVEL-PACKAGES')
-
-        if top_level_packages is None:
-            # no "TOP-LEVEL-PACKAGES found, try root
-            top_level_packages = self.root
-
-        if self.use_ar_xpath:
-            search_point = top_level_packages  # type: typing.Union[_Element, ArTree]
-        else:
-            self.ar_tree = ArTree()
-            self.fill_tree_from_xml(top_level_packages, self.ar_tree)
-
     def get_element_desc(self, element):
         # type: (_Element, _DocRoot, str) -> str
         """Get element description from XML."""
@@ -253,6 +231,64 @@ class Earxml:
             return txt.text
         else:
             return ""
+
+    def get_ecu_instance(self, element):
+        # type: (_Element) -> typing.Union[_Element, None]
+        if element is not None:
+            if element.tag.replace(self.ns, "") == "ECU-INSTANCE":
+                return element
+            else:
+                return self.get_ecu_instance(element.getparent())
+        else:
+            return None
+
+    def selector(self, start_element, selector):
+        start_pos = 0
+        token = ""
+        result_list = [start_element]
+        last_found_token = 0
+        while start_pos < len(selector):
+            token_match = re.search(r'//|/|>>|>|<<|<|#|$', selector[start_pos:])
+            found_token = token_match.span()
+
+            if start_pos > 0:  # at least one Token found...
+                value = selector[last_found_token:start_pos + found_token[0]]
+                if token == "//":
+                    result_list = [c for a in result_list for c in self.findall(value, a)]
+                elif token == "/":
+                    if value == "..":
+                        result_list = [self.get_referencable_parent(a.getparent()) for a in result_list]
+                    else:
+                        result_list = [self.get_sub_by_name(a, value) for a in result_list]
+                elif token == ">>":
+                    result_list = [self.xml_element_cache[a.text][0].getparent() for start in result_list for a in
+                                   self.get_all_sub_by_name(start, value) if a.text in self.xml_element_cache]
+                elif token == ">":
+                    result_list = [self.xml_element_cache[self.get_sub_by_name(a, value).text][0].getparent() for a in result_list
+                                   if self.get_sub_by_name(a, value) is not None and self.get_sub_by_name(a, value).text in self.xml_element_cache]
+                elif token == "<<":
+                    result_list = [c for a in result_list for c in
+                                   self.find_references_of_type(a, value, referencable_parent=True)]
+                elif token == "<":
+                    result_list = [self.find_references_of_type(a, value, referencable_parent=True)[0]
+                                   for a in result_list
+                                   if len(self.find_references_of_type(a, value, referencable_parent=True)) > 0]
+                elif token == "#":
+                    sn_snippets = value.split("|")
+                    filtered_results = []
+                    for tag in result_list:
+                        sn = self.get_short_name(tag)
+                        for test_name in sn_snippets:
+                            if test_name in sn:
+                                filtered_results.append(tag)
+                    result_list = filtered_results
+
+                result_list = list(set(result_list))
+
+            last_found_token = found_token[1] + start_pos
+            token = selector[start_pos + found_token[0]:start_pos + found_token[1]]
+            start_pos += found_token[1]
+        return sorted(result_list, key=lambda element: element.sourceline)
 
 
 def create_sub_element(parent, element_name, text=None, dest=None):
@@ -281,13 +317,13 @@ def get_base_type_of_signal(signal):
                 create_type = "sint64"
             else:
                 create_type = "uint64"
-            size = 64                            
+            size = 64
         elif signal.size > 16:
             if signal.is_signed:
                 create_type = "sint32"
             else:
                 create_type = "uint32"
-            size = 32                            
+            size = 32
         elif signal.size > 8:
             if signal.is_signed:
                 create_type = "sint16"
@@ -376,21 +412,25 @@ def dump(dbs, f, **options):
             create_sub_element(can_frame_triggering, 'SHORT-NAME', frame.name)
             frame_port_refs = create_sub_element(can_frame_triggering, 'FRAME-PORT-REFS')
             for transmitter in frame.transmitters:
-                frame_port_ref = create_sub_element(frame_port_refs, 'FRAME-PORT-REF', dest='FRAME-PORT', text="/ECU/{0}/CN_{0}/{1}".format(transmitter, frame.name))
+                frame_port_ref = create_sub_element(frame_port_refs, 'FRAME-PORT-REF', dest='FRAME-PORT',
+                                                    text="/ECU/{0}/CN_{0}/{1}".format(transmitter, frame.name))
             for rec in frame.receivers:
-                frame_port_ref = create_sub_element(frame_port_refs, 'FRAME-PORT-REF', dest='FRAME-PORT', text="/ECU/{0}/CN_{0}/{1}".format(rec, frame.name))
+                frame_port_ref = create_sub_element(frame_port_refs, 'FRAME-PORT-REF', dest='FRAME-PORT',
+                                                    text="/ECU/{0}/CN_{0}/{1}".format(rec, frame.name))
             frame_ref = create_sub_element(can_frame_triggering, 'FRAME-REF')
             if ar_version[0] == "3":
                 frame_ref.set('DEST', 'FRAME')
                 frame_ref.text = "/Frame/FRAME_{0}".format(frame.name)
                 pdu_triggering_refs = create_sub_element(can_frame_triggering, 'I-PDU-TRIGGERING-REFS')
-                pdu_triggering_ref = create_sub_element(pdu_triggering_refs, 'I-PDU-TRIGGERING-REF', dest='I-PDU-TRIGGERING')
+                pdu_triggering_ref = create_sub_element(pdu_triggering_refs, 'I-PDU-TRIGGERING-REF',
+                                                        dest='I-PDU-TRIGGERING')
             else:
                 frame_ref.set('DEST', 'CAN-FRAME')
                 frame_ref.text = "/CanFrame/FRAME_{0}".format(frame.name)
                 pdu_triggering = create_sub_element(can_frame_triggering, 'PDU-TRIGGERINGS')
                 pdu_triggering_ref_conditional = create_sub_element(pdu_triggering, 'PDU-TRIGGERING-REF-CONDITIONAL')
-                pdu_triggering_ref = create_sub_element(pdu_triggering_ref_conditional, 'PDU-TRIGGERING-REF', dest='PDU-TRIGGERING')
+                pdu_triggering_ref = create_sub_element(pdu_triggering_ref_conditional, 'PDU-TRIGGERING-REF',
+                                                        dest='PDU-TRIGGERING')
 
             if frame.arbitration_id.extended is False:
                 create_sub_element(can_frame_triggering, 'CAN-ADDRESSING-MODE', 'STANDARD')
@@ -412,7 +452,8 @@ def dump(dbs, f, **options):
 
                 ipdu_triggering = create_sub_element(ipdu_triggerings, 'I-PDU-TRIGGERING')
                 create_sub_element(ipdu_triggering, 'SHORT-NAME', "IPDUTRIGG_{0}".format(frame.name))
-                ipdu_ref = create_sub_element(ipdu_triggering, 'I-PDU-REF', dest='SIGNAL-I-PDU', text="/PDU/PDU_{0}".format(frame.name))
+                ipdu_ref = create_sub_element(ipdu_triggering, 'I-PDU-REF', dest='SIGNAL-I-PDU',
+                                              text="/PDU/PDU_{0}".format(frame.name))
             isignal_triggerings = create_sub_element(physical_channel, 'I-SIGNAL-TRIGGERINGS')
             for frame in db.frames:
                 if frame.is_complex_multiplexed:
@@ -446,7 +487,8 @@ def dump(dbs, f, **options):
                             'I-SIGNAL-PORT-REF',
                             '/ECU/{0}/CN_{0}/{1}'.format(receiver, signal.name), dest='I-SIGNAL-PORT')
 
-                    isignal_ref = create_sub_element(isignal_triggering, 'I-SIGNAL-REF', dest='I-SIGNAL', text="/ISignal/{0}".format(signal.name))
+                    isignal_ref = create_sub_element(isignal_triggering, 'I-SIGNAL-REF', dest='I-SIGNAL',
+                                                     text="/ISignal/{0}".format(signal.name))
             ipdu_triggerings = create_sub_element(physical_channel, 'PDU-TRIGGERINGS')
             for frame in db.frames:
                 if frame.is_complex_multiplexed:
@@ -458,7 +500,8 @@ def dump(dbs, f, **options):
                     'SHORT-NAME',
                     "IPDUTRIGG_{0}".format(frame.name))
                 # missing: I-PDU-PORT-REFS
-                ipdu_ref = create_sub_element(ipdu_triggering, 'I-PDU-REF', dest='I-SIGNAL-I-PDU', text="/PDU/PDU_{0}".format(frame.name))
+                ipdu_ref = create_sub_element(ipdu_triggering, 'I-PDU-REF', dest='I-SIGNAL-I-PDU',
+                                              text="/PDU/PDU_{0}".format(frame.name))
                 # missing: I-SIGNAL-TRIGGERINGS
 
                 # TODO
@@ -574,7 +617,8 @@ def dump(dbs, f, **options):
             for group in frame.signalGroups:
                 signal_to_pdu_mapping = create_sub_element(signal_to_pdu_mappings, 'I-SIGNAL-TO-I-PDU-MAPPING')
                 create_sub_element(signal_to_pdu_mapping, 'SHORT-NAME', group.name)
-                signal_ref = create_sub_element(signal_to_pdu_mapping, 'SIGNAL-REF', text="/ISignal/{}".format(group.name), dest='I-SIGNAL')
+                signal_ref = create_sub_element(signal_to_pdu_mapping, 'SIGNAL-REF',
+                                                text="/ISignal/{}".format(group.name), dest='I-SIGNAL')
                 # TODO: TRANSFER-PROPERTY: PENDING???
 
     #
@@ -623,7 +667,8 @@ def dump(dbs, f, **options):
             for group in frame.signalGroups:
                 signal_ele = create_sub_element(elements, 'I-SIGNAL')
                 create_sub_element(signal_ele, 'SHORT-NAME', group.name)
-                sys_sig_ref = create_sub_element(signal_ele, 'SYSTEM-SIGNAL-REF', text="/Signal/{}".format(group.name), dest='SYSTEM-SIGNAL-GROUP')
+                sys_sig_ref = create_sub_element(signal_ele, 'SYSTEM-SIGNAL-REF', text="/Signal/{}".format(group.name),
+                                                 dest='SYSTEM-SIGNAL-GROUP')
 
     #
     # AR-PACKAGE Signal
@@ -646,7 +691,8 @@ def dump(dbs, f, **options):
                     l2.set("L", "FOR-ALL")
                     l2.text = signal.comment
                 if ar_version[0] == "3":
-                    data_type_ref = create_sub_element(signal_ele, 'DATA-TYPE-REF', text="/DataType/{}".format(signal.name))
+                    data_type_ref = create_sub_element(signal_ele, 'DATA-TYPE-REF',
+                                                       text="/DataType/{}".format(signal.name))
                     if signal.is_float:
                         data_type_ref.set('DEST', 'REAL-TYPE')
                     else:
@@ -664,7 +710,8 @@ def dump(dbs, f, **options):
                     group_ele, 'SYSTEM-SIGNAL-REFS')
                 for member in group.signals:
                     member_ele = create_sub_element(
-                        sys_signal_refs, 'SYSTEM-SIGNAL-REF', dest='SYSTEM-SIGNAL', text="/Signal/{}".format(member.name))
+                        sys_signal_refs, 'SYSTEM-SIGNAL-REF', dest='SYSTEM-SIGNAL',
+                        text="/Signal/{}".format(member.name))
 
     #
     # AR-PACKAGE Datatype
@@ -694,7 +741,8 @@ def dump(dbs, f, **options):
                             encoding.text = "DOUBLE"
                         else:
                             encoding.text = "SINGLE"
-                    compu_method_ref = create_sub_element(sw_data_def_props, 'COMPU-METHOD-REF', dest='COMPU-METHOD', text="/DataType/Semantics/{}".format(signal.name))
+                    compu_method_ref = create_sub_element(sw_data_def_props, 'COMPU-METHOD-REF', dest='COMPU-METHOD',
+                                                          text="/DataType/Semantics/{}".format(signal.name))
     else:
         created_types = []  # type: typing.List[str]
         for name in dbs:
@@ -849,17 +897,21 @@ def dump(dbs, f, **options):
 
             if rec_temp is not None:
                 if ar_version[0] == "3":
-                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-I-PDU-GROUP-REF', dest="I-PDU-GROUP")
+                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-I-PDU-GROUP-REF',
+                                                             dest="I-PDU-GROUP")
                 else:
-                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-COM-I-PDU-GROUP-REF', dest="I-SIGNAL-I-PDU-GROUP")
+                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-COM-I-PDU-GROUP-REF',
+                                                             dest="I-SIGNAL-I-PDU-GROUP")
 
                 asso_ipdu_group_ref.text = "/IPDUGroup/{0}_Rx".format(ecu.name)
 
             if send_temp is not None:
                 if ar_version[0] == "3":
-                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-I-PDU-GROUP-REF', dest="I-PDU-GROUP")
+                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-I-PDU-GROUP-REF',
+                                                             dest="I-PDU-GROUP")
                 else:
-                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-COM-I-PDU-GROUP-REF', dest="I-SIGNAL-I-PDU-GROUP")
+                    asso_ipdu_group_ref = create_sub_element(asso_ipdu_group_refs, 'ASSOCIATED-COM-I-PDU-GROUP-REF',
+                                                             dest="I-SIGNAL-I-PDU-GROUP")
                 asso_ipdu_group_ref.text = "/IPDUGroup/{}_Tx".format(ecu.name)
 
     #
@@ -880,12 +932,14 @@ def dump(dbs, f, **options):
         if ar_version[0] == "3":
             ipdu_refs = create_sub_element(ipdu_grp, 'I-PDU-REFS')
             for frame_name in tx_ipdu_groups[pdu_group]:
-                ipdu_ref = create_sub_element(ipdu_refs, 'I-PDU-REF', dest="SIGNAL-I-PDU", text="/PDU/PDU_{}".format(frame_name))
+                ipdu_ref = create_sub_element(ipdu_refs, 'I-PDU-REF', dest="SIGNAL-I-PDU",
+                                              text="/PDU/PDU_{}".format(frame_name))
         else:
             isignal_ipdus = create_sub_element(ipdu_grp, 'I-SIGNAL-I-PDUS')
             for frame_name in tx_ipdu_groups[pdu_group]:
                 isignal_ipdu_ref_conditional = create_sub_element(isignal_ipdus, 'I-SIGNAL-I-PDU-REF-CONDITIONAL')
-                ipdu_ref = create_sub_element(isignal_ipdu_ref_conditional, 'I-SIGNAL-I-PDU-REF', dest="I-SIGNAL-I-PDU", text="/PDU/PDU_{}".format(frame_name))
+                ipdu_ref = create_sub_element(isignal_ipdu_ref_conditional, 'I-SIGNAL-I-PDU-REF', dest="I-SIGNAL-I-PDU",
+                                              text="/PDU/PDU_{}".format(frame_name))
 
     if ar_version[0] == "3":
         for pdu_group in rx_ipdu_groups:
@@ -895,7 +949,8 @@ def dump(dbs, f, **options):
 
             ipdu_refs = create_sub_element(ipdu_grp, 'I-PDU-REFS')
             for frame_name in rx_ipdu_groups[pdu_group]:
-                ipdu_ref = create_sub_element(ipdu_refs, 'I-PDU-REF', dest="SIGNAL-I-PDU", text="/PDU/PDU_{}".format(frame_name))
+                ipdu_ref = create_sub_element(ipdu_refs, 'I-PDU-REF', dest="SIGNAL-I-PDU",
+                                              text="/PDU/PDU_{}".format(frame_name))
     else:
         for pdu_group in rx_ipdu_groups:
             ipdu_grp = create_sub_element(elements, 'I-SIGNAL-I-PDU-GROUP')
@@ -904,7 +959,8 @@ def dump(dbs, f, **options):
             isignal_ipdus = create_sub_element(ipdu_grp, 'I-SIGNAL-I-PDUS')
             for frame_name in rx_ipdu_groups[pdu_group]:
                 isignal_ipdu_ref_conditional = create_sub_element(isignal_ipdus, 'I-SIGNAL-I-PDU-REF-CONDITIONAL')
-                ipdu_ref = create_sub_element(isignal_ipdu_ref_conditional, 'I-SIGNAL-I-PDU-REF', dest="I-SIGNAL-I-PDU", text="/PDU/PDU_" + frame_name)
+                ipdu_ref = create_sub_element(isignal_ipdu_ref_conditional, 'I-SIGNAL-I-PDU-REF', dest="I-SIGNAL-I-PDU",
+                                              text="/PDU/PDU_" + frame_name)
 
     f.write(lxml.etree.tostring(root, pretty_print=True, xml_declaration=True))
 
@@ -914,15 +970,25 @@ def dump(dbs, f, **options):
 ###################################
 
 
-
-pdu_frame_mapping = {}  # type: typing.Dict[_Element, str]
-signal_rxs = {}  # type: typing.Dict[_Element, canmatrix.Signal]
+frames_cache = {}  # type: typing.Dict[_Element, canmatrix.Frame]
 
 
-def get_sys_signals(sys_signal, sys_signal_array, frame, group_id, ea):
+def get_signalgrp_and_signals(sys_signal, sys_signal_array, frame, group_id, ea):
     # type: (_Element, typing.Sequence[_Element], canmatrix.Frame, int, str) -> None
     members = [ea.get_element_name(signal) for signal in sys_signal_array]
-    frame.add_signal_group(ea.get_element_name(sys_signal), group_id, members)
+
+    # get data related to E2E-Protection
+    transform_ele = ea.follow_ref(sys_signal, "TRANSFORMER-REF")
+    e2e_transform = None
+    if transform_ele is not None:
+        e2e_transform = {
+            'profile': ea.get_child(transform_ele, "PROFILE-NAME").text,
+        }
+        data_id_elems = ea.get_children(ea.get_child(sys_signal, "TRANSFORMATION-I-SIGNAL-PROPSS"), "DATA-ID")
+        if data_id_elems is not None:
+            e2e_transform['data_ids'] = [int(x.text) for x in data_id_elems]
+
+    frame.add_signal_group(ea.get_element_name(sys_signal), group_id, members, e2e_transform)
 
 
 def decode_compu_method(compu_method, ea, float_factory):
@@ -933,7 +999,6 @@ def decode_compu_method(compu_method, ea, float_factory):
 
     if compu_method is None:
         return values, factor, offset, None, None
-
 
     unit = ea.follow_ref(compu_method, "UNIT-REF")
     const = None
@@ -951,12 +1016,14 @@ def decode_compu_method(compu_method, ea, float_factory):
         # keyword definition. 06Jun16
         #####################################################################################################
 
-        if ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text, float_factory) == canmatrix.utils.decode_number(ll.text, float_factory):
+        if ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text,
+                                                                                 float_factory) == canmatrix.utils.decode_number(
+            ll.text, float_factory):
             #####################################################################################################
             #####################################################################################################
             values[ll.text] = desc
 
-        scale_desc = ea.get_element_desc(compu_scale)
+        # scale_desc = ea.get_element_desc(compu_scale)
         rational = ea.get_child(compu_scale, "COMPU-RATIONAL-COEFFS")
         if rational is not None:
             numerator_parent = ea.get_child(rational, "COMPU-NUMERATOR")
@@ -968,7 +1035,8 @@ def decode_compu_method(compu_method, ea, float_factory):
                 offset = float_factory(numerator[0].text) / float_factory(denominator[0].text)
             except decimal.DivisionByZero:
                 if numerator[0].text != denominator[0].text or numerator[1].text != denominator[1].text:
-                    logger.warning("ARXML signal scaling: polynom is not supported and it is replaced by factor=1 and offset =0.")
+                    logger.warning(
+                        "ARXML signal scaling: polynom is not supported and it is replaced by factor=1 and offset =0.")
                 factor = float_factory(1)
                 offset = float_factory(0)
         else:
@@ -1004,15 +1072,17 @@ def eval_type_of_signal(type_encoding, base_type, ea):
         is_signed = False  # signed
     return is_signed, is_float
 
+
 def ar_byteorder_is_little(in_string):
     if in_string == 'MOST-SIGNIFICANT-BYTE-LAST' or in_string == 'OPAQUE':
         return True
     return False
 
+
 def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0):
-    # type: (typing.Sequence[_Element], canmatrix.Frame, _DocRoot, str, _MultiplexId, typing.Callable, int) -> None
+    # type: (typing.Sequence[_Element], typing.Union[canmatrix.Frame, canmatrix.Pdu], Earxml, int, typing.Callable, int) -> None
     """Add signals from xml to the Frame."""
-    global signal_rxs
+
     group_id = 1
     if signal_array is None:  # Empty signalarray - nothing to do
         return
@@ -1023,18 +1093,15 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         isignal = ea.follow_ref(signal, "SIGNAL-REF")
         if isignal is None:
-            isignal = ea.follow_ref(signal, "I-SIGNAL-REF")
+            isignal = ea.follow_ref(signal, "I-SIGNAL-REF")  # AR4
 
         if isignal is None:
             isignal = ea.follow_ref(signal, "I-SIGNAL-GROUP-REF")
             if isignal is not None:
                 logger.debug("get_signals: found I-SIGNAL-GROUP ")
+                isignal_array = ea.follow_all_ref(isignal, "I-SIGNAL-REF")
+                get_signalgrp_and_signals(isignal, isignal_array, frame, group_id, ea)
 
-                isignal_array = ea.follow_ref(isignal, "I-SIGNAL-REF")
-
-                system_signal_array = [ea.follow_ref(isignal, "SYSTEM-SIGNAL-REF") for isignal in isignal_array]
-                system_signal_group = ea.follow_ref(isignal, "SYSTEM-SIGNAL-GROUP-REF")
-                get_sys_signals(system_signal_group, system_signal_array, frame, group_id, ea)
                 group_id = group_id + 1
                 continue
         if isignal is None:
@@ -1042,7 +1109,11 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 'Frame %s, no isignal for %s found',
                 frame.name, ea.get_child(signal, "SHORT-NAME").text)
 
-        base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")
+        base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")  # AR4
+        if base_type is None:
+            a = ea.selector(isignal, ">SYSTEM-SIGNAL-REF>DATA-TYPE-REF>BASE-TYPE-REF")
+            if len(a) > 0:
+                base_type = a[0]
         try:
             type_encoding = ea.get_child(base_type, "BASE-TYPE-ENCODING").text
         except AttributeError:
@@ -1059,25 +1130,16 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         if system_signal is None:
             logger.debug('Frame %s, signal %s has no system-signal', frame.name, isignal.tag)
 
-
         if system_signal is not None and "SYSTEM-SIGNAL-GROUP" in system_signal.tag:
-            system_signals = ea.find_children_by_path(system_signal, "SYSTEM-SIGNAL-REFS/SYSTEM-SIGNAL")
-            get_sys_signals(system_signal, system_signals, frame, group_id, ns)
+            system_signals = ea.selector(system_signal, "SYSTEM-SIGNAL-REFS>>SYSTEM-SIGNAL-REF")
+            get_sys_signals(system_signal, system_signals, frame, group_id, ea)
 
             group_id = group_id + 1
             continue
 
-        length = ea.get_child(isignal, "LENGTH")
+        length = ea.get_child(isignal, "LENGTH")  # AR4 ?
         if length is None:
             length = ea.get_child(system_signal, "LENGTH")
-
-        name = ea.get_child(system_signal, "SHORT-NAME")
-        unit_element = ea.get_child(isignal, "UNIT")
-        display_name = ea.get_child(unit_element, "DISPLAY-NAME")
-        if display_name is not None:
-            signal_unit = display_name.text
-        else:
-            signal_unit = ""
 
         signal_min = None  # type: canmatrix.types.OptionalPhysicalValue
         signal_max = None  # type: canmatrix.types.OptionalPhysicalValue
@@ -1100,7 +1162,6 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
             lower = ea.get_child(data_constr, "LOWER-LIMIT")
             upper = ea.get_child(data_constr, "UPPER-LIMIT")
-            encoding = None  # TODO - find encoding in AR4
         else:
             lower = ea.get_child(datatype, "LOWER-LIMIT")
             upper = ea.get_child(datatype, "UPPER-LIMIT")
@@ -1112,7 +1173,6 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         datdefprops = ea.get_child(datatype, "SW-DATA-DEF-PROPS")
 
-
         if compu_method is None and datdefprops is not None:
             compu_method = ea.follow_ref(datdefprops, "COMPU-METHOD-REF")
         if compu_method is None:  # AR4
@@ -1123,7 +1183,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             if encoding is not None and encoding.text == "IEEE754":
                 is_float = True
         if compu_method is None:
-            logger.debug('No Compmethod found!! - try alternate scheme 1.')
+            #logger.debug('No Compmethod found!! - try alternate scheme 1.')
             networkrep = ea.get_child(isignal, "NETWORK-REPRESENTATION-PROPS")
             data_def_props_var = ea.get_child(networkrep, "SW-DATA-DEF-PROPS-VARIANTS")
             data_def_props_cond = ea.get_child(data_def_props_var, "SW-DATA-DEF-PROPS-CONDITIONAL")
@@ -1133,13 +1193,15 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 except:
                     logger.debug('No valid compu method found for this - check ARXML file!!')
                     compu_method = None
+        if compu_method is None:
+            logger.error('No valid compu method found for isignal/systemsignal {}/{} - check ARXML file!!'
+                         .format(ea.get_short_name(isignal), ea.get_short_name(system_signal)))
         #####################################################################################################
         # no found compu-method fuzzy search in systemsignal:
         #####################################################################################################
         if compu_method is None:
             logger.debug('No Compmethod found!! - fuzzy search in syssignal.')
             compu_method = ea.follow_ref(system_signal, "COMPU-METHOD-REF")
-
 
         # decode compuMethod:
         (values, factor, offset, unit_elem, const) = decode_compu_method(compu_method, ea, float_factory)
@@ -1152,15 +1214,22 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             signal_max += offset
 
         if base_type is None:
-            base_type = ea.get_child(datdefprops, "BASE-TYPE")
+            base_type = ea.follow_ref(datdefprops, "BASE-TYPE-REF")
 
         (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type, ea)
 
+        unit_element = ea.get_child(isignal, "UNIT")
+        display_name = ea.get_child(unit_element, "DISPLAY-NAME")
+        if display_name is not None:
+            signal_unit = display_name.text
+        else:
+            signal_unit = ""
+
         if unit_elem is not None:
             longname = ea.get_child(unit_elem, "LONG-NAME")
-        #####################################################################################################
-        # Modification to support obtaining the Signals Unit by DISPLAY-NAME. 07June16
-        #####################################################################################################
+            #####################################################################################################
+            # Modification to support obtaining the Signals Unit by DISPLAY-NAME. 07June16
+            #####################################################################################################
             display_name = None
             try:
                 display_name = ea.get_child(unit_elem, "DISPLAY-NAME")
@@ -1173,24 +1242,25 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 if l4 is not None:
                     signal_unit = l4.text
 
-        init_list = ea.find_children_by_path(system_signal, "INIT-VALUE/VALUE")
+        init_list = ea.selector(system_signal, ">INIT-VALUE-REF/VALUE")
 
-        if not init_list:
+        if len(init_list) == 0:
             init_list = ea.find_children_by_path(isignal, "INIT-VALUE/NUMERICAL-VALUE-SPECIFICATION/VALUE")  # #AR4.2
         if init_list:
             initvalue = init_list[0]
         else:
             initvalue = None
 
+        isignal_name = ea.get_short_name(isignal)
+        system_signal_name = ea.get_short_name(system_signal)
+        compu_name = ea.get_short_name(compu_method)
+        name = isignal_name if isignal_name else system_signal_name
         is_little_endian = False
         if motorola is not None:
             is_little_endian = ar_byteorder_is_little(motorola.text)
         else:
-            logger.debug('no name byte order for signal' + name.text)
+            logger.debug('no name byte order for signal' + name)
 
-        if name is None:
-            logger.debug('no name for signal given')
-            name = ea.get_child(isignal, "SHORT-NAME")
         if start_bit is None:
             logger.debug('no startBit for signal given')
         if length is None:
@@ -1198,7 +1268,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         if start_bit is not None:
             new_signal = canmatrix.Signal(
-                name.text,
+                name,
                 start_bit=int(start_bit.text) + bit_offset,
                 size=int(length.text) if length is not None else 0,
                 is_little_endian=is_little_endian,
@@ -1220,8 +1290,12 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 # startbit of motorola coded signals are MSB in arxml
                 new_signal.set_startbit(int(start_bit.text) + bit_offset, bitNumbering=1)
 
-            # save signal, to determin receiver-ECUs for this signal later
-            signal_rxs[system_signal] = new_signal
+            communication_direction = ea.selector(isignal, "<I-SIGNAL-TRIGGERING>I-SIGNAL-PORT-REF/COMMUNICATION-DIRECTION")
+            if len(communication_direction) > 0:
+                ecu = ea.get_ecu_instance(communication_direction[0])
+
+                if communication_direction[0].text == "IN":
+                    new_signal.add_receiver(ea.get_short_name(ecu))
 
             if base_type is not None:
                 temp = ea.get_child(base_type, "SHORT-NAME")
@@ -1231,12 +1305,22 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
             if initvalue is not None and initvalue.text is not None:
                 initvalue.text = canmatrix.utils.guess_value(initvalue.text)
-                new_signal.initial_value = float_factory(initvalue.text)
+
+                try:
+                    new_signal.initial_value = (float_factory(initvalue.text) * factor) + offset
+                except decimal.InvalidOperation:
+                    logger.error("could not decode value {}".format(initvalue.text))
 
             for key, value in list(values.items()):
                 new_signal.add_values(canmatrix.utils.decode_number(key, float_factory), value)
             if signal_name is not None:
                 new_signal.add_attribute("LongName", signal_name)
+            if compu_name is not None and compu_name:
+                new_signal.add_attribute("CompuMethodName", compu_name)
+            if isignal_name is not None and isignal_name:
+                new_signal.add_attribute("ISignalName", isignal_name)
+            if system_signal_name is not None and system_signal_name:
+                new_signal.add_attribute("SysSignalName", system_signal_name)
             existing_signal = frame.signal_by_name(new_signal.name)
             if existing_signal is None:
                 frame.add_signal(new_signal)
@@ -1249,7 +1333,6 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
 
     is_little_endian = ar_byteorder_is_little(selector_byte_order.text)
 
-
     is_signed = False  # unsigned
     multiplexor = canmatrix.Signal(
         "Multiplexor",
@@ -1261,7 +1344,7 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
     multiplexor.initial_value = 0
     target_frame.add_signal(multiplexor)
     static_part = ea.get_child(pdu, "STATIC-PART")
-    ipdu = ea.get_child(static_part, "I-PDU")
+    ipdu = ea.follow_ref(static_part, "I-PDU-REF")
     if ipdu is not None:
         pdu_sig_mappings = ea.get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS")
         pdu_sig_mapping = ea.get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING")
@@ -1286,49 +1369,57 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
 
             get_signals(pdu_sig_mapping, target_frame, ea, selector_id.text, float_factory)
 
+
 def containters_are_little_endian(ea):
+    # type: (Earxml) -> bool
     container_i_pdu_header_byte_orders = ea.findall("CONTAINER-I-PDU-HEADER-BYTE-ORDER")
     if len(container_i_pdu_header_byte_orders) > 0:
         return ar_byteorder_is_little(container_i_pdu_header_byte_orders[0].text)
+    logger.debug("CONTAINER-I-PDU-HEADER-BYTE-ORDER not found (default big endian)")
+    return False
 
-def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
-    headers_are_littleendian = containters_are_little_endian(ea)
+
+def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_are_littleendian):
     target_frame.is_fd = True
-    #pdus = ea.get_children(pdu, "CONTAINED-PDU-TRIGGERING")
     pdus = ea.follow_all_ref(pdu, "CONTAINED-PDU-TRIGGERING-REF")
-    signal_group_id = 1
-    singnals_grouped = []  # type: typing.List[str]
     header_type = ea.get_child(pdu, "HEADER-TYPE").text
 
-    if header_type == "SHORT-HEADER":
-        if headers_are_littleendian:  # INTEL
-            target_frame.add_signal(
-                canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor",
-                                 is_little_endian=True))
-            target_frame.add_signal(canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=True))
-        else:  # Motorola
-            header_id_signal= canmatrix.Signal(start_bit=0, size=24, name="Header_ID", multiplex="Multiplexor",
-                                 is_little_endian=False)
-            target_frame.add_signal(header_id_signal)
-            header_dlc_signal = canmatrix.Signal(start_bit=24, size=8, name="Header_DLC", is_little_endian=False)
-            target_frame.add_signal(header_dlc_signal)
-        header_length = 32
-
-    elif header_type == "LONG-HEADER":
-        if headers_are_littleendian:
-            target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor", is_little_endian=True))
-            target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=True))
-        else:
-            target_frame.add_signal(canmatrix.Signal(start_bit=0, size=32, name="Header_ID", multiplex="Multiplexor",
-                                                     is_little_endian=False))
-            target_frame.add_signal(canmatrix.Signal(start_bit=32, size=32, name="Header_DLC", is_little_endian=False))
-        header_length = 64
-    else:
-        header_length = 0
-       
-
+    header_type_params = {
+        "SHORT-HEADER": (24, 8),
+        "LONG-HEADER": (32, 32),
+    }
+    if header_type in header_type_params:
+        mux_size = header_type_params[header_type]
+        target_frame.add_signal(
+            canmatrix.Signal(
+                start_bit=0, size=mux_size[0], name="Header_ID", is_little_endian=headers_are_littleendian
+            )
+        )
+        target_frame.add_signal(
+            canmatrix.Signal(
+                start_bit=mux_size[0], size=mux_size[1], name="Header_DLC", is_little_endian=headers_are_littleendian
+            )
+        )
+    ipdus_refs = []
     for cpdu in pdus:
         ipdu = ea.follow_ref(cpdu, "I-PDU-REF")
+        if ipdu in ipdus_refs:
+            continue
+        ipdus_refs.append(ipdu)
+        timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATION")
+        if timing_spec is None:
+            timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATIONS")
+        cyclic_timing = ea.get_child(timing_spec, "CYCLIC-TIMING")
+        repeating_time = ea.get_child(cyclic_timing, "REPEATING-TIME")
+        cycle_time = 0
+        value = ea.get_child(repeating_time, "VALUE")
+        if value is not None:
+            cycle_time = int(float_factory(value.text) * 1000)
+        else:
+            time_period = ea.get_child(cyclic_timing, "TIME-PERIOD")
+            value = ea.get_child(time_period, "VALUE")
+            if value is not None:
+                cycle_time = int(float_factory(value.text) * 1000)
         try:
             if header_type == "SHORT-HEADER":
                 header_id = ea.get_child(ipdu, "HEADER-ID-SHORT-HEADER").text
@@ -1337,47 +1428,42 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory):
             else:
                 # none type
                 header_id = None
-                pass
         except AttributeError:
             header_id = None
         if header_id is not None:
-            if header_id.startswith("0x"):
-                header_id = int(header_id, 16)
-            else:
-                header_id = int(header_id)
+            header_id = int(header_id, 0)
 
-        offset = 0
         if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
+            secured_i_pdu_name = ea.get_element_name(ipdu)
             payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
             ipdu = ea.follow_ref(payload, "I-PDU-REF")
-#            length = ea.get_child(ipdu, "LENGTH").text
+            logger.info("found secured pdu '%s', dissolved to '%s'", secured_i_pdu_name, ea.get_element_name(ipdu))
         try:
-            offset = int(ea.get_child(ipdu, "OFFSET").text)*8
+            offset = int(ea.get_child(ipdu, "OFFSET").text) * 8
         except:
             offset = 0
-        # pdu_sig_mapping = get_children(ipdu, "I-SIGNAL-IN-I-PDU", root_or_cache, ns)
+
+        try:
+            pdu_type = ipdu.attrib["DEST"]
+        except KeyError:
+            pdu_type = ""
+        try:
+            pdu_port_type = ea.get_child(cpdu, "I-PDU-PORT-REF").attrib["DEST"]
+        except (AttributeError, KeyError):
+            pdu_port_type = ""
+        ipdu_length = int(ea.get_child(ipdu, "LENGTH").text)
+        ipdu_name = ea.get_element_name(ipdu)
+        ipdu_triggering_name = ea.get_element_name(cpdu)
+        target_pdu = canmatrix.Pdu(name=ipdu_name, size=ipdu_length, id=header_id,
+                                   triggering_name=ipdu_triggering_name, pdu_type=pdu_type,
+                                   port_type=pdu_port_type, cycle_time=cycle_time)
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
-        # TODO
-        if pdu_sig_mapping:
-
-            get_signals(pdu_sig_mapping, target_frame, ea, header_id, float_factory, bit_offset=header_length+offset)
-
-            new_signals = []
-            for signal in target_frame:
-                if signal.name not in singnals_grouped and signal.name != "Header_ID" and signal.name != "Header_DLC":
-                    new_signals.append(signal.name)
-            if header_id is None:
-                target_frame.add_signal_group(ea.get_short_name(ipdu), signal_group_id, new_signals)
-            else:
-                sg_group_name =  ea.get_short_name(ipdu)
-                if len(sg_group_name) == 0:
-                    sg_group_name = "HEARDER_ID_" + str(header_id)
-                target_frame.add_signal_group(sg_group_name, signal_group_id, new_signals)
-            singnals_grouped += new_signals
-            signal_group_id += 1
+        get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory, bit_offset=offset)
+        target_frame.add_pdu(target_pdu)
 
 
-def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset, repeating_time, ea, time_period, float_factory):
+def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset,
+                        repeating_time, ea, time_period, float_factory):
     if cyclic_timing is not None and event_timing is not None:
         target_frame.add_attribute("GenMsgSendType", "cyclicAndSpontanX")  # CycleAndSpontan
         if minimum_delay is not None:
@@ -1414,20 +1500,12 @@ def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay
             target_frame.cycle_time = int(float_factory(value.text) * 1000)
 
 
-def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
-    # type: (_Element, _DocRoot, dict, str, typing.Callable) -> typing.Union[canmatrix.Frame, None]
-    global pdu_frame_mapping
-    address_mode = ea.get_child(frame_triggering, "CAN-ADDRESSING-MODE")
-    frame_rx_behaviour_elem = ea.get_child(frame_triggering, "CAN-FRAME-RX-BEHAVIOR")
-    frame_tx_behaviour_elem = ea.get_child(frame_triggering, "CAN-FRAME-TX-BEHAVIOR")
-    is_fd_elem = ea.get_child(frame_triggering, "CAN-FD-FRAME-SUPPORT")
+def get_frame(frame_triggering, ea, multiplex_translation, float_factory, headers_are_littleendian):
+    # type: (_Element, _DocRoot, dict, typing.Callable, bool) -> typing.Union[canmatrix.Frame, None]
+    global frames_cache
 
     arb_id = ea.get_child(frame_triggering, "IDENTIFIER")
-
-
     frame_elem = ea.follow_ref(frame_triggering, "FRAME-REF")
-
-
     frame_name_elem = ea.get_child(frame_triggering, "SHORT-NAME")
     logger.debug("processing Frame: %s", frame_name_elem.text)
     if arb_id is None:
@@ -1436,17 +1514,16 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
     arbitration_id = int(arb_id.text)
 
     if frame_elem is not None:
+        if frame_elem in frames_cache:
+            return copy.deepcopy(frames_cache[frame_elem])
         dlc_elem = ea.get_child(frame_elem, "FRAME-LENGTH")
-       # pdu_mapping = ea.get_child(frame_elem, "PDU-TO-FRAME-MAPPING")
-       # pdu = ea.follow_ref(pdu_mapping, "PDU-REF")  # SIGNAL-I-PDU
+        # pdu_mapping = ea.get_child(frame_elem, "PDU-TO-FRAME-MAPPING")
+        # pdu = ea.follow_ref(pdu_mapping, "PDU-REF")  # SIGNAL-I-PDU
         pdu = ea.follow_ref(frame_elem, "PDU-REF")  # SIGNAL-I-PDU
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            payload = ea.follow_ref(pdu, "PAYLOAD-REF")
-            pdu = ea.follow_ref(payload, "I-PDU-REF")
+            pdu = ea.selector(pdu, ">PAYLOAD-REF>I-PDU-REF")[0]
             # logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
-
-        pdu_frame_mapping[pdu] = ea.get_element_name(frame_elem)
 
         new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text))
         comment = ea.get_element_desc(frame_elem)
@@ -1455,40 +1532,45 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame %s has no FRAME-REF", frame_name_elem.text)
-        ipdu_triggering = ea.follow_ref(frame_triggering, "I-PDU-TRIGGERING-REF")
-        pdu = ea.follow_ref(ipdu_triggering, "I-PDU-REF")
-        if pdu is None:
-            pdu = ea.get_child(ipdu_triggering, "I-SIGNAL-I-PDU")  # AR4.2
+        pdu = ea.selector(frame_triggering, ">I-PDU-TRIGGERING-REF>I-PDU-REF") # AR4.2
+        if len(pdu) == 0:
+            pdu = ea.selector(frame_triggering, ">PDU-TRIGGERING-REF>I-PDU-REF")
+        if len(pdu) > 0:
+            pdu = pdu[0]
+        else:
+            pdu = None
         dlc_elem = ea.get_child(pdu, "LENGTH")
-
-        new_frame = canmatrix.Frame(frame_name_elem.text, arbitration_id=arbitration_id, size=int(int(dlc_elem.text) / 8))
+        new_frame = canmatrix.Frame(frame_name_elem.text, arbitration_id=arbitration_id,
+                                    size=int(int(dlc_elem.text) / 8))
 
     if pdu is None:
         logger.error("pdu is None")
     else:
-        logger.debug(ea.get_element_name(pdu))
-
-    if pdu is not None and "MULTIPLEXED-I-PDU" in pdu.tag:
-        get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, ea, float_factory)
+        logger.debug("PDU: " + ea.get_element_name(pdu))
 
     if new_frame.comment is None:
         new_frame.add_comment(ea.get_element_desc(pdu))
 
+    address_mode = ea.get_child(frame_triggering, "CAN-ADDRESSING-MODE")
+    frame_rx_behaviour_elem = ea.get_child(frame_triggering, "CAN-FRAME-RX-BEHAVIOR")
+    frame_tx_behaviour_elem = ea.get_child(frame_triggering, "CAN-FRAME-TX-BEHAVIOR")
+    is_fd_elem = ea.get_child(frame_triggering, "CAN-FD-FRAME-SUPPORT")
     if address_mode is not None and address_mode.text == 'EXTENDED':
         new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=True)
     else:
         new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=False)
 
     if (frame_rx_behaviour_elem is not None and frame_rx_behaviour_elem.text == 'CAN-FD') or \
-        (frame_tx_behaviour_elem is not None and frame_tx_behaviour_elem.text == 'CAN-FD') or \
-        (is_fd_elem is not None and is_fd_elem.text == 'TRUE'):
+            (frame_tx_behaviour_elem is not None and frame_tx_behaviour_elem.text == 'CAN-FD') or \
+            (is_fd_elem is not None and is_fd_elem.text == 'TRUE'):
         new_frame.is_fd = True
     else:
         new_frame.is_fd = False
 
-    timing_spec = ea.get_child(pdu, "I-PDU-TIMING-SPECIFICATION")
+    timing_spec = ea.get_child(pdu, "I-PDU-TIMING-SPECIFICATION")  # AR 3
     if timing_spec is None:
-        timing_spec = ea.get_child(pdu, "I-PDU-TIMING-SPECIFICATIONS")
+        timing_spec = ea.get_child(pdu, "I-PDU-TIMING-SPECIFICATIONS")  # AR 4
+
     cyclic_timing = ea.get_child(timing_spec, "CYCLIC-TIMING")
     repeating_time = ea.get_child(cyclic_timing, "REPEATING-TIME")
 
@@ -1500,15 +1582,15 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
     time_offset = ea.get_child(cyclic_timing, "TIME-OFFSET")
     time_period = ea.get_child(cyclic_timing, "TIME-PERIOD")
 
-    store_frame_timings(new_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset, repeating_time, ea, time_period, float_factory)
+    store_frame_timings(new_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset,
+                        repeating_time, ea, time_period, float_factory)
 
-    if pdu.tag == ea.ns + "CONTAINER-I-PDU":
-        get_frame_from_container_ipdu(pdu, new_frame, ea, float_factory)
-
+    if pdu is not None and "MULTIPLEXED-I-PDU" in pdu.tag:
+        get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, ea, float_factory)
+    elif pdu is not None and pdu.tag == ea.ns + "CONTAINER-I-PDU":
+        get_frame_from_container_ipdu(pdu, new_frame, ea, float_factory, headers_are_littleendian)
     else:
-        pdu_sig_mapping = ea.follow_all_ref(pdu, "I-SIGNAL-TO-I-PDU-MAPPING-REF")
-        if len(pdu_sig_mapping) == 0:
-            pdu_sig_mapping = ea.get_children(pdu, "I-SIGNAL-TO-I-PDU-MAPPING")
+        pdu_sig_mapping = ea.selector(pdu, "//I-SIGNAL-TO-I-PDU-MAPPING")
         if pdu_sig_mapping:
             get_signals(pdu_sig_mapping, new_frame, ea, None, float_factory)
         # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
@@ -1528,100 +1610,33 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory):
                         logger.debug("AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!",
                                      ea.get_element_name(ipdus))
                     # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                    get_signals(signal_to_pdu_maps, new_frame, ea, None, float_factory)  # todo BUG expects list, not item
+                    get_signals(signal_to_pdu_maps, new_frame, ea, None,
+                                float_factory)  # todo BUG expects list, not item
             else:
                 logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
+    if new_frame.is_pdu_container and new_frame.cycle_time == 0:
+        cycle_times = {pdu.cycle_time for pdu in new_frame.pdus}
+        if len(cycle_times) > 1:
+            logger.warning("%s is pdu-container(frame) with different cycle times (%s), frame cycle-time: %s",
+                           new_frame.name, cycle_times, new_frame.cycle_time)
+        new_frame.cycle_time = min(cycle_times)
     new_frame.fit_dlc()
-    return new_frame
+    if frame_elem is not None:
+        frames_cache[frame_elem] = new_frame
+    return copy.deepcopy(new_frame)
 
 
-
-
-
-def process_ecu(ecu_elem, db, ea, multiplex_translation):
-    # type: (_Element, canmatrix.CanMatrix, _DocRoot, typing.Mapping[str, str], str) -> canmatrix.Ecu
-    global pdu_frame_mapping
+def process_ecu(ecu_elem, ea):
+    # type: (_Element, Earxml) -> canmatrix.Ecu
     connectors = ea.get_child(ecu_elem, "CONNECTORS")
-    diag_address = ea.get_child(ecu_elem, "DIAGNOSTIC-ADDRESS")
-    diag_response = ea.get_child(ecu_elem, "RESPONSE-ADDRESSS")
+    # diag_address = ea.get_child(ecu_elem, "DIAGNOSTIC-ADDRESS")
+    # diag_response = ea.get_child(ecu_elem, "RESPONSE-ADDRESSS")
     # TODO: use diag_address for frame-classification
     comm_connector = ea.get_child(connectors, "COMMUNICATION-CONNECTOR")
     if comm_connector is None:
         comm_connector = ea.get_child(connectors, "CAN-COMMUNICATION-CONNECTOR")
-    frames = ea.find_children_by_path(comm_connector, "ECU-COMM-PORT-INSTANCES/FRAME-PORT")
+    # frames = ea.find_children_by_path(comm_connector, "ECU-COMM-PORT-INSTANCES/FRAME-PORT")
     nm_address = ea.get_child(comm_connector, "NM-ADDRESS")
-    assoc_refs = ea.get_child(ecu_elem, "ASSOCIATED-I-PDU-GROUP-REFS")
-
-    if assoc_refs is not None:
-        assoc = ea.follow_all_ref(assoc_refs, "ASSOCIATED-I-PDU-GROUP-REF")
-    else:  # AR4
-        assoc_refs = ea.get_child(ecu_elem, "ASSOCIATED-COM-I-PDU-GROUP-REFS")
-        assoc = ea.follow_all_ref(assoc_refs, "ASSOCIATED-COM-I-PDU-GROUP-REF")
-
-    in_frame = []
-    out_frame = []
-
-    # get direction of frames (is current ECU sender/receiver/...?)
-    for ref in assoc:
-        direction = ea.get_child(ref, "COMMUNICATION-DIRECTION")
-        group_refs = ea.get_child(ref, "CONTAINED-I-PDU-GROUPS-REFS")
-        pdu_refs = ea.get_child(ref, "I-PDU-REFS")
-        if pdu_refs is not None:  # AR3
-            # local defined pdus
-            pdus = ea.follow_all_ref(pdu_refs, "I-PDU-REF")
-            for pdu in pdus:
-                if pdu in pdu_frame_mapping:
-                    if direction.text == "IN":
-                        in_frame.append(pdu_frame_mapping[pdu])
-                    else:
-                        out_frame.append(pdu_frame_mapping[pdu])
-        else:  # AR4
-            isigpdus = ea.get_child(ref, "I-SIGNAL-I-PDUS")
-            isigconds = ea.get_children(
-                isigpdus, "I-SIGNAL-I-PDU-REF-CONDITIONAL")
-            for isigcond in isigconds:
-                pdus = ea.follow_all_ref(isigcond, "I-SIGNAL-I-PDU-REF")
-                for pdu in pdus:
-                    if pdu in pdu_frame_mapping:
-                        if direction.text == "IN":
-                            in_frame.append(pdu_frame_mapping[pdu])
-                        else:
-                            out_frame.append(pdu_frame_mapping[pdu])
-
-        # grouped pdus
-        group = ea.get_children(group_refs, "CONTAINED-I-PDU-GROUPS")
-        for t in group:
-            if direction is None:
-                direction = ea.get_child(
-                    t, "COMMUNICATION-DIRECTION")
-            pdu_refs = ea.get_child(t, "I-PDU-REFS")
-            pdus = ea.get_children(pdu_refs, "I-PDU")
-            for pdu in pdus:
-                if direction.text == "IN":
-                    in_frame.append(ea.get_element_name(pdu))
-                else:
-                    out_frame.append(ea.get_element_name(pdu))
-
-        for out in out_frame:
-            if out in multiplex_translation:
-                out = multiplex_translation[out]
-            frame = db.frame_by_name(out)
-            if frame is not None:
-                frame.add_transmitter(ea.get_element_name(ecu_elem))
-            else:
-                pass
-
-#               for inf in inFrame:
-#                       if inf in multiplexTranslation:
-#                               inf = multiplexTranslation[inf]
-#                       frame = db.frameByName(inf)
-#                       if frame is not None:
-#                               for signal in frame.signals:
-#                                       recname = arGetName(ecu, ns)
-#                                       if recname not in  signal.receiver:
-#                                               signal.receiver.append(recname)
-#                       else:
-#                               print "in not found: " + inf
     new_ecu = canmatrix.Ecu(ea.get_element_name(ecu_elem))
     if nm_address is not None:
         new_ecu.add_attribute("NWM-Stationsadresse", nm_address.text)
@@ -1629,6 +1644,10 @@ def process_ecu(ecu_elem, db, ea, multiplex_translation):
     else:
         new_ecu.add_attribute("NWM-Stationsadresse", "0")
         new_ecu.add_attribute("NWM-Knoten", "nein")
+    desc = ea.get_child(ecu_elem, "DESC", )
+    l2 = ea.get_child(desc, "L-2")
+    if l2 is not None:
+        new_ecu.add_comment(l2.text)
     return new_ecu
 
 
@@ -1657,11 +1676,12 @@ def ecuc_extract_signal(signal_node, ea):
             signal_type = attribute.getparent().find(".//" + ea.ns + "VALUE").text
         if attribute.text.endswith("ComTimeout"):
             timeout = int(attribute.getparent().find(".//" + ea.ns + "VALUE").text)
-    return canmatrix.Signal(ea.get_element_name(signal_node), start_bit=start_bit, size=size, is_little_endian=is_little)
+    return canmatrix.Signal(ea.get_element_name(signal_node), start_bit=start_bit, size=size,
+                            is_little_endian=is_little)
 
 
 def extract_cm_from_ecuc(com_module, ea):
-    # type: (_Element, Earxml -> typing.Dict[str, canmatrix.CanMatrix]
+    # type: (_Element, Earxml) -> typing.Dict[str, canmatrix.CanMatrix]
     db = canmatrix.CanMatrix()
     definitions = ea.findall("DEFINITION-REF", com_module)
     for definition in definitions:
@@ -1680,9 +1700,9 @@ def extract_cm_from_ecuc(com_module, ea):
     db.recalc_dlc(strategy="max")
     return {"": db}
 
+
 def decode_ethernet_helper(ea, float_factory):
     found_matrixes = {}
-
 
     socket_connetions = ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER")
     pdu_triggering_header_id_map = {}
@@ -1694,7 +1714,6 @@ def decode_ethernet_helper(ea, float_factory):
             pdu_triggering_header_id_map[ipdu_triggering] = header_id.text
         except:
             pass
-
 
     ecs = ea.findall('ETHERNET-CLUSTER')
     for ec in ecs:
@@ -1712,7 +1731,7 @@ def decode_ethernet_helper(ea, float_factory):
             for socket_connetion in ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER", pc):
                 header_id = ea.get_child(socket_connetion, "HEADER-ID")
                 ipdu_triggering = ea.follow_ref(socket_connetion, "PDU-TRIGGERING-REF")
-#            for ipdu_triggering in ea.findall("PDU-TRIGGERING", pc):
+                #            for ipdu_triggering in ea.findall("PDU-TRIGGERING", pc):
                 ipdu = ea.follow_ref(ipdu_triggering, "I-PDU-REF")
                 if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
                     payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
@@ -1720,7 +1739,7 @@ def decode_ethernet_helper(ea, float_factory):
 
                 ipdu_name = ea.get_element_name(ipdu)
                 logger.info("ETH PDU " + ipdu_name + " found")
-                target_frame = canmatrix.Frame(name = ipdu_name)
+                target_frame = canmatrix.Frame(name=ipdu_name)
                 try:
                     target_frame.header_id = int(header_id.text)
                 except:
@@ -1728,13 +1747,14 @@ def decode_ethernet_helper(ea, float_factory):
                         target_frame.header_id = int(pdu_triggering_header_id_map[ipdu_triggering])
                     except:
                         target_frame.header_id = 0
-#                    continue
+                #                    continue
                 pdu_sig_mapping = ea.findall("I-SIGNAL-TO-I-PDU-MAPPING", ipdu)
 
                 get_signals(pdu_sig_mapping, target_frame, ea, None, float_factory)
                 target_frame.update_receiver()
                 db.add_frame(target_frame)
     return found_matrixes
+
 
 def decode_flexray_helper(ea, float_factory):
     found_matrixes = {}
@@ -1756,13 +1776,14 @@ def decode_flexray_helper(ea, float_factory):
                 slot_id = int(ea.get_child(frame_element, "SLOT-ID").text)
                 base_cycle = ea.get_child(frame_element, "BASE-CYCLE").text
                 ipdu_triggerings = ea.get_children(frame_element, "I-PDU-TRIGGERING")
-                frame_repetition_cycle = ea.find_children_by_path(frame_element, "CYCLE-REPETITION/CYCLE-REPETITION")[0].text
+                frame_repetition_cycle = ea.find_children_by_path(frame_element, "CYCLE-REPETITION/CYCLE-REPETITION")[
+                    0].text
                 network_endpoints = pc.findall('.//' + ea.ns + "NETWORK-ENDPOINT")
                 frame_size = int(ea.find_children_by_path(frame_element, "FRAME/FRAME-LENGTH")[0].text)
-                frame = canmatrix.Frame(size = frame_size, arbitration_id = frame_counter)
+                frame = canmatrix.Frame(size=frame_size, arbitration_id=frame_counter)
                 frame.slot_id = slot_id
                 frame.base_cycle = base_cycle
-                frame.repitition_cycle = frame_repetition_cycle.replace("CYCLE-REPETITION-","")
+                frame.repitition_cycle = frame_repetition_cycle.replace("CYCLE-REPETITION-", "")
                 db.add_frame(frame)
                 for ipdu_triggering in ipdu_triggerings:
                     ipdu_triggering_name = ea.get_element_name(ipdu_triggering)
@@ -1771,12 +1792,14 @@ def decode_flexray_helper(ea, float_factory):
                     ipdu_length = int(ea.get_child(ipdu, "LENGTH").text)
                     pdu_port_type = ea.get_child(ipdu_triggering, "I-PDU-PORT-REF").attrib["DEST"]
                     ipdu_name = ea.get_element_name(ipdu)
-                    target_pdu = canmatrix.Pdu(name = ipdu_name, size=ipdu_length,
-                                               triggering_name = ipdu_triggering_name, pdu_type=pdu_type, port_type=pdu_port_type)
+                    target_pdu = canmatrix.Pdu(name=ipdu_name, size=ipdu_length,
+                                               triggering_name=ipdu_triggering_name, pdu_type=pdu_type,
+                                               port_type=pdu_port_type)
                     pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
                     get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory)
                     frame.add_pdu(target_pdu)
     return found_matrixes
+
 
 def decode_can_helper(ea, float_factory, ignore_cluster_info):
     found_matrixes = {}
@@ -1784,6 +1807,10 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         ccs = [lxml.etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
     else:
         ccs = ea.findall('CAN-CLUSTER')
+
+    headers_are_littleendian = containters_are_little_endian(ea)
+    nodes = {}  # type: typing.Dict[_Element, canmatrix.Ecu]
+
     for cc in ccs:  # type: _Element
         db = canmatrix.CanMatrix()
         # Defines not jet imported...
@@ -1807,136 +1834,121 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
             fd_baudrate_elem = ea.find("CAN-FD-BAUDRATE", cc)
 
             logger.debug("Busname: " + ea.get_element_name(cc))
-
             bus_name = ea.get_element_name(cc)
+
             if speed is not None:
                 db.baudrate = int(speed.text)
             elif baudrate_elem is not None:
                 db.baudrate = int(baudrate_elem.text)
 
-            logger.debug("Baudrate: "+ str(db.baudrate))
+            logger.debug("Baudrate: " + str(db.baudrate))
             if fd_baudrate_elem is not None:
-                db.fd_baudrate = fd_baudrate_elem.text
+                db.fd_baudrate = int(fd_baudrate_elem.text)
 
-        
-
-            physical_channels = ea.find("PHYSICAL-CHANNELS", cc)  # type: _Element
-            if physical_channels is None:
-                logger.error("PHYSICAL-CHANNELS not found")
-
-            nm_lower_id = ea.get_child(cc, "NM-LOWER-CAN-ID")
-
-            physical_channel = ea.get_child(physical_channels, "PHYSICAL-CHANNEL")
-            if physical_channel is None:
-                physical_channel = ea.get_child(physical_channels, "CAN-PHYSICAL-CHANNEL")
-            if physical_channel is None:
-                logger.error("PHYSICAL-CHANNEL not found")
-            can_frame_trig = ea.get_children(physical_channel, "CAN-FRAME-TRIGGERING")
-            if can_frame_trig is None:
-                logger.error("CAN-FRAME-TRIGGERING not found")
-            else:
-                logger.debug("%d frames found in arxml", len(can_frame_trig))
+            can_frame_trig = ea.selector(cc, "/CAN-PHYSICAL-CHANNEL//CAN-FRAME-TRIGGERING")
 
         multiplex_translation = {}  # type: typing.Dict[str, str]
         for frameTrig in can_frame_trig:  # type: _Element
-            frame = get_frame(frameTrig, ea, multiplex_translation, float_factory)
+            frame = get_frame(frameTrig, ea, multiplex_translation, float_factory, headers_are_littleendian)
             if frame is not None:
+                comm_direction = ea.selector(frameTrig, ">>FRAME-PORT-REF/COMMUNICATION-DIRECTION")
+                if len(comm_direction) > 0:
+                    ecu_elem = ea.get_ecu_instance(element=comm_direction[0])
+                    if ecu_elem is not None:
+                        if ecu_elem in nodes:
+                            ecu = nodes[ecu_elem]
+                        else:
+                            ecu = process_ecu(ecu_elem, ea)
+                            nodes[ecu_elem] = ecu
+                        if comm_direction[0].text == "OUT":
+                            frame.add_transmitter(ecu.name)
+                        else:
+                            frame.add_receiver(ecu.name)
+                        db.add_ecu(ecu)
                 db.add_frame(frame)
-
-        if ignore_cluster_info is True:
-            pass
-            # no support for signal direction
-        else:  # find signal senders/receivers...
-            isignal_triggerings = ea.find_children_by_path(physical_channel, "I-SIGNAL-TRIGGERING")
-            for sig_trig in isignal_triggerings:
-                isignal = ea.follow_ref(sig_trig, 'SIGNAL-REF') # AR 3.2
-                if isignal is None:
-                    isignal = ea.follow_ref(sig_trig, 'I-SIGNAL-REF') # AR4
-                if isignal is None:
-                    sig_trig_text = ea.get_element_name(sig_trig) if sig_trig is not None else "None"
-                    logger.debug("load: no isignal for %s", sig_trig_text)
-                    continue
-
-                port_ref = ea.follow_all_ref(sig_trig, "I-SIGNAL-PORT-REF")
-
-                for port in port_ref:
-                    comm_direction = ea.get_child(port, "COMMUNICATION-DIRECTION")
-                    if comm_direction is not None and comm_direction.text == "IN":
-                        sys_signal = ea.follow_ref(isignal, "SYSTEM-SIGNAL-REF")
-                        ecu_name = ea.get_element_name(port.getparent().getparent().getparent().getparent())
-                        # port points in ECU; probably more stable to go up
-                        # from each ECU than to go down in XML...
-                        if sys_signal in signal_rxs:
-                            signal_rxs[sys_signal].add_receiver(ecu_name)
-                            # find ECUs:
-        nodes = ea.findall('ECU-INSTANCE')
-        for node in nodes:  # type: _Element
-            ecu = process_ecu(node, db, ea, multiplex_translation)
-            desc = ea.get_child(node, "DESC", )
-            l2 = ea.get_child(desc, "L-2")
-            if l2 is not None:
-                ecu.add_comment(l2.text)
-
-            db.add_ecu(ecu)
-
-
         for frame in db.frames:
+            if frame.is_pdu_container:
+                continue
             sig_value_hash = dict()
             for sig in frame.signals:
+                sig.receivers = list(set(frame.receivers).intersection(sig.receivers))
                 try:
                     sig_value_hash[sig.name] = sig.phys2raw()
                 except AttributeError:
                     sig_value_hash[sig.name] = 0
             frame_data = frame.encode(sig_value_hash)
             frame.add_attribute("GenMsgStartValue", "".join(["%02x" % x for x in frame_data]))
-            frame.update_receiver()
+            # frame.update_receiver()
         found_matrixes[bus_name] = db
 
-
     return found_matrixes
+
+
+def get_frames_nb(ea):
+    # type (Earxml) -> int
+    frames = ea.findall('CAN-FRAME')  # AR4.2
+    if frames is None:
+        frames = ea.findall('FRAME')  # AR4.1
+    if frames is None:
+        return 0
+    return len(frames)
+
+
+def get_can_trigger_nb(ea):
+    # type (Earxml) -> int
+    can_triggers = ea.findall('CAN-FRAME-TRIGGERING')
+    if can_triggers is None:
+        return 0
+    return len(can_triggers)
+
+
+def get_sig_pdu_map_nb(ea):
+    # type (Earxml) -> int
+    sig_pdu_map = ea.findall('SIGNAL-TO-PDU-MAPPINGS')
+    if sig_pdu_map is None:
+        return 0
+    return len(sig_pdu_map)
+
+
+def get_sig_ipdu_nb(ea):
+    # type (Earxml) -> int
+    sig_ipdu = ea.findall('I-SIGNAL-TO-I-PDU-MAPPING')
+    if sig_ipdu is None:
+        return 0
+    return len(sig_ipdu)
+
 
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> typing.Dict[str, canmatrix.CanMatrix]
 
-    global pdu_frame_mapping
-    pdu_frame_mapping = {}
-    global signal_rxs
-    signal_rxs = {}
+    global frames_cache
+    frames_cache = {}
 
     float_factory = options.get("float_factory", default_float_factory)  # type: typing.Callable
     ignore_cluster_info = options.get("arxmlIgnoreClusterInfo", False)
-    use_ar_xpath = options.get("arxmlUseXpath", False)
+
     decode_ethernet = options.get("decode_ethernet", False)
     decode_flexray = options.get("decode_flexray", False)
 
     result = {}
     logger.debug("Read arxml ...")
 
-    ea = Earxml(use_ar_xpath)
+    ea = Earxml()
     ea.open(file)
 
-    logger.debug("Build arTree ...")
 
-    ea.build_ar_tree()
-    com_module = ea.get_short_name_path("ActiveEcuC/Com")
+    com_module = ea.get_short_name_path("/ActiveEcuC/Com")
 
     if com_module is not None and len(com_module) > 0:
         logger.info("seems to be a ECUC arxml. Very limited support for extracting canmatrix.")
         return extract_cm_from_ecuc(com_module, ea)
 
-    frames = ea.findall('CAN-FRAME')  # AR4.2
-    if frames is None:
-        frames = ea.findall('FRAME')  # AR3.2-4.1?
-    
-    logger.debug("%d frames in arxml...", len(frames))
-    can_triggers = ea.findall('CAN-FRAME-TRIGGERING')
-    logger.debug("%d can-frame-triggering in arxml...", len(can_triggers))
+    logger.debug("%d frames in arxml...", get_frames_nb(ea))
+    logger.debug("%d can-frame-triggering in arxml...", get_can_trigger_nb(ea))
 
-    sig_pdu_map = ea.findall('SIGNAL-TO-PDU-MAPPINGS')
-    logger.debug("%d SIGNAL-TO-PDU-MAPPINGS in arxml...", len(sig_pdu_map))
+    logger.debug("%d SIGNAL-TO-PDU-MAPPINGS in arxml...", get_sig_pdu_map_nb(ea))
 
-    sig_ipdu = ea.findall('I-SIGNAL-TO-I-PDU-MAPPING')
-    logger.debug("%d I-SIGNAL-TO-I-PDU-MAPPING in arxml...", len(sig_ipdu))
+    logger.debug("%d I-SIGNAL-TO-I-PDU-MAPPING in arxml...", get_sig_ipdu_nb(ea))
 
     if decode_ethernet:
         result.update(decode_ethernet_helper(ea, float_factory))
@@ -1945,5 +1957,7 @@ def load(file, **options):
         result.update(decode_flexray_helper(ea, float_factory))
 
     result.update(decode_can_helper(ea, float_factory, ignore_cluster_info))
+
+
 
     return result

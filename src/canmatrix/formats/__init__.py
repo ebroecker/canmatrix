@@ -6,18 +6,16 @@ import logging
 import os
 import sys
 import typing
+from builtins import str
+from io import BytesIO
 
 import canmatrix
 import canmatrix.cancluster
 
-if sys.version_info > (3, 0):
-    import io
-else:
-    import StringIO
-
 logger = logging.getLogger(__name__)
-moduleList = ["arxml", "csv", "dbc", "dbf", "json",
-              "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy", "wireshark"]
+moduleList = ["arxml", "csv", "dbc", "dbf", "json", "ldf",
+              "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy", "wireshark", "odx"]
+
 loadedFormats = []
 supportedFormats = {}  # type: typing.MutableMapping[str, typing.MutableSequence[str]]
 extensionMapping = {}
@@ -49,12 +47,8 @@ for loadedModule in loadedFormats:
 
 def loads(string, import_type=None, key="", encoding="utf-8", **options):
     # type: (typing.Union[bytes,str], str, str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
-    if sys.version_info > (3, 0):
-        byte_str = bytes(string, encoding) if isinstance(string, str) else string
-        file_object = io.BytesIO(byte_str)
-    else:
-        string = string.encode(encoding)
-        file_object = StringIO.StringIO(string)
+    bytes_str = string.encode(encoding=encoding) if isinstance(string, str) else string
+    file_object = BytesIO(bytes_str)
     return load(file_object, import_type, key, **options)
 
 
