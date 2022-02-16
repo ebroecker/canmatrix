@@ -91,7 +91,7 @@ def create_attribute_string(attribute, attribute_class, name, value, is_string):
     # type: (str, str, str, typing.Any, bool) -> str
     if is_string:
         value = '"' + value + '"'
-    elif not value:
+    elif value is None:
         value = '""'
 
     attribute_string = 'BA_ "' + attribute + '" ' + attribute_class + ' ' + name + ' ' + str(value) + ';\n'

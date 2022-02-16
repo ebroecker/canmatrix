@@ -106,7 +106,12 @@ class Ecu(object):
         :param str attribute: Attribute name
         :param any value: Attribute value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except UnicodeDecodeError:
+            self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def del_attribute(self, attribute):
         if attribute in self.attributes:
@@ -282,7 +287,12 @@ class Signal(object):
         :param str attribute: attribute name
         :param value: attribute value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except UnicodeDecodeError:
+            self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def del_attribute(self, attribute):
         """
@@ -1715,7 +1725,12 @@ class CanMatrix(object):
         :param str attribute: attribute name
         :param value: attribute value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except UnicodeDecodeError:
+            self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def add_signal_defines(self, type, definition):
         """
