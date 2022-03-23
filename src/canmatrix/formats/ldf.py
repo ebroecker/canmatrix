@@ -6,9 +6,10 @@ import ldfparser.encoding
 
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
-    ldf = ldfparser.parseLDF(path=f.name)  # using f.name is not nice, but works
+    ldf = ldfparser.parse_ldf(path=f.name)  # using f.name is not nice, but works
 
     db = canmatrix.CanMatrix()
+    db.baudrate = ldf.get_baudrate()
 
     for lin_frame in ldf.frames:
         cm_frame = canmatrix.Frame()
@@ -20,6 +21,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         for mapping in lin_frame.signal_map:
             lin_signal = mapping[1]
             cm_signal = canmatrix.Signal()
+            cm_signal.is_signed = False
             if lin_signal.name in ldf.converters:
                 for converter in ldf.converters[lin_signal.name]._converters:
                     if isinstance(converter, ldfparser.encoding.LogicalValue):
