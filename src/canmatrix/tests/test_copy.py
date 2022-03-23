@@ -77,7 +77,7 @@ def test_copy_ecu_with_attributes():
     assert len(matrix1.frames) == 1
     assert len(matrix1.ecus) == 1
     assert matrix1.ecu_by_name("ECU") is not None
-    assert matrix1.ecu_by_name("ECU").attribute("Node Address") == 42
+    assert matrix1.ecu_by_name("ECU").attribute("Node Address") == '42'
     assert matrix1.ecu_by_name("ECU").attribute("some_ecu_define", matrix1) == "default_value"
 
 def test_copy_frame_default_attributes():
