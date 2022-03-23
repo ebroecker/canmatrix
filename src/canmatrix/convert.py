@@ -297,14 +297,14 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         if options.get('checkSignalRange') is not None and options['checkSignalRange']:
             for frame in db.frames:
                 for signal in frame.signals:
-                    if (signal.phys2raw(signal.max) - signal.phys2raw(signal.min)) is 0:
+                    if (signal.phys2raw(signal.max) - signal.phys2raw(signal.min)) == 0:
                         logger.warning("Invalid Min , Max value of %s", (frame.name+"::"+signal.name))
 
         # Check for Signals without unit and Value table , the idea is to improve signal readability
         if options.get('checkSignalUnit') is not None and options['checkSignalUnit']:
             for frame in db.frames:
                 for signal in frame:
-                    if signal.unit is "" and len(signal.values) == 0:
+                    if signal.unit == "" and len(signal.values) == 0:
                         logger.warning("Please add value table for the signal %s or add appropriate Unit", (frame.name+"::"+signal.name))
 
         # Convert dbc from J1939 to Extended format
@@ -317,7 +317,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         if options.get('convertToJ1939') is not None and options['convertToJ1939']:
             for frame in db.frames:
                 frame.is_j1939=True
-            db.add_attribute("ProtocolType","J1939")
+            db.add_attribute("ProtocolType", "J1939")
 
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))
