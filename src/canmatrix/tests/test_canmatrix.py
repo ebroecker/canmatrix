@@ -122,7 +122,7 @@ def test_decode_signal():
 def test_ecu_find_attribute():
     ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     ecu.add_attribute("attr1", 255)
-    assert ecu.attribute("attr1") == 255
+    assert ecu.attribute("attr1") == '255'
 
 
 def test_ecu_no_attribute():
@@ -159,7 +159,7 @@ def test_signal_find_mandatory_attribute(some_signal):
 
 def test_signal_find_optional_attribute(some_signal):
     some_signal.add_attribute("attr1", 255)
-    assert some_signal.attribute("attr1") == 255
+    assert some_signal.attribute("attr1") == '255'
 
 
 def test_signal_no_attribute(some_signal):
@@ -213,7 +213,7 @@ def test_signal_delete_wrong_attribute_doesnt_raise(some_signal):
 def test_signal_spn(some_signal):
     assert some_signal.spn is None
     some_signal.add_attribute("SPN", 10)
-    assert some_signal.spn == 10
+    assert some_signal.spn == '10'
 
 
 def test_signal_set_startbit():

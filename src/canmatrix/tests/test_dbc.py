@@ -516,3 +516,31 @@ def test_without_ecu():
 
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     matrix.frames[0].signals[0].name == "A_B_C_D_E"
+
+
+def test_int_attribute_zero():
+    db = canmatrix.CanMatrix()
+    frame = canmatrix.Frame("some Frame")
+    frame.add_signal(canmatrix.Signal("signal_name", size=1, start_bit=1))
+    db.add_frame(frame)
+    db.add_ecu_defines("ecu_define", "INT 0 10")
+    db.add_ecu_defines("ecu_define2", "INT 0 10")
+    db.add_ecu_defines("ecu_define3", "INT 0 10")
+
+    db.add_frame_defines("test", "INT 0 10")
+    db.add_frame_defines("test2", "INT 0 10")
+    frame.add_attribute("test", 7)
+    frame.add_attribute("test2", 0)
+
+    ecu = canmatrix.Ecu('TestEcu')
+    ecu.add_attribute('ecu_define', 1)
+    ecu.add_attribute('ecu_define2', 0)
+
+    db.add_ecu(ecu)
+
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(db, outdbc, "dbc")
+    assert 'BO_ 0 7' in outdbc.getvalue().decode('utf8')
+    assert 'BO_ 0 0' in outdbc.getvalue().decode('utf8')
+    assert 'TestEcu 1' in outdbc.getvalue().decode('utf8')
+    assert 'TestEcu 0' in outdbc.getvalue().decode('utf8')
