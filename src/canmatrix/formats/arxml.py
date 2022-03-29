@@ -1132,7 +1132,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         if system_signal is not None and "SYSTEM-SIGNAL-GROUP" in system_signal.tag:
             system_signals = ea.selector(system_signal, "SYSTEM-SIGNAL-REFS>>SYSTEM-SIGNAL-REF")
-            get_sys_signals(system_signal, system_signals, frame, group_id, ea)
+            get_signalgrp_and_signals(system_signal, system_signals, frame, group_id, ea)
 
             group_id = group_id + 1
             continue
