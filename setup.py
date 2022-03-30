@@ -102,7 +102,7 @@ setup(
         "test": ["pathlib2; python_version < '3.4'", "pytest"],
         "wireshark": [],
         "xls": ["xlrd==1.2.0", "xlwt"],
-        "xlsx": ["xlsxwriter"],
+        "xlsx": ["openpyxl"],
         "yaml": ["pyyaml"],
     },
 
