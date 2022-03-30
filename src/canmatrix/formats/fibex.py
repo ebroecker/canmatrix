@@ -92,7 +92,7 @@ def dump(db, f, **options):
     # ELEMENTS
     #
     elements = create_sub_element_fx(root, "ELEMENTS")
-
+    
     #
     # CLUSTERS
     #
@@ -118,6 +118,23 @@ def dump(db, f, **options):
     channel = create_sub_element_fx(channels, "CHANNEL")
     # for each channel
     create_short_name_desc(channel, "CANCHANNEL01", "Can Channel Description")
+
+    # for pdu triggerings
+    pdu_triggerings = create_sub_element_fx(channel, "PDU-TRIGGERINGS")
+    for pdu in db.frames:
+        pdu_triggering = create_sub_element_fx(
+            pdu_triggerings, "PDU-TRIGGERING")
+        pdu_triggering.set("ID", "PDU_" + pdu.name)
+        pdu_timings = create_sub_element_fx(pdu_triggering, "TIMINGS")
+        if pdu.cycle_time > 0:
+            cyclic_timing = create_sub_element_fx(pdu_timings, "CYCLIC-TIMING")
+            repeating_time_range = create_sub_element_fx(cyclic_timing, "REPEATING-TIME-RANGE")
+            create_sub_element_fx(repeating_time_range, "VALUE", "PT" + str(pdu.cycle_time/1000.0) + "S")
+
+        pdu_ref = create_sub_element_fx(pdu_triggering, "PDU-REF")
+        pdu_ref.set("ID-REF", "PDU_" + pdu.name)
+
+
     frame_triggerings = create_sub_element_fx(channel, "FRAME-TRIGGERINGS")
     for frame in db.frames:
         frame_triggering = create_sub_element_fx(
@@ -149,6 +166,12 @@ def dump(db, f, **options):
                 input_port = create_sub_element_fx(inputs, "INPUT-PORT")
                 frame_triggering_ref = create_sub_element_fx(input_port, "FRAME-TRIGGERING-REF")
                 frame_triggering_ref.set("ID-REF", "FT_" + frame.name)
+                # Reference to PDUs
+                included_pdus = create_sub_element_fx(input_port, "INCLUDED-PDUS")
+                included_pdu = create_sub_element_fx(included_pdus, "INCLUDED-PDU")
+                pdu_triggering_ref = create_sub_element_fx(included_pdu, "PDU-TRIGGERING-REF")
+                pdu_triggering_ref.set("ID-REF", "PDU_" + frame.name)
+
                 
         outputs = create_sub_element_fx(connector, "OUTPUTS")
         for frame in db.frames:
@@ -156,6 +179,11 @@ def dump(db, f, **options):
                 input_port = create_sub_element_fx(outputs, "OUTPUT-PORT")
                 frame_triggering_ref = create_sub_element_fx(input_port, "FRAME-TRIGGERING-REF")
                 frame_triggering_ref.set("ID-REF", "FT_" + frame.name)
+                # Reference to PDUs
+                included_pdus = create_sub_element_fx(input_port, "INCLUDED-PDUS")
+                included_pdu = create_sub_element_fx(included_pdus, "INCLUDED-PDU")
+                pdu_triggering_ref = create_sub_element_fx(included_pdu, "PDU-TRIGGERING-REF")
+                pdu_triggering_ref.set("ID-REF", "PDU_" + frame.name)
                 
         
         # ignore CONTROLERS/CONTROLER

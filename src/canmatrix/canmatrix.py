@@ -106,7 +106,12 @@ class Ecu(object):
         :param str attribute: Attribute name
         :param any value: Attribute value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except UnicodeDecodeError:
+            self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def del_attribute(self, attribute):
         if attribute in self.attributes:
@@ -282,7 +287,12 @@ class Signal(object):
         :param str attribute: attribute name
         :param value: attribute value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except UnicodeDecodeError:
+            self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def del_attribute(self, attribute):
         """
@@ -465,6 +475,7 @@ class SignalGroup(object):
     name = attr.ib()  # type: str
     id = attr.ib()  # type: int
     signals = attr.ib(factory=list, repr=False)  # type: typing.MutableSequence[Signal]
+    e2e_trans = attr.ib(default=None)
 
     def add_signal(self, signal):  # type: (Signal) -> None
         """Add a Signal to SignalGroup.
@@ -788,7 +799,7 @@ class Pdu(object):
         """
         self.signals.append(signal)
         return self.signals[len(self.signals) - 1]
-    def add_signal_group(self, Name, Id, signalNames):
+    def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
         # type: (str, int, typing.Sequence[str]) -> None
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
@@ -796,7 +807,7 @@ class Pdu(object):
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = SignalGroup(Name, Id)
+        newGroup = SignalGroup(Name, Id, e2e_trans=e2e_trans)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
@@ -996,7 +1007,7 @@ class Frame(object):
 
         return iter(self.signals)
 
-    def add_signal_group(self, Name, Id, signalNames):
+    def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
         # type: (str, int, typing.Sequence[str]) -> None
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
@@ -1004,7 +1015,7 @@ class Frame(object):
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = SignalGroup(Name, Id)
+        newGroup = SignalGroup(Name, Id, e2e_trans=e2e_trans)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
@@ -1714,7 +1725,12 @@ class CanMatrix(object):
         :param str attribute: attribute name
         :param value: attribute value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except UnicodeDecodeError:
+            self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def add_signal_defines(self, type, definition):
         """
