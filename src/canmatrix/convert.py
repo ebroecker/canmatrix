@@ -328,7 +328,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         # Check The name of the frames are exceeding 32 character, if exceeding then warn against the Frame
         if options.get('checkFrameNameLength') is not None and options['checkFrameNameLength']:
             for frame in db.frames:
-                if len(frame.name) >= 32:
+                if len(frame.name) > 32:
                     logger.warning("Frame %s name exceeds 32 characters, consider updating the frame name within"
                                    " character limit(Max 32 characters)", frame.name)
 
@@ -336,9 +336,9 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         if options.get('checkSignalNameLength') is not None and options['checkSignalNameLength']:
             for frame in db.frames:
                 for signal in frame:
-                    if len(signal.name) >= 32:
+                    if len(signal.name) > 32:
                         logger.warning("Signal %s::%s name exceeds 32 characters, consider updating the signal name "
-                                       "within the character limit(Max 32 character)", frame.name,signal.name)
+                                       "within the character limit(Max 32 characters)", frame.name,signal.name)
 
 
 
