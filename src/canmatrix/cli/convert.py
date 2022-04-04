@@ -89,8 +89,8 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--checkSignalUnit/--no-checkSignalUnit', 'checkSignalUnit', default = False, help="if checkSignalUnit is set , then signals without units and value table will be warned. \tdefault: False")
 @click.option('--checkSignalReceiver/--no-checkSignalReceiver', 'checkSignalReceiver', default = False, help="if checkSignalReceiver is set, then signals without an assigned Receiver will be warned \tdefault: False")
 @click.option('--checkFloatingSignals/--no-checkFloatingSignals', 'checkFloatingSignals', default = False, help="if checkFloatingSignals is set, then unassigned signals to a frame/message will be warned \tdefault: False")
-
-
+@click.option('--checkFrameNameLength/--no-checkFrameNameLength', 'checkFrameNameLength', default = False, help="if checkFrameNameLength is set, then the name of the frames more than 32 character will be warned \tdefault: False")
+@click.option('--checkSignalNameLength/--no-checkSignalNameLength', 'checkSignalNameLength', default = False, help="if checkSignalNameLength is set, then the name of the signals more than 32 character will be warned \tdefault: False")
 
 # arxml switches
 @click.option('--arxmlIgnoreClusterInfo/--no-arxmlIgnoreClusterInfo', 'arxmlIgnoreClusterInfo', default=False, help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault False")
