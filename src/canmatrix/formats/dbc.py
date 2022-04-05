@@ -200,16 +200,20 @@ def dump(in_db, f, **options):
     output_names = collections.defaultdict(dict)  # type: typing.Dict[canmatrix.Frame, typing.Dict[canmatrix.Signal, str]]
 
     for frame in db.frames:
-        # fix long frame names
+        # fix long frame names , warn if the frame name exceeds 32 characters
         if len(frame.name) > 32:
             frame.add_attribute("SystemMessageLongSymbol", frame.name)
+            logger.warning("Frame %s name exceeds 32 characters, consider updating the frame name within"
+                           " character limit(Max 32 characters) ", frame.name)
             frame.name = frame.name[0:32]
             db.add_frame_defines("SystemMessageLongSymbol", "STRING")
 
-        # fix long signal names
+        # fix long signal names, warn if the signal name exceeds 32 characters
         for s in frame.signals:
             if len(s.name) > 32:
                 s.add_attribute("SystemSignalLongSymbol", s.name)
+                logger.warning("Signal %s::%s name exceeds 32 characters, consider updating the signal name "
+                               "within the character limit(Max 32 characters)", frame.name, s.name)
                 s.name = s.name[0:32]
                 db.add_signal_defines("SystemSignalLongSymbol", "STRING")
 
