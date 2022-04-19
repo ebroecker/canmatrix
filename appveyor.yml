@@ -1,17 +1,22 @@
+# appveyor.yml - https://www.appveyor.com/docs/lang/python
+---
+image:
+  - Visual Studio 2022
+
 skip_branch_with_pr: true
 
 environment:
-  VENV: "%APPVEYOR_BUILD_FOLDER%\\venv"
-
   matrix:
-    - TOXENV: dist
     - TOXENV: py27
-    - TOXENV: pypy
     - TOXENV: py35
     - TOXENV: py36
     - TOXENV: py37
     - TOXENV: py38
+    - TOXENV: py39
+    - TOXENV: py310
+    - TOXENV: pypy
     - TOXENV: pypy3
+    - TOXENV: dist
 
 matrix:
   allow_failures:
@@ -21,20 +26,16 @@ matrix:
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 init:
   - ps: if (Get-ChildItem Env:ENABLE_RDP -ErrorAction SilentlyContinue) {iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))} else {echo RDP not enabled}
-  - echo "TOXENV- %TOXENV%"
 
 install:
   - if "%TOXENV%"=="pypy" choco install python.pypy
   - if "%TOXENV%"=="pypy3" choco install python.pypy3
-  - py -3.6 -m venv "%VENV%"
-  - "%VENV%\\Scripts\\activate"
-  - python -c "import sys; print(sys.version)"
-  - pip install tox
-  - ps: Update-AppveyorBuild -Version "v$(python get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
+  - py -m pip install tox
+  - ps: Update-AppveyorBuild -Version "v$(py get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
 
 build_script:
-  - tox
-  - tox -e codecov
+  - py -m tox
+  - py -m tox -e codecov
 
 artifacts:
   - path: "dist\\*"

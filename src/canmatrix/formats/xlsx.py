@@ -260,7 +260,7 @@ def dump(db, filename, **options):
                     col = write_ecu_matrix(ecu_list, sig, frame, worksheet, row, col, frame_style)
 
                     # write Value
-                    (frontRow, back_row) = canmatrix.formats.xls_common.get_signal(db, sig, motorola_bit_format)
+                    (frontRow, back_row) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format)
                     write_excel_line(worksheet, row, front_col, frontRow, signal_style)
                     back_row += additional_frame_info
                     for item in additional_signal_columns:

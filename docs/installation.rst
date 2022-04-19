@@ -11,12 +11,7 @@ or
 
 ::
 
-    $ python setup.py install
-
-and
-::
-
-    $ pip install -r requirements.txt
+    $ pip install .
 
 This installs the *canmatrix* package into your python installation.
 In addition to the *canmatrix* package there are 2 scripts installed with this package:

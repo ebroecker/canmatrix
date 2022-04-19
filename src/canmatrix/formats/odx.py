@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from lxml import etree
 import canmatrix.formats
 import decimal
@@ -38,7 +40,7 @@ class OdxReader:
         return short_name.text
 
 
-def read_param(eo : OdxReader, param, start_byte_pos=0):
+def read_param(eo, param, start_byte_pos=0):
     return_data = {}
     short_name = eo.get_short_name(param)
     byte_pos = eo.find("BYTE-POSITION", param)
@@ -80,13 +82,13 @@ def read_param(eo : OdxReader, param, start_byte_pos=0):
     return return_data
 
 
-def find_param(eo: OdxReader, request, param_type):
+def find_param(eo, request, param_type):
     for param in eo.findall("PARAM", request):
         if param.attrib["SEMANTIC"] == param_type:
             return param
     return None
 
-def decode_compumethod(eo : OdxReader, compu_method, category):
+def decode_compumethod(eo, compu_method, category):
     compu_info = {}
     if category == "TEXTTABLE":
         compu_info["type"] = "TEXTTABLE"
@@ -118,7 +120,7 @@ def decode_compumethod(eo : OdxReader, compu_method, category):
     return compu_info
 
 
-def get_struct(eo: OdxReader, struct_name, offset_bit=0):
+def get_struct(eo, struct_name, offset_bit=0):
     struct = eo.id_links[struct_name]
 
     byte_size = eo.find("BYTE-SIZE", struct)
@@ -161,7 +163,7 @@ def get_struct(eo: OdxReader, struct_name, offset_bit=0):
     return data_dict
 
 
-def get_odx_info(eo: OdxReader, element_type):
+def get_odx_info(eo, element_type):
     did_infos = {}
     for request in eo.findall(element_type):
         short_name = eo.get_short_name(request)
