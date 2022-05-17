@@ -252,17 +252,23 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                 signal.name = signal.attributes.get(options.get('signalNameFromAttrib'), signal.name)
 
         # Max Signal Value Calculation , if max value is 0
-        if options.get('calcSignalMax') is not None and options['calcSignalMax']:
+        if options.get('calcSignalMaximumsWhereZero') is not None and options['calcSignalMaximumsWhereZero']:
             for signal in [b for a in db for b in a.signals]:
                 if signal.max == 0 or signal.max is None:
                     signal.calc_max_for_none = True
                     signal.set_max(None)
 
         # Max Signal Value Calculation
-        if options.get('recalcSignalMax') is not None and options['recalcSignalMax']:
+        if options.get('recalcSignalMaximums') is not None and options['recalcSignalMaximums']:
             for signal in [b for a in db for b in a.signals]:
                 signal.calc_max_for_none = True
                 signal.set_max(None)
+
+        # Min Signal Value Calculation
+        if options.get('recalcSignalMinimums') is not None and options['recalcSignalMinimums']:
+            for signal in [b for a in db for b in a.signals]:
+                signal.calc_min_for_none = True
+                signal.set_min(None)
 
         # Delete Unassigned Signals to a Valid Frame/Message
         if options.get('deleteFloatingSignals') is not None and options['deleteFloatingSignals']:
@@ -294,7 +300,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                     logger.warning("No Transmitter Node Found for Frame %s", frame.name)
 
         # Check & Warn for Signals with Min/Max set to 0
-        if options.get('checkSignalRange') is not None and options['checkSignalRange']:
+        if options.get('warnSignalMinMaxSame') is not None and options['warnSignalMinMaxSame']:
             for frame in db.frames:
                 for signal in frame.signals:
                     if (signal.phys2raw(signal.max) - signal.phys2raw(signal.min)) == 0:
@@ -318,6 +324,8 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             for frame in db.frames:
                 frame.is_j1939=True
             db.add_attribute("ProtocolType", "J1939")
+
+
 
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))
