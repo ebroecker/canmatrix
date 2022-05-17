@@ -78,13 +78,14 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--signals', help="Copy only given Signals (comma separated list) to target matrix just as 'free' signals without containing frame")
 @click.option('--merge', help="merge additional can databases.\nSyntax: --merge filename[:ecu=SOMEECU][:frame=FRAME1][:frame=FRAME2],filename2")
 @click.option('--ignorePduContainer/--no-ignorePduContainer', 'ignorePduContainer', default = False, help="Ignore any Frame with PDU container; if no export as multiplexed Frames\ndefault False")
-@click.option('--calcSignalMax/--no-calcSignalMax', 'calcSignalMax', default = False, help="Calculate Signals Maximum Physical Value; If maximum value is set to 0\ndefault False")
-@click.option('--recalcSignalMax/--no-recalcSignalMax', 'recalcSignalMax', default = False, help="Recalculate Signals Maximum Physical Value for the entire database\ndefault False")
+@click.option('--calcSignalMaximumsWhereZero/--no-calcSignalMaximumsWhereZero', 'calcSignalMaximumsWhereZero', default = False, help="Calculate Signals Maximum Physical Value; If maximum value is set to 0\ndefault False")
+@click.option('--recalcSignalMaximums/--no-recalcSignalMaximums', 'recalcSignalMaximums', default = False, help="Recalculate Signals Maximum Physical Value for the entire database\ndefault False")
 @click.option('--deleteFloatingSignals/--no-deleteFloatingSignals', 'deleteFloatingSignals', default = False, help="if deleteFloatingSignals is set , then unassigned signals to a frame/message will be deleted \tdefault: False")
+@click.option('--recalcSignalMinimums/--no-recalcSignalMinimums', 'recalcSignalMinimums', default = False, help="Recalculate Signals Minimum Physical Value for the entire database\ndefault False")
 
 #Frame/Signal Check switches
 @click.option('--checkFloatingFrames/--no-checkFloatingFrames', 'checkFloatingFrames', default = False, help="if checkFloatingFrames is set, CAN message/frame without sender node will be warned .\tdefault: False")
-@click.option('--checkSignalRange/--no-checkSignalRange', 'checkSignalRange', default = False, help="if checkSignalRange is set, then signals consisting raw min/max value set to 0 will be warned. \tdefault: False ")
+@click.option('--warnSignalMinMaxSame/--no-warnSignalMinMaxSame', 'warnSignalMinMaxSame', default = False, help="if warnSignalMinMaxSame is set, then signals consisting same raw min & max value will be warned. \tdefault: False ")
 @click.option('--checkSignalUnit/--no-checkSignalUnit', 'checkSignalUnit', default = False, help="if checkSignalUnit is set , then signals without units and value table will be warned. \tdefault: False")
 @click.option('--checkSignalReceiver/--no-checkSignalReceiver', 'checkSignalReceiver', default = False, help="if checkSignalReceiver is set, then signals without an assigned Receiver will be warned \tdefault: False")
 @click.option('--checkFloatingSignals/--no-checkFloatingSignals', 'checkFloatingSignals', default = False, help="if checkFloatingSignals is set, then unassigned signals to a frame/message will be warned \tdefault: False")
