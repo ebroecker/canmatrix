@@ -1851,16 +1851,16 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         for frameTrig in can_frame_trig:  # type: _Element
             frame = get_frame(frameTrig, ea, multiplex_translation, float_factory, headers_are_littleendian)
             if frame is not None:
-                comm_direction = ea.selector(frameTrig, ">>FRAME-PORT-REF/COMMUNICATION-DIRECTION")
-                if len(comm_direction) > 0:
-                    ecu_elem = ea.get_ecu_instance(element=comm_direction[0])
+                comm_directions = ea.selector(frameTrig, ">>FRAME-PORT-REF/COMMUNICATION-DIRECTION")
+                for comm_direction in comm_directions:
+                    ecu_elem = ea.get_ecu_instance(element=comm_direction)
                     if ecu_elem is not None:
                         if ecu_elem in nodes:
                             ecu = nodes[ecu_elem]
                         else:
                             ecu = process_ecu(ecu_elem, ea)
                             nodes[ecu_elem] = ecu
-                        if comm_direction[0].text == "OUT":
+                        if comm_direction.text == "OUT":
                             frame.add_transmitter(ecu.name)
                         else:
                             frame.add_receiver(ecu.name)
