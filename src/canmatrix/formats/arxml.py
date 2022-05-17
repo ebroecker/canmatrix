@@ -1414,12 +1414,12 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
         cycle_time = 0
         value = ea.get_child(repeating_time, "VALUE")
         if value is not None:
-            cycle_time = int(float_factory(value.text, 0) * 1000)
+            cycle_time = int(float_factory(value.text) * 1000)
         else:
             time_period = ea.get_child(cyclic_timing, "TIME-PERIOD")
             value = ea.get_child(time_period, "VALUE")
             if value is not None:
-                cycle_time = int(float_factory(value.text, 0) * 1000)
+                cycle_time = int(float_factory(value.text) * 1000)
         try:
             if header_type == "SHORT-HEADER":
                 header_id = ea.get_child(ipdu, "HEADER-ID-SHORT-HEADER").text
