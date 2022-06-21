@@ -339,12 +339,10 @@ def dump(db, f, **options):
             create_sub_element_ho(compu_denominator, "V", "1")  # nenner
             # defaultValue = create_sub_element_ho(compuInternalToPhys,"COMPU-DEFAULT-VALUE")
 
-            # @TODO: Implement signal interpretation
-            sigint_method = create_sub_element_ho(compu_methods,"COMPU_METHOD")
-            sigint_mapping = create_sub_element_ho(sigint_method, "SIGNAL_INTERPRETATIONS")
-            for key, value in signal.values:
-                sigint_value = create_sub_element_ho(sigint_mapping, "SIGNAL_INTERPRETATION", value)
-                sigint_value.set("VALUE", str(key))
+            # CAN signal interpretation
+            compu_const = create_sub_element_ho(compu_scale, "COMPU-CONST")
+            for value in signal.values:
+                create_sub_element_ho(compu_const, "VT", value)
 
     #
     # REQUIREMENTS
