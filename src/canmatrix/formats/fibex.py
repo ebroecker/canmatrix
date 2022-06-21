@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+exit# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
@@ -338,6 +338,13 @@ def dump(db, f, **options):
             compu_denominator = create_sub_element_ho(compu_rational_coeffs, "COMPU-DENOMINATOR")
             create_sub_element_ho(compu_denominator, "V", "1")  # nenner
             # defaultValue = create_sub_element_ho(compuInternalToPhys,"COMPU-DEFAULT-VALUE")
+
+            # @TODO: Implement signal interpretation
+            sigint_method = create_sub_element_ho(compu_methods,"COMPU_METHOD")
+            sigint_mapping = create_sub_element_ho(sigint_method, "SIGNAL_INTERPRETATIONS")
+            for key, value in signal.values:
+                sigint_value = create_sub_element_ho(sigint_mapping, "SIGNAL_INTERPRETATION", value)
+                sigint_value.set("VALUE", str(key))
 
     #
     # REQUIREMENTS
