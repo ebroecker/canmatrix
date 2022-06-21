@@ -340,9 +340,13 @@ def dump(db, f, **options):
             # defaultValue = create_sub_element_ho(compuInternalToPhys,"COMPU-DEFAULT-VALUE")
 
             # CAN signal interpretation
+            compu_method =  create_sub_element_ho(compu_methods, "COMPU-METHOD")
+            create_sub_element_ho(compu_method, "CATEGORY", "TEXTTABLE")
             compu_const = create_sub_element_ho(compu_scale, "COMPU-CONST")
-            for value in signal.values:
-                create_sub_element_ho(compu_const, "VT", value)
+            for value, text in signal.values:
+                create_sub_element_ho(compu_method, "LOWER-LIMIT", str(value))
+                create_sub_element_ho(compu_method, "UPPER-LIMIT", str(value))
+                create_sub_element_ho(compu_const, "VT", text)
 
     #
     # REQUIREMENTS
