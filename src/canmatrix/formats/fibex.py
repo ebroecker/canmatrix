@@ -1,4 +1,4 @@
-exit# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # All rights reserved.
 #
