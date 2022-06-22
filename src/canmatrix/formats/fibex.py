@@ -343,7 +343,12 @@ def dump(db, f, **options):
             compu_method =  create_sub_element_ho(compu_methods, "COMPU-METHOD")
             create_sub_element_ho(compu_method, "CATEGORY", "TEXTTABLE")
             compu_const = create_sub_element_ho(compu_scale, "COMPU-CONST")
-            for value, text in signal.values:
+            for pair in signal.values:
+                try:
+                    value, text = str(pair).split(":")
+                except ValueError:
+                    value = str(pair)
+                    text = ""
                 create_sub_element_ho(compu_method, "LOWER-LIMIT", str(value))
                 create_sub_element_ho(compu_method, "UPPER-LIMIT", str(value))
                 create_sub_element_ho(compu_const, "VT", text)
