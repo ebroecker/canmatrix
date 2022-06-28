@@ -342,6 +342,8 @@ def dump(db, f, **options):
             # CAN signal interpretation
             compu_method =  create_sub_element_ho(compu_methods, "COMPU-METHOD")
             create_sub_element_ho(compu_method, "CATEGORY", "TEXTTABLE")
+            compu_scales = create_sub_element_ho(compu_method, "COMPU-SCALES")
+            compu_scale = create_sub_element_ho(compu_scales, "COMPU-SCALE")
             compu_const = create_sub_element_ho(compu_scale, "COMPU-CONST")
             for pair in signal.values:
                 try:
@@ -349,8 +351,8 @@ def dump(db, f, **options):
                 except ValueError:
                     value = str(pair)
                     text = ""
-                create_sub_element_ho(compu_method, "LOWER-LIMIT", str(value))
-                create_sub_element_ho(compu_method, "UPPER-LIMIT", str(value))
+                create_sub_element_ho(compu_scale, "LOWER-LIMIT", str(value))
+                create_sub_element_ho(compu_scale, "UPPER-LIMIT", str(value))
                 create_sub_element_ho(compu_const, "VT", text)
 
     #
