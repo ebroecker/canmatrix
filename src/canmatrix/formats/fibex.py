@@ -342,7 +342,8 @@ def dump(db, f, **options):
             # CAN signal interpretation
             compu_method =  create_sub_element_ho(compu_methods, "COMPU-METHOD")
             create_sub_element_ho(compu_method, "CATEGORY", "TEXTTABLE")
-            compu_scales = create_sub_element_ho(compu_method, "COMPU-SCALES")
+            compu_int_to_phys = create_sub_element_ho(compu_method, "COMPU-INTERNAL-TO-PHYS")
+            compu_scales = create_sub_element_ho(compu_int_to_phys, "COMPU-SCALES")
             compu_scale = create_sub_element_ho(compu_scales, "COMPU-SCALE")
             compu_const = create_sub_element_ho(compu_scale, "COMPU-CONST")
             for pair in signal.values:
