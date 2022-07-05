@@ -29,6 +29,7 @@ from __future__ import absolute_import, division, print_function
 
 import typing
 from builtins import *
+from xml.dom.minidom import TypeInfo
 
 import lxml.etree
 
@@ -341,19 +342,16 @@ def dump(db, f, **options):
 
             # CAN signal interpretation
             compu_method =  create_sub_element_ho(compu_methods, "COMPU-METHOD")
+            create_sub_element_ho(compu_method, "SHORT-NAME",
+                "SIGNAL_INTERPRETATION_" + signal.name)
             create_sub_element_ho(compu_method, "CATEGORY", "TEXTTABLE")
             compu_int_to_phys = create_sub_element_ho(compu_method, "COMPU-INTERNAL-TO-PHYS")
             compu_scales = create_sub_element_ho(compu_int_to_phys, "COMPU-SCALES")
-            compu_scale = create_sub_element_ho(compu_scales, "COMPU-SCALE")
-            compu_const = create_sub_element_ho(compu_scale, "COMPU-CONST")
-            for pair in signal.values:
-                try:
-                    value, text = str(pair).split(":")
-                except ValueError:
-                    value = str(pair)
-                    text = ""
+            for value, text in signal.values.items():
+                compu_scale = create_sub_element_ho(compu_scales, "COMPU-SCALE")
                 create_sub_element_ho(compu_scale, "LOWER-LIMIT", str(value))
                 create_sub_element_ho(compu_scale, "UPPER-LIMIT", str(value))
+                compu_const = create_sub_element_ho(compu_scale, "COMPU-CONST")
                 create_sub_element_ho(compu_const, "VT", text)
 
     #
