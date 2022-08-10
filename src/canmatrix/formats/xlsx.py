@@ -217,7 +217,12 @@ def dump(db, filename, **options):
         # sort signals:
         sig_hash = {}
         for sig in frame.signals:
-            sig_hash["%02d" % int(sig.get_startbit()) + sig.name] = sig
+            if motorola_bit_format == "msb":
+                sig_hash["%03d" % int(sig.get_startbit(bit_numbering=1)) + sig.name] = sig
+            elif motorola_bit_format == "msbreverse":
+                sig_hash["%03d" % int(sig.get_startbit()) + sig.name] = sig
+            else:  # motorolaBitFormat == "lsb"
+                sig_hash["%03d" % int(sig.get_startbit(bit_numbering=1, start_little=True)) + sig.name] = sig
 
         # set style for first line with border
         signal_style = sty_first_frame
