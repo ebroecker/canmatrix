@@ -91,7 +91,7 @@ def dump(db, f, **options):
                     "is_float": signal.is_float,
                 })
             symbolic_frame = {"name": frame.name,
-                              "id": int(frame.arbitration_id.id),
+                              "id": int(frame.arbitration_id.to_compound_integer()),
                               "is_extended_frame": frame.arbitration_id.extended,
                               "is_fd": frame.is_fd,
                               "signals": symbolic_signals}
@@ -150,7 +150,7 @@ def dump(db, f, **options):
 
             export_dict['messages'].append(
                 {"name": frame.name,
-                 "id": int(frame.arbitration_id.id),
+                 "id": int(frame.arbitration_id.to_compound_integer()),
                  "is_extended_frame": frame.arbitration_id.extended,
                  "is_fd": frame.is_fd,
                  "signals": symbolic_signals,
