@@ -1546,7 +1546,8 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     if pdu is None:
         logger.error("pdu is None")
     else:
-        logger.debug("PDU: " + ea.get_element_name(pdu))
+        new_frame.pdu_name = ea.get_element_name(pdu)
+        logger.debug("PDU: " + new_frame.pdu_name)
 
     if new_frame.comment is None:
         new_frame.add_comment(ea.get_element_desc(pdu))
