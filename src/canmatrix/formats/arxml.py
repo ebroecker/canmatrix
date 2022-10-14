@@ -1506,14 +1506,15 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
 
     arb_id = ea.get_child(frame_triggering, "IDENTIFIER")
     frame_elem = ea.follow_ref(frame_triggering, "FRAME-REF")
-    frame_name_elem = ea.get_child(frame_triggering, "SHORT-NAME")
-    logger.debug("processing Frame: %s", frame_name_elem.text)
+    frame_trig_name_elem = ea.get_child(frame_triggering, "SHORT-NAME")
+    logger.debug("processing Frame-Trigger: %s", frame_trig_name_elem.text)
     if arb_id is None:
-        logger.info("found Frame %s without arbitration id", frame_name_elem.text)
+        logger.info("found Frame-Trigger %s without arbitration id", frame_trig_name_elem.text)
         return None
     arbitration_id = int(arb_id.text, 0)
 
     if frame_elem is not None:
+        logger.debug("Frame: %s", ea.get_element_name(frame_elem))
         if frame_elem in frames_cache:
             return copy.deepcopy(frames_cache[frame_elem])
         dlc_elem = ea.get_child(frame_elem, "FRAME-LENGTH")
@@ -1531,7 +1532,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
             new_frame.add_comment(comment)
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
-        logger.debug("Frame %s has no FRAME-REF", frame_name_elem.text)
+        logger.debug("Frame-Trigger %s has no FRAME-REF", frame_trig_name_elem.text)
         pdu = ea.selector(frame_triggering, ">I-PDU-TRIGGERING-REF>I-PDU-REF") # AR4.2
         if len(pdu) == 0:
             pdu = ea.selector(frame_triggering, ">PDU-TRIGGERING-REF>I-PDU-REF")
@@ -1540,7 +1541,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         else:
             pdu = None
         dlc_elem = ea.get_child(pdu, "LENGTH")
-        new_frame = canmatrix.Frame(frame_name_elem.text, arbitration_id=arbitration_id,
+        new_frame = canmatrix.Frame(frame_trig_name_elem.text, arbitration_id=arbitration_id,
                                     size=int(int(dlc_elem.text, 0) / 8))
 
     if pdu is None:
