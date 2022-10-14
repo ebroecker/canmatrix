@@ -883,6 +883,7 @@ class Frame(object):
     pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
     header_id = attr.ib(default=None)  #type: int
     # header_id
+    pdu_name = attr.ib(default="")  # type: str
 
     @property
     def is_multiplexed(self):  # type: () -> bool
