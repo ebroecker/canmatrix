@@ -442,7 +442,7 @@ class Signal(object):
         raw_value = (value - self.float_factory(self.offset)) / self.float_factory(self.factor)
 
         if not self.is_float:
-            raw_value = int(raw_value)
+            raw_value = int(round(raw_value))
         return raw_value
 
     def raw2phys(self, value, decode_to_str=False):
@@ -883,6 +883,7 @@ class Frame(object):
     pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
     header_id = attr.ib(default=None)  #type: int
     # header_id
+    pdu_name = attr.ib(default="")  # type: str
 
     @property
     def is_multiplexed(self):  # type: () -> bool

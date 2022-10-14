@@ -339,6 +339,26 @@ def dump(db, f, **options):
             create_sub_element_ho(compu_denominator, "V", "1")  # nenner
             # defaultValue = create_sub_element_ho(compuInternalToPhys,"COMPU-DEFAULT-VALUE")
 
+            # CAN signal interpretation
+            if signal.values:
+                compu_method =  create_sub_element_ho(compu_methods, "COMPU-METHOD")
+                create_sub_element_ho(compu_method, "SHORT-NAME",
+                    "SIGNAL_INTERPRETATION_" + signal.name)
+                create_sub_element_ho(compu_method, "CATEGORY", "TEXTTABLE")
+                compu_int_to_phys = create_sub_element_ho(compu_method, "COMPU-INTERNAL-TO-PHYS")
+                compu_scales = create_sub_element_ho(compu_int_to_phys, "COMPU-SCALES")
+
+                for value, text in signal.values.items():
+                    compu_scale = create_sub_element_ho(compu_scales, "COMPU-SCALE")
+
+                    lower_limit = create_sub_element_ho(compu_scale, "LOWER-LIMIT", str(value))
+                    lower_limit.set("INTERVAL-TYPE", "CLOSED")
+                    upper_limit = create_sub_element_ho(compu_scale, "UPPER-LIMIT", str(value))
+                    upper_limit.set("INTERVAL-TYPE", "CLOSED")
+
+                    compu_const = create_sub_element_ho(compu_scale, "COMPU-CONST")
+                    create_sub_element_ho(compu_const, "VT", text)
+
     #
     # REQUIREMENTS
     #
