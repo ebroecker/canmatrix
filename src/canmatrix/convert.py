@@ -251,6 +251,10 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             for signal in [b for a in db for b in a.signals]:
                 signal.name = signal.attributes.get(options.get('signalNameFromAttrib'), signal.name)
 
+        if options.get('frameNameFromAttrib') is not None:
+            for frame in db:
+                frame.name = frame.attributes.get(options.get('frameNameFromAttrib'), frame.name)
+
         # Max Signal Value Calculation , if max value is 0
         if options.get('calcSignalMaximumsWhereZero') is not None and options['calcSignalMaximumsWhereZero']:
             for signal in [b for a in db for b in a.signals]:

@@ -51,6 +51,7 @@ _Element = lxml.etree._Element
 _MultiplexId = typing.Union[str, int, None]
 _FloatFactory = typing.Callable[[typing.Any], typing.Any]
 
+
 class Earxml:
     def __init__(self):
         self.xml_element_cache = dict()  # type: typing.Dict[str, _Element]
@@ -1528,6 +1529,10 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
 
         new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text, 0))
         comment = ea.get_element_desc(frame_elem)
+        if pdu is not None:
+            new_frame.add_attribute("PduName", ea.get_short_name(pdu))
+        new_frame.add_attribute("FrameTriggeringName", ea.get_short_name(frame_triggering))
+
         if comment is not None:
             new_frame.add_comment(comment)
     else:
@@ -1543,6 +1548,9 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         dlc_elem = ea.get_child(pdu, "LENGTH")
         new_frame = canmatrix.Frame(frame_trig_name_elem.text, arbitration_id=arbitration_id,
                                     size=int(int(dlc_elem.text, 0) / 8))
+        if pdu is not None:
+            new_frame.add_attribute("PduName", ea.get_short_name(pdu))
+        new_frame.add_attribute("FrameTriggeringName", ea.get_short_name(frame_triggering))
 
     if pdu is None:
         logger.error("pdu is None")
@@ -1819,10 +1827,17 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
         db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
         db.add_signal_defines("LongName", 'STRING')
+        db.add_signal_defines("CompuMethodName", 'STRING')
+        db.add_signal_defines("ISignalName", 'STRING')
+        db.add_signal_defines("SysSignalName", 'STRING')
         db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
         db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
         db.add_frame_defines("GenMsgStartValue", 'STRING')
+        db.add_frame_defines("FrameTriggeringName", 'STRING')
+        db.add_frame_defines("PduName", 'STRING')
         db.add_frame_defines("GenMsgStartDelayTime", 'INT 0 65535')
+
+
         db.add_frame_defines(
             "GenMsgSendType",
             'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
@@ -1938,7 +1953,6 @@ def load(file, **options):
     ea = Earxml()
     ea.open(file)
 
-
     com_module = ea.get_short_name_path("/ActiveEcuC/Com")
 
     if com_module is not None and len(com_module) > 0:
@@ -1959,7 +1973,5 @@ def load(file, **options):
         result.update(decode_flexray_helper(ea, float_factory))
 
     result.update(decode_can_helper(ea, float_factory, ignore_cluster_info))
-
-
 
     return result
