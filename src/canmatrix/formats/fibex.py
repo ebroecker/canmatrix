@@ -101,7 +101,7 @@ def dump(db, f, **options):
     cluster.set('ID', 'canCluster1')
     create_short_name_desc(cluster, "clusterShort", "clusterDesc")
     create_sub_element_fx(cluster, "SPEED", "500")
-    create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "false")
+    create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "true")
     create_sub_element_fx(cluster, "BIT-COUNTING-POLICY", "MONOTONE")
     protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN")
     protocol.attrib['{{{pre}}}type'.format(pre=xsi)] = "can:PROTOCOL-TYPE"
@@ -117,6 +117,7 @@ def dump(db, f, **options):
     channels = create_sub_element_fx(elements, "CHANNELS")
     channel = create_sub_element_fx(channels, "CHANNEL")
     # for each channel
+    channel.set('ID', 'CANCHANNEL01')
     create_short_name_desc(channel, "CANCHANNEL01", "Can Channel Description")
 
     # for pdu triggerings
@@ -156,10 +157,19 @@ def dump(db, f, **options):
         function_refs = create_sub_element_fx(ecu, "FUNCTION-REFS")
         func_ref = create_sub_element_fx(function_refs, "FUNCTION-REF")
         func_ref.set("ID-REF", "FCT_" + bu.name)
-        
+
+        controllers = create_sub_element_fx(ecu, "CONTROLLERS")
+        controller = create_sub_element_fx(controllers, "CONTROLLER")
+        create_short_name_desc(controller, bu.name, bu.comment)
+        controller.set('ID', 'Controller_' + bu.name)
+
         connectors = create_sub_element_fx(ecu, "CONNECTORS")
         connector = create_sub_element_fx(connectors, "CONNECTOR")
-        
+        connector.set('ID', 'Connector' + bu.name)
+        channel_ref = create_sub_element_fx(connector, "CHANNEL-REF")
+        channel_ref.set("ID-REF", "CANCHANNEL01")
+        controller_ref = create_sub_element_fx(connector, "CONTROLLER-REF")
+        controller_ref.set("ID-REF", 'Controller_' + bu.name)
         inputs = create_sub_element_fx(connector, "INPUTS")
         for frame in db.frames:
             if bu.name in frame.receivers:
@@ -169,6 +179,7 @@ def dump(db, f, **options):
                 # Reference to PDUs
                 included_pdus = create_sub_element_fx(input_port, "INCLUDED-PDUS")
                 included_pdu = create_sub_element_fx(included_pdus, "INCLUDED-PDU")
+                included_pdu.set('ID', 'input_included_pdu_' + frame.name)
                 pdu_triggering_ref = create_sub_element_fx(included_pdu, "PDU-TRIGGERING-REF")
                 pdu_triggering_ref.set("ID-REF", "PDU_" + frame.name)
 
@@ -182,6 +193,7 @@ def dump(db, f, **options):
                 # Reference to PDUs
                 included_pdus = create_sub_element_fx(input_port, "INCLUDED-PDUS")
                 included_pdu = create_sub_element_fx(included_pdus, "INCLUDED-PDU")
+                included_pdu.set('ID', 'output_included_pdu_' + frame.name)
                 pdu_triggering_ref = create_sub_element_fx(included_pdu, "PDU-TRIGGERING-REF")
                 pdu_triggering_ref.set("ID-REF", "PDU_" + frame.name)
                 
