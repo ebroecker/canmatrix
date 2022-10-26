@@ -518,6 +518,20 @@ def test_without_ecu():
     matrix.frames[0].signals[0].name == "A_B_C_D_E"
 
 
+def test_default_initial_value():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+            BO_ 560 ECU1_Message: 1 ECU1
+              SG_ ECU2_Signal : 0|8@0+ (1,-5) [-2|250] "g" ECU2
+
+            BA_DEF_ SG_ "GenSigStartValue" FLOAT 0.0 100.0;
+            
+            BA_DEF_DEF_ "GenSigStartValue" 10.0;
+    ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.frames[0].signals[0].initial_value == 10
+
+
 def test_int_attribute_zero():
     db = canmatrix.CanMatrix()
     frame = canmatrix.Frame("some Frame")
