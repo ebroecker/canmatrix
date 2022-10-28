@@ -237,8 +237,13 @@ def dump(in_db, f, **options):
         for signal in frame.signals:
             if signal.cycle_time != 0:
                 signal.add_attribute("GenSigCycleTime", signal.cycle_time)
-            if signal.phys2raw(None) != 0 and float(signal.initial_value) != float(db.signal_defines["GenSigStartValue"].defaultValue):
-                signal.add_attribute("GenSigStartValue", signal.phys2raw(None))
+            if "GenSigStartValue" in db.signal_defines:
+                if signal.phys2raw(None) != 0:
+                    if db.signal_defines["GenSigStartValue"].defaultValue is not None and \
+                            float(signal.initial_value) != float(db.signal_defines["GenSigStartValue"].defaultValue):
+                        signal.add_attribute("GenSigStartValue", signal.phys2raw(float(db.signal_defines["GenSigStartValue"].defaultValue)))
+                    elif db.signal_defines["GenSigStartValue"].defaultValue is None:
+                        signal.add_attribute("GenSigStartValue", signal.phys2raw(None))
 
             name = normalized_names[signal]
             if compatibility:
