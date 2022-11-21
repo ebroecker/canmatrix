@@ -77,7 +77,6 @@ class Earxml:
 
     def open(self, filename):
         self.tree = lxml.etree.parse(filename)
-
         self.root = self.tree.getroot()  # type: _Element
 
         self.ns = "{" + self.tree.xpath('namespace-uri(.)') + "}"  # type: str
@@ -1017,7 +1016,14 @@ def decode_compu_method(compu_method, ea, float_factory):
         # keyword definition. 06Jun16
         #####################################################################################################
 
-        if ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text,
+        if len(desc) == 0:
+            vt = ea.get_sub_by_name(compu_scale, 'VT')
+            if vt is not None:
+                desc = vt.text
+
+        rational = ea.get_child(compu_scale, "COMPU-RATIONAL-COEFFS")
+
+        if rational is None and ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text,
                                                                                  float_factory) == canmatrix.utils.decode_number(
             ll.text, float_factory):
             #####################################################################################################
@@ -1025,7 +1031,6 @@ def decode_compu_method(compu_method, ea, float_factory):
             values[ll.text] = desc
 
         # scale_desc = ea.get_element_desc(compu_scale)
-        rational = ea.get_child(compu_scale, "COMPU-RATIONAL-COEFFS")
         if rational is not None:
             numerator_parent = ea.get_child(rational, "COMPU-NUMERATOR")
             numerator = ea.get_children(numerator_parent, "V")
