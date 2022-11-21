@@ -53,6 +53,7 @@ def test_create_comment_string():
     test_string = canmatrix.formats.dbc.create_comment_string("BO_", "ident", "some comment", "utf8", "utf8", "")
     assert test_string == b'CM_ BO_ ident "some comment";\n'
 
+
 def test_parse_comment_from_dbc():
     dbc = io.BytesIO(textwrap.dedent(u'''\
         BO_ 1 someFrame: 1 someEcu
@@ -63,6 +64,7 @@ def test_parse_comment_from_dbc():
 
     matrix = canmatrix.formats.dbc.load(dbc)
     assert matrix.frames[0].signals[0].comment == "resistance setting (0-100%)"
+
 
 def test_parse_multi_line_comment():
     dbc = io.BytesIO(textwrap.dedent(u'''\
@@ -240,6 +242,7 @@ def test_export_of_unknown_defines():
         if line.startswith("BA_ "):
             assert line.endswith('";')
 
+
 def test_braces_in_attributes():
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BO_ 20 frameName: 1 someEcu
@@ -248,6 +251,7 @@ def test_braces_in_attributes():
     BA_ "Signal Age [ms]" SG_ 20 sometext 5000;
      ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+
 
 def test_defines_with_spaces():
     dbc = io.BytesIO(textwrap.dedent(u'''\
@@ -275,6 +279,7 @@ def test_defines_with_spaces():
     assert matrix.frames[0].attributes["Period [ms]"] == '3000'
     assert matrix.env_vars["someEnvVar"]["attributes"]["some attrib"] == '"some space"'
     assert matrix.ecus[0].attributes["Description X"] == "Some Some Text"
+
 
 def test_writing_complex_multiplex():
     db = canmatrix.CanMatrix()
@@ -306,6 +311,7 @@ def test_defines_with_special_cars():
      ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].signals[0].attributes["Accuracy"] == "+/- 10.2 at 55.1%"
+
 
 def test_j1939_frametype():
     dbc = io.BytesIO(textwrap.dedent(u'''\
@@ -346,6 +352,7 @@ def test_attributes_with_spaces_before_semicolumn():
     assert matrix.frames[0].attributes["someAttribute"] == 'str'
     assert matrix.frames[1].attribute("someAttribute", matrix) == 'asd'
 
+
 def test_cycle_time_handling():
     dbc = io.BytesIO(textwrap.dedent(u'''\
         BO_ 17 Frame_1: 8 Vector__XXX
@@ -381,6 +388,7 @@ def test_cycle_time_handling():
     outdbc = io.BytesIO()
     canmatrix.formats.dump({"aa":matrix}, outdbc, "kcd")
 
+
 def test_keep_cycle_time_defines():
     dbc = io.BytesIO(textwrap.dedent(u'''\
         BO_ 17 Frame_1: 8 Vector__XXX
@@ -395,6 +403,7 @@ def test_keep_cycle_time_defines():
     canmatrix.formats.dump(matrix, outdbc, "dbc")
     assert 'BA_DEF_ BO_ "GenMsgCycleTime" INT 0 50000' in outdbc.getvalue().decode('utf8')
     assert 'BA_DEF_DEF_ "GenMsgCycleTime" 0' in outdbc.getvalue().decode('utf8')
+
 
 def test_unique_signal_names():
     db = canmatrix.CanMatrix()
@@ -412,6 +421,7 @@ def test_unique_signal_names():
     assert "signal_name0" not in outdbc.getvalue().decode('utf8')
     assert "signal_name1" not in outdbc.getvalue().decode('utf8')
     assert "signal_name" in outdbc.getvalue().decode('utf8')
+
 
 def test_signal_inital_value():
     dbc = io.BytesIO(textwrap.dedent(u'''\
@@ -480,6 +490,7 @@ def test_missing_space():
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].signals[0].name == "sig1"
 
+
 def test_escaped_quotes():
     dbc = io.BytesIO(textwrap.dedent(r'''
         BO_ 17 Frame_1: 8 Vector__XXX
@@ -516,6 +527,37 @@ def test_without_ecu():
 
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     matrix.frames[0].signals[0].name == "A_B_C_D_E"
+
+
+def test_default_initial_value():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+            BO_ 560 ECU1_Message: 1 ECU1
+              SG_ ECU2_Signal : 0|8@0+ (1,-5) [-2|250] "g" ECU2
+
+            BA_DEF_ SG_ "GenSigStartValue" FLOAT 0.0 100.0;
+            
+            BA_DEF_DEF_ "GenSigStartValue" 10.0;
+    ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.frames[0].signals[0].initial_value == 10
+#    outdbc = io.BytesIO()
+#    canmatrix.formats.dump(matrix, outdbc, "dbc")
+
+
+def test_no_initial_value():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+            BO_ 560 ECU1_Message: 1 ECU1
+              SG_ ECU2_Signal : 0|8@0+ (1,-5) [-2|250] "g" ECU2
+
+            BA_DEF_ SG_ "GenSigStartValue" FLOAT 0.0 100.0;
+    ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(matrix, outdbc, "dbc")
+    assert 'BA_ "GenSigStartValue" SG_ 560 ECU2_Signal 5;' in outdbc.getvalue().decode('utf8')
+#    assert matrix.frames[0].signals[0].initial_value == 10
 
 
 def test_int_attribute_zero():
