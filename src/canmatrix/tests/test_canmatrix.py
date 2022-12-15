@@ -276,7 +276,7 @@ def test_signal_decode_named_value(some_signal):
     some_signal.add_values(255, "Init")
     some_signal.add_values(254, "Error")
     assert some_signal.raw2phys(254, decode_to_str=True) == "Error"
-    assert some_signal.raw2phys(200, decode_to_str=True) == 200
+    assert some_signal.raw2phys(300, decode_to_str=True) == 450
 
 
 def test_signal_encode_named_value(some_signal):
@@ -383,7 +383,7 @@ def the_group():
 
 @pytest.fixture
 def some_signal():
-    return canmatrix.canmatrix.Signal(name="speed", size=8)
+    return canmatrix.canmatrix.Signal(name="speed", size=8, factor=1.5)
 
 
 def test_signalgroup_empty(the_group):
@@ -854,7 +854,7 @@ def test_decoded_signal_phys_value(some_signal):
 
 def test_decoded_signal_named_value():
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
-    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
+    decoded = canmatrix.canmatrix.DecodedSignal(10, signal)
     assert decoded.named_value == "Init"
 
 
