@@ -428,7 +428,7 @@ class Signal(object):
             for value_key, value_string in self.values.items():
                 if value_string == value:
                     value = value_key
-                    break
+                    return value
             else:
                 raise ValueError(
                         "{} is invalid value choice for {}".format(value, self)
@@ -455,12 +455,14 @@ class Signal(object):
         """
         if self.is_float:
             value = self.float_factory(value)
-        result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
         if decode_to_str:
             for value_key, value_string in self.values.items():
-                if value_key == result:
-                    result = value_string
+                if value_key == value:
+                    return value_string
                     break
+
+        result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
+
         return result
 
     def __str__(self):  # type: () -> str
