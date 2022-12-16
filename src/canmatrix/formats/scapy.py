@@ -64,7 +64,7 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
 
     for frame in db.frames:
         scapy_decoder += "class " + frame.name + "(SignalPacket):\n"
-        scapy_decoder += "    fields_desc = [ \n"
+        scapy_decoder += "    fields_desc = [\n"
 
         if frame.is_multiplexed and not frame.is_complex_multiplexed:
             multiplexer = frame.get_multiplexer
@@ -83,7 +83,7 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
     for frame in db.frames:
         if frame.arbitration_id.extended:
             scapy_decoder += "bind_layers(SignalHeader, " + frame.name + ", identifier  = " + hex(
-                frame.arbitration_id.id) + ", flags = extended)\n"
+                frame.arbitration_id.id) + ", flags = \"extended\")\n"
         else:
             scapy_decoder += "bind_layers(SignalHeader, " + frame.name + ", identifier  = " + hex(
                 frame.arbitration_id.id) + ")\n"

@@ -428,7 +428,7 @@ class Signal(object):
             for value_key, value_string in self.values.items():
                 if value_string == value:
                     value = value_key
-                    break
+                    return value
             else:
                 raise ValueError(
                         "{} is invalid value choice for {}".format(value, self)
@@ -439,10 +439,10 @@ class Signal(object):
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
-        raw_value = (value - self.offset) / self.factor
+        raw_value = (value - self.float_factory(self.offset)) / self.float_factory(self.factor)
 
         if not self.is_float:
-            raw_value = int(raw_value)
+            raw_value = int(round(raw_value))
         return raw_value
 
     def raw2phys(self, value, decode_to_str=False):
@@ -455,12 +455,14 @@ class Signal(object):
         """
         if self.is_float:
             value = self.float_factory(value)
-        result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
         if decode_to_str:
             for value_key, value_string in self.values.items():
-                if value_key == result:
-                    result = value_string
+                if value_key == value:
+                    return value_string
                     break
+
+        result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
+
         return result
 
     def __str__(self):  # type: () -> str
@@ -883,6 +885,7 @@ class Frame(object):
     pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
     header_id = attr.ib(default=None)  #type: int
     # header_id
+    pdu_name = attr.ib(default="")  # type: str
 
     @property
     def is_multiplexed(self):  # type: () -> bool

@@ -51,6 +51,7 @@ _Element = lxml.etree._Element
 _MultiplexId = typing.Union[str, int, None]
 _FloatFactory = typing.Callable[[typing.Any], typing.Any]
 
+
 class Earxml:
     def __init__(self):
         self.xml_element_cache = dict()  # type: typing.Dict[str, _Element]
@@ -76,7 +77,6 @@ class Earxml:
 
     def open(self, filename):
         self.tree = lxml.etree.parse(filename)
-
         self.root = self.tree.getroot()  # type: _Element
 
         self.ns = "{" + self.tree.xpath('namespace-uri(.)') + "}"  # type: str
@@ -782,7 +782,7 @@ def dump(dbs, f, **options):
                 compu_int_to_phys = create_sub_element(
                     compu_method, 'COMPU-INTERNAL-TO-PHYS')
                 compu_scales = create_sub_element(compu_int_to_phys, 'COMPU-SCALES')
-                for value in sorted(signal.values, key=lambda x: int(x)):
+                for value in sorted(signal.values, key=lambda x: int(x, 0)):
                     compu_scale = create_sub_element(compu_scales, 'COMPU-SCALE')
                     desc = create_sub_element(compu_scale, 'DESC')
                     l2 = create_sub_element(desc, 'L-2')
@@ -986,7 +986,7 @@ def get_signalgrp_and_signals(sys_signal, sys_signal_array, frame, group_id, ea)
         }
         data_id_elems = ea.get_children(ea.get_child(sys_signal, "TRANSFORMATION-I-SIGNAL-PROPSS"), "DATA-ID")
         if data_id_elems is not None:
-            e2e_transform['data_ids'] = [int(x.text) for x in data_id_elems]
+            e2e_transform['data_ids'] = [int(x.text, 0) for x in data_id_elems]
 
     frame.add_signal_group(ea.get_element_name(sys_signal), group_id, members, e2e_transform)
 
@@ -1016,7 +1016,14 @@ def decode_compu_method(compu_method, ea, float_factory):
         # keyword definition. 06Jun16
         #####################################################################################################
 
-        if ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text,
+        if len(desc) == 0:
+            vt = ea.get_sub_by_name(compu_scale, 'VT')
+            if vt is not None:
+                desc = vt.text
+
+        rational = ea.get_child(compu_scale, "COMPU-RATIONAL-COEFFS")
+
+        if rational is None and ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text,
                                                                                  float_factory) == canmatrix.utils.decode_number(
             ll.text, float_factory):
             #####################################################################################################
@@ -1024,7 +1031,6 @@ def decode_compu_method(compu_method, ea, float_factory):
             values[ll.text] = desc
 
         # scale_desc = ea.get_element_desc(compu_scale)
-        rational = ea.get_child(compu_scale, "COMPU-RATIONAL-COEFFS")
         if rational is not None:
             numerator_parent = ea.get_child(rational, "COMPU-NUMERATOR")
             numerator = ea.get_children(numerator_parent, "V")
@@ -1269,8 +1275,8 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         if start_bit is not None:
             new_signal = canmatrix.Signal(
                 name,
-                start_bit=int(start_bit.text) + bit_offset,
-                size=int(length.text) if length is not None else 0,
+                start_bit=int(start_bit.text, 0) + bit_offset,
+                size=int(length.text, 0) if length is not None else 0,
                 is_little_endian=is_little_endian,
                 is_signed=is_signed,
                 factor=factor,
@@ -1288,7 +1294,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
             if not new_signal.is_little_endian:
                 # startbit of motorola coded signals are MSB in arxml
-                new_signal.set_startbit(int(start_bit.text) + bit_offset, bitNumbering=1)
+                new_signal.set_startbit(int(start_bit.text, 0) + bit_offset, bitNumbering=1)
 
             communication_direction = ea.selector(isignal, "<I-SIGNAL-TRIGGERING>I-SIGNAL-PORT-REF/COMMUNICATION-DIRECTION")
             if len(communication_direction) > 0:
@@ -1336,8 +1342,8 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
     is_signed = False  # unsigned
     multiplexor = canmatrix.Signal(
         "Multiplexor",
-        start_bit=int(selector_start.text),
-        size=int(selector_len.text),
+        start_bit=int(selector_start.text, 0),
+        size=int(selector_len.text, 0),
         is_little_endian=is_little_endian,
         multiplex="Multiplexor")
 
@@ -1439,7 +1445,7 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
             ipdu = ea.follow_ref(payload, "I-PDU-REF")
             logger.info("found secured pdu '%s', dissolved to '%s'", secured_i_pdu_name, ea.get_element_name(ipdu))
         try:
-            offset = int(ea.get_child(ipdu, "OFFSET").text) * 8
+            offset = int(ea.get_child(ipdu, "OFFSET").text, 0) * 8
         except:
             offset = 0
 
@@ -1451,7 +1457,7 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
             pdu_port_type = ea.get_child(cpdu, "I-PDU-PORT-REF").attrib["DEST"]
         except (AttributeError, KeyError):
             pdu_port_type = ""
-        ipdu_length = int(ea.get_child(ipdu, "LENGTH").text)
+        ipdu_length = int(ea.get_child(ipdu, "LENGTH").text, 0)
         ipdu_name = ea.get_element_name(ipdu)
         ipdu_triggering_name = ea.get_element_name(cpdu)
         target_pdu = canmatrix.Pdu(name=ipdu_name, size=ipdu_length, id=header_id,
@@ -1506,14 +1512,15 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
 
     arb_id = ea.get_child(frame_triggering, "IDENTIFIER")
     frame_elem = ea.follow_ref(frame_triggering, "FRAME-REF")
-    frame_name_elem = ea.get_child(frame_triggering, "SHORT-NAME")
-    logger.debug("processing Frame: %s", frame_name_elem.text)
+    frame_trig_name_elem = ea.get_child(frame_triggering, "SHORT-NAME")
+    logger.debug("processing Frame-Trigger: %s", frame_trig_name_elem.text)
     if arb_id is None:
-        logger.info("found Frame %s without arbitration id", frame_name_elem.text)
+        logger.info("found Frame-Trigger %s without arbitration id", frame_trig_name_elem.text)
         return None
-    arbitration_id = int(arb_id.text)
+    arbitration_id = int(arb_id.text, 0)
 
     if frame_elem is not None:
+        logger.debug("Frame: %s", ea.get_element_name(frame_elem))
         if frame_elem in frames_cache:
             return copy.deepcopy(frames_cache[frame_elem])
         dlc_elem = ea.get_child(frame_elem, "FRAME-LENGTH")
@@ -1525,13 +1532,17 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
             pdu = ea.selector(pdu, ">PAYLOAD-REF>I-PDU-REF")[0]
             # logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
 
-        new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text))
+        new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text, 0))
         comment = ea.get_element_desc(frame_elem)
+        if pdu is not None:
+            new_frame.add_attribute("PduName", ea.get_short_name(pdu))
+        new_frame.add_attribute("FrameTriggeringName", ea.get_short_name(frame_triggering))
+
         if comment is not None:
             new_frame.add_comment(comment)
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
-        logger.debug("Frame %s has no FRAME-REF", frame_name_elem.text)
+        logger.debug("Frame-Trigger %s has no FRAME-REF", frame_trig_name_elem.text)
         pdu = ea.selector(frame_triggering, ">I-PDU-TRIGGERING-REF>I-PDU-REF") # AR4.2
         if len(pdu) == 0:
             pdu = ea.selector(frame_triggering, ">PDU-TRIGGERING-REF>I-PDU-REF")
@@ -1540,13 +1551,17 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         else:
             pdu = None
         dlc_elem = ea.get_child(pdu, "LENGTH")
-        new_frame = canmatrix.Frame(frame_name_elem.text, arbitration_id=arbitration_id,
-                                    size=int(int(dlc_elem.text) / 8))
+        new_frame = canmatrix.Frame(frame_trig_name_elem.text, arbitration_id=arbitration_id,
+                                    size=int(int(dlc_elem.text, 0) / 8))
+        if pdu is not None:
+            new_frame.add_attribute("PduName", ea.get_short_name(pdu))
+        new_frame.add_attribute("FrameTriggeringName", ea.get_short_name(frame_triggering))
 
     if pdu is None:
         logger.error("pdu is None")
     else:
-        logger.debug("PDU: " + ea.get_element_name(pdu))
+        new_frame.pdu_name = ea.get_element_name(pdu)
+        logger.debug("PDU: " + new_frame.pdu_name)
 
     if new_frame.comment is None:
         new_frame.add_comment(ea.get_element_desc(pdu))
@@ -1664,18 +1679,18 @@ def ecuc_extract_signal(signal_node, ea):
     # timeout = 0
     for attribute in attributes:
         if attribute.text.endswith("ComBitPosition"):
-            start_bit = int(attribute.getparent().find(".//" + ea.ns + "VALUE").text)
+            start_bit = int(attribute.getparent().find(".//" + ea.ns + "VALUE").text, 0)
         if attribute.text.endswith("ComBitSize"):
-            size = int(attribute.getparent().find(".//" + ea.ns + "VALUE").text)
+            size = int(attribute.getparent().find(".//" + ea.ns + "VALUE").text, 0)
         if attribute.text.endswith("ComSignalEndianness"):
             endianness = attribute.getparent().find(".//" + ea.ns + "VALUE").text
             is_little = "LITTLE_ENDIAN" in endianness
         if attribute.text.endswith("ComSignalInitValue"):
-            init_value = int(attribute.getparent().find(".//" + ea.ns + "VALUE").text)
+            init_value = int(attribute.getparent().find(".//" + ea.ns + "VALUE").text, 0)
         if attribute.text.endswith("ComSignalType"):
             signal_type = attribute.getparent().find(".//" + ea.ns + "VALUE").text
         if attribute.text.endswith("ComTimeout"):
-            timeout = int(attribute.getparent().find(".//" + ea.ns + "VALUE").text)
+            timeout = int(attribute.getparent().find(".//" + ea.ns + "VALUE").text, 0)
     return canmatrix.Signal(ea.get_element_name(signal_node), start_bit=start_bit, size=size,
                             is_little_endian=is_little)
 
@@ -1741,10 +1756,10 @@ def decode_ethernet_helper(ea, float_factory):
                 logger.info("ETH PDU " + ipdu_name + " found")
                 target_frame = canmatrix.Frame(name=ipdu_name)
                 try:
-                    target_frame.header_id = int(header_id.text)
+                    target_frame.header_id = int(header_id.text, 0)
                 except:
                     try:
-                        target_frame.header_id = int(pdu_triggering_header_id_map[ipdu_triggering])
+                        target_frame.header_id = int(pdu_triggering_header_id_map[ipdu_triggering], 0)
                     except:
                         target_frame.header_id = 0
                 #                    continue
@@ -1773,13 +1788,13 @@ def decode_flexray_helper(ea, float_factory):
             frames = ea.findall("FLEXRAY-FRAME-TRIGGERING", pc)
             for frame_element in frames:
                 frame_counter += 1
-                slot_id = int(ea.get_child(frame_element, "SLOT-ID").text)
+                slot_id = int(ea.get_child(frame_element, "SLOT-ID").text, 0)
                 base_cycle = ea.get_child(frame_element, "BASE-CYCLE").text
                 ipdu_triggerings = ea.get_children(frame_element, "I-PDU-TRIGGERING")
                 frame_repetition_cycle = ea.find_children_by_path(frame_element, "CYCLE-REPETITION/CYCLE-REPETITION")[
                     0].text
                 network_endpoints = pc.findall('.//' + ea.ns + "NETWORK-ENDPOINT")
-                frame_size = int(ea.find_children_by_path(frame_element, "FRAME/FRAME-LENGTH")[0].text)
+                frame_size = int(ea.find_children_by_path(frame_element, "FRAME/FRAME-LENGTH")[0].text, 0)
                 frame = canmatrix.Frame(size=frame_size, arbitration_id=frame_counter)
                 frame.slot_id = slot_id
                 frame.base_cycle = base_cycle
@@ -1789,7 +1804,7 @@ def decode_flexray_helper(ea, float_factory):
                     ipdu_triggering_name = ea.get_element_name(ipdu_triggering)
                     ipdu = ea.get_child(ipdu_triggering, "I-PDU")
                     pdu_type = ea.get_child(ipdu_triggering, "I-PDU-REF").attrib["DEST"]
-                    ipdu_length = int(ea.get_child(ipdu, "LENGTH").text)
+                    ipdu_length = int(ea.get_child(ipdu, "LENGTH").text,0)
                     pdu_port_type = ea.get_child(ipdu_triggering, "I-PDU-PORT-REF").attrib["DEST"]
                     ipdu_name = ea.get_element_name(ipdu)
                     target_pdu = canmatrix.Pdu(name=ipdu_name, size=ipdu_length,
@@ -1817,10 +1832,17 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
         db.add_ecu_defines("NWM-Knoten", 'ENUM  "nein","ja"')
         db.add_signal_defines("LongName", 'STRING')
+        db.add_signal_defines("CompuMethodName", 'STRING')
+        db.add_signal_defines("ISignalName", 'STRING')
+        db.add_signal_defines("SysSignalName", 'STRING')
         db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
         db.add_frame_defines("GenMsgNrOfRepetitions", 'INT 0 65535')
         db.add_frame_defines("GenMsgStartValue", 'STRING')
+        db.add_frame_defines("FrameTriggeringName", 'STRING')
+        db.add_frame_defines("PduName", 'STRING')
         db.add_frame_defines("GenMsgStartDelayTime", 'INT 0 65535')
+
+
         db.add_frame_defines(
             "GenMsgSendType",
             'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
@@ -1837,13 +1859,13 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
             bus_name = ea.get_element_name(cc)
 
             if speed is not None:
-                db.baudrate = int(speed.text)
+                db.baudrate = int(speed.text, 0)
             elif baudrate_elem is not None:
-                db.baudrate = int(baudrate_elem.text)
+                db.baudrate = int(baudrate_elem.text, 0)
 
             logger.debug("Baudrate: " + str(db.baudrate))
             if fd_baudrate_elem is not None:
-                db.fd_baudrate = int(fd_baudrate_elem.text)
+                db.fd_baudrate = int(fd_baudrate_elem.text, 0)
 
             can_frame_trig = ea.selector(cc, "/CAN-PHYSICAL-CHANNEL//CAN-FRAME-TRIGGERING")
 
@@ -1851,16 +1873,16 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         for frameTrig in can_frame_trig:  # type: _Element
             frame = get_frame(frameTrig, ea, multiplex_translation, float_factory, headers_are_littleendian)
             if frame is not None:
-                comm_direction = ea.selector(frameTrig, ">>FRAME-PORT-REF/COMMUNICATION-DIRECTION")
-                if len(comm_direction) > 0:
-                    ecu_elem = ea.get_ecu_instance(element=comm_direction[0])
+                comm_directions = ea.selector(frameTrig, ">>FRAME-PORT-REF/COMMUNICATION-DIRECTION")
+                for comm_direction in comm_directions:
+                    ecu_elem = ea.get_ecu_instance(element=comm_direction)
                     if ecu_elem is not None:
                         if ecu_elem in nodes:
                             ecu = nodes[ecu_elem]
                         else:
                             ecu = process_ecu(ecu_elem, ea)
                             nodes[ecu_elem] = ecu
-                        if comm_direction[0].text == "OUT":
+                        if comm_direction.text == "OUT":
                             frame.add_transmitter(ecu.name)
                         else:
                             frame.add_receiver(ecu.name)
@@ -1936,7 +1958,6 @@ def load(file, **options):
     ea = Earxml()
     ea.open(file)
 
-
     com_module = ea.get_short_name_path("/ActiveEcuC/Com")
 
     if com_module is not None and len(com_module) > 0:
@@ -1957,7 +1978,5 @@ def load(file, **options):
         result.update(decode_flexray_helper(ea, float_factory))
 
     result.update(decode_can_helper(ea, float_factory, ignore_cluster_info))
-
-
 
     return result
