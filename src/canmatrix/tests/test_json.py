@@ -115,6 +115,7 @@ def test_import_min_max():
     assert matrix.frames[0].signals[0].min == -5
     assert matrix.frames[0].signals[0].max == 42
 
+
 def test_import_native():
     json_input = """{
         "messages": [
@@ -208,6 +209,7 @@ def test_export_native():
     assert (data['messages'][0]['signals'][0]['factor'] == 0.123)
     assert (data['messages'][0]['signals'][0]['offset'] == 1)
 
+
 def test_export_all_native():
     matrix = canmatrix.canmatrix.CanMatrix()
     frame = canmatrix.canmatrix.Frame(name="test_frame", size=6, arbitration_id=10)
@@ -222,3 +224,16 @@ def test_export_all_native():
     assert (data['messages'][0]['signals'][0]['factor'] == 0.123)
     assert (data['messages'][0]['signals'][0]['offset'] == 1)
     assert (data['messages'][0]['is_fd'] is False)
+
+
+def test_export_extended():
+    matrix = canmatrix.canmatrix.CanMatrix()
+    frame = canmatrix.canmatrix.Frame(name="test_frame", size=6, arbitration_id=canmatrix.canmatrix.ArbitrationId(extended=True, id=10))
+    frame.pgn=22
+    signal = canmatrix.Signal(name="someSigName", size=40)
+    frame.add_signal(signal)
+    matrix.add_frame(frame)
+    out_file = io.BytesIO()
+    canmatrix.formats.dump(matrix, out_file, "json")
+#    data = json.loads(out_file.getvalue().decode("utf-8"))
+    matrix = canmatrix.formats.loads_flat(out_file.getvalue().decode("utf-8"), "json", jsonExportAll=True)

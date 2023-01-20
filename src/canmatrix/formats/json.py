@@ -195,7 +195,8 @@ def load(f, **_options):
     if "messages" in json_data:
         for frame in json_data["messages"]:
             # new_frame = Frame(frame["id"],frame["name"],8,None)
-            new_frame = canmatrix.Frame(frame["name"], arbitration_id=frame["id"], size=8)
+            arb_id = canmatrix.canmatrix.ArbitrationId(id=frame["id"], extended=frame.get("is_extended_frame", "False"))
+            new_frame = canmatrix.Frame(frame["name"], arbitration_id=arb_id, size=8)
             if "length" in frame:
                 new_frame.size = frame["length"]
 
