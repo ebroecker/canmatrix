@@ -234,7 +234,8 @@ def load(f, **_options):
                         is_little_endian = True
                     else:
                         is_little_endian = False
-                    start_bit = int(fe.selector(signal_instance, "/BIT-POSITION")[0].text)
+
+                    start_bit = int(fe.selector(signal_instance, "/BIT-POSITION")[0].text, 0)
                     signal = fe.selector(signal_instance, ">SIGNAL-REF")[0]
                     ecu_instance_refs = fe.selector(signal_instance, "<<ECU")
                     receiver_ecus = []
@@ -280,7 +281,10 @@ def load(f, **_options):
                                 value_value = fe.selector(compu_scale, "!LOWER-LIMIT")[0].text
                                 sig.add_values(value_value, value_name)
                     sig.is_little_endian = is_little_endian
-                    sig.start_bit = start_bit
+                    if not sig.is_little_endian:
+                        sig.set_startbit(start_bit, bitNumbering=1)
+                    else:
+                        sig.start_bit = start_bit
                     sig.size = bit_length
                     sig.receivers = list(set(receiver_ecus))
 
