@@ -104,6 +104,14 @@ def dump(db, f, **options):
                 symbolic_frame["attributes"] = frame_attributes
             export_dict['messages'].append(symbolic_frame)
     else:  # export_all
+        _define_mapping = {"signal_defines": db.signal_defines, "frame_defines": db.frame_defines,
+                           "global_defines": db.global_defines, "env_defines": db.env_defines, "ecu_defines": db.ecu_defines}
+        for define_type in _define_mapping:
+            export_dict[define_type] = [{"name": a,
+                                         "define": _define_mapping[define_type][a].definition,
+                                         "default": _define_mapping[define_type][a].defaultValue,
+                                         "type": _define_mapping[define_type][a].type} for a in _define_mapping[define_type]]
+        export_dict['ecus'] = {ecu.name: ecu.comment for ecu in db.ecus}
         for frame in db.frames:
             frame_attributes = {attribute: frame.attribute(attribute, db=db) for attribute in db.frame_defines}
             symbolic_signals = []
@@ -194,6 +202,10 @@ def load(f, **_options):
                     key = int(key)
                 db.value_tables.setdefault(val_tab_name, {})[key] = val
 
+    if "ecus" in json_data:
+        for ecu in json_data["ecus"]:
+            new_ecu = canmatrix.Ecu(name=ecu, comment=json_data["ecus"][ecu])
+            db.add_ecu(new_ecu)
     if "messages" in json_data:
         for frame in json_data["messages"]:
             # new_frame = Frame(frame["id"],frame["name"],8,None)
@@ -245,6 +257,12 @@ def load(f, **_options):
                         new_signal.start_bit, bitNumbering=1, startLittle=True)
                 new_frame.add_signal(new_signal)
             db.add_frame(new_frame)
+
+    _define_list = ["signal_defines", "frame_defines", "global_defines", "env_defines", "ecu_defines"]
+    for define_type in _define_list:
+        if define_type in json_data:
+            for define in json_data[define_type]:
+                eval("db.add_" + define_type + f"('{define['name']}', '{define['define']}')")
     f.close()
     db.update_ecu_list()
     return db
