@@ -134,8 +134,9 @@ def dump(db, f, **options):
                     "comment": signal.comment,
                     "attributes": attributes,
                     "values": values,
-                    "is_multiplexer" : signal.is_multiplexer,
-                    "mux_value" : signal.mux_val
+                    "is_multiplexer": signal.is_multiplexer,
+                    "mux_value": signal.mux_val,
+                    "receivers": signal.receivers
                 }
                 if signal.multiplex is not None:
                     symbolic_signal["multiplex"] = signal.multiplex
@@ -156,7 +157,8 @@ def dump(db, f, **options):
                  "signals": symbolic_signals,
                  "attributes": frame_attributes,
                  "comment": frame.comment,
-                 "length": frame.size})
+                 "length": frame.size,
+                 "transmitters": frame.transmitters})
     if sys.version_info > (3, 0):
         import io
         temp = io.TextIOWrapper(f, encoding='UTF-8')
@@ -201,7 +203,8 @@ def load(f, **_options):
                 new_frame.size = frame["length"]
 
             new_frame.arbitration_id.extended = frame.get("is_extended_frame", False)
-
+            if "transmitters" in frame:
+                new_frame.transmitters = frame["transmitters"]
             for signal in frame["signals"]:
                 is_little_endian = not signal.get("is_big_endian", False)
                 is_float = signal.get("is_float", False)
@@ -233,10 +236,15 @@ def load(f, **_options):
                 if signal.get("values", False):
                     for key in signal["values"]:
                         new_signal.add_values(key, signal["values"][key])
+
+                if signal.get("receivers", False):
+                    for ecu in signal["receivers"]:
+                        new_signal.add_receiver(ecu)
                 if new_signal.is_little_endian is False:
                     new_signal.set_startbit(
                         new_signal.start_bit, bitNumbering=1, startLittle=True)
                 new_frame.add_signal(new_signal)
             db.add_frame(new_frame)
     f.close()
+    db.update_ecu_list()
     return db
