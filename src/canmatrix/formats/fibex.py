@@ -190,6 +190,7 @@ def load(f, **_options):
         if "CAN" not in fe.selector(cluster, "//PROTOCOL")[0].text:
             logger.info(fe.sn(cluster) + " seems not to be a CAN cluster - ignoring")
             continue
+
         db = canmatrix.CanMatrix()
         result[fe.sn(cluster)] = db
         channels = fe.selector(cluster, ">>CHANNEL-REF")
@@ -227,7 +228,9 @@ def load(f, **_options):
                 frame.arbitration_id = canmatrix.ArbitrationId(extended=extended, id=arbitration_id)
 
                 frame.add_comment(fe.get_desc_or_longname(pdu))
-
+                if "CAN-FD" in [a.text for a in
+                     fe.selector(ft, "//CAN-FRAME-TX-BEHAVIOR") + fe.selector(ft, "//CAN-FRAME-RX-BEHAVIOR")]:
+                    frame.is_fd = True
                 for signal_instance in fe.selector(pdu, "//SIGNAL-INSTANCE"):
                     byte_order_element = fe.selector(signal_instance, "/IS-HIGH-LOW-BYTE-ORDER")
                     if byte_order_element[0].text == "false":
