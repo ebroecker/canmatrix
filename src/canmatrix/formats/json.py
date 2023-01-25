@@ -258,11 +258,13 @@ def load(f, **_options):
                 new_frame.add_signal(new_signal)
             db.add_frame(new_frame)
 
-    _define_list = ["signal_defines", "frame_defines", "global_defines", "env_defines", "ecu_defines"]
-    for define_type in _define_list:
+    _define_list = {"signal_defines": db.add_signal_defines, "frame_defines": db.add_frame_defines,
+                    "global_defines": db.add_global_defines, "env_defines": db.add_env_defines,
+                    "ecu_defines": db.add_ecu_defines}
+    for define_type, fptr in _define_list.items():
         if define_type in json_data:
             for define in json_data[define_type]:
-                eval("db.add_" + define_type + f"('{define['name']}', '{define['define']}')")
+                fptr(define['name'], define['define'])
     f.close()
     db.update_ecu_list()
     return db
