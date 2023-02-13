@@ -132,6 +132,14 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             for renameTuple in rename_tuples:
                 old, new = renameTuple.split(':')
                 db.rename_frame(old, new)
+
+        if 'compressFrame' in options and options['compressFrame'] is not None:
+            frames_cmdline = options['compressFrame'].split(',')
+            for frame_name in frames_cmdline:
+                frames = db.glob_frames(frame_name)
+                for frame in frames:
+                    frame.compress()
+                    
         if 'deleteFrame' in options and options['deleteFrame'] is not None:
             delete_frame_names = options['deleteFrame'].split(',')
             for frame_name in delete_frame_names:
