@@ -379,7 +379,7 @@ ____________________
 
   --compressFrame=FRAME
 
-                        compress Frame form databases.  Syntax: --renameFrame=frame1,frame2,*
+                        compress Frame form databases.  Syntax: --compressFrame=frame1,frame2,*
 
   --deleteSignal=DELETESIGNAL
 
