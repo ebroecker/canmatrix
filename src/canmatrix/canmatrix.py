@@ -1546,6 +1546,54 @@ class Frame(object):
 
         else:
             return decoded
+    
+    def _compress_little(self):
+        for signal in self.signals:
+            if not signal.is_little_endian:
+                return
+        gap_found = True
+        while gap_found:
+            gap_found = False
+            layout = self.get_frame_layout()
+            gap_len = None
+            for byte in range(len(layout)//8):
+                for bit in range(7,-1,-1):
+                    bit_nr = byte*8+bit
+                    signal_list = layout[bit_nr]
+                    if signal_list == []:
+                        if gap_len is None:
+                            gap_len = 1
+                        else:
+                            gap_len += 1
+                    else:
+                        if gap_len is not None:
+                            signal = layout[bit_nr][0] 
+                            signal.start_bit -= gap_len
+                            gap_found = True
+                            break
+                if gap_found:
+                    break
+
+    def compress(self):
+        for signal in self.signals:
+            if signal.is_little_endian:
+                return self._compress_little()
+        gap_found = True
+        while gap_found:
+            gap_found = False
+            layout = self.get_frame_layout()
+            free_start = None
+            for bit_nr, signal_list in enumerate(layout):
+                if signal_list == []:
+                    if free_start is None:
+                        free_start = bit_nr
+                else:
+                    if free_start is not None:
+                        signal = layout[bit_nr][0] 
+                        signal.start_bit = free_start
+                        gap_found = True
+                        break
+
 
     def __str__(self):  # type: () -> str
         """Represent the frame by its name only."""

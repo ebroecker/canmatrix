@@ -248,7 +248,7 @@ class Earxml:
         result_list = [start_element]
         last_found_token = 0
         while start_pos < len(selector):
-            token_match = re.search(r'//|/|>>|>|<<|<|#|$', selector[start_pos:])
+            token_match = re.search(r'//|/|>>|>|<<|<|#|:|$', selector[start_pos:])
             found_token = token_match.span()
 
             if start_pos > 0:  # at least one Token found...
@@ -273,6 +273,13 @@ class Earxml:
                     result_list = [self.find_references_of_type(a, value, referencable_parent=True)[0]
                                    for a in result_list
                                    if len(self.find_references_of_type(a, value, referencable_parent=True)) > 0]
+                elif token == ":":
+                    filtered_results = []
+                    for item in result_list:
+                        if value == item.text:
+                            filtered_results.append(item)
+                    result_list = filtered_results
+
                 elif token == "#":
                     sn_snippets = value.split("|")
                     filtered_results = []
@@ -1085,7 +1092,7 @@ def ar_byteorder_is_little(in_string):
     return False
 
 
-def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0):
+def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0, signal_triggerings=[]):
     # type: (typing.Sequence[_Element], typing.Union[canmatrix.Frame, canmatrix.Pdu], Earxml, int, typing.Callable, int) -> None
     """Add signals from xml to the Frame."""
 
@@ -1114,6 +1121,16 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             logger.debug(
                 'Frame %s, no isignal for %s found',
                 frame.name, ea.get_child(signal, "SHORT-NAME").text)
+
+        receiver = []  # type: typing.List[str]
+
+        for triggering in signal_triggerings:
+            try:
+                if ea.selector(triggering, ">I-SIGNAL-REF")[0] == isignal:
+                    reciving_ecu_instances = ea.selector(triggering, ">>I-SIGNAL-PORT-REF//COMMUNICATION-DIRECTION:IN/../../..")
+                    receiver = [ea.get_short_name(a) for a in reciving_ecu_instances]
+            except IndexError:
+                pass
 
         base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")  # AR4
         if base_type is None:
@@ -1149,7 +1166,6 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         signal_min = None  # type: canmatrix.types.OptionalPhysicalValue
         signal_max = None  # type: canmatrix.types.OptionalPhysicalValue
-        receiver = []  # type: typing.List[str]
 
         signal_description = ea.get_element_desc(system_signal)
 
@@ -1518,6 +1534,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         logger.info("found Frame-Trigger %s without arbitration id", frame_trig_name_elem.text)
         return None
     arbitration_id = int(arb_id.text, 0)
+    isignaltriggerings_of_current_cluster = ea.selector(frame_triggering, "/..//I-SIGNAL-TRIGGERING")
 
     if frame_elem is not None:
         logger.debug("Frame: %s", ea.get_element_name(frame_elem))
@@ -1607,7 +1624,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     else:
         pdu_sig_mapping = ea.selector(pdu, "//I-SIGNAL-TO-I-PDU-MAPPING")
         if pdu_sig_mapping:
-            get_signals(pdu_sig_mapping, new_frame, ea, None, float_factory)
+            get_signals(pdu_sig_mapping, new_frame, ea, None, float_factory, signal_triggerings=isignaltriggerings_of_current_cluster)
         # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
         else:  # AR 4.2
             pdu_trigs = ea.follow_all_ref(frame_triggering, "PDU-TRIGGERINGS-REF")
@@ -1626,7 +1643,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
                                      ea.get_element_name(ipdus))
                     # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
                     get_signals(signal_to_pdu_maps, new_frame, ea, None,
-                                float_factory)  # todo BUG expects list, not item
+                                float_factory, signal_triggerings=isignaltriggerings_of_current_cluster)  # todo BUG expects list, not item
             else:
                 logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
     if new_frame.is_pdu_container and new_frame.cycle_time == 0:
@@ -1638,6 +1655,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     new_frame.fit_dlc()
     if frame_elem is not None:
         frames_cache[frame_elem] = new_frame
+
     return copy.deepcopy(new_frame)
 
 

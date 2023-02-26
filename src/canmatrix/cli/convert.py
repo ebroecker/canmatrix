@@ -65,6 +65,7 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--deleteSignalAttributes', 'deleteSignalAttributes', help="delete attributes from all signals\nExample --deleteSignalAttributes GenMsgSomeVar,CycleTime")
 @click.option('--deleteFrame', 'deleteFrame', help="delete Frame form databases. (comma separated list)\nSyntax: --deleteFrame=myFrame1,mySecondFrame")
 @click.option('--renameFrame', 'renameFrame', help="increment each frame.id in database by increment\nSyntax: --frameIdIncrement=increment")
+@click.option('--compressFrame', 'compressFrame', help="remove gaps between signals in Frame. (comma separated list of Frames)\nSyntax: --compressFrame=myFrame1,mySecondFrame")
 @click.option('--addFrameReceiver', 'addFrameReceiver', help="add receiver Ecu to frame(s) (comma separated list)\nSyntax: --addFrameReceiver=framename:myNewEcu,mySecondEcu:myNEWEcu")
 @click.option('--changeFrameId', 'changeFrameId', help="change frame.id in database\nSyntax: --changeFrameId=oldId:newId")
 @click.option('--setFrameFd', 'setFrameFd', help="set Frame from database to canfd. (comma separated list)\nSyntax: --setFrameFd=myFrame1,mySecondFrame")
