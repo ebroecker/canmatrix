@@ -1092,3 +1092,27 @@ def test_baudrate():
     assert cm.baudrate == 500000
     cm.fd_baudrate = 1000000
     assert cm.fd_baudrate == 1000000
+
+def test_frame_compress():
+    frame = canmatrix.Frame("my_frame", size=8)
+    frame.add_signal(canmatrix.Signal(name = "Sig1", start_bit = 2, size = 13, is_little_endian=False ))
+    frame.add_signal(canmatrix.Signal(name = "Sig2", start_bit = 17, size = 14, is_little_endian=False))
+    frame.add_signal(canmatrix.Signal(name = "Sig3", start_bit = 35, size = 6, is_little_endian=False))
+    frame.add_signal(canmatrix.Signal(name = "Sig4", start_bit = 49, size = 8, is_little_endian=False))
+    frame.compress()
+    assert frame.signal_by_name("Sig1").start_bit == 0
+    assert frame.signal_by_name("Sig2").start_bit == 13
+    assert frame.signal_by_name("Sig3").start_bit == 27
+    assert frame.signal_by_name("Sig4").start_bit == 33
+
+    frame = canmatrix.Frame("my_frame", size=8)
+    # some signals overlap!
+    frame.add_signal(canmatrix.Signal(name = "Sig1", start_bit = 12, size = 12, is_little_endian=True))
+    frame.add_signal(canmatrix.Signal(name = "Sig2", start_bit = 17, size = 9, is_little_endian=True))
+    frame.add_signal(canmatrix.Signal(name = "Sig3", start_bit = 33, size = 5, is_little_endian=True))
+    frame.add_signal(canmatrix.Signal(name = "Sig4", start_bit = 48, size = 9, is_little_endian=True))
+    frame.compress()
+    assert frame.signal_by_name("Sig1").start_bit == 0
+    assert frame.signal_by_name("Sig2").start_bit == 12
+    assert frame.signal_by_name("Sig3").start_bit == 21
+    assert frame.signal_by_name("Sig4").start_bit == 26
