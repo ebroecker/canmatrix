@@ -194,7 +194,7 @@ def test_import_export_enums():
     f_in = io.BytesIO(f_out.getvalue())
     new_matrix = canmatrix.formats.json.load(f_in)
 
-    assert new_matrix.value_tables == {"Options": {0: "North", 1: "East", 2: "South", 3: "West"}}
+    assert new_matrix.value_tables == {"Options": {"0": "North", "1": "East", "2": "South", "3": "West"}}
 
 
 def test_export_native():
