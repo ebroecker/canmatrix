@@ -63,7 +63,7 @@ class MissingMuxSignal(ExceptionTemplate): pass
 class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
 class ArbitrationIdOutOfRange(ExceptionTemplate): pass
-class J1939needsExtendedIdetifier(ExceptionTemplate): pass
+class J1939NeedsExtendedIdentifier(ExceptionTemplate): pass
 class DecodingConatainerPdu(ExceptionTemplate): pass
 class EncodingConatainerPdu(ExceptionTemplate): pass
 
@@ -643,7 +643,7 @@ class ArbitrationId(object):
     @property
     def pgn(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         # PGN is bits 8-25 of the 29-Bit Extended CAN-ID
         # Made up of PDU-S (8-15), PDU-F (16-23), Data Page (24) & Extended Data Page (25)
         # If PDU-F >= 240 the PDU-S is interpreted as Group Extension
@@ -677,7 +677,7 @@ class ArbitrationId(object):
     @property
     def j1939_destination(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         if self.j1939_pdu_format == 1:
             destination = self.j1939_ps
         else:
@@ -687,7 +687,7 @@ class ArbitrationId(object):
     @property
     def j1939_source(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return self.id & 0xFF
 
     @j1939_source.setter
@@ -698,13 +698,13 @@ class ArbitrationId(object):
     @property
     def j1939_ps(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 8) & 0xFF
 
     @property
     def j1939_pf(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 16) & 0xFF
 
     @property
@@ -714,19 +714,19 @@ class ArbitrationId(object):
     @property
     def j1939_dp(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 24) & 0x1
 
     @property
     def j1939_edp(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 25) & 0x1
 
     @property
     def j1939_priority(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 26) & 0x7
 
     @j1939_priority.setter
