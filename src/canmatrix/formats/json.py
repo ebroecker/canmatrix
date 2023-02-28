@@ -278,6 +278,10 @@ def load(f, **_options):
                     for key in signal["values"]:
                         new_signal.add_values(key, signal["values"][key])
 
+                if signal.get("attributes", False):
+                    for key in signal["attributes"]:
+                        new_signal.add_attribute(key, signal["attributes"][key])
+
                 if "comment" in signal:
                     new_signal.comment = signal["comment"]
 
