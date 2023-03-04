@@ -29,10 +29,15 @@ from __future__ import absolute_import, division, print_function
 
 import typing
 from builtins import *
-
 import lxml.etree
-
+import logging
 import canmatrix
+import re
+import decimal
+
+clusterImporter = 1
+
+logger = logging.getLogger(__name__)
 
 fx = "http://www.asam.net/xml/fbx"
 ho = "http://www.asam.net/xml"
@@ -71,6 +76,226 @@ def create_sub_element_ho(parent, element_name, element_text=None):
     if element_text is not None:
         new.text = element_text
     return new
+
+
+class Fe:
+    def __init__(self, filename):
+        self.tree = lxml.etree.parse(filename)
+        self.root = self.tree.getroot()  # type: _Element
+
+        self.ns = "{" + self.tree.xpath('namespace-uri(.)') + "}"  # type: str
+        self.nsp = self.tree.xpath('namespace-uri(.)')
+        self.ans = "{http://www.asam.net/xml}"
+        self._id_cache = {a.attrib["ID"]:a for a in self.root.xpath(".//*[@ID]")}
+        self._id_rev_cache = {}
+        for referencer in self.root.xpath(".//*[@ID-REF]"):
+            ref_id = referencer.attrib["ID-REF"]
+            if ref_id not in self._id_rev_cache:
+                self._id_rev_cache[ref_id] = [referencer]
+            else:
+                self._id_rev_cache[ref_id].append(referencer)
+
+    def sn(self, tag):
+        sn = tag.find("./" + self.ans + "SHORT-NAME").text
+        return sn
+
+    def get_referencable_parent(self, xml_element):
+        path = ""
+        while xml_element != self.root:
+            try:
+               current_short_name = self.sn(xml_element)
+               return xml_element
+            except AttributeError:
+                pass
+            xml_element = xml_element.getparent()
+        return xml_element
+
+    def find_parent(self, start_element, parent_tag):
+        while start_element != self.root:
+            if start_element.tag == self.ns + parent_tag or start_element == self.ans + parent_tag:
+                return start_element
+            start_element = start_element.getparent()
+        return None
+
+    def get_desc_or_longname(self, element):
+        long_name_elements = self.selector(element, "./!LONG-NAME")
+        if len(long_name_elements) > 0:
+            return long_name_elements[0].text
+
+        desc_elements = self.selector(element, "./!DESC")
+        if len(desc_elements) > 0:
+            return desc_elements[0].text
+
+        return ""
+
+    def selector(self, start_element, selector):
+        start_pos = 0
+        token = ""
+        result_list = [start_element]
+        last_found_token = 0
+        while start_pos < len(selector):
+            token_match = re.search(r'//|/!|/|!|>>|>!|<<!|<<|\^|>|$', selector[start_pos:])
+            found_token = token_match.span()
+            if start_pos > 0:  # at least one Token found...
+                value = selector[last_found_token:start_pos + found_token[0]]
+                if token == "//":
+                    result_list = [c for a in result_list for c in a.findall(".//" + self.ns + value)]
+                elif token == "/!":
+                    result_list = [c for a in result_list for c in a.findall(".//" + self.ans + value)]
+                elif token == "/":
+                    if value == "..":
+                        result_list = [a.getparent() for a in result_list]
+                    else:
+                        result_list = [a.find("./" + self.ns + value) for a in result_list]
+                elif token == "!":
+                    result_list = [a.find("./" + self.ans + value) for a in result_list]
+                elif token == ">":
+                    start_points = [a.find("./" + self.ns + value).attrib["ID-REF"] for a in result_list]
+                    result_list = [self._id_cache[a] for a in start_points]
+                elif token == "<<":
+                    id_list = [a.attrib["ID"] for a in result_list]
+                    result_list = [b for a in id_list for b in self._id_rev_cache[a]]
+                    result_list = [a for a in result_list if self.get_referencable_parent(a) is not None and self.get_referencable_parent(a).tag.endswith(value)]
+                elif token == "<<!":
+                    id_list = [a.attrib["ID"] for a in result_list]
+                    result_list = [b for a in id_list for b in self._id_rev_cache[a]]
+                elif token == ">>":
+                    start_points = [c.attrib["ID-REF"] for a in result_list for c in a.findall(".//" + self.ns + value)]
+                    result_list = [self._id_cache[a] for a in start_points]
+                elif token == ">!":
+                    start_points = [c.attrib["ID-REF"] for a in result_list for c in a.findall(".//" + self.ans + value)]
+                    result_list = [self._id_cache[a] for a in start_points]
+                elif token == ">>":
+                    start_points = [c.attrib["ID-REF"] for a in result_list for c in a.findall(".//" + self.ns + value)]
+                    result_list = [self._id_cache[a] for a in start_points]
+                elif token == "^":
+                    result_list = [self.find_parent(a, value) for a in result_list if a is not None and self.find_parent(a, value) is not None]
+
+            result_list = [a for a in result_list if a is not None]
+            last_found_token = found_token[1] + start_pos
+            token = selector[start_pos + found_token[0]:start_pos + found_token[1]]
+            start_pos += found_token[1]
+        return sorted(result_list, key=lambda element: element.sourceline)
+
+
+def load(f, **_options):
+    fe = Fe(f)
+    result = {}
+
+    clusters = fe.selector(fe.root, "//CLUSTER")
+    names = [fe.sn(a) for a in clusters]
+    logger.info("Found clusters: " + ",".join(names))
+
+    for cluster in clusters:
+        if "CAN" not in fe.selector(cluster, "//PROTOCOL")[0].text:
+            logger.info(fe.sn(cluster) + " seems not to be a CAN cluster - ignoring")
+            continue
+
+        db = canmatrix.CanMatrix()
+        result[fe.sn(cluster)] = db
+        channels = fe.selector(cluster, ">>CHANNEL-REF")
+        for channel in channels:
+            for ft in fe.selector(channel, "//FRAME-TRIGGERING"):
+                ports = fe.selector(ft, "<<ECU/..")
+                output_ports = [a for a in ports if a.tag == fe.ns + "OUTPUT-PORT"]
+                sending_ecus = [fe.get_referencable_parent(a) for a in output_ports]
+                arbitration_id_element = fe.selector(ft, "//IDENTIFIER-VALUE")[0]
+                arbitration_id = int(arbitration_id_element.text)
+                extended = arbitration_id_element.attrib.get("EXTENDED-ADDRESSING", 'false') == 'true'
+                frame_element = fe.selector(ft, ">FRAME-REF")[0]
+                frame_size = int(fe.selector(frame_element, "/BYTE-LENGTH")[0].text)
+                pdu = fe.selector(frame_element, ">>PDU-REF")[0]
+
+                frame_name = fe.sn(pdu)
+#                fe.selector(pdu, "<<!PDU-TRIGGERING")
+                frame = canmatrix.Frame(name=frame_name)
+                frame.size = frame_size
+                if len(output_ports) > 0:
+                    pdu_triggerings = fe.selector(output_ports[0], ">>PDU-TRIGGERING-REF")
+                    if len(pdu_triggerings) > 0:
+                        cyclic_timing_element = fe.selector(pdu_triggerings[0],
+                                                    "/TIMINGS/CYCLIC-TIMING/REPEATING-TIME-RANGE/VALUE")
+                if len(cyclic_timing_element) > 0:
+                    time_value_string = cyclic_timing_element[0].text
+                    if time_value_string.startswith("PT") and time_value_string.endswith("S"):
+                        frame.cycle_time = decimal.Decimal(time_value_string[2:-1])*1000
+                frame.transmitters = [fe.sn(a) for a in sending_ecus]
+                for ecu_element in sending_ecus:
+                    ecu_name = fe.sn(ecu_element)
+                    cm_ecu = canmatrix.Ecu(ecu_name)
+                    cm_ecu.add_comment(fe.get_desc_or_longname(ecu_element))
+                    db.add_ecu(cm_ecu)
+                frame.arbitration_id = canmatrix.ArbitrationId(extended=extended, id=arbitration_id)
+
+                frame.add_comment(fe.get_desc_or_longname(pdu))
+                if "CAN-FD" in [a.text for a in
+                     fe.selector(ft, "//CAN-FRAME-TX-BEHAVIOR") + fe.selector(ft, "//CAN-FRAME-RX-BEHAVIOR")]:
+                    frame.is_fd = True
+                for signal_instance in fe.selector(pdu, "//SIGNAL-INSTANCE"):
+                    byte_order_element = fe.selector(signal_instance, "/IS-HIGH-LOW-BYTE-ORDER")
+                    if byte_order_element[0].text == "false":
+                        is_little_endian = True
+                    else:
+                        is_little_endian = False
+
+                    start_bit = int(fe.selector(signal_instance, "/BIT-POSITION")[0].text, 0)
+                    signal = fe.selector(signal_instance, ">SIGNAL-REF")[0]
+                    ecu_instance_refs = fe.selector(signal_instance, "<<ECU")
+                    receiver_ecus = []
+                    for ecu_instance_ref in ecu_instance_refs:
+                        if len(fe.selector(ecu_instance_ref, "^INPUT-PORT")) > 0:
+                            ecu_name = fe.sn(fe.get_referencable_parent(ecu_instance_ref))
+                            receiver_ecus.append(ecu_name)
+                            db.add_ecu(canmatrix.Ecu(ecu_name))
+
+                    signal_name = fe.sn(signal)
+                    coding = fe.selector(signal, ">CODING-REF")[0]
+                    bit_length = int(fe.selector(coding, "/!BIT-LENGTH")[0].text)
+                    compu_methods = fe.selector(coding, "/!COMPU-METHOD")
+                    sig = canmatrix.Signal(name=signal_name)
+
+                    for compu_method in compu_methods:
+                        category = fe.selector(compu_method, "/!CATEGORY")
+                        if len(category) > 0 and category[0].text == "LINEAR":
+                            numerator = fe.selector(compu_method, "/!COMPU-NUMERATOR")[0]
+                            denominator = fe.selector(compu_method, "/!COMPU-DENOMINATOR")[0]
+                            teiler = decimal.Decimal(fe.selector(denominator, "/!V")[0].text)
+                            [offset, factor] = [decimal.Decimal(a.text) for a in fe.selector(numerator, "/!V")]
+                            [offset, factor] = [a / teiler for a in [offset, factor]]
+                            sig.offset = offset
+                            sig.factor = factor
+                            try:
+                                sig.min=decimal.Decimal(fe.selector(compu_method, "!PHYS-CONSTRS!LOWER-LIMIT")[0].text)
+                                sig.max = decimal.Decimal(fe.selector(compu_method, "!PHYS-CONSTRS!UPPER-LIMIT")[0].text)
+                            except:
+                                pass
+                            unit = fe.selector(compu_method, ">!UNIT-REF")
+                            if len(unit) > 0:
+                                try:
+                                    sig.unit = fe.selector(unit[0],"!DISPLAY-NAME")[0].text
+                                except:
+                                    pass
+                        elif len(category) > 0 and category[0].text == "TEXTTABLE":
+                            for compu_scale in fe.selector(compu_method, "/!COMPU-SCALE"):
+                                try:
+                                    value_name = fe.selector(compu_scale, "!COMPU-CONST!VT")[0].text
+                                except IndexError:
+                                    value_name = fe.get_desc_or_longname(compu_scale)
+                                value_value = fe.selector(compu_scale, "!LOWER-LIMIT")[0].text
+                                sig.add_values(value_value, value_name)
+                    sig.is_little_endian = is_little_endian
+                    if not sig.is_little_endian:
+                        sig.set_startbit(start_bit, bitNumbering=1)
+                    else:
+                        sig.start_bit = start_bit
+                    sig.size = bit_length
+                    sig.receivers = list(set(receiver_ecus))
+
+                    sig.add_comment(fe.get_desc_or_longname(signal))
+
+                    frame.add_signal(sig)
+                db.add_frame(frame)
+    return result
 
 
 def dump(db, f, **options):
@@ -134,7 +359,6 @@ def dump(db, f, **options):
 
         pdu_ref = create_sub_element_fx(pdu_triggering, "PDU-REF")
         pdu_ref.set("ID-REF", "PDU_" + pdu.name)
-
 
     frame_triggerings = create_sub_element_fx(channel, "FRAME-TRIGGERINGS")
     for frame in db.frames:
