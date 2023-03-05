@@ -14,6 +14,7 @@ class CanCluster(dict):
         self._frames = []  # type: typing.List[canmatrix.Frame]
         self._signals = []  # type: typing.List[canmatrix.Signal]
         self._ecus = []  # type: typing.List[canmatrix.Ecu]
+        self._pdu_gateway_list = []
         self.update()
 
     def update_frames(self):  # type: () -> typing.MutableSequence[canmatrix.Frame]
@@ -82,3 +83,24 @@ class CanCluster(dict):
         if not self._signals:
             self.update_signals()
         return self._signals
+
+    def pdu_gateway(self, pdu_gateway_list=[]):
+        self._pdu_gateway_list += pdu_gateway_list
+        return self._pdu_gateway_list
+
+    def get_routing_info(self, pdu_name, strict_search=False):
+        routing_source = []
+        routing_target = []
+        if strict_search:
+            for pdu in self._pdu_gateway_list:
+                if pdu_name == pdu["source"]:
+                    routing_source.append(pdu["target"])
+                if pdu_name == pdu["target"]:
+                    routing_target.append(pdu["source"])
+        else:
+            for pdu in self._pdu_gateway_list:
+                if pdu_name in pdu["source"]:
+                    routing_source.append(pdu["target"])
+                if pdu_name in pdu["target"]:
+                    routing_target.append(pdu["source"])
+        return {"source": routing_source, "target": routing_target}

@@ -35,6 +35,7 @@ from builtins import *
 import lxml.etree
 
 import canmatrix
+import canmatrix.cancluster
 import canmatrix.types
 import canmatrix.utils
 import re
@@ -1860,7 +1861,6 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         db.add_frame_defines("PduName", 'STRING')
         db.add_frame_defines("GenMsgStartDelayTime", 'INT 0 65535')
 
-
         db.add_frame_defines(
             "GenMsgSendType",
             'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
@@ -1997,4 +1997,13 @@ def load(file, **options):
 
     result.update(decode_can_helper(ea, float_factory, ignore_cluster_info))
 
+    result = canmatrix.cancluster.CanCluster(result)
+    pdu_gateway_mappings = []
+    for pdu_mapping in ea.selector(ea.root, "//I-PDU-MAPPING"):
+        source_pdu = ea.selector(pdu_mapping, ">SOURCE-I-PDU-REF/I-PDU-REF")
+        target_pdu = ea.selector(pdu_mapping, ">TARGET-I-PDU-REF/I-PDU-REF")
+
+        if len(source_pdu) > 0 and len(target_pdu) > 0:
+            pdu_gateway_mappings.append({"source": source_pdu[0].text, "target" : target_pdu[0].text})
+    result.pdu_gateway(pdu_gateway_mappings)
     return result
