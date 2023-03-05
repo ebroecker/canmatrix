@@ -27,6 +27,12 @@ def test_pdu_gateway():
                       </PDU-TRIGGERINGS>
                     </CAN-FRAME-TRIGGERING>
                    </FRAME-TRIGGERINGS>
+                   <I-SIGNAL-TRIGGERINGS>
+                    <I-SIGNAL-TRIGGERING>
+                      <SHORT-NAME>someSignalTriggering</SHORT-NAME>
+                      <I-SIGNAL-REF DEST="I-SIGNAL">/ISignal/someSignal</I-SIGNAL-REF>
+                    </I-SIGNAL-TRIGGERING>
+                   </I-SIGNAL-TRIGGERINGS>
                    <PDU-TRIGGERINGS>
                     <PDU-TRIGGERING>
                       <SHORT-NAME>somePduTriggering</SHORT-NAME>
@@ -56,6 +62,12 @@ def test_pdu_gateway():
                       </PDU-TRIGGERINGS>
                     </CAN-FRAME-TRIGGERING>
                    </FRAME-TRIGGERINGS>
+                   <I-SIGNAL-TRIGGERINGS>
+                    <I-SIGNAL-TRIGGERING>
+                      <SHORT-NAME>someOtherSignalTriggering</SHORT-NAME>
+                      <I-SIGNAL-REF DEST="I-SIGNAL">/ISignal/someOtherSignal</I-SIGNAL-REF>
+                    </I-SIGNAL-TRIGGERING>
+                   </I-SIGNAL-TRIGGERINGS>
                    <PDU-TRIGGERINGS>
                     <PDU-TRIGGERING>
                       <SHORT-NAME>someOtherPduTriggering</SHORT-NAME>
@@ -85,6 +97,12 @@ def test_pdu_gateway():
                 </TARGET-I-PDU>
                 </I-PDU-MAPPING>
               </I-PDU-MAPPINGS>
+             <SIGNAL-MAPPINGS>
+                <I-SIGNAL-MAPPING>
+                  <SOURCE-SIGNAL-REF DEST="I-SIGNAL-TRIGGERING">/Cluster/someCluster/CHNL/someSignalTriggering</SOURCE-SIGNAL-REF>
+                  <TARGET-SIGNAL-REF DEST="I-SIGNAL-TRIGGERING">/Cluster/someOtherCluster/CHNL/someOtherSignalTriggering</TARGET-SIGNAL-REF>
+                </I-SIGNAL-MAPPING>
+             </SIGNAL-MAPPINGS>
             </GATEWAY>
         </ELEMENTS>
     </AR-PACKAGE>
@@ -92,5 +110,7 @@ def test_pdu_gateway():
 
     cluster = canmatrix.formats.arxml.load(arxml)
 
-    assert cluster.get_routing_info("someOtherPdu")["target"][0] == "/PDU/somePdu"
-    assert cluster.get_routing_info("/PDU/somePdu", strict_search=True)["source"][0] == "/PDU/someOtherPdu"
+    assert cluster.get_pdu_routing_info("someOtherPdu")["target"][0] == "/PDU/somePdu"
+    assert cluster.get_pdu_routing_info("/PDU/somePdu", strict_search=True)["source"][0] == "/PDU/someOtherPdu"
+    assert cluster.get_signal_routing_info("someSignal")["source"][0] == '/ISignal/someOtherSignal'
+    assert cluster.get_signal_routing_info("/ISignal/someOtherSignal")["target"][0] == '/ISignal/someSignal'

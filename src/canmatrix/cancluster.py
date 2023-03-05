@@ -14,7 +14,8 @@ class CanCluster(dict):
         self._frames = []  # type: typing.List[canmatrix.Frame]
         self._signals = []  # type: typing.List[canmatrix.Signal]
         self._ecus = []  # type: typing.List[canmatrix.Ecu]
-        self._pdu_gateway_list = []
+        self._pdu_gateway_list = []     # type: typing.List[dict[str, str]]
+        self._signal_gateway_list = []  # type: typing.List[dict[str, str]]
         self.update()
 
     def update_frames(self):  # type: () -> typing.MutableSequence[canmatrix.Frame]
@@ -88,7 +89,11 @@ class CanCluster(dict):
         self._pdu_gateway_list += pdu_gateway_list
         return self._pdu_gateway_list
 
-    def get_routing_info(self, pdu_name, strict_search=False):
+    def signal_gateway(self, signal_gateway_list=[]):
+        self._signal_gateway_list += signal_gateway_list
+        return self._signal_gateway_list
+
+    def get_pdu_routing_info(self, pdu_name, strict_search=False):
         routing_source = []
         routing_target = []
         if strict_search:
@@ -103,4 +108,21 @@ class CanCluster(dict):
                     routing_source.append(pdu["target"])
                 if pdu_name in pdu["target"]:
                     routing_target.append(pdu["source"])
+        return {"source": routing_source, "target": routing_target}
+
+    def get_signal_routing_info(self, signal_name, strict_search=False):
+        routing_source = []
+        routing_target = []
+        if strict_search:
+            for signal_gw in self._signal_gateway_list:
+                if signal_name == signal_gw["source"]:
+                    routing_source.append(signal_gw["target"])
+                if signal_name == signal_gw["target"]:
+                    routing_target.append(signal_gw["source"])
+        else:
+            for signal_gw in self._signal_gateway_list:
+                if signal_name in signal_gw["source"]:
+                    routing_source.append(signal_gw["target"])
+                if signal_name in signal_gw["target"]:
+                    routing_target.append(signal_gw["source"])
         return {"source": routing_source, "target": routing_target}

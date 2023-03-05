@@ -1998,6 +1998,7 @@ def load(file, **options):
     result.update(decode_can_helper(ea, float_factory, ignore_cluster_info))
 
     result = canmatrix.cancluster.CanCluster(result)
+
     pdu_gateway_mappings = []
     for pdu_mapping in ea.selector(ea.root, "//I-PDU-MAPPING"):
         source_pdu = ea.selector(pdu_mapping, ">SOURCE-I-PDU-REF/I-PDU-REF")
@@ -2006,4 +2007,13 @@ def load(file, **options):
         if len(source_pdu) > 0 and len(target_pdu) > 0:
             pdu_gateway_mappings.append({"source": source_pdu[0].text, "target" : target_pdu[0].text})
     result.pdu_gateway(pdu_gateway_mappings)
+
+    signal_gateway_mappings = []
+    for signal_mapping in ea.selector(ea.root, "//I-SIGNAL-MAPPING"):
+        source_signal = ea.selector(signal_mapping, ">SOURCE-SIGNAL-REF/I-SIGNAL-REF")
+        target_signal = ea.selector(signal_mapping, ">TARGET-SIGNAL-REF/I-SIGNAL-REF")
+        if len(source_signal) > 0 and len(target_signal) > 0:
+            signal_gateway_mappings.append({"source": source_signal[0].text, "target" : target_signal[0].text})
+    result.signal_gateway(signal_gateway_mappings)
+
     return result
