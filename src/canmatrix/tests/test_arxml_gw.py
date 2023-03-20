@@ -110,7 +110,7 @@ def test_pdu_gateway():
 
     cluster = canmatrix.formats.arxml.load(arxml)
 
-    assert cluster.get_pdu_routing_info("someOtherPdu")["target"][0] == "/PDU/somePdu"
-    assert cluster.get_pdu_routing_info("/PDU/somePdu", strict_search=True)["source"][0] == "/PDU/someOtherPdu"
-    assert cluster.get_signal_routing_info("someSignal")["source"][0] == '/ISignal/someOtherSignal'
-    assert cluster.get_signal_routing_info("/ISignal/someOtherSignal")["target"][0] == '/ISignal/someSignal'
+    assert cluster.get_pdu_routing_info("someOtherPdu")["target"][0]["pdu"] == "/PDU/somePdu"
+    assert cluster.get_pdu_routing_info("/PDU/somePdu", strict_search=True)["source"][0]["pdu"] == "/PDU/someOtherPdu"
+    assert cluster.get_signal_routing_info("someSignal")["source"][0]["signal"] == '/ISignal/someOtherSignal'
+    assert cluster.get_signal_routing_info("/ISignal/someOtherSignal")["target"][0]["signal"] == '/ISignal/someSignal'

@@ -128,6 +128,13 @@ class Earxml:
             xml_element = xml_element.getparent()
         return xml_element
 
+    def get_parent_with_name(self, xml_element, tag_name):
+        while xml_element != self.root:
+            if xml_element.tag == self.ns + tag_name:
+                return xml_element
+            xml_element = xml_element.getparent()
+        return None
+
     def find_references_of_type(self, element, xml_tag, referencable_parent=False):
         referencing_elements = []
         current_ar_path = self.get_short_name_path_of_element(element)
@@ -1999,21 +2006,86 @@ def load(file, **options):
 
     result = canmatrix.cancluster.CanCluster(result)
 
+    def get_cluster_for_triggering(triggering):
+        while triggering != ea.root:
+            if triggering.tag.endswith("-CLUSTER"):
+                return triggering
+            triggering = triggering.getparent()
+
+    def get_ecu_for_triggering(triggering):
+        phys_channel = None
+        while triggering != ea.root:
+            if triggering.tag.endswith("-CHANNEL"):
+                phys_channel =  triggering
+                break
+            triggering = triggering.getparent()
+
+        if phys_channel is not None:
+            ecu_name = ""
+            channel = ea.selector(phys_channel, ">COMMUNICATION-CONNECTOR-REF")
+            if len(channel) == 0:
+                return ""
+            ecu_instance = ea.get_parent_with_name(channel[0], "ECU-INSTANCE")
+            if ecu_instance is not None:
+                ecu_name = ea.get_short_name(ecu_instance)
+            return ecu_name
+        return ""
+
+
     pdu_gateway_mappings = []
     for pdu_mapping in ea.selector(ea.root, "//I-PDU-MAPPING"):
-        source_pdu = ea.selector(pdu_mapping, ">SOURCE-I-PDU-REF/I-PDU-REF")
-        target_pdu = ea.selector(pdu_mapping, ">TARGET-I-PDU-REF/I-PDU-REF")
+        source_triggering = ea.selector(pdu_mapping, ">SOURCE-I-PDU-REF")
+        target_triggering = ea.selector(pdu_mapping, ">TARGET-I-PDU-REF")
+        if len(source_triggering) == 0 or len(target_triggering) == 0:
+            continue
+        source_pdu = ea.selector(source_triggering[0], "/I-PDU-REF")
+        target_pdu = ea.selector(target_triggering[0], "/I-PDU-REF")
 
-        if len(source_pdu) > 0 and len(target_pdu) > 0:
-            pdu_gateway_mappings.append({"source": source_pdu[0].text, "target" : target_pdu[0].text})
+        if len(source_pdu) == 0 or len(target_pdu) == 0:
+            continue
+        source_cluster_name = ea.get_short_name_path_of_element(get_cluster_for_triggering(source_triggering[0]))
+        target_cluster_name = ea.get_short_name_path_of_element(get_cluster_for_triggering(target_triggering[0]))
+        ecu = get_ecu_for_triggering(source_triggering[0])
+        source_type = ""
+        target_type = ""
+        if "DEST" in source_pdu[0].attrib:
+            source_type = source_pdu[0].attrib["DEST"]
+        if "DEST" in target_pdu[0].attrib:
+            target_type = target_pdu[0].attrib["DEST"]
+
+        mapping_info = {"ecu": ecu, "source": source_pdu[0].text, "source_cluster": source_cluster_name,
+                        "target": target_pdu[0].text, "target_cluster": target_cluster_name,
+                        "target_type": target_type, "source_type": source_type}
+
+        pdu_gateway_mappings.append(mapping_info)
+
     result.pdu_gateway(pdu_gateway_mappings)
 
     signal_gateway_mappings = []
     for signal_mapping in ea.selector(ea.root, "//I-SIGNAL-MAPPING"):
-        source_signal = ea.selector(signal_mapping, ">SOURCE-SIGNAL-REF/I-SIGNAL-REF")
-        target_signal = ea.selector(signal_mapping, ">TARGET-SIGNAL-REF/I-SIGNAL-REF")
-        if len(source_signal) > 0 and len(target_signal) > 0:
-            signal_gateway_mappings.append({"source": source_signal[0].text, "target" : target_signal[0].text})
+        source_triggering = ea.selector(signal_mapping, ">SOURCE-SIGNAL-REF")
+        target_triggering = ea.selector(signal_mapping, ">TARGET-SIGNAL-REF")
+        if len(source_triggering) == 0 or len(target_triggering) == 0:
+            continue
+        source_signal = ea.selector(source_triggering[0], "/I-SIGNAL-REF")
+        target_signal = ea.selector(target_triggering[0], "/I-SIGNAL-REF")
+        if len(source_signal) == 0 or len(target_signal) == 0:
+            continue
+
+        source_cluster_name = ea.get_short_name_path_of_element(get_cluster_for_triggering(source_triggering[0]))
+        target_cluster_name = ea.get_short_name_path_of_element(get_cluster_for_triggering(target_triggering[0]))
+        ecu = get_ecu_for_triggering(source_triggering[0])
+        source_type = ""
+        target_type = ""
+        if "DEST" in source_signal[0].attrib:
+            source_type = source_signal[0].attrib["DEST"]
+        if "DEST" in target_signal[0].attrib:
+            target_type = source_signal[0].attrib["DEST"]
+        mapping_info = {"ecu": ecu, "source": source_signal[0].text, "source_cluster": source_cluster_name,
+                        "target": target_signal[0].text, "target_cluster": target_cluster_name,
+                        "source_type": source_type, "target_type": target_type}
+
+        signal_gateway_mappings.append(mapping_info)
     result.signal_gateway(signal_gateway_mappings)
 
     return result
