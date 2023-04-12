@@ -308,7 +308,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         # Check & Warn for Frame/Messages without Transmitter Node
         if options.get('checkFloatingFrames') is not None and options['checkFloatingFrames']:
             for frame in db.frames:
-                if len(frame.transmitters) is 0:
+                if len(frame.transmitters) == 0:
                     logger.warning("No Transmitter Node Found for Frame %s", frame.name)
 
         # Check & Warn for Signals with Min/Max set to 0
