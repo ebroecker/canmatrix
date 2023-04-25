@@ -1,0 +1,24 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: 
+
+
+BO_ 0 my_frame: 8 Vector__XXX
+ SG_ Sample_signal : 12|12@1- (1,0) [-2048|2047] "" Vector__XXX
+ SG_ Sample_signal2 : 17|9@1- (1,0) [-256|255] "" Vector__XXX
+ SG_ Sample_signal3 : 33|5@1- (1,0) [-16|15] "" Vector__XXX
+ SG_ Sample_signal4 : 48|9@1- (1,0) [-256|255] "" Vector__XXX
+
+
+
+
+
+
+
+
+

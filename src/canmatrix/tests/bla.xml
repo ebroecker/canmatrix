@@ -1,0 +1,53 @@
+    <AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-3-0.xsd">
+
+    <AR-PACKAGE>
+      <SHORT-NAME>Cluster</SHORT-NAME>
+      <ELEMENTS>
+        <CAN-CLUSTER>
+          <SHORT-NAME>someCluster</SHORT-NAME>
+          <CAN-CLUSTER-VARIANTS>
+            <CAN-CLUSTER-CONDITIONAL>
+              <PHYSICAL-CHANNELS>
+                <CAN-PHYSICAL-CHANNEL>
+                  <SHORT-NAME>CHNL</SHORT-NAME>
+                   <FRAME-TRIGGERINGS>
+                    <CAN-FRAME-TRIGGERING>
+                      <SHORT-NAME>SomeFrameTriggering</SHORT-NAME>
+                      <PDU-TRIGGERINGS>
+                        <PDU-TRIGGERING-REF-CONDITIONAL>
+                          <PDU-TRIGGERING-REF DEST="PDU-TRIGGERING">/Cluster/someCluster/CHNL/somePDUName</PDU-TRIGGERING-REF>
+                        </PDU-TRIGGERING-REF-CONDITIONAL>
+                      </PDU-TRIGGERINGS>
+                    </CAN-FRAME-TRIGGERING>
+                   </FRAME-TRIGGERINGS>
+                   <PDU-TRIGGERINGS>
+                    <PDU-TRIGGERING>
+                      <SHORT-NAME>somePduTriggering</SHORT-NAME>
+                      <I-PDU-REF DEST="NM-PDU">/PDU/somePdu</I-PDU-REF>
+                    </PDU-TRIGGERING>
+                   </PDU-TRIGGERINGS>
+                </CAN-PHYSICAL-CHANNEL>
+              </PHYSICAL-CHANNELS>
+            </CAN-CLUSTER-CONDITIONAL>
+          </CAN-CLUSTER-VARIANTS>
+        </CAN-CLUSTER>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+        <SHORT-NAME>Gateway</SHORT-NAME>
+        <ELEMENTS>
+            <GATEWAY>
+              <SHORT-NAME>someECU</SHORT-NAME>
+              <ECU-REF DEST="ECU-INSTANCE">/ECU/someECU</ECU-REF>
+              <I-PDU-MAPPINGS>
+                <I-PDU-MAPPING>
+                <SOURCE-I-PDU-REF DEST="PDU-TRIGGERING">/Cluster/someCluster/CHNL/somePduTriggering</SOURCE-I-PDU-REF>
+                <TARGET-I-PDU>
+                    <TARGET-I-PDU-REF DEST="PDU-TRIGGERING">/Cluster/otherCluster/CHNL/somePduTriggering</TARGET-I-PDU-REF>
+                </TARGET-I-PDU>
+                </I-PDU-MAPPING>
+              </I-PDU-MAPPINGS>
+            </GATEWAY>
+        </ELEMENTS>
+    </AR-PACKAGE>
+    </AUTOSAR>
