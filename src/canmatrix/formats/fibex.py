@@ -215,10 +215,10 @@ def load(f, **_options):
                     if len(pdu_triggerings) > 0:
                         cyclic_timing_element = fe.selector(pdu_triggerings[0],
                                                     "/TIMINGS/CYCLIC-TIMING/REPEATING-TIME-RANGE/VALUE")
-                if len(cyclic_timing_element) > 0:
-                    time_value_string = cyclic_timing_element[0].text
-                    if time_value_string.startswith("PT") and time_value_string.endswith("S"):
-                        frame.cycle_time = decimal.Decimal(time_value_string[2:-1])*1000
+                        if len(cyclic_timing_element) > 0:
+                            time_value_string = cyclic_timing_element[0].text
+                            if time_value_string.startswith("PT") and time_value_string.endswith("S"):
+                                frame.cycle_time = decimal.Decimal(time_value_string[2:-1])*1000
                 frame.transmitters = [fe.sn(a) for a in sending_ecus]
                 for ecu_element in sending_ecus:
                     ecu_name = fe.sn(ecu_element)
