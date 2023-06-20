@@ -37,6 +37,7 @@ import struct
 import typing
 import warnings
 from builtins import *
+import importlib.metadata
 
 import attr
 from past.builtins import basestring
@@ -46,8 +47,9 @@ import canmatrix.copy
 import canmatrix.types
 import canmatrix.utils
 
-if attr.__version__ < '17.4.0':  # type: ignore
+if importlib.metadata.version("attrs") < '17.4.0':
     raise RuntimeError("need attrs >= 17.4.0")
+
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
 
@@ -801,6 +803,7 @@ class Pdu(object):
         """
         self.signals.append(signal)
         return self.signals[len(self.signals) - 1]
+
     def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
         # type: (str, int, typing.Sequence[str]) -> None
         """Add new SignalGroup to the Frame. Add given signals to the group.
