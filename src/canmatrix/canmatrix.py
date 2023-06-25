@@ -34,10 +34,10 @@ import itertools
 import logging
 import math
 import struct
+import sys
 import typing
 import warnings
 from builtins import *
-import importlib.metadata
 
 import attr
 from past.builtins import basestring
@@ -47,7 +47,12 @@ import canmatrix.copy
 import canmatrix.types
 import canmatrix.utils
 
-if importlib.metadata.version("attrs") < '17.4.0':
+if sys.version_info < (3, 8):
+    from importlib_metadata import version
+else:
+    from importlib.metadata import version
+
+if version("attrs") < '17.4.0':
     raise RuntimeError("need attrs >= 17.4.0")
 
 logger = logging.getLogger(__name__)
