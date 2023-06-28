@@ -152,7 +152,7 @@ class Signal(object):
     * factor, offset, min, max
     * receivers  (ECU Name)
     * attributes, _values, unit, comment
-    * _multiplex ('Multiplexor' or Number of Multiplex)
+    * multiplex ('Multiplexor' or Number of Multiplex)
     """
 
     name = attr.ib(default="")  # type: str
@@ -230,6 +230,7 @@ class Signal(object):
             self.mux_val = int(value)
         elif value == 'Multiplexor':
             self.is_multiplexer = True
+            self.multiplex = 'Multiplexor'
             ret_multiplex = value
         return ret_multiplex
 
