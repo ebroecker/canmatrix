@@ -34,10 +34,10 @@ import itertools
 import logging
 import math
 import struct
+import sys
 import typing
 import warnings
 from builtins import *
-import importlib.metadata
 
 import attr
 from past.builtins import basestring
@@ -47,7 +47,12 @@ import canmatrix.copy
 import canmatrix.types
 import canmatrix.utils
 
-if importlib.metadata.version("attrs") < '17.4.0':
+if sys.version_info < (3, 8):
+    from importlib_metadata import version
+else:
+    from importlib.metadata import version
+
+if version("attrs") < '17.4.0':
     raise RuntimeError("need attrs >= 17.4.0")
 
 logger = logging.getLogger(__name__)
@@ -441,7 +446,7 @@ class Signal(object):
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
-        raw_value = (value - self.float_factory(self.offset)) / self.float_factory(self.factor)
+        raw_value = (self.float_factory(value) - self.float_factory(self.offset)) / self.float_factory(self.factor)
 
         if not self.is_float:
             raw_value = int(round(raw_value))
