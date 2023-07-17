@@ -7,14 +7,12 @@ skip_branch_with_pr: true
 
 environment:
   matrix:
-    - TOXENV: py27
-    - TOXENV: py35
-    - TOXENV: py36
     - TOXENV: py37
     - TOXENV: py38
     - TOXENV: py39
     - TOXENV: py310
-    - TOXENV: pypy
+    - TOXENV: py311
+    - TOXENV: py312
     - TOXENV: pypy3
     - TOXENV: dist
 
@@ -28,7 +26,6 @@ init:
   - ps: if (Get-ChildItem Env:ENABLE_RDP -ErrorAction SilentlyContinue) {iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))} else {echo RDP not enabled}
 
 install:
-  - if "%TOXENV%"=="pypy" choco install python.pypy
   - if "%TOXENV%"=="pypy3" choco install python.pypy3
   - py -m pip install tox
   - ps: Update-AppveyorBuild -Version "v$(py get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
