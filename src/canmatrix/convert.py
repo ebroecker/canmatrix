@@ -132,6 +132,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             for renameTuple in rename_tuples:
                 old, new = renameTuple.split(':')
                 db.rename_frame(old, new)
+                    
         if 'deleteFrame' in options and options['deleteFrame'] is not None:
             delete_frame_names = options['deleteFrame'].split(',')
             for frame_name in delete_frame_names:
@@ -227,6 +228,13 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                 'deleteObsoleteEcus']:
             db.delete_obsolete_ecus()
 
+        if 'compressFrame' in options and options['compressFrame'] is not None:
+            frames_cmdline = options['compressFrame'].split(',')
+            for frame_name in frames_cmdline:
+                frames = db.glob_frames(frame_name)
+                for frame in frames:
+                    frame.compress()
+
         if 'recalcDLC' in options and options['recalcDLC']:
             db.recalc_dlc(options['recalcDLC'])
 
@@ -300,7 +308,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         # Check & Warn for Frame/Messages without Transmitter Node
         if options.get('checkFloatingFrames') is not None and options['checkFloatingFrames']:
             for frame in db.frames:
-                if len(frame.transmitters) is 0:
+                if len(frame.transmitters) == 0:
                     logger.warning("No Transmitter Node Found for Frame %s", frame.name)
 
         # Check & Warn for Signals with Min/Max set to 0

@@ -35,6 +35,7 @@ from builtins import *
 import lxml.etree
 
 import canmatrix
+import canmatrix.cancluster
 import canmatrix.types
 import canmatrix.utils
 import re
@@ -126,6 +127,13 @@ class Earxml:
                 return xml_element
             xml_element = xml_element.getparent()
         return xml_element
+
+    def get_parent_with_name(self, xml_element, tag_name):
+        while xml_element != self.root:
+            if xml_element.tag == self.ns + tag_name:
+                return xml_element
+            xml_element = xml_element.getparent()
+        return None
 
     def find_references_of_type(self, element, xml_tag, referencable_parent=False):
         referencing_elements = []
@@ -248,7 +256,7 @@ class Earxml:
         result_list = [start_element]
         last_found_token = 0
         while start_pos < len(selector):
-            token_match = re.search(r'//|/|>>|>|<<|<|#|$', selector[start_pos:])
+            token_match = re.search(r'//|/|>>|>|<<|<|#|:|$', selector[start_pos:])
             found_token = token_match.span()
 
             if start_pos > 0:  # at least one Token found...
@@ -273,6 +281,13 @@ class Earxml:
                     result_list = [self.find_references_of_type(a, value, referencable_parent=True)[0]
                                    for a in result_list
                                    if len(self.find_references_of_type(a, value, referencable_parent=True)) > 0]
+                elif token == ":":
+                    filtered_results = []
+                    for item in result_list:
+                        if value == item.text:
+                            filtered_results.append(item)
+                    result_list = filtered_results
+
                 elif token == "#":
                     sn_snippets = value.split("|")
                     filtered_results = []
@@ -1085,7 +1100,7 @@ def ar_byteorder_is_little(in_string):
     return False
 
 
-def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0):
+def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0, signal_triggerings=[]):
     # type: (typing.Sequence[_Element], typing.Union[canmatrix.Frame, canmatrix.Pdu], Earxml, int, typing.Callable, int) -> None
     """Add signals from xml to the Frame."""
 
@@ -1114,6 +1129,16 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             logger.debug(
                 'Frame %s, no isignal for %s found',
                 frame.name, ea.get_child(signal, "SHORT-NAME").text)
+
+        receiver = []  # type: typing.List[str]
+
+        for triggering in signal_triggerings:
+            try:
+                if ea.selector(triggering, ">I-SIGNAL-REF")[0] == isignal:
+                    reciving_ecu_instances = ea.selector(triggering, ">>I-SIGNAL-PORT-REF//COMMUNICATION-DIRECTION:IN/../../..")
+                    receiver = [ea.get_short_name(a) for a in reciving_ecu_instances]
+            except IndexError:
+                pass
 
         base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")  # AR4
         if base_type is None:
@@ -1149,7 +1174,6 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         signal_min = None  # type: canmatrix.types.OptionalPhysicalValue
         signal_max = None  # type: canmatrix.types.OptionalPhysicalValue
-        receiver = []  # type: typing.List[str]
 
         signal_description = ea.get_element_desc(system_signal)
 
@@ -1518,6 +1542,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         logger.info("found Frame-Trigger %s without arbitration id", frame_trig_name_elem.text)
         return None
     arbitration_id = int(arb_id.text, 0)
+    isignaltriggerings_of_current_cluster = ea.selector(frame_triggering, "/..//I-SIGNAL-TRIGGERING")
 
     if frame_elem is not None:
         logger.debug("Frame: %s", ea.get_element_name(frame_elem))
@@ -1607,7 +1632,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     else:
         pdu_sig_mapping = ea.selector(pdu, "//I-SIGNAL-TO-I-PDU-MAPPING")
         if pdu_sig_mapping:
-            get_signals(pdu_sig_mapping, new_frame, ea, None, float_factory)
+            get_signals(pdu_sig_mapping, new_frame, ea, None, float_factory, signal_triggerings=isignaltriggerings_of_current_cluster)
         # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
         else:  # AR 4.2
             pdu_trigs = ea.follow_all_ref(frame_triggering, "PDU-TRIGGERINGS-REF")
@@ -1626,7 +1651,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
                                      ea.get_element_name(ipdus))
                     # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
                     get_signals(signal_to_pdu_maps, new_frame, ea, None,
-                                float_factory)  # todo BUG expects list, not item
+                                float_factory, signal_triggerings=isignaltriggerings_of_current_cluster)  # todo BUG expects list, not item
             else:
                 logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
     if new_frame.is_pdu_container and new_frame.cycle_time == 0:
@@ -1638,6 +1663,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     new_frame.fit_dlc()
     if frame_elem is not None:
         frames_cache[frame_elem] = new_frame
+
     return copy.deepcopy(new_frame)
 
 
@@ -1842,7 +1868,6 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         db.add_frame_defines("PduName", 'STRING')
         db.add_frame_defines("GenMsgStartDelayTime", 'INT 0 65535')
 
-
         db.add_frame_defines(
             "GenMsgSendType",
             'ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none"')
@@ -1978,5 +2003,89 @@ def load(file, **options):
         result.update(decode_flexray_helper(ea, float_factory))
 
     result.update(decode_can_helper(ea, float_factory, ignore_cluster_info))
+
+    result = canmatrix.cancluster.CanCluster(result)
+
+    def get_cluster_for_triggering(triggering):
+        while triggering != ea.root:
+            if triggering.tag.endswith("-CLUSTER"):
+                return triggering
+            triggering = triggering.getparent()
+
+    def get_ecu_for_triggering(triggering):
+        phys_channel = None
+        while triggering != ea.root:
+            if triggering.tag.endswith("-CHANNEL"):
+                phys_channel =  triggering
+                break
+            triggering = triggering.getparent()
+
+        if phys_channel is not None:
+            ecu_name = ""
+            channel = ea.selector(phys_channel, ">COMMUNICATION-CONNECTOR-REF")
+            if len(channel) == 0:
+                return ""
+            ecu_instance = ea.get_parent_with_name(channel[0], "ECU-INSTANCE")
+            if ecu_instance is not None:
+                ecu_name = ea.get_short_name(ecu_instance)
+            return ecu_name
+        return ""
+
+
+    pdu_gateway_mappings = []
+    for pdu_mapping in ea.selector(ea.root, "//I-PDU-MAPPING"):
+        source_triggering = ea.selector(pdu_mapping, ">SOURCE-I-PDU-REF")
+        target_triggering = ea.selector(pdu_mapping, ">TARGET-I-PDU-REF")
+        if len(source_triggering) == 0 or len(target_triggering) == 0:
+            continue
+        source_pdu = ea.selector(source_triggering[0], "/I-PDU-REF")
+        target_pdu = ea.selector(target_triggering[0], "/I-PDU-REF")
+
+        if len(source_pdu) == 0 or len(target_pdu) == 0:
+            continue
+        source_cluster_name = ea.get_short_name_path_of_element(get_cluster_for_triggering(source_triggering[0]))
+        target_cluster_name = ea.get_short_name_path_of_element(get_cluster_for_triggering(target_triggering[0]))
+        ecu = get_ecu_for_triggering(source_triggering[0])
+        source_type = ""
+        target_type = ""
+        if "DEST" in source_pdu[0].attrib:
+            source_type = source_pdu[0].attrib["DEST"]
+        if "DEST" in target_pdu[0].attrib:
+            target_type = target_pdu[0].attrib["DEST"]
+
+        mapping_info = {"ecu": ecu, "source": source_pdu[0].text, "source_cluster": source_cluster_name,
+                        "target": target_pdu[0].text, "target_cluster": target_cluster_name,
+                        "target_type": target_type, "source_type": source_type}
+
+        pdu_gateway_mappings.append(mapping_info)
+
+    result.pdu_gateway(pdu_gateway_mappings)
+
+    signal_gateway_mappings = []
+    for signal_mapping in ea.selector(ea.root, "//I-SIGNAL-MAPPING"):
+        source_triggering = ea.selector(signal_mapping, ">SOURCE-SIGNAL-REF")
+        target_triggering = ea.selector(signal_mapping, ">TARGET-SIGNAL-REF")
+        if len(source_triggering) == 0 or len(target_triggering) == 0:
+            continue
+        source_signal = ea.selector(source_triggering[0], "/I-SIGNAL-REF")
+        target_signal = ea.selector(target_triggering[0], "/I-SIGNAL-REF")
+        if len(source_signal) == 0 or len(target_signal) == 0:
+            continue
+
+        source_cluster_name = ea.get_short_name_path_of_element(get_cluster_for_triggering(source_triggering[0]))
+        target_cluster_name = ea.get_short_name_path_of_element(get_cluster_for_triggering(target_triggering[0]))
+        ecu = get_ecu_for_triggering(source_triggering[0])
+        source_type = ""
+        target_type = ""
+        if "DEST" in source_signal[0].attrib:
+            source_type = source_signal[0].attrib["DEST"]
+        if "DEST" in target_signal[0].attrib:
+            target_type = source_signal[0].attrib["DEST"]
+        mapping_info = {"ecu": ecu, "source": source_signal[0].text, "source_cluster": source_cluster_name,
+                        "target": target_signal[0].text, "target_cluster": target_cluster_name,
+                        "source_type": source_type, "target_type": target_type}
+
+        signal_gateway_mappings.append(mapping_info)
+    result.signal_gateway(signal_gateway_mappings)
 
     return result

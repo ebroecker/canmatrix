@@ -84,6 +84,7 @@ setup(
         "click",
         "enum34; python_version < '3.4'",
         "future",
+        "importlib-metadata; python_version < '3.8'",
         "six",
         "typing; python_version < '3.5'",
     ],
