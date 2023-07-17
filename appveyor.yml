@@ -12,8 +12,6 @@ environment:
     - TOXENV: py39
     - TOXENV: py310
     - TOXENV: py311
-    - TOXENV: py312
-    - TOXENV: pypy3
     - TOXENV: dist
 
 matrix:
