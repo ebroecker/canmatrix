@@ -1248,7 +1248,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type, ea)
 
-        unit_element = ea.get_child(isignal, "UNIT")
+        unit_element = ea.follow_ref(isignal, "UNIT-REF")
         display_name = ea.get_child(unit_element, "DISPLAY-NAME")
         if display_name is not None:
             signal_unit = display_name.text
