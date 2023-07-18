@@ -1031,7 +1031,7 @@ def decode_compu_method(compu_method, ea, float_factory):
         # keyword definition. 06Jun16
         #####################################################################################################
 
-        if len(desc) == 0:
+        if desc is None or len(desc) == 0:
             vt = ea.get_sub_by_name(compu_scale, 'VT')
             if vt is not None:
                 desc = vt.text
