@@ -22,6 +22,13 @@ There are also some extract and merge options for dealing with can databases.
 
             .sym peak pcan can description
 
+            .xml (fibex)
+
+            .ldf (lin bus) 
+
+            .odx (diagnostic file)
+
+
 **supported file formats for export:**
 
             .dbc
@@ -42,6 +49,10 @@ There are also some extract and merge options for dealing with can databases.
 
             .xml (fibex)
 
+            .lua (wireshark script)
+
+            .scapy 
+
 """
 
 classifiers = """\
@@ -58,6 +69,7 @@ Programming Language :: Python :: 3.7
 Programming Language :: Python :: 3.8
 Programming Language :: Python :: 3.9
 Programming Language :: Python :: 3.10
+Programming Language :: Python :: 3.11
 """
 
 from setuptools import find_packages, setup
