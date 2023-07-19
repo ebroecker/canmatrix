@@ -1,7 +1,6 @@
 ## **Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats. ##
 [![PyPI](https://img.shields.io/pypi/v/canmatrix.svg)](https://pypi.org/project/canmatrix/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/canmatrix.svg)](https://pypi.org/project/canmatrix/)
-[![Build Status](https://travis-ci.org/ebroecker/canmatrix.svg?branch=development)](https://travis-ci.org/ebroecker/canmatrix)
 [![Codecov branch](https://img.shields.io/codecov/c/github/ebroecker/canmatrix/development.svg)](https://codecov.io/gh/ebroecker/canmatrix/)
 [![GitHub issues](https://img.shields.io/github/issues-raw/ebroecker/canmatrix.svg)](https://github.com/ebroecker/canmatrix/issues)
 

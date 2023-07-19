@@ -178,9 +178,78 @@ class Fe:
         return sorted(result_list, key=lambda element: element.sourceline)
 
 
+def get_signals_for_pdu(fe, pdu, overall_startbit = 0):
+    signals = []
+    ecus = []
+    for signal_instance in fe.selector(pdu, "//SIGNAL-INSTANCE"):
+        byte_order_element = fe.selector(signal_instance, "/IS-HIGH-LOW-BYTE-ORDER")
+        if byte_order_element[0].text == "false":
+            is_little_endian = True
+        else:
+            is_little_endian = False
+
+        start_bit = int(fe.selector(signal_instance, "/BIT-POSITION")[0].text, 0) + overall_startbit
+        signal = fe.selector(signal_instance, ">SIGNAL-REF")[0]
+        ecu_instance_refs = fe.selector(signal_instance, "<<ECU")
+        receiver_ecus = []
+        for ecu_instance_ref in ecu_instance_refs:
+            if len(fe.selector(ecu_instance_ref, "^INPUT-PORT")) > 0:
+                ecu_name = fe.sn(fe.get_referencable_parent(ecu_instance_ref))
+                receiver_ecus.append(ecu_name)
+                ecus.append(canmatrix.Ecu(name=ecu_name.strip()))
+
+        signal_name = fe.sn(signal)
+        coding = fe.selector(signal, ">CODING-REF")[0]
+        bit_length = int(fe.selector(coding, "/!BIT-LENGTH")[0].text)
+        compu_methods = fe.selector(coding, "/!COMPU-METHOD")
+        sig = canmatrix.Signal(name=signal_name)
+
+        for compu_method in compu_methods:
+            category = fe.selector(compu_method, "/!CATEGORY")
+            if len(category) > 0 and category[0].text == "LINEAR":
+                numerator = fe.selector(compu_method, "/!COMPU-NUMERATOR")[0]
+                denominator = fe.selector(compu_method, "/!COMPU-DENOMINATOR")[0]
+                teiler = decimal.Decimal(fe.selector(denominator, "/!V")[0].text)
+                [offset, factor] = [decimal.Decimal(a.text) for a in fe.selector(numerator, "/!V")]
+                [offset, factor] = [a / teiler for a in [offset, factor]]
+                sig.offset = offset
+                sig.factor = factor
+                try:
+                    sig.min = decimal.Decimal(fe.selector(compu_method, "!PHYS-CONSTRS!LOWER-LIMIT")[0].text)
+                    sig.max = decimal.Decimal(fe.selector(compu_method, "!PHYS-CONSTRS!UPPER-LIMIT")[0].text)
+                except:
+                    pass
+                unit = fe.selector(compu_method, ">!UNIT-REF")
+                if len(unit) > 0:
+                    try:
+                        sig.unit = fe.selector(unit[0], "!DISPLAY-NAME")[0].text
+                    except:
+                        pass
+            elif len(category) > 0 and category[0].text == "TEXTTABLE":
+                for compu_scale in fe.selector(compu_method, "/!COMPU-SCALE"):
+                    try:
+                        value_name = fe.selector(compu_scale, "!COMPU-CONST!VT")[0].text
+                    except IndexError:
+                        value_name = fe.get_desc_or_longname(compu_scale)
+                    value_value = fe.selector(compu_scale, "!LOWER-LIMIT")[0].text
+                    sig.add_values(value_value, value_name)
+        sig.is_little_endian = is_little_endian
+        if not sig.is_little_endian:
+            sig.set_startbit(start_bit, bitNumbering=1)
+        else:
+            sig.start_bit = start_bit
+        sig.size = bit_length
+        sig.receivers = list(set(receiver_ecus))
+
+        sig.add_comment(fe.get_desc_or_longname(signal))
+        signals.append(sig)
+    return signals, ecus
+
+
 def load(f, **_options):
     fe = Fe(f)
     result = {}
+    sig_group_counter = 0
 
     clusters = fe.selector(fe.root, "//CLUSTER")
     names = [fe.sn(a) for a in clusters]
@@ -204,11 +273,35 @@ def load(f, **_options):
                 extended = arbitration_id_element.attrib.get("EXTENDED-ADDRESSING", 'false') == 'true'
                 frame_element = fe.selector(ft, ">FRAME-REF")[0]
                 frame_size = int(fe.selector(frame_element, "/BYTE-LENGTH")[0].text)
-                pdu = fe.selector(frame_element, ">>PDU-REF")[0]
 
-                frame_name = fe.sn(pdu)
-#                fe.selector(pdu, "<<!PDU-TRIGGERING")
-                frame = canmatrix.Frame(name=frame_name)
+                pdu_instances = fe.selector(frame_element, "//PDU-INSTANCE")
+
+                if len(pdu_instances) > 1:
+                    frame_name = fe.sn(frame_element)
+                    frame = canmatrix.Frame(name=frame_name)
+                    for pdu_instance in pdu_instances:
+                        pdu = fe.selector(pdu_instance, ">PDU-REF")[0]
+                        pdu_startbit_position = int(fe.selector(pdu_instance, "/BIT-POSITION")[0].text, 0)
+                        signals, ecus = get_signals_for_pdu(fe, pdu, pdu_startbit_position)
+                        for sig in signals:
+                            frame.add_signal(sig)
+                        for ecu in ecus:
+                            db.add_ecu(ecu)
+
+                        frame.add_signal_group(fe.sn(pdu), sig_group_counter, [sig.name for sig in signals])
+                        sig_group_counter += 1
+                else:
+                    pdu = fe.selector(pdu_instances[0], ">PDU-REF")[0]
+                    frame_name = fe.sn(pdu)
+                    frame = canmatrix.Frame(name=frame_name)
+
+                    signals, ecus = get_signals_for_pdu(fe, pdu)
+                    for sig in signals:
+                        frame.add_signal(sig)
+                    for ecu in ecus:
+                        db.add_ecu(ecu)
+
+                #                fe.selector(pdu, "<<!PDU-TRIGGERING")
                 frame.size = frame_size
                 if len(output_ports) > 0:
                     pdu_triggerings = fe.selector(output_ports[0], ">>PDU-TRIGGERING-REF")
@@ -231,69 +324,7 @@ def load(f, **_options):
                 if "CAN-FD" in [a.text for a in
                      fe.selector(ft, "//CAN-FRAME-TX-BEHAVIOR") + fe.selector(ft, "//CAN-FRAME-RX-BEHAVIOR")]:
                     frame.is_fd = True
-                for signal_instance in fe.selector(pdu, "//SIGNAL-INSTANCE"):
-                    byte_order_element = fe.selector(signal_instance, "/IS-HIGH-LOW-BYTE-ORDER")
-                    if byte_order_element[0].text == "false":
-                        is_little_endian = True
-                    else:
-                        is_little_endian = False
 
-                    start_bit = int(fe.selector(signal_instance, "/BIT-POSITION")[0].text, 0)
-                    signal = fe.selector(signal_instance, ">SIGNAL-REF")[0]
-                    ecu_instance_refs = fe.selector(signal_instance, "<<ECU")
-                    receiver_ecus = []
-                    for ecu_instance_ref in ecu_instance_refs:
-                        if len(fe.selector(ecu_instance_ref, "^INPUT-PORT")) > 0:
-                            ecu_name = fe.sn(fe.get_referencable_parent(ecu_instance_ref))
-                            receiver_ecus.append(ecu_name)
-                            db.add_ecu(canmatrix.Ecu(ecu_name))
-
-                    signal_name = fe.sn(signal)
-                    coding = fe.selector(signal, ">CODING-REF")[0]
-                    bit_length = int(fe.selector(coding, "/!BIT-LENGTH")[0].text)
-                    compu_methods = fe.selector(coding, "/!COMPU-METHOD")
-                    sig = canmatrix.Signal(name=signal_name)
-
-                    for compu_method in compu_methods:
-                        category = fe.selector(compu_method, "/!CATEGORY")
-                        if len(category) > 0 and category[0].text == "LINEAR":
-                            numerator = fe.selector(compu_method, "/!COMPU-NUMERATOR")[0]
-                            denominator = fe.selector(compu_method, "/!COMPU-DENOMINATOR")[0]
-                            teiler = decimal.Decimal(fe.selector(denominator, "/!V")[0].text)
-                            [offset, factor] = [decimal.Decimal(a.text) for a in fe.selector(numerator, "/!V")]
-                            [offset, factor] = [a / teiler for a in [offset, factor]]
-                            sig.offset = offset
-                            sig.factor = factor
-                            try:
-                                sig.min=decimal.Decimal(fe.selector(compu_method, "!PHYS-CONSTRS!LOWER-LIMIT")[0].text)
-                                sig.max = decimal.Decimal(fe.selector(compu_method, "!PHYS-CONSTRS!UPPER-LIMIT")[0].text)
-                            except:
-                                pass
-                            unit = fe.selector(compu_method, ">!UNIT-REF")
-                            if len(unit) > 0:
-                                try:
-                                    sig.unit = fe.selector(unit[0],"!DISPLAY-NAME")[0].text
-                                except:
-                                    pass
-                        elif len(category) > 0 and category[0].text == "TEXTTABLE":
-                            for compu_scale in fe.selector(compu_method, "/!COMPU-SCALE"):
-                                try:
-                                    value_name = fe.selector(compu_scale, "!COMPU-CONST!VT")[0].text
-                                except IndexError:
-                                    value_name = fe.get_desc_or_longname(compu_scale)
-                                value_value = fe.selector(compu_scale, "!LOWER-LIMIT")[0].text
-                                sig.add_values(value_value, value_name)
-                    sig.is_little_endian = is_little_endian
-                    if not sig.is_little_endian:
-                        sig.set_startbit(start_bit, bitNumbering=1)
-                    else:
-                        sig.start_bit = start_bit
-                    sig.size = bit_length
-                    sig.receivers = list(set(receiver_ecus))
-
-                    sig.add_comment(fe.get_desc_or_longname(signal))
-
-                    frame.add_signal(sig)
                 db.add_frame(frame)
     return result
 
