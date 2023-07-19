@@ -193,6 +193,18 @@ this will remove frames ``myFrame`` and ``myFrame2`` in ``source.dbc`` and store
 this will load ``source.dbc`` and rename frames ``myFrame`` in ``myNewFrame``  and ``myFrame2`` in ``myNewFrame2``.
 The result is stored in ``target.dlc``.
 
+**compress Frame:**
+
+::
+
+    $ canconvert --compressFrame=myFrame,myFrame2,someFrames* source.dbc target.dbc
+
+this will load ``source.dbc`` and compress frames ``myFrame`` in ``myFrame2``  and all frames starting with ``someFrames``.
+compress means, it tries to fill gaps between signals.
+Works only for frames which have only big_endian signals or frames which have only little_endian singals
+Frame name could be * which will compress all frames
+The result is stored in ``target.dlc``.
+
 
 **delete Signal:**
 
@@ -364,6 +376,10 @@ ____________________
   --renameFrame=RENAMEFRAME
 
                         rename Frame form databases. (comma separated list) Syntax: --renameFrame=myOldFrame:myNewFrame,mySecondFrame:mySecondNewFrame
+
+  --compressFrame=FRAME
+
+                        compress Frame form databases.  Syntax: --compressFrame=frame1,frame2,*
 
   --deleteSignal=DELETESIGNAL
 

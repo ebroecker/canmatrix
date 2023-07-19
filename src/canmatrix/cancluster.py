@@ -14,6 +14,8 @@ class CanCluster(dict):
         self._frames = []  # type: typing.List[canmatrix.Frame]
         self._signals = []  # type: typing.List[canmatrix.Signal]
         self._ecus = []  # type: typing.List[canmatrix.Ecu]
+        self._pdu_gateway_list = []     # type: typing.List[dict[str, str]]
+        self._signal_gateway_list = []  # type: typing.List[dict[str, str]]
         self.update()
 
     def update_frames(self):  # type: () -> typing.MutableSequence[canmatrix.Frame]
@@ -82,3 +84,45 @@ class CanCluster(dict):
         if not self._signals:
             self.update_signals()
         return self._signals
+
+    def pdu_gateway(self, pdu_gateway_list=[]):
+        self._pdu_gateway_list += pdu_gateway_list
+        return self._pdu_gateway_list
+
+    def signal_gateway(self, signal_gateway_list=[]):
+        self._signal_gateway_list += signal_gateway_list
+        return self._signal_gateway_list
+
+    def get_pdu_routing_info(self, pdu_name, strict_search=False):
+        routing_source = []
+        routing_target = []
+        if strict_search:
+            for pdu in self._pdu_gateway_list:
+                if pdu_name == pdu["source"]:
+                    routing_source.append({"pdu": pdu["target"], "cluster": pdu["target_cluster"], "ecu": pdu["ecu"], "type": pdu["target_type"]})
+                if pdu_name == pdu["target"]:
+                    routing_target.append({"pdu": pdu["source"], "cluster": pdu["source_cluster"], "ecu": pdu["ecu"], "type": pdu["source_type"]})
+        else:
+            for pdu in self._pdu_gateway_list:
+                if pdu_name in pdu["source"]:
+                    routing_source.append({"pdu": pdu["target"], "cluster": pdu["target_cluster"], "ecu": pdu["ecu"], "type": pdu["target_type"]})
+                if pdu_name in pdu["target"]:
+                    routing_target.append({"pdu": pdu["source"], "cluster": pdu["source_cluster"], "ecu": pdu["ecu"], "type": pdu["source_type"]})
+        return {"source": routing_source, "target": routing_target}
+
+    def get_signal_routing_info(self, signal_name, strict_search=False):
+        routing_source = []
+        routing_target = []
+        if strict_search:
+            for signal_gw in self._signal_gateway_list:
+                if signal_name == signal_gw["source"]:
+                    routing_source.append({"signal": signal_gw["target"], "cluster": signal_gw["target_cluster"], "ecu": signal_gw["ecu"], "type": signal_gw["target_type"]})
+                if signal_name == signal_gw["target"]:
+                    routing_target.append({"signal": signal_gw["source"], "cluster": signal_gw["source_cluster"], "ecu": signal_gw["ecu"], "type": signal_gw["source_type"]})
+        else:
+            for signal_gw in self._signal_gateway_list:
+                if signal_name in signal_gw["source"]:
+                    routing_source.append({"signal": signal_gw["target"], "cluster": signal_gw["target_cluster"], "ecu": signal_gw["ecu"], "type": signal_gw["target_type"]})
+                if signal_name in signal_gw["target"]:
+                    routing_target.append({"signal": signal_gw["source"], "cluster": signal_gw["source_cluster"], "ecu": signal_gw["ecu"], "type": signal_gw["source_type"]})
+        return {"source": routing_source, "target": routing_target}

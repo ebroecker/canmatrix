@@ -132,6 +132,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             for renameTuple in rename_tuples:
                 old, new = renameTuple.split(':')
                 db.rename_frame(old, new)
+                    
         if 'deleteFrame' in options and options['deleteFrame'] is not None:
             delete_frame_names = options['deleteFrame'].split(',')
             for frame_name in delete_frame_names:
@@ -227,6 +228,13 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                 'deleteObsoleteEcus']:
             db.delete_obsolete_ecus()
 
+        if 'compressFrame' in options and options['compressFrame'] is not None:
+            frames_cmdline = options['compressFrame'].split(',')
+            for frame_name in frames_cmdline:
+                frames = db.glob_frames(frame_name)
+                for frame in frames:
+                    frame.compress()
+
         if 'recalcDLC' in options and options['recalcDLC']:
             db.recalc_dlc(options['recalcDLC'])
 
@@ -251,18 +259,28 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             for signal in [b for a in db for b in a.signals]:
                 signal.name = signal.attributes.get(options.get('signalNameFromAttrib'), signal.name)
 
+        if options.get('frameNameFromAttrib') is not None:
+            for frame in db:
+                frame.name = frame.attributes.get(options.get('frameNameFromAttrib'), frame.name)
+
         # Max Signal Value Calculation , if max value is 0
-        if options.get('calcSignalMax') is not None and options['calcSignalMax']:
+        if options.get('calcSignalMaximumsWhereZero') is not None and options['calcSignalMaximumsWhereZero']:
             for signal in [b for a in db for b in a.signals]:
                 if signal.max == 0 or signal.max is None:
                     signal.calc_max_for_none = True
                     signal.set_max(None)
 
         # Max Signal Value Calculation
-        if options.get('recalcSignalMax') is not None and options['recalcSignalMax']:
+        if options.get('recalcSignalMaximums') is not None and options['recalcSignalMaximums']:
             for signal in [b for a in db for b in a.signals]:
                 signal.calc_max_for_none = True
                 signal.set_max(None)
+
+        # Min Signal Value Calculation
+        if options.get('recalcSignalMinimums') is not None and options['recalcSignalMinimums']:
+            for signal in [b for a in db for b in a.signals]:
+                signal.calc_min_for_none = True
+                signal.set_min(None)
 
         # Delete Unassigned Signals to a Valid Frame/Message
         if options.get('deleteFloatingSignals') is not None and options['deleteFloatingSignals']:
@@ -290,21 +308,21 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         # Check & Warn for Frame/Messages without Transmitter Node
         if options.get('checkFloatingFrames') is not None and options['checkFloatingFrames']:
             for frame in db.frames:
-                if len(frame.transmitters) is 0:
+                if len(frame.transmitters) == 0:
                     logger.warning("No Transmitter Node Found for Frame %s", frame.name)
 
         # Check & Warn for Signals with Min/Max set to 0
-        if options.get('checkSignalRange') is not None and options['checkSignalRange']:
+        if options.get('warnSignalMinMaxSame') is not None and options['warnSignalMinMaxSame']:
             for frame in db.frames:
                 for signal in frame.signals:
-                    if (signal.phys2raw(signal.max) - signal.phys2raw(signal.min)) is 0:
+                    if (signal.phys2raw(signal.max) - signal.phys2raw(signal.min)) == 0:
                         logger.warning("Invalid Min , Max value of %s", (frame.name+"::"+signal.name))
 
         # Check for Signals without unit and Value table , the idea is to improve signal readability
         if options.get('checkSignalUnit') is not None and options['checkSignalUnit']:
             for frame in db.frames:
                 for signal in frame:
-                    if signal.unit is "" and len(signal.values) == 0:
+                    if signal.unit == "" and len(signal.values) == 0:
                         logger.warning("Please add value table for the signal %s or add appropriate Unit", (frame.name+"::"+signal.name))
 
         # Convert dbc from J1939 to Extended format
@@ -317,7 +335,9 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
         if options.get('convertToJ1939') is not None and options['convertToJ1939']:
             for frame in db.frames:
                 frame.is_j1939=True
-            db.add_attribute("ProtocolType","J1939")
+            db.add_attribute("ProtocolType", "J1939")
+
+
 
         logger.info(name)
         logger.info("%d Frames found" % (db.frames.__len__()))

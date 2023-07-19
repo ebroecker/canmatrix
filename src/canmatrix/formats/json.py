@@ -30,7 +30,7 @@ import json
 import sys
 import typing
 from builtins import *
-
+import decimal
 import canmatrix
 
 
@@ -104,6 +104,20 @@ def dump(db, f, **options):
                 symbolic_frame["attributes"] = frame_attributes
             export_dict['messages'].append(symbolic_frame)
     else:  # export_all
+        _define_mapping = {"signal_defines": db.signal_defines, "frame_defines": db.frame_defines,
+                           "global_defines": db.global_defines, "env_defines": db.env_defines, "ecu_defines": db.ecu_defines}
+        for define_type in _define_mapping:
+            export_dict[define_type] = [{"name": a,
+                                         "define": _define_mapping[define_type][a].definition,
+                                         "default": _define_mapping[define_type][a].defaultValue,
+                                         "type": _define_mapping[define_type][a].type} for a in _define_mapping[define_type]]
+        export_dict['ecus'] = {ecu.name: ecu.comment for ecu in db.ecus}
+        export_dict['attributes'] = db.attributes
+        export_dict['value_tables'] = db.value_tables
+        export_dict['env_vars'] = db.env_vars
+        export_dict['baudrate'] = db.baudrate
+        export_dict['fd_baudrate'] = db.fd_baudrate
+
         for frame in db.frames:
             frame_attributes = {attribute: frame.attribute(attribute, db=db) for attribute in db.frame_defines}
             symbolic_signals = []
@@ -132,10 +146,13 @@ def dump(db, f, **options):
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
                     "comment": signal.comment,
+                    "comments": signal.comments,
                     "attributes": attributes,
+                    "initial_value": number_converter(signal.initial_value),
                     "values": values,
-                    "is_multiplexer" : signal.is_multiplexer,
-                    "mux_value" : signal.mux_val
+                    "is_multiplexer": signal.is_multiplexer,
+                    "mux_value": signal.mux_val,
+                    "receivers": signal.receivers,
                 }
                 if signal.multiplex is not None:
                     symbolic_signal["multiplex"] = signal.multiplex
@@ -156,7 +173,14 @@ def dump(db, f, **options):
                  "signals": symbolic_signals,
                  "attributes": frame_attributes,
                  "comment": frame.comment,
-                 "length": frame.size})
+                 "length": frame.size,
+                 "is_complex_multiplexed": frame.is_complex_multiplexed,
+                 "mux_names": frame.mux_names,
+                 "cycle_time": frame.cycle_time,
+                 "is_j1939": frame.is_j1939,
+                 "header_id": frame.header_id,
+                 "pdu_name": frame.pdu_name,
+                 "transmitters": frame.transmitters})
     if sys.version_info > (3, 0):
         import io
         temp = io.TextIOWrapper(f, encoding='UTF-8')
@@ -192,15 +216,36 @@ def load(f, **_options):
                     key = int(key)
                 db.value_tables.setdefault(val_tab_name, {})[key] = val
 
+    if "ecus" in json_data:
+        for ecu in json_data["ecus"]:
+            new_ecu = canmatrix.Ecu(name=ecu, comment=json_data["ecus"][ecu])
+            db.add_ecu(new_ecu)
     if "messages" in json_data:
         for frame in json_data["messages"]:
             # new_frame = Frame(frame["id"],frame["name"],8,None)
-            new_frame = canmatrix.Frame(frame["name"], arbitration_id=frame["id"], size=8)
+            arb_id = canmatrix.canmatrix.ArbitrationId(id=frame["id"], extended=frame.get("is_extended_frame", "False"))
+            new_frame = canmatrix.Frame(frame["name"], arbitration_id=arb_id, size=8)
             if "length" in frame:
                 new_frame.size = frame["length"]
+            simple_mapping = ["is_complex_multiplexed", "mux_names", "cycle_time", "is_j1939", "header_id", "pdu_name"]
+            for key in simple_mapping:
+                if key in frame:
+                    if key == "is_complex_multiplexed":
+                        new_frame.is_complex_multiplexed = frame[key]
+                    elif key == "mux_names":
+                        new_frame.mux_names = frame[key]
+                    elif key == "cycle_time":
+                        new_frame.cycle_time = frame[key]
+                    elif key == "is_j1939":
+                        new_frame.is_j1939 = frame[key]
+                    elif key == "header_id":
+                        new_frame.header_id = frame[key]
+                    elif key == "pdu_name":
+                        new_frame.pdu_name = frame[key]
 
             new_frame.arbitration_id.extended = frame.get("is_extended_frame", False)
-
+            if "transmitters" in frame:
+                new_frame.transmitters = frame["transmitters"]
             for signal in frame["signals"]:
                 is_little_endian = not signal.get("is_big_endian", False)
                 is_float = signal.get("is_float", False)
@@ -232,10 +277,52 @@ def load(f, **_options):
                 if signal.get("values", False):
                     for key in signal["values"]:
                         new_signal.add_values(key, signal["values"][key])
+
+                if signal.get("attributes", False):
+                    for key in signal["attributes"]:
+                        new_signal.add_attribute(key, signal["attributes"][key])
+
+                if "comment" in signal:
+                    new_signal.comment = signal["comment"]
+
+                if "comments" in signal:
+                    new_signal.comments = signal["comments"]
+
+                if "initial_value" in signal:
+                    new_signal.initial_value = decimal.Decimal(signal["initial_value"])
+
+                if signal.get("receivers", False):
+                    for ecu in signal["receivers"]:
+                        new_signal.add_receiver(ecu)
                 if new_signal.is_little_endian is False:
                     new_signal.set_startbit(
                         new_signal.start_bit, bitNumbering=1, startLittle=True)
                 new_frame.add_signal(new_signal)
             db.add_frame(new_frame)
+
+    _define_list = {"signal_defines": db.add_signal_defines, "frame_defines": db.add_frame_defines,
+                    "global_defines": db.add_global_defines, "env_defines": db.add_env_defines,
+                    "ecu_defines": db.add_ecu_defines}
+    for define_type, fptr in _define_list.items():
+        if define_type in json_data:
+            for define in json_data[define_type]:
+                fptr(define['name'], define['define'])
+
+    cm_import_list_dict = {'attributes': db.attributes, 'value_tables': db.value_tables, 'env_vars': db.env_vars}
+
+    cm_import_list_val = ['baudrate', 'fd_baudrate']
+
+    for key in cm_import_list_dict:
+        if key in json_data:
+            cm_import_list_dict[key].update(json_data[key])
+
+    for key in cm_import_list_val:
+        if key in json_data:
+            if key == 'baudrate':
+                db.baudrate = json_data[key]
+            elif key == 'fd_baudrate':
+                db.fd_baudrate = json_data[key]
+
     f.close()
+    db.update_ecu_list()
     return db

@@ -34,6 +34,7 @@ import itertools
 import logging
 import math
 import struct
+import sys
 import typing
 import warnings
 from builtins import *
@@ -46,8 +47,14 @@ import canmatrix.copy
 import canmatrix.types
 import canmatrix.utils
 
-if attr.__version__ < '17.4.0':  # type: ignore
+if sys.version_info < (3, 8):
+    from importlib_metadata import version
+else:
+    from importlib.metadata import version
+
+if version("attrs") < '17.4.0':
     raise RuntimeError("need attrs >= 17.4.0")
+
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
 
@@ -63,7 +70,7 @@ class MissingMuxSignal(ExceptionTemplate): pass
 class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
 class ArbitrationIdOutOfRange(ExceptionTemplate): pass
-class J1939needsExtendedIdetifier(ExceptionTemplate): pass
+class J1939NeedsExtendedIdentifier(ExceptionTemplate): pass
 class DecodingConatainerPdu(ExceptionTemplate): pass
 class EncodingConatainerPdu(ExceptionTemplate): pass
 
@@ -106,7 +113,12 @@ class Ecu(object):
         :param str attribute: Attribute name
         :param any value: Attribute value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except UnicodeDecodeError:
+            self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def del_attribute(self, attribute):
         if attribute in self.attributes:
@@ -140,7 +152,7 @@ class Signal(object):
     * factor, offset, min, max
     * receivers  (ECU Name)
     * attributes, _values, unit, comment
-    * _multiplex ('Multiplexor' or Number of Multiplex)
+    * multiplex ('Multiplexor' or Number of Multiplex)
     """
 
     name = attr.ib(default="")  # type: str
@@ -218,6 +230,7 @@ class Signal(object):
             self.mux_val = int(value)
         elif value == 'Multiplexor':
             self.is_multiplexer = True
+            self.multiplex = 'Multiplexor'
             ret_multiplex = value
         return ret_multiplex
 
@@ -282,7 +295,12 @@ class Signal(object):
         :param str attribute: attribute name
         :param value: attribute value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except UnicodeDecodeError:
+            self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def del_attribute(self, attribute):
         """
@@ -418,7 +436,7 @@ class Signal(object):
             for value_key, value_string in self.values.items():
                 if value_string == value:
                     value = value_key
-                    break
+                    return value
             else:
                 raise ValueError(
                         "{} is invalid value choice for {}".format(value, self)
@@ -429,10 +447,10 @@ class Signal(object):
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
-        raw_value = (value - self.offset) / self.factor
+        raw_value = (self.float_factory(value) - self.float_factory(self.offset)) / self.float_factory(self.factor)
 
         if not self.is_float:
-            raw_value = int(raw_value)
+            raw_value = int(round(raw_value))
         return raw_value
 
     def raw2phys(self, value, decode_to_str=False):
@@ -445,12 +463,14 @@ class Signal(object):
         """
         if self.is_float:
             value = self.float_factory(value)
-        result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
         if decode_to_str:
             for value_key, value_string in self.values.items():
-                if value_key == result:
-                    result = value_string
+                if value_key == value:
+                    return value_string
                     break
+
+        result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
+
         return result
 
     def __str__(self):  # type: () -> str
@@ -631,7 +651,7 @@ class ArbitrationId(object):
     @property
     def pgn(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         # PGN is bits 8-25 of the 29-Bit Extended CAN-ID
         # Made up of PDU-S (8-15), PDU-F (16-23), Data Page (24) & Extended Data Page (25)
         # If PDU-F >= 240 the PDU-S is interpreted as Group Extension
@@ -665,7 +685,7 @@ class ArbitrationId(object):
     @property
     def j1939_destination(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         if self.j1939_pdu_format == 1:
             destination = self.j1939_ps
         else:
@@ -675,7 +695,7 @@ class ArbitrationId(object):
     @property
     def j1939_source(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return self.id & 0xFF
 
     @j1939_source.setter
@@ -686,13 +706,13 @@ class ArbitrationId(object):
     @property
     def j1939_ps(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 8) & 0xFF
 
     @property
     def j1939_pf(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 16) & 0xFF
 
     @property
@@ -702,19 +722,19 @@ class ArbitrationId(object):
     @property
     def j1939_dp(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 24) & 0x1
 
     @property
     def j1939_edp(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 25) & 0x1
 
     @property
     def j1939_priority(self):
         if not self.extended:
-            raise J1939needsExtendedIdetifier
+            raise J1939NeedsExtendedIdentifier
         return (self.id >> 26) & 0x7
 
     @j1939_priority.setter
@@ -789,6 +809,7 @@ class Pdu(object):
         """
         self.signals.append(signal)
         return self.signals[len(self.signals) - 1]
+
     def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
         # type: (str, int, typing.Sequence[str]) -> None
         """Add new SignalGroup to the Frame. Add given signals to the group.
@@ -873,6 +894,7 @@ class Frame(object):
     pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
     header_id = attr.ib(default=None)  #type: int
     # header_id
+    pdu_name = attr.ib(default="")  # type: str
 
     @property
     def is_multiplexed(self):  # type: () -> bool
@@ -1533,6 +1555,54 @@ class Frame(object):
 
         else:
             return decoded
+    
+    def _compress_little(self):
+        for signal in self.signals:
+            if not signal.is_little_endian:
+                return
+        gap_found = True
+        while gap_found:
+            gap_found = False
+            layout = self.get_frame_layout()
+            gap_len = None
+            for byte in range(len(layout)//8):
+                for bit in range(7,-1,-1):
+                    bit_nr = byte*8+bit
+                    signal_list = layout[bit_nr]
+                    if signal_list == []:
+                        if gap_len is None:
+                            gap_len = 1
+                        else:
+                            gap_len += 1
+                    else:
+                        if gap_len is not None:
+                            signal = layout[bit_nr][0] 
+                            signal.start_bit -= gap_len
+                            gap_found = True
+                            break
+                if gap_found:
+                    break
+
+    def compress(self):
+        for signal in self.signals:
+            if signal.is_little_endian:
+                return self._compress_little()
+        gap_found = True
+        while gap_found:
+            gap_found = False
+            layout = self.get_frame_layout()
+            free_start = None
+            for bit_nr, signal_list in enumerate(layout):
+                if signal_list == []:
+                    if free_start is None:
+                        free_start = bit_nr
+                else:
+                    if free_start is not None:
+                        signal = layout[bit_nr][0] 
+                        signal.start_bit = free_start
+                        gap_found = True
+                        break
+
 
     def __str__(self):  # type: () -> str
         """Represent the frame by its name only."""
@@ -1715,7 +1785,12 @@ class CanMatrix(object):
         :param str attribute: attribute name
         :param value: attribute value
         """
-        self.attributes[attribute] = value
+        try:
+            self.attributes[attribute] = str(value)
+        except UnicodeDecodeError:
+            self.attributes[attribute] = value
+        if type(self.attributes[attribute]) == str:
+            self.attributes[attribute] = self.attributes[attribute].strip()
 
     def add_signal_defines(self, type, definition):
         """

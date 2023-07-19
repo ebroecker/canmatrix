@@ -27,14 +27,25 @@ def test_get_signals_from_container_i_pdu():
     assert matrix["New_CanCluster"].frames[0].pdus[0].signals[0].attributes["SysSignalName"] == 'PDU_Contained_1_Signal1_905db81da40081cb'
 
 
-
 def test_get_signals_from_secured_pdu():
     here = Path(__file__).parent
     matrix = canmatrix.formats.arxml.load(str(here / "ARXMLSecuredPDUTest.arxml"))
     assert matrix["CAN"].frames[0].signals[0].name == 'someTestSignal'
     assert matrix["CAN"].frames[0].signals[1].name == 'Signal'
 
+
 def test_min_max():
     here = Path(__file__).parent
     matrix = canmatrix.formats.arxml.load(str(here / "ARXML_min_max.arxml"))
-    assert matrix["New_CanCluster"].frames[0].signals[0].is_signed == False
+    assert matrix["New_CanCluster"].frames[0].signals[0].is_signed is False
+
+
+def test_decode_compu_method_1():
+    here = Path(__file__).parent
+    ea = canmatrix.formats.arxml.Earxml()
+    ea.open(str(here / "ARXMLCompuMethod1.arxml"))
+    compu_method = ea.find("COMPU-METHOD")
+    values, factor, offset, unit, const = canmatrix.formats.arxml.decode_compu_method(compu_method, ea, float)
+    assert values == {'0': 'no trailer detected', '1': 'trailer detected'}
+    assert factor == 42
+    assert offset == 17

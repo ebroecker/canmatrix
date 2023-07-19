@@ -122,7 +122,7 @@ def test_decode_signal():
 def test_ecu_find_attribute():
     ecu = canmatrix.canmatrix.Ecu(name="Gateway")
     ecu.add_attribute("attr1", 255)
-    assert ecu.attribute("attr1") == 255
+    assert ecu.attribute("attr1") == '255'
 
 
 def test_ecu_no_attribute():
@@ -159,7 +159,7 @@ def test_signal_find_mandatory_attribute(some_signal):
 
 def test_signal_find_optional_attribute(some_signal):
     some_signal.add_attribute("attr1", 255)
-    assert some_signal.attribute("attr1") == 255
+    assert some_signal.attribute("attr1") == '255'
 
 
 def test_signal_no_attribute(some_signal):
@@ -213,7 +213,7 @@ def test_signal_delete_wrong_attribute_doesnt_raise(some_signal):
 def test_signal_spn(some_signal):
     assert some_signal.spn is None
     some_signal.add_attribute("SPN", 10)
-    assert some_signal.spn == 10
+    assert some_signal.spn == '10'
 
 
 def test_signal_set_startbit():
@@ -276,7 +276,7 @@ def test_signal_decode_named_value(some_signal):
     some_signal.add_values(255, "Init")
     some_signal.add_values(254, "Error")
     assert some_signal.raw2phys(254, decode_to_str=True) == "Error"
-    assert some_signal.raw2phys(200, decode_to_str=True) == 200
+    assert some_signal.raw2phys(300, decode_to_str=True) == 450
 
 
 def test_signal_encode_named_value(some_signal):
@@ -383,7 +383,7 @@ def the_group():
 
 @pytest.fixture
 def some_signal():
-    return canmatrix.canmatrix.Signal(name="speed", size=8)
+    return canmatrix.canmatrix.Signal(name="speed", size=8, factor=1.5)
 
 
 def test_signalgroup_empty(the_group):
@@ -854,7 +854,7 @@ def test_decoded_signal_phys_value(some_signal):
 
 def test_decoded_signal_named_value():
     signal = canmatrix.canmatrix.Signal(factor="0.1", values={10: "Init"})
-    decoded = canmatrix.canmatrix.DecodedSignal(100, signal)
+    decoded = canmatrix.canmatrix.DecodedSignal(10, signal)
     assert decoded.named_value == "Init"
 
 
@@ -1092,3 +1092,27 @@ def test_baudrate():
     assert cm.baudrate == 500000
     cm.fd_baudrate = 1000000
     assert cm.fd_baudrate == 1000000
+
+def test_frame_compress():
+    frame = canmatrix.Frame("my_frame", size=8)
+    frame.add_signal(canmatrix.Signal(name = "Sig1", start_bit = 2, size = 13, is_little_endian=False ))
+    frame.add_signal(canmatrix.Signal(name = "Sig2", start_bit = 17, size = 14, is_little_endian=False))
+    frame.add_signal(canmatrix.Signal(name = "Sig3", start_bit = 35, size = 6, is_little_endian=False))
+    frame.add_signal(canmatrix.Signal(name = "Sig4", start_bit = 49, size = 8, is_little_endian=False))
+    frame.compress()
+    assert frame.signal_by_name("Sig1").start_bit == 0
+    assert frame.signal_by_name("Sig2").start_bit == 13
+    assert frame.signal_by_name("Sig3").start_bit == 27
+    assert frame.signal_by_name("Sig4").start_bit == 33
+
+    frame = canmatrix.Frame("my_frame", size=8)
+    # some signals overlap!
+    frame.add_signal(canmatrix.Signal(name = "Sig1", start_bit = 12, size = 12, is_little_endian=True))
+    frame.add_signal(canmatrix.Signal(name = "Sig2", start_bit = 17, size = 9, is_little_endian=True))
+    frame.add_signal(canmatrix.Signal(name = "Sig3", start_bit = 33, size = 5, is_little_endian=True))
+    frame.add_signal(canmatrix.Signal(name = "Sig4", start_bit = 48, size = 9, is_little_endian=True))
+    frame.compress()
+    assert frame.signal_by_name("Sig1").start_bit == 0
+    assert frame.signal_by_name("Sig2").start_bit == 12
+    assert frame.signal_by_name("Sig3").start_bit == 21
+    assert frame.signal_by_name("Sig4").start_bit == 26

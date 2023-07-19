@@ -74,7 +74,7 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     __init_yaml()
-    db = yaml.load(f)
+    db = yaml.safe_load(f)
     return db
 
 
