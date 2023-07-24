@@ -57,7 +57,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     plc_name = "PLC"
 
     nm_out = canmatrix.canmatrix.Frame(name="NMT_Out_Request", size=2, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0), transmitters=[plc_name])
-    sig_cmd = canmatrix.canmatrix.Signal(name="CMD", size=8, start_bit = 0, receivers=[node_name])
+    sig_cmd = canmatrix.canmatrix.Signal(name="nmt_CMD", size=8, start_bit = 0, receivers=[node_name])
     for val, val_name in cmd_values.items():
         sig_cmd.add_values(val, val_name)
     nm_out.add_signal(sig_cmd)
@@ -79,6 +79,45 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     emcy.add_signal(canmatrix.canmatrix.Signal(name="E_Reg", size=8, start_bit=16, receivers=[plc_name]))
     emcy.add_signal(canmatrix.canmatrix.Signal(name="E_Number", size=8, start_bit=24, receivers=[plc_name]))
     db.add_frame(emcy)
+
+    sdo_down = canmatrix.canmatrix.Frame(name="SDO_download", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x600+node_id), transmitters=[node_name])
+    sig_cmd = canmatrix.canmatrix.Signal(name="sdo_down_CMD", size=8, start_bit=0, receivers=[plc_name])
+    sig_cmd.is_multiplexer = True
+    sig_cmd.multiplex = "Multiplexor"
+    sdo_down.add_signal(sig_cmd)
+    sdo_down.add_signal(canmatrix.canmatrix.Signal(name="sdo_down_IDX", size=16, start_bit=8, receivers=[plc_name]))
+    sdo_down.add_signal(canmatrix.canmatrix.Signal(name="sdo_down_SUBIDX", size=8, start_bit=24, receivers=[plc_name]))
+    sdo_down.add_signal(canmatrix.canmatrix.Signal(name="data8", size=8, start_bit=32, receivers=[plc_name], multiplex=0x2f))
+    sig_cmd.add_values(0x2f, "8_bytes")
+    sdo_down.add_signal(canmatrix.canmatrix.Signal(name="data16", size=16, start_bit=32, receivers=[plc_name], multiplex=0x2b))
+    sig_cmd.add_values(0x2b, "16_bytes")
+    sdo_down.add_signal(canmatrix.canmatrix.Signal(name="data24", size=24, start_bit=32, receivers=[plc_name], multiplex=0x27))
+    sig_cmd.add_values(0x27, "3_bytes")
+    sdo_down.add_signal(canmatrix.canmatrix.Signal(name="data32", size=32, start_bit=32, receivers=[plc_name], multiplex=0x23))
+    sig_cmd.add_values(0x23, "4_bytes")
+    sig_cmd.add_values(0x40, "upload_request")
+    db.add_frame(sdo_down)
+
+    sdo_up = canmatrix.canmatrix.Frame(name="SDO_upload", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x580+node_id), transmitters=[plc_name])
+    sig_cmd = canmatrix.canmatrix.Signal(name="sdo_state", size=8, start_bit=0, receivers=[node_name])
+    sig_cmd.is_multiplexer = True
+    sig_cmd.multiplex = "Multiplexor"
+    sdo_up.add_signal(sig_cmd)
+    sdo_up.add_signal(canmatrix.canmatrix.Signal(name="sdo_uo_IDX", size=16, start_bit=8, receivers=[node_name]))
+    sdo_up.add_signal(canmatrix.canmatrix.Signal(name="sdo_up_SUBIDX", size=8, start_bit=24, receivers=[node_name]))
+    sdo_up.add_signal(canmatrix.canmatrix.Signal(name="error_code", size=32, start_bit=32, receivers=[node_name], multiplex=0x80))
+    sig_cmd.add_values(0x80, "upload_error")
+
+    sdo_up.add_signal(canmatrix.canmatrix.Signal(name="data8", size=8, start_bit=32, receivers=[plc_name], multiplex=0x4f))
+    sig_cmd.add_values(0x2f, "8_bytes")
+    sdo_up.add_signal(canmatrix.canmatrix.Signal(name="data16", size=16, start_bit=32, receivers=[plc_name], multiplex=0x4b))
+    sig_cmd.add_values(0x2b, "16_bytes")
+    sdo_up.add_signal(canmatrix.canmatrix.Signal(name="data24", size=24, start_bit=32, receivers=[plc_name], multiplex=0x47))
+    sig_cmd.add_values(0x27, "3_bytes")
+    sdo_down.add_signal(canmatrix.canmatrix.Signal(name="data32", size=32, start_bit=32, receivers=[plc_name], multiplex=0x43))
+    sig_cmd.add_values(0x23, "4_bytes")
+    db.add_frame(sdo_up)
+
 
     # RX Can-Ids ...
     for index in range(0x1400, 0x1408):
