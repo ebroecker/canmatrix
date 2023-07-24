@@ -48,7 +48,7 @@ def get_signals(parent_object, signal_receiver):
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     eds_import_encoding = options.get("edsImportEncoding", 'iso-8859-1')
-    node_id = options.get('node_id', 0)
+    node_id = options.get("eds_node_id", 1)
     fp = codecs.getreader(eds_import_encoding)(f)
     od = canopen.objectdictionary.eds.import_eds(fp, node_id)
     db = canmatrix.CanMatrix()
