@@ -2,5 +2,5 @@ lxml
 ldfparser
 xlrd
 xlwt
-xlsxwriter
+openpyxl
 pyyaml
