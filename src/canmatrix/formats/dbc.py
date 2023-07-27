@@ -423,13 +423,7 @@ def dump(in_db, f, **options):
 
     # signal-values:
     for frame in db.frames:
-        multiplex_written = False
         for signal in frame.signals:
-            if signal.multiplex == 'Multiplexor' and multiplex_written:
-                continue
-
-            multiplex_written = True
-
             if signal.values:
                 f.write(
                     ('VAL_ %d ' %
