@@ -114,8 +114,8 @@ setup(
         "sym": [],
         "test": ["pathlib2; python_version < '3.4'", "pytest"],
         "wireshark": [],
-        "xls": ["xlrd", "xlwt"],
-        "xlsx": ["xlsxwriter"],
+        "xls": ["xlrd==1.2.0", "xlwt"],
+        "xlsx": ["openpyxl"],
         "yaml": ["pyyaml"],
         "eds": ["canopen"]
     },

@@ -200,10 +200,18 @@ def get_signals_for_pdu(fe, pdu, overall_startbit = 0):
 
         signal_name = fe.sn(signal)
         coding = fe.selector(signal, ">CODING-REF")[0]
+        is_signed = False
+        try:
+            basedatatype = fe.selector(coding, "/!CODED-TYPE")[0].attrib[fe.ans + "BASE-DATA-TYPE"]
+            if "UINT" in basedatatype:
+                is_signed = False
+            elif "INT" in basedatatype:
+                is_signed = True
+        except:
+            pass
         bit_length = int(fe.selector(coding, "/!BIT-LENGTH")[0].text)
         compu_methods = fe.selector(coding, "/!COMPU-METHOD")
-        sig = canmatrix.Signal(name=signal_name)
-
+        sig = canmatrix.Signal(name=signal_name, is_signed=is_signed)
         for compu_method in compu_methods:
             category = fe.selector(compu_method, "/!CATEGORY")
             if len(category) > 0 and category[0].text == "LINEAR":

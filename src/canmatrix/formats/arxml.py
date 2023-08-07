@@ -1583,7 +1583,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         new_frame.add_attribute("FrameTriggeringName", ea.get_short_name(frame_triggering))
 
     if pdu is None:
-        logger.error("pdu is None")
+        logger.error("Frame %r has no PDU", new_frame.name)
     else:
         new_frame.pdu_name = ea.get_element_name(pdu)
         logger.debug("PDU: " + new_frame.pdu_name)
@@ -1625,35 +1625,30 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     store_frame_timings(new_frame, cyclic_timing, event_timing, minimum_delay, repeats, starting_time, time_offset,
                         repeating_time, ea, time_period, float_factory)
 
-    if pdu is not None and "MULTIPLEXED-I-PDU" in pdu.tag:
-        get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, ea, float_factory)
-    elif pdu is not None and pdu.tag == ea.ns + "CONTAINER-I-PDU":
-        get_frame_from_container_ipdu(pdu, new_frame, ea, float_factory, headers_are_littleendian)
-    else:
-        pdu_sig_mapping = ea.selector(pdu, "//I-SIGNAL-TO-I-PDU-MAPPING")
-        if pdu_sig_mapping:
-            get_signals(pdu_sig_mapping, new_frame, ea, None, float_factory, signal_triggerings=isignaltriggerings_of_current_cluster)
-        # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
-        else:  # AR 4.2
-            pdu_trigs = ea.follow_all_ref(frame_triggering, "PDU-TRIGGERINGS-REF")
-            if pdu_trigs is not None:
-                for pdu_trig in pdu_trigs:
-                    trig_ref_cond = ea.get_child(pdu_trig, "PDU-TRIGGERING-REF-CONDITIONAL")
-                    trigs = ea.follow_ref(trig_ref_cond, "PDU-TRIGGERING-REF")
-                    ipdus = ea.follow_ref(trigs, "I-PDU-REF")
-
-                    signal_to_pdu_maps = ea.get_child(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS")
-                    if signal_to_pdu_maps is None:
-                        signal_to_pdu_maps = ea.get_child(ipdus, "I-SIGNAL-TO-I-PDU-MAPPINGS")
-
-                    if signal_to_pdu_maps is None:
-                        logger.debug("AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!",
-                                     ea.get_element_name(ipdus))
-                    # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-                    get_signals(signal_to_pdu_maps, new_frame, ea, None,
-                                float_factory, signal_triggerings=isignaltriggerings_of_current_cluster)  # todo BUG expects list, not item
+    if pdu is not None:
+        if "MULTIPLEXED-I-PDU" in pdu.tag:
+            get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, ea, float_factory)
+        elif pdu.tag == ea.ns + "CONTAINER-I-PDU":
+            get_frame_from_container_ipdu(pdu, new_frame, ea, float_factory, headers_are_littleendian)
+        else:
+            pdu_sig_mapping = ea.selector(pdu, "//I-SIGNAL-TO-I-PDU-MAPPING")
+            if pdu_sig_mapping:
+                get_signals(
+                    pdu_sig_mapping, new_frame, ea, None, float_factory, signal_triggerings=isignaltriggerings_of_current_cluster
+                )
             else:
-                logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", new_frame.name)
+                # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
+                update_frame_with_pdu_triggerings(
+                    new_frame, ea, frame_triggering, float_factory,
+                    isignaltriggerings_of_current_cluster
+                )
+    else:
+        # AR 4.2
+        update_frame_with_pdu_triggerings(
+            new_frame, ea, frame_triggering, float_factory,
+            isignaltriggerings_of_current_cluster
+        )
+
     if new_frame.is_pdu_container and new_frame.cycle_time == 0:
         cycle_times = {pdu.cycle_time for pdu in new_frame.pdus}
         if len(cycle_times) > 1:
@@ -1665,6 +1660,35 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         frames_cache[frame_elem] = new_frame
 
     return copy.deepcopy(new_frame)
+
+
+def update_frame_with_pdu_triggerings(
+    frame, ea, frame_triggering, float_factory, signal_triggerings=None
+):
+    # type: (canmatrix.Frame, Earxml, _Element, typing.Callable, typing.Optional[typing.Sequence]) -> None
+    """Update frame with signals from PDU Triggerings."""
+    signal_triggerings = signal_triggerings or []
+    pdu_trigs = ea.follow_all_ref(frame_triggering, "PDU-TRIGGERINGS-REF")
+    if pdu_trigs is not None:
+        for pdu_trig in pdu_trigs:
+            trig_ref_cond = ea.get_child(pdu_trig, "PDU-TRIGGERING-REF-CONDITIONAL")
+            trigs = ea.follow_ref(trig_ref_cond, "PDU-TRIGGERING-REF")
+            ipdus = ea.follow_ref(trigs, "I-PDU-REF")
+
+            signal_to_pdu_maps = ea.get_child(ipdus, "I-SIGNAL-TO-PDU-MAPPINGS")
+            if signal_to_pdu_maps is None:
+                signal_to_pdu_maps = ea.get_child(ipdus, "I-SIGNAL-TO-I-PDU-MAPPINGS")
+
+            if signal_to_pdu_maps is None:
+                logger.debug(
+                    "AR4.x PDU %s no SIGNAL-TO-PDU-MAPPINGS found - no signal extraction!",
+                    ea.get_element_name(ipdus)
+                )
+
+            # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
+            get_signals(signal_to_pdu_maps, frame, ea, None, float_factory, signal_triggerings=signal_triggerings)  # todo BUG expects list, not item
+    else:
+        logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", frame.name)
 
 
 def process_ecu(ecu_elem, ea):
