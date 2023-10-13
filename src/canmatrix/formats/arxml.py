@@ -1554,8 +1554,12 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         pdu = ea.follow_ref(frame_elem, "PDU-REF")  # SIGNAL-I-PDU
 
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            pdu = ea.selector(pdu, ">PAYLOAD-REF>I-PDU-REF")[0]
-            # logger.info("found secured pdu - no signal extraction possible: %s", get_element_name(pdu, ns))
+            ipdu = ea.selector(pdu, ">PAYLOAD-REF>I-PDU-REF")
+            if not ipdu:
+                logger.error("SecuredIPdu %r is missing Payload", ea.get_short_name(pdu))
+                return None
+
+            pdu = ipdu[0]
 
         new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text, 0))
         comment = ea.get_element_desc(frame_elem)
@@ -1800,7 +1804,17 @@ def decode_ethernet_helper(ea, float_factory):
                 ipdu = ea.follow_ref(ipdu_triggering, "I-PDU-REF")
                 if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
                     payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
+                    if payload is None:
+                        logger.error(
+                            "SecuredIPdu %r is missing Payload", ea.get_short_name(ipdu)
+                        )
+                        continue
                     ipdu = ea.follow_ref(payload, "I-PDU-REF")
+                    if ipdu is None:
+                        logger.error(
+                            "PduTriggering %r is missing IPdu", ea.get_short_name(payload)
+                        )
+                        continue
 
                 ipdu_name = ea.get_element_name(ipdu)
                 logger.info("ETH PDU " + ipdu_name + " found")
