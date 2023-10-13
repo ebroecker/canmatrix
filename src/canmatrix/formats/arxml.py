@@ -298,7 +298,7 @@ class Earxml:
                                 filtered_results.append(tag)
                     result_list = filtered_results
 
-                result_list = list(set(result_list))
+                result_list = [result for result in set(result_list) if result is not None]
 
             last_found_token = found_token[1] + start_pos
             token = selector[start_pos + found_token[0]:start_pos + found_token[1]]
