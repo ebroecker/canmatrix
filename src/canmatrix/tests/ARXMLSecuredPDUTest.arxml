@@ -7,7 +7,7 @@
         <CAN-CLUSTER>
           <SHORT-NAME>CAN</SHORT-NAME>
           <PHYSICAL-CHANNELS>
-            <PHYSICAL-CHANNEL>
+            <CAN-PHYSICAL-CHANNEL>
               <SHORT-NAME>CAN</SHORT-NAME>
               <FRAME-TRIGGERINGSS>
                 <CAN-FRAME-TRIGGERING>
@@ -62,7 +62,7 @@
                   <SIGNAL-REF DEST="I-SIGNAL">/ISignal/Signal</SIGNAL-REF>
                 </I-SIGNAL-TRIGGERING>
               </I-SIGNAL-TRIGGERINGS>
-            </PHYSICAL-CHANNEL>
+            </CAN-PHYSICAL-CHANNEL>
           </PHYSICAL-CHANNELS>
         </CAN-CLUSTER>
       </ELEMENTS>
