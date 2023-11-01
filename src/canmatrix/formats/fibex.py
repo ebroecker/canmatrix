@@ -552,6 +552,7 @@ def dump(db, f, **options):
             signal_element = create_sub_element_fx(signals, "SIGNAL")
             signal_element.set("ID", "SIG_" + signal_id)
             create_short_name_desc(signal_element, signal.name, signal.comment)
+            create_sub_element_fx(signal_element, "DEFAULT-VALUE", str(signal.initial_value))
             coding_ref = create_sub_element_fx(signal_element, "CODING-REF")
             coding_ref.set("ID-REF", "CODING_" + signal_id)
 
