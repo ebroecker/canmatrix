@@ -397,6 +397,26 @@ def dump(db, f, **options):
             pre=xsi)] = 'http://www.asam.net/xml/fbx ..\\..\\xml_schema\\fibex.xsd http://www.asam.net/xml/fbx/can  ..\\..\\xml_schema\\fibex4can.xsd'
 
     #
+    # Make sure that we can even write to FIBEX
+    #
+
+    # make frame names unique by adding suffix, if needed
+    frame_names = dict()
+    for frame in db.frames:
+        if frame.name in frame_names:
+            # conflict resolution
+            tmp = 2
+            while f"{frame.name}_{str(tmp)}" in frame_names:
+                tmp += 1
+
+            new_name = f"{frame.name}_{str(tmp)}"
+            print(f"Warning: Changing frame name due to conflict: {frame.name} -> {new_name}")
+            frame.name = new_name
+
+        frame_names[frame.name] = frame
+
+
+    #
     # PROJECT
     #
     project = create_sub_element_fx(root, "PROJECT")
@@ -496,7 +516,6 @@ def dump(db, f, **options):
                 included_pdu.set('ID', 'input_included_pdu_' + frame.name)
                 pdu_triggering_ref = create_sub_element_fx(included_pdu, "PDU-TRIGGERING-REF")
                 pdu_triggering_ref.set("ID-REF", "PDU_" + frame.name)
-
                 
         outputs = create_sub_element_fx(connector, "OUTPUTS")
         for frame in db.frames:
@@ -510,9 +529,8 @@ def dump(db, f, **options):
                 included_pdu.set('ID', 'output_included_pdu_' + frame.name)
                 pdu_triggering_ref = create_sub_element_fx(included_pdu, "PDU-TRIGGERING-REF")
                 pdu_triggering_ref.set("ID-REF", "PDU_" + frame.name)
-                
-        
-        # ignore CONTROLERS/CONTROLER
+
+        # ignore CONTROLLERS/CONTROLLER
 
     #
     # PDUS
@@ -537,7 +555,7 @@ def dump(db, f, **options):
                     signals_switch.append(signal)
                 elif signal.multiplex is not None or signal.mux_val is not None:
                     if signal.multiplex != signal.mux_val:
-                        print(f"Warning: For Signal {signal.name} mux_val {signal.mux_val} != multiplex {signal.multiplex}")
+                        print(f"Warning: Signal {signal.name} mux_val {signal.mux_val} != multiplex {signal.multiplex}")
                     sigs = signals_dynamic.setdefault(signal.mux_val, [])
                     sigs.append(signal)
                 else:
@@ -548,7 +566,6 @@ def dump(db, f, **options):
                       f"Switch Signals: {len(signals_switch)} "
                       f"Dyn Signals: {len(signals_dynamic)} "
                       f"Static Signals: {len(signals_static)}")
-
 
             # SWITCH
             mux_switch = create_sub_element_fx(mux, "SWITCH")
