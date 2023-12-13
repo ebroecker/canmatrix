@@ -30,7 +30,6 @@ import typing
 from builtins import *
 
 import yaml
-from past.builtins import long, unicode
 
 import canmatrix
 
@@ -43,8 +42,6 @@ except ImportError:
 representers = False
 try:
     yaml.add_representer(int, SafeRepresenter.represent_int)
-    yaml.add_representer(long, SafeRepresenter.represent_long)
-    yaml.add_representer(unicode, SafeRepresenter.represent_unicode)
     yaml.add_representer(str, SafeRepresenter.represent_unicode)
     yaml.add_representer(list, SafeRepresenter.represent_list)
     representers = True
@@ -67,7 +64,7 @@ def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.A
 
     # f = open(filename, "w")
     if representers:
-        f.write(unicode(yaml.dump(new_db)))
+        f.write(yaml.dump(new_db))
     else:
         f.write(yaml.dump(new_db).encode('utf8'))
 

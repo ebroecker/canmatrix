@@ -30,7 +30,6 @@ import logging
 import typing
 from builtins import *
 
-import past.builtins
 import xlrd
 import xlwt
 
@@ -540,7 +539,7 @@ def load(file, **options):
         unit = ""
 
         factor = sh.cell(row_num, index['function']).value
-        if isinstance(factor, past.builtins.basestring):
+        if isinstance(factor, str):
             factor = factor.strip()
             if " " in factor and factor[0].isdigit():
                 (factor, unit) = factor.strip().split(" ", 1)
