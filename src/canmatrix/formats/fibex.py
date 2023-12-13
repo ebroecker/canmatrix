@@ -633,6 +633,7 @@ def dump(db, f, **options):
             if start_pos != -1 and end_pos != -1:
                 static_part = create_sub_element_fx(mux, "STATIC-PART")
                 static_part.set("ID", "PDU_" + frame.name + "_STATIC_PART")
+                create_sub_element_ho(static_part, "SHORT-NAME", signal.name)
                 seg_positions = create_sub_element_fx(static_part, "SEGMENT-POSITIONS")
                 seg_position = create_sub_element_fx(seg_positions, "SEGMENT-POSITION")
                 create_sub_element_fx(seg_position, "BIT-POSITION", str(start_pos))
