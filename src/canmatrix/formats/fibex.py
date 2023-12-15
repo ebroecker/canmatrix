@@ -649,7 +649,7 @@ def dump(db, f, **options):
                 create_sub_element_fx(static_pdu, "PDU-TYPE", "APPLICATION")
                 signal_instances = create_sub_element_fx(static_pdu, "SIGNAL-INSTANCES")
                 for signal in signals_static:
-                    signal_id = f"{frame.name}.{signal.name}_STATIC_PART"
+                    signal_id = create_signal_id(frame, signal)
                     signal_instance = create_signal_instance(signal_instances, signal, signal_id)
                     create_signal_ref(signal_instance, signal_id)
 
