@@ -126,6 +126,9 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--jsonNativeTypes/--no-jsonNativeTypes', 'jsonNativeTypes', default=False, help="Uses native json representation for decimals instead of string.")
 #sym switches
 @click.option('--symExportEncoding', 'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
+#eds switches
+@click.option('--edsImportEncoding', 'edsImportEncoding', default="iso-8859-1", help="Import charset of EDS format\ndefault iso-8859-1")
+@click.option('--edsNode', 'eds_node_id', default=1, help="Node-Id for EDS format\ndefault 1")
 # in and out file
 @click.argument('infile', required=True)
 @click.argument('outfile', required=True)

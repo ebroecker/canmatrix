@@ -117,6 +117,7 @@ setup(
         "xls": ["xlrd==1.2.0", "xlwt"],
         "xlsx": ["openpyxl"],
         "yaml": ["pyyaml"],
+        "eds": ["canopen"]
     },
 
     packages = find_packages("src"),
