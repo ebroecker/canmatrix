@@ -1132,9 +1132,9 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         receiver = []  # type: typing.List[str]
 
-        for triggering in signal_triggerings:
+        for triggering in ea.selector(isignal, "<<I-SIGNAL-TRIGGERING"):
             try:
-                if ea.selector(triggering, ">I-SIGNAL-REF")[0] == isignal:
+#                if ea.selector(triggering, ">I-SIGNAL-REF")[0] == isignal:
                     reciving_ecu_instances = ea.selector(triggering, ">>I-SIGNAL-PORT-REF//COMMUNICATION-DIRECTION:IN/../../..")
                     receiver = [ea.get_short_name(a) for a in reciving_ecu_instances]
             except IndexError:
