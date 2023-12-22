@@ -778,6 +778,17 @@ class ArbitrationId(object):
 
 
 @attr.s(eq=False)
+class Endpoint(object):
+    """
+    Represents a Endpoint.
+
+    AUTOSAR Ethernet Frames Endpoints
+    """    
+    ip = attr.ib(default="")  # type: str
+    port = attr.ib(default=0)  # type: int
+
+
+@attr.s(eq=False)
 class Pdu(object):
     """
     Represents a PDU.
@@ -892,8 +903,10 @@ class Frame(object):
 
     pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
     header_id = attr.ib(default=None)  #type: int
-    # header_id
+    
     pdu_name = attr.ib(default="")  # type: str
+    
+    endpoints = attr.ib(factory=dict)
 
     @property
     def is_multiplexed(self):  # type: () -> bool
@@ -1723,6 +1736,8 @@ class CanMatrix(object):
     baudrate = attr.ib(default=0)  # type:int
     fd_baudrate = attr.ib(default=0)  # type:int
 
+    vlan = attr.ib(default=None)  # type:int
+
     load_errors = attr.ib(factory=list)  # type: typing.MutableSequence[Exception]
 
     def __iter__(self):  # type: () -> typing.Iterator[Frame]
@@ -1909,6 +1924,17 @@ class CanMatrix(object):
                 return test
         return None
 
+    def frame_by_header_id(self, header_id):  # type: (HeaderId) -> typing.Union[Frame, None]
+        """Get Frame by its Header id.
+        :param HeaderId header_id: Header id as canmatrix.header_id
+        :rtype: Frame or None
+        """
+        for test in self.frames:
+            if test.header_id == header_id:
+                # found ID while ignoring extended or standard
+                return test
+        return None   
+
     def frame_by_pgn(self, pgn):  # type: (int) -> typing.Union[Frame, None]
         """Get Frame by pgn (j1939).
 
@@ -1922,7 +1948,6 @@ class CanMatrix(object):
                 # of just pgn is needed to do the pf >= 240 check
                 return test
         return None
-
 
     def frame_by_name(self, name):  # type: (str) -> typing.Union[Frame, None]
         """Get Frame by name.
