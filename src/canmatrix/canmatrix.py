@@ -40,7 +40,6 @@ import warnings
 from builtins import *
 
 import attr
-from past.builtins import basestring
 from six.moves import zip_longest
 
 import canmatrix.copy
@@ -432,7 +431,7 @@ class Signal(object):
             if not (self.min <= value <= self.max):
                 value = self.min
 
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             for value_key, value_string in self.values.items():
                 if value_string == value:
                     value = value_key
