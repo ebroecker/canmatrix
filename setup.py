@@ -95,7 +95,6 @@ setup(
         "attrs>=19.2.0",
         "click",
         "enum34; python_version < '3.4'",
-        "future",
         "importlib-metadata; python_version < '3.8'",
         "six",
         "typing; python_version < '3.5'",
@@ -117,6 +116,7 @@ setup(
         "xls": ["xlrd==1.2.0", "xlwt"],
         "xlsx": ["openpyxl"],
         "yaml": ["pyyaml"],
+        "eds": ["canopen"]
     },
 
     packages = find_packages("src"),
