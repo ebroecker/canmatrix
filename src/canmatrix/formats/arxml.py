@@ -184,7 +184,7 @@ class Earxml:
         return self.find(name, start_element)
 
     def find_children_by_path(self, from_element, path):
-        # type: (_Element, str, _DocRoot, str) -> typing.Sequence[_Element]
+        # type: (_Element, _Element, str) -> typing.Sequence[_Element]
         path_elements = path.split('/')
         element = from_element
         for element_name in path_elements[:-1]:
@@ -201,7 +201,7 @@ class Earxml:
         return ""
 
     def get_child(self, parent, tag_name):
-        # type: (_Element, str, _DocRoot, str) -> typing.Optional[_Element]
+        # type: (_Element, _Element, str) -> typing.Optional[_Element]
         """Get first sub-child or referenced sub-child with given name."""
         # logger.debug("get_child: " + tag_name)
         if parent is None:
@@ -215,7 +215,7 @@ class Earxml:
         return ret
 
     def get_children(self, parent, tag_name):
-        # type: (_Element, str, _DocRoot, str) -> typing.Sequence[_Element]
+        # type: (_Element, str, str) -> typing.Sequence[_Element]
         if parent is None:
             return []
         ret = self.findall(tag_name, parent)
@@ -227,7 +227,7 @@ class Earxml:
         return ret
 
     def get_element_desc(self, element):
-        # type: (_Element, _DocRoot, str) -> str
+        # type: (_Element, _DocRoot) -> str
         """Get element description from XML."""
         desc = self.get_child(element, "DESC")
         txt = self.get_child(desc, 'L-2[@L="DE"]')
@@ -307,7 +307,7 @@ class Earxml:
 
 
 def create_sub_element(parent, element_name, text=None, dest=None):
-    # type: (_Element, str, typing.Optional[str]) -> _Element
+    # type: (_Element, str, typing.Optional[str], typing.Optional[str]) -> _Element
     sn = lxml.etree.SubElement(parent, element_name)
     if text is not None:
         sn.text = str(text)
@@ -1007,7 +1007,7 @@ def get_signalgrp_and_signals(sys_signal, sys_signal_array, frame, group_id, ea)
 
 
 def decode_compu_method(compu_method, ea, float_factory):
-    # type: (_Element, _DocRoot, str, _FloatFactory) -> typing.Tuple
+    # type: (_Element, Earxml, _FloatFactory) -> typing.Tuple
     values = {}
     factor = float_factory(1.0)
     offset = float_factory(0)
@@ -1530,7 +1530,7 @@ def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay
 
 
 def get_frame(frame_triggering, ea, multiplex_translation, float_factory, headers_are_littleendian):
-    # type: (_Element, _DocRoot, dict, typing.Callable, bool) -> typing.Union[canmatrix.Frame, None]
+    # type: (_Element, Earxml, dict, typing.Callable, bool) -> typing.Union[canmatrix.Frame, None]
     global frames_cache
 
     arb_id = ea.get_child(frame_triggering, "IDENTIFIER")
