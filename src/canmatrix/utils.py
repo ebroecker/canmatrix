@@ -125,7 +125,7 @@ def decode_number(value, float_factory):  # type(string) -> (int)
         return 0
     value = value.strip()
 
-    if '.' in value:
+    if ('.' in value) or (value.lower() in ["inf", "+inf", "-inf"]):
         return float_factory(value)
 
     base = 10
