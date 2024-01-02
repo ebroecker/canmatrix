@@ -1563,7 +1563,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
             pdu = ipdu[0]
 
         new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text, 0))
-        new_frame.add_pdu(target_pdu)
+        # new_frame.add_pdu(target_pdu)
         
         comment = ea.get_element_desc(frame_elem)
         if pdu is not None:
