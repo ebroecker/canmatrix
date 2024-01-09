@@ -27,6 +27,7 @@ install:
   - if "%TOXENV%"=="pypy3" choco install python.pypy3
   - py -m pip install setuptools
   - py -m pip install tox
+  - py -m pip install wheel
   - ps: Update-AppveyorBuild -Version "v$(py get_version.py) b$Env:APPVEYOR_BUILD_NUMBER"
 
 build_script:
