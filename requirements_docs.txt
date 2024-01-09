@@ -4,4 +4,3 @@ xlrd
 xlwt
 openpyxl
 pyyaml
-setuptools
