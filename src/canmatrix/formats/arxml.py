@@ -1112,6 +1112,9 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         motorola = ea.get_child(signal, "PACKING-BYTE-ORDER")
         start_bit = ea.get_child(signal, "START-POSITION")
 
+        # To Get Update Bit
+        ub_start_bit = ea.get_child(signal, "UPDATE-INDICATION-BIT-POSITION")
+        
         isignal = ea.follow_ref(signal, "SIGNAL-REF")
         if isignal is None:
             isignal = ea.follow_ref(signal, "I-SIGNAL-REF")  # AR4
@@ -1119,9 +1122,16 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         if isignal is None:
             isignal = ea.follow_ref(signal, "I-SIGNAL-GROUP-REF")
             if isignal is not None:
-                logger.debug("get_signals: found I-SIGNAL-GROUP ")
+                logger.debug("get_signals: found I-SIGNAL-GROUP")
                 isignal_array = ea.follow_all_ref(isignal, "I-SIGNAL-REF")
                 get_signalgrp_and_signals(isignal, isignal_array, frame, group_id, ea)
+                if ub_start_bit is not None:
+                    ub_name = ea.get_element_name(isignal) + "_UB"   
+                    isignal_ub = canmatrix.Signal(ub_name,
+                                                  start_bit=int(ub_start_bit.text, 0),
+                                                  size = 1,
+                                                  is_signed = False) 
+                    frame.add_signal(new_signal_ub)
 
                 group_id = group_id + 1
                 continue
@@ -1353,7 +1363,14 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             existing_signal = frame.signal_by_name(new_signal.name)
             if existing_signal is None:
                 frame.add_signal(new_signal)
-
+                
+            if ub_start_bit is not None:
+                ub_name = name + "_UB"
+                new_signal_ub = canmatrix.Signal(ub_name,
+                                                 start_bit=int(ub_start_bit.text, 0),
+                                                 size = 1,
+                                                 is_signed = False)
+                frame.add_signal(new_signal_ub)
 
 def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea, float_factory):
     selector_byte_order = ea.get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER")
