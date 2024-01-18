@@ -1131,7 +1131,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                                                   start_bit=int(ub_start_bit.text, 0),
                                                   size = 1,
                                                   is_signed = False) 
-                    frame.add_signal(new_signal_ub)
+                    frame.add_signal(isignal_ub)
 
                 group_id = group_id + 1
                 continue
