@@ -434,7 +434,9 @@ def dump(db, f, **options):
     clusters = create_sub_element_fx(elements, "CLUSTERS")
     cluster = lxml.etree.SubElement(clusters, ns_fx + "CLUSTER")
     cluster.set('ID', 'canCluster1')
-    create_short_name_desc(cluster, "clusterShort", "clusterDesc")
+    # add the file name as a suffix in the cluster name
+    cluster_name = f"cluster_{f.name.split('.')[0]}"
+    create_short_name_desc(cluster, cluster_name, "clusterDesc")
     create_sub_element_fx(cluster, "SPEED", "500")
     create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "true")
     create_sub_element_fx(cluster, "BIT-COUNTING-POLICY", "MONOTONE")
