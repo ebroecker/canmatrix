@@ -27,6 +27,7 @@
 
 from __future__ import absolute_import, division, print_function
 
+import os
 import typing
 from builtins import *
 import lxml.etree
@@ -435,7 +436,7 @@ def dump(db, f, **options):
     cluster = lxml.etree.SubElement(clusters, ns_fx + "CLUSTER")
     cluster.set('ID', 'canCluster1')
     # add the file name as a suffix in the cluster name
-    cluster_name = f"cluster_{f.name.split('.')[0]}"
+    cluster_name = f"cluster_{os.path.basename(f.name).split('.')[0]}"
     create_short_name_desc(cluster, cluster_name, "clusterDesc")
     create_sub_element_fx(cluster, "SPEED", "500")
     create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "true")
