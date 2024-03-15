@@ -162,7 +162,14 @@ class Signal(object):
     is_little_endian = attr.ib(default=True)  # type: bool
     is_signed = attr.ib(default=True)  # type: bool
     offset = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: canmatrix.types.PhysicalValue
-    factor = attr.ib(converter=float_factory, default=float_factory(1.0))  # type: canmatrix.types.PhysicalValue
+    factor = attr.ib(
+        converter=lambda value, float_factory=float_factory: (
+            float_factory(value)
+            if float(value) != 0
+            else float_factory(1.0)
+        ),
+        default=float_factory(1.0)
+    )  # type: canmatrix.types.PhysicalValue
 
     unit = attr.ib(default="")  # type: str
     receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
