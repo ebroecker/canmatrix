@@ -1208,8 +1208,23 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 if base_type is None:
                     base_type = ea.follow_ref(test_signal, "BASE-TYPE-REF")
 
-            lower = ea.get_child(data_constr, "LOWER-LIMIT")
-            upper = ea.get_child(data_constr, "UPPER-LIMIT")
+            # Only get min/max values of the internal
+            lowers = ea.get_children(data_constr, "INTERNAL-CONSTRS/LOWER-LIMIT")
+            if not lowers:
+                lower = None
+            else:
+                lower = lowers[0]
+                for elem in lowers:
+                    if decimal.Decimal(lower.text) > decimal.Decimal(elem.text):
+                        lower = elem
+            uppers = ea.get_children(data_constr, "INTERNAL-CONSTRS/UPPER-LIMIT")
+            if not uppers:
+                upper = None
+            else:
+                upper = uppers[0]
+                for elem in uppers:
+                    if decimal.Decimal(upper.text) < decimal.Decimal(elem.text):
+                        upper = elem
         else:
             lower = ea.get_child(datatype, "LOWER-LIMIT")
             upper = ea.get_child(datatype, "UPPER-LIMIT")
