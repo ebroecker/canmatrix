@@ -1967,7 +1967,7 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
     if ignore_cluster_info is True:
         ccs = [lxml.etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
     else:
-        ccs = ea.findall('CAN-CLUSTER')
+        ccs = ea.findall('CAN-CLUSTER') + ea.findall('J-1939-CLUSTER') 
 
     headers_are_littleendian = containters_are_little_endian(ea)
     nodes = {}  # type: typing.Dict[_Element, canmatrix.Ecu]
@@ -2017,6 +2017,7 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         multiplex_translation = {}  # type: typing.Dict[str, str]
         for frameTrig in can_frame_trig:  # type: _Element
             frame = get_frame(frameTrig, ea, multiplex_translation, float_factory, headers_are_littleendian)
+            frame.is_j1939 = "J-1939" in cc.tag
             if frame is not None:
                 comm_directions = ea.selector(frameTrig, ">>FRAME-PORT-REF/COMMUNICATION-DIRECTION")
                 for comm_direction in comm_directions:
