@@ -17,6 +17,17 @@ def test_signal_defaults_to_decimal():
     assert isinstance(signal.factor, decimal.Decimal)
 
 
+def test_enum_defines_from_decimal():
+    db = canmatrix.CanMatrix()
+    db.add_frame_defines("test_enum", 'ENUM  "eins","zwei","drei","vier"')
+    s1 = canmatrix.canmatrix.Signal('signal', size=32, is_float=True)
+    f1 = canmatrix.canmatrix.Frame('frame', arbitration_id=1, size=4)
+    f1.add_signal(s1)
+    f1.add_attribute("test_enum", "2.00001")
+    db.add_frame(f1)
+    db.enum_attribs_to_values()
+ 
+
 def test_encode_signal():
     s1 = canmatrix.canmatrix.Signal('signal', size=8)
     assert s1.phys2raw() == 0
