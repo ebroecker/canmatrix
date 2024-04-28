@@ -61,7 +61,6 @@ Environment :: Console
 License :: OSI Approved :: BSD License
 Topic :: Scientific/Engineering
 Programming Language :: Python
-Programming Language :: Python :: 2.7
 Programming Language :: Python :: 3.4
 Programming Language :: Python :: 3.5
 Programming Language :: Python :: 3.6
@@ -94,9 +93,7 @@ setup(
     install_requires = [
         "attrs>=19.2.0",
         "click",
-        "enum34; python_version < '3.4'",
         "importlib-metadata; python_version < '3.8'",
-        "six",
         "typing; python_version < '3.5'",
     ],
     extras_require = {
