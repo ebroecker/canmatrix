@@ -137,6 +137,7 @@ def dump(db, filename, **options):
     # worksheet = workbook.add_worksheet('K-Matrix ' + ws_name[0:22])
     worksheet = workbook.active
     worksheet.title = 'K-Matrix '
+    worksheet.sheet_properties.outlinePr.summaryBelow = False
 
     global sty_header
     global sty_white
@@ -264,6 +265,7 @@ def dump(db, filename, **options):
             write_excel_line(worksheet, row, temp_col, row_array, frame_style)
             row += 1
 
+        first_fold_row = row+1
         # iterate over signals
         for sig_idx in sorted(sig_hash.keys()):
             sig = sig_hash[sig_idx]
@@ -279,8 +281,9 @@ def dump(db, filename, **options):
                 for val in sorted(sig.values.keys()):
                     row_array = canmatrix.formats.xls_common.get_frame_info(db, frame)
                     front_col = write_excel_line(worksheet, row, 0, row_array, frame_style)
-#                    if frame_style != sty_first_frame:
-#                        worksheet.set_row(row, None, None, {'level': 1})
+
+                    if row >= first_fold_row:    
+                        worksheet.row_dimensions[row+1].outline_level = 1
 
                     col = head_start
                     col = write_ecu_matrix(ecu_list, sig, frame, worksheet, row, col, frame_style)
@@ -304,12 +307,13 @@ def dump(db, filename, **options):
                     frame_style = sty_white
                     value_style = sty_norm
                 # loop over values ends here
+
             # no valuetable available
             else:
                 row_array = canmatrix.formats.xls_common.get_frame_info(db, frame)
                 front_col = write_excel_line(worksheet, row, 0, row_array, frame_style)
-#                if frame_style != sty_first_frame:
-#                    worksheet.set_row(row, None, None, {'level': 1})
+                if row >= first_fold_row:    
+                    worksheet.row_dimensions[row+1].outline_level = 1
 
                 col = head_start
                 col = write_ecu_matrix(ecu_list, sig, frame, worksheet, row, col, frame_style)
