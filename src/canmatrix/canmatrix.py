@@ -2337,20 +2337,20 @@ class CanMatrix(object):
             if self.ecu_defines[define].type == "ENUM":
                 for bu in self.ecus:
                     if define in bu.attributes:
-                        bu.attributes[define] = self.ecu_defines[define].values[int(bu.attributes[define])]
+                        bu.attributes[define] = self.ecu_defines[define].values[int(float(bu.attributes[define]))]
 
         for define in self.frame_defines:
             if self.frame_defines[define].type == "ENUM":
                 for frame in self.frames:
                     if define in frame.attributes:
-                        frame.attributes[define] = self.frame_defines[define].values[int(frame.attributes[define])]
+                        frame.attributes[define] = self.frame_defines[define].values[int(float(frame.attributes[define]))]
 
         for define in self.signal_defines:
             if self.signal_defines[define].type == "ENUM":
                 for frame in self.frames:
                     for signal in frame.signals:
                         if define in signal.attributes:
-                            signal.attributes[define] = self.signal_defines[define].values[int(signal.attributes[define])]
+                            signal.attributes[define] = self.signal_defines[define].values[int(float(signal.attributes[define]))]
 
     def enum_attribs_to_keys(self):  # type: () -> None
         for define in self.ecu_defines:
