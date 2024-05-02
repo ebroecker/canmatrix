@@ -26,8 +26,6 @@
 
 # TODO: Definitions should be disassembled
 
-from __future__ import absolute_import, division, print_function
-
 import decimal
 import fnmatch
 import itertools
@@ -40,7 +38,7 @@ import warnings
 from builtins import *
 
 import attr
-from six.moves import zip_longest
+from itertools import zip_longest
 
 import canmatrix.copy
 import canmatrix.types
