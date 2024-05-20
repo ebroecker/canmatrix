@@ -1595,8 +1595,8 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         # pdu = ea.follow_ref(pdu_mapping, "PDU-REF")  # SIGNAL-I-PDU
         pdu = ea.follow_ref(frame_elem, "PDU-REF")  # SIGNAL-I-PDU
 
-        pdu_name = ea.get_element_name(pdu)
-        target_pdu = canmatrix.Pdu(name=pdu_name)
+        # pdu_name = ea.get_element_name(pdu)
+        # target_pdu = canmatrix.Pdu(name=pdu_name)
 
         secOC_properties = None
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
@@ -1628,7 +1628,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
             ipdu_length = ea.get_child(pdu, "LENGTH").text
 
         new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text, 0), secOC_properties=secOC_properties)
-        new_frame.add_pdu(target_pdu)
+        # new_frame.add_pdu(target_pdu)
 
         if secOC_properties is not None:
             if freshness_tx_length is not None and int(freshness_tx_length, 0) > 0:
