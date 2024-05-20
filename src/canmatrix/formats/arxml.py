@@ -1224,7 +1224,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 upper = uppers[0]
                 for elem in uppers:
                     if decimal.Decimal(upper.text) < decimal.Decimal(elem.text):
-                        upper = elem                       
+                        upper = elem
         else:
             lower = ea.get_child(datatype, "LOWER-LIMIT")
             upper = ea.get_child(datatype, "UPPER-LIMIT")
