@@ -1454,7 +1454,7 @@ class Frame(object):
 
         rx_length = len(data)
         if rx_length != self.size:
-            msg_id = self.arbitration_id.id if self.arbitration_id.id else self.header_id
+            msg_id = self.arbitration_id.id if self.arbitration_id.id != 0 else self.header_id
 
             logging.warning(f"Received message 0x{msg_id:08X} with length {rx_length}, expected {self.size}")
 
