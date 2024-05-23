@@ -467,6 +467,7 @@ class Signal(object):
         """
         if self.is_float:
             value = self.float_factory(value)
+                                                                                                            
         if decode_to_str:
             for value_key, value_string in self.values.items():
                 if value_key == value:
@@ -489,7 +490,8 @@ class SignalGroup(object):
     name = attr.ib()  # type: str
     id = attr.ib()  # type: int
     signals = attr.ib(factory=list, repr=False)  # type: typing.MutableSequence[Signal]
-    e2e_trans = attr.ib(default=None)
+    e2e_properties = attr.ib(default=None)  # type: Optional[AutosarE2EProperties]
+    secOC_properties= attr.ib(default=None)  # type: Optional[AutosarSecOCProperties]
 
     def add_signal(self, signal):  # type: (Signal) -> None
         """Add a Signal to SignalGroup.
@@ -676,8 +678,6 @@ class ArbitrationId(object):
         self.id &= 0xfc0000ff
         self.id |= (_pgn << 8 & 0x3FFFF00)  # default pgn is None -> mypy reports error
 
-
-
     @property
     def j1939_tuple(self):  # type: () -> typing.Tuple[int, int, int]
         """Get tuple (destination, PGN, source)
@@ -788,10 +788,28 @@ class Endpoint(object):
     Represents a Endpoint.
 
     AUTOSAR Ethernet Frames Endpoints
-    """    
-    ip = attr.ib(default="")  # type: str
-    port = attr.ib(default=0)  # type: int
+    """
+    server_ip = attr.ib(default="")  # type: str
+    server_port = attr.ib(default=0)  # type: int
+    client_ip = attr.ib(default="")  # type: str
+    client_port = attr.ib(default=0)  # type: int
 
+
+@attr.s(eq=False)
+class AutosarE2EProperties(object):
+    profile = attr.ib(default=None)  # type: str
+    data_ids = attr.ib(default=None) # type: List[int]
+    data_length = attr.ib(default=None)  # type: int
+
+
+@attr.s(eq=False)
+class AutosarSecOCProperties(object):
+    auth_algorithm = attr.ib(default="")  # type: str
+    payload_length = attr.ib(default=0)  # type: int
+    auth_tx_length = attr.ib(default=0)  # type: int
+    data_id = attr.ib(default=0)  # type: int
+    freshness_length = attr.ib(default=0)  # type: int
+    freshness_tx_length = attr.ib(default=0)  # type: int
 
 @attr.s(eq=False)
 class Pdu(object):
@@ -825,15 +843,18 @@ class Pdu(object):
         self.signals.append(signal)
         return self.signals[len(self.signals) - 1]
 
-    def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
-        # type: (str, int, typing.Sequence[str]) -> None
+    def add_signal_group(self, 
+                         Name: str, 
+                         Id: int, 
+                         signalNames: typing.Sequence[str], 
+                         e2e_properties: Optional[AutosarE2EProperties] = None) -> None:
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
         :param str Name: Group name
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = SignalGroup(Name, Id, e2e_trans=e2e_trans)
+        newGroup = SignalGroup(Name, Id, e2e_properties=e2e_properties)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
@@ -869,7 +890,7 @@ class Frame(object):
     """
     Represents CAN Frame.
 
-    The Frame has  following mandatory attributes
+    The Frame has following mandatory attributes
 
     * arbitration_id,
     * name,
@@ -899,7 +920,7 @@ class Frame(object):
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
     receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
-
+    
     cycle_time = attr.ib(default=0)  # type: int
 
     is_j1939 = attr.ib(default=False)  # type: bool
@@ -907,11 +928,12 @@ class Frame(object):
     # ('sendType', '_sendType', str, None),
 
     pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
-    header_id = attr.ib(default=None)  #type: int
-    
     pdu_name = attr.ib(default="")  # type: str
+
+    header_id = attr.ib(default=None)  # type: int
+    endpoints = attr.ib(default=None)  # type: typing.MutableSequence[Endpoint]
     
-    endpoints = attr.ib(factory=dict)
+    secOC_properties = attr.ib(default=None)  # type:  Optional[AutosarSecOCProperties]
 
     @property
     def is_multiplexed(self):  # type: () -> bool
@@ -1036,15 +1058,18 @@ class Frame(object):
 
         return iter(self.signals)
 
-    def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
-        # type: (str, int, typing.Sequence[str]) -> None
+    def add_signal_group(self,
+                         Name: str, 
+                         Id: int, 
+                         signalNames: typing.Sequence[str], 
+                         e2e_properties: Optional[AutosarE2EProperties] = None) -> None:
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
         :param str Name: Group name
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = SignalGroup(Name, Id, e2e_trans=e2e_trans)
+        newGroup = SignalGroup(Name, Id, e2e_properties=e2e_properties)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
@@ -1409,12 +1434,15 @@ class Frame(object):
                 least = most + signal.size
 
                 bits = big[most:least]
+
             unpacked.append(unpack_bitstring(signal.size, signal.is_float, signal.is_signed, bits))
 
         return unpacked
 
-    def unpack(self, data, report_error=True):
-        # type: (bytes, bool) -> typing.Mapping[str, DecodedSignal]
+    def unpack(self, data: bytes, 
+               allow_truncated: bool = False,
+               allow_exceeded: bool = False,
+               ) -> typing.Mapping[str, DecodedSignal]:
         """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
         decodes every signal in signal-list.
 
@@ -1425,12 +1453,26 @@ class Frame(object):
         """
 
         rx_length = len(data)
-        if rx_length != self.size and report_error:
-            raise DecodingFrameLength(
-                'Received message 0x{self.arbitration_id.id:08X} '
-                'with length {rx_length}, expected {self.size}'.format(**locals())
-            )
-        elif self.is_pdu_container:
+        if rx_length != self.size:
+            msg_id = self.arbitration_id.id if self.arbitration_id.id != 0 else self.header_id
+
+            logging.warning(f"Received message 0x{msg_id:08X} with length {rx_length}, expected {self.size}")
+
+            if allow_truncated:
+                # pad the data with 0xff to prevent the codec from
+                # raising an exception.
+                data = data.ljust(self.size, b"\xFF")
+
+            if allow_exceeded:
+                # trim the payload data to match the expected size
+                data = data[:self.size]
+            
+            if len(data) != self.size:
+                # return None
+                raise DecodingFrameLength(
+                    f"Received message 0x{msg_id:04X} with wrong data size: {rx_length} instead of {self.size}")
+
+        if self.is_pdu_container:
             header_id_signal = self.signal_by_name("Header_ID")
             header_dlc_signal = self.signal_by_name("Header_DLC")
             if header_id_signal is None or header_dlc_signal is None:
@@ -1729,6 +1771,9 @@ class CanMatrix(object):
     ecus = attr.ib(factory=list)  # type: typing.MutableSequence[Ecu]
     frames = attr.ib(factory=list)  # type: typing.MutableSequence[Frame]
 
+    frames_dict_name = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
+    frames_dict_id = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
+
     signal_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     frame_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     global_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
@@ -1737,12 +1782,9 @@ class CanMatrix(object):
     value_tables = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.MutableMapping]
     env_vars = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.MutableMapping]
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
-
     baudrate = attr.ib(default=0)  # type:int
     fd_baudrate = attr.ib(default=0)  # type:int
-
     vlan = attr.ib(default=None)  # type:int
-
     load_errors = attr.ib(factory=list)  # type: typing.MutableSequence[Exception]
 
     def __iter__(self):  # type: () -> typing.Iterator[Frame]
@@ -1928,17 +1970,27 @@ class CanMatrix(object):
                 # found ID while ignoring extended or standard
                 return test
         return None
-
+    
     def frame_by_header_id(self, header_id):  # type: (HeaderId) -> typing.Union[Frame, None]
         """Get Frame by its Header id.
+
         :param HeaderId header_id: Header id as canmatrix.header_id
         :rtype: Frame or None
         """
         for test in self.frames:
             if test.header_id == header_id:
-                # found ID while ignoring extended or standard
                 return test
-        return None   
+        return None
+
+    def get_frame_by_id(self, id: int
+                        ) -> typing.Union[Frame, None]:
+        """Get Frame by id.
+
+        :param str name: Frame id to search for
+        :rtype: Frame or None
+        """
+
+        return self.frames_dict_id[id]
 
     def frame_by_pgn(self, pgn):  # type: (int) -> typing.Union[Frame, None]
         """Get Frame by pgn (j1939).
@@ -1964,6 +2016,15 @@ class CanMatrix(object):
             if test.name == name:
                 return test
         return None
+    
+    def get_frame_by_name(self, name):  # type: (str) -> typing.Union[Frame, None]
+        """Get Frame by name.
+
+        :param str name: Frame name to search for
+        :rtype: Frame or None
+        """
+
+        return self.frames_dict_name[name]
 
     def glob_frames(self, globStr):  # type: (str) -> typing.List[Frame]
         """Find Frames by given glob pattern.
@@ -2009,6 +2070,13 @@ class CanMatrix(object):
         :return: the inserted Frame
         """
         self.frames.append(frame)
+
+        self.frames_dict_name[frame.name] = frame
+        if frame.header_id:
+            self.frames_dict_id[frame.header_id] = frame
+        elif frame.arbitration_id.id:
+            self.frames_dict_id[frame.arbitration_id.id] = frame
+
         return self.frames[len(self.frames) - 1]
 
     def remove_frame(self, frame):  # type: (Frame) -> None
@@ -2282,7 +2350,7 @@ class CanMatrix(object):
                     logger.error(
                         "Name Conflict, could not copy/merge EnvVar " + envVar)
 
-    def set_fd_type(self):  # type: () -> None
+    def set_fd_type(self) -> None:
         """Try to guess and set the CAN type for every frame.
 
         If a Frame is longer than 8 bytes, it must be Flexible Data Rate frame (CAN-FD).
@@ -2292,7 +2360,10 @@ class CanMatrix(object):
             if frame.size > 8:
                 frame.is_fd = True
 
-    def encode(self, frame_id, data):  # type: (ArbitrationId, typing.Mapping[str, typing.Any]) -> bytes
+    def encode(self, 
+               frame_id: ArbitrationId, 
+               data: typing.Mapping[str, typing.Any]
+               ) -> bytes:
         """Return a byte string containing the values from data packed
         according to the frame format.
 
