@@ -847,7 +847,7 @@ class Pdu(object):
                          Name: str, 
                          Id: int, 
                          signalNames: typing.Sequence[str], 
-                         e2e_properties: Optional[AutosarE2EProperties] = None) -> None:
+                         e2e_properties: typing.Optional[AutosarE2EProperties] = None) -> None:
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
         :param str Name: Group name
