@@ -131,11 +131,33 @@ def get_multiplexing_parts_infos(signals, frame_name, start_pos=-1, end_pos=-1, 
 
 def get_base_data_type(bit_length, is_signed=False):
     # type: (int, bool) -> str
-    if is_signed and bit_length == 32:
-        return "A_INT32"
-    
-    elif not is_signed and bit_length == 32:
-        return "A_UINT32"
+	if bit_length == 8:
+		if is_signed:
+			return "A_INT8"
+		
+		elif not is_signed:
+			return "A_UINT8"
+			
+	elif bit_length == 16:
+		if is_signed:
+			return "A_INT16"
+		
+		elif not is_signed:
+			return "A_UINT16"
+			
+	elif bit_length == 32:
+		if is_signed:
+			return "A_INT32"
+		
+		elif not is_signed:
+			return "A_UINT32"
+			
+	elif bit_length == 64:
+		if is_signed:
+			return "A_INT64"
+		
+		elif not is_signed:
+			return "A_UINT64"
 
 
 class Fe:
