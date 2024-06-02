@@ -10,7 +10,7 @@ except ImportError:
 def test_ecu_extract():
     here = Path(__file__).parent
 
-    db = canmatrix.formats.arxml.load("files/arxml/MyECU.ecuc.arxml")['']
+    db = canmatrix.formats.arxml.load("tests/files/arxml/MyECU.ecuc.arxml")['']
     assert db.frames is not None
     assert len(db.frames) == 2
     assert len(db.frames[0].signals) == 3
@@ -19,7 +19,7 @@ def test_ecu_extract():
 
 def test_get_signals_from_container_i_pdu():
     here = Path(__file__).parent
-    matrix = canmatrix.formats.arxml.load("files/arxml/ARXMLContainerTest.arxml")
+    matrix = canmatrix.formats.arxml.load("tests/files/arxml/ARXMLContainerTest.arxml")
     assert matrix["New_CanCluster"].frames[0].signals[0].name == 'Header_ID'
     assert matrix["New_CanCluster"].frames[0].signals[1].name == 'Header_DLC'
     assert matrix["New_CanCluster"].frames[0].pdus[0].name == 'PDU_Contained_1'
@@ -29,21 +29,21 @@ def test_get_signals_from_container_i_pdu():
 
 def test_get_signals_from_secured_pdu():
     here = Path(__file__).parent
-    matrix = canmatrix.formats.arxml.load("files/arxml/ARXMLSecuredPDUTest.arxml")
+    matrix = canmatrix.formats.arxml.load("tests/files/arxml/ARXMLSecuredPDUTest.arxml")
     assert matrix["CAN"].frames[0].signals[0].name == 'someTestSignal'
     assert matrix["CAN"].frames[0].signals[1].name == 'Signal'
 
 
 def test_min_max():
     here = Path(__file__).parent
-    matrix = canmatrix.formats.arxml.load("files/arxml/ARXML_min_max.arxml")
+    matrix = canmatrix.formats.arxml.load("tests/files/arxml/ARXML_min_max.arxml")
     assert matrix["New_CanCluster"].frames[0].signals[0].is_signed is False
 
 
 def test_decode_compu_method_1():
     here = Path(__file__).parent
     ea = canmatrix.formats.arxml.Earxml()
-    ea.open("files/arxml/ARXMLCompuMethod1.arxml")
+    ea.open("tests/files/arxml/ARXMLCompuMethod1.arxml")
     compu_method = ea.find("COMPU-METHOD")
     values, factor, offset, unit, const = canmatrix.formats.arxml.decode_compu_method(compu_method, ea, float)
     assert values == {'0': 'no trailer detected', '1': 'trailer detected'}
