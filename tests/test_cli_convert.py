@@ -21,21 +21,21 @@ def run(testdir):
     return do_run
 
 def test_silent(tmpdir, run):
-    inputFile = str(here / "test_frame_decoding.dbc")
+    inputFile = "./files/dbc/test_frame_decoding.dbc")
 
     normal_result = run(inputFile ,"tmp.dbc")
     silent_result = run("-s", inputFile,"tmp.dbc")
     assert len(normal_result.errlines) > len(silent_result.errlines)
 
 def test_verbose(tmpdir, run):
-    inputFile = str(here / "ARXML_min_max.arxml")
+    inputFile = "./files/arxml/ARXML_min_max.arxml"
 
     normal_result = run(inputFile ,"tmp.dbc")
     verbose_result = run("-vv", inputFile,"tmp.dbc")
     assert len(normal_result.errlines) < len(verbose_result.errlines)
 
 def test_force_output_format(tmpdir, run):
-    inputFile = str(here / "test_frame_decoding.dbc")
+    inputFile = "./files/dbc/test_frame_decoding.dbc"
     outFile =  str(here / "tmp.tmp")
     normal_result = run("-v", "-f","dbc", inputFile, outFile)
     assert 'INFO - convert - done' in normal_result.errlines[-1]
