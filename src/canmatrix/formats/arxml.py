@@ -1600,23 +1600,26 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
 
         secOC_properties = None
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            payload_length = ea.get_child(pdu, "LENGTH").text
+            try:
+                payload_length = ea.get_child(pdu, "LENGTH").text
 
-            secured_ipdu_SecoC = ea.get_child(pdu, "SECURE-COMMUNICATION-PROPS")
+                secured_ipdu_SecoC = ea.get_child(pdu, "SECURE-COMMUNICATION-PROPS")
 
-            auth_algorithm = ea.get_child(secured_ipdu_SecoC, "AUTH-ALGORITHM").text
-            auth_tx_length = ea.get_child(secured_ipdu_SecoC, "AUTH-INFO-TX-LENGTH").text
-            data_id = ea.get_child(secured_ipdu_SecoC, "DATA-ID").text
-            freshness_bit_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-LENGTH").text
-            freshness_tx_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-TX-LENGTH").text
-            
-            secOC_properties = canmatrix.AutosarSecOCProperties(auth_algorithm, 
-                                                               int(payload_length, 0),
-                                                               int(auth_tx_length, 0),
-                                                               int(data_id, 0),
-                                                               int(freshness_bit_length, 0),
-                                                               int(freshness_tx_length, 0)
-                                                               )
+                auth_algorithm = ea.get_child(secured_ipdu_SecoC, "AUTH-ALGORITHM").text
+                auth_tx_length = ea.get_child(secured_ipdu_SecoC, "AUTH-INFO-TX-LENGTH").text
+                data_id = ea.get_child(secured_ipdu_SecoC, "DATA-ID").text
+                freshness_bit_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-LENGTH").text
+                freshness_tx_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-TX-LENGTH").text
+                
+                secOC_properties = canmatrix.AutosarSecOCProperties(auth_algorithm, 
+                                                                   int(payload_length, 0),
+                                                                   int(auth_tx_length, 0),
+                                                                   int(data_id, 0),
+                                                                   int(freshness_bit_length, 0),
+                                                                   int(freshness_tx_length, 0)
+                                                                   )
+            except Exception as e:
+                logger.warning(f"{e}")
 
             ipdu = ea.selector(pdu, ">PAYLOAD-REF>I-PDU-REF")
             if not ipdu:
