@@ -1,3 +1,0 @@
-ID,Frame Name,Cycle Time [ms],Launch Type,Launch Parameter,Signal Byte No.,Signal Bit No.,Signal Name,Signal Function,Signal Length [Bit],Signal Default, Signal Not Available,Byteorder,is signed,Name / Phys. Range,Function / Increment Unit,Value
-123h,testFrame1,,,1,4,someTestSignal,,11, , ,m,u,5  specialCharUnit°$,1.0..10236.0
-123h,testFrame1,,,3,4,Signal,,3, , ,i,u,someUnit,0.0..7.0
