@@ -1,0 +1,453 @@
+FormatVersion=5.0 // Do not edit this line!
+Title="canmatrix-Export"
+{ENUMS}
+enum Baudrate(0="125K", 1="250K", 2="500K", 3="1M")
+enum BridgeAFault_status(0="Normal", 1="FLT_A", 2="N/A", 3="FLT_C", 4="OverVoltage", 5="FLT_B", 6="Overcurrent", 7="5V")
+enum BridgeAVoltageOk_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum BridgeBFault_status(0="Normal", 1="FLT_A", 2="N/A", 3="FLT_C", 4="OverVoltage", 5="FLT_B", 6="Overcurrent", 7="5V")
+enum BridgeBVoltageOk_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum CANbus_status(0="Normal", 1="Warning", 3="ErrorPassive", 4="N/A")
+enum ControlHardwareFail_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum EStopShutdown_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum EnableSplitPhase_command(0="Normal - Three Phase Mode", 1="Enable Split Phase Mode", 2="Error", 3="N/A")
+enum EnableSplitPhase_echo(0="Normal - Three Phase Mode", 1="Enable Split Phase Mode", 2="Error", 3="N/A")
+enum EnableUPSMode_command(0="Disable", 1="Enable", 2="Error", 3="N/A")
+enum EnableUPSMode_echo(0="Disable", 1="Enable", 2="Error", 3="N/A")
+enum Enable_command(0="Disable", 1="Enable", 2="Error", 3="N/A")
+enum Enable_echo(0="Disable", 1="Enable", 2="Error", 3="N/A")
+enum FaultClear_command(0="Normal", 1="Clear Faults", 2="Error", 3="N/A")
+enum FaultClr_echo(0="Normal", 1="Clear Faults", 2="Error", 3="N/A")
+enum ForceRelayK1_Precharge_command(0="Normal", 1="Force On", 2="Error", 3="N/A")
+enum ForceRelayMX1_command(0="Normal", 1="Force On", 2="Error", 3="N/A")
+enum ForceRelayMX2_command(0="Normal", 1="Force On", 2="Error", 3="N/A")
+enum ForceRelayRelayK2_DCRun_comand(0="Normal", 1="Force On", 2="Error", 3="N/A")
+enum GeneralFault_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum HardwareEnable_status(0="Not Active", 1="Active", 2="Error", 3="N/A")
+enum IllegalTransition_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum InvalidEEHeader_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum InvalidEESection_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum InvertHwEnable_command(0="No invert", 1="Invert", 2="Error", 3="N/A")
+enum K1PrechargePermissive_status(0="Open", 1="Closed", 2="Error", 3="N/A")
+enum K2DCRunPermissive_status(0="Open", 1="Closed", 2="Error", 3="N/A")
+enum LineVoltageDetected_status(0="No_Voltage", 1="Voltage_Detected", 2="Error", 3="N/A")
+enum LossOfAC_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum LossValidControlMessage_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum MX1Permissive_status(0="Open", 1="Closed", 2="Error", 3="N/A")
+enum MX2Permissive_status(0="Open", 1="Closed", 2="Error", 3="N/A")
+enum MasterFollowerMode_command(0="Master", 1="Follower", 2="Error", 3="N/A")
+enum MessageValidModeControl_status(0="Invalid", 1="Valid", 2="Error", 3="N/A")
+enum MessageValidPowerCMD_status(0="Invalid", 1="Valid", 2="Error", 3="N/A")
+enum MessageValidVF_status(0="Invalid", 1="Valid", 2="Error", 3="N/A")
+enum OvercurrentAC_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum OvercurrentDC_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum OvertempInternal_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum OvertempPowerDevice_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum OvervoltageDC_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum PhaseRotation_command(0="Negative", 1="Positive", 2="Error", 3="N/A")
+enum PhaseRotation_echo(0="Negative", 1="Positive", 2="Error", 3="N/A")
+enum PhaseRotation_status(0="Negative", 1="Positive", 2="Error", 3="N/A")
+enum PowerAvailAC_status(0="None", 1="Available", 2="Error", 3="N/A")
+enum PowerAvailDC_status(0="None", 1="Available", 2="Error", 3="N/A")
+enum PowerCircuitEnabled_status(0="Disabled", 1="Enabled", 2="Error", 3="N/A")
+enum State_status(0="Power On Reset", 1="Ready", 2="Following", 3="Fault", 4="Forming", 5="N/A", 6="N/A", 7="N/A", 8="N/A", 9="N/A", 10="N/A", 11="N/A", 12="N/A", 13="N/A", 14="N/A", 15="N/A")
+enum StatusBaudrate(0="125K", 1="250K", 2="500K", 3="1M")
+enum StatusThermalOverload(0="Warning", 1="Fault", 2="Error", 3="N/A")
+enum ThermalOverload(0="Warning", 1="Fault", 2="Error", 3="N/A")
+enum UndervoltageDC_status(0="Normal", 1="Fault Active", 2="Error", 3="N/A")
+enum WriteSerialNumber(0="Disable", 1="Enable", 2="Error", 3="N/A")
+
+{SENDRECEIVE}
+
+[CommandModeControlAPU2]
+ID=FF9B41h
+Type=Standard
+DLC=9
+CycleTime=0
+Var=Enable_command unsigned 1,2 -m /min:0 /max:3 /e:Enable_command
+Var=FaultClear_command unsigned 3,2 -m /min:0 /max:3 /e:FaultClear_command
+Var=MasterFollowerMode_command unsigned 17,2 -m /min:0 /max:3 /e:MasterFollowerMode_command
+Var=ForceRelayMX1_command unsigned 33,2 -m /min:0 /max:3 /e:ForceRelayMX1_command
+Var=ForceRelayMX2_command unsigned 35,2 -m /min:0 /max:3 /e:ForceRelayMX2_command
+Var=ForceRelayK1_Precharge_command unsigned 37,2 -m /min:0 /max:3 /e:ForceRelayK1_Precharge_command
+Var=ForceRelayRelayK2_DCRun_comand unsigned 39,2 -m /min:0 /max:3 /e:ForceRelayRelayK2_DCRun_comand
+Var=InvertHwEnable_command unsigned 57,2 -m /min:0 /max:3 /e:InvertHwEnable_command
+Var=EnableUPSMode_command unsigned 59,2 -m /min:0 /max:3 /e:EnableUPSMode_command
+Var=EnableSplitPhase_command unsigned 61,2 -m /min:0 /max:3 /e:EnableSplitPhase_command
+Var=PhaseRotation_command unsigned 63,2 -m /min:0 /max:3 /e:PhaseRotation_command
+
+[CommandModeControl]
+ID=FFAB41h
+Type=Standard
+DLC=9
+CycleTime=0
+Var=Enable_command unsigned 1,2 -m /min:0 /max:3 /e:Enable_command
+Var=FaultClear_command unsigned 3,2 -m /min:0 /max:3 /e:FaultClear_command
+Var=MasterFollowerMode_command unsigned 17,2 -m /min:0 /max:3 /e:MasterFollowerMode_command
+Var=ForceRelayMX1_command unsigned 33,2 -m /min:0 /max:3 /e:ForceRelayMX1_command
+Var=ForceRelayMX2_command unsigned 35,2 -m /min:0 /max:3 /e:ForceRelayMX2_command
+Var=ForceRelayK1_Precharge_command unsigned 37,2 -m /min:0 /max:3 /e:ForceRelayK1_Precharge_command
+Var=ForceRelayRelayK2_DCRun_comand unsigned 39,2 -m /min:0 /max:3 /e:ForceRelayRelayK2_DCRun_comand
+Var=InvertHwEnable_command unsigned 57,2 -m /min:0 /max:3 /e:InvertHwEnable_command
+Var=EnableUPSMode_command unsigned 59,2 -m /min:0 /max:3 /e:EnableUPSMode_command
+Var=EnableSplitPhase_command unsigned 61,2 -m /min:0 /max:3 /e:EnableSplitPhase_command
+Var=PhaseRotation_command unsigned 63,2 -m /min:0 /max:3 /e:PhaseRotation_command
+
+[CommandPowerAPU2]
+ID=CFF9C41h
+Type=Standard
+DLC=9
+CycleTime=0
+Var=RealPower_command unsigned 7,32 -m /u:W /o:-90000 /min:-90000 /max:90000
+Var=ReactivePower_command unsigned 39,32 -m /u:VA /o:-90000 /min:-90000 /max:90000
+
+[CommandVFAPU2]
+ID=CFF9E41h
+Type=Standard
+DLC=8
+CycleTime=0
+Var=Voltage_command unsigned 7,16 -m /u:Vrms /f:0.1 /o:10 /min:10 /max:500
+Var=Frequency_command unsigned 23,16 -m /u:Hz /f:0.1 /o:45 /min:45 /max:65
+
+[CommandSetNVParam]
+ID=CFFAA41h
+Type=Standard
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX0 7,16 0 -m 
+Var=Dummy unsigned 23,16 -m /min:0 /max:65535
+
+[CommandSetNVParam]
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX1 7,16 1 -m 
+Var=VUnder50pct unsigned 23,16 -m /u:ms /o:1 /min:1 /max:30000
+Var=V50to88pct unsigned 39,16 -m /u:ms /o:1 /min:1 /max:30000
+Var=V110to120pct unsigned 55,16 -m /u:ms /o:1 /min:1 /max:30000
+
+[CommandSetNVParam]
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX2 7,16 2 -m 
+Var=VOver120 unsigned 23,16 -m /o:1 /min:1 /max:30000
+
+[CommandSetNVParam]
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX3 7,16 3 -m 
+Var=FreqHi unsigned 23,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70
+Var=FreqVeryLo unsigned 55,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70
+
+[CommandSetNVParam]
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX4 7,16 4 -m 
+Var=FreqVeryLo unsigned 23,16 -m /u:ms /o:160 /min:160 /max:160
+Var=FreqLo unsigned 39,16 -m /u:ms /o:1 /min:1 /max:30000
+Var=FreqHi unsigned 55,16 -m /u:ms /o:160 /min:160 /max:160
+
+[CommandSetNVParam]
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX5 7,16 5 -m 
+Var=NodeID unsigned 23,8 -m /min:0 /max:247
+Var=SA_Mask unsigned 31,8 -m /min:0 /max:255
+Var=Baudrate unsigned 39,4 -m /min:0 /max:15 /e:Baudrate
+
+[CommandSetNVParam]
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX6 7,16 6 -m 
+Var=ThermalOverload unsigned 17,2 -m /min:0 /max:3 /e:ThermalOverload
+
+[CommandSetNVParam]
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX7 7,16 7 -m 
+Var=MX1Open unsigned 23,16 -m /u:ms /min:0 /max:5000
+Var=MX1Close unsigned 39,16 -m /u:ms /min:0 /max:2000
+Var=MX2Open unsigned 55,16 -m /u:ms /min:0 /max:65535
+
+[CommandSetNVParam]
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX8 7,16 8 -m 
+Var=MX2Close unsigned 23,16 -m /u:ms /min:0 /max:2000
+Var=K1Open unsigned 39,16 -m /u:ms /min:0 /max:2000
+Var=K1Close unsigned 55,16 -m /u:ms /min:0 /max:2000
+
+[CommandSetNVParam]
+DLC=9
+CycleTime=0
+Mux=CommandSetNVParam_MUX9 7,16 9 -m 
+Var=K2Open unsigned 23,16 -m /u:ms /min:0 /max:2000
+Var=K2Close unsigned 39,16 -m /u:ms /min:0 /max:2000
+
+[CommandPower]
+ID=CFFAC41h
+Type=Standard
+DLC=9
+CycleTime=0
+Var=RealPower_command unsigned 7,32 -m /u:W /o:-90000 /min:-90000 /max:90000
+Var=ReactivePower_command unsigned 39,32 -m /u:VA /o:-90000 /min:-90000 /max:90000
+
+[CommandVF]
+ID=CFFAE41h
+Type=Standard
+DLC=8
+CycleTime=0
+Var=Voltage_command unsigned 7,16 -m /u:Vrms /f:0.1 /o:10 /min:10 /max:500
+Var=Frequency_command unsigned 23,16 -m /u:Hz /f:0.1 /o:45 /min:45 /max:65
+
+[CommandFactoryControl]
+ID=CFFAF41h
+Type=Standard
+DLC=9
+CycleTime=0
+Var=WriteSerialNumber unsigned 1,2 -m /min:0 /max:3 /e:WriteSerialNumber
+Var=FactoryAccess unsigned 23,16 -m /min:0 /max:65535
+Var=SerialNumber unsigned 39,32 -m /min:0 /max:4294967295
+
+[StatusACParameters]
+ID=CFFC2F7h
+Type=Standard
+DLC=8
+CycleTime=100
+Var=VoltageAC_measured unsigned 7,16 -m /u:V /f:0.1 /min:0 /max:65535
+Var=CurrentAC_measured unsigned 23,16 -m /u:A /min:0 /max:65535
+Var=Frequency_measured unsigned 39,16 -m /u:Hz /f:0.1 /min:0 /max:65535
+
+[StatusBits]
+ID=CFFC3F7h
+Type=Standard
+DLC=8
+CycleTime=100
+Var=State_status unsigned 3,4 -m /min:0 /max:15 /e:State_status
+Var=Enable_echo unsigned 5,2 -m /min:0 /max:3 /e:Enable_echo
+Var=FaultClr_echo unsigned 7,2 -m /min:0 /max:3 /e:FaultClr_echo
+Var=HardwareEnable_status unsigned 9,2 -m /min:0 /max:3 /e:HardwareEnable_status
+Var=PowerAvailAC_status unsigned 11,2 -m /min:0 /max:3 /e:PowerAvailAC_status
+Var=PowerAvailDC_status unsigned 13,2 -m /min:0 /max:3 /e:PowerAvailDC_status
+Var=PowerCircuitEnabled_status unsigned 15,2 -m /min:0 /max:3 /e:PowerCircuitEnabled_status
+Var=MX1Permissive_status unsigned 17,2 -m /min:0 /max:3 /e:MX1Permissive_status
+Var=MX2Permissive_status unsigned 19,2 -m /min:0 /max:3 /e:MX2Permissive_status
+Var=K1PrechargePermissive_status unsigned 21,2 -m /min:0 /max:3 /e:K1PrechargePermissive_status
+Var=K2DCRunPermissive_status unsigned 23,2 -m /min:0 /max:3 /e:K2DCRunPermissive_status
+Var=MessageValidModeControl_status unsigned 25,2 -m /min:0 /max:3 /e:MessageValidModeControl_status
+Var=MessageValidPowerCMD_status unsigned 27,2 -m /min:0 /max:3 /e:MessageValidPowerCMD_status
+Var=MessageValidVF_status unsigned 29,2 -m /min:0 /max:3 /e:MessageValidVF_status
+Var=CANbus_status unsigned 31,2 -m /min:0 /max:3 /e:CANbus_status
+Var=EnableUPSMode_echo unsigned 33,2 -m /min:0 /max:3 /e:EnableUPSMode_echo
+Var=EnableSplitPhase_echo unsigned 35,2 -m /min:0 /max:3 /e:EnableSplitPhase_echo
+Var=PhaseRotation_status unsigned 37,2 -m /min:0 /max:3 /e:PhaseRotation_status
+Var=LineVoltageDetected_status unsigned 39,2 -m /min:0 /max:3 /e:LineVoltageDetected_status
+Var=PhaseRotation_echo unsigned 41,2 -m /min:0 /max:3 /e:PhaseRotation_echo
+
+[StatusFaults]
+ID=CFFC8F7h
+Type=Standard
+DLC=8
+CycleTime=100
+Var=GeneralFault_status unsigned 1,2 -m /min:0 /max:3 /e:GeneralFault_status
+Var=OvercurrentAC_status unsigned 3,2 -m /min:0 /max:3 /e:OvercurrentAC_status
+Var=LossOfAC_status unsigned 5,2 -m /min:0 /max:3 /e:LossOfAC_status
+Var=OvercurrentDC_status unsigned 7,2 -m /min:0 /max:3 /e:OvercurrentDC_status
+Var=OvervoltageDC_status unsigned 9,2 -m /min:0 /max:3 /e:OvervoltageDC_status
+Var=UndervoltageDC_status unsigned 11,2 -m /min:0 /max:3 /e:UndervoltageDC_status
+Var=OvertempInternal_status unsigned 13,2 -m /min:0 /max:3 /e:OvertempInternal_status
+Var=OvertempPowerDevice_status unsigned 15,2 -m /min:0 /max:3 /e:OvertempPowerDevice_status
+Var=ControlHardwareFail_status unsigned 19,4 -m /min:0 /max:15 /e:ControlHardwareFail_status
+Var=LossValidControlMessage_status unsigned 23,4 -m /min:0 /max:15 /e:LossValidControlMessage_status
+Var=EStopShutdown_status unsigned 25,2 -m /min:0 /max:3 /e:EStopShutdown_status
+Var=IllegalTransition_status unsigned 27,2 -m /min:0 /max:3 /e:IllegalTransition_status
+Var=InvalidEEHeader_status unsigned 29,2 -m /min:0 /max:3 /e:InvalidEEHeader_status
+Var=InvalidEESection_status unsigned 31,2 -m /min:0 /max:3 /e:InvalidEESection_status
+Var=ThermalOverload unsigned 33,2 -m /min:0 /max:3 /e:ThermalOverload
+Var=BridgeBFault_status unsigned 42,3 -m /min:0 /max:7 /e:BridgeBFault_status
+Var=BridgeBVoltageOk_status unsigned 43,1 -m /min:0 /max:1 /e:BridgeBVoltageOk_status
+Var=BridgeAFault_status unsigned 58,3 -m /min:0 /max:7 /e:BridgeAFault_status
+Var=BridgeAVoltageOk_status unsigned 59,1 -m /min:0 /max:1 /e:BridgeAVoltageOk_status
+
+[MasterMeasuredPower]
+ID=CFFCAF6h
+Type=Standard
+DLC=9
+CycleTime=0
+Var=RealPower_measured unsigned 7,32 -m /u:W /min:0 /max:4294967295
+Var=ReactivePower_measured unsigned 39,32 -m /u:VA /min:0 /max:4294967295
+
+[StatusMeasuredPower]
+ID=CFFCAF7h
+Type=Standard
+DLC=9
+CycleTime=100
+Var=RealPower_measured unsigned 7,32 -m /u:W /min:0 /max:4294967295
+Var=ReactivePower_measured unsigned 39,32 -m /u:VA /min:0 /max:4294967295
+
+[StatusCommandedPower]
+ID=18FFC4F7h
+Type=Standard
+DLC=9
+CycleTime=100
+Var=RealPower_echo unsigned 7,32 -m /u:W /min:0 /max:4294967295
+Var=ReactivePower_echo unsigned 39,32 -m /u:VA /min:0 /max:4294967295
+
+[StatusCommandVF]
+ID=18FFC9F7h
+Type=Standard
+DLC=8
+CycleTime=100
+Var=Voltage_echo unsigned 7,16 -m /u:Vrms /f:0.1 /min:0 /max:65535
+Var=Frequency_echo unsigned 23,16 -m /u:Hz /f:0.1 /min:0 /max:65535
+
+[StatusTemps]
+ID=18FFCBF7h
+Type=Standard
+DLC=8
+CycleTime=100
+Var=TempInlet_measured unsigned 7,16 -m /u:C /f:0.1 /min:0 /max:65535
+Var=TempInternal_measured unsigned 23,16 -m /u:C /f:0.1 /min:0 /max:65535
+Var=ConverterLosses unsigned 39,16 -m /u:W /min:0 /max:65535
+
+[StatusLineCurrents]
+ID=18FFD0F7h
+Type=Standard
+DLC=8
+CycleTime=100
+Var=L1Current_measured unsigned 7,16 -m /u:A /min:0 /max:65535
+Var=L2Current_measured unsigned 23,16 -m /u:A /min:0 /max:65535
+Var=L3Current_measured unsigned 39,16 -m /u:A /min:0 /max:65535
+
+[StatusLineVoltages]
+ID=18FFD1F7h
+Type=Standard
+DLC=8
+CycleTime=100
+Var=L1Voltage_measured unsigned 7,16 -m /u:Vrms /f:0.1 /min:0 /max:65535
+Var=L2Voltage_measured unsigned 23,16 -m /u:Vrms /f:0.1 /min:0 /max:65535
+Var=L3Voltage_measured unsigned 39,16 -m /u:Vrms /f:0.1 /min:0 /max:65535
+
+[StatusNVParam]
+ID=1CFFA9F7h
+Type=Standard
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX0 7,16 0 -m 
+Var=Dummy unsigned 23,16 -m /o:5 /min:5 /max:10
+
+[StatusNVParam]
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX1 7,16 1 -m 
+Var=VUnder50pct unsigned 23,16 -m /u:ms /o:1 /min:1 /max:30000
+Var=V50to88pct unsigned 39,16 -m /u:ms /o:1 /min:1 /max:30000
+Var=V110to120pct unsigned 55,16 -m /u:ms /o:1 /min:1 /max:30000
+
+[StatusNVParam]
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX2 7,16 2 -m 
+Var=VOver120 unsigned 23,16 -m /o:1 /min:1 /max:30000
+
+[StatusNVParam]
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX3 7,16 3 -m 
+Var=FreqHi unsigned 23,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70
+Var=FreqVeryLo unsigned 55,16 -m /u:Hz /f:0.1 /o:40 /min:40 /max:70
+
+[StatusNVParam]
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX4 7,16 4 -m 
+Var=FreqVeryLo unsigned 23,16 -m /u:ms /o:160 /min:160 /max:160
+Var=FreqLo unsigned 39,16 -m /u:ms /o:1 /min:1 /max:30000
+Var=FreqHi unsigned 55,16 -m /u:ms /o:160 /min:160 /max:160
+
+[StatusNVParam]
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX5 7,16 5 -m 
+Var=StatusNodeID unsigned 23,8 -m /min:0 /max:247
+Var=StatusSA_Mask unsigned 31,8 -m /min:0 /max:255
+Var=StatusBaudrate unsigned 39,4 -m /min:0 /max:15 /e:StatusBaudrate
+
+[StatusNVParam]
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX6 7,16 6 -m 
+Var=StatusThermalOverload unsigned 17,2 -m /min:0 /max:3 /e:StatusThermalOverload
+
+[StatusNVParam]
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX7 7,16 7 -m 
+Var=StatusMX1Open unsigned 23,16 -m /u:ms /min:0 /max:5000
+Var=StatusMX1Close unsigned 39,16 -m /u:ms /min:0 /max:2000
+Var=StatusMX2Open unsigned 55,16 -m /u:ms /min:0 /max:65535
+
+[StatusNVParam]
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX8 7,16 8 -m 
+Var=StatusMX2Close unsigned 23,16 -m /u:ms /min:0 /max:2000
+Var=StatusK1Open unsigned 39,16 -m /u:ms /min:0 /max:2000
+Var=StatusK1Close unsigned 55,16 -m /u:ms /min:0 /max:2000
+
+[StatusNVParam]
+DLC=9
+CycleTime=0
+Mux=StatusNVParam_MUX9 7,16 9 -m 
+Var=StatusK2Open unsigned 23,16 -m /u:ms /min:0 /max:2000
+Var=StatusK2Close unsigned 39,16 -m /u:ms /min:0 /max:2000
+
+[softwareRev]
+ID=1CFFC1F7h
+Type=Standard
+DLC=9
+CycleTime=0
+Var=ControlSwRev unsigned 7,16 -m /min:0 /max:65535
+Var=InterfaceRev unsigned 23,16 -m /min:0 /max:65535
+Var=BuildTime unsigned 39,32 -m /min:0 /max:4294967295
+
+[StatusControlVoltage]
+ID=1CFFC5F7h
+Type=Standard
+DLC=9
+CycleTime=100
+Var=v5p0_Supply unsigned 7,16 -m /u:V /f:0.01 /min:0 /max:65535
+Var=v3p3_Supply unsigned 23,16 -m /u:V /f:0.01 /min:0 /max:65535
+Var=v24_Supply unsigned 39,16 -m /u:V /f:0.01 /min:0 /max:65535
+Var=v15_Supply unsigned 55,16 -m /u:V /f:0.01 /min:0 /max:65535
+
+[StatusControlVolts2]
+ID=1CFFC6F7h
+Type=Standard
+DLC=9
+CycleTime=100
+Var=n15V_Supply unsigned 7,16 -m /u:V /f:0.01 /min:0 /max:65535
+Var=DiodeTemperature unsigned 39,16 -m /u:C /min:0 /max:65535
+Var=IGBTTemperature unsigned 55,16 -m /u:C /min:0 /max:65535
+
+[StatusDCParameters]
+ID=1CFFC7F7h
+Type=Standard
+DLC=8
+CycleTime=100
+Var=VoltageDCInput_measured unsigned 7,16 -m /u:V /min:0 /max:65535
+Var=VoltageDCBus unsigned 23,16 -m /u:V /min:0 /max:65535
+Var=CurrentDC_measured unsigned 39,16 -m /u:A /min:0 /max:65535
+
+[serialNumber]
+ID=1CFFCCF7h
+Type=Standard
+DLC=8
+CycleTime=0
+Var=SerialNumber unsigned 7,32 -m /min:0 /max:4294967295
+
+[softwareRevHash]
+ID=1CFFCDF7h
+Type=Standard
+DLC=8
+CycleTime=0
+Var=Hash unsigned 7,28 -m /min:0 /max:268435455
+

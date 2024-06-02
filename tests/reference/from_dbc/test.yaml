@@ -1,0 +1,118 @@
+!!python/object:canmatrix.canmatrix.CanMatrix
+attributes: {}
+boardUnits: !!python/object:canmatrix.canmatrix.BoardUnitList
+  _list:
+  - !!python/object:canmatrix.canmatrix.BoardUnit
+    attributes: {NetworkNode: '273'}
+    comment: sender ECU
+    name: testBU
+  - !!python/object:canmatrix.canmatrix.BoardUnit
+    attributes: {}
+    comment: receiver ECU
+    name: recBU
+buDefines:
+  NetworkNode: !!python/object:canmatrix.canmatrix.Define {defaultValue: null, definition: INT
+      0 65535, max: 65535, min: 0, type: INT}
+envVars: {}
+frameDefines:
+  GenMsgCycleTime: !!python/object:canmatrix.canmatrix.Define {defaultValue: null,
+    definition: INT 0 65535, max: 65535, min: 0, type: INT}
+frames: !!python/object:canmatrix.canmatrix.FrameList
+  _list:
+  - !!Frame
+    _Id: 291
+    _j1939_pgn: null
+    _j1939_prio: 0
+    _j1939_source: 0
+    attributes: {GenMsgCycleTime: '100'}
+    comment: 'Multi
+
+      Line
+
+      Frame comment'
+    extended: false
+    is_complex_multiplexed: false
+    is_fd: false
+    is_j1939: false
+    mux_names: {}
+    name: testFrame1
+    receiver: [recBU]
+    signalGroups: []
+    signals:
+    - !!python/object:canmatrix.canmatrix.Signal
+      _values: {}
+      attributes: {}
+      calc_max_for_none: true
+      calc_min_for_none: true
+      comment: "Multi\nLine\nSignal comment with a-umlaut: \xE4"
+      comments: {}
+      enumeration: null
+      factor: 5.0
+      is_float: false
+      is_little_endian: false
+      is_multiplexer: false
+      is_signed: false
+      max: 500.0
+      min: 0.0
+      multiplex: null
+      muxValMax: 0
+      muxValMin: 0
+      mux_val: null
+      mux_value: null
+      muxerForSignal: null
+      name: someTestSignal
+      offset: 1.0
+      receiver: [recBU]
+      signalsize: 11
+      startbit: 9
+      unit: "specialCharUnit\xB0$"
+    - !!python/object:canmatrix.canmatrix.Signal
+      _values: {1: one, 2: two, 3: three}
+      attributes: {}
+      calc_max_for_none: true
+      calc_min_for_none: true
+      comment: null
+      comments: {}
+      enumeration: null
+      factor: 1.0
+      is_float: false
+      is_little_endian: true
+      is_multiplexer: false
+      is_signed: false
+      max: 6.0
+      min: 0.0
+      multiplex: null
+      muxValMax: 0
+      muxValMin: 0
+      mux_val: null
+      mux_value: null
+      muxerForSignal: null
+      name: Signal
+      offset: 0.0
+      receiver: [recBU]
+      signalsize: 3
+      startbit: 20
+      unit: someUnit
+    size: 8
+    transmitter: [testBU]
+  - !!Frame
+    _Id: 18
+    _j1939_pgn: null
+    _j1939_prio: 0
+    _j1939_source: 0
+    attributes: {}
+    comment: null
+    extended: 1
+    is_complex_multiplexed: false
+    is_fd: false
+    is_j1939: false
+    mux_names: {}
+    name: extendedFrame
+    receiver: []
+    signalGroups: []
+    signals: []
+    size: 8
+    transmitter: [testBU]
+globalDefines: {}
+signalDefines: {}
+valueTables: {}

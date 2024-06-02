@@ -1,0 +1,19 @@
+FormatVersion=5.0 // Do not edit this line!
+Title="canmatrix-Export"
+{ENUMS}
+
+
+{SENDRECEIVE}
+
+[testFrame1]
+ID=123h
+Type=Standard
+DLC=8
+Var=someTestSignal unsigned 4,11 -m /u:specialCharUnit° /f:5 /o:1 /min:1 /max:10236
+Var=Signal unsigned 20,3 /u:someUnit /min:0 /max:7
+
+[extendedFrame]
+ID=00000012h
+Type=Extended
+DLC=8
+

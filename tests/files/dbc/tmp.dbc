@@ -1,0 +1,22 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: 
+
+
+BO_ 291 testFrame1: 8 testBU
+ SG_ someTestSignal : 7|11@0+ (5,1) [0|500] "specialCharUnit°$" recBU
+
+
+
+
+
+BA_DEF_ BO_ "SomeUnneededDefine" INT 0 65535;
+
+
+
+

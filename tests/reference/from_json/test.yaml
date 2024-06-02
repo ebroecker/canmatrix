@@ -1,0 +1,102 @@
+!!python/object:canmatrix.canmatrix.CanMatrix
+attributes: {}
+boardUnits: !!python/object:canmatrix.canmatrix.BoardUnitList
+  _list: []
+buDefines: {}
+envVars: {}
+frameDefines: {}
+frames: !!python/object:canmatrix.canmatrix.FrameList
+  _list:
+  - !!Frame
+    _Id: 291
+    _j1939_pgn: null
+    _j1939_prio: 0
+    _j1939_source: 0
+    attributes: {}
+    comment: null
+    extended: 0
+    is_complex_multiplexed: false
+    is_fd: false
+    is_j1939: false
+    mux_names: {}
+    name: testFrame1
+    receiver: []
+    signalGroups: []
+    signals:
+    - !!python/object:canmatrix.canmatrix.Signal
+      _values: {}
+      attributes: {}
+      calc_max_for_none: true
+      calc_min_for_none: true
+      comment: null
+      comments: {}
+      enumeration: null
+      factor: 5.0
+      is_float: false
+      is_little_endian: false
+      is_multiplexer: false
+      is_signed: false
+      max: 10236.0
+      min: 1.0
+      multiplex: null
+      muxValMax: 0
+      muxValMin: 0
+      mux_val: null
+      mux_value: null
+      muxerForSignal: null
+      name: someTestSignal
+      offset: 1.0
+      receiver: []
+      signalsize: 11
+      startbit: 9
+      unit: "specialCharUnit\xB0$"
+    - !!python/object:canmatrix.canmatrix.Signal
+      _values: {}
+      attributes: {}
+      calc_max_for_none: true
+      calc_min_for_none: true
+      comment: null
+      comments: {}
+      enumeration: null
+      factor: 1.0
+      is_float: false
+      is_little_endian: true
+      is_multiplexer: false
+      is_signed: false
+      max: 7.0
+      min: 0.0
+      multiplex: null
+      muxValMax: 0
+      muxValMin: 0
+      mux_val: null
+      mux_value: null
+      muxerForSignal: null
+      name: Signal
+      offset: 0.0
+      receiver: []
+      signalsize: 3
+      startbit: 20
+      unit: someUnit
+    size: 8
+    transmitter: []
+  - !!Frame
+    _Id: 18
+    _j1939_pgn: null
+    _j1939_prio: 0
+    _j1939_source: 0
+    attributes: {}
+    comment: null
+    extended: 1
+    is_complex_multiplexed: false
+    is_fd: false
+    is_j1939: false
+    mux_names: {}
+    name: extendedFrame
+    receiver: []
+    signalGroups: []
+    signals: []
+    size: 8
+    transmitter: []
+globalDefines: {}
+signalDefines: {}
+valueTables: {}
