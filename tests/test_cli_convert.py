@@ -21,7 +21,7 @@ def run(testdir):
     return do_run
 
 def test_silent(tmpdir, run):
-    inputFile = "./files/dbc/test_frame_decoding.dbc")
+    inputFile = "./files/dbc/test_frame_decoding.dbc"
 
     normal_result = run(inputFile ,"tmp.dbc")
     silent_result = run("-s", inputFile,"tmp.dbc")
