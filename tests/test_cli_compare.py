@@ -32,7 +32,7 @@ def test_verbose(tmpdir, run):
     inputFile2 = "tests/files/arxml/ARXML_min_max.arxml"
 
     normal_result = run(inputFile1, inputFile2)
-    verbose_result = run("-vv", inputFile1 ,inputFile2)
+    verbose_result = run("-v", inputFile1 ,inputFile2)
     assert len(normal_result.errlines) < len(verbose_result.errlines)
 
 def create_dbc():
