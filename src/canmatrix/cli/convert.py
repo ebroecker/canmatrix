@@ -144,12 +144,18 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
 
     root_logger = canmatrix.log.setup_logger()
 
-    if silent is True:
+    if silent:
         # only print error messages, ignore verbosity flag
         verbosity = -1
         options["silent"] = True
+    elif verbosity:
+        # Debug Message
+        verbosity = 2
 
     canmatrix.log.set_log_level(root_logger, verbosity)
+
+    loggeer.debug("Verbose Mode")
+
     if options["ignoreEncodingErrors"]:
         options["ignoreEncodingErrors"] = "ignore"
     else:
