@@ -20,16 +20,16 @@ def run(testdir):
     return do_run
 
 def test_silent(tmpdir, run):
-    inputFile1 = str(here / "test_frame_decoding.dbc")
-    inputFile2 = str(here / "ARXML_min_max.arxml")
+    inputFile1 = "tests/files/dbc/test_frame_decoding.dbc"
+    inputFile2 = "tests/files/arxml/ARXML_min_max.arxml"
 
     normal_result = run(inputFile1 ,inputFile2)
     silent_result = run("-s", inputFile1 ,inputFile2)
     assert len(normal_result.errlines) > len(silent_result.errlines)
 
 def test_verbose(tmpdir, run):
-    inputFile1 = str(here / "test_frame_decoding.dbc")
-    inputFile2 = str(here / "ARXML_min_max.arxml")
+    inputFile1 = "tests/files/dbc/test_frame_decoding.dbc"
+    inputFile2 = "tests/files/arxml/ARXML_min_max.arxml"
 
     normal_result = run(inputFile1, inputFile2)
     verbose_result = run("-vv", inputFile1 ,inputFile2)
