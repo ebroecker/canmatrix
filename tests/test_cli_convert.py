@@ -31,7 +31,7 @@ def test_verbose(tmpdir, run):
     inputFile = "tests/files/arxml/ARXML_min_max.arxml"
 
     normal_result = run(inputFile ,"tmp.dbc")
-    verbose_result = run("-vv", inputFile,"tmp.dbc")
+    verbose_result = run("-v", inputFile,"tmp.dbc")
     assert len(normal_result.errlines) < len(verbose_result.errlines)
 
 def test_force_output_format(tmpdir, run):
