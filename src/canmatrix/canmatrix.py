@@ -34,7 +34,6 @@ import math
 import struct
 import sys
 import typing
-from typing import Optional
 import warnings
 from builtins import *
 
@@ -844,11 +843,11 @@ class Pdu(object):
         self.signals.append(signal)
         return self.signals[len(self.signals) - 1]
 
-    def add_signal_group(self,
-                         Name: str,
-                         Id: int,
-                         signalNames: typing.Sequence[str],
-                         e2e_properties: Optional[AutosarE2EProperties] = None) -> None:
+    def add_signal_group(self, 
+                         Name: str, 
+                         Id: int, 
+                         signalNames: typing.Sequence[str], 
+                         e2e_properties: typing.Optional[AutosarE2EProperties] = None) -> None:
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
         :param str Name: Group name
@@ -1060,10 +1059,10 @@ class Frame(object):
         return iter(self.signals)
 
     def add_signal_group(self,
-                         Name: str,
-                         Id: int,
-                         signalNames: typing.Sequence[str],
-                         e2e_properties: Optional[AutosarE2EProperties] = None) -> None:
+                         Name: str, 
+                         Id: int, 
+                         signalNames: typing.Sequence[str], 
+                         e2e_properties: typing.Optional[AutosarE2EProperties] = None) -> None:
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
         :param str Name: Group name
