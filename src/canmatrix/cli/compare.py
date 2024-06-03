@@ -66,7 +66,7 @@ def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attri
     # import only after setting log level, to also disable warning messages in silent mode.
     import canmatrix.formats  # due this import we need the import alias for log module
 
-    loggeer.debug("Verbose Mode")
+    logger.debug("Verbose Mode")
 
     logger.info("Importing " + matrix1 + " ... ")
     db1 = canmatrix.formats.loadp_flat(matrix1)
