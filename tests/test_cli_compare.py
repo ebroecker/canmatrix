@@ -3,6 +3,7 @@ import sys
 
 import canmatrix.formats
 import pytest
+import tempdir
 
 try:
     from pathlib import Path
@@ -13,39 +14,33 @@ pytest_plugins = ["pytester"]
 here = Path(__file__).parent
 
 
+inputFile1 = "tests/files/dbc/test_frame_decoding.dbc"
+inputFile2 = "tests/files/arxml/ARXML_min_max.arxml"
+
+inputFile1_path = os.path.abspath(inputFile1)
+inputFile2_path = os.path.abspath(inputFile2)
+
+
 @pytest.fixture
-def run():
+def run(testdir):
     def do_run(*args):
-        now_dir_path = os.getcwd()
         args = [sys.executable,"-m","canmatrix.cli.compare"] + list(args)
-        return now_dir_path.run(*args)
+        return testdir.run(*args)
     return do_run
 
-def test_silent(run):
-    inputFile1 = "tests/files/dbc/test_frame_decoding.dbc"
-    inputFile2 = "tests/files/arxml/ARXML_min_max.arxml"
-
-    normal_result = run(inputFile1 ,inputFile2)
-    silent_result = run("-s", inputFile1 ,inputFile2)
+def test_silent(tmpdir, run):
+    normal_result = run(inputFile1_path ,inputFile2_path)
+    silent_result = run("-s", inputFile1_path ,inputFile2_path)
     assert len(normal_result.errlines) > len(silent_result.errlines)
 
-def test_verbose(run):
-    inputFile1 = "tests/files/dbc/test_frame_decoding.dbc"
-    inputFile2 = "tests/files/arxml/ARXML_min_max.arxml"
-
-    path = os.getcwd()
-    print(path)
-    files_and_directories = os.listdir(path)
-    print("当前目录包含的文件和文件夹:")
-    for item in files_and_directories:
-        print(item)
-    normal_result = run(inputFile1, inputFile2)
-    verbose_result = run("-v", inputFile1 ,inputFile2)
+def test_verbose(tmpdir, run):
+    normal_result = run(inputFile1_path, inputFile2_path)
+    verbose_result = run("-v", inputFile1_path ,inputFile2_path)
     assert len(normal_result.errlines) < len(verbose_result.errlines)
 
-def create_dbc():
-    outFile1 = "tests/files/dbc/tmpa.dbc"
-    outFile2 = "tests/files/dbc/tmpb.dbc"
+def create_dbc(dir):
+    outFile1 = f"{dir}/tmpa.dbc"
+    outFile2 = f"{dir}/tmpa.dbc"
     myFrame = canmatrix.Frame("testFrame3", arbitration_id=canmatrix.arbitration_id_converter(0x124), size=8, transmitters=["testBU"])
     mySignal = canmatrix.Signal("someTestSignal",
                       size=11,
@@ -75,7 +70,7 @@ def create_dbc():
     return outFile1, outFile2
 
 def test_frames(tmpdir, run):
-    (inputFile1, inputFile2) = create_dbc()
+    (inputFile1, inputFile2) = create_dbc(tmpdir)
 
     result = run("--frames", inputFile1, inputFile2)
     for line in result.outlines:
