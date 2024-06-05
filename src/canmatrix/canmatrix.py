@@ -467,7 +467,7 @@ class Signal(object):
         """
         if self.is_float:
             value = self.float_factory(value)
-                                                                                                            
+
         if decode_to_str:
             for value_key, value_string in self.values.items():
                 if value_key == value:
@@ -920,7 +920,7 @@ class Frame(object):
     attributes = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.Any]
     receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
-    
+
     cycle_time = attr.ib(default=0)  # type: int
 
     is_j1939 = attr.ib(default=False)  # type: bool
@@ -932,7 +932,7 @@ class Frame(object):
 
     header_id = attr.ib(default=None)  # type: int
     endpoints = attr.ib(default=None)  # type: typing.MutableSequence[Endpoint]
-    
+
     secOC_properties = attr.ib(default=None)  # type:  Optional[AutosarSecOCProperties]
 
     @property
@@ -1439,7 +1439,7 @@ class Frame(object):
 
         return unpacked
 
-    def unpack(self, data: bytes, 
+    def unpack(self, data: bytes,
                allow_truncated: bool = False,
                allow_exceeded: bool = False,
                ) -> typing.Mapping[str, DecodedSignal]:
@@ -1466,7 +1466,7 @@ class Frame(object):
             if allow_exceeded:
                 # trim the payload data to match the expected size
                 data = data[:self.size]
-            
+
             if len(data) != self.size:
                 # return None
                 raise DecodingFrameLength(
@@ -1614,7 +1614,7 @@ class Frame(object):
 
         else:
             return decoded
-    
+
     def _compress_little(self):
         for signal in self.signals:
             if not signal.is_little_endian:
@@ -1635,7 +1635,7 @@ class Frame(object):
                             gap_len += 1
                     else:
                         if gap_len is not None:
-                            signal = layout[bit_nr][0] 
+                            signal = layout[bit_nr][0]
                             signal.start_bit -= gap_len
                             gap_found = True
                             break
@@ -1657,7 +1657,7 @@ class Frame(object):
                         free_start = bit_nr
                 else:
                     if free_start is not None:
-                        signal = layout[bit_nr][0] 
+                        signal = layout[bit_nr][0]
                         signal.start_bit = free_start
                         gap_found = True
                         break
@@ -1970,7 +1970,7 @@ class CanMatrix(object):
                 # found ID while ignoring extended or standard
                 return test
         return None
-    
+
     def frame_by_header_id(self, header_id):  # type: (HeaderId) -> typing.Union[Frame, None]
         """Get Frame by its Header id.
 
@@ -2016,7 +2016,7 @@ class CanMatrix(object):
             if test.name == name:
                 return test
         return None
-    
+
     def get_frame_by_name(self, name):  # type: (str) -> typing.Union[Frame, None]
         """Get Frame by name.
 
@@ -2360,8 +2360,8 @@ class CanMatrix(object):
             if frame.size > 8:
                 frame.is_fd = True
 
-    def encode(self, 
-               frame_id: ArbitrationId, 
+    def encode(self,
+               frame_id: ArbitrationId,
                data: typing.Mapping[str, typing.Any]
                ) -> bytes:
         """Return a byte string containing the values from data packed
