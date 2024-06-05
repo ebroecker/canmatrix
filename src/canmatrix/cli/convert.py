@@ -154,7 +154,7 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
 
     canmatrix.log.set_log_level(root_logger, verbosity)
 
-    logger.debug("Verbose Mode")
+    root_logger.debug("Verbose Mode")
 
     if options["ignoreEncodingErrors"]:
         options["ignoreEncodingErrors"] = "ignore"

@@ -66,15 +66,15 @@ def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attri
     # import only after setting log level, to also disable warning messages in silent mode.
     import canmatrix.formats  # due this import we need the import alias for log module
 
-    logger.debug("Verbose Mode")
+    root_logger.debug("Verbose Mode")
 
-    logger.info("Importing " + matrix1 + " ... ")
+    root_logger.info("Importing " + matrix1 + " ... ")
     db1 = canmatrix.formats.loadp_flat(matrix1)
-    logger.info("%d Frames found" % (db1.frames.__len__()))
+    root_logger.info("%d Frames found" % (db1.frames.__len__()))
 
-    logger.info("Importing " + matrix2 + " ... ")
+    root_logger.info("Importing " + matrix2 + " ... ")
     db2 = canmatrix.formats.loadp_flat(matrix2)
-    logger.info("%d Frames found" % (db2.frames.__len__()))
+    root_logger.info("%d Frames found" % (db2.frames.__len__()))
 
     ignore = {}  # type: typing.Dict[str, typing.Union[str, bool]]
 
