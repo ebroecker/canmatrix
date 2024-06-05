@@ -14,10 +14,11 @@ here = Path(__file__).parent
 
 
 @pytest.fixture
-def run(testdir):
+def run():
     def do_run(*args):
+        now_dir_path = os.getcwd()
         args = [sys.executable,"-m","canmatrix.cli.compare"] + list(args)
-        return testdir.run(*args)
+        return now_dir_path.run(*args)
     return do_run
 
 def test_silent(run):
