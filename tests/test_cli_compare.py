@@ -3,7 +3,6 @@ import sys
 
 import canmatrix.formats
 import pytest
-import tempdir
 
 try:
     from pathlib import Path
