@@ -1,3 +1,4 @@
+import os
 import sys
 
 import canmatrix.formats
@@ -31,6 +32,12 @@ def test_verbose(tmpdir, run):
     inputFile1 = "tests/files/dbc/test_frame_decoding.dbc"
     inputFile2 = "tests/files/arxml/ARXML_min_max.arxml"
 
+    path = os.getcwd()
+    print(path)
+    files_and_directories = os.listdir(path)
+    print("当前目录包含的文件和文件夹:")
+    for item in files_and_directories:
+        print(item)
     normal_result = run(inputFile1, inputFile2)
     verbose_result = run("-v", inputFile1 ,inputFile2)
     assert len(normal_result.errlines) < len(verbose_result.errlines)
