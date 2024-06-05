@@ -36,8 +36,8 @@ def test_verbose(tmpdir, run):
     assert len(normal_result.errlines) < len(verbose_result.errlines)
 
 def create_dbc():
-    outFile1 = str(here / "tmpa.dbc")
-    outFile2 = str(here / "tmpb.dbc")
+    outFile1 = "tests/files/dbc/tmpa.dbc"
+    outFile2 = "tests/files/dbc/tmpb.dbc"
     myFrame = canmatrix.Frame("testFrame3", arbitration_id=canmatrix.arbitration_id_converter(0x124), size=8, transmitters=["testBU"])
     mySignal = canmatrix.Signal("someTestSignal",
                       size=11,
