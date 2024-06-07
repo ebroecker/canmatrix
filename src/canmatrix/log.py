@@ -43,12 +43,11 @@ def setup_logger():  # type: () -> logging.Logger
     logger.addHandler(handler)
     return logger
 
-
 def set_log_level(logger, level):  # type: (logging.Logger, int) -> None
     """Dynamic reconfiguration of the log level"""
     if level > 2:
         level = 2
-    if level < -1:
+    elif level < -1:
         level = -1
 
     levels = {
@@ -57,4 +56,5 @@ def set_log_level(logger, level):  # type: (logging.Logger, int) -> None
         1: logging.INFO,
         2: logging.DEBUG
     }
+    logger.info(f"Set {level} {levels[level]}")
     logger.setLevel(levels[level])

@@ -23,20 +23,22 @@
 
 from __future__ import absolute_import, division, print_function
 
-import logging
 import sys
+import logging
 import typing
-from builtins import *
 
 import click
 
-import canmatrix.compare
+import canmatrix.compare as cancompare
+
+import canmatrix.log as canmatrix_log
+
 
 logger = logging.getLogger(__name__)
 
 
 @click.command()
-@click.option('-v', '--verbose', 'verbosity', help="Output verbosity", count=True, default=1)
+@click.option('-v', '--verbose', 'verbosity', help="Output verbosity", count=True, default=False)
 @click.option('-s', '--silent', is_flag=True, default=False, help="don't print status messages to stdout. (only errors)")
 @click.option('-f', '--frames', is_flag=True, default=False, help="show list of frames")
 @click.option('-c', '--comments', 'check_comments', is_flag=True, default=False, help="look for changed comments")
@@ -51,30 +53,30 @@ def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attri
         matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
     """
 
-    import canmatrix.log
-    root_logger = canmatrix.log.setup_logger()
+    root_logger = canmatrix_log.setup_logger()
 
     if silent:
         # Only print ERROR messages (ignore import warnings)
         verbosity = -1
-    elif verbosity:
+    elif not verbosity:
+        # Info Message
+        verbosity = 1
+    else:
         # Debug Message
         verbosity = 2
 
-    canmatrix.log.set_log_level(root_logger, verbosity)
+    canmatrix_log.set_log_level(root_logger, verbosity)
 
     # import only after setting log level, to also disable warning messages in silent mode.
-    import canmatrix.formats  # due this import we need the import alias for log module
+    import canmatrix.formats as canmatrix_format # due this import we need the import alias for log module
 
-    root_logger.debug("Verbose Mode")
+    logger.info("Importing " + matrix1 + " ... ")
+    db1 = canmatrix_format.loadp_flat(matrix1)
+    logger.info("%d Frames found" % (db1.frames.__len__()))
 
-    root_logger.info("Importing " + matrix1 + " ... ")
-    db1 = canmatrix.formats.loadp_flat(matrix1)
-    root_logger.info("%d Frames found" % (db1.frames.__len__()))
-
-    root_logger.info("Importing " + matrix2 + " ... ")
-    db2 = canmatrix.formats.loadp_flat(matrix2)
-    root_logger.info("%d Frames found" % (db2.frames.__len__()))
+    logger.info("Importing " + matrix2 + " ... ")
+    db2 = canmatrix_format.loadp_flat(matrix2)
+    logger.info("%d Frames found" % (db2.frames.__len__()))
 
     ignore = {}  # type: typing.Dict[str, typing.Union[str, bool]]
 
@@ -104,8 +106,8 @@ def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attri
     else:
         # ignore["ATTRIBUTE"] = "*"
         # ignore["DEFINE"] = "*"
-        obj = canmatrix.compare.compare_db(db1, db2, ignore)
-        canmatrix.compare.dump_result(obj)
+        obj = cancompare.compare_db(db1, db2, ignore)
+        cancompare.dump_result(obj)
     return 0
 
 
