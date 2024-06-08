@@ -9,8 +9,8 @@ from canmatrix.convert import convert_pdu_container_to_multiplexed
 
 
 def load_dbc():
-    here = os.path.dirname(os.path.realpath(__file__))
-    return canmatrix.formats.loadp_flat(os.path.join(here, "test_frame_decoding.dbc"))
+    test_file = "tests/files/dbc/test_frame_decoding.dbc"
+    return canmatrix.formats.loadp_flat(test_file)
 
 
 def test_decode_with_dbc_big_endian():

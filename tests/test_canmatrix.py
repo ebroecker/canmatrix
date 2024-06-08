@@ -958,7 +958,7 @@ def test_canmatrix_get_frame_by_wrong_pgn(empty_matrix, empty_frame):
     empty_frame.arbitration_id.id = 0xAB123456
     empty_frame.arbitration_id.extended = True
     empty_matrix.add_frame(empty_frame)
-    assert empty_matrix.frame_by_pgn(0xAB34) == None
+    assert empty_matrix.frame_by_pgn(0xAB34) is None
 
 
 def test_canmatrix_iterate_over_frames(empty_matrix, empty_frame):

@@ -1335,6 +1335,11 @@ class Frame(object):
         for signal in self.signals:
             if signal.name in data:
                 value = data.get(signal.name)
+                if isinstance(value, str):
+                    value = signal.phys2raw(value)
+                    if value is None:
+                        # TODO Error Handling
+                        value = 0
                 bits = pack_bitstring(signal.size, signal.is_float, value, signal.is_signed)
 
                 if signal.is_little_endian:
@@ -1369,7 +1374,6 @@ class Frame(object):
         """
 
         data = dict() if data is None else data
-
         if self.is_complex_multiplexed:
             raise EncodingComplexMultiplexed
         elif self.is_pdu_container:

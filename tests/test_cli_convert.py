@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import sys
 
 import canmatrix.formats
@@ -10,8 +11,15 @@ except ImportError:
     from pathlib2 import Path
 
 pytest_plugins = ["pytester"]
-here = Path(__file__).parent
 
+
+inputFile1 = "tests/files/dbc/test_frame_decoding.dbc"
+inputFile2 = "tests/files/arxml/ARXML_min_max.arxml"
+tmpFile= ""
+
+inputFile1_path = os.path.abspath(inputFile1)
+inputFile2_path = os.path.abspath(inputFile2)
+tmpFile_path = ""
 
 @pytest.fixture
 def run(testdir):
@@ -21,36 +29,34 @@ def run(testdir):
     return do_run
 
 def test_silent(tmpdir, run):
-    inputFile = "tests/files/dbc/test_frame_decoding.dbc"
-
-    normal_result = run(inputFile ,"tmp.dbc")
-    silent_result = run("-s", inputFile,"tmp.dbc")
+    normal_result = run(inputFile1_path ,"tmp.dbc")
+    silent_result = run("-s", inputFile1_path,"tmp.dbc")
     assert len(normal_result.errlines) > len(silent_result.errlines)
 
 def test_verbose(tmpdir, run):
-    inputFile = "tests/files/arxml/ARXML_min_max.arxml"
-
-    normal_result = run(inputFile ,"tmp.dbc")
-    verbose_result = run("-v", inputFile,"tmp.dbc")
+    normal_result = run(inputFile1_path ,"tmp.dbc")
+    verbose_result = run("-v", inputFile1_path,"tmp.dbc")
     assert len(normal_result.errlines) < len(verbose_result.errlines)
 
 def test_force_output_format(tmpdir, run):
-    inputFile = "tests/files/dbc/test_frame_decoding.dbc"
-    outFile =  str(here / "tmp.tmp")
-    normal_result = run("-v", "-f","dbc", inputFile, outFile)
-    assert 'INFO - convert - done' in normal_result.errlines[-1]
-    with open(outFile, "r") as fd:
+    outFile = f"./tmp.tmp"
+    global tmpFile_path
+    tmpFile_path = os.path.abspath(outFile)
+
+    normal_result = run("-v", "-f","dbc", inputFile1_path, tmpFile_path)
+    assert 'INFO - convert - Export Done' in normal_result.errlines[-1]
+    with open(tmpFile_path, "r") as fd:
         first_line = fd.readline()
         assert first_line == 'VERSION "created by canmatrix"\n'
 
-def test_foce_input_format(tmpdir, run):
+def test_force_input_format(tmpdir, run):
     #requires test_force_output to run first
-    inputFile =  str(here / "tmp.tmp")
-    normal_result = run("-i","dbc", inputFile, "tmp.dbc")
-    assert 'INFO - convert - done' in normal_result.errlines[-1]
+    # inputFile = f"{tmpdir}/tmp.tmp"
+    normal_result = run("-i", "dbc", tmpFile_path, "tmp.dbc")
+    assert 'INFO - convert - Export Done' in normal_result.errlines[-1]
 
 def create_dbc_with_special_char():
-    outFile = str(here / "tmp.dbc")
+    outFile = "tmp.dbc"
     myFrame = canmatrix.Frame("testFrame1", arbitration_id=canmatrix.arbitration_id_converter(0x123), size=8, transmitters=["testBU"])
     mySignal = canmatrix.Signal("someTestSignal",
                       size=11,
@@ -74,7 +80,7 @@ def create_dbc_with_special_char():
 def test_ignore_encoding_errors(tmpdir, run):
     inputFile = create_dbc_with_special_char()
     normal_result = run("--ignoreEncodingErrors","--dbcExportEncoding", "ascii", inputFile, "tmp2.dbc")
-    assert 'INFO - convert - done' in normal_result.errlines[-1]
+    assert 'INFO - convert - Export Done' in normal_result.errlines[-1]
 
 def test_delete_obsolete_defines(tmpdir, run):
     inputFile = create_dbc_with_special_char()
@@ -197,7 +203,7 @@ def test_copy_signals(tmpdir, run):
 
 
 def create_dbc(additionalReceiver = []):
-    outFile = str(here / "tmpb.dbc")
+    outFile = "tmpb.dbc"
     myFrame = canmatrix.Frame("testFrame3", arbitration_id=canmatrix.arbitration_id_converter(0x124), size=8, transmitters=["testBU"])
     mySignal = canmatrix.Signal("someTestSignal",
                       size=11,

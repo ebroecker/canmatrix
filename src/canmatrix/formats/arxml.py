@@ -1048,9 +1048,8 @@ def decode_compu_method(compu_method, ea, float_factory):
 
         rational = ea.get_child(compu_scale, "COMPU-RATIONAL-COEFFS")
 
-        if rational is None and ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text,
-                                                                                 float_factory) == canmatrix.utils.decode_number(
-            ll.text, float_factory):
+        if rational is None and ll is not None and desc is not None and \
+            canmatrix.utils.decode_number(ul.text,float_factory) == canmatrix.utils.decode_number(ll.text, float_factory):
             #####################################################################################################
             #####################################################################################################
             values[ll.text] = desc

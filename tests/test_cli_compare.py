@@ -10,7 +10,6 @@ except ImportError:
     from pathlib2 import Path
 
 pytest_plugins = ["pytester"]
-here = Path(__file__).parent
 
 
 inputFile1 = "tests/files/dbc/test_frame_decoding.dbc"
@@ -69,14 +68,14 @@ def create_dbc(dir):
     return outFile1, outFile2
 
 def test_frames(tmpdir, run):
-    (inputFile1, inputFile2) = create_dbc(tmpdir)
+    (inputFile1, inputFile2) = create_dbc(".")
 
     result = run("--frames", inputFile1, inputFile2)
     for line in result.outlines:
         assert line.startswith("Frames")
 
 def test_attributes(tmpdir, run):
-    (inputFile1, inputFile2) = create_dbc()
+    (inputFile1, inputFile2) = create_dbc(".")
 
     reference = run(inputFile1, inputFile2)
     result = run("--attributes", inputFile1, inputFile2)
@@ -85,7 +84,7 @@ def test_attributes(tmpdir, run):
     assert "ATTRIBUTES" in "".join(result.outlines)
 
 def test_value_tables(tmpdir, run):
-    (inputFile1, inputFile2) = create_dbc()
+    (inputFile1, inputFile2) = create_dbc(".")
 
     reference = run(inputFile1, inputFile2)
     result = run("--valueTable", inputFile1, inputFile2)
@@ -94,7 +93,7 @@ def test_value_tables(tmpdir, run):
     assert "Valuetable" not in "".join(result.outlines)
 
 def test_comments(tmpdir, run):
-    (inputFile1, inputFile2) = create_dbc()
+    (inputFile1, inputFile2) = create_dbc(".")
     reference = run(inputFile1, inputFile2)
     result = run("--comments", inputFile1, inputFile2)
     assert len(reference.outlines) < len(result.outlines)

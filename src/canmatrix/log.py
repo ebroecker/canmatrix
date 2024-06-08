@@ -56,5 +56,5 @@ def set_log_level(logger, level):  # type: (logging.Logger, int) -> None
         1: logging.INFO,
         2: logging.DEBUG
     }
-    logger.info(f"Set {level} {levels[level]}")
+    
     logger.setLevel(levels[level])
