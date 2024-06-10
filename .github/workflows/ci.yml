@@ -49,18 +49,19 @@ jobs:
       run: |
         tox -e gh
     - name: Coveralls
-      uses: coverallsapp/github-action@v2
+      uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.github_token }}
         flag-name: Unittests-${{ matrix.os }}-${{ matrix.python-version }}
         parallel: true
+        path-to-lcov: ./coverage.lcov
 
   coveralls:
     needs: test
     runs-on: ubuntu-latest
     steps:
     - name: Coveralls Finished
-      uses: coverallsapp/github-action@v2
+      uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.github_token }}
         parallel-finished: true
