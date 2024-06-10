@@ -20,7 +20,20 @@ jobs:
         experimental: [false]
         # python-version: ["2.7","3.4","3.5","3.6","3.7","3.8","3.9","3.10","3.11","3.12"]
         python-version: ["3.7","3.8","3.9","3.10","3.11","3.12"]
-
+        # Python 3.9 is on macos-13 but not macos-latest (macos-14-arm64)
+        # https://github.com/actions/setup-python/issues/696#issuecomment-1637587760
+        # exclude:
+        #   - { python-version: "3.8", os: "macos-latest", experimental: false }
+        #   - { python-version: "3.9", os: "macos-latest", experimental: false }
+        # include:
+        #   - { python-version: "3.8", os: "macos-13", experimental: false }
+        #   - { python-version: "3.9", os: "macos-13", experimental: false }
+        # uncomment when python 3.13.0 alpha is available
+        #include:
+        #  # Only test on a single configuration while there are just pre-releases
+        #  - os: ubuntu-latest
+        #    experimental: true
+        #    python-version: "3.13.0-alpha - 3.13.0"
       fail-fast: false
     steps:
     - uses: actions/checkout@v4
@@ -36,20 +49,21 @@ jobs:
       run: |
         tox -e gh
     - name: Coveralls
-      if: matrix.os == 'ubuntu-latest'
-      uses: AndreMiras/coveralls-python-action@develop
+      uses: coverallsapp/github-action@master
       with:
+        github-token: ${{ secrets.github_token }}
+        flag-name: Unittests-${{ matrix.os }}-${{ matrix.python-version }}
         parallel: true
-        flag-name: Test ${{ matrix.os }} ${{ matrix.python-version }}
 
-  coveralls_finish:
-    needs: [test, codegen]
+  coveralls:
+    needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Coveralls Finished
-        uses: AndreMiras/coveralls-python-action@develop
-        with:
-          parallel-finished: true
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
 
   # static-code-analysis:
   #   runs-on: ubuntu-latest
@@ -118,7 +132,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
