@@ -59,6 +59,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       uses: AndreMiras/coveralls-python-action@develop
       with:
+        github-token: ${{ secrets.github_token }}
         parallel: true
         flag-name: Test ${{ matrix.os }} ${{ matrix.python-version }}
 
@@ -69,6 +70,7 @@ jobs:
       - name: Coveralls Finished
         uses: AndreMiras/coveralls-python-action@develop
         with:
+          github-token: ${{ secrets.github_token }}
           parallel-finished: true
 
   # static-code-analysis:
