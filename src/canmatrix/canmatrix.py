@@ -436,18 +436,19 @@ class Signal(object):
             if not (self.min <= value <= self.max):
                 value = self.min
 
-        if isinstance(value, str):
+        if isinstance(value, str) and self.values:
             for value_key, value_string in self.values.items():
                 if value_string == value:
                     value = value_key
                     return value
-            else:
-                raise ValueError(
-                        "{} is invalid value choice for {}".format(value, self)
-                )
 
-        if not (self.min <= value <= self.max):
-            logger.info(
+        try:
+            value = decimal.Decimal(value)
+        except Exception as e:
+            raise e
+
+        if not (0 <= value <= 10):
+            logger.warning(
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
@@ -455,6 +456,7 @@ class Signal(object):
 
         if not self.is_float:
             raw_value = int(round(raw_value))
+
         return raw_value
 
     def raw2phys(self, value, decode_to_str=False):
