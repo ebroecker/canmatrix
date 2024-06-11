@@ -238,12 +238,7 @@ def dump(in_db, f, **options):
             if signal.cycle_time != 0:
                 signal.add_attribute("GenSigCycleTime", signal.cycle_time)
             if "GenSigStartValue" in db.signal_defines:
-                if signal.phys2raw(None) != 0:
-                    if db.signal_defines["GenSigStartValue"].defaultValue is not None and \
-                            float(signal.initial_value) != float(db.signal_defines["GenSigStartValue"].defaultValue):
-                        signal.add_attribute("GenSigStartValue", signal.phys2raw(float(db.signal_defines["GenSigStartValue"].defaultValue)))
-                    elif db.signal_defines["GenSigStartValue"].defaultValue is None:
-                        signal.add_attribute("GenSigStartValue", signal.phys2raw(None))
+                signal.add_attribute("GenSigStartValue", signal.phys2raw(None))
 
             name = normalized_names[signal]
             if compatibility:
@@ -955,11 +950,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         #     frame.extended = 1
 
         for signal in frame.signals:
-            if "GenSigStartValue" in db.signal_defines \
-                    and db.signal_defines["GenSigStartValue"].defaultValue is not None:
-                default_value = signal.phys2raw(float_factory(db.signal_defines["GenSigStartValue"].defaultValue))
-            else:
-                default_value = signal.phys2raw(None)
+            default_value = signal.phys2raw(None)
             gen_sig_start_value = float_factory(signal.attributes.get("GenSigStartValue", default_value))
             signal.initial_value = (gen_sig_start_value * signal.factor) + signal.offset
             signal.cycle_time = int(signal.attributes.get("GenSigCycleTime", 0))
