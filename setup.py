@@ -81,6 +81,7 @@ setup(
     name = "canmatrix",
     version = versioneer.get_version(),
     cmdclass = versioneer.get_cmdclass(),
+    long_description_content_type='text/x-rst',
     maintainer = "Eduard Broecker",
     maintainer_email = "eduard@gmx.de",
     url = "http://github.com/ebroecker/canmatrix",
