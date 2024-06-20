@@ -368,7 +368,7 @@ def load(file, **options):
 
     ecu_start = ecu_end = 0
 
-    column_heads = [sheet.cell(1,a).value for a in range(1, sheet.max_column)]
+    column_heads = [sheet.cell(1,a).value for a in range(1, sheet.max_column+1)]
 
     if 'Byteorder' in column_heads:
         ecu_start = column_heads.index('Byteorder') + 1
@@ -407,6 +407,7 @@ def load(file, **options):
             cycle_time = get_if_possible(row, 'Cycle Time [ms]', '0')
             launch_type = get_if_possible(row, 'Launch Type')
             dlc = 8
+                    
             # launch_param = get_if_possible(row, 'Launch Parameter', '0')
             # launch_param = str(int(launch_param))
 
@@ -415,6 +416,12 @@ def load(file, **options):
             else:
                 new_frame = canmatrix.Frame(frame_name, arbitration_id=int(frame_id[:-1], 16), size=dlc)
 
+            for col_head in column_heads:
+                if col_head.startswith("frame."):
+                    command_str = col_head.replace("frame", "new_frame")
+                    command_str += "=" + str(row[column_heads.index(col_head)].value)
+                    exec(command_str)
+                    
             db.add_frame(new_frame)
 
             # eval launch_type
@@ -482,6 +489,7 @@ def load(file, **options):
                             bitNumbering=1,
                             startLittle=True
                         )
+                                    
                 if signal_name is not None:
                     new_frame.add_signal(new_signal)
                     new_signal.add_comment(signal_comment)
@@ -533,6 +541,14 @@ def load(file, **options):
             new_signal.offset = 0
             new_signal.min = None
             new_signal.max = None
+
+        for col_head in column_heads: # todo explain this possibly dangerous code with eval
+            if col_head.startswith("signal."):
+                command_str = col_head.replace("signal", "new_signal")
+                command_str += "=" + str(row[column_heads.index(col_head)].value)
+                exec(command_str)
+
+
 
     # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
     for frame in db.frames:
