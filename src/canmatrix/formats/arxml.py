@@ -1900,9 +1900,13 @@ def decode_ethernet_helper(ea, float_factory):
                     client_app_endpoint = ea.get_child(client_port_ref, "APPLICATION-ENDPOINT")
                     client_endpoint_ref = ea.follow_ref(client_app_endpoint, "NETWORK-ENDPOINT-REF")
                     client_ipv4 = ea.find("IPV-4-ADDRESS", client_endpoint_ref)
+                    ttl = ea.find("TTL", client_endpoint_ref)
 
-                    endpoint = canmatrix.Endpoint(server_ipv4.text, int(server_port.text, 0), 
-                                                client_ipv4.text, int(client_port.text, 0))
+                    endpoint = canmatrix.Endpoint(server_ipv4.text, 
+                                                  int(server_port.text, 0),
+                                                  client_ipv4.text, 
+                                                  int(client_port.text, 0),
+                                                  ttl)
 
                     for scii in ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER", socket_connection):
 

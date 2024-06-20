@@ -796,6 +796,7 @@ class Endpoint(object):
     server_port = attr.ib(default=0)  # type: int
     client_ip = attr.ib(default="")  # type: str
     client_port = attr.ib(default=0)  # type: int
+    ttl = attr.ib(default=0)  # type: int
 
 
 @attr.s(eq=False)
