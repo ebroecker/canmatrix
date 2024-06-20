@@ -447,7 +447,8 @@ class Signal(object):
         except Exception as e:
             raise e
 
-        if not (0 <= value <= 10):
+        # if not (0 <= value <= 10):
+        if not (self.min <= value <= self.max):
             logger.warning(
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)

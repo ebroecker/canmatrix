@@ -11,35 +11,36 @@ try:
 except ImportError:
     from pathlib2 import Path
 
-
 pytest_plugins = ["pytester"]
+here = Path(__file__).parent / "files"
+tmp_dir = tempfile.mkdtemp()
 
-inputFile1 = "tests/files/dbc/test_frame_decoding.dbc"
-inputFile2 = "tests/files/arxml/ARXML_min_max.arxml"
-
-inputFile1_path = os.path.abspath(inputFile1)
-inputFile2_path = os.path.abspath(inputFile2)
 
 @pytest.fixture
 def run(testdir):
     def do_run(*args):
-        args = [sys.executable,"-m","canmatrix.cli.compare"] + list(args)
+        args = [sys.executable, "-m", "canmatrix.cli.compare"] + list(args)
         return testdir.run(*args)
     return do_run
 
 def test_silent(tmpdir, run):
-    normal_result = run(inputFile1_path, inputFile2_path)
-    silent_result = run("-s", inputFile1_path, inputFile2_path)
+    inputFile1 = str(here / "dbc" / "test_frame_decoding.dbc")
+    inputFile2 = str(here / "arxml" / "ARXML_min_max.arxml")
+
+    normal_result = run(inputFile1, inputFile2)
+    silent_result = run("-s", inputFile1, inputFile2)
     assert len(normal_result.errlines) > len(silent_result.errlines)
     assert len(normal_result.outlines) == len(silent_result.outlines)
 
 def test_verbose(tmpdir, run):
-    normal_result = run(inputFile1_path, inputFile2_path)
-    verbose_result = run("-v", inputFile1_path, inputFile2_path)
+    inputFile1 = str(here / "dbc" / "test_frame_decoding.dbc")
+    inputFile2 = str(here / "arxml" / "ARXML_min_max.arxml")
+
+    normal_result = run(inputFile1, inputFile2)
+    verbose_result = run("-vv", inputFile1, inputFile2)
     assert len(normal_result.errlines) + len(normal_result.outlines) < len(verbose_result.errlines) + len(verbose_result.outlines)
 
 def create_dbc():
-    tmp_dir = tempfile.mkdtemp()
     outFile1 = tmp_dir + "/output_cli_compare_tmpa.dbc"
     outFile2 = tmp_dir + "/output_cli_compare_tmpb.dbc"
 
@@ -60,7 +61,7 @@ def create_dbc():
     canmatrix.formats.dumpp({"": db}, outFile1, dbcExportEncoding='iso-8859-1',
                             dbcExportCommentEncoding='iso-8859-1')
 
-    db.add_frame_defines("myAttribute","INT -5 10")
+    db.add_frame_defines("myAttribute", "INT -5 10")
     db.add_signal_defines("mySignalAttribute", 'INT 0 65535')
     mySignal.add_attribute("mySignalAttribute", "7")
     myFrame.add_attribute("myAttribute", "42")

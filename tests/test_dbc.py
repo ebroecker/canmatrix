@@ -374,7 +374,6 @@ def test_cycle_time_handling():
     assert matrix.frames[0].signal_by_name("sig1").cycle_time == 10
     assert matrix.frames[0].signal_by_name("sig2").cycle_time == 20
 
-
 #    assert "GenMsgCycleTime" not in matrix.frame_defines
 #    assert "GenSigCycleTime" not in matrix.signal_defines
 

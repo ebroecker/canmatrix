@@ -23,16 +23,13 @@
 
 from __future__ import absolute_import, division, print_function
 
-import sys
 import logging
-import typing
+import sys
 
 import click
 
-import canmatrix.convert as canconvert
-import canmatrix.formats as canmatrix_format
-import canmatrix.log as canmatrix_log
-
+import canmatrix.convert
+import canmatrix.log
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +37,7 @@ logger = logging.getLogger(__name__)
 def get_formats():
     input = ""
     output = ""
-    for suppFormat, features in canmatrix_format.supportedFormats.items():
+    for suppFormat, features in canmatrix.formats.supportedFormats.items():
         if 'load' in features:
             input += suppFormat + "\n"
         if 'dump' in features:
@@ -50,7 +47,7 @@ def get_formats():
 
 @click.command()
 # global switches
-@click.option('-v', '--verbose', 'verbosity', help="Output verbosity", count=True, default=False)
+@click.option('-v', '--verbose', 'verbosity', count=True, default=1)
 @click.option('-s', '--silent/--no-silent', is_flag=True, default=False, help="don't print status messages to stdout. (only errors)")
 @click.option('-f', '--force_output', help="enforce output format, ignoring output file extension (e.g., -f csv).\nSupported formats for writing:\n" + get_formats()[1])
 @click.option('-i', '--input_format', 'import_type', help="give hint for input format\nSupported formats for reading:\n" + get_formats()[0])
@@ -94,11 +91,13 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--checkSignalReceiver/--no-checkSignalReceiver', 'checkSignalReceiver', default = False, help="if checkSignalReceiver is set, then signals without an assigned Receiver will be warned \tdefault: False")
 @click.option('--checkFloatingSignals/--no-checkFloatingSignals', 'checkFloatingSignals', default = False, help="if checkFloatingSignals is set, then unassigned signals to a frame/message will be warned \tdefault: False")
 
+
 # arxml switches
 @click.option('--arxmlIgnoreClusterInfo/--no-arxmlIgnoreClusterInfo', 'arxmlIgnoreClusterInfo', default=False, help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault False")
 @click.option('--arxmlExportVersion', 'arVersion',  default="3.2.3", help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 3.2.3")
 @click.option('--arxmlFlexray/--no-arxmlFlexray', 'decode_flexray', default = False, help="EXPERIMENTAL: import basic flexray data from ARXML")
 @click.option('--arxmlEthernet/--no-arxmlEthernet', 'decode_ethernet', default = False, help="EXPERIMENTAL: import basic ethernet data from ARXML")
+
 
 # dbc switches
 @click.option('--dbcImportEncoding', 'dbcImportEncoding', default="iso-8859-1", help="Import charset of dbc (relevant for units), maybe utf-8\ndefault iso-8859-1")
@@ -143,26 +142,20 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
 
     """
 
-    root_logger = canmatrix_log.setup_logger()
+    root_logger = canmatrix.log.setup_logger()
 
-    if silent:
-        # Only print ERROR messages (ignore import warnings)
+    if silent is True:
+        # only print error messages, ignore verbosity flag
         verbosity = -1
-    elif not verbosity:
-        # Info Message
-        verbosity = 1
-    else:
-        # Debug Message
-        verbosity = 2
+        options["silent"] = True
 
-    canmatrix_log.set_log_level(root_logger, verbosity)
-
+    canmatrix.log.set_log_level(root_logger, verbosity)
     if options["ignoreEncodingErrors"]:
         options["ignoreEncodingErrors"] = "ignore"
     else:
         options["ignoreEncodingErrors"] = "strict"
 
-    canconvert.convert(infile, outfile, **options)
+    canmatrix.convert.convert(infile, outfile, **options)
     return 0
 
 

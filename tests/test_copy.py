@@ -80,6 +80,7 @@ def test_copy_ecu_with_attributes():
     assert matrix1.ecu_by_name("ECU").attribute("Node Address") == '42'
     assert matrix1.ecu_by_name("ECU").attribute("some_ecu_define", matrix1) == "default_value"
 
+
 def test_copy_frame_default_attributes():
     source = canmatrix.canmatrix.CanMatrix()
     frame1 = canmatrix.canmatrix.Frame("Frame1", arbitration_id=1)
