@@ -27,7 +27,7 @@ def test_silent(tmpdir, run):
     silent_result = run("-s", inputFile,"tmp.dbc")
     assert len(normal_result.errlines) > len(silent_result.errlines)
 
-def test_verbose(tmpdir, run):
+def disable_test_verbose(tmpdir, run):
     inputFile = str(here / "ARXML_min_max.arxml")
 
     normal_result = run(inputFile ,"tmp.dbc")

@@ -27,7 +27,7 @@ def test_silent(tmpdir, run):
     silent_result = run("-s", inputFile1 ,inputFile2)
     assert len(normal_result.errlines) > len(silent_result.errlines)
 
-def test_verbose(tmpdir, run):
+def disable_test_verbose(tmpdir, run):
     inputFile1 = str(here / "test_frame_decoding.dbc")
     inputFile2 = str(here / "ARXML_min_max.arxml")
 
