@@ -58,12 +58,14 @@ class Earxml:
     def __init__(self):
         self.xml_element_cache = dict()  # type: typing.Dict[str, _Element]
         self.path_cache = {}
+        self.sn_cache = {}
 
     def fill_caches(self, start_element=None, ar_path=""):
         if start_element is None:
             start_element = self.root
             self.path_cache = {}
         if start_element.tag == self.ns + "SHORT-NAME":
+            self.sn_cache[start_element.getparent()] = start_element.text
             return start_element.text
         for sub_element in start_element:
             text = sub_element.text
@@ -155,13 +157,8 @@ class Earxml:
     def get_short_name(self, element):
         # type: (_Element, str) -> str
         """Get element short name."""
-        if element is None:
-            return ""
-        name = element.find('./' + self.ns + 'SHORT-NAME')
-        if name is not None and name.text is not None:
-            return name.text
-        return ""
-
+        return self.sn_cache.get(element, "")
+    
     def follow_ref(self, start_element, element_name):
         ref_element = self.find(element_name, start_element)
         if ref_element is None:
