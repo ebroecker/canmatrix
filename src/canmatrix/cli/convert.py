@@ -140,7 +140,7 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
     import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
     export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym|*.py
 
-    \n"""
+    """
 
     root_logger = canmatrix.log.setup_logger()
 

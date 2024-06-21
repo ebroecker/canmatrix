@@ -436,18 +436,20 @@ class Signal(object):
             if not (self.min <= value <= self.max):
                 value = self.min
 
-        if isinstance(value, str):
+        if isinstance(value, str) and self.values:
             for value_key, value_string in self.values.items():
                 if value_string == value:
                     value = value_key
                     return value
-            else:
-                raise ValueError(
-                        "{} is invalid value choice for {}".format(value, self)
-                )
 
+        try:
+            value = decimal.Decimal(value)
+        except Exception as e:
+            raise e
+
+        # if not (0 <= value <= 10):
         if not (self.min <= value <= self.max):
-            logger.info(
+            logger.warning(
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
@@ -455,6 +457,7 @@ class Signal(object):
 
         if not self.is_float:
             raw_value = int(round(raw_value))
+
         return raw_value
 
     def raw2phys(self, value, decode_to_str=False):
@@ -793,6 +796,7 @@ class Endpoint(object):
     server_port = attr.ib(default=0)  # type: int
     client_ip = attr.ib(default="")  # type: str
     client_port = attr.ib(default=0)  # type: int
+    ttl = attr.ib(default=0)  # type: int
 
 
 @attr.s(eq=False)
@@ -1335,6 +1339,11 @@ class Frame(object):
         for signal in self.signals:
             if signal.name in data:
                 value = data.get(signal.name)
+                if isinstance(value, str):
+                    value = signal.phys2raw(value)
+                    if value is None:
+                        # TODO Error Handling
+                        value = 0
                 bits = pack_bitstring(signal.size, signal.is_float, value, signal.is_signed)
 
                 if signal.is_little_endian:
@@ -1369,7 +1378,6 @@ class Frame(object):
         """
 
         data = dict() if data is None else data
-
         if self.is_complex_multiplexed:
             raise EncodingComplexMultiplexed
         elif self.is_pdu_container:

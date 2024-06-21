@@ -1048,9 +1048,8 @@ def decode_compu_method(compu_method, ea, float_factory):
 
         rational = ea.get_child(compu_scale, "COMPU-RATIONAL-COEFFS")
 
-        if rational is None and ll is not None and desc is not None and canmatrix.utils.decode_number(ul.text,
-                                                                                 float_factory) == canmatrix.utils.decode_number(
-            ll.text, float_factory):
+        if rational is None and ll is not None and desc is not None and \
+            canmatrix.utils.decode_number(ul.text,float_factory) == canmatrix.utils.decode_number(ll.text, float_factory):
             #####################################################################################################
             #####################################################################################################
             values[ll.text] = desc
@@ -1600,23 +1599,26 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
 
         secOC_properties = None
         if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            payload_length = ea.get_child(pdu, "LENGTH").text
+            try:
+                payload_length = ea.get_child(pdu, "LENGTH").text
 
-            secured_ipdu_SecoC = ea.get_child(pdu, "SECURE-COMMUNICATION-PROPS")
+                secured_ipdu_SecoC = ea.get_child(pdu, "SECURE-COMMUNICATION-PROPS")
 
-            auth_algorithm = ea.get_child(secured_ipdu_SecoC, "AUTH-ALGORITHM").text
-            auth_tx_length = ea.get_child(secured_ipdu_SecoC, "AUTH-INFO-TX-LENGTH").text
-            data_id = ea.get_child(secured_ipdu_SecoC, "DATA-ID").text
-            freshness_bit_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-LENGTH").text
-            freshness_tx_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-TX-LENGTH").text
-            
-            secOC_properties = canmatrix.AutosarSecOCProperties(auth_algorithm, 
-                                                               int(payload_length, 0),
-                                                               int(auth_tx_length, 0),
-                                                               int(data_id, 0),
-                                                               int(freshness_bit_length, 0),
-                                                               int(freshness_tx_length, 0)
-                                                               )
+                auth_algorithm = ea.get_child(secured_ipdu_SecoC, "AUTH-ALGORITHM").text
+                auth_tx_length = ea.get_child(secured_ipdu_SecoC, "AUTH-INFO-TX-LENGTH").text
+                data_id = ea.get_child(secured_ipdu_SecoC, "DATA-ID").text
+                freshness_bit_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-LENGTH").text
+                freshness_tx_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-TX-LENGTH").text
+                
+                secOC_properties = canmatrix.AutosarSecOCProperties(auth_algorithm, 
+                                                                   int(payload_length, 0),
+                                                                   int(auth_tx_length, 0),
+                                                                   int(data_id, 0),
+                                                                   int(freshness_bit_length, 0),
+                                                                   int(freshness_tx_length, 0)
+                                                                   )
+            except Exception as e:
+                logger.warning(f"{e}")
 
             ipdu = ea.selector(pdu, ">PAYLOAD-REF>I-PDU-REF")
             if not ipdu:
@@ -1898,9 +1900,13 @@ def decode_ethernet_helper(ea, float_factory):
                     client_app_endpoint = ea.get_child(client_port_ref, "APPLICATION-ENDPOINT")
                     client_endpoint_ref = ea.follow_ref(client_app_endpoint, "NETWORK-ENDPOINT-REF")
                     client_ipv4 = ea.find("IPV-4-ADDRESS", client_endpoint_ref)
+                    ttl = ea.find("TTL", client_endpoint_ref)
 
-                    endpoint = canmatrix.Endpoint(server_ipv4.text, int(server_port.text, 0), 
-                                                client_ipv4.text, int(client_port.text, 0))
+                    endpoint = canmatrix.Endpoint(server_ipv4.text, 
+                                                  int(server_port.text, 0),
+                                                  client_ipv4.text, 
+                                                  int(client_port.text, 0),
+                                                  ttl)
 
                     for scii in ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER", socket_connection):
 
@@ -2076,8 +2082,9 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
         multiplex_translation = {}  # type: typing.Dict[str, str]
         for frameTrig in can_frame_trig:  # type: _Element
             frame = get_frame(frameTrig, ea, multiplex_translation, float_factory, headers_are_littleendian)
-            frame.is_j1939 = "J-1939" in cc.tag
             if frame is not None:
+                frame.is_j1939 = "J-1939" in cc.tag
+                
                 comm_directions = ea.selector(frameTrig, ">>FRAME-PORT-REF/COMMUNICATION-DIRECTION")
                 for comm_direction in comm_directions:
                     ecu_elem = ea.get_ecu_instance(element=comm_direction)
