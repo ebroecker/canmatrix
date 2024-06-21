@@ -788,8 +788,10 @@ def dump(db, f, **options):
                 "Coding for " +
                 signal_id)
                 
-            coded = create_sub_element_ho(coding, "CODED-TYPE")
-            base_data_type = get_base_data_type(signal.size, signal.is_signed)
+            coded = create_sub_element_ho(coding, "CODED-TYPE")			
+            # find smallest predefined type size able of holding signal size
+            byte_size = (signal.size + 8 - 1) / 8
+            base_data_type = get_base_data_type(byte_size * 8, signal.is_signed)
             if base_data_type is not None:
                 coded.set(ns_ho + "BASE-DATA-TYPE", base_data_type)
                 coded.set("CATEGORY", "STANDARD-LENGTH-TYPE")
