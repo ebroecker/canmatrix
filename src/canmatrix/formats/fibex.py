@@ -131,34 +131,33 @@ def get_multiplexing_parts_infos(signals, frame_name, start_pos=-1, end_pos=-1, 
 
 def get_base_data_type(bit_length, is_signed=False):
     # type: (int, bool) -> str
-    if bit_length == 8:
+    if bit_length > 0 and bit_length <= 8:
         if is_signed:
             return "A_INT8"
         
         elif not is_signed:
             return "A_UINT8"
             
-    elif bit_length == 16:
+    elif bit_length > 8 and bit_length <= 16:
         if is_signed:
             return "A_INT16"
         
         elif not is_signed:
             return "A_UINT16"
             
-    elif bit_length == 32:
+    elif bit_length > 16 and bit_length <= 32:
         if is_signed:
             return "A_INT32"
         
         elif not is_signed:
             return "A_UINT32"
             
-    elif bit_length == 64:
+    elif bit_length > 32 and bit_length <= 64:
         if is_signed:
             return "A_INT64"
         
         elif not is_signed:
             return "A_UINT64"
-
 
 class Fe:
     def __init__(self, filename):
@@ -788,10 +787,8 @@ def dump(db, f, **options):
                 "Coding for " +
                 signal_id)
                 
-            coded = create_sub_element_ho(coding, "CODED-TYPE")			
-            # find smallest predefined type size able of holding signal size
-            byte_size = (signal.size + 8 - 1) / 8
-            base_data_type = get_base_data_type(byte_size * 8, signal.is_signed)
+            coded = create_sub_element_ho(coding, "CODED-TYPE")
+            base_data_type = get_base_data_type(signal.size, signal.is_signed)
             if base_data_type is not None:
                 coded.set(ns_ho + "BASE-DATA-TYPE", base_data_type)
                 coded.set("CATEGORY", "STANDARD-LENGTH-TYPE")
