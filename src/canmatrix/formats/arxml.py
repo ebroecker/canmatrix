@@ -797,7 +797,7 @@ def dump(dbs, f, **options):
                 compu_int_to_phys = create_sub_element(
                     compu_method, 'COMPU-INTERNAL-TO-PHYS')
                 compu_scales = create_sub_element(compu_int_to_phys, 'COMPU-SCALES')
-                for value in sorted(signal.values, key=lambda x: int(x, 0)):
+                for value in sorted(signal.values):
                     compu_scale = create_sub_element(compu_scales, 'COMPU-SCALE')
                     desc = create_sub_element(compu_scale, 'DESC')
                     l2 = create_sub_element(desc, 'L-2')
