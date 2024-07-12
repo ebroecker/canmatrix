@@ -987,6 +987,21 @@ def test_canmatrix_rename_ecu_by_wrong_name(empty_matrix):
     assert ecu.name == "old_name"
 
 
+def test_canmatrix_rename_ecu_check_frame(empty_matrix):
+    ecu = canmatrix.Ecu(name="old_name")
+    frame = canmatrix.Frame(name="test_frame")
+    signal = canmatrix.Signal(name="test_signal")
+    signal.add_receiver("old_name")
+    frame.add_signal(signal)
+    frame.update_receiver()
+    assert "old_name" in frame.receivers
+    
+    empty_matrix.add_ecu(ecu)
+    empty_matrix.add_frame(frame)
+    empty_matrix.rename_ecu("old_name", "new_name")
+    assert "old_name" not in frame.receivers
+    assert "new_name" in frame.receivers
+
 def test_canmatrix_rename_ecu_by_instance(empty_matrix):
     ecu = canmatrix.Ecu(name="old_name")
     empty_matrix.add_ecu(ecu)
