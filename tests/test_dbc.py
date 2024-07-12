@@ -540,9 +540,52 @@ def test_default_initial_value():
 
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].signals[0].initial_value == 10
-#    outdbc = io.BytesIO()
-#    canmatrix.formats.dump(matrix, outdbc, "dbc")
 
+def test_keep_individual_inital_value():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 561 ECU1_Message2: 1 ECU1
+            SG_ ECU2_Signal2 : 0|8@0+ (2,0) [-2|250] "g" ECU2
+
+        BA_DEF_ SG_ "GenSigStartValue" FLOAT 0.0 100.0;
+        
+        BA_DEF_DEF_ "GenSigStartValue" 10.0;
+        BA_ "GenSigStartValue" SG_ 561 ECU2_Signal2 42;
+    ''').encode('utf-8'))
+    matrix1 = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix1.frames[0].signals[0].initial_value == decimal.Decimal('84')  # in matrix should be the physical value!
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(matrix1, outdbc, "dbc")
+    # in dbc should be the raw value
+    assert  'BA_ "GenSigStartValue" SG_ 561 ECU2_Signal2 42' in outdbc.getvalue().decode('utf8')
+
+
+def test_individual_initial_value_merge():
+    dbc1 = io.BytesIO(textwrap.dedent(u'''\
+            BO_ 560 ECU1_Message: 1 ECU1
+              SG_ ECU2_Signal : 0|8@0+ (1,-5) [-2|250] "g" ECU2
+
+            BA_DEF_ SG_ "GenSigStartValue" FLOAT 0.0 100.0;
+            
+            BA_DEF_DEF_ "GenSigStartValue" 10.0;
+    ''').encode('utf-8'))
+
+    dbc2 = io.BytesIO(textwrap.dedent(u'''\
+            BO_ 561 ECU1_Message2: 1 ECU1
+              SG_ ECU2_Signal2 : 0|8@0+ (1,0) [-2|250] "g" ECU2
+
+            BA_DEF_ SG_ "GenSigStartValue" FLOAT 0.0 100.0;
+            
+            BA_DEF_DEF_ "GenSigStartValue" 10.0;
+            BA_ "GenSigStartValue" SG_ 561 ECU2_Signal2 42;
+    ''').encode('utf-8'))
+
+    matrix1 = canmatrix.formats.dbc.load(dbc1, dbcImportEncoding="utf8")
+    matrix2 = canmatrix.formats.dbc.load(dbc2, dbcImportEncoding="utf8")
+    matrix1.merge([matrix2])
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(matrix1, outdbc, "dbc")
+
+    assert  'BA_ "GenSigStartValue" SG_ 561 ECU2_Signal2 42' in outdbc.getvalue().decode('utf8')
 
 def test_no_initial_value():
     dbc = io.BytesIO(textwrap.dedent(u'''\
