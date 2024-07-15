@@ -92,11 +92,11 @@ def test_delete_obsolete_defines(tmpdir, run):
     deleted_result = run("--deleteObsoleteDefines", inputFile, "tmp2.dbc")
     with open("tmp2.dbc", "rb") as fd:
         content = fd.read()
-        assert b"BA_DEF_" not in content
+        assert b"SomeUnneededDefine" not in content
     normal_result = run(inputFile, "tmp2.dbc")
     with open("tmp2.dbc", "rb") as fd:
         content = fd.read()
-        assert b"BA_DEF_" in content
+        assert b"SomeUnneededDefine" in content
 
 def test_delete_ecu(tmpdir, run):
     inputFile = create_dbc_with_special_char()
