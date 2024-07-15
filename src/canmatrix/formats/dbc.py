@@ -237,6 +237,9 @@ def dump(in_db, f, **options):
         for signal in frame.signals:
             if signal.cycle_time != 0:
                 signal.add_attribute("GenSigCycleTime", signal.cycle_time)
+            if signal.initial_value != 0 and "GenSigStartValue" not in db.signal_defines:
+                db.add_signal_defines("GenSigStartValue", 'FLOAT 0 100000000000')
+                
             if "GenSigStartValue" in db.signal_defines:
                 if signal.phys2raw(None) != 0:
                     if db.signal_defines["GenSigStartValue"].defaultValue is None:
