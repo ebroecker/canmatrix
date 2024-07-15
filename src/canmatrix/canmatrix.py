@@ -1321,6 +1321,7 @@ class Frame(object):
         """
         Collect Frame receivers out of receiver given in each signal. Add them to `self.receiver` list.
         """
+        self.receivers = []
         for sig in self.signals:
             for receiver in sig.receivers:
                 self.add_receiver(receiver)
