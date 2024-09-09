@@ -1671,6 +1671,16 @@ class Frame(object):
                         gap_found = True
                         break
 
+    def multiplex_signals(self):
+        """Assign multiplexer to signals. When a multiplexor is in the frame and frame is not complex multiplexed"""
+        multiplexor = self.get_multiplexer
+        if self.is_complex_multiplexed or (multiplexor is None):
+            return
+        for signal in self.signals:
+            if signal.is_multiplexer:
+                continue
+            signal.muxer_for_signal = multiplexor.name
+            signal.mux_val = signal.multiplex
 
     def __str__(self):  # type: () -> str
         """Represent the frame by its name only."""

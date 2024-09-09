@@ -989,6 +989,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
     db.enum_attribs_to_values()
     for frame in db.frames:
+        frame.multiplex_signals()
         if "_FD" in frame.attributes.get("VFrameFormat", ""):
             frame.is_fd = True
         if "J1939PG" in frame.attributes.get("VFrameFormat", ""):
