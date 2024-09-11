@@ -1672,7 +1672,7 @@ class Frame(object):
                         break
 
     def multiplex_signals(self):
-        """Assign multiplexer to signals. When a multiplexor is in the frame and frame is not complex multiplexed"""
+        """Assign multiplexer to signals. When a multiplexor is in the frame."""
         multiplexor = self.get_multiplexer
         if multiplexor is None:
             return
