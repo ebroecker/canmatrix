@@ -511,6 +511,9 @@ def dump(db, f, **options):
         create_sub_element_fx(identifier, "IDENTIFIER-VALUE", str(frame.arbitration_id.id))
         frame_ref = create_sub_element_fx(frame_triggering, "FRAME-REF")
         frame_ref.set("ID-REF", "FRAME_" + frame.name)
+        if (frame.is_fd):
+            create_sub_element_fx(frame_triggering, "CAN-FRAME-TX-BEHAVIOR","CAN-FD")
+            create_sub_element_fx(frame_triggering, "CAN-FRAME-RX-BEHAVIOR","CAN-FD")
 
     #
     # ECUS
