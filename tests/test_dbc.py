@@ -339,6 +339,20 @@ def test_j1939_frametype():
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].is_j1939 == False
 
+def test_multiplex_frame():
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    BU_: someOtherEcu
+    
+    BO_ 123 someFrame: 8 someOtherEcu
+     SG_ someSignal m2 : 8|8@1+ (1,0) [0|9] ""  CCL_TEST
+     SG_ someOtherSignal m1 : 8|8@0+ (1,0) [0|9] ""  CCL_TEST
+     SG_ someMultiplexor M : 0|8@1+ (1,0) [0|2] ""  CCL_TEST
+    ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.frames[0].is_multiplexed
+
+    assert matrix.frames[0].signal_by_name("someSignal").muxer_for_signal == "someMultiplexor"
+
 
 def test_attributes_with_spaces_before_semicolumn():
     dbc = io.BytesIO(textwrap.dedent(u'''\

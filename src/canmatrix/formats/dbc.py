@@ -599,9 +599,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     multiplex = temp.group(2)  # type: str
 
                     is_complex_multiplexed = False
+                    is_multiplexer = False
 
                     if multiplex == 'M':
                         multiplex = 'Multiplexor'
+                        is_multiplexer = True
                     elif multiplex.endswith('M'):
                         is_complex_multiplexed = True
                         multiplex = multiplex[:-1]
@@ -632,7 +634,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         **extras
                     )
 
-                    if is_complex_multiplexed:
+                    if is_complex_multiplexed or is_multiplexer:
                         temp_signal.is_multiplexer = True
                         temp_signal.multiplex = 'Multiplexor'
 
@@ -989,6 +991,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
     db.enum_attribs_to_values()
     for frame in db.frames:
+        frame.multiplex_signals()
         if "_FD" in frame.attributes.get("VFrameFormat", ""):
             frame.is_fd = True
         if "J1939PG" in frame.attributes.get("VFrameFormat", ""):
