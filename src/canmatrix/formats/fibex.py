@@ -130,7 +130,7 @@ def get_multiplexing_parts_infos(signals, frame_name, start_pos=-1, end_pos=-1, 
     return start_pos, end_pos, seg_big_endian
 
 def get_base_data_type(signal):
-    # type: (int, bool) -> str
+    # type: (Signal) -> str
     if signal.is_float:
         if (signal.size<=32):
             return "A_FLOAT32"
@@ -140,21 +140,20 @@ def get_base_data_type(signal):
     if signal.size > 0 and signal.size <= 8:
         if signal.is_signed:
             return "A_INT8"
-    
         elif not signal.is_signed:
             return "A_UINT8"
         
-        elif signal.size > 8 and signal.size <= 16:
+    elif signal.size > 8 and signal.size <= 16:
             if signal.is_signed:
                 return "A_INT16"
             elif not signal.is_signed:
                 return "A_UINT16"
-        elif signal.size > 16 and signal.size <= 32:
+    elif signal.size > 16 and signal.size <= 32:
             if signal.is_signed:
                 return "A_INT32"
             elif not signal.is_signed:
                 return "A_UINT32"
-        elif signal.size > 32 and signal.size <= 64:
+    elif signal.size > 32 and signal.size <= 64:
             if signal.is_signed:
                 return "A_INT64"
             elif not signal.is_signed:
