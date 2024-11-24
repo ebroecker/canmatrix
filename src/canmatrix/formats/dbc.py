@@ -23,8 +23,6 @@
 # this script exports dbc-files from a canmatrix-object
 # dbc-files are the can-matrix-definitions of the CANoe (Vector Informatic)
 
-from __future__ import absolute_import, division, print_function
-
 import collections
 import copy
 import decimal

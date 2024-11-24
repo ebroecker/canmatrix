@@ -17,12 +17,8 @@ db.ecus.add(Ecu("recBU"))
 
 myFrame = Frame("testFrame1", Id=0x123, dlc=8, transmitter="testBU")
 
-if sys.version_info > (3, 0):
-    unit = u"specialCharUnit°$"
-    comment = u"Multi \n Line \n Signal comment with a-umlaut: ä"
-else:
-    unit = "specialCharUnit°$".decode("utf-8")
-    comment = "Multi \n Line \n Signal comment with a-umlaut: ä".decode("utf-8")
+unit = "specialCharUnit°$"
+comment = "Multi \n Line \n Signal comment with a-umlaut: ä"
 
 mySignal = Signal("someTestSignal",
                   signalSize=11,

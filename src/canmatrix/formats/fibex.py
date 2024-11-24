@@ -25,8 +25,6 @@
 # only (fibex: Field Bus Exchange Format //
 # https://de.wikipedia.org/wiki/Field_Bus_Exchange_Format)
 
-from __future__ import absolute_import, division, print_function
-
 import os
 import typing
 from builtins import *

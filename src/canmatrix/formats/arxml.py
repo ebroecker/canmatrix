@@ -25,8 +25,6 @@
 # currently Support for Autosar 3.2 and 4.0-4.3 is planned
 # AUTOSAR 4.2.2 is partial support -> 2024/05/20
 
-from __future__ import absolute_import, division, print_function
-
 import copy
 import decimal
 import logging

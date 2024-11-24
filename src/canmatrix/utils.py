@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function
 
 import csv
 import shlex
@@ -16,9 +15,7 @@ else:
 
 
 def quote_aware_space_split(in_line):  # type: (str) -> typing.List[str]
-    if sys.version_info >= (3, 0):  # is there a clean way to to it?
-        return shlex.split(in_line.strip())
-    return [item.decode('utf-8') for item in shlex.split(in_line.strip().encode('utf-8'))]
+    return shlex.split(in_line.strip())
 
 
 # https://stackoverflow.com/questions/18092354/python-split-string-without-splitting-escaped-character

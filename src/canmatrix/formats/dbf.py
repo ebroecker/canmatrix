@@ -23,7 +23,6 @@
 # this script imports dbf-files in a canmatrix-object
 # dbf-files are the can-matrix-definitions of the busmaster-project (http://rbei-etas.github.io/busmaster/)
 #
-from __future__ import absolute_import, division, print_function
 
 import copy
 import decimal

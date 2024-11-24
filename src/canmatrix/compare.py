@@ -19,8 +19,6 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
-from __future__ import absolute_import, division, print_function
-
 import logging
 import sys
 import typing
@@ -36,7 +34,7 @@ WithAttribute = typing.TypeVar("WithAttribute", canmatrix.CanMatrix, canmatrix.E
 
 
 @attr.s
-class CompareResult(object):
+class CompareResult:
     """Hold comparison results in logical tree."""
     result = attr.ib(default=None)  # type: typing.Optional[str]    # any of equal, added, deleted, changed
     type = attr.ib(default=None)  # type: typing.Optional[str]      # db, ecu, frame, signal, signalGroup or attribute

@@ -24,8 +24,6 @@
 # kcd-files are the can-matrix-definitions of the kayak
 # (http://kayak.2codeornot2code.org/)
 
-from __future__ import absolute_import, division, print_function
-
 import decimal
 import os
 import re

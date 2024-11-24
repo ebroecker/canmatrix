@@ -23,8 +23,6 @@
 # this script exports xls-files from a canmatrix-object
 # xls-files are the can-matrix-definitions displayed in Excel
 
-from __future__ import absolute_import, division, print_function
-
 import logging
 import typing
 from builtins import *
