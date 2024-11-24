@@ -258,10 +258,10 @@ def dump(db, file_object, delimiter=',', **options):
         # loop over signals ends here
     # loop over frames ends here
 
+    import io
+    temp = io.TextIOWrapper(file_object, encoding='UTF-8')
+
     try:
-        import io
-        temp = io.TextIOWrapper(file_object, encoding='UTF-8')
-    
         writer = csv.writer(temp, delimiter=delimiter)
         for csv_row in csv_table:
             writer.writerow(csv_row.as_list)
