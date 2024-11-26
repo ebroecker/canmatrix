@@ -23,8 +23,6 @@
 # this script exports canmatrix-objects to a CSV file. (Based on xlsx)
 # Author: Martin Hoffmann (m8ddin@gmail.com)
 
-from __future__ import absolute_import, division, print_function
-
 import collections
 import csv
 import logging
@@ -47,9 +45,6 @@ class CsvRow:
         return self._row_dict[key]
 
     def __setitem__(self, key, item):  # type: (int, CsvDataType) -> None
-        if sys.version_info <= (3, 0):
-            if type(item).__name__ == "unicode":
-                item = item.encode('utf-8')
         self._row_dict[key] = item
 
     def __add__(self, other):  # type: (typing.Iterable[CsvDataType]) -> CsvRow
@@ -263,11 +258,8 @@ def dump(db, file_object, delimiter=',', **options):
         # loop over signals ends here
     # loop over frames ends here
 
-    if sys.version_info > (3, 0):
-        import io
-        temp = io.TextIOWrapper(file_object, encoding='UTF-8')
-    else:
-        temp = file_object
+    import io
+    temp = io.TextIOWrapper(file_object, encoding='UTF-8')
 
     try:
         writer = csv.writer(temp, delimiter=delimiter)
@@ -279,7 +271,7 @@ def dump(db, file_object, delimiter=',', **options):
         #        [row.toCSV(delimiter) for row in csv_table])
         #    print(finalTableString)
     finally:
-        if sys.version_info > (3, 0):
-            # When TextIOWrapper is garbage collected, it closes the raw stream
-            # unless the raw stream is detached first
-            temp.detach()
+        # When TextIOWrapper is garbage collected, it closes the raw stream
+        # unless the raw stream is detached first
+        temp.detach()
+
