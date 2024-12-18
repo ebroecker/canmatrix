@@ -1986,6 +1986,7 @@ class CanMatrix(object):
         :rtype: Frame or None
         """
         hash_name = f"{arbitration_id.id}_{arbitration_id.extended}"
+        
         frame = self._frames_dict_id_extend.get(hash_name, None)
         if frame is not None:
             return frame
@@ -2095,7 +2096,7 @@ class CanMatrix(object):
         :return: the inserted Frame
         """
         self.frames.append(frame)
-
+        self._frames_dict_id_extend = {}
         self.frames_dict_name[frame.name] = frame
         if frame.header_id:
             self.frames_dict_id[frame.header_id] = frame
@@ -2110,6 +2111,7 @@ class CanMatrix(object):
         :param Frame frame: frame to remove from CAN Matrix
         """
         self.frames.remove(frame)
+        self._frames_dict_id_extend = {}
 
     def add_signal(self, signal):  # type: (Signal) -> Signal
         """
@@ -2204,6 +2206,8 @@ class CanMatrix(object):
             if bu.name.strip() == ecu.name:
                 return
         self.ecus.append(ecu)
+        self._frames_dict_id_extend = {}
+
 
     def del_ecu(self, ecu_or_glob):  # type: (typing.Union[Ecu, str]) -> None
         """Remove ECU from Matrix and all Frames.
@@ -2374,6 +2378,7 @@ class CanMatrix(object):
                 else:
                     logger.error(
                         "Name Conflict, could not copy/merge EnvVar " + envVar)
+        self._frames_dict_id_extend = {}
 
     def set_fd_type(self) -> None:
         """Try to guess and set the CAN type for every frame.
