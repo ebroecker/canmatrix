@@ -1793,7 +1793,7 @@ class CanMatrix(object):
 
     frames_dict_name = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
     frames_dict_id = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
-
+    _frames_dict_id_extend = {}
     signal_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     frame_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     global_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
@@ -1985,10 +1985,15 @@ class CanMatrix(object):
         :param ArbitrationId arbitration_id: Frame id as canmatrix.ArbitrationId
         :rtype: Frame or None
         """
-        for test in self.frames:
-            if test.arbitration_id == arbitration_id:
+        hash_name = f"{arbitration_id.id}_{arbitration_id.extended}"
+        frame = self._frames_dict_id_extend.get(hash_name)
+        if frame is not None:
+            return frame
+        for frame in self.frames:
+            if frame.arbitration_id == arbitration_id:
                 # found ID while ignoring extended or standard
-                return test
+                self._frames_dict_id_extend[hash_name] = frame
+                return frame
         return None
 
     def frame_by_header_id(self, header_id):  # type: (HeaderId) -> typing.Union[Frame, None]
