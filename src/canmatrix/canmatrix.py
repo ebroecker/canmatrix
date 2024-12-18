@@ -1986,7 +1986,7 @@ class CanMatrix(object):
         :rtype: Frame or None
         """
         hash_name = f"{arbitration_id.id}_{arbitration_id.extended}"
-        frame = self._frames_dict_id_extend.get(hash_name)
+        frame = self._frames_dict_id_extend.get(hash_name, None)
         if frame is not None:
             return frame
         for frame in self.frames:
