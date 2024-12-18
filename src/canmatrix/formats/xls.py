@@ -545,7 +545,9 @@ def load(file, **options):
                 unit = unit.strip()
                 new_signal.unit = unit
                 try:
-                    new_signal.factor = float_factory(factor)
+                    # if prevents overwriting explicit factor (if given)
+                    if new_signal.factor in (1, 1.0):	
+                        new_signal.factor = float_factory(factor)
                 except:
                     logger.warning(
                         "Some error occurred while decoding scale of Signal %s: '%s'",
