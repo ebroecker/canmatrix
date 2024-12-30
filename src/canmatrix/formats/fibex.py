@@ -25,8 +25,6 @@
 # only (fibex: Field Bus Exchange Format //
 # https://de.wikipedia.org/wiki/Field_Bus_Exchange_Format)
 
-from __future__ import absolute_import, division, print_function
-
 import os
 import typing
 from builtins import *
@@ -129,36 +127,35 @@ def get_multiplexing_parts_infos(signals, frame_name, start_pos=-1, end_pos=-1, 
 
     return start_pos, end_pos, seg_big_endian
 
-def get_base_data_type(bit_length, is_signed=False):
-    # type: (int, bool) -> str
-    if bit_length > 0 and bit_length <= 8:
-        if is_signed:
+def get_base_data_type(signal):
+    # type: (Signal) -> str
+    if signal.is_float:
+        if (signal.size<=32):
+            return "A_FLOAT32"
+        else:
+            return "A_FLOAT64"
+    
+    if signal.size > 0 and signal.size <= 8:
+        if signal.is_signed:
             return "A_INT8"
-        
-        elif not is_signed:
+        elif not signal.is_signed:
             return "A_UINT8"
-            
-    elif bit_length > 8 and bit_length <= 16:
-        if is_signed:
-            return "A_INT16"
         
-        elif not is_signed:
-            return "A_UINT16"
-            
-    elif bit_length > 16 and bit_length <= 32:
-        if is_signed:
-            return "A_INT32"
-        
-        elif not is_signed:
-            return "A_UINT32"
-            
-    elif bit_length > 32 and bit_length <= 64:
-        if is_signed:
-            return "A_INT64"
-        
-        elif not is_signed:
-            return "A_UINT64"
-
+    elif signal.size > 8 and signal.size <= 16:
+            if signal.is_signed:
+                return "A_INT16"
+            elif not signal.is_signed:
+                return "A_UINT16"
+    elif signal.size > 16 and signal.size <= 32:
+            if signal.is_signed:
+                return "A_INT32"
+            elif not signal.is_signed:
+                return "A_UINT32"
+    elif signal.size > 32 and signal.size <= 64:
+            if signal.is_signed:
+                return "A_INT64"
+            elif not signal.is_signed:
+                return "A_UINT64"
 class Fe:
     def __init__(self, filename):
         self.tree = lxml.etree.parse(filename)
@@ -511,6 +508,9 @@ def dump(db, f, **options):
         create_sub_element_fx(identifier, "IDENTIFIER-VALUE", str(frame.arbitration_id.id))
         frame_ref = create_sub_element_fx(frame_triggering, "FRAME-REF")
         frame_ref.set("ID-REF", "FRAME_" + frame.name)
+        if (frame.is_fd):
+            create_sub_element_fx(frame_triggering, "CAN-FRAME-TX-BEHAVIOR","CAN-FD")
+            create_sub_element_fx(frame_triggering, "CAN-FRAME-RX-BEHAVIOR","CAN-FD")
 
     #
     # ECUS
@@ -788,7 +788,7 @@ def dump(db, f, **options):
                 signal_id)
                 
             coded = create_sub_element_ho(coding, "CODED-TYPE")
-            base_data_type = get_base_data_type(signal.size, signal.is_signed)
+            base_data_type = get_base_data_type(signal)
             if base_data_type is not None:
                 coded.set(ns_ho + "BASE-DATA-TYPE", base_data_type)
                 coded.set("CATEGORY", "STANDARD-LENGTH-TYPE")

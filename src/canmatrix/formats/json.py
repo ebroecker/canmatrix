@@ -24,10 +24,7 @@
 # json-files are the can-matrix-definitions of the CANard-project
 # (https://github.com/ericevenchick/CANard)
 
-from __future__ import absolute_import, division, print_function
-
 import json
-import sys
 import typing
 from builtins import *
 import decimal
@@ -181,20 +178,16 @@ def dump(db, f, **options):
                  "header_id": frame.header_id,
                  "pdu_name": frame.pdu_name,
                  "transmitters": frame.transmitters})
-    if sys.version_info > (3, 0):
-        import io
-        temp = io.TextIOWrapper(f, encoding='UTF-8')
-    else:
-        temp = f
+    import io
+    temp = io.TextIOWrapper(f, encoding='UTF-8')
 
     try:
         json.dump(export_dict, temp, sort_keys=True,
                   indent=4, separators=(',', ': '))
     finally:
-        if sys.version_info > (3, 0):
-            # When TextIOWrapper is garbage collected, it closes the raw stream
-            # unless the raw stream is detached first
-            temp.detach()
+        # When TextIOWrapper is garbage collected, it closes the raw stream
+        # unless the raw stream is detached first
+        temp.detach()
 
 
 def load(f, **_options):
@@ -202,12 +195,8 @@ def load(f, **_options):
 
     db = canmatrix.CanMatrix()
 
-    if sys.version_info > (3, 0):
-        import io
-        json_data = json.load(io.TextIOWrapper(f, encoding='UTF-8'))
-    else:
-
-        json_data = json.load(f)
+    import io
+    json_data = json.load(io.TextIOWrapper(f, encoding='UTF-8'))
 
     if "enumerations" in json_data:
         for val_tab_name, val_tab_dict in json_data['enumerations'].items():

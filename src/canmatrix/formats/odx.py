@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from lxml import etree
 import canmatrix.formats
 import decimal
