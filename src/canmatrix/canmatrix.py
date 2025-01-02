@@ -191,7 +191,7 @@ class Signal(object):
 
     cycle_time = attr.ib(default=0)  # type: int
     initial_value = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: canmatrix.types.PhysicalValue
-
+    scale_ranges = attr.ib(factory=list)
     min = attr.ib(
         converter=lambda value, float_factory=float_factory: (
             float_factory(value)
