@@ -147,10 +147,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     #TX
     for index in range(0x1A00, 0x1A08):   
         if index in od:
+            pdo_name = od[index].name.replace(" ", "_")
             frame = canmatrix.canmatrix.Frame(name=pdo_name, transmitters=[node_name])
             db.add_frame(frame)
-            pdo_name = od[index].name.replace(" ", "_")
             frame_id = od[index].canid
+            print(frame_id)
             frame.arbitration_id = canmatrix.ArbitrationId(id=frame_id)
             frame.size = 8
             signals = get_signals(od[index], plc_name)
