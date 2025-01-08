@@ -161,4 +161,10 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 frame.add_signal(sig)
 
     db.update_ecu_list()   
+    for ecu in db.ecus:
+        if "-" in ecu.name:
+            db.rename_ecu(ecu.name, ecu.name.replace("-","_").replace(" ", "_"))
+        else:
+            db.rename_ecu(ecu.name, ecu.name.replace(" ", "_"))
+
     return db

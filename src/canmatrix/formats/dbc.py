@@ -223,6 +223,8 @@ def dump(in_db, f, **options):
         # remove "-" from frame names
         if compatibility:
             frame.name = re.sub("[^A-Za-z0-9]", whitespace_replacement, frame.name)
+            if frame.name[0].isdigit():
+                frame.name = "_" + frame.name
 
         duplicate_signal_totals = collections.Counter(normalized_names.values())
         duplicate_signal_counter = collections.Counter()  # type: typing.Counter[str]
