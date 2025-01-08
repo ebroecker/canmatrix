@@ -1,0 +1,591 @@
+/*************************************************************************************/
+//                                                                                     
+// Description: XYZ
+// Created:     09 September 2010 09:00:00
+// Author:      ABC
+// Version:     1.1
+// Vehicle Project: XYZ
+//                                                                                     
+/*************************************************************************************/
+
+LIN_description_file;
+LIN_protocol_version = "2.0";
+LIN_language_version = "2.0";
+LIN_speed = 19.2 kbps;
+
+Nodes {
+  Master: SG, 10 ms, 0 ms ;
+  Slaves: IBS ;
+}
+
+Signals {
+  Batt_CNominal: 8, 255, SG, IBS ;
+  Batt_U0Min: 8, 255, SG, IBS ;
+  Batt_U0Max: 8, 255, SG, IBS ;
+  Batt_CCANominal: 8, 255, SG, IBS ;
+  Temperature_Upred: 8, 255, SG, IBS ;
+  Batt_Technology: 3, 7, SG, IBS ;
+  Batt_ChangeNotification: 1, 0, SG, IBS ;
+  BatteryCurrent: 16, 65535, IBS, SG ;
+  BatteryVoltage: 16, 65535, IBS, SG ;
+  CentreTapVoltage: 16, 65535, IBS, SG ;
+  InChipTemperature: 9, 511, IBS, SG ;
+  CurrentRangeMeas: 2, 0, IBS, SG ;
+  SOC: 16, 65535, IBS, SG ;
+  SOCUpperTolerance: 8, 255, IBS, SG ;
+  SOCLowerTolerance: 8, 255, IBS, SG ;
+  BatteryTemperature: 8, 255, IBS, SG ;
+  SOCRecalibrated: 1, 0, IBS, SG ;
+  EndOfDischarge: 1, 0, IBS, SG ;
+  FullCharge: 1, 0, IBS, SG ;
+  ExtChargerDetected: 1, 0, IBS, SG ;
+  RequestBatteryParameters: 1, 0, IBS, SG ;
+  IBSErrorCommon: 1, 0, IBS, SG ;
+  MANDATORY_RESPONSE_ERROR_SIGNAL: 1, 0, IBS, SG ;
+  UPredNextCrank: 8, 255, IBS, SG ;
+  UPredGivenTemperature: 8, 255, IBS, SG ;
+  UBattMinLastCrank: 16, 65535, IBS, SG ;
+  IBattMinLastCrank: 16, 65535, IBS, SG ;
+  NewCrankDetected: 1, 0, IBS, SG ;
+  SOH: 8, 255, IBS, SG ;
+  CapacityLossTop: 8, 255, IBS, SG ;
+  CapacityLossBottom: 8, 255, IBS, SG ;
+  CentreTapDifference: 8, 255, IBS, SG ;
+  Sulfation: 1, 0, IBS, SG ;
+  BatteryDefect: 1, 0, IBS, SG ;
+  RiImpedance: 8, 255, IBS, SG ;
+  RiSigStrength: 8, 255, IBS, SG ;
+  Ri0ImpedanceAvg: 8, 255, IBS, SG ;
+  RiCrank: 8, 255, IBS, SG ;
+  Ri0CrankAvg: 8, 255, IBS, SG ;
+  Ri0Avg: 8, 255, IBS, SG ;
+  AhChargedCycle: 16, 65535, IBS, SG ;
+  AhDischargedCycle: 16, 65535, IBS, SG ;
+  QuiescentCurrentMinimal: 8, 255, IBS, SG ;
+  QuiescentCurrentAverage: 8, 255, IBS, SG ;
+  LastMeasuredOCV: 16, 65535, IBS, SG ;
+  AhChargedLifetime: 16, 65535, IBS, SG ;
+  AhDischargedLifetime: 16, 65535, IBS, SG ;
+  TimeInService: 16, 65535, IBS, SG ;
+  CounterEOD: 4, 15, IBS, SG ;
+  CounterIcing: 4, 15, IBS, SG ;
+  WakeupByCurrent: 1, 0, IBS, SG ;
+  WakeupByChargeCurrent: 1, 0, IBS, SG ;
+  WakeupByCharge: 1, 0, IBS, SG ;
+  WakeupBySleepmode: 1, 0, IBS, SG ;
+  WakeupByBatteryVoltage: 1, 0, IBS, SG ;
+  WakeupByEndOfDischarge: 1, 0, IBS, SG ;
+  Batt_CNominal_coded: 8, 255, IBS, SG ;
+  Batt_U0Min_coded: 8, 255, IBS, SG ;
+  Batt_U0Max_coded: 8, 255, IBS, SG ;
+  Batt_CCANominal_coded: 8, 255, IBS, SG ;
+  Temperature_Upred_coded: 8, 255, IBS, SG ;
+  Batt_Technology_coded: 3, 7, IBS, SG ;
+}
+
+Diagnostic_signals {
+  MasterReqB0: 8, 0 ;
+  MasterReqB1: 8, 0 ;
+  MasterReqB2: 8, 0 ;
+  MasterReqB3: 8, 0 ;
+  MasterReqB4: 8, 0 ;
+  MasterReqB5: 8, 0 ;
+  MasterReqB6: 8, 0 ;
+  MasterReqB7: 8, 0 ;
+  SlaveRespB0: 8, 0 ;
+  SlaveRespB1: 8, 0 ;
+  SlaveRespB2: 8, 0 ;
+  SlaveRespB3: 8, 0 ;
+  SlaveRespB4: 8, 0 ;
+  SlaveRespB5: 8, 0 ;
+  SlaveRespB6: 8, 0 ;
+  SlaveRespB7: 8, 0 ;
+}
+
+
+Frames {
+  SG_BatteryConfig: 17, SG, 6 {
+    Batt_CNominal, 0 ;
+    Batt_U0Min, 8 ;
+    Batt_U0Max, 16 ;
+    Batt_CCANominal, 24 ;
+    Temperature_Upred, 32 ;
+    Batt_Technology, 40 ;
+    Batt_ChangeNotification, 43 ;
+  }
+  IBS_DataAcquisition: 33, IBS, 8 {
+    BatteryCurrent, 0 ;
+    BatteryVoltage, 16 ;
+    CentreTapVoltage, 32 ;
+    InChipTemperature, 48 ;
+    CurrentRangeMeas, 57 ;
+  }
+  IBS_SOC: 34, IBS, 6 {
+    SOC, 0 ;
+    SOCUpperTolerance, 16 ;
+    SOCLowerTolerance, 24 ;
+    BatteryTemperature, 32 ;
+    SOCRecalibrated, 40 ;
+    EndOfDischarge, 41 ;
+    FullCharge, 42 ;
+    ExtChargerDetected, 43 ;
+    RequestBatteryParameters, 45 ;
+    IBSErrorCommon, 46 ;
+    MANDATORY_RESPONSE_ERROR_SIGNAL, 47 ;
+  }
+  IBS_SOF: 35, IBS, 8 {
+    UPredNextCrank, 0 ;
+    UPredGivenTemperature, 8 ;
+    UBattMinLastCrank, 16 ;
+    IBattMinLastCrank, 32 ;
+    NewCrankDetected, 48 ;
+  }
+  IBS_SOH: 36, IBS, 6 {
+    SOH, 0 ;
+    CapacityLossTop, 8 ;
+    CapacityLossBottom, 16 ;
+    CentreTapDifference, 24 ;
+    Sulfation, 32 ;
+    BatteryDefect, 33 ;
+  }
+  IBS_BatteryResistance: 37, IBS, 8 {
+    RiImpedance, 0 ;
+    RiSigStrength, 8 ;
+    Ri0ImpedanceAvg, 16 ;
+    RiCrank, 24 ;
+    Ri0CrankAvg, 32 ;
+    Ri0Avg, 40 ;
+  }
+  IBS_DrivingCycle: 38, IBS, 8 {
+    AhChargedCycle, 0 ;
+    AhDischargedCycle, 16 ;
+    QuiescentCurrentMinimal, 32 ;
+    QuiescentCurrentAverage, 40 ;
+    LastMeasuredOCV, 48 ;
+  }
+  IBS_BatteryHistory: 39, IBS, 7 {
+    AhChargedLifetime, 0 ;
+    AhDischargedLifetime, 16 ;
+    TimeInService, 32 ;
+    CounterEOD, 48 ;
+    CounterIcing, 52 ;
+  }
+  IBS_Status: 40, IBS, 8 {
+    WakeupByCurrent, 0 ;
+    WakeupByChargeCurrent, 1 ;
+    WakeupByCharge, 2 ;
+    WakeupBySleepmode, 3 ;
+    WakeupByBatteryVoltage, 4 ;
+    WakeupByEndOfDischarge, 5 ;
+    Batt_CNominal_coded, 16 ;
+    Batt_U0Min_coded, 24 ;
+    Batt_U0Max_coded, 32 ;
+    Batt_CCANominal_coded, 40 ;
+    Temperature_Upred_coded, 48 ;
+    Batt_Technology_coded, 56 ;
+  }
+}
+
+
+
+Diagnostic_frames {
+  MasterReq: 0x3c {
+    MasterReqB0, 0 ;
+    MasterReqB1, 8 ;
+    MasterReqB2, 16 ;
+    MasterReqB3, 24 ;
+    MasterReqB4, 32 ;
+    MasterReqB5, 40 ;
+    MasterReqB6, 48 ;
+    MasterReqB7, 56 ;
+  }
+  SlaveResp: 0x3d {
+    SlaveRespB0, 0 ;
+    SlaveRespB1, 8 ;
+    SlaveRespB2, 16 ;
+    SlaveRespB3, 24 ;
+    SlaveRespB4, 32 ;
+    SlaveRespB5, 40 ;
+    SlaveRespB6, 48 ;
+    SlaveRespB7, 56 ;
+  }
+}
+
+Node_attributes {
+  IBS{
+    LIN_protocol = "2.0" ;
+    configured_NAD = 0x1 ;
+    product_id = 0x36, 0xF10B, 255 ;
+    response_error = MANDATORY_RESPONSE_ERROR_SIGNAL ;
+    P2_min = 50 ms ;
+    ST_min = 50 ms ;
+    configurable_frames {
+      SG_BatteryConfig = 0x1011 ;
+      IBS_DataAcquisition = 0x1021 ;
+      IBS_SOC = 0x1022 ;
+      IBS_SOF = 0x1023 ;
+      IBS_SOH = 0x1024 ;
+      IBS_BatteryResistance = 0x1025 ;
+      IBS_DrivingCycle = 0x1026 ;
+      IBS_BatteryHistory = 0x1027 ;
+      IBS_Status = 0x1028 ;
+    }
+  }
+}
+
+Schedule_tables {
+ IBS_LIN_Normal {
+    IBS_DataAcquisition delay 50 ms ;
+    IBS_SOC delay 50 ms ;
+    IBS_DataAcquisition delay 50 ms ;
+    IBS_SOF delay 50 ms ;
+    IBS_DataAcquisition delay 50 ms ;
+    IBS_SOH delay 50 ms ;
+    IBS_DataAcquisition delay 50 ms ;
+    IBS_BatteryResistance delay 50 ms ;
+    IBS_DataAcquisition delay 50 ms ;
+    IBS_DrivingCycle delay 50 ms ;
+    IBS_DataAcquisition delay 50 ms ;
+    IBS_BatteryHistory delay 50 ms ;
+    IBS_Status delay 50 ms ;
+    SG_BatteryConfig delay 50 ms ;
+  }
+ DiagnoseReq {
+    MasterReq delay 10 ms ;
+  }
+ DiagnoseResp {
+    SlaveResp delay 10 ms ;
+  }
+ IBS_LIN_Standard {
+    IBS_DataAcquisition delay 20 ms ;
+    IBS_SOC delay 20 ms ;
+    IBS_SOF delay 20 ms ;
+    IBS_SOH delay 20 ms ;
+    IBS_BatteryResistance delay 20 ms ;
+    IBS_DrivingCycle delay 20 ms ;
+    IBS_BatteryHistory delay 20 ms ;
+    IBS_Status delay 40 ms ;
+  }
+ IBS_LIN2_Standard {
+    SG_BatteryConfig delay 20 ms ;
+    IBS_DataAcquisition delay 20 ms ;
+    IBS_SOC delay 20 ms ;
+    IBS_SOF delay 20 ms ;
+    IBS_SOH delay 20 ms ;
+    IBS_BatteryResistance delay 20 ms ;
+    IBS_DrivingCycle delay 20 ms ;
+    IBS_BatteryHistory delay 20 ms ;
+    IBS_Status delay 40 ms ;
+  }
+}
+
+
+Signal_encoding_types {
+  Enc_AhChargedCycle {
+    physical_value, 0, 65534, 0.01, 0, "Ah" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_AhChargedLifetime {
+    physical_value, 0, 65534, 1, 0, "Ah" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_AhDischargedCycle {
+    physical_value, 0, 65534, 0.01, 0, "Ah" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_AhDischargedLifetime {
+    physical_value, 0, 65534, 1, 0, "Ah" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_Batt_CCANominal {
+    physical_value, 0, 254, 5, 200, "Ampere" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_Batt_CNominal {
+    physical_value, 0, 254, 1, 0, "Ah" ;
+    logical_value, 0, "unknown" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_Batt_ChangeNotification {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "battery was changed" ;
+  }
+  Enc_Batt_Technology {
+    logical_value, 0, "flooded" ;
+    logical_value, 1, "AGM" ;
+    logical_value, 2, "improved flooded" ;
+    logical_value, 3, "reserved" ;
+    logical_value, 4, "reserved" ;
+    logical_value, 5, "reserved" ;
+    logical_value, 6, "reserved" ;
+    logical_value, 7, "LIN_INIT" ;
+  }
+  Enc_Batt_U0Max {
+    physical_value, 0, 254, 0.005, 12.26, "Volt" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_Batt_U0Min {
+    physical_value, 0, 254, 0.005, 10.96, "Volt" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_BatteryCurrent {
+    physical_value, 1, 66, 10, -1230, "Ampere" ;
+    physical_value, 67, 4765, 0.1, -576.6, "Ampere" ;
+    physical_value, 4766, 12765, 0.01, -147.66, "Ampere" ;
+    physical_value, 12766, 52765, 0.001, -32.766, "Ampere" ;
+    physical_value, 52766, 60765, 0.01, -507.66, "Ampere" ;
+    physical_value, 60766, 65465, 0.1, -5976.6, "Ampere" ;
+    physical_value, 65466, 65532, 10, -654090, "Ampere" ;
+    logical_value, 0, "IBatt_lowerlimit" ;
+    logical_value, 65533, "IBatt_upperlimit" ;
+    logical_value, 65534, "BatteryCurrent_Error" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_BatteryDefect {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "Battery Defect detected" ;
+  }
+  Enc_BatteryTemperature {
+    physical_value, 0, 254, 1, -40, "°C" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_BatteryVoltage {
+    physical_value, 0, 32000, 0.001, 0, "Volt" ;
+    physical_value, 32001, 65533, 1, 0, "invalid" ;
+    logical_value, 65534, "BatteryVoltage_Error" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_CapacityLossBottom {
+    physical_value, 0, 200, 0.5, 0, "%" ;
+    physical_value, 201, 254, 1, 0, "invalid" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_CapacityLossTop {
+    physical_value, 0, 200, 0.5, 0, "%" ;
+    physical_value, 201, 254, 1, 0, "invalid" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_CentreTapDifference {
+    physical_value, 0, 254, 1, -127, "[%]" ;
+    logical_value, 255, "INVALID" ;
+  }
+  Enc_CounterEOD {
+    physical_value, 0, 14, 1, 0 ;
+    logical_value, 15, "LIN_INIT" ;
+  }
+  Enc_CounterIcing {
+    physical_value, 0, 14, 1, 0 ;
+    logical_value, 15, "LIN_INIT" ;
+  }
+  Enc_CurrentRangeMeas {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "Current range I1" ;
+    logical_value, 2, "Current range I2" ;
+    logical_value, 3, "Current range I3" ;
+  }
+  Enc_EndOfDischarge {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "End of Discharge reached" ;
+  }
+  Enc_ExtChargerDetected {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "External Charger at battery terminals" ;
+  }
+  Enc_FullCharge {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "Fullcharge reached" ;
+  }
+  Enc_IBSErrorCommon {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "Internal IBS error present" ;
+  }
+  Enc_IBattMinLastCrank {
+    physical_value, 0, 65534, 0.04, -2000, "Ampere" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_InChipTemperature {
+    physical_value, 0, 510, 0.5, -40, "�C" ;
+    logical_value, 511, "LIN_INIT" ;
+  }
+  Enc_LastMeasuredOCV {
+    physical_value, 0, 65534, 0.001, 0, "Volt" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_MANDATORY_RESPONSE_ERROR_SIGNAL {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "LIN response error" ;
+  }
+  Enc_NewCrankDetected {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "New Engine crank detected" ;
+  }
+  Enc_QuiescentCurrentAverage {
+    physical_value, 0, 250, 0.002, -0.5, "Ampere" ;
+    logical_value, 253, "smaller -0,5 A" ;
+    logical_value, 254, "greater  0,0 A" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_QuiescentCurrentMinimal {
+    physical_value, 0, 250, 0.002, -0.5, "Ampere" ;
+    logical_value, 253, "smaller -0,5 A" ;
+    logical_value, 254, "greater  0,0 A" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_RequestBatteryParameters {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "IBS requests battery parameters" ;
+  }
+  Enc_Ri0Avg {
+    physical_value, 0, 254, 0.1, 0, "mohm" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_Ri0CrankAvg {
+    physical_value, 0, 254, 0.1, 0, "mohm" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_Ri0ImpedanceAvg {
+    physical_value, 0, 254, 0.1, 0, "mohm" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_RiCrank {
+    physical_value, 0, 254, 0.1, 0, "mohm" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_RiImpedance {
+    physical_value, 0, 254, 0.1, 0, "mohm" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_RiSigStrength {
+    physical_value, 0, 254, 1, 0, "SigStrength" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_SOC {
+    physical_value, 0, 1500, 0.1, 0, "%" ;
+    physical_value, 1501, 65534, 1, 0, "SOC_Error" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_SOCLowerTolerance {
+    physical_value, 0, 254, 1, 0, "%" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_SOCRecalibrated {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "SOC Recalibrated" ;
+  }
+  Enc_SOCUpperTolerance {
+    physical_value, 0, 254, 1, 0, "%" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_SOH {
+    physical_value, 0, 200, 0.5, 0, "%" ;
+    physical_value, 201, 254, 1, 0, "invalid" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_Sulfation {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "Battery sulfation detected" ;
+  }
+  Enc_Temperature_Upred {
+    physical_value, 0, 160, 1, -40, "�C" ;
+    physical_value, 161, 254, 1, 0, "invalid" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_TimeInService {
+    physical_value, 0, 65534, 1, 0, "days" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_UBattMinLastCrank {
+    physical_value, 0, 65534, 0.001, 0, "Volt" ;
+    logical_value, 65535, "LIN_INIT" ;
+  }
+  Enc_UPredGivenTemperature {
+    physical_value, 0, 254, 0.1, 0, "Volt" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_UPredNextCrank {
+    physical_value, 0, 254, 0.1, 0, "Volt" ;
+    logical_value, 255, "LIN_INIT" ;
+  }
+  Enc_WakeupByBatteryVoltage {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "IBS WakeupByBatteryVoltage" ;
+  }
+  Enc_WakeupByCharge {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "IBS WakeupByCharge" ;
+  }
+  Enc_WakeupByChargeCurrent {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "IBS WakeupByChargeCurrent" ;
+  }
+  Enc_WakeupByCurrent {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "IBS WakeupByCurrent" ;
+  }
+  Enc_WakeupByEndOfDischarge {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "IBS WakeupByEndOfDischarge" ;
+  }
+  Enc_WakeupBySleepmode {
+    logical_value, 0, "LIN_INIT" ;
+    logical_value, 1, "IBS WakeupBySleepmode" ;
+  }
+}
+
+Signal_representation {
+  Enc_AhChargedCycle: AhChargedCycle ;
+  Enc_AhChargedLifetime: AhChargedLifetime ;
+  Enc_AhDischargedCycle: AhDischargedCycle ;
+  Enc_AhDischargedLifetime: AhDischargedLifetime ;
+  Enc_Batt_CCANominal: Batt_CCANominal, Batt_CCANominal_coded ;
+  Enc_Batt_CNominal: Batt_CNominal, Batt_CNominal_coded ;
+  Enc_Batt_ChangeNotification: Batt_ChangeNotification ;
+  Enc_Batt_Technology: Batt_Technology, Batt_Technology_coded ;
+  Enc_Batt_U0Max: Batt_U0Max, Batt_U0Max_coded ;
+  Enc_Batt_U0Min: Batt_U0Min, Batt_U0Min_coded ;
+  Enc_BatteryCurrent: BatteryCurrent ;
+  Enc_BatteryDefect: BatteryDefect ;
+  Enc_BatteryTemperature: BatteryTemperature ;
+  Enc_BatteryVoltage: BatteryVoltage, CentreTapVoltage ;
+  Enc_CapacityLossBottom: CapacityLossBottom ;
+  Enc_CapacityLossTop: CapacityLossTop ;
+  Enc_CentreTapDifference: CentreTapDifference ;
+  Enc_CounterEOD: CounterEOD ;
+  Enc_CounterIcing: CounterIcing ;
+  Enc_CurrentRangeMeas: CurrentRangeMeas ;
+  Enc_EndOfDischarge: EndOfDischarge ;
+  Enc_ExtChargerDetected: ExtChargerDetected ;
+  Enc_FullCharge: FullCharge ;
+  Enc_IBSErrorCommon: IBSErrorCommon ;
+  Enc_IBattMinLastCrank: IBattMinLastCrank ;
+  Enc_InChipTemperature: InChipTemperature ;
+  Enc_LastMeasuredOCV: LastMeasuredOCV ;
+  Enc_MANDATORY_RESPONSE_ERROR_SIGNAL: MANDATORY_RESPONSE_ERROR_SIGNAL ;
+  Enc_NewCrankDetected: NewCrankDetected ;
+  Enc_QuiescentCurrentAverage: QuiescentCurrentAverage ;
+  Enc_QuiescentCurrentMinimal: QuiescentCurrentMinimal ;
+  Enc_RequestBatteryParameters: RequestBatteryParameters ;
+  Enc_Ri0Avg: Ri0Avg ;
+  Enc_Ri0CrankAvg: Ri0CrankAvg ;
+  Enc_Ri0ImpedanceAvg: Ri0ImpedanceAvg ;
+  Enc_RiCrank: RiCrank ;
+  Enc_RiImpedance: RiImpedance ;
+  Enc_RiSigStrength: RiSigStrength ;
+  Enc_SOC: SOC ;
+  Enc_SOCLowerTolerance: SOCLowerTolerance ;
+  Enc_SOCRecalibrated: SOCRecalibrated ;
+  Enc_SOCUpperTolerance: SOCUpperTolerance ;
+  Enc_SOH: SOH ;
+  Enc_Sulfation: Sulfation ;
+  Enc_Temperature_Upred: Temperature_Upred, Temperature_Upred_coded ;
+  Enc_TimeInService: TimeInService ;
+  Enc_UBattMinLastCrank: UBattMinLastCrank ;
+  Enc_UPredGivenTemperature: UPredGivenTemperature ;
+  Enc_UPredNextCrank: UPredNextCrank ;
+  Enc_WakeupByBatteryVoltage: WakeupByBatteryVoltage ;
+  Enc_WakeupByCharge: WakeupByCharge ;
+  Enc_WakeupByChargeCurrent: WakeupByChargeCurrent ;
+  Enc_WakeupByCurrent: WakeupByCurrent ;
+  Enc_WakeupByEndOfDischarge: WakeupByEndOfDischarge ;
+  Enc_WakeupBySleepmode: WakeupBySleepmode ;
+}

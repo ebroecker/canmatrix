@@ -1,0 +1,67 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: New_ECU 
+
+
+BO_ 1 New_Frame: 8 Vector__XXX
+ SG_ New_Frame_NewPDU_NewSignal : 0|8@0+ (1,0) [0|255] "" New_ECU
+ SG_ New_Frame_NewPDU_NewSignal_1 : 1|4@0+ (1,0) [0|15] "" New_ECU
+ SG_ New_Frame_NewPDU_NewSignal_2 : 16|16@1+ (1,0) [0|65535] "" New_ECU
+ SG_ New_Frame_NewPDU_NewSignal_3 : 32|12@0+ (1,0) [0|4095] "" New_ECU
+ SG_ New_Frame_NewPDU_NewSignal_4 : 56|2@0+ (1,0) [0|3] "" New_ECU
+ SG_ New_Frame_NewPDU_NewSignal_5 : 2|1@0+ (1,0) [0|1] "" New_ECU
+
+
+
+
+
+BA_DEF_ BO_ "FrameTriggeringName" STRING;
+BA_DEF_ BO_ "GenMsgDelayTime" INT 0 65535;
+BA_DEF_ BO_ "GenMsgNrOfRepetitions" INT 0 65535;
+BA_DEF_ BO_ "GenMsgSendType" ENUM  "cyclicX","spontanX","cyclicIfActiveX","spontanWithDelay","cyclicAndSpontanX","cyclicAndSpontanWithDelay","spontanWithRepitition","cyclicIfActiveAndSpontanWD","cyclicIfActiveFast","cyclicWithRepeatOnDemand","none";
+BA_DEF_ BO_ "GenMsgStartDelayTime" INT 0 65535;
+BA_DEF_ BO_ "GenMsgStartValue" STRING;
+BA_DEF_ BO_ "PduName" STRING;
+BA_DEF_ BO_ "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_ "CompuMethodName" STRING;
+BA_DEF_ SG_ "ISignalName" STRING;
+BA_DEF_ SG_ "LongName" STRING;
+BA_DEF_ SG_ "SysSignalName" STRING;
+BA_DEF_ BU_ "NWM-Knoten" ENUM  "nein","ja";
+BA_DEF_ BU_ "NWM-Stationsadresse" HEX 0 63;
+BA_DEF_  "BusType" STRING;
+BA_ "NWM-Knoten" BU_ New_ECU 0;
+BA_ "NWM-Stationsadresse" BU_ New_ECU 0;
+
+BA_ "BusType"   "CAN FD";
+
+BA_ "FrameTriggeringName" BO_ 1 "NewFrameTriggering_da879414224fd9a2";
+BA_ "GenMsgSendType" BO_ 1 1;
+BA_ "GenMsgStartValue" BO_ 1 "0000000000000000";
+BA_ "PduName" BO_ 1 "New_Frame_NewPDU";
+BA_ "VFrameFormat" BO_ 1 14;
+
+BA_ "CompuMethodName" SG_ 1 New_Frame_NewPDU_NewSignal "New_Frame_NewPDU_NewSignal_Encoding";
+BA_ "ISignalName" SG_ 1 New_Frame_NewPDU_NewSignal "New_Frame_NewPDU_NewSignal";
+BA_ "SysSignalName" SG_ 1 New_Frame_NewPDU_NewSignal "New_Frame_NewPDU_NewSignal_d3ad4ded3d1f5a52";
+BA_ "CompuMethodName" SG_ 1 New_Frame_NewPDU_NewSignal_1 "New_Frame_NewPDU_NewSignal_1_Encoding";
+BA_ "ISignalName" SG_ 1 New_Frame_NewPDU_NewSignal_1 "New_Frame_NewPDU_NewSignal_1";
+BA_ "SysSignalName" SG_ 1 New_Frame_NewPDU_NewSignal_1 "New_Frame_NewPDU_NewSignal_1_97dba33bf5006571";
+BA_ "CompuMethodName" SG_ 1 New_Frame_NewPDU_NewSignal_2 "New_Frame_NewPDU_NewSignal_2_Encoding";
+BA_ "ISignalName" SG_ 1 New_Frame_NewPDU_NewSignal_2 "New_Frame_NewPDU_NewSignal_2";
+BA_ "SysSignalName" SG_ 1 New_Frame_NewPDU_NewSignal_2 "New_Frame_NewPDU_NewSignal_2_c4d5cde179c23521";
+BA_ "CompuMethodName" SG_ 1 New_Frame_NewPDU_NewSignal_3 "New_Frame_NewPDU_NewSignal_3_Encoding";
+BA_ "ISignalName" SG_ 1 New_Frame_NewPDU_NewSignal_3 "New_Frame_NewPDU_NewSignal_3";
+BA_ "SysSignalName" SG_ 1 New_Frame_NewPDU_NewSignal_3 "New_Frame_NewPDU_NewSignal_3_545262b7a6cd1260";
+BA_ "CompuMethodName" SG_ 1 New_Frame_NewPDU_NewSignal_4 "New_Frame_NewPDU_NewSignal_4_Encoding";
+BA_ "ISignalName" SG_ 1 New_Frame_NewPDU_NewSignal_4 "New_Frame_NewPDU_NewSignal_4";
+BA_ "SysSignalName" SG_ 1 New_Frame_NewPDU_NewSignal_4 "New_Frame_NewPDU_NewSignal_4_7c569e4203cfd6a3";
+BA_ "CompuMethodName" SG_ 1 New_Frame_NewPDU_NewSignal_5 "New_Frame_NewPDU_NewSignal_5_Encoding";
+BA_ "ISignalName" SG_ 1 New_Frame_NewPDU_NewSignal_5 "New_Frame_NewPDU_NewSignal_5";
+BA_ "SysSignalName" SG_ 1 New_Frame_NewPDU_NewSignal_5 "New_Frame_NewPDU_NewSignal_5_0fa1a7a828ef955d";
+

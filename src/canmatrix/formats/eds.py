@@ -39,8 +39,11 @@ def get_signals(parent_object, signal_receiver):
     for sub in range(1, len(parent_object)):
         name = parent_object[sub].name
         size = datatype_mapping[parent_object[sub].data_type][1]
+        factor = parent_object[sub].factor
         unsigned = "UNSIGNED" in datatype_mapping[parent_object[sub].data_type][0]
-        signal = canmatrix.Signal(name = name, receivers=[signal_receiver], size=size, start_bit = position, is_signed = not unsigned)
+        signal = canmatrix.Signal(name = name, receivers=[signal_receiver], size=size, start_bit = position, factor=factor, is_signed = not unsigned)
+        if parent_object[sub].min is not None:
+            signal.offset = parent_object[sub].min
         position += size
         signals.append(signal)
     return signals
@@ -151,7 +154,6 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             frame = canmatrix.canmatrix.Frame(name=pdo_name, transmitters=[node_name])
             db.add_frame(frame)
             frame_id = od[index].canid
-            print(frame_id)
             frame.arbitration_id = canmatrix.ArbitrationId(id=frame_id)
             frame.size = 8
             signals = get_signals(od[index], plc_name)
