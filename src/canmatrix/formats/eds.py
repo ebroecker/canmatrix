@@ -142,7 +142,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     for index in range(0x1800, 0x1808):
         if index in od:
             # store canid in object...
-            od[index+0x200].canid = od[index][1].default - 0x40000000
+            od[index+0x200].canid = od[index][1].default & 0x7FF
 
     #TX
     for index in range(0x1A00, 0x1A08):   
