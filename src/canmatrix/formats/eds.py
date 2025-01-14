@@ -52,36 +52,37 @@ def get_signals(parent_object, signal_receiver):
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     eds_import_encoding = options.get("edsImportEncoding", 'iso-8859-1')
     node_id = options.get("eds_node_id", 1)
+    generic = options.get("generic", False)
     fp = codecs.getreader(eds_import_encoding)(f)
     od = canopen.objectdictionary.eds.import_eds(fp, node_id)
     db = canmatrix.CanMatrix()
 
     node_name = od.device_information.product_name
     plc_name = "PLC"
+    if generic is True:
+        nm_out = canmatrix.canmatrix.Frame(name="NMT_Out_Request", size=2, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0), transmitters=[plc_name])
+        sig_cmd = canmatrix.canmatrix.Signal(name="nmt_CMD", size=8, start_bit = 0, receivers=[node_name])
+        for val, val_name in cmd_values.items():
+            sig_cmd.add_values(val, val_name)
+        nm_out.add_signal(sig_cmd)
+        nm_out.add_signal(canmatrix.canmatrix.Signal(name="Node_ID", size=8, start_bit = 8, receivers=[node_name]))
+        db.add_frame(nm_out)
 
-    nm_out = canmatrix.canmatrix.Frame(name="NMT_Out_Request", size=2, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0), transmitters=[plc_name])
-    sig_cmd = canmatrix.canmatrix.Signal(name="nmt_CMD", size=8, start_bit = 0, receivers=[node_name])
-    for val, val_name in cmd_values.items():
-        sig_cmd.add_values(val, val_name)
-    nm_out.add_signal(sig_cmd)
-    nm_out.add_signal(canmatrix.canmatrix.Signal(name="Node_ID", size=8, start_bit = 8, receivers=[node_name]))
-    db.add_frame(nm_out)
+        nm_responde = canmatrix.canmatrix.Frame(name="NMT_Response_Frame_In", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x700+node_id), transmitters=[node_name])
+        response_sig1 = canmatrix.canmatrix.Signal(name="NMT_Response_1", size=32, start_bit = 0, receivers=[plc_name])
+        nm_responde.add_signal(response_sig1)
+        response_sig2 = canmatrix.canmatrix.Signal(name="NMT_Response_1", size=32, start_bit = 32, receivers=[plc_name])
+        nm_responde.add_signal(response_sig2)
+        db.add_frame(nm_responde)
 
-    nm_responde = canmatrix.canmatrix.Frame(name="NMT_Response_Frame_In", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x700+node_id), transmitters=[node_name])
-    response_sig1 = canmatrix.canmatrix.Signal(name="NMT_Response_1", size=32, start_bit = 0, receivers=[plc_name])
-    nm_responde.add_signal(response_sig1)
-    response_sig2 = canmatrix.canmatrix.Signal(name="NMT_Response_1", size=32, start_bit = 32, receivers=[plc_name])
-    nm_responde.add_signal(response_sig2)
-    db.add_frame(nm_responde)
+        sync = canmatrix.canmatrix.Frame(name="SYNC", size=0, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x80), transmitters=[plc_name])
+        db.add_frame(sync)
 
-    sync = canmatrix.canmatrix.Frame(name="SYNC", size=0, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x80), transmitters=[plc_name])
-    db.add_frame(sync)
-
-    emcy = canmatrix.canmatrix.Frame(name="EMCY", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x80+node_id), transmitters=[node_name])
-    emcy.add_signal(canmatrix.canmatrix.Signal(name="EMCY_Error_Code", size=16, start_bit=0, receivers=[plc_name]))
-    emcy.add_signal(canmatrix.canmatrix.Signal(name="E_Reg", size=8, start_bit=16, receivers=[plc_name]))
-    emcy.add_signal(canmatrix.canmatrix.Signal(name="E_Number", size=8, start_bit=24, receivers=[plc_name]))
-    db.add_frame(emcy)
+        emcy = canmatrix.canmatrix.Frame(name="EMCY", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x80+node_id), transmitters=[node_name])
+        emcy.add_signal(canmatrix.canmatrix.Signal(name="EMCY_Error_Code", size=16, start_bit=0, receivers=[plc_name]))
+        emcy.add_signal(canmatrix.canmatrix.Signal(name="E_Reg", size=8, start_bit=16, receivers=[plc_name]))
+        emcy.add_signal(canmatrix.canmatrix.Signal(name="E_Number", size=8, start_bit=24, receivers=[plc_name]))
+        db.add_frame(emcy)
 
     sdo_down = canmatrix.canmatrix.Frame(name="SDO_download", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x600+node_id), transmitters=[node_name])
     sig_cmd = canmatrix.canmatrix.Signal(name="sdo_down_CMD", size=8, start_bit=0, receivers=[plc_name])
