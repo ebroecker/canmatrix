@@ -461,7 +461,7 @@ def dump(in_db, f, **options):
         if frame.is_complex_multiplexed:
             for signal in frame.signals:
                 if signal.muxer_for_signal is not None:
-                    f.write(("SG_MUL_VAL_ %d %s %s " % (frame.arbitration_id.to_compound_integer(), signal.name, signal.muxer_for_signal)).encode(dbc_export_encoding, ignore_encoding_errors))
+                    f.write(("SG_MUL_VAL_ %d %s %s " % (frame.arbitration_id.to_compound_integer(), output_names[frame][signal], signal.muxer_for_signal)).encode(dbc_export_encoding, ignore_encoding_errors))
                     f.write((", ".join(["%d-%d" % (a, b) for a, b in signal.mux_val_grp])).encode(dbc_export_encoding, ignore_encoding_errors))
 
                     f.write(";\n".encode(dbc_export_encoding, ignore_encoding_errors))
