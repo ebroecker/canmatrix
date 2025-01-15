@@ -162,6 +162,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             new_sig.muxer_for_signal = "sdo_down_IDX"
             sdo_down.add_signal(new_sig)
             up_sig = copy.deepcopy(new_sig)
+            up_sig.muxer_for_signal = "sdo_up_IDX"
 
             up_sig.receivers = []
             sdo_up.add_signal(up_sig)
@@ -184,6 +185,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 new_sig.muxer_for_signal = "sdo_down_IDX"
                 sdo_down.add_signal(new_sig)
                 up_sig = copy.deepcopy(new_sig)
+                up_sig.muxer_for_signal = "sdo_up_IDX"
 
                 up_sig.receivers = []
                 sdo_up.add_signal(up_sig)
@@ -211,6 +213,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 sdo_down.add_signal(new_sig)
                 members.append(signal_name)
                 up_sig = copy.deepcopy(new_sig)
+                up_sig.muxer_for_signal = "sdo_up_IDX"
                 up_sig.receivers = []
                 sdo_up.add_signal(up_sig)
             if len(members) > 0:
