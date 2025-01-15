@@ -41,7 +41,10 @@ def get_signals(parent_object, signal_receiver):
         size = datatype_mapping[parent_object[sub].data_type][1]
         factor = parent_object[sub].factor
         unsigned = "UNSIGNED" in datatype_mapping[parent_object[sub].data_type][0]
-        signal = canmatrix.Signal(name = name, receivers=[signal_receiver], size=size, start_bit = position, factor=factor, is_signed = not unsigned)
+        signal = canmatrix.Signal(name = name, size=size, start_bit = position, factor=factor, is_signed = not unsigned)
+        signal.receivers = []
+        if len(signal_receiver) > 0:
+            signal.receivers.append(signal_receiver)
         if parent_object[sub].min is not None:
             signal.offset = parent_object[sub].min
         position += size
