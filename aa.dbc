@@ -1,0 +1,84 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_: PLC ZC_8TC_HEARTBEAT_VERSION 
+
+
+BO_ 0 NMT_Out_Request: 2 PLC
+ SG_ nmt_CMD : 0|8@1- (1,0) [-128|127] "" ZC_8TC_HEARTBEAT_VERSION
+ SG_ Node_ID : 8|8@1- (1,0) [-128|127] "" ZC_8TC_HEARTBEAT_VERSION
+
+BO_ 1793 NMT_Response_Frame_In: 8 ZC_8TC_HEARTBEAT_VERSION
+ SG_ NMT_Response_10 : 0|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ NMT_Response_11 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+
+BO_ 128 SYNC: 0 PLC
+
+BO_ 129 EMCY: 8 ZC_8TC_HEARTBEAT_VERSION
+ SG_ EMCY_Error_Code : 0|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ E_Reg : 16|8@1- (1,0) [-128|127] "" PLC
+ SG_ E_Number : 24|8@1- (1,0) [-128|127] "" PLC
+
+BO_ 1537 SDO_download: 8 ZC_8TC_HEARTBEAT_VERSION
+ SG_ sdo_down_CMD M : 0|8@1- (1,0) [-128|127] "" PLC
+ SG_ sdo_down_IDX : 8|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ sdo_down_SUBIDX : 24|8@1- (1,0) [-128|127] "" PLC
+ SG_ data8 m47 : 32|8@1- (1,0) [-128|127] "" PLC
+ SG_ data16 m43 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ data24 m39 : 32|24@1- (1,0) [-8388608|8388607] "" PLC
+ SG_ data320 m35 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ data321 m67 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+
+BO_ 1409 SDO_upload: 8 PLC
+ SG_ sdo_state M : 0|8@1- (1,0) [-128|127] "" ZC_8TC_HEARTBEAT_VERSION
+ SG_ sdo_uo_IDX : 8|16@1- (1,0) [-32768|32767] "" ZC_8TC_HEARTBEAT_VERSION
+ SG_ sdo_up_SUBIDX : 24|8@1- (1,0) [-128|127] "" ZC_8TC_HEARTBEAT_VERSION
+ SG_ error_code m128 : 32|32@1- (1,0) [-2147483648|2147483647] "" ZC_8TC_HEARTBEAT_VERSION
+ SG_ data8 m79 : 32|8@1- (1,0) [-128|127] "" PLC
+ SG_ data16 m75 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ data24 m71 : 32|24@1- (1,0) [-8388608|8388607] "" PLC
+
+BO_ 641 _2nd_Transmit_PDO_Mapping_Paramet: 8 ZC_8TC_HEARTBEAT_VERSION
+ SG_ _1st_object_to_be_mapped : 0|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _2nd_object_to_be_mapped : 32|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _3rd_object_to_be_mapped : 64|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _4th_object_to_be_mapped : 96|32@1+ (1,0) [0|4294967295] "" PLC
+
+BO_ 897 _3rd_Transmit_PDO_Mapping_Paramet: 8 ZC_8TC_HEARTBEAT_VERSION
+ SG_ _1st_object_to_be_mapped : 0|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _2st_object_to_be_mapped : 32|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _3st_object_to_be_mapped : 64|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _4st_object_to_be_mapped : 96|32@1+ (1,0) [0|4294967295] "" PLC
+
+BO_ 1153 _4th_Transmit_PDO_Mapping_Paramet: 8 ZC_8TC_HEARTBEAT_VERSION
+ SG_ _1st_object_to_be_mapped : 0|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _2nd_object_to_be_mapped : 32|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _3rd_object_to_be_mapped : 64|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _4th_object_to_be_mapped : 96|32@1+ (1,0) [0|4294967295] "" PLC
+
+BO_ 0 _5th_Transmit_PDO_Mapping_Paramet: 8 ZC_8TC_HEARTBEAT_VERSION
+ SG_ _1st_object_to_be_mapped : 0|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _2nd_object_to_be_mapped : 32|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _3rd_object_to_be_mapped : 64|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ _4th_object_to_be_mapped : 96|32@1+ (1,0) [0|4294967295] "" PLC
+
+
+
+
+
+BA_DEF_ BO_ "SystemMessageLongSymbol" STRING;
+
+
+BA_ "SystemMessageLongSymbol" BO_ 641 "2nd_Transmit_PDO_Mapping_Parameter";
+BA_ "SystemMessageLongSymbol" BO_ 897 "3rd_Transmit_PDO_Mapping_Parameter";
+BA_ "SystemMessageLongSymbol" BO_ 1153 "4th_Transmit_PDO_Mapping_Parameter";
+BA_ "SystemMessageLongSymbol" BO_ 0 "5th_Transmit_PDO_Mapping_Parameter";
+
+
+VAL_ 0 nmt_CMD 1 "switch to state \"Operational\"" 2 "switch to state \"Stop\"" 128 "switch to state \"Pre-Operational\"" 129 "Reset Node" 130 "Reset Communication";
+VAL_ 1537 sdo_down_CMD 35 "4_bytes" 39 "3_bytes" 43 "16_bytes" 47 "8_bytes" 64 "upload_request";
+VAL_ 1409 sdo_state 35 "4_bytes" 39 "3_bytes" 43 "16_bytes" 47 "8_bytes" 128 "upload_error";

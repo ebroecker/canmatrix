@@ -64,6 +64,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     fp = codecs.getreader(eds_import_encoding)(f)
     od = canopen.objectdictionary.eds.import_eds(fp, node_id)
     db = canmatrix.CanMatrix()
+    signal_group_counter = 1
 
     node_name = od.device_information.product_name
     plc_name = "PLC"
@@ -145,7 +146,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             subindex = 0
             combined_value = int(f"{subindex:02X}{obj.index:04X}", 16)
             signal_name = obj.name.replace(' ', '_').replace('-','_')
-            new_sig = canmatrix.canmatrix.Signal(name=signal_name, size=get_bit_length(obj.data_type), start_bit=32, receivers=[plc_name])
+            size = get_bit_length(obj.data_type)
+            if size == 0:
+                logger.info("Ignoring " + signal_name + " size 0")
+                continue
+            new_sig = canmatrix.canmatrix.Signal(name=signal_name, size=size, start_bit=32, receivers=[plc_name])
             datatype_name = get_data_type_name(obj.data_type)
             if "UNSIGNED" in datatype_name:
                 new_sig.is_signed = False
@@ -158,10 +163,16 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             up_sig.receivers = []
             sdo_up.add_signal(up_sig)
         elif isinstance(obj, canopen.objectdictionary.ODRecord):
+            members = []
             for subobj in obj.values():
                 combined_value = int(f"{subobj.subindex:02X}{obj.index:04X}", 16)
                 signal_name = subobj.name.replace(' ', '_').replace('-','_')
-                new_sig = canmatrix.canmatrix.Signal(name=signal_name, size=get_bit_length(subobj.data_type), start_bit=32, receivers=[plc_name])
+                size = get_bit_length(subobj.data_type)
+                if size == 0:
+                    logger.info("Ignoring " + signal_name + " size 0")
+                    continue
+
+                new_sig = canmatrix.canmatrix.Signal(name=signal_name, size=size, start_bit=32, receivers=[plc_name])
                 datatype_name = get_data_type_name(subobj.data_type)
                 if "UNSIGNED" in datatype_name:
                     new_sig.is_signed = False
@@ -173,12 +184,21 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
                 up_sig.receivers = []
                 sdo_up.add_signal(up_sig)
+            if len(members) > 0:
+                sdo_down.add_signal_group("SG_R_" + obj.name.replace(' ','_').replace('-','_'), signal_group_counter, members)
+                signal_group_counter += 1
+
         elif isinstance(obj, canopen.objectdictionary.ODArray):
+            members = []
             for subobj in obj.values():
                 combined_value = int(f"{subobj.subindex:02X}{obj.index:04X}", 16)
                 signal_name = subobj.name.replace(' ', '_').replace('-','_')
+                size = get_bit_length(subobj.data_type)
+                if size == 0:
+                    logger.info("Ignoring " + signal_name + " size 0")
+                    continue
 
-                new_sig = canmatrix.canmatrix.Signal(name=signal_name, size=get_bit_length(subobj.data_type), start_bit=32, receivers=[plc_name])
+                new_sig = canmatrix.canmatrix.Signal(name=signal_name, size=size, start_bit=32, receivers=[plc_name])
                 datatype_name = get_data_type_name(subobj.data_type)
                 if "UNSIGNED" in datatype_name:
                     new_sig.is_signed = False
@@ -186,10 +206,13 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 new_sig.mux_val_grp.append([ combined_value, combined_value])
                 new_sig.muxer_for_signal = "sdo_down_IDX"
                 sdo_down.add_signal(new_sig)
+                members.append(signal_name)
                 up_sig = copy.deepcopy(new_sig)
-
                 up_sig.receivers = []
                 sdo_up.add_signal(up_sig)
+            if len(members) > 0:
+                sdo_down.add_signal_group("SG_A_" + obj.name.replace(' ','_').replace('-','_'), signal_group_counter, members)
+                signal_group_counter += 1
 
 
 

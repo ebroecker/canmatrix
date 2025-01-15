@@ -1,0 +1,2631 @@
+VERSION "created by canmatrix"
+
+
+NS_ :
+
+BS_:
+
+BU_:  PLC 
+
+
+BO_ 1537 SDO_download: 8 
+ SG_ sdo_down_CMD M : 5|3@1+ (1,0) [0|7] "" PLC
+ SG_ sdo_down_IDX m2M : 8|24@1- (1,0) [-8388608|8388607] "" PLC
+ SG_ Device_Type m4096 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Error_Register m4097 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_Errors m4099 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Standard_Error_Field0 m69635 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Standard_Error_Field1 m135171 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Standard_Error_Field2 m200707 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Standard_Error_Field3 m266243 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Standard_Error_Field4 m331779 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ COB_ID_SYNC m4101 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Communication_Cycle_Period m4102 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Node_ID m4107 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries0 m4112 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Save_all_Parameters m69648 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Save_Communication_Parameters m135184 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Save_Application_Parameters m200720 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Save_Manufacturer_Defined_Parame m266256 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries1 m4113 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Restore_all_Default_Parameters m69649 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Restore_Communication_Default_Pa m135185 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Restore_Application_Default_Para m200721 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Restore_Manufacturer_Defined_Def m266257 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ COB_ID_EMCY m4116 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Inhibit_Time_Emergency m4117 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries2 m4118 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Consumer_Heartbeat_Time m69654 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Producer_Heartbeat_Time m4119 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries3 m4120 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Vendor_Id m69656 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Product_Code m135192 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Revision_number m200728 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Serial_number m266264 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries4 m4137 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Communication_Error m69673 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries5 m4608 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID_Client_to_Server0 m70144 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ COB_ID_Server_to_Client0 m135680 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries6 m4736 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID_Client_to_Server1 m70272 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ COB_ID_Server_to_Client1 m135808 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Node_ID_of_the_SDO_Server m201344 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries7 m5120 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID0 m70656 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Transmission_Type0 m136192 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Inhibit_Time0 m201728 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Compatibility_Entry0 m267264 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Event_Timer0 m332800 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries8 m5121 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID1 m70657 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Transmission_Type1 m136193 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Inhibit_Time1 m201729 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Compatibility_Entry1 m267265 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Event_Timer1 m332801 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries9 m5122 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID2 m70658 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Transmission_Type2 m136194 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Inhibit_Time2 m201730 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Compatibility_Entry2 m267266 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Event_Timer2 m332802 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries10 m5123 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID3 m70659 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Transmission_Type3 m136195 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Inhibit_Time3 m201731 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Compatibility_Entry3 m267267 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Event_Timer3 m332803 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries11 m5632 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PDO_Mapping_Entry0 m71168 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry1 m136704 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry2 m202240 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry3 m267776 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry4 m333312 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry5 m398848 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry6 m464384 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry7 m529920 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries12 m5633 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PDO_Mapping_Entry8 m71169 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry9 m136705 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry10 m202241 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry11 m267777 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry12 m333313 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry13 m398849 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry14 m464385 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry15 m529921 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries13 m5634 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PDO_Mapping_Entry16 m71170 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry17 m136706 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry18 m202242 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry19 m267778 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry20 m333314 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry21 m398850 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry22 m464386 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry23 m529922 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries14 m5635 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PDO_Mapping_Entry24 m71171 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry25 m136707 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry26 m202243 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry27 m267779 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry28 m333315 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry29 m398851 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry30 m464387 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry31 m529923 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries15 m6144 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID4 m71680 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Transmission_Type4 m137216 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Inhibit_Time4 m202752 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Compatibility_Entry4 m268288 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Event_Timer4 m333824 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ SYNC_start_value0 m399360 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries16 m6145 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID5 m71681 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Transmission_Type5 m137217 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Inhibit_Time5 m202753 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Compatibility_Entry5 m268289 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Event_Timer5 m333825 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ SYNC_start_value1 m399361 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries17 m6146 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID6 m71682 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Transmission_Type6 m137218 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Inhibit_Time6 m202754 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Compatibility_Entry6 m268290 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Event_Timer6 m333826 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ SYNC_start_value2 m399362 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries18 m6147 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ COB_ID7 m71683 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Transmission_Type7 m137219 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Inhibit_Time7 m202755 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Compatibility_Entry7 m268291 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Event_Timer7 m333827 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ SYNC_start_value3 m399363 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries19 m6656 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PDO_Mapping_Entry32 m72192 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry33 m137728 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry34 m203264 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry35 m268800 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry36 m334336 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry37 m399872 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry38 m465408 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry39 m530944 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries20 m6657 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PDO_Mapping_Entry40 m72193 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry41 m137729 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry42 m203265 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry43 m268801 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry44 m334337 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry45 m399873 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry46 m465409 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry47 m530945 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries21 m6658 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PDO_Mapping_Entry48 m72194 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry49 m137730 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry50 m203266 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry51 m268802 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry52 m334338 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry53 m399874 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry54 m465410 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry55 m530946 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries22 m6659 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PDO_Mapping_Entry56 m72195 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry57 m137731 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry58 m203267 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry59 m268803 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry60 m334339 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry61 m399875 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry62 m465411 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ PDO_Mapping_Entry63 m530947 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries23 m8016 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries24 m8017 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Program_Control_Status_1 m73553 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Program_Control_Status_2 m139089 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries25 m8192 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Password m73728 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Status0 m139264 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ New_Password m204800 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ CAN_Bitrate m8193 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ RS232_baudrate m8194 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ CPU_Load m8195 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries26 m8204 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Custom_Persistent_Memory_Unsigne0 m73740 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Custom_Persistent_Memory_Unsigne1 m139276 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Custom_Persistent_Memory_Signed_0 m204812 : 32|2@1- (1,0) [-2|1] "" PLC
+ SG_ Custom_Persistent_Memory_Signed_1 m270348 : 32|2@1- (1,0) [-2|1] "" PLC
+ SG_ Custom_Persistent_Memory_Unsigne2 m335884 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Custom_Persistent_Memory_Unsigne3 m401420 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Custom_Persistent_Memory_Signed_2 m466956 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Custom_Persistent_Memory_Signed_3 m532492 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Custom_Persistent_Memory_Unsigne4 m598028 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Custom_Persistent_Memory_Unsigne5 m663564 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Custom_Persistent_Memory_Signed_4 m729100 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Custom_Persistent_Memory_Signed_5 m794636 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Phase_A_current m8207 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Phase_B_current m8208 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Current_demand m8218 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries27 m8219 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Torque_regulator_requested m73755 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Torque_regulator_actual m139291 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Torque_regulator_out m204827 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Torque_regulator_error m270363 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Calculated_Fly_On_Torque_regulat0 m335899 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Calculated_Fly_On_Torque_regulat1 m401435 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Calculated_Fly_On_Torque_Integra m466971 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Calculated_Feed_FWD_Const m532507 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Calculated_Torque_Feed_FWD m598043 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries28 m8220 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Flux_regulator_requested m73756 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Flux_regulator_actual m139292 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Flux_regulator_out m204828 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Flux_regulator_error m270364 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Calculated_Flux_Feed_FWD m335900 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries29 m8221 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PMSM_Flux_Mode m73757 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ PMSM_Flux_Manual_Current m139293 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Flux_Actual_Current_mA m204829 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Flux_Actual_Current m270365 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Flux_I_Increment m335901 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Flux_pulse_mode_counter m401437 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Flux_pulse_mode_num_of_pulses m466973 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Flux_Off_At_Zero_Torque m532509 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Flux_Max_Weakening_Current m598045 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Motor_Induction m663581 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Field_Weakening_Point m729117 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Field_Weakening_Regulator_P_Gain m794653 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Field_Weakening_Regulator_I_Gain m860189 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Field_Weakening_Regulator_Reques m925725 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Field_Weakening_Regulator_Actual m991261 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Field_Weakening_Regulator_Out m1056797 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Field_Weakening_Regulator_Error m1122333 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Field_Weakening_Id_Limit m1187869 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Field_Weakening_Regulator_Enable m1253405 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Field_Weakening_Regulator_Flux_G0 m1318941 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Field_Weakening_Regulator_Flux_G1 m1384477 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Field_Weakening_Regulator_Flux_L0 m1450013 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Field_Weakening_Regulator_Flux_L1 m1515549 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ MTPA_Polynom_a2 m1581085 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ MTPA_Polynom_a1 m1646621 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ MTPA_Polynom_a0 m1712157 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries30 m8222 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ BMS_Battery_Voltage m73758 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ BMS_Min_Cell_Voltage m139294 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ BMS_Min_Cell_Voltage_Id m204830 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ BMS_Max_Cell_Voltage m270366 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ BMS_Max_Cell_Voltage_Id m335902 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ BMS_Battery_Current m401438 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ BMS_Battery_Pack_Min_Temperature m466974 : 32|2@1- (1,0) [-2|1] "" PLC
+ SG_ BMS_Battery_Pack_Max_Temperature m532510 : 32|2@1- (1,0) [-2|1] "" PLC
+ SG_ BMS_SOC m598046 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ BMS_State m663582 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ BMS_Recup_Actual_Allowed m729118 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ BMS_Discharge_Actual_Allowed m794654 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Electrical_angle m8223 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries31 m8224 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Average_consumption m73760 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Range m139296 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Safety_execute m8225 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries32 m8226 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Hall_sensor_bit_pattern m73762 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Hall_noise_counter m139298 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ DC_current m8227 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Electric_power m8228 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Motor_temperature m8229 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries33 m8230 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Controller_temperature m73766 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Capacitor_temperature m139302 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ IGBT_PH_1_temperature m204838 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ IGBT_PH_2_temperature m270374 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ IGBT_PH_3_temperature m335910 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ I2T m401446 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ IGBT_highest_die_temperature m466982 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ IGBT_die_LS_PH_1_temperature m532518 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ IGBT_die_HS_PH_1_temperature m598054 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ IGBT_die_LS_PH_2_temperature m663590 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ IGBT_die_HS_PH_2_temperature m729126 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ IGBT_die_LS_PH_3_temperature m794662 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ IGBT_die_HS_PH_3_temperature m860198 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ IGBT_total_loss m925734 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Warnings m8231 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Motor_current_limit m8232 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Logic_power_supply_voltage m8233 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Test_mode_command m8241 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries34 m8242 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Pulse_mode_counter m73778 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Pulse_mode_nuber_of_pulses m139314 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Motor_pole_pairs m8243 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Motor_Type m8244 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ FOC_Calculation_Delay_Enable m8249 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries35 m8256 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Feedback_type m73792 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Motor_phase_offset m139328 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Feedback_direction m204864 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Test_stepper_frequency m270400 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Hall_configuration m335936 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Feedback_resolution m401472 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Electrical_angle_filter m467008 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Motor_phase_offset_compensation m532544 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Test_stepper_enable m598080 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Auto_aligning_rotor_position_cur m663616 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ SinCos_zero_voltage_sin m729152 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ SinCos_zero_voltage_cos m794688 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Feedback_Slave_Mode m860224 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ El_Angle_Triger_Out m925760 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ El_Angle_Triger_Value m991296 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries36 m8265 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Rotor_Angle_Observer_Input m73801 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Rotor_Angle_Observer_Output m139337 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Rotor_Angle_Observer_Error m204873 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Maximum_controller_current m8272 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Secondary_current_protection m8273 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries37 m8274 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Maximum_velocity m73810 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Maximum_velocity_gain m139346 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ PMSM_Back_EMF_Ratio m204882 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Velocity_Filtering_Enable m270418 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries38 m8275 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Maximum_DC_current m73811 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Maximum_DC_current_gain m139347 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Overvoltage_limit m8276 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries39 m8277 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Undervoltage_limit m73813 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Undervoltage_gain m139349 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Undervoltage_min_voltage m204885 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries40 m8279 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Motor_temperature_sensor_type m73815 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Motor_maximum_temperature m139351 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Motor_maximum_temperature_gain m204887 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries41 m8283 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Stall_protection_time m73819 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Stall_protection_current m139355 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries42 m8288 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ OC_out_1_enable m73824 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ OC_out_2_enable m139360 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ OC_out_1_Value m204896 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ OC_out_2_Value m270432 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ OC_out_1_Value_2 m335968 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ OC_out_2_Value_2 m401504 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries43 m8289 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Brake_nominal_voltage m73825 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Brake_reduced_voltage m139361 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Brake_Time_To_Reduce_Voltage m204897 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries44 m8304 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Throttle_voltage m73840 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ AUX_Voltage m139376 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Brake_voltage m204912 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries45 m8306 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ AD_resolver_sin m73842 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ AD_resolver_cos m139378 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries46 m8307 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ AD_Sin_Cos_Sin m73843 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ AD_Sin_Cos_Cos m139379 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Digital_inputs m8310 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries47 m8320 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Command m73856 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Memory m139392 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Sampling_rate m204928 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Wrap_around m270464 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Trigger_level m336000 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Trigger_mode m401536 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Trigger_source m467072 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Pre_trigger_samples_requested m532608 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Pre_trigger_samples_recorded m598144 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Post_trigger_samples_recorded m663680 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Status1 m729216 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Record_number m794752 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Memory_capacity m925824 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Trigger_source_Index m991360 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Trigger_source_Subindex m1056896 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Configuration_Number m1122432 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Record_channel m1187968 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Record_step m1253504 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_configurations m1319040 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries48 m8321 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Channel_count m73857 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Selected_channel m139393 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Channel_index m204929 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Channel_subindex m270465 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Channel_configuration_status m336001 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries49 m8322 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ FOC_frequency m73858 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Speed_loop_frequency m139394 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries50 m8323 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Osci_test_signal_1 m73859 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Osci_test_signal_2 m139395 : 32|2@1- (1,0) [-2|1] "" PLC
+ SG_ Osci_test_signal_3 m204931 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Osci_test_signal_4 m270467 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Allow_PDO_COB_ID_change m8324 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Actual_FOC_Angle m8325 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Velocity_actual_value_averaged m8326 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Velocity_actual_value_filtered m8327 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Current_Flux_Actual_Value m8336 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries51 m8337 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Induction_Motor_Rotor_Time_Const m73873 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Induction_Motor_Rated_Velocity m139409 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Induction_Motor_Flux_Control_mod m204945 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Induction_Motor_V_to_Hz_ratio m270481 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Induction_Motor_Rated_Flux_Curre m336017 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Induction_control_parameter_flux0 m401553 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Induction_control_parameter_flux1 m467089 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_Entries0 m9472 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Gate_Driver_Error_Num_1 m75008 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Gate_Driver_Error_Num_2 m140544 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Gate_Driver_Error_Num_3 m206080 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Gate_Driver_Error_Num_4 m271616 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Gate_Driver_Error_Num_5 m337152 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Gate_Driver_Error_Num_6 m402688 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_Entries1 m9728 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Velocity_Min m75264 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Velocity_Ramp m140800 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_Entries2 m9729 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Position_Home m75265 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Position_Hysteresis m140801 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Position_Save_Home m206337 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Position_Factor_Numerator m271873 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_Entries3 m9730 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Hold_Current_Start m75266 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Hold_Current_Max m140802 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Hold_Current_Ramp m206338 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_Entries4 m9731 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ State m75267 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Reached_Home m140803 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Position_Value m206339 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Position_Error m271875 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Select_Application m12288 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries52 m12289 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Control_Mode m77825 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Status m143361 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Error_Code m208897 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Number_Of_Contolled_Drives m274433 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Drive1_NodeID m339969 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Drive2_NodeID m405505 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Drive3_NodeID m471041 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Drive4_NodeID m536577 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Drive1_Dirrection_Invert_E m602113 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Drive2_Dirrection_Invert_E m667649 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Drive3_Dirrection_Invert_E m733185 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Drive4_Dirrection_Invert_E m798721 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Disable_PWM_On_Stop_Enable m864257 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Disable_PWM_On_Stop_Delay m929793 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Disable_PMW_On_Stop_Veloci m995329 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Max_Fw_Velocity m1060865 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Max_Rw_Velocity m1126401 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries53 m12291 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Din1_Function m77827 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Din2_Function m143363 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Din3_Function m208899 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Din4_Function m274435 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Din5_Function m339971 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Din6_Function m405507 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Invert_Din_Polarity m471043 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Dout1_Function m536579 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Dout2_Function m602115 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Throttle_Type m667651 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Throttle_Positive_Min_Volt m733187 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Throttle_Positive_Max_Volt m798723 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Throttle_Negative_Min_Volt m864259 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Throttle_Negative_Max_Volt m929795 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Throttle_Min_Out_Value m995331 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Throttle_Max_Out_Value m1060867 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Throttle_Wire_Brake_Enable m1126403 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Throttle_Wire_Brake_Min_Vo m1191939 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Throttle_Wire_Brake_Max_Vo m1257475 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Throttle_Invert m1323011 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_PWM_Pulse_Width m1388547 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Servo_PWM_Valid_Data_Delay m1454083 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Pump_Control_Threshold_Tem m1519619 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries54 m12292 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Velocity_Feedback_Mode m77828 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Velocity_Feedback_Drive_Nu m143364 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Velocity_Regulator_P m208900 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Velocity_Regulator_I m274436 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Velocity_Regulator_Max_Dri m339972 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Velocity_Regulator_Max_Reg m405508 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries55 m12293 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Brake_Mode m77829 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Brake_Minimum_Velocity m143365 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Brake_Digital_Current m208901 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Brake_Linear_Current m274437 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Brake_Potentiometer_Minimu m339973 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Brake_Potentiometer_Maximu m405509 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Brake_Current m471045 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Regeneration_Active m536581 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Constant_Regeneration_Curr0 m602117 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Constant_Regeneration_Curr1 m667653 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Constant_Regeneration_Mini m733189 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Constant_Regeneration_Actu m798725 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Brake_And_Regeneration_Zer m864261 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries56 m12294 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Power_Mode_Enable m77830 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Power_Mode_Active m143366 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Power_Mode_Select_Voltage_0 m208902 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Power_Mode_Select_Voltage_1 m274438 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries57 m12295 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Power_Mode_Normal_Max_Thro m77831 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Power_Mode_Normal_Max_Driv m143367 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Normal_Max_Rege m208903 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Normal_Max_Batt m274439 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Normal_Max_Line m339975 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Normal_Max_Digi m405511 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Normal_Max_Velo m471047 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Normal_Max_Cons m536583 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries58 m12296 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Power_Mode_Eco_Max_Throttl m77832 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Power_Mode_Eco_Max_Drive_C m143368 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Eco_Max_Regener m208904 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Eco_Max_Battery m274440 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Eco_Max_Linear_ m339976 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Eco_Max_Digital m405512 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Eco_Max_Velocit m471048 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Eco_Max_Constan m536584 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries59 m12297 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Power_Mode_Sport_Max_Throt m77833 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Power_Mode_Sport_Max_Drive m143369 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Sport_Max_Regen m208905 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Sport_Max_Batte m274441 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Sport_Max_Linea m339977 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Sport_Max_Digit m405513 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Sport_Max_Veloc m471049 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ APP_1_Power_Mode_Sport_Max_Const m536585 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries60 m12298 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Maximum_DC_Current m77834 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries61 m12299 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Precharge_Enable m77835 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ APP_1_Precharge_Min_Voltage m143371 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ APP_1_Precharge_Max_Time m208907 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Number_of_entries62 m20480 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Test_CMD m86016 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Test_Status m151552 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Test_Result_1 m217088 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Test_Result_2 m282624 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Test_Result_3 m348160 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries63 m24574 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Control_board_version m90110 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Dummy_mapping_object m24575 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Abort_connection_option_code m24583 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Error_code m24639 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Controlword m24640 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Statusword m24641 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Quick_stop_option_code m24666 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Shutdown_option_code m24667 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Disable_operation_option_code m24668 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Fault_reaction_option_code m24670 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Modes_of_operation m24672 : 32|2@1- (1,0) [-2|1] "" PLC
+ SG_ Modes_of_operation_display m24673 : 32|2@1- (1,0) [-2|1] "" PLC
+ SG_ Position_actual_value_internal m24675 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Position_actual_value m24676 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Following_error_window m24677 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Position_window m24679 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Velocity_sensor_actual_value m24681 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Velocity_actual_value m24684 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Target_torque m24689 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Motor_rated_current m24693 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Motor_rated_torque m24694 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Torque_actual_value m24695 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Number_of_entries64 m24696 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Current_Torque_Actual_Value m90232 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Current_Torque_Actual_Value_mA m155768 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ DC_link_circuit_voltage m24697 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Target_position m24698 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Polarity m24702 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Position_factor_number_of_entrie m24723 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Position_factor_Numerator m90259 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Position_factor_Divisor m155795 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Velocity_encoder_factor_number_o m24724 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Velocity_encoder_factor_Numerato m90260 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Velocity_encoder_factor_Divisor m155796 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Number_of_entries65 m24822 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Current_control_torque_regulator0 m90358 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Current_control_torque_regulator1 m155894 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Current_control_flux_regulator_P m221430 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Current_control_flux_regulator_I m286966 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Current_control_regulator_ramp m352502 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Velocity_control_parameter_set_n m24825 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Velocity_control_regulator_P_Gai m90361 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Velocity_control_regulator_I_Gai m155897 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Position_control_parameter_set_n m24827 : 32|8@1+ (1,0) [-128|127] "" PLC
+ SG_ Position_Control_Regulator_P_Gai m90363 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Position_Control_Regulator_I_Gai m155899 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Position_Control_Regulator_D_Gai m221435 : 32|16@1- (1,0) [-32768|32767] "" PLC
+ SG_ Nominal_position m286971 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Low_Pass_Filter_Cut_Off_Frequenc m352507 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Position_Control_Regulator_Outpu m418043 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Position_Control_Regulator_B_Gai m483579 : 32|16@1+ (1,0) [-32768|32767] "" PLC
+ SG_ Target_velocity m24831 : 32|32@1- (1,0) [-2147483648|2147483647] "" PLC
+ SG_ Supported_drive_modes m25858 : 32|32@1+ (1,0) [-2147483648|2147483647] "" PLC
+
+BO_ 1409 SDO_upload: 8 PLC
+ SG_ sdo_up_CMD M : 5|3@1+ (1,0) [0|7] "" Vector__XXX
+ SG_ sdo_up_IDX m2M : 8|24@1- (1,0) [-8388608|8388607] "" Vector__XXX
+ SG_ Device_Type m4096 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Error_Register m4097 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_Errors m4099 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Standard_Error_Field0 m69635 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Standard_Error_Field1 m135171 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Standard_Error_Field2 m200707 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Standard_Error_Field3 m266243 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Standard_Error_Field4 m331779 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ COB_ID_SYNC m4101 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Communication_Cycle_Period m4102 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Node_ID m4107 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries0 m4112 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Save_all_Parameters m69648 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Save_Communication_Parameters m135184 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Save_Application_Parameters m200720 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Save_Manufacturer_Defined_Parame m266256 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries1 m4113 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Restore_all_Default_Parameters m69649 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Restore_Communication_Default_Pa m135185 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Restore_Application_Default_Para m200721 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Restore_Manufacturer_Defined_Def m266257 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ COB_ID_EMCY m4116 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Inhibit_Time_Emergency m4117 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries2 m4118 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Consumer_Heartbeat_Time m69654 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Producer_Heartbeat_Time m4119 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries3 m4120 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Vendor_Id m69656 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Product_Code m135192 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Revision_number m200728 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Serial_number m266264 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries4 m4137 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Communication_Error m69673 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries5 m4608 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID_Client_to_Server0 m70144 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ COB_ID_Server_to_Client0 m135680 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries6 m4736 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID_Client_to_Server1 m70272 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ COB_ID_Server_to_Client1 m135808 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Node_ID_of_the_SDO_Server m201344 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries7 m5120 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID0 m70656 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Transmission_Type0 m136192 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Inhibit_Time0 m201728 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Compatibility_Entry0 m267264 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Event_Timer0 m332800 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries8 m5121 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID1 m70657 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Transmission_Type1 m136193 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Inhibit_Time1 m201729 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Compatibility_Entry1 m267265 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Event_Timer1 m332801 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries9 m5122 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID2 m70658 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Transmission_Type2 m136194 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Inhibit_Time2 m201730 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Compatibility_Entry2 m267266 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Event_Timer2 m332802 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries10 m5123 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID3 m70659 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Transmission_Type3 m136195 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Inhibit_Time3 m201731 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Compatibility_Entry3 m267267 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Event_Timer3 m332803 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries11 m5632 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PDO_Mapping_Entry0 m71168 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry1 m136704 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry2 m202240 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry3 m267776 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry4 m333312 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry5 m398848 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry6 m464384 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry7 m529920 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries12 m5633 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PDO_Mapping_Entry8 m71169 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry9 m136705 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry10 m202241 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry11 m267777 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry12 m333313 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry13 m398849 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry14 m464385 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry15 m529921 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries13 m5634 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PDO_Mapping_Entry16 m71170 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry17 m136706 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry18 m202242 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry19 m267778 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry20 m333314 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry21 m398850 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry22 m464386 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry23 m529922 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries14 m5635 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PDO_Mapping_Entry24 m71171 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry25 m136707 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry26 m202243 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry27 m267779 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry28 m333315 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry29 m398851 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry30 m464387 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry31 m529923 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries15 m6144 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID4 m71680 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Transmission_Type4 m137216 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Inhibit_Time4 m202752 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Compatibility_Entry4 m268288 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Event_Timer4 m333824 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ SYNC_start_value0 m399360 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries16 m6145 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID5 m71681 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Transmission_Type5 m137217 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Inhibit_Time5 m202753 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Compatibility_Entry5 m268289 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Event_Timer5 m333825 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ SYNC_start_value1 m399361 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries17 m6146 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID6 m71682 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Transmission_Type6 m137218 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Inhibit_Time6 m202754 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Compatibility_Entry6 m268290 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Event_Timer6 m333826 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ SYNC_start_value2 m399362 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries18 m6147 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ COB_ID7 m71683 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Transmission_Type7 m137219 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Inhibit_Time7 m202755 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Compatibility_Entry7 m268291 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Event_Timer7 m333827 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ SYNC_start_value3 m399363 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries19 m6656 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PDO_Mapping_Entry32 m72192 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry33 m137728 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry34 m203264 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry35 m268800 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry36 m334336 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry37 m399872 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry38 m465408 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry39 m530944 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries20 m6657 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PDO_Mapping_Entry40 m72193 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry41 m137729 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry42 m203265 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry43 m268801 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry44 m334337 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry45 m399873 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry46 m465409 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry47 m530945 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries21 m6658 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PDO_Mapping_Entry48 m72194 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry49 m137730 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry50 m203266 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry51 m268802 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry52 m334338 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry53 m399874 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry54 m465410 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry55 m530946 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries22 m6659 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PDO_Mapping_Entry56 m72195 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry57 m137731 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry58 m203267 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry59 m268803 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry60 m334339 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry61 m399875 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry62 m465411 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ PDO_Mapping_Entry63 m530947 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries23 m8016 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries24 m8017 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Program_Control_Status_1 m73553 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Program_Control_Status_2 m139089 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries25 m8192 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Password m73728 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Status0 m139264 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ New_Password m204800 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ CAN_Bitrate m8193 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ RS232_baudrate m8194 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ CPU_Load m8195 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries26 m8204 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Unsigne0 m73740 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Unsigne1 m139276 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Signed_0 m204812 : 32|2@1- (1,0) [-2|1] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Signed_1 m270348 : 32|2@1- (1,0) [-2|1] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Unsigne2 m335884 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Unsigne3 m401420 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Signed_2 m466956 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Signed_3 m532492 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Unsigne4 m598028 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Unsigne5 m663564 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Signed_4 m729100 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Custom_Persistent_Memory_Signed_5 m794636 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Phase_A_current m8207 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Phase_B_current m8208 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Current_demand m8218 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries27 m8219 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Torque_regulator_requested m73755 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Torque_regulator_actual m139291 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Torque_regulator_out m204827 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Torque_regulator_error m270363 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Calculated_Fly_On_Torque_regulat0 m335899 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Calculated_Fly_On_Torque_regulat1 m401435 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Calculated_Fly_On_Torque_Integra m466971 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Calculated_Feed_FWD_Const m532507 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Calculated_Torque_Feed_FWD m598043 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries28 m8220 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Flux_regulator_requested m73756 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Flux_regulator_actual m139292 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Flux_regulator_out m204828 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Flux_regulator_error m270364 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Calculated_Flux_Feed_FWD m335900 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries29 m8221 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PMSM_Flux_Mode m73757 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ PMSM_Flux_Manual_Current m139293 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Flux_Actual_Current_mA m204829 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Flux_Actual_Current m270365 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Flux_I_Increment m335901 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Flux_pulse_mode_counter m401437 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Flux_pulse_mode_num_of_pulses m466973 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Flux_Off_At_Zero_Torque m532509 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Flux_Max_Weakening_Current m598045 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Motor_Induction m663581 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Field_Weakening_Point m729117 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_P_Gain m794653 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_I_Gain m860189 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_Reques m925725 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_Actual m991261 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_Out m1056797 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_Error m1122333 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Field_Weakening_Id_Limit m1187869 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_Enable m1253405 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_Flux_G0 m1318941 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_Flux_G1 m1384477 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_Flux_L0 m1450013 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Field_Weakening_Regulator_Flux_L1 m1515549 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ MTPA_Polynom_a2 m1581085 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ MTPA_Polynom_a1 m1646621 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ MTPA_Polynom_a0 m1712157 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries30 m8222 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ BMS_Battery_Voltage m73758 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ BMS_Min_Cell_Voltage m139294 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ BMS_Min_Cell_Voltage_Id m204830 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ BMS_Max_Cell_Voltage m270366 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ BMS_Max_Cell_Voltage_Id m335902 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ BMS_Battery_Current m401438 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ BMS_Battery_Pack_Min_Temperature m466974 : 32|2@1- (1,0) [-2|1] "" Vector__XXX
+ SG_ BMS_Battery_Pack_Max_Temperature m532510 : 32|2@1- (1,0) [-2|1] "" Vector__XXX
+ SG_ BMS_SOC m598046 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ BMS_State m663582 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ BMS_Recup_Actual_Allowed m729118 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ BMS_Discharge_Actual_Allowed m794654 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Electrical_angle m8223 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries31 m8224 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Average_consumption m73760 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Range m139296 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Safety_execute m8225 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries32 m8226 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Hall_sensor_bit_pattern m73762 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Hall_noise_counter m139298 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ DC_current m8227 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Electric_power m8228 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Motor_temperature m8229 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries33 m8230 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Controller_temperature m73766 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Capacitor_temperature m139302 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ IGBT_PH_1_temperature m204838 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ IGBT_PH_2_temperature m270374 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ IGBT_PH_3_temperature m335910 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ I2T m401446 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ IGBT_highest_die_temperature m466982 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ IGBT_die_LS_PH_1_temperature m532518 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ IGBT_die_HS_PH_1_temperature m598054 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ IGBT_die_LS_PH_2_temperature m663590 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ IGBT_die_HS_PH_2_temperature m729126 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ IGBT_die_LS_PH_3_temperature m794662 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ IGBT_die_HS_PH_3_temperature m860198 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ IGBT_total_loss m925734 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Warnings m8231 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Motor_current_limit m8232 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Logic_power_supply_voltage m8233 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Test_mode_command m8241 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries34 m8242 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Pulse_mode_counter m73778 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Pulse_mode_nuber_of_pulses m139314 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Motor_pole_pairs m8243 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Motor_Type m8244 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ FOC_Calculation_Delay_Enable m8249 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries35 m8256 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Feedback_type m73792 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Motor_phase_offset m139328 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Feedback_direction m204864 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Test_stepper_frequency m270400 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Hall_configuration m335936 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Feedback_resolution m401472 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Electrical_angle_filter m467008 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Motor_phase_offset_compensation m532544 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Test_stepper_enable m598080 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Auto_aligning_rotor_position_cur m663616 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ SinCos_zero_voltage_sin m729152 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ SinCos_zero_voltage_cos m794688 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Feedback_Slave_Mode m860224 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ El_Angle_Triger_Out m925760 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ El_Angle_Triger_Value m991296 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries36 m8265 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Rotor_Angle_Observer_Input m73801 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Rotor_Angle_Observer_Output m139337 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Rotor_Angle_Observer_Error m204873 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Maximum_controller_current m8272 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Secondary_current_protection m8273 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries37 m8274 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Maximum_velocity m73810 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Maximum_velocity_gain m139346 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ PMSM_Back_EMF_Ratio m204882 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Velocity_Filtering_Enable m270418 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries38 m8275 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Maximum_DC_current m73811 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Maximum_DC_current_gain m139347 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Overvoltage_limit m8276 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries39 m8277 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Undervoltage_limit m73813 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Undervoltage_gain m139349 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Undervoltage_min_voltage m204885 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries40 m8279 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Motor_temperature_sensor_type m73815 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Motor_maximum_temperature m139351 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Motor_maximum_temperature_gain m204887 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries41 m8283 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Stall_protection_time m73819 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Stall_protection_current m139355 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries42 m8288 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ OC_out_1_enable m73824 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ OC_out_2_enable m139360 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ OC_out_1_Value m204896 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ OC_out_2_Value m270432 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ OC_out_1_Value_2 m335968 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ OC_out_2_Value_2 m401504 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries43 m8289 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Brake_nominal_voltage m73825 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Brake_reduced_voltage m139361 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Brake_Time_To_Reduce_Voltage m204897 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries44 m8304 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Throttle_voltage m73840 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ AUX_Voltage m139376 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Brake_voltage m204912 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries45 m8306 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ AD_resolver_sin m73842 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ AD_resolver_cos m139378 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries46 m8307 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ AD_Sin_Cos_Sin m73843 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ AD_Sin_Cos_Cos m139379 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Digital_inputs m8310 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries47 m8320 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Command m73856 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Memory m139392 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Sampling_rate m204928 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Wrap_around m270464 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Trigger_level m336000 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Trigger_mode m401536 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Trigger_source m467072 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Pre_trigger_samples_requested m532608 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Pre_trigger_samples_recorded m598144 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Post_trigger_samples_recorded m663680 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Status1 m729216 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Record_number m794752 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Memory_capacity m925824 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Trigger_source_Index m991360 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Trigger_source_Subindex m1056896 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Configuration_Number m1122432 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Record_channel m1187968 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Record_step m1253504 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_configurations m1319040 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries48 m8321 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Channel_count m73857 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Selected_channel m139393 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Channel_index m204929 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Channel_subindex m270465 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Channel_configuration_status m336001 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries49 m8322 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ FOC_frequency m73858 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Speed_loop_frequency m139394 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries50 m8323 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Osci_test_signal_1 m73859 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Osci_test_signal_2 m139395 : 32|2@1- (1,0) [-2|1] "" Vector__XXX
+ SG_ Osci_test_signal_3 m204931 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Osci_test_signal_4 m270467 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Allow_PDO_COB_ID_change m8324 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Actual_FOC_Angle m8325 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Velocity_actual_value_averaged m8326 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Velocity_actual_value_filtered m8327 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Current_Flux_Actual_Value m8336 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries51 m8337 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Induction_Motor_Rotor_Time_Const m73873 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Induction_Motor_Rated_Velocity m139409 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Induction_Motor_Flux_Control_mod m204945 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Induction_Motor_V_to_Hz_ratio m270481 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Induction_Motor_Rated_Flux_Curre m336017 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Induction_control_parameter_flux0 m401553 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Induction_control_parameter_flux1 m467089 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_Entries0 m9472 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Gate_Driver_Error_Num_1 m75008 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Gate_Driver_Error_Num_2 m140544 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Gate_Driver_Error_Num_3 m206080 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Gate_Driver_Error_Num_4 m271616 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Gate_Driver_Error_Num_5 m337152 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Gate_Driver_Error_Num_6 m402688 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_Entries1 m9728 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Velocity_Min m75264 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Velocity_Ramp m140800 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_Entries2 m9729 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Position_Home m75265 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Position_Hysteresis m140801 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Position_Save_Home m206337 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Position_Factor_Numerator m271873 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_Entries3 m9730 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Hold_Current_Start m75266 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Hold_Current_Max m140802 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Hold_Current_Ramp m206338 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_Entries4 m9731 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ State m75267 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Reached_Home m140803 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Position_Value m206339 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Position_Error m271875 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Select_Application m12288 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries52 m12289 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Control_Mode m77825 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Status m143361 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Error_Code m208897 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Number_Of_Contolled_Drives m274433 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Drive1_NodeID m339969 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Drive2_NodeID m405505 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Drive3_NodeID m471041 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Drive4_NodeID m536577 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Drive1_Dirrection_Invert_E m602113 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Drive2_Dirrection_Invert_E m667649 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Drive3_Dirrection_Invert_E m733185 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Drive4_Dirrection_Invert_E m798721 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Disable_PWM_On_Stop_Enable m864257 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Disable_PWM_On_Stop_Delay m929793 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Disable_PMW_On_Stop_Veloci m995329 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Max_Fw_Velocity m1060865 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Max_Rw_Velocity m1126401 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries53 m12291 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Din1_Function m77827 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Din2_Function m143363 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Din3_Function m208899 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Din4_Function m274435 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Din5_Function m339971 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Din6_Function m405507 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Invert_Din_Polarity m471043 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Dout1_Function m536579 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Dout2_Function m602115 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Throttle_Type m667651 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Throttle_Positive_Min_Volt m733187 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Throttle_Positive_Max_Volt m798723 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Throttle_Negative_Min_Volt m864259 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Throttle_Negative_Max_Volt m929795 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Throttle_Min_Out_Value m995331 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Throttle_Max_Out_Value m1060867 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Throttle_Wire_Brake_Enable m1126403 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Throttle_Wire_Brake_Min_Vo m1191939 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Throttle_Wire_Brake_Max_Vo m1257475 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Throttle_Invert m1323011 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_PWM_Pulse_Width m1388547 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Servo_PWM_Valid_Data_Delay m1454083 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Pump_Control_Threshold_Tem m1519619 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries54 m12292 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Velocity_Feedback_Mode m77828 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Velocity_Feedback_Drive_Nu m143364 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Velocity_Regulator_P m208900 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Velocity_Regulator_I m274436 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Velocity_Regulator_Max_Dri m339972 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Velocity_Regulator_Max_Reg m405508 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries55 m12293 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Brake_Mode m77829 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Brake_Minimum_Velocity m143365 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Brake_Digital_Current m208901 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Brake_Linear_Current m274437 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Brake_Potentiometer_Minimu m339973 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Brake_Potentiometer_Maximu m405509 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Brake_Current m471045 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Regeneration_Active m536581 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Constant_Regeneration_Curr0 m602117 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Constant_Regeneration_Curr1 m667653 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Constant_Regeneration_Mini m733189 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Constant_Regeneration_Actu m798725 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Brake_And_Regeneration_Zer m864261 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries56 m12294 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Enable m77830 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Active m143366 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Select_Voltage_0 m208902 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Select_Voltage_1 m274438 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries57 m12295 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Normal_Max_Thro m77831 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Normal_Max_Driv m143367 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Normal_Max_Rege m208903 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Normal_Max_Batt m274439 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Normal_Max_Line m339975 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Normal_Max_Digi m405511 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Normal_Max_Velo m471047 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Normal_Max_Cons m536583 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries58 m12296 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Eco_Max_Throttl m77832 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Eco_Max_Drive_C m143368 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Eco_Max_Regener m208904 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Eco_Max_Battery m274440 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Eco_Max_Linear_ m339976 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Eco_Max_Digital m405512 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Eco_Max_Velocit m471048 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Eco_Max_Constan m536584 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries59 m12297 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Sport_Max_Throt m77833 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Sport_Max_Drive m143369 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Sport_Max_Regen m208905 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Sport_Max_Batte m274441 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Sport_Max_Linea m339977 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Sport_Max_Digit m405513 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Sport_Max_Veloc m471049 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ APP_1_Power_Mode_Sport_Max_Const m536585 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries60 m12298 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Maximum_DC_Current m77834 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries61 m12299 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Precharge_Enable m77835 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ APP_1_Precharge_Min_Voltage m143371 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ APP_1_Precharge_Max_Time m208907 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Number_of_entries62 m20480 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Test_CMD m86016 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Test_Status m151552 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Test_Result_1 m217088 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Test_Result_2 m282624 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Test_Result_3 m348160 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries63 m24574 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Control_board_version m90110 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Dummy_mapping_object m24575 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Abort_connection_option_code m24583 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Error_code m24639 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Controlword m24640 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Statusword m24641 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Quick_stop_option_code m24666 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Shutdown_option_code m24667 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Disable_operation_option_code m24668 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Fault_reaction_option_code m24670 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Modes_of_operation m24672 : 32|2@1- (1,0) [-2|1] "" Vector__XXX
+ SG_ Modes_of_operation_display m24673 : 32|2@1- (1,0) [-2|1] "" Vector__XXX
+ SG_ Position_actual_value_internal m24675 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Position_actual_value m24676 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Following_error_window m24677 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Position_window m24679 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Velocity_sensor_actual_value m24681 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Velocity_actual_value m24684 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Target_torque m24689 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Motor_rated_current m24693 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Motor_rated_torque m24694 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Torque_actual_value m24695 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Number_of_entries64 m24696 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Current_Torque_Actual_Value m90232 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Current_Torque_Actual_Value_mA m155768 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ DC_link_circuit_voltage m24697 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Target_position m24698 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Polarity m24702 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Position_factor_number_of_entrie m24723 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Position_factor_Numerator m90259 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Position_factor_Divisor m155795 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Velocity_encoder_factor_number_o m24724 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Velocity_encoder_factor_Numerato m90260 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Velocity_encoder_factor_Divisor m155796 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Number_of_entries65 m24822 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Current_control_torque_regulator0 m90358 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Current_control_torque_regulator1 m155894 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Current_control_flux_regulator_P m221430 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Current_control_flux_regulator_I m286966 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Current_control_regulator_ramp m352502 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Velocity_control_parameter_set_n m24825 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Velocity_control_regulator_P_Gai m90361 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Velocity_control_regulator_I_Gai m155897 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Position_control_parameter_set_n m24827 : 32|8@1+ (1,0) [-128|127] "" Vector__XXX
+ SG_ Position_Control_Regulator_P_Gai m90363 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Position_Control_Regulator_I_Gai m155899 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Position_Control_Regulator_D_Gai m221435 : 32|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Nominal_position m286971 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Low_Pass_Filter_Cut_Off_Frequenc m352507 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Position_Control_Regulator_Outpu m418043 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Position_Control_Regulator_B_Gai m483579 : 32|16@1+ (1,0) [-32768|32767] "" Vector__XXX
+ SG_ Target_velocity m24831 : 32|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
+ SG_ Supported_drive_modes m25858 : 32|32@1+ (1,0) [-2147483648|2147483647] "" Vector__XXX
+
+BO_ 513 Receive_PDO_1_Mapping: 8 PLC
+ SG_ PDO_Mapping_Entry0 : 0|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry1 : 32|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry2 : 64|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry3 : 96|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry4 : 128|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry5 : 160|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry6 : 192|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry7 : 224|32@1+ (1,0) [0|4294967295] "" 
+
+BO_ 769 Receive_PDO_2_Mapping: 8 PLC
+ SG_ PDO_Mapping_Entry0 : 0|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry1 : 32|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry2 : 64|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry3 : 96|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry4 : 128|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry5 : 160|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry6 : 192|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry7 : 224|32@1+ (1,0) [0|4294967295] "" 
+
+BO_ 1025 Receive_PDO_3_Mapping: 8 PLC
+ SG_ PDO_Mapping_Entry0 : 0|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry1 : 32|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry2 : 64|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry3 : 96|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry4 : 128|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry5 : 160|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry6 : 192|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry7 : 224|32@1+ (1,0) [0|4294967295] "" 
+
+BO_ 1281 Receive_PDO_4_Mapping: 8 PLC
+ SG_ PDO_Mapping_Entry0 : 0|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry1 : 32|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry2 : 64|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry3 : 96|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry4 : 128|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry5 : 160|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry6 : 192|32@1+ (1,0) [0|4294967295] "" 
+ SG_ PDO_Mapping_Entry7 : 224|32@1+ (1,0) [0|4294967295] "" 
+
+BO_ 385 Transmit_PDO_1_Mapping: 8 
+ SG_ PDO_Mapping_Entry0 : 0|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry1 : 32|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry2 : 64|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry3 : 96|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry4 : 128|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry5 : 160|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry6 : 192|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry7 : 224|32@1+ (1,0) [0|4294967295] "" PLC
+
+BO_ 641 Transmit_PDO_2_Mapping: 8 
+ SG_ PDO_Mapping_Entry0 : 0|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry1 : 32|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry2 : 64|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry3 : 96|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry4 : 128|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry5 : 160|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry6 : 192|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry7 : 224|32@1+ (1,0) [0|4294967295] "" PLC
+
+BO_ 897 Transmit_PDO_3_Mapping: 8 
+ SG_ PDO_Mapping_Entry0 : 0|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry1 : 32|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry2 : 64|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry3 : 96|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry4 : 128|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry5 : 160|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry6 : 192|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry7 : 224|32@1+ (1,0) [0|4294967295] "" PLC
+
+BO_ 1153 Transmit_PDO_4_Mapping: 8 
+ SG_ PDO_Mapping_Entry0 : 0|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry1 : 32|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry2 : 64|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry3 : 96|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry4 : 128|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry5 : 160|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry6 : 192|32@1+ (1,0) [0|4294967295] "" PLC
+ SG_ PDO_Mapping_Entry7 : 224|32@1+ (1,0) [0|4294967295] "" PLC
+
+
+
+
+
+BA_DEF_ SG_ "SystemSignalLongSymbol" STRING;
+
+
+
+BA_ "SystemSignalLongSymbol" SG_ 1537 Save_Manufacturer_Defined_Parame "Save_Manufacturer_Defined_Parameters";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Restore_Communication_Default_Pa "Restore_Communication_Default_Parameters";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Restore_Application_Default_Para "Restore_Application_Default_Parameters";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Restore_Manufacturer_Defined_Def "Restore_Manufacturer_Defined_Default_Parameters";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Unsigne0 "Custom_Persistent_Memory_Unsigned_8_1";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Unsigne1 "Custom_Persistent_Memory_Unsigned_8_2";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Signed_0 "Custom_Persistent_Memory_Signed_8_1";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Signed_1 "Custom_Persistent_Memory_Signed_8_2";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Unsigne2 "Custom_Persistent_Memory_Unsigned_16_1";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Unsigne3 "Custom_Persistent_Memory_Unsigned_16_2";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Signed_2 "Custom_Persistent_Memory_Signed_16_1";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Signed_3 "Custom_Persistent_Memory_Signed_16_2";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Unsigne4 "Custom_Persistent_Memory_Unsigned_32_1";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Unsigne5 "Custom_Persistent_Memory_Unsigned_32_2";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Signed_4 "Custom_Persistent_Memory_Signed_32_1";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Custom_Persistent_Memory_Signed_5 "Custom_Persistent_Memory_Signed_32_2";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Calculated_Fly_On_Torque_regulat0 "Calculated_Fly_On_Torque_regulator_I";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Calculated_Fly_On_Torque_regulat1 "Calculated_Fly_On_Torque_regulator_P";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Calculated_Fly_On_Torque_Integra "Calculated_Fly_On_Torque_Integral";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Field_Weakening_Regulator_Reques "Field_Weakening_Regulator_Requested";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Field_Weakening_Regulator_Flux_G0 "Field_Weakening_Regulator_Flux_Gain_Antiwindup_Int";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Field_Weakening_Regulator_Flux_G1 "Field_Weakening_Regulator_Flux_Gain_Antiwindup_Ext";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Field_Weakening_Regulator_Flux_L0 "Field_Weakening_Regulator_Flux_Limit_Up";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Field_Weakening_Regulator_Flux_L1 "Field_Weakening_Regulator_Flux_Limit_Low";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Auto_aligning_rotor_position_cur "Auto_aligning_rotor_position_current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Induction_Motor_Rotor_Time_Const "Induction_Motor_Rotor_Time_Constant";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Induction_Motor_Flux_Control_mod "Induction_Motor_Flux_Control_mode";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Induction_Motor_Rated_Flux_Curre "Induction_Motor_Rated_Flux_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Induction_control_parameter_flux0 "Induction_control_parameter_flux_set_P_gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Induction_control_parameter_flux1 "Induction_control_parameter_flux_set_I_gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Drive1_Dirrection_Invert_E "APP_1_Drive1_Dirrection_Invert_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Drive2_Dirrection_Invert_E "APP_1_Drive2_Dirrection_Invert_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Drive3_Dirrection_Invert_E "APP_1_Drive3_Dirrection_Invert_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Drive4_Dirrection_Invert_E "APP_1_Drive4_Dirrection_Invert_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Disable_PMW_On_Stop_Veloci "APP_1_Disable_PMW_On_Stop_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Throttle_Positive_Min_Volt "APP_1_Throttle_Positive_Min_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Throttle_Positive_Max_Volt "APP_1_Throttle_Positive_Max_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Throttle_Negative_Min_Volt "APP_1_Throttle_Negative_Min_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Throttle_Negative_Max_Volt "APP_1_Throttle_Negative_Max_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Throttle_Wire_Brake_Min_Vo "APP_1_Throttle_Wire_Brake_Min_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Throttle_Wire_Brake_Max_Vo "APP_1_Throttle_Wire_Brake_Max_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Pump_Control_Threshold_Tem "APP_1_Pump_Control_Threshold_Temerature";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Velocity_Feedback_Drive_Nu "APP_1_Velocity_Feedback_Drive_Number";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Velocity_Regulator_Max_Dri "APP_1_Velocity_Regulator_Max_Drive_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Velocity_Regulator_Max_Reg "APP_1_Velocity_Regulator_Max_Regenerative_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Brake_Potentiometer_Minimu "APP_1_Brake_Potentiometer_Minimum_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Brake_Potentiometer_Maximu "APP_1_Brake_Potentiometer_Maximum_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Constant_Regeneration_Curr0 "APP_1_Constant_Regeneration_Current_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Constant_Regeneration_Curr1 "APP_1_Constant_Regeneration_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Constant_Regeneration_Mini "APP_1_Constant_Regeneration_Minimum_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Constant_Regeneration_Actu "APP_1_Constant_Regeneration_Actual_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Brake_And_Regeneration_Zer "APP_1_Brake_And_Regeneration_Zero_Current_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Select_Voltage_0 "APP_1_Power_Mode_Select_Voltage_1";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Select_Voltage_1 "APP_1_Power_Mode_Select_Voltage_2";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Normal_Max_Thro "APP_1_Power_Mode_Normal_Max_Throttle_Out";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Normal_Max_Driv "APP_1_Power_Mode_Normal_Max_Drive_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Normal_Max_Rege "APP_1_Power_Mode_Normal_Max_Regenerative_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Normal_Max_Batt "APP_1_Power_Mode_Normal_Max_Battery_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Normal_Max_Line "APP_1_Power_Mode_Normal_Max_Linear_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Normal_Max_Digi "APP_1_Power_Mode_Normal_Max_Digital_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Normal_Max_Velo "APP_1_Power_Mode_Normal_Max_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Normal_Max_Cons "APP_1_Power_Mode_Normal_Max_Constant_Regeneration_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Eco_Max_Throttl "APP_1_Power_Mode_Eco_Max_Throttle_Out";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Eco_Max_Drive_C "APP_1_Power_Mode_Eco_Max_Drive_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Eco_Max_Regener "APP_1_Power_Mode_Eco_Max_Regenerative_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Eco_Max_Battery "APP_1_Power_Mode_Eco_Max_Battery_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Eco_Max_Linear_ "APP_1_Power_Mode_Eco_Max_Linear_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Eco_Max_Digital "APP_1_Power_Mode_Eco_Max_Digital_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Eco_Max_Velocit "APP_1_Power_Mode_Eco_Max_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Eco_Max_Constan "APP_1_Power_Mode_Eco_Max_Constant_Regeneration_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Sport_Max_Throt "APP_1_Power_Mode_Sport_Max_Throttle_Out";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Sport_Max_Drive "APP_1_Power_Mode_Sport_Max_Drive_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Sport_Max_Regen "APP_1_Power_Mode_Sport_Max_Regenerative_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Sport_Max_Batte "APP_1_Power_Mode_Sport_Max_Battery_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Sport_Max_Linea "APP_1_Power_Mode_Sport_Max_Linear_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Sport_Max_Digit "APP_1_Power_Mode_Sport_Max_Digital_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Sport_Max_Veloc "APP_1_Power_Mode_Sport_Max_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1537 APP_1_Power_Mode_Sport_Max_Const "APP_1_Power_Mode_Sport_Max_Constant_Regeneration_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Position_factor_number_of_entrie "Position_factor_number_of_entries";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Velocity_encoder_factor_number_o "Velocity_encoder_factor_number_of_entries";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Velocity_encoder_factor_Numerato "Velocity_encoder_factor_Numerator";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Current_control_torque_regulator0 "Current_control_torque_regulator_P_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Current_control_torque_regulator1 "Current_control_torque_regulator_I_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Current_control_flux_regulator_P "Current_control_flux_regulator_P_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Current_control_flux_regulator_I "Current_control_flux_regulator_I_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Velocity_control_parameter_set_n "Velocity_control_parameter_set_number_of_entries";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Velocity_control_regulator_P_Gai "Velocity_control_regulator_P_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Velocity_control_regulator_I_Gai "Velocity_control_regulator_I_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Position_control_parameter_set_n "Position_control_parameter_set_number_of_entries";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Position_Control_Regulator_P_Gai "Position_Control_Regulator_P_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Position_Control_Regulator_I_Gai "Position_Control_Regulator_I_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Position_Control_Regulator_D_Gai "Position_Control_Regulator_D_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Low_Pass_Filter_Cut_Off_Frequenc "Low_Pass_Filter_Cut_Off_Frequency";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Position_Control_Regulator_Outpu "Position_Control_Regulator_Output_Limit";
+BA_ "SystemSignalLongSymbol" SG_ 1537 Position_Control_Regulator_B_Gai "Position_Control_Regulator_B_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Save_Manufacturer_Defined_Parame "Save_Manufacturer_Defined_Parameters";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Restore_Communication_Default_Pa "Restore_Communication_Default_Parameters";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Restore_Application_Default_Para "Restore_Application_Default_Parameters";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Restore_Manufacturer_Defined_Def "Restore_Manufacturer_Defined_Default_Parameters";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Unsigne0 "Custom_Persistent_Memory_Unsigned_8_1";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Unsigne1 "Custom_Persistent_Memory_Unsigned_8_2";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Signed_0 "Custom_Persistent_Memory_Signed_8_1";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Signed_1 "Custom_Persistent_Memory_Signed_8_2";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Unsigne2 "Custom_Persistent_Memory_Unsigned_16_1";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Unsigne3 "Custom_Persistent_Memory_Unsigned_16_2";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Signed_2 "Custom_Persistent_Memory_Signed_16_1";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Signed_3 "Custom_Persistent_Memory_Signed_16_2";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Unsigne4 "Custom_Persistent_Memory_Unsigned_32_1";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Unsigne5 "Custom_Persistent_Memory_Unsigned_32_2";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Signed_4 "Custom_Persistent_Memory_Signed_32_1";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Custom_Persistent_Memory_Signed_5 "Custom_Persistent_Memory_Signed_32_2";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Calculated_Fly_On_Torque_regulat0 "Calculated_Fly_On_Torque_regulator_I";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Calculated_Fly_On_Torque_regulat1 "Calculated_Fly_On_Torque_regulator_P";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Calculated_Fly_On_Torque_Integra "Calculated_Fly_On_Torque_Integral";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Field_Weakening_Regulator_Reques "Field_Weakening_Regulator_Requested";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Field_Weakening_Regulator_Flux_G0 "Field_Weakening_Regulator_Flux_Gain_Antiwindup_Int";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Field_Weakening_Regulator_Flux_G1 "Field_Weakening_Regulator_Flux_Gain_Antiwindup_Ext";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Field_Weakening_Regulator_Flux_L0 "Field_Weakening_Regulator_Flux_Limit_Up";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Field_Weakening_Regulator_Flux_L1 "Field_Weakening_Regulator_Flux_Limit_Low";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Auto_aligning_rotor_position_cur "Auto_aligning_rotor_position_current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Induction_Motor_Rotor_Time_Const "Induction_Motor_Rotor_Time_Constant";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Induction_Motor_Flux_Control_mod "Induction_Motor_Flux_Control_mode";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Induction_Motor_Rated_Flux_Curre "Induction_Motor_Rated_Flux_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Induction_control_parameter_flux0 "Induction_control_parameter_flux_set_P_gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Induction_control_parameter_flux1 "Induction_control_parameter_flux_set_I_gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Drive1_Dirrection_Invert_E "APP_1_Drive1_Dirrection_Invert_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Drive2_Dirrection_Invert_E "APP_1_Drive2_Dirrection_Invert_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Drive3_Dirrection_Invert_E "APP_1_Drive3_Dirrection_Invert_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Drive4_Dirrection_Invert_E "APP_1_Drive4_Dirrection_Invert_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Disable_PMW_On_Stop_Veloci "APP_1_Disable_PMW_On_Stop_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Throttle_Positive_Min_Volt "APP_1_Throttle_Positive_Min_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Throttle_Positive_Max_Volt "APP_1_Throttle_Positive_Max_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Throttle_Negative_Min_Volt "APP_1_Throttle_Negative_Min_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Throttle_Negative_Max_Volt "APP_1_Throttle_Negative_Max_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Throttle_Wire_Brake_Min_Vo "APP_1_Throttle_Wire_Brake_Min_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Throttle_Wire_Brake_Max_Vo "APP_1_Throttle_Wire_Brake_Max_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Pump_Control_Threshold_Tem "APP_1_Pump_Control_Threshold_Temerature";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Velocity_Feedback_Drive_Nu "APP_1_Velocity_Feedback_Drive_Number";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Velocity_Regulator_Max_Dri "APP_1_Velocity_Regulator_Max_Drive_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Velocity_Regulator_Max_Reg "APP_1_Velocity_Regulator_Max_Regenerative_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Brake_Potentiometer_Minimu "APP_1_Brake_Potentiometer_Minimum_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Brake_Potentiometer_Maximu "APP_1_Brake_Potentiometer_Maximum_Voltage";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Constant_Regeneration_Curr0 "APP_1_Constant_Regeneration_Current_Enable";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Constant_Regeneration_Curr1 "APP_1_Constant_Regeneration_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Constant_Regeneration_Mini "APP_1_Constant_Regeneration_Minimum_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Constant_Regeneration_Actu "APP_1_Constant_Regeneration_Actual_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Brake_And_Regeneration_Zer "APP_1_Brake_And_Regeneration_Zero_Current_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Select_Voltage_0 "APP_1_Power_Mode_Select_Voltage_1";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Select_Voltage_1 "APP_1_Power_Mode_Select_Voltage_2";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Normal_Max_Thro "APP_1_Power_Mode_Normal_Max_Throttle_Out";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Normal_Max_Driv "APP_1_Power_Mode_Normal_Max_Drive_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Normal_Max_Rege "APP_1_Power_Mode_Normal_Max_Regenerative_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Normal_Max_Batt "APP_1_Power_Mode_Normal_Max_Battery_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Normal_Max_Line "APP_1_Power_Mode_Normal_Max_Linear_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Normal_Max_Digi "APP_1_Power_Mode_Normal_Max_Digital_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Normal_Max_Velo "APP_1_Power_Mode_Normal_Max_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Normal_Max_Cons "APP_1_Power_Mode_Normal_Max_Constant_Regeneration_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Eco_Max_Throttl "APP_1_Power_Mode_Eco_Max_Throttle_Out";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Eco_Max_Drive_C "APP_1_Power_Mode_Eco_Max_Drive_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Eco_Max_Regener "APP_1_Power_Mode_Eco_Max_Regenerative_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Eco_Max_Battery "APP_1_Power_Mode_Eco_Max_Battery_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Eco_Max_Linear_ "APP_1_Power_Mode_Eco_Max_Linear_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Eco_Max_Digital "APP_1_Power_Mode_Eco_Max_Digital_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Eco_Max_Velocit "APP_1_Power_Mode_Eco_Max_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Eco_Max_Constan "APP_1_Power_Mode_Eco_Max_Constant_Regeneration_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Sport_Max_Throt "APP_1_Power_Mode_Sport_Max_Throttle_Out";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Sport_Max_Drive "APP_1_Power_Mode_Sport_Max_Drive_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Sport_Max_Regen "APP_1_Power_Mode_Sport_Max_Regenerative_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Sport_Max_Batte "APP_1_Power_Mode_Sport_Max_Battery_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Sport_Max_Linea "APP_1_Power_Mode_Sport_Max_Linear_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Sport_Max_Digit "APP_1_Power_Mode_Sport_Max_Digital_Brake_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Sport_Max_Veloc "APP_1_Power_Mode_Sport_Max_Velocity";
+BA_ "SystemSignalLongSymbol" SG_ 1409 APP_1_Power_Mode_Sport_Max_Const "APP_1_Power_Mode_Sport_Max_Constant_Regeneration_Current";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Position_factor_number_of_entrie "Position_factor_number_of_entries";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Velocity_encoder_factor_number_o "Velocity_encoder_factor_number_of_entries";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Velocity_encoder_factor_Numerato "Velocity_encoder_factor_Numerator";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Current_control_torque_regulator0 "Current_control_torque_regulator_P_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Current_control_torque_regulator1 "Current_control_torque_regulator_I_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Current_control_flux_regulator_P "Current_control_flux_regulator_P_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Current_control_flux_regulator_I "Current_control_flux_regulator_I_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Velocity_control_parameter_set_n "Velocity_control_parameter_set_number_of_entries";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Velocity_control_regulator_P_Gai "Velocity_control_regulator_P_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Velocity_control_regulator_I_Gai "Velocity_control_regulator_I_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Position_control_parameter_set_n "Position_control_parameter_set_number_of_entries";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Position_Control_Regulator_P_Gai "Position_Control_Regulator_P_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Position_Control_Regulator_I_Gai "Position_Control_Regulator_I_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Position_Control_Regulator_D_Gai "Position_Control_Regulator_D_Gain";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Low_Pass_Filter_Cut_Off_Frequenc "Low_Pass_Filter_Cut_Off_Frequency";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Position_Control_Regulator_Outpu "Position_Control_Regulator_Output_Limit";
+BA_ "SystemSignalLongSymbol" SG_ 1409 Position_Control_Regulator_B_Gai "Position_Control_Regulator_B_Gain";
+
+SIG_GROUP_ 1537 SG_A_Predefined_Error_Field 1 : Number_of_Errors Standard_Error_Field0;
+SIG_GROUP_ 1537 SG_A_Store_Parameter_Field 2 : Number_of_entries0 Save_all_Parameters Save_Communication_Parameters Save_Application_Parameters Save_Manufacturer_Defined_Parame;
+SIG_GROUP_ 1537 SG_A_Restore_Default_Parameters 3 : Number_of_entries0 Restore_all_Default_Parameters Restore_Communication_Default_Pa Restore_Application_Default_Para Restore_Manufacturer_Defined_Def;
+SIG_GROUP_ 1537 SG_A_Consumer_Heartbeat_Time 4 : Number_of_entries0 Consumer_Heartbeat_Time;
+SIG_GROUP_ 1537 SG_A_Error_behaviour 5 : Number_of_entries0 Communication_Error;
+SIG_GROUP_ 1537 SG_A_Download_Program_Data 6 : Number_of_entries0;
+SIG_GROUP_ 1537 SG_A_Program_Control_Status 7 : Number_of_entries0 Program_Control_Status_1 Program_Control_Status_2;
+SIG_GROUP_ 1537 SG_A_Flux_regulator 8 : Number_of_entries0 Flux_regulator_requested Flux_regulator_actual Flux_regulator_out Flux_regulator_error Calculated_Flux_Feed_FWD;
+SIG_GROUP_ 1537 SG_A_Pulse_mode 9 : Number_of_entries0 Pulse_mode_counter Pulse_mode_nuber_of_pulses;
+SIG_GROUP_ 1537 SG_A_Frequencies 10 : Number_of_entries0 FOC_frequency Speed_loop_frequency;
+SIG_GROUP_ 1537 SG_A_Position_factor 11 : Position_factor_number_of_entrie Position_factor_Numerator Position_factor_Divisor;
+SIG_GROUP_ 1537 SG_A_Velocity_encoder_factor 12 : Velocity_encoder_factor_number_o Velocity_encoder_factor_Numerato Velocity_encoder_factor_Divisor;
+SG_MUL_VAL_ 1537 sdo_down_IDX sdo_down_CMD 2-2;
+SG_MUL_VAL_ 1537 Device_Type sdo_down_IDX 4096-4096;
+SG_MUL_VAL_ 1537 Error_Register sdo_down_IDX 4097-4097;
+SG_MUL_VAL_ 1537 Number_of_Errors sdo_down_IDX 4099-4099;
+SG_MUL_VAL_ 1537 Standard_Error_Field sdo_down_IDX 69635-69635;
+SG_MUL_VAL_ 1537 Standard_Error_Field sdo_down_IDX 135171-135171;
+SG_MUL_VAL_ 1537 Standard_Error_Field sdo_down_IDX 200707-200707;
+SG_MUL_VAL_ 1537 Standard_Error_Field sdo_down_IDX 266243-266243;
+SG_MUL_VAL_ 1537 Standard_Error_Field sdo_down_IDX 331779-331779;
+SG_MUL_VAL_ 1537 COB_ID_SYNC sdo_down_IDX 4101-4101;
+SG_MUL_VAL_ 1537 Communication_Cycle_Period sdo_down_IDX 4102-4102;
+SG_MUL_VAL_ 1537 Node_ID sdo_down_IDX 4107-4107;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 4112-4112;
+SG_MUL_VAL_ 1537 Save_all_Parameters sdo_down_IDX 69648-69648;
+SG_MUL_VAL_ 1537 Save_Communication_Parameters sdo_down_IDX 135184-135184;
+SG_MUL_VAL_ 1537 Save_Application_Parameters sdo_down_IDX 200720-200720;
+SG_MUL_VAL_ 1537 Save_Manufacturer_Defined_Parame sdo_down_IDX 266256-266256;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 4113-4113;
+SG_MUL_VAL_ 1537 Restore_all_Default_Parameters sdo_down_IDX 69649-69649;
+SG_MUL_VAL_ 1537 Restore_Communication_Default_Pa sdo_down_IDX 135185-135185;
+SG_MUL_VAL_ 1537 Restore_Application_Default_Para sdo_down_IDX 200721-200721;
+SG_MUL_VAL_ 1537 Restore_Manufacturer_Defined_Def sdo_down_IDX 266257-266257;
+SG_MUL_VAL_ 1537 COB_ID_EMCY sdo_down_IDX 4116-4116;
+SG_MUL_VAL_ 1537 Inhibit_Time_Emergency sdo_down_IDX 4117-4117;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 4118-4118;
+SG_MUL_VAL_ 1537 Consumer_Heartbeat_Time sdo_down_IDX 69654-69654;
+SG_MUL_VAL_ 1537 Producer_Heartbeat_Time sdo_down_IDX 4119-4119;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 4120-4120;
+SG_MUL_VAL_ 1537 Vendor_Id sdo_down_IDX 69656-69656;
+SG_MUL_VAL_ 1537 Product_Code sdo_down_IDX 135192-135192;
+SG_MUL_VAL_ 1537 Revision_number sdo_down_IDX 200728-200728;
+SG_MUL_VAL_ 1537 Serial_number sdo_down_IDX 266264-266264;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 4137-4137;
+SG_MUL_VAL_ 1537 Communication_Error sdo_down_IDX 69673-69673;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 4608-4608;
+SG_MUL_VAL_ 1537 COB_ID_Client_to_Server sdo_down_IDX 70144-70144;
+SG_MUL_VAL_ 1537 COB_ID_Server_to_Client sdo_down_IDX 135680-135680;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 4736-4736;
+SG_MUL_VAL_ 1537 COB_ID_Client_to_Server sdo_down_IDX 70272-70272;
+SG_MUL_VAL_ 1537 COB_ID_Server_to_Client sdo_down_IDX 135808-135808;
+SG_MUL_VAL_ 1537 Node_ID_of_the_SDO_Server sdo_down_IDX 201344-201344;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 5120-5120;
+SG_MUL_VAL_ 1537 COB_ID sdo_down_IDX 70656-70656;
+SG_MUL_VAL_ 1537 Transmission_Type sdo_down_IDX 136192-136192;
+SG_MUL_VAL_ 1537 Inhibit_Time sdo_down_IDX 201728-201728;
+SG_MUL_VAL_ 1537 Compatibility_Entry sdo_down_IDX 267264-267264;
+SG_MUL_VAL_ 1537 Event_Timer sdo_down_IDX 332800-332800;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 5121-5121;
+SG_MUL_VAL_ 1537 COB_ID sdo_down_IDX 70657-70657;
+SG_MUL_VAL_ 1537 Transmission_Type sdo_down_IDX 136193-136193;
+SG_MUL_VAL_ 1537 Inhibit_Time sdo_down_IDX 201729-201729;
+SG_MUL_VAL_ 1537 Compatibility_Entry sdo_down_IDX 267265-267265;
+SG_MUL_VAL_ 1537 Event_Timer sdo_down_IDX 332801-332801;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 5122-5122;
+SG_MUL_VAL_ 1537 COB_ID sdo_down_IDX 70658-70658;
+SG_MUL_VAL_ 1537 Transmission_Type sdo_down_IDX 136194-136194;
+SG_MUL_VAL_ 1537 Inhibit_Time sdo_down_IDX 201730-201730;
+SG_MUL_VAL_ 1537 Compatibility_Entry sdo_down_IDX 267266-267266;
+SG_MUL_VAL_ 1537 Event_Timer sdo_down_IDX 332802-332802;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 5123-5123;
+SG_MUL_VAL_ 1537 COB_ID sdo_down_IDX 70659-70659;
+SG_MUL_VAL_ 1537 Transmission_Type sdo_down_IDX 136195-136195;
+SG_MUL_VAL_ 1537 Inhibit_Time sdo_down_IDX 201731-201731;
+SG_MUL_VAL_ 1537 Compatibility_Entry sdo_down_IDX 267267-267267;
+SG_MUL_VAL_ 1537 Event_Timer sdo_down_IDX 332803-332803;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 5632-5632;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 71168-71168;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 136704-136704;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 202240-202240;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 267776-267776;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 333312-333312;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 398848-398848;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 464384-464384;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 529920-529920;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 5633-5633;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 71169-71169;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 136705-136705;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 202241-202241;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 267777-267777;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 333313-333313;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 398849-398849;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 464385-464385;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 529921-529921;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 5634-5634;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 71170-71170;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 136706-136706;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 202242-202242;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 267778-267778;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 333314-333314;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 398850-398850;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 464386-464386;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 529922-529922;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 5635-5635;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 71171-71171;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 136707-136707;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 202243-202243;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 267779-267779;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 333315-333315;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 398851-398851;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 464387-464387;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 529923-529923;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 6144-6144;
+SG_MUL_VAL_ 1537 COB_ID sdo_down_IDX 71680-71680;
+SG_MUL_VAL_ 1537 Transmission_Type sdo_down_IDX 137216-137216;
+SG_MUL_VAL_ 1537 Inhibit_Time sdo_down_IDX 202752-202752;
+SG_MUL_VAL_ 1537 Compatibility_Entry sdo_down_IDX 268288-268288;
+SG_MUL_VAL_ 1537 Event_Timer sdo_down_IDX 333824-333824;
+SG_MUL_VAL_ 1537 SYNC_start_value sdo_down_IDX 399360-399360;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 6145-6145;
+SG_MUL_VAL_ 1537 COB_ID sdo_down_IDX 71681-71681;
+SG_MUL_VAL_ 1537 Transmission_Type sdo_down_IDX 137217-137217;
+SG_MUL_VAL_ 1537 Inhibit_Time sdo_down_IDX 202753-202753;
+SG_MUL_VAL_ 1537 Compatibility_Entry sdo_down_IDX 268289-268289;
+SG_MUL_VAL_ 1537 Event_Timer sdo_down_IDX 333825-333825;
+SG_MUL_VAL_ 1537 SYNC_start_value sdo_down_IDX 399361-399361;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 6146-6146;
+SG_MUL_VAL_ 1537 COB_ID sdo_down_IDX 71682-71682;
+SG_MUL_VAL_ 1537 Transmission_Type sdo_down_IDX 137218-137218;
+SG_MUL_VAL_ 1537 Inhibit_Time sdo_down_IDX 202754-202754;
+SG_MUL_VAL_ 1537 Compatibility_Entry sdo_down_IDX 268290-268290;
+SG_MUL_VAL_ 1537 Event_Timer sdo_down_IDX 333826-333826;
+SG_MUL_VAL_ 1537 SYNC_start_value sdo_down_IDX 399362-399362;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 6147-6147;
+SG_MUL_VAL_ 1537 COB_ID sdo_down_IDX 71683-71683;
+SG_MUL_VAL_ 1537 Transmission_Type sdo_down_IDX 137219-137219;
+SG_MUL_VAL_ 1537 Inhibit_Time sdo_down_IDX 202755-202755;
+SG_MUL_VAL_ 1537 Compatibility_Entry sdo_down_IDX 268291-268291;
+SG_MUL_VAL_ 1537 Event_Timer sdo_down_IDX 333827-333827;
+SG_MUL_VAL_ 1537 SYNC_start_value sdo_down_IDX 399363-399363;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 6656-6656;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 72192-72192;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 137728-137728;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 203264-203264;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 268800-268800;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 334336-334336;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 399872-399872;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 465408-465408;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 530944-530944;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 6657-6657;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 72193-72193;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 137729-137729;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 203265-203265;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 268801-268801;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 334337-334337;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 399873-399873;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 465409-465409;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 530945-530945;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 6658-6658;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 72194-72194;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 137730-137730;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 203266-203266;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 268802-268802;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 334338-334338;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 399874-399874;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 465410-465410;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 530946-530946;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 6659-6659;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 72195-72195;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 137731-137731;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 203267-203267;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 268803-268803;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 334339-334339;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 399875-399875;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 465411-465411;
+SG_MUL_VAL_ 1537 PDO_Mapping_Entry sdo_down_IDX 530947-530947;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8016-8016;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8017-8017;
+SG_MUL_VAL_ 1537 Program_Control_Status_1 sdo_down_IDX 73553-73553;
+SG_MUL_VAL_ 1537 Program_Control_Status_2 sdo_down_IDX 139089-139089;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8192-8192;
+SG_MUL_VAL_ 1537 Password sdo_down_IDX 73728-73728;
+SG_MUL_VAL_ 1537 Status sdo_down_IDX 139264-139264;
+SG_MUL_VAL_ 1537 New_Password sdo_down_IDX 204800-204800;
+SG_MUL_VAL_ 1537 CAN_Bitrate sdo_down_IDX 8193-8193;
+SG_MUL_VAL_ 1537 RS232_baudrate sdo_down_IDX 8194-8194;
+SG_MUL_VAL_ 1537 CPU_Load sdo_down_IDX 8195-8195;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8204-8204;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Unsigne sdo_down_IDX 73740-73740;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Unsigne sdo_down_IDX 139276-139276;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Signed_ sdo_down_IDX 204812-204812;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Signed_ sdo_down_IDX 270348-270348;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Unsigne sdo_down_IDX 335884-335884;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Unsigne sdo_down_IDX 401420-401420;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Signed_ sdo_down_IDX 466956-466956;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Signed_ sdo_down_IDX 532492-532492;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Unsigne sdo_down_IDX 598028-598028;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Unsigne sdo_down_IDX 663564-663564;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Signed_ sdo_down_IDX 729100-729100;
+SG_MUL_VAL_ 1537 Custom_Persistent_Memory_Signed_ sdo_down_IDX 794636-794636;
+SG_MUL_VAL_ 1537 Phase_A_current sdo_down_IDX 8207-8207;
+SG_MUL_VAL_ 1537 Phase_B_current sdo_down_IDX 8208-8208;
+SG_MUL_VAL_ 1537 Current_demand sdo_down_IDX 8218-8218;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8219-8219;
+SG_MUL_VAL_ 1537 Torque_regulator_requested sdo_down_IDX 73755-73755;
+SG_MUL_VAL_ 1537 Torque_regulator_actual sdo_down_IDX 139291-139291;
+SG_MUL_VAL_ 1537 Torque_regulator_out sdo_down_IDX 204827-204827;
+SG_MUL_VAL_ 1537 Torque_regulator_error sdo_down_IDX 270363-270363;
+SG_MUL_VAL_ 1537 Calculated_Fly_On_Torque_regulat sdo_down_IDX 335899-335899;
+SG_MUL_VAL_ 1537 Calculated_Fly_On_Torque_regulat sdo_down_IDX 401435-401435;
+SG_MUL_VAL_ 1537 Calculated_Fly_On_Torque_Integra sdo_down_IDX 466971-466971;
+SG_MUL_VAL_ 1537 Calculated_Feed_FWD_Const sdo_down_IDX 532507-532507;
+SG_MUL_VAL_ 1537 Calculated_Torque_Feed_FWD sdo_down_IDX 598043-598043;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8220-8220;
+SG_MUL_VAL_ 1537 Flux_regulator_requested sdo_down_IDX 73756-73756;
+SG_MUL_VAL_ 1537 Flux_regulator_actual sdo_down_IDX 139292-139292;
+SG_MUL_VAL_ 1537 Flux_regulator_out sdo_down_IDX 204828-204828;
+SG_MUL_VAL_ 1537 Flux_regulator_error sdo_down_IDX 270364-270364;
+SG_MUL_VAL_ 1537 Calculated_Flux_Feed_FWD sdo_down_IDX 335900-335900;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8221-8221;
+SG_MUL_VAL_ 1537 PMSM_Flux_Mode sdo_down_IDX 73757-73757;
+SG_MUL_VAL_ 1537 PMSM_Flux_Manual_Current sdo_down_IDX 139293-139293;
+SG_MUL_VAL_ 1537 Flux_Actual_Current_mA sdo_down_IDX 204829-204829;
+SG_MUL_VAL_ 1537 Flux_Actual_Current sdo_down_IDX 270365-270365;
+SG_MUL_VAL_ 1537 Flux_I_Increment sdo_down_IDX 335901-335901;
+SG_MUL_VAL_ 1537 Flux_pulse_mode_counter sdo_down_IDX 401437-401437;
+SG_MUL_VAL_ 1537 Flux_pulse_mode_num_of_pulses sdo_down_IDX 466973-466973;
+SG_MUL_VAL_ 1537 Flux_Off_At_Zero_Torque sdo_down_IDX 532509-532509;
+SG_MUL_VAL_ 1537 Flux_Max_Weakening_Current sdo_down_IDX 598045-598045;
+SG_MUL_VAL_ 1537 Motor_Induction sdo_down_IDX 663581-663581;
+SG_MUL_VAL_ 1537 Field_Weakening_Point sdo_down_IDX 729117-729117;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_P_Gain sdo_down_IDX 794653-794653;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_I_Gain sdo_down_IDX 860189-860189;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_Reques sdo_down_IDX 925725-925725;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_Actual sdo_down_IDX 991261-991261;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_Out sdo_down_IDX 1056797-1056797;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_Error sdo_down_IDX 1122333-1122333;
+SG_MUL_VAL_ 1537 Field_Weakening_Id_Limit sdo_down_IDX 1187869-1187869;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_Enable sdo_down_IDX 1253405-1253405;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_Flux_G sdo_down_IDX 1318941-1318941;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_Flux_G sdo_down_IDX 1384477-1384477;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_Flux_L sdo_down_IDX 1450013-1450013;
+SG_MUL_VAL_ 1537 Field_Weakening_Regulator_Flux_L sdo_down_IDX 1515549-1515549;
+SG_MUL_VAL_ 1537 MTPA_Polynom_a2 sdo_down_IDX 1581085-1581085;
+SG_MUL_VAL_ 1537 MTPA_Polynom_a1 sdo_down_IDX 1646621-1646621;
+SG_MUL_VAL_ 1537 MTPA_Polynom_a0 sdo_down_IDX 1712157-1712157;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8222-8222;
+SG_MUL_VAL_ 1537 BMS_Battery_Voltage sdo_down_IDX 73758-73758;
+SG_MUL_VAL_ 1537 BMS_Min_Cell_Voltage sdo_down_IDX 139294-139294;
+SG_MUL_VAL_ 1537 BMS_Min_Cell_Voltage_Id sdo_down_IDX 204830-204830;
+SG_MUL_VAL_ 1537 BMS_Max_Cell_Voltage sdo_down_IDX 270366-270366;
+SG_MUL_VAL_ 1537 BMS_Max_Cell_Voltage_Id sdo_down_IDX 335902-335902;
+SG_MUL_VAL_ 1537 BMS_Battery_Current sdo_down_IDX 401438-401438;
+SG_MUL_VAL_ 1537 BMS_Battery_Pack_Min_Temperature sdo_down_IDX 466974-466974;
+SG_MUL_VAL_ 1537 BMS_Battery_Pack_Max_Temperature sdo_down_IDX 532510-532510;
+SG_MUL_VAL_ 1537 BMS_SOC sdo_down_IDX 598046-598046;
+SG_MUL_VAL_ 1537 BMS_State sdo_down_IDX 663582-663582;
+SG_MUL_VAL_ 1537 BMS_Recup_Actual_Allowed sdo_down_IDX 729118-729118;
+SG_MUL_VAL_ 1537 BMS_Discharge_Actual_Allowed sdo_down_IDX 794654-794654;
+SG_MUL_VAL_ 1537 Electrical_angle sdo_down_IDX 8223-8223;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8224-8224;
+SG_MUL_VAL_ 1537 Average_consumption sdo_down_IDX 73760-73760;
+SG_MUL_VAL_ 1537 Range sdo_down_IDX 139296-139296;
+SG_MUL_VAL_ 1537 Safety_execute sdo_down_IDX 8225-8225;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8226-8226;
+SG_MUL_VAL_ 1537 Hall_sensor_bit_pattern sdo_down_IDX 73762-73762;
+SG_MUL_VAL_ 1537 Hall_noise_counter sdo_down_IDX 139298-139298;
+SG_MUL_VAL_ 1537 DC_current sdo_down_IDX 8227-8227;
+SG_MUL_VAL_ 1537 Electric_power sdo_down_IDX 8228-8228;
+SG_MUL_VAL_ 1537 Motor_temperature sdo_down_IDX 8229-8229;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8230-8230;
+SG_MUL_VAL_ 1537 Controller_temperature sdo_down_IDX 73766-73766;
+SG_MUL_VAL_ 1537 Capacitor_temperature sdo_down_IDX 139302-139302;
+SG_MUL_VAL_ 1537 IGBT_PH_1_temperature sdo_down_IDX 204838-204838;
+SG_MUL_VAL_ 1537 IGBT_PH_2_temperature sdo_down_IDX 270374-270374;
+SG_MUL_VAL_ 1537 IGBT_PH_3_temperature sdo_down_IDX 335910-335910;
+SG_MUL_VAL_ 1537 I2T sdo_down_IDX 401446-401446;
+SG_MUL_VAL_ 1537 IGBT_highest_die_temperature sdo_down_IDX 466982-466982;
+SG_MUL_VAL_ 1537 IGBT_die_LS_PH_1_temperature sdo_down_IDX 532518-532518;
+SG_MUL_VAL_ 1537 IGBT_die_HS_PH_1_temperature sdo_down_IDX 598054-598054;
+SG_MUL_VAL_ 1537 IGBT_die_LS_PH_2_temperature sdo_down_IDX 663590-663590;
+SG_MUL_VAL_ 1537 IGBT_die_HS_PH_2_temperature sdo_down_IDX 729126-729126;
+SG_MUL_VAL_ 1537 IGBT_die_LS_PH_3_temperature sdo_down_IDX 794662-794662;
+SG_MUL_VAL_ 1537 IGBT_die_HS_PH_3_temperature sdo_down_IDX 860198-860198;
+SG_MUL_VAL_ 1537 IGBT_total_loss sdo_down_IDX 925734-925734;
+SG_MUL_VAL_ 1537 Warnings sdo_down_IDX 8231-8231;
+SG_MUL_VAL_ 1537 Motor_current_limit sdo_down_IDX 8232-8232;
+SG_MUL_VAL_ 1537 Logic_power_supply_voltage sdo_down_IDX 8233-8233;
+SG_MUL_VAL_ 1537 Test_mode_command sdo_down_IDX 8241-8241;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8242-8242;
+SG_MUL_VAL_ 1537 Pulse_mode_counter sdo_down_IDX 73778-73778;
+SG_MUL_VAL_ 1537 Pulse_mode_nuber_of_pulses sdo_down_IDX 139314-139314;
+SG_MUL_VAL_ 1537 Motor_pole_pairs sdo_down_IDX 8243-8243;
+SG_MUL_VAL_ 1537 Motor_Type sdo_down_IDX 8244-8244;
+SG_MUL_VAL_ 1537 FOC_Calculation_Delay_Enable sdo_down_IDX 8249-8249;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8256-8256;
+SG_MUL_VAL_ 1537 Feedback_type sdo_down_IDX 73792-73792;
+SG_MUL_VAL_ 1537 Motor_phase_offset sdo_down_IDX 139328-139328;
+SG_MUL_VAL_ 1537 Feedback_direction sdo_down_IDX 204864-204864;
+SG_MUL_VAL_ 1537 Test_stepper_frequency sdo_down_IDX 270400-270400;
+SG_MUL_VAL_ 1537 Hall_configuration sdo_down_IDX 335936-335936;
+SG_MUL_VAL_ 1537 Feedback_resolution sdo_down_IDX 401472-401472;
+SG_MUL_VAL_ 1537 Electrical_angle_filter sdo_down_IDX 467008-467008;
+SG_MUL_VAL_ 1537 Motor_phase_offset_compensation sdo_down_IDX 532544-532544;
+SG_MUL_VAL_ 1537 Test_stepper_enable sdo_down_IDX 598080-598080;
+SG_MUL_VAL_ 1537 Auto_aligning_rotor_position_cur sdo_down_IDX 663616-663616;
+SG_MUL_VAL_ 1537 SinCos_zero_voltage_sin sdo_down_IDX 729152-729152;
+SG_MUL_VAL_ 1537 SinCos_zero_voltage_cos sdo_down_IDX 794688-794688;
+SG_MUL_VAL_ 1537 Feedback_Slave_Mode sdo_down_IDX 860224-860224;
+SG_MUL_VAL_ 1537 El_Angle_Triger_Out sdo_down_IDX 925760-925760;
+SG_MUL_VAL_ 1537 El_Angle_Triger_Value sdo_down_IDX 991296-991296;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8265-8265;
+SG_MUL_VAL_ 1537 Rotor_Angle_Observer_Input sdo_down_IDX 73801-73801;
+SG_MUL_VAL_ 1537 Rotor_Angle_Observer_Output sdo_down_IDX 139337-139337;
+SG_MUL_VAL_ 1537 Rotor_Angle_Observer_Error sdo_down_IDX 204873-204873;
+SG_MUL_VAL_ 1537 Maximum_controller_current sdo_down_IDX 8272-8272;
+SG_MUL_VAL_ 1537 Secondary_current_protection sdo_down_IDX 8273-8273;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8274-8274;
+SG_MUL_VAL_ 1537 Maximum_velocity sdo_down_IDX 73810-73810;
+SG_MUL_VAL_ 1537 Maximum_velocity_gain sdo_down_IDX 139346-139346;
+SG_MUL_VAL_ 1537 PMSM_Back_EMF_Ratio sdo_down_IDX 204882-204882;
+SG_MUL_VAL_ 1537 Velocity_Filtering_Enable sdo_down_IDX 270418-270418;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8275-8275;
+SG_MUL_VAL_ 1537 Maximum_DC_current sdo_down_IDX 73811-73811;
+SG_MUL_VAL_ 1537 Maximum_DC_current_gain sdo_down_IDX 139347-139347;
+SG_MUL_VAL_ 1537 Overvoltage_limit sdo_down_IDX 8276-8276;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8277-8277;
+SG_MUL_VAL_ 1537 Undervoltage_limit sdo_down_IDX 73813-73813;
+SG_MUL_VAL_ 1537 Undervoltage_gain sdo_down_IDX 139349-139349;
+SG_MUL_VAL_ 1537 Undervoltage_min_voltage sdo_down_IDX 204885-204885;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8279-8279;
+SG_MUL_VAL_ 1537 Motor_temperature_sensor_type sdo_down_IDX 73815-73815;
+SG_MUL_VAL_ 1537 Motor_maximum_temperature sdo_down_IDX 139351-139351;
+SG_MUL_VAL_ 1537 Motor_maximum_temperature_gain sdo_down_IDX 204887-204887;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8283-8283;
+SG_MUL_VAL_ 1537 Stall_protection_time sdo_down_IDX 73819-73819;
+SG_MUL_VAL_ 1537 Stall_protection_current sdo_down_IDX 139355-139355;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8288-8288;
+SG_MUL_VAL_ 1537 OC_out_1_enable sdo_down_IDX 73824-73824;
+SG_MUL_VAL_ 1537 OC_out_2_enable sdo_down_IDX 139360-139360;
+SG_MUL_VAL_ 1537 OC_out_1_Value sdo_down_IDX 204896-204896;
+SG_MUL_VAL_ 1537 OC_out_2_Value sdo_down_IDX 270432-270432;
+SG_MUL_VAL_ 1537 OC_out_1_Value_2 sdo_down_IDX 335968-335968;
+SG_MUL_VAL_ 1537 OC_out_2_Value_2 sdo_down_IDX 401504-401504;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8289-8289;
+SG_MUL_VAL_ 1537 Brake_nominal_voltage sdo_down_IDX 73825-73825;
+SG_MUL_VAL_ 1537 Brake_reduced_voltage sdo_down_IDX 139361-139361;
+SG_MUL_VAL_ 1537 Brake_Time_To_Reduce_Voltage sdo_down_IDX 204897-204897;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8304-8304;
+SG_MUL_VAL_ 1537 Throttle_voltage sdo_down_IDX 73840-73840;
+SG_MUL_VAL_ 1537 AUX_Voltage sdo_down_IDX 139376-139376;
+SG_MUL_VAL_ 1537 Brake_voltage sdo_down_IDX 204912-204912;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8306-8306;
+SG_MUL_VAL_ 1537 AD_resolver_sin sdo_down_IDX 73842-73842;
+SG_MUL_VAL_ 1537 AD_resolver_cos sdo_down_IDX 139378-139378;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8307-8307;
+SG_MUL_VAL_ 1537 AD_Sin_Cos_Sin sdo_down_IDX 73843-73843;
+SG_MUL_VAL_ 1537 AD_Sin_Cos_Cos sdo_down_IDX 139379-139379;
+SG_MUL_VAL_ 1537 Digital_inputs sdo_down_IDX 8310-8310;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8320-8320;
+SG_MUL_VAL_ 1537 Command sdo_down_IDX 73856-73856;
+SG_MUL_VAL_ 1537 Memory sdo_down_IDX 139392-139392;
+SG_MUL_VAL_ 1537 Sampling_rate sdo_down_IDX 204928-204928;
+SG_MUL_VAL_ 1537 Wrap_around sdo_down_IDX 270464-270464;
+SG_MUL_VAL_ 1537 Trigger_level sdo_down_IDX 336000-336000;
+SG_MUL_VAL_ 1537 Trigger_mode sdo_down_IDX 401536-401536;
+SG_MUL_VAL_ 1537 Trigger_source sdo_down_IDX 467072-467072;
+SG_MUL_VAL_ 1537 Pre_trigger_samples_requested sdo_down_IDX 532608-532608;
+SG_MUL_VAL_ 1537 Pre_trigger_samples_recorded sdo_down_IDX 598144-598144;
+SG_MUL_VAL_ 1537 Post_trigger_samples_recorded sdo_down_IDX 663680-663680;
+SG_MUL_VAL_ 1537 Status sdo_down_IDX 729216-729216;
+SG_MUL_VAL_ 1537 Record_number sdo_down_IDX 794752-794752;
+SG_MUL_VAL_ 1537 Memory_capacity sdo_down_IDX 925824-925824;
+SG_MUL_VAL_ 1537 Trigger_source_Index sdo_down_IDX 991360-991360;
+SG_MUL_VAL_ 1537 Trigger_source_Subindex sdo_down_IDX 1056896-1056896;
+SG_MUL_VAL_ 1537 Configuration_Number sdo_down_IDX 1122432-1122432;
+SG_MUL_VAL_ 1537 Record_channel sdo_down_IDX 1187968-1187968;
+SG_MUL_VAL_ 1537 Record_step sdo_down_IDX 1253504-1253504;
+SG_MUL_VAL_ 1537 Number_of_configurations sdo_down_IDX 1319040-1319040;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8321-8321;
+SG_MUL_VAL_ 1537 Channel_count sdo_down_IDX 73857-73857;
+SG_MUL_VAL_ 1537 Selected_channel sdo_down_IDX 139393-139393;
+SG_MUL_VAL_ 1537 Channel_index sdo_down_IDX 204929-204929;
+SG_MUL_VAL_ 1537 Channel_subindex sdo_down_IDX 270465-270465;
+SG_MUL_VAL_ 1537 Channel_configuration_status sdo_down_IDX 336001-336001;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8322-8322;
+SG_MUL_VAL_ 1537 FOC_frequency sdo_down_IDX 73858-73858;
+SG_MUL_VAL_ 1537 Speed_loop_frequency sdo_down_IDX 139394-139394;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8323-8323;
+SG_MUL_VAL_ 1537 Osci_test_signal_1 sdo_down_IDX 73859-73859;
+SG_MUL_VAL_ 1537 Osci_test_signal_2 sdo_down_IDX 139395-139395;
+SG_MUL_VAL_ 1537 Osci_test_signal_3 sdo_down_IDX 204931-204931;
+SG_MUL_VAL_ 1537 Osci_test_signal_4 sdo_down_IDX 270467-270467;
+SG_MUL_VAL_ 1537 Allow_PDO_COB_ID_change sdo_down_IDX 8324-8324;
+SG_MUL_VAL_ 1537 Actual_FOC_Angle sdo_down_IDX 8325-8325;
+SG_MUL_VAL_ 1537 Velocity_actual_value_averaged sdo_down_IDX 8326-8326;
+SG_MUL_VAL_ 1537 Velocity_actual_value_filtered sdo_down_IDX 8327-8327;
+SG_MUL_VAL_ 1537 Current_Flux_Actual_Value sdo_down_IDX 8336-8336;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 8337-8337;
+SG_MUL_VAL_ 1537 Induction_Motor_Rotor_Time_Const sdo_down_IDX 73873-73873;
+SG_MUL_VAL_ 1537 Induction_Motor_Rated_Velocity sdo_down_IDX 139409-139409;
+SG_MUL_VAL_ 1537 Induction_Motor_Flux_Control_mod sdo_down_IDX 204945-204945;
+SG_MUL_VAL_ 1537 Induction_Motor_V_to_Hz_ratio sdo_down_IDX 270481-270481;
+SG_MUL_VAL_ 1537 Induction_Motor_Rated_Flux_Curre sdo_down_IDX 336017-336017;
+SG_MUL_VAL_ 1537 Induction_control_parameter_flux sdo_down_IDX 401553-401553;
+SG_MUL_VAL_ 1537 Induction_control_parameter_flux sdo_down_IDX 467089-467089;
+SG_MUL_VAL_ 1537 Number_of_Entries sdo_down_IDX 9472-9472;
+SG_MUL_VAL_ 1537 Gate_Driver_Error_Num_1 sdo_down_IDX 75008-75008;
+SG_MUL_VAL_ 1537 Gate_Driver_Error_Num_2 sdo_down_IDX 140544-140544;
+SG_MUL_VAL_ 1537 Gate_Driver_Error_Num_3 sdo_down_IDX 206080-206080;
+SG_MUL_VAL_ 1537 Gate_Driver_Error_Num_4 sdo_down_IDX 271616-271616;
+SG_MUL_VAL_ 1537 Gate_Driver_Error_Num_5 sdo_down_IDX 337152-337152;
+SG_MUL_VAL_ 1537 Gate_Driver_Error_Num_6 sdo_down_IDX 402688-402688;
+SG_MUL_VAL_ 1537 Number_of_Entries sdo_down_IDX 9728-9728;
+SG_MUL_VAL_ 1537 Velocity_Min sdo_down_IDX 75264-75264;
+SG_MUL_VAL_ 1537 Velocity_Ramp sdo_down_IDX 140800-140800;
+SG_MUL_VAL_ 1537 Number_of_Entries sdo_down_IDX 9729-9729;
+SG_MUL_VAL_ 1537 Position_Home sdo_down_IDX 75265-75265;
+SG_MUL_VAL_ 1537 Position_Hysteresis sdo_down_IDX 140801-140801;
+SG_MUL_VAL_ 1537 Position_Save_Home sdo_down_IDX 206337-206337;
+SG_MUL_VAL_ 1537 Position_Factor_Numerator sdo_down_IDX 271873-271873;
+SG_MUL_VAL_ 1537 Number_of_Entries sdo_down_IDX 9730-9730;
+SG_MUL_VAL_ 1537 Hold_Current_Start sdo_down_IDX 75266-75266;
+SG_MUL_VAL_ 1537 Hold_Current_Max sdo_down_IDX 140802-140802;
+SG_MUL_VAL_ 1537 Hold_Current_Ramp sdo_down_IDX 206338-206338;
+SG_MUL_VAL_ 1537 Number_of_Entries sdo_down_IDX 9731-9731;
+SG_MUL_VAL_ 1537 State sdo_down_IDX 75267-75267;
+SG_MUL_VAL_ 1537 Reached_Home sdo_down_IDX 140803-140803;
+SG_MUL_VAL_ 1537 Position_Value sdo_down_IDX 206339-206339;
+SG_MUL_VAL_ 1537 Position_Error sdo_down_IDX 271875-271875;
+SG_MUL_VAL_ 1537 Select_Application sdo_down_IDX 12288-12288;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12289-12289;
+SG_MUL_VAL_ 1537 APP_1_Control_Mode sdo_down_IDX 77825-77825;
+SG_MUL_VAL_ 1537 APP_1_Status sdo_down_IDX 143361-143361;
+SG_MUL_VAL_ 1537 APP_1_Error_Code sdo_down_IDX 208897-208897;
+SG_MUL_VAL_ 1537 APP_1_Number_Of_Contolled_Drives sdo_down_IDX 274433-274433;
+SG_MUL_VAL_ 1537 APP_1_Drive1_NodeID sdo_down_IDX 339969-339969;
+SG_MUL_VAL_ 1537 APP_1_Drive2_NodeID sdo_down_IDX 405505-405505;
+SG_MUL_VAL_ 1537 APP_1_Drive3_NodeID sdo_down_IDX 471041-471041;
+SG_MUL_VAL_ 1537 APP_1_Drive4_NodeID sdo_down_IDX 536577-536577;
+SG_MUL_VAL_ 1537 APP_1_Drive1_Dirrection_Invert_E sdo_down_IDX 602113-602113;
+SG_MUL_VAL_ 1537 APP_1_Drive2_Dirrection_Invert_E sdo_down_IDX 667649-667649;
+SG_MUL_VAL_ 1537 APP_1_Drive3_Dirrection_Invert_E sdo_down_IDX 733185-733185;
+SG_MUL_VAL_ 1537 APP_1_Drive4_Dirrection_Invert_E sdo_down_IDX 798721-798721;
+SG_MUL_VAL_ 1537 APP_1_Disable_PWM_On_Stop_Enable sdo_down_IDX 864257-864257;
+SG_MUL_VAL_ 1537 APP_1_Disable_PWM_On_Stop_Delay sdo_down_IDX 929793-929793;
+SG_MUL_VAL_ 1537 APP_1_Disable_PMW_On_Stop_Veloci sdo_down_IDX 995329-995329;
+SG_MUL_VAL_ 1537 APP_1_Max_Fw_Velocity sdo_down_IDX 1060865-1060865;
+SG_MUL_VAL_ 1537 APP_1_Max_Rw_Velocity sdo_down_IDX 1126401-1126401;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12291-12291;
+SG_MUL_VAL_ 1537 APP_1_Din1_Function sdo_down_IDX 77827-77827;
+SG_MUL_VAL_ 1537 APP_1_Din2_Function sdo_down_IDX 143363-143363;
+SG_MUL_VAL_ 1537 APP_1_Din3_Function sdo_down_IDX 208899-208899;
+SG_MUL_VAL_ 1537 APP_1_Din4_Function sdo_down_IDX 274435-274435;
+SG_MUL_VAL_ 1537 APP_1_Din5_Function sdo_down_IDX 339971-339971;
+SG_MUL_VAL_ 1537 APP_1_Din6_Function sdo_down_IDX 405507-405507;
+SG_MUL_VAL_ 1537 APP_1_Invert_Din_Polarity sdo_down_IDX 471043-471043;
+SG_MUL_VAL_ 1537 APP_1_Dout1_Function sdo_down_IDX 536579-536579;
+SG_MUL_VAL_ 1537 APP_1_Dout2_Function sdo_down_IDX 602115-602115;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Type sdo_down_IDX 667651-667651;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Positive_Min_Volt sdo_down_IDX 733187-733187;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Positive_Max_Volt sdo_down_IDX 798723-798723;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Negative_Min_Volt sdo_down_IDX 864259-864259;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Negative_Max_Volt sdo_down_IDX 929795-929795;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Min_Out_Value sdo_down_IDX 995331-995331;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Max_Out_Value sdo_down_IDX 1060867-1060867;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Wire_Brake_Enable sdo_down_IDX 1126403-1126403;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Wire_Brake_Min_Vo sdo_down_IDX 1191939-1191939;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Wire_Brake_Max_Vo sdo_down_IDX 1257475-1257475;
+SG_MUL_VAL_ 1537 APP_1_Throttle_Invert sdo_down_IDX 1323011-1323011;
+SG_MUL_VAL_ 1537 APP_1_PWM_Pulse_Width sdo_down_IDX 1388547-1388547;
+SG_MUL_VAL_ 1537 APP_1_Servo_PWM_Valid_Data_Delay sdo_down_IDX 1454083-1454083;
+SG_MUL_VAL_ 1537 APP_1_Pump_Control_Threshold_Tem sdo_down_IDX 1519619-1519619;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12292-12292;
+SG_MUL_VAL_ 1537 APP_1_Velocity_Feedback_Mode sdo_down_IDX 77828-77828;
+SG_MUL_VAL_ 1537 APP_1_Velocity_Feedback_Drive_Nu sdo_down_IDX 143364-143364;
+SG_MUL_VAL_ 1537 APP_1_Velocity_Regulator_P sdo_down_IDX 208900-208900;
+SG_MUL_VAL_ 1537 APP_1_Velocity_Regulator_I sdo_down_IDX 274436-274436;
+SG_MUL_VAL_ 1537 APP_1_Velocity_Regulator_Max_Dri sdo_down_IDX 339972-339972;
+SG_MUL_VAL_ 1537 APP_1_Velocity_Regulator_Max_Reg sdo_down_IDX 405508-405508;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12293-12293;
+SG_MUL_VAL_ 1537 APP_1_Brake_Mode sdo_down_IDX 77829-77829;
+SG_MUL_VAL_ 1537 APP_1_Brake_Minimum_Velocity sdo_down_IDX 143365-143365;
+SG_MUL_VAL_ 1537 APP_1_Brake_Digital_Current sdo_down_IDX 208901-208901;
+SG_MUL_VAL_ 1537 APP_1_Brake_Linear_Current sdo_down_IDX 274437-274437;
+SG_MUL_VAL_ 1537 APP_1_Brake_Potentiometer_Minimu sdo_down_IDX 339973-339973;
+SG_MUL_VAL_ 1537 APP_1_Brake_Potentiometer_Maximu sdo_down_IDX 405509-405509;
+SG_MUL_VAL_ 1537 APP_1_Brake_Current sdo_down_IDX 471045-471045;
+SG_MUL_VAL_ 1537 APP_1_Regeneration_Active sdo_down_IDX 536581-536581;
+SG_MUL_VAL_ 1537 APP_1_Constant_Regeneration_Curr sdo_down_IDX 602117-602117;
+SG_MUL_VAL_ 1537 APP_1_Constant_Regeneration_Curr sdo_down_IDX 667653-667653;
+SG_MUL_VAL_ 1537 APP_1_Constant_Regeneration_Mini sdo_down_IDX 733189-733189;
+SG_MUL_VAL_ 1537 APP_1_Constant_Regeneration_Actu sdo_down_IDX 798725-798725;
+SG_MUL_VAL_ 1537 APP_1_Brake_And_Regeneration_Zer sdo_down_IDX 864261-864261;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12294-12294;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Enable sdo_down_IDX 77830-77830;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Active sdo_down_IDX 143366-143366;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Select_Voltage_ sdo_down_IDX 208902-208902;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Select_Voltage_ sdo_down_IDX 274438-274438;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12295-12295;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Normal_Max_Thro sdo_down_IDX 77831-77831;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Normal_Max_Driv sdo_down_IDX 143367-143367;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Normal_Max_Rege sdo_down_IDX 208903-208903;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Normal_Max_Batt sdo_down_IDX 274439-274439;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Normal_Max_Line sdo_down_IDX 339975-339975;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Normal_Max_Digi sdo_down_IDX 405511-405511;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Normal_Max_Velo sdo_down_IDX 471047-471047;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Normal_Max_Cons sdo_down_IDX 536583-536583;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12296-12296;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Eco_Max_Throttl sdo_down_IDX 77832-77832;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Eco_Max_Drive_C sdo_down_IDX 143368-143368;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Eco_Max_Regener sdo_down_IDX 208904-208904;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Eco_Max_Battery sdo_down_IDX 274440-274440;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Eco_Max_Linear_ sdo_down_IDX 339976-339976;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Eco_Max_Digital sdo_down_IDX 405512-405512;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Eco_Max_Velocit sdo_down_IDX 471048-471048;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Eco_Max_Constan sdo_down_IDX 536584-536584;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12297-12297;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Sport_Max_Throt sdo_down_IDX 77833-77833;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Sport_Max_Drive sdo_down_IDX 143369-143369;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Sport_Max_Regen sdo_down_IDX 208905-208905;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Sport_Max_Batte sdo_down_IDX 274441-274441;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Sport_Max_Linea sdo_down_IDX 339977-339977;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Sport_Max_Digit sdo_down_IDX 405513-405513;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Sport_Max_Veloc sdo_down_IDX 471049-471049;
+SG_MUL_VAL_ 1537 APP_1_Power_Mode_Sport_Max_Const sdo_down_IDX 536585-536585;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12298-12298;
+SG_MUL_VAL_ 1537 APP_1_Maximum_DC_Current sdo_down_IDX 77834-77834;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 12299-12299;
+SG_MUL_VAL_ 1537 APP_1_Precharge_Enable sdo_down_IDX 77835-77835;
+SG_MUL_VAL_ 1537 APP_1_Precharge_Min_Voltage sdo_down_IDX 143371-143371;
+SG_MUL_VAL_ 1537 APP_1_Precharge_Max_Time sdo_down_IDX 208907-208907;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 20480-20480;
+SG_MUL_VAL_ 1537 Test_CMD sdo_down_IDX 86016-86016;
+SG_MUL_VAL_ 1537 Test_Status sdo_down_IDX 151552-151552;
+SG_MUL_VAL_ 1537 Test_Result_1 sdo_down_IDX 217088-217088;
+SG_MUL_VAL_ 1537 Test_Result_2 sdo_down_IDX 282624-282624;
+SG_MUL_VAL_ 1537 Test_Result_3 sdo_down_IDX 348160-348160;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 24574-24574;
+SG_MUL_VAL_ 1537 Control_board_version sdo_down_IDX 90110-90110;
+SG_MUL_VAL_ 1537 Dummy_mapping_object sdo_down_IDX 24575-24575;
+SG_MUL_VAL_ 1537 Abort_connection_option_code sdo_down_IDX 24583-24583;
+SG_MUL_VAL_ 1537 Error_code sdo_down_IDX 24639-24639;
+SG_MUL_VAL_ 1537 Controlword sdo_down_IDX 24640-24640;
+SG_MUL_VAL_ 1537 Statusword sdo_down_IDX 24641-24641;
+SG_MUL_VAL_ 1537 Quick_stop_option_code sdo_down_IDX 24666-24666;
+SG_MUL_VAL_ 1537 Shutdown_option_code sdo_down_IDX 24667-24667;
+SG_MUL_VAL_ 1537 Disable_operation_option_code sdo_down_IDX 24668-24668;
+SG_MUL_VAL_ 1537 Fault_reaction_option_code sdo_down_IDX 24670-24670;
+SG_MUL_VAL_ 1537 Modes_of_operation sdo_down_IDX 24672-24672;
+SG_MUL_VAL_ 1537 Modes_of_operation_display sdo_down_IDX 24673-24673;
+SG_MUL_VAL_ 1537 Position_actual_value_internal sdo_down_IDX 24675-24675;
+SG_MUL_VAL_ 1537 Position_actual_value sdo_down_IDX 24676-24676;
+SG_MUL_VAL_ 1537 Following_error_window sdo_down_IDX 24677-24677;
+SG_MUL_VAL_ 1537 Position_window sdo_down_IDX 24679-24679;
+SG_MUL_VAL_ 1537 Velocity_sensor_actual_value sdo_down_IDX 24681-24681;
+SG_MUL_VAL_ 1537 Velocity_actual_value sdo_down_IDX 24684-24684;
+SG_MUL_VAL_ 1537 Target_torque sdo_down_IDX 24689-24689;
+SG_MUL_VAL_ 1537 Motor_rated_current sdo_down_IDX 24693-24693;
+SG_MUL_VAL_ 1537 Motor_rated_torque sdo_down_IDX 24694-24694;
+SG_MUL_VAL_ 1537 Torque_actual_value sdo_down_IDX 24695-24695;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 24696-24696;
+SG_MUL_VAL_ 1537 Current_Torque_Actual_Value sdo_down_IDX 90232-90232;
+SG_MUL_VAL_ 1537 Current_Torque_Actual_Value_mA sdo_down_IDX 155768-155768;
+SG_MUL_VAL_ 1537 DC_link_circuit_voltage sdo_down_IDX 24697-24697;
+SG_MUL_VAL_ 1537 Target_position sdo_down_IDX 24698-24698;
+SG_MUL_VAL_ 1537 Polarity sdo_down_IDX 24702-24702;
+SG_MUL_VAL_ 1537 Position_factor_number_of_entrie sdo_down_IDX 24723-24723;
+SG_MUL_VAL_ 1537 Position_factor_Numerator sdo_down_IDX 90259-90259;
+SG_MUL_VAL_ 1537 Position_factor_Divisor sdo_down_IDX 155795-155795;
+SG_MUL_VAL_ 1537 Velocity_encoder_factor_number_o sdo_down_IDX 24724-24724;
+SG_MUL_VAL_ 1537 Velocity_encoder_factor_Numerato sdo_down_IDX 90260-90260;
+SG_MUL_VAL_ 1537 Velocity_encoder_factor_Divisor sdo_down_IDX 155796-155796;
+SG_MUL_VAL_ 1537 Number_of_entries sdo_down_IDX 24822-24822;
+SG_MUL_VAL_ 1537 Current_control_torque_regulator sdo_down_IDX 90358-90358;
+SG_MUL_VAL_ 1537 Current_control_torque_regulator sdo_down_IDX 155894-155894;
+SG_MUL_VAL_ 1537 Current_control_flux_regulator_P sdo_down_IDX 221430-221430;
+SG_MUL_VAL_ 1537 Current_control_flux_regulator_I sdo_down_IDX 286966-286966;
+SG_MUL_VAL_ 1537 Current_control_regulator_ramp sdo_down_IDX 352502-352502;
+SG_MUL_VAL_ 1537 Velocity_control_parameter_set_n sdo_down_IDX 24825-24825;
+SG_MUL_VAL_ 1537 Velocity_control_regulator_P_Gai sdo_down_IDX 90361-90361;
+SG_MUL_VAL_ 1537 Velocity_control_regulator_I_Gai sdo_down_IDX 155897-155897;
+SG_MUL_VAL_ 1537 Position_control_parameter_set_n sdo_down_IDX 24827-24827;
+SG_MUL_VAL_ 1537 Position_Control_Regulator_P_Gai sdo_down_IDX 90363-90363;
+SG_MUL_VAL_ 1537 Position_Control_Regulator_I_Gai sdo_down_IDX 155899-155899;
+SG_MUL_VAL_ 1537 Position_Control_Regulator_D_Gai sdo_down_IDX 221435-221435;
+SG_MUL_VAL_ 1537 Nominal_position sdo_down_IDX 286971-286971;
+SG_MUL_VAL_ 1537 Low_Pass_Filter_Cut_Off_Frequenc sdo_down_IDX 352507-352507;
+SG_MUL_VAL_ 1537 Position_Control_Regulator_Outpu sdo_down_IDX 418043-418043;
+SG_MUL_VAL_ 1537 Position_Control_Regulator_B_Gai sdo_down_IDX 483579-483579;
+SG_MUL_VAL_ 1537 Target_velocity sdo_down_IDX 24831-24831;
+SG_MUL_VAL_ 1537 Supported_drive_modes sdo_down_IDX 25858-25858;
+SG_MUL_VAL_ 1409 sdo_up_IDX sdo_up_CMD 2-2;
+SG_MUL_VAL_ 1409 Device_Type sdo_down_IDX 4096-4096;
+SG_MUL_VAL_ 1409 Error_Register sdo_down_IDX 4097-4097;
+SG_MUL_VAL_ 1409 Number_of_Errors sdo_down_IDX 4099-4099;
+SG_MUL_VAL_ 1409 Standard_Error_Field sdo_down_IDX 69635-69635;
+SG_MUL_VAL_ 1409 Standard_Error_Field sdo_down_IDX 135171-135171;
+SG_MUL_VAL_ 1409 Standard_Error_Field sdo_down_IDX 200707-200707;
+SG_MUL_VAL_ 1409 Standard_Error_Field sdo_down_IDX 266243-266243;
+SG_MUL_VAL_ 1409 Standard_Error_Field sdo_down_IDX 331779-331779;
+SG_MUL_VAL_ 1409 COB_ID_SYNC sdo_down_IDX 4101-4101;
+SG_MUL_VAL_ 1409 Communication_Cycle_Period sdo_down_IDX 4102-4102;
+SG_MUL_VAL_ 1409 Node_ID sdo_down_IDX 4107-4107;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 4112-4112;
+SG_MUL_VAL_ 1409 Save_all_Parameters sdo_down_IDX 69648-69648;
+SG_MUL_VAL_ 1409 Save_Communication_Parameters sdo_down_IDX 135184-135184;
+SG_MUL_VAL_ 1409 Save_Application_Parameters sdo_down_IDX 200720-200720;
+SG_MUL_VAL_ 1409 Save_Manufacturer_Defined_Parame sdo_down_IDX 266256-266256;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 4113-4113;
+SG_MUL_VAL_ 1409 Restore_all_Default_Parameters sdo_down_IDX 69649-69649;
+SG_MUL_VAL_ 1409 Restore_Communication_Default_Pa sdo_down_IDX 135185-135185;
+SG_MUL_VAL_ 1409 Restore_Application_Default_Para sdo_down_IDX 200721-200721;
+SG_MUL_VAL_ 1409 Restore_Manufacturer_Defined_Def sdo_down_IDX 266257-266257;
+SG_MUL_VAL_ 1409 COB_ID_EMCY sdo_down_IDX 4116-4116;
+SG_MUL_VAL_ 1409 Inhibit_Time_Emergency sdo_down_IDX 4117-4117;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 4118-4118;
+SG_MUL_VAL_ 1409 Consumer_Heartbeat_Time sdo_down_IDX 69654-69654;
+SG_MUL_VAL_ 1409 Producer_Heartbeat_Time sdo_down_IDX 4119-4119;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 4120-4120;
+SG_MUL_VAL_ 1409 Vendor_Id sdo_down_IDX 69656-69656;
+SG_MUL_VAL_ 1409 Product_Code sdo_down_IDX 135192-135192;
+SG_MUL_VAL_ 1409 Revision_number sdo_down_IDX 200728-200728;
+SG_MUL_VAL_ 1409 Serial_number sdo_down_IDX 266264-266264;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 4137-4137;
+SG_MUL_VAL_ 1409 Communication_Error sdo_down_IDX 69673-69673;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 4608-4608;
+SG_MUL_VAL_ 1409 COB_ID_Client_to_Server sdo_down_IDX 70144-70144;
+SG_MUL_VAL_ 1409 COB_ID_Server_to_Client sdo_down_IDX 135680-135680;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 4736-4736;
+SG_MUL_VAL_ 1409 COB_ID_Client_to_Server sdo_down_IDX 70272-70272;
+SG_MUL_VAL_ 1409 COB_ID_Server_to_Client sdo_down_IDX 135808-135808;
+SG_MUL_VAL_ 1409 Node_ID_of_the_SDO_Server sdo_down_IDX 201344-201344;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 5120-5120;
+SG_MUL_VAL_ 1409 COB_ID sdo_down_IDX 70656-70656;
+SG_MUL_VAL_ 1409 Transmission_Type sdo_down_IDX 136192-136192;
+SG_MUL_VAL_ 1409 Inhibit_Time sdo_down_IDX 201728-201728;
+SG_MUL_VAL_ 1409 Compatibility_Entry sdo_down_IDX 267264-267264;
+SG_MUL_VAL_ 1409 Event_Timer sdo_down_IDX 332800-332800;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 5121-5121;
+SG_MUL_VAL_ 1409 COB_ID sdo_down_IDX 70657-70657;
+SG_MUL_VAL_ 1409 Transmission_Type sdo_down_IDX 136193-136193;
+SG_MUL_VAL_ 1409 Inhibit_Time sdo_down_IDX 201729-201729;
+SG_MUL_VAL_ 1409 Compatibility_Entry sdo_down_IDX 267265-267265;
+SG_MUL_VAL_ 1409 Event_Timer sdo_down_IDX 332801-332801;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 5122-5122;
+SG_MUL_VAL_ 1409 COB_ID sdo_down_IDX 70658-70658;
+SG_MUL_VAL_ 1409 Transmission_Type sdo_down_IDX 136194-136194;
+SG_MUL_VAL_ 1409 Inhibit_Time sdo_down_IDX 201730-201730;
+SG_MUL_VAL_ 1409 Compatibility_Entry sdo_down_IDX 267266-267266;
+SG_MUL_VAL_ 1409 Event_Timer sdo_down_IDX 332802-332802;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 5123-5123;
+SG_MUL_VAL_ 1409 COB_ID sdo_down_IDX 70659-70659;
+SG_MUL_VAL_ 1409 Transmission_Type sdo_down_IDX 136195-136195;
+SG_MUL_VAL_ 1409 Inhibit_Time sdo_down_IDX 201731-201731;
+SG_MUL_VAL_ 1409 Compatibility_Entry sdo_down_IDX 267267-267267;
+SG_MUL_VAL_ 1409 Event_Timer sdo_down_IDX 332803-332803;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 5632-5632;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 71168-71168;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 136704-136704;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 202240-202240;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 267776-267776;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 333312-333312;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 398848-398848;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 464384-464384;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 529920-529920;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 5633-5633;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 71169-71169;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 136705-136705;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 202241-202241;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 267777-267777;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 333313-333313;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 398849-398849;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 464385-464385;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 529921-529921;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 5634-5634;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 71170-71170;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 136706-136706;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 202242-202242;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 267778-267778;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 333314-333314;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 398850-398850;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 464386-464386;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 529922-529922;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 5635-5635;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 71171-71171;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 136707-136707;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 202243-202243;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 267779-267779;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 333315-333315;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 398851-398851;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 464387-464387;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 529923-529923;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 6144-6144;
+SG_MUL_VAL_ 1409 COB_ID sdo_down_IDX 71680-71680;
+SG_MUL_VAL_ 1409 Transmission_Type sdo_down_IDX 137216-137216;
+SG_MUL_VAL_ 1409 Inhibit_Time sdo_down_IDX 202752-202752;
+SG_MUL_VAL_ 1409 Compatibility_Entry sdo_down_IDX 268288-268288;
+SG_MUL_VAL_ 1409 Event_Timer sdo_down_IDX 333824-333824;
+SG_MUL_VAL_ 1409 SYNC_start_value sdo_down_IDX 399360-399360;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 6145-6145;
+SG_MUL_VAL_ 1409 COB_ID sdo_down_IDX 71681-71681;
+SG_MUL_VAL_ 1409 Transmission_Type sdo_down_IDX 137217-137217;
+SG_MUL_VAL_ 1409 Inhibit_Time sdo_down_IDX 202753-202753;
+SG_MUL_VAL_ 1409 Compatibility_Entry sdo_down_IDX 268289-268289;
+SG_MUL_VAL_ 1409 Event_Timer sdo_down_IDX 333825-333825;
+SG_MUL_VAL_ 1409 SYNC_start_value sdo_down_IDX 399361-399361;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 6146-6146;
+SG_MUL_VAL_ 1409 COB_ID sdo_down_IDX 71682-71682;
+SG_MUL_VAL_ 1409 Transmission_Type sdo_down_IDX 137218-137218;
+SG_MUL_VAL_ 1409 Inhibit_Time sdo_down_IDX 202754-202754;
+SG_MUL_VAL_ 1409 Compatibility_Entry sdo_down_IDX 268290-268290;
+SG_MUL_VAL_ 1409 Event_Timer sdo_down_IDX 333826-333826;
+SG_MUL_VAL_ 1409 SYNC_start_value sdo_down_IDX 399362-399362;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 6147-6147;
+SG_MUL_VAL_ 1409 COB_ID sdo_down_IDX 71683-71683;
+SG_MUL_VAL_ 1409 Transmission_Type sdo_down_IDX 137219-137219;
+SG_MUL_VAL_ 1409 Inhibit_Time sdo_down_IDX 202755-202755;
+SG_MUL_VAL_ 1409 Compatibility_Entry sdo_down_IDX 268291-268291;
+SG_MUL_VAL_ 1409 Event_Timer sdo_down_IDX 333827-333827;
+SG_MUL_VAL_ 1409 SYNC_start_value sdo_down_IDX 399363-399363;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 6656-6656;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 72192-72192;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 137728-137728;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 203264-203264;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 268800-268800;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 334336-334336;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 399872-399872;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 465408-465408;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 530944-530944;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 6657-6657;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 72193-72193;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 137729-137729;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 203265-203265;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 268801-268801;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 334337-334337;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 399873-399873;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 465409-465409;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 530945-530945;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 6658-6658;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 72194-72194;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 137730-137730;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 203266-203266;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 268802-268802;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 334338-334338;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 399874-399874;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 465410-465410;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 530946-530946;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 6659-6659;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 72195-72195;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 137731-137731;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 203267-203267;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 268803-268803;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 334339-334339;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 399875-399875;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 465411-465411;
+SG_MUL_VAL_ 1409 PDO_Mapping_Entry sdo_down_IDX 530947-530947;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8016-8016;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8017-8017;
+SG_MUL_VAL_ 1409 Program_Control_Status_1 sdo_down_IDX 73553-73553;
+SG_MUL_VAL_ 1409 Program_Control_Status_2 sdo_down_IDX 139089-139089;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8192-8192;
+SG_MUL_VAL_ 1409 Password sdo_down_IDX 73728-73728;
+SG_MUL_VAL_ 1409 Status sdo_down_IDX 139264-139264;
+SG_MUL_VAL_ 1409 New_Password sdo_down_IDX 204800-204800;
+SG_MUL_VAL_ 1409 CAN_Bitrate sdo_down_IDX 8193-8193;
+SG_MUL_VAL_ 1409 RS232_baudrate sdo_down_IDX 8194-8194;
+SG_MUL_VAL_ 1409 CPU_Load sdo_down_IDX 8195-8195;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8204-8204;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Unsigne sdo_down_IDX 73740-73740;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Unsigne sdo_down_IDX 139276-139276;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Signed_ sdo_down_IDX 204812-204812;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Signed_ sdo_down_IDX 270348-270348;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Unsigne sdo_down_IDX 335884-335884;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Unsigne sdo_down_IDX 401420-401420;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Signed_ sdo_down_IDX 466956-466956;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Signed_ sdo_down_IDX 532492-532492;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Unsigne sdo_down_IDX 598028-598028;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Unsigne sdo_down_IDX 663564-663564;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Signed_ sdo_down_IDX 729100-729100;
+SG_MUL_VAL_ 1409 Custom_Persistent_Memory_Signed_ sdo_down_IDX 794636-794636;
+SG_MUL_VAL_ 1409 Phase_A_current sdo_down_IDX 8207-8207;
+SG_MUL_VAL_ 1409 Phase_B_current sdo_down_IDX 8208-8208;
+SG_MUL_VAL_ 1409 Current_demand sdo_down_IDX 8218-8218;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8219-8219;
+SG_MUL_VAL_ 1409 Torque_regulator_requested sdo_down_IDX 73755-73755;
+SG_MUL_VAL_ 1409 Torque_regulator_actual sdo_down_IDX 139291-139291;
+SG_MUL_VAL_ 1409 Torque_regulator_out sdo_down_IDX 204827-204827;
+SG_MUL_VAL_ 1409 Torque_regulator_error sdo_down_IDX 270363-270363;
+SG_MUL_VAL_ 1409 Calculated_Fly_On_Torque_regulat sdo_down_IDX 335899-335899;
+SG_MUL_VAL_ 1409 Calculated_Fly_On_Torque_regulat sdo_down_IDX 401435-401435;
+SG_MUL_VAL_ 1409 Calculated_Fly_On_Torque_Integra sdo_down_IDX 466971-466971;
+SG_MUL_VAL_ 1409 Calculated_Feed_FWD_Const sdo_down_IDX 532507-532507;
+SG_MUL_VAL_ 1409 Calculated_Torque_Feed_FWD sdo_down_IDX 598043-598043;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8220-8220;
+SG_MUL_VAL_ 1409 Flux_regulator_requested sdo_down_IDX 73756-73756;
+SG_MUL_VAL_ 1409 Flux_regulator_actual sdo_down_IDX 139292-139292;
+SG_MUL_VAL_ 1409 Flux_regulator_out sdo_down_IDX 204828-204828;
+SG_MUL_VAL_ 1409 Flux_regulator_error sdo_down_IDX 270364-270364;
+SG_MUL_VAL_ 1409 Calculated_Flux_Feed_FWD sdo_down_IDX 335900-335900;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8221-8221;
+SG_MUL_VAL_ 1409 PMSM_Flux_Mode sdo_down_IDX 73757-73757;
+SG_MUL_VAL_ 1409 PMSM_Flux_Manual_Current sdo_down_IDX 139293-139293;
+SG_MUL_VAL_ 1409 Flux_Actual_Current_mA sdo_down_IDX 204829-204829;
+SG_MUL_VAL_ 1409 Flux_Actual_Current sdo_down_IDX 270365-270365;
+SG_MUL_VAL_ 1409 Flux_I_Increment sdo_down_IDX 335901-335901;
+SG_MUL_VAL_ 1409 Flux_pulse_mode_counter sdo_down_IDX 401437-401437;
+SG_MUL_VAL_ 1409 Flux_pulse_mode_num_of_pulses sdo_down_IDX 466973-466973;
+SG_MUL_VAL_ 1409 Flux_Off_At_Zero_Torque sdo_down_IDX 532509-532509;
+SG_MUL_VAL_ 1409 Flux_Max_Weakening_Current sdo_down_IDX 598045-598045;
+SG_MUL_VAL_ 1409 Motor_Induction sdo_down_IDX 663581-663581;
+SG_MUL_VAL_ 1409 Field_Weakening_Point sdo_down_IDX 729117-729117;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_P_Gain sdo_down_IDX 794653-794653;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_I_Gain sdo_down_IDX 860189-860189;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_Reques sdo_down_IDX 925725-925725;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_Actual sdo_down_IDX 991261-991261;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_Out sdo_down_IDX 1056797-1056797;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_Error sdo_down_IDX 1122333-1122333;
+SG_MUL_VAL_ 1409 Field_Weakening_Id_Limit sdo_down_IDX 1187869-1187869;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_Enable sdo_down_IDX 1253405-1253405;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_Flux_G sdo_down_IDX 1318941-1318941;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_Flux_G sdo_down_IDX 1384477-1384477;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_Flux_L sdo_down_IDX 1450013-1450013;
+SG_MUL_VAL_ 1409 Field_Weakening_Regulator_Flux_L sdo_down_IDX 1515549-1515549;
+SG_MUL_VAL_ 1409 MTPA_Polynom_a2 sdo_down_IDX 1581085-1581085;
+SG_MUL_VAL_ 1409 MTPA_Polynom_a1 sdo_down_IDX 1646621-1646621;
+SG_MUL_VAL_ 1409 MTPA_Polynom_a0 sdo_down_IDX 1712157-1712157;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8222-8222;
+SG_MUL_VAL_ 1409 BMS_Battery_Voltage sdo_down_IDX 73758-73758;
+SG_MUL_VAL_ 1409 BMS_Min_Cell_Voltage sdo_down_IDX 139294-139294;
+SG_MUL_VAL_ 1409 BMS_Min_Cell_Voltage_Id sdo_down_IDX 204830-204830;
+SG_MUL_VAL_ 1409 BMS_Max_Cell_Voltage sdo_down_IDX 270366-270366;
+SG_MUL_VAL_ 1409 BMS_Max_Cell_Voltage_Id sdo_down_IDX 335902-335902;
+SG_MUL_VAL_ 1409 BMS_Battery_Current sdo_down_IDX 401438-401438;
+SG_MUL_VAL_ 1409 BMS_Battery_Pack_Min_Temperature sdo_down_IDX 466974-466974;
+SG_MUL_VAL_ 1409 BMS_Battery_Pack_Max_Temperature sdo_down_IDX 532510-532510;
+SG_MUL_VAL_ 1409 BMS_SOC sdo_down_IDX 598046-598046;
+SG_MUL_VAL_ 1409 BMS_State sdo_down_IDX 663582-663582;
+SG_MUL_VAL_ 1409 BMS_Recup_Actual_Allowed sdo_down_IDX 729118-729118;
+SG_MUL_VAL_ 1409 BMS_Discharge_Actual_Allowed sdo_down_IDX 794654-794654;
+SG_MUL_VAL_ 1409 Electrical_angle sdo_down_IDX 8223-8223;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8224-8224;
+SG_MUL_VAL_ 1409 Average_consumption sdo_down_IDX 73760-73760;
+SG_MUL_VAL_ 1409 Range sdo_down_IDX 139296-139296;
+SG_MUL_VAL_ 1409 Safety_execute sdo_down_IDX 8225-8225;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8226-8226;
+SG_MUL_VAL_ 1409 Hall_sensor_bit_pattern sdo_down_IDX 73762-73762;
+SG_MUL_VAL_ 1409 Hall_noise_counter sdo_down_IDX 139298-139298;
+SG_MUL_VAL_ 1409 DC_current sdo_down_IDX 8227-8227;
+SG_MUL_VAL_ 1409 Electric_power sdo_down_IDX 8228-8228;
+SG_MUL_VAL_ 1409 Motor_temperature sdo_down_IDX 8229-8229;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8230-8230;
+SG_MUL_VAL_ 1409 Controller_temperature sdo_down_IDX 73766-73766;
+SG_MUL_VAL_ 1409 Capacitor_temperature sdo_down_IDX 139302-139302;
+SG_MUL_VAL_ 1409 IGBT_PH_1_temperature sdo_down_IDX 204838-204838;
+SG_MUL_VAL_ 1409 IGBT_PH_2_temperature sdo_down_IDX 270374-270374;
+SG_MUL_VAL_ 1409 IGBT_PH_3_temperature sdo_down_IDX 335910-335910;
+SG_MUL_VAL_ 1409 I2T sdo_down_IDX 401446-401446;
+SG_MUL_VAL_ 1409 IGBT_highest_die_temperature sdo_down_IDX 466982-466982;
+SG_MUL_VAL_ 1409 IGBT_die_LS_PH_1_temperature sdo_down_IDX 532518-532518;
+SG_MUL_VAL_ 1409 IGBT_die_HS_PH_1_temperature sdo_down_IDX 598054-598054;
+SG_MUL_VAL_ 1409 IGBT_die_LS_PH_2_temperature sdo_down_IDX 663590-663590;
+SG_MUL_VAL_ 1409 IGBT_die_HS_PH_2_temperature sdo_down_IDX 729126-729126;
+SG_MUL_VAL_ 1409 IGBT_die_LS_PH_3_temperature sdo_down_IDX 794662-794662;
+SG_MUL_VAL_ 1409 IGBT_die_HS_PH_3_temperature sdo_down_IDX 860198-860198;
+SG_MUL_VAL_ 1409 IGBT_total_loss sdo_down_IDX 925734-925734;
+SG_MUL_VAL_ 1409 Warnings sdo_down_IDX 8231-8231;
+SG_MUL_VAL_ 1409 Motor_current_limit sdo_down_IDX 8232-8232;
+SG_MUL_VAL_ 1409 Logic_power_supply_voltage sdo_down_IDX 8233-8233;
+SG_MUL_VAL_ 1409 Test_mode_command sdo_down_IDX 8241-8241;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8242-8242;
+SG_MUL_VAL_ 1409 Pulse_mode_counter sdo_down_IDX 73778-73778;
+SG_MUL_VAL_ 1409 Pulse_mode_nuber_of_pulses sdo_down_IDX 139314-139314;
+SG_MUL_VAL_ 1409 Motor_pole_pairs sdo_down_IDX 8243-8243;
+SG_MUL_VAL_ 1409 Motor_Type sdo_down_IDX 8244-8244;
+SG_MUL_VAL_ 1409 FOC_Calculation_Delay_Enable sdo_down_IDX 8249-8249;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8256-8256;
+SG_MUL_VAL_ 1409 Feedback_type sdo_down_IDX 73792-73792;
+SG_MUL_VAL_ 1409 Motor_phase_offset sdo_down_IDX 139328-139328;
+SG_MUL_VAL_ 1409 Feedback_direction sdo_down_IDX 204864-204864;
+SG_MUL_VAL_ 1409 Test_stepper_frequency sdo_down_IDX 270400-270400;
+SG_MUL_VAL_ 1409 Hall_configuration sdo_down_IDX 335936-335936;
+SG_MUL_VAL_ 1409 Feedback_resolution sdo_down_IDX 401472-401472;
+SG_MUL_VAL_ 1409 Electrical_angle_filter sdo_down_IDX 467008-467008;
+SG_MUL_VAL_ 1409 Motor_phase_offset_compensation sdo_down_IDX 532544-532544;
+SG_MUL_VAL_ 1409 Test_stepper_enable sdo_down_IDX 598080-598080;
+SG_MUL_VAL_ 1409 Auto_aligning_rotor_position_cur sdo_down_IDX 663616-663616;
+SG_MUL_VAL_ 1409 SinCos_zero_voltage_sin sdo_down_IDX 729152-729152;
+SG_MUL_VAL_ 1409 SinCos_zero_voltage_cos sdo_down_IDX 794688-794688;
+SG_MUL_VAL_ 1409 Feedback_Slave_Mode sdo_down_IDX 860224-860224;
+SG_MUL_VAL_ 1409 El_Angle_Triger_Out sdo_down_IDX 925760-925760;
+SG_MUL_VAL_ 1409 El_Angle_Triger_Value sdo_down_IDX 991296-991296;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8265-8265;
+SG_MUL_VAL_ 1409 Rotor_Angle_Observer_Input sdo_down_IDX 73801-73801;
+SG_MUL_VAL_ 1409 Rotor_Angle_Observer_Output sdo_down_IDX 139337-139337;
+SG_MUL_VAL_ 1409 Rotor_Angle_Observer_Error sdo_down_IDX 204873-204873;
+SG_MUL_VAL_ 1409 Maximum_controller_current sdo_down_IDX 8272-8272;
+SG_MUL_VAL_ 1409 Secondary_current_protection sdo_down_IDX 8273-8273;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8274-8274;
+SG_MUL_VAL_ 1409 Maximum_velocity sdo_down_IDX 73810-73810;
+SG_MUL_VAL_ 1409 Maximum_velocity_gain sdo_down_IDX 139346-139346;
+SG_MUL_VAL_ 1409 PMSM_Back_EMF_Ratio sdo_down_IDX 204882-204882;
+SG_MUL_VAL_ 1409 Velocity_Filtering_Enable sdo_down_IDX 270418-270418;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8275-8275;
+SG_MUL_VAL_ 1409 Maximum_DC_current sdo_down_IDX 73811-73811;
+SG_MUL_VAL_ 1409 Maximum_DC_current_gain sdo_down_IDX 139347-139347;
+SG_MUL_VAL_ 1409 Overvoltage_limit sdo_down_IDX 8276-8276;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8277-8277;
+SG_MUL_VAL_ 1409 Undervoltage_limit sdo_down_IDX 73813-73813;
+SG_MUL_VAL_ 1409 Undervoltage_gain sdo_down_IDX 139349-139349;
+SG_MUL_VAL_ 1409 Undervoltage_min_voltage sdo_down_IDX 204885-204885;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8279-8279;
+SG_MUL_VAL_ 1409 Motor_temperature_sensor_type sdo_down_IDX 73815-73815;
+SG_MUL_VAL_ 1409 Motor_maximum_temperature sdo_down_IDX 139351-139351;
+SG_MUL_VAL_ 1409 Motor_maximum_temperature_gain sdo_down_IDX 204887-204887;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8283-8283;
+SG_MUL_VAL_ 1409 Stall_protection_time sdo_down_IDX 73819-73819;
+SG_MUL_VAL_ 1409 Stall_protection_current sdo_down_IDX 139355-139355;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8288-8288;
+SG_MUL_VAL_ 1409 OC_out_1_enable sdo_down_IDX 73824-73824;
+SG_MUL_VAL_ 1409 OC_out_2_enable sdo_down_IDX 139360-139360;
+SG_MUL_VAL_ 1409 OC_out_1_Value sdo_down_IDX 204896-204896;
+SG_MUL_VAL_ 1409 OC_out_2_Value sdo_down_IDX 270432-270432;
+SG_MUL_VAL_ 1409 OC_out_1_Value_2 sdo_down_IDX 335968-335968;
+SG_MUL_VAL_ 1409 OC_out_2_Value_2 sdo_down_IDX 401504-401504;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8289-8289;
+SG_MUL_VAL_ 1409 Brake_nominal_voltage sdo_down_IDX 73825-73825;
+SG_MUL_VAL_ 1409 Brake_reduced_voltage sdo_down_IDX 139361-139361;
+SG_MUL_VAL_ 1409 Brake_Time_To_Reduce_Voltage sdo_down_IDX 204897-204897;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8304-8304;
+SG_MUL_VAL_ 1409 Throttle_voltage sdo_down_IDX 73840-73840;
+SG_MUL_VAL_ 1409 AUX_Voltage sdo_down_IDX 139376-139376;
+SG_MUL_VAL_ 1409 Brake_voltage sdo_down_IDX 204912-204912;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8306-8306;
+SG_MUL_VAL_ 1409 AD_resolver_sin sdo_down_IDX 73842-73842;
+SG_MUL_VAL_ 1409 AD_resolver_cos sdo_down_IDX 139378-139378;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8307-8307;
+SG_MUL_VAL_ 1409 AD_Sin_Cos_Sin sdo_down_IDX 73843-73843;
+SG_MUL_VAL_ 1409 AD_Sin_Cos_Cos sdo_down_IDX 139379-139379;
+SG_MUL_VAL_ 1409 Digital_inputs sdo_down_IDX 8310-8310;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8320-8320;
+SG_MUL_VAL_ 1409 Command sdo_down_IDX 73856-73856;
+SG_MUL_VAL_ 1409 Memory sdo_down_IDX 139392-139392;
+SG_MUL_VAL_ 1409 Sampling_rate sdo_down_IDX 204928-204928;
+SG_MUL_VAL_ 1409 Wrap_around sdo_down_IDX 270464-270464;
+SG_MUL_VAL_ 1409 Trigger_level sdo_down_IDX 336000-336000;
+SG_MUL_VAL_ 1409 Trigger_mode sdo_down_IDX 401536-401536;
+SG_MUL_VAL_ 1409 Trigger_source sdo_down_IDX 467072-467072;
+SG_MUL_VAL_ 1409 Pre_trigger_samples_requested sdo_down_IDX 532608-532608;
+SG_MUL_VAL_ 1409 Pre_trigger_samples_recorded sdo_down_IDX 598144-598144;
+SG_MUL_VAL_ 1409 Post_trigger_samples_recorded sdo_down_IDX 663680-663680;
+SG_MUL_VAL_ 1409 Status sdo_down_IDX 729216-729216;
+SG_MUL_VAL_ 1409 Record_number sdo_down_IDX 794752-794752;
+SG_MUL_VAL_ 1409 Memory_capacity sdo_down_IDX 925824-925824;
+SG_MUL_VAL_ 1409 Trigger_source_Index sdo_down_IDX 991360-991360;
+SG_MUL_VAL_ 1409 Trigger_source_Subindex sdo_down_IDX 1056896-1056896;
+SG_MUL_VAL_ 1409 Configuration_Number sdo_down_IDX 1122432-1122432;
+SG_MUL_VAL_ 1409 Record_channel sdo_down_IDX 1187968-1187968;
+SG_MUL_VAL_ 1409 Record_step sdo_down_IDX 1253504-1253504;
+SG_MUL_VAL_ 1409 Number_of_configurations sdo_down_IDX 1319040-1319040;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8321-8321;
+SG_MUL_VAL_ 1409 Channel_count sdo_down_IDX 73857-73857;
+SG_MUL_VAL_ 1409 Selected_channel sdo_down_IDX 139393-139393;
+SG_MUL_VAL_ 1409 Channel_index sdo_down_IDX 204929-204929;
+SG_MUL_VAL_ 1409 Channel_subindex sdo_down_IDX 270465-270465;
+SG_MUL_VAL_ 1409 Channel_configuration_status sdo_down_IDX 336001-336001;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8322-8322;
+SG_MUL_VAL_ 1409 FOC_frequency sdo_down_IDX 73858-73858;
+SG_MUL_VAL_ 1409 Speed_loop_frequency sdo_down_IDX 139394-139394;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8323-8323;
+SG_MUL_VAL_ 1409 Osci_test_signal_1 sdo_down_IDX 73859-73859;
+SG_MUL_VAL_ 1409 Osci_test_signal_2 sdo_down_IDX 139395-139395;
+SG_MUL_VAL_ 1409 Osci_test_signal_3 sdo_down_IDX 204931-204931;
+SG_MUL_VAL_ 1409 Osci_test_signal_4 sdo_down_IDX 270467-270467;
+SG_MUL_VAL_ 1409 Allow_PDO_COB_ID_change sdo_down_IDX 8324-8324;
+SG_MUL_VAL_ 1409 Actual_FOC_Angle sdo_down_IDX 8325-8325;
+SG_MUL_VAL_ 1409 Velocity_actual_value_averaged sdo_down_IDX 8326-8326;
+SG_MUL_VAL_ 1409 Velocity_actual_value_filtered sdo_down_IDX 8327-8327;
+SG_MUL_VAL_ 1409 Current_Flux_Actual_Value sdo_down_IDX 8336-8336;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 8337-8337;
+SG_MUL_VAL_ 1409 Induction_Motor_Rotor_Time_Const sdo_down_IDX 73873-73873;
+SG_MUL_VAL_ 1409 Induction_Motor_Rated_Velocity sdo_down_IDX 139409-139409;
+SG_MUL_VAL_ 1409 Induction_Motor_Flux_Control_mod sdo_down_IDX 204945-204945;
+SG_MUL_VAL_ 1409 Induction_Motor_V_to_Hz_ratio sdo_down_IDX 270481-270481;
+SG_MUL_VAL_ 1409 Induction_Motor_Rated_Flux_Curre sdo_down_IDX 336017-336017;
+SG_MUL_VAL_ 1409 Induction_control_parameter_flux sdo_down_IDX 401553-401553;
+SG_MUL_VAL_ 1409 Induction_control_parameter_flux sdo_down_IDX 467089-467089;
+SG_MUL_VAL_ 1409 Number_of_Entries sdo_down_IDX 9472-9472;
+SG_MUL_VAL_ 1409 Gate_Driver_Error_Num_1 sdo_down_IDX 75008-75008;
+SG_MUL_VAL_ 1409 Gate_Driver_Error_Num_2 sdo_down_IDX 140544-140544;
+SG_MUL_VAL_ 1409 Gate_Driver_Error_Num_3 sdo_down_IDX 206080-206080;
+SG_MUL_VAL_ 1409 Gate_Driver_Error_Num_4 sdo_down_IDX 271616-271616;
+SG_MUL_VAL_ 1409 Gate_Driver_Error_Num_5 sdo_down_IDX 337152-337152;
+SG_MUL_VAL_ 1409 Gate_Driver_Error_Num_6 sdo_down_IDX 402688-402688;
+SG_MUL_VAL_ 1409 Number_of_Entries sdo_down_IDX 9728-9728;
+SG_MUL_VAL_ 1409 Velocity_Min sdo_down_IDX 75264-75264;
+SG_MUL_VAL_ 1409 Velocity_Ramp sdo_down_IDX 140800-140800;
+SG_MUL_VAL_ 1409 Number_of_Entries sdo_down_IDX 9729-9729;
+SG_MUL_VAL_ 1409 Position_Home sdo_down_IDX 75265-75265;
+SG_MUL_VAL_ 1409 Position_Hysteresis sdo_down_IDX 140801-140801;
+SG_MUL_VAL_ 1409 Position_Save_Home sdo_down_IDX 206337-206337;
+SG_MUL_VAL_ 1409 Position_Factor_Numerator sdo_down_IDX 271873-271873;
+SG_MUL_VAL_ 1409 Number_of_Entries sdo_down_IDX 9730-9730;
+SG_MUL_VAL_ 1409 Hold_Current_Start sdo_down_IDX 75266-75266;
+SG_MUL_VAL_ 1409 Hold_Current_Max sdo_down_IDX 140802-140802;
+SG_MUL_VAL_ 1409 Hold_Current_Ramp sdo_down_IDX 206338-206338;
+SG_MUL_VAL_ 1409 Number_of_Entries sdo_down_IDX 9731-9731;
+SG_MUL_VAL_ 1409 State sdo_down_IDX 75267-75267;
+SG_MUL_VAL_ 1409 Reached_Home sdo_down_IDX 140803-140803;
+SG_MUL_VAL_ 1409 Position_Value sdo_down_IDX 206339-206339;
+SG_MUL_VAL_ 1409 Position_Error sdo_down_IDX 271875-271875;
+SG_MUL_VAL_ 1409 Select_Application sdo_down_IDX 12288-12288;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12289-12289;
+SG_MUL_VAL_ 1409 APP_1_Control_Mode sdo_down_IDX 77825-77825;
+SG_MUL_VAL_ 1409 APP_1_Status sdo_down_IDX 143361-143361;
+SG_MUL_VAL_ 1409 APP_1_Error_Code sdo_down_IDX 208897-208897;
+SG_MUL_VAL_ 1409 APP_1_Number_Of_Contolled_Drives sdo_down_IDX 274433-274433;
+SG_MUL_VAL_ 1409 APP_1_Drive1_NodeID sdo_down_IDX 339969-339969;
+SG_MUL_VAL_ 1409 APP_1_Drive2_NodeID sdo_down_IDX 405505-405505;
+SG_MUL_VAL_ 1409 APP_1_Drive3_NodeID sdo_down_IDX 471041-471041;
+SG_MUL_VAL_ 1409 APP_1_Drive4_NodeID sdo_down_IDX 536577-536577;
+SG_MUL_VAL_ 1409 APP_1_Drive1_Dirrection_Invert_E sdo_down_IDX 602113-602113;
+SG_MUL_VAL_ 1409 APP_1_Drive2_Dirrection_Invert_E sdo_down_IDX 667649-667649;
+SG_MUL_VAL_ 1409 APP_1_Drive3_Dirrection_Invert_E sdo_down_IDX 733185-733185;
+SG_MUL_VAL_ 1409 APP_1_Drive4_Dirrection_Invert_E sdo_down_IDX 798721-798721;
+SG_MUL_VAL_ 1409 APP_1_Disable_PWM_On_Stop_Enable sdo_down_IDX 864257-864257;
+SG_MUL_VAL_ 1409 APP_1_Disable_PWM_On_Stop_Delay sdo_down_IDX 929793-929793;
+SG_MUL_VAL_ 1409 APP_1_Disable_PMW_On_Stop_Veloci sdo_down_IDX 995329-995329;
+SG_MUL_VAL_ 1409 APP_1_Max_Fw_Velocity sdo_down_IDX 1060865-1060865;
+SG_MUL_VAL_ 1409 APP_1_Max_Rw_Velocity sdo_down_IDX 1126401-1126401;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12291-12291;
+SG_MUL_VAL_ 1409 APP_1_Din1_Function sdo_down_IDX 77827-77827;
+SG_MUL_VAL_ 1409 APP_1_Din2_Function sdo_down_IDX 143363-143363;
+SG_MUL_VAL_ 1409 APP_1_Din3_Function sdo_down_IDX 208899-208899;
+SG_MUL_VAL_ 1409 APP_1_Din4_Function sdo_down_IDX 274435-274435;
+SG_MUL_VAL_ 1409 APP_1_Din5_Function sdo_down_IDX 339971-339971;
+SG_MUL_VAL_ 1409 APP_1_Din6_Function sdo_down_IDX 405507-405507;
+SG_MUL_VAL_ 1409 APP_1_Invert_Din_Polarity sdo_down_IDX 471043-471043;
+SG_MUL_VAL_ 1409 APP_1_Dout1_Function sdo_down_IDX 536579-536579;
+SG_MUL_VAL_ 1409 APP_1_Dout2_Function sdo_down_IDX 602115-602115;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Type sdo_down_IDX 667651-667651;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Positive_Min_Volt sdo_down_IDX 733187-733187;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Positive_Max_Volt sdo_down_IDX 798723-798723;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Negative_Min_Volt sdo_down_IDX 864259-864259;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Negative_Max_Volt sdo_down_IDX 929795-929795;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Min_Out_Value sdo_down_IDX 995331-995331;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Max_Out_Value sdo_down_IDX 1060867-1060867;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Wire_Brake_Enable sdo_down_IDX 1126403-1126403;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Wire_Brake_Min_Vo sdo_down_IDX 1191939-1191939;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Wire_Brake_Max_Vo sdo_down_IDX 1257475-1257475;
+SG_MUL_VAL_ 1409 APP_1_Throttle_Invert sdo_down_IDX 1323011-1323011;
+SG_MUL_VAL_ 1409 APP_1_PWM_Pulse_Width sdo_down_IDX 1388547-1388547;
+SG_MUL_VAL_ 1409 APP_1_Servo_PWM_Valid_Data_Delay sdo_down_IDX 1454083-1454083;
+SG_MUL_VAL_ 1409 APP_1_Pump_Control_Threshold_Tem sdo_down_IDX 1519619-1519619;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12292-12292;
+SG_MUL_VAL_ 1409 APP_1_Velocity_Feedback_Mode sdo_down_IDX 77828-77828;
+SG_MUL_VAL_ 1409 APP_1_Velocity_Feedback_Drive_Nu sdo_down_IDX 143364-143364;
+SG_MUL_VAL_ 1409 APP_1_Velocity_Regulator_P sdo_down_IDX 208900-208900;
+SG_MUL_VAL_ 1409 APP_1_Velocity_Regulator_I sdo_down_IDX 274436-274436;
+SG_MUL_VAL_ 1409 APP_1_Velocity_Regulator_Max_Dri sdo_down_IDX 339972-339972;
+SG_MUL_VAL_ 1409 APP_1_Velocity_Regulator_Max_Reg sdo_down_IDX 405508-405508;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12293-12293;
+SG_MUL_VAL_ 1409 APP_1_Brake_Mode sdo_down_IDX 77829-77829;
+SG_MUL_VAL_ 1409 APP_1_Brake_Minimum_Velocity sdo_down_IDX 143365-143365;
+SG_MUL_VAL_ 1409 APP_1_Brake_Digital_Current sdo_down_IDX 208901-208901;
+SG_MUL_VAL_ 1409 APP_1_Brake_Linear_Current sdo_down_IDX 274437-274437;
+SG_MUL_VAL_ 1409 APP_1_Brake_Potentiometer_Minimu sdo_down_IDX 339973-339973;
+SG_MUL_VAL_ 1409 APP_1_Brake_Potentiometer_Maximu sdo_down_IDX 405509-405509;
+SG_MUL_VAL_ 1409 APP_1_Brake_Current sdo_down_IDX 471045-471045;
+SG_MUL_VAL_ 1409 APP_1_Regeneration_Active sdo_down_IDX 536581-536581;
+SG_MUL_VAL_ 1409 APP_1_Constant_Regeneration_Curr sdo_down_IDX 602117-602117;
+SG_MUL_VAL_ 1409 APP_1_Constant_Regeneration_Curr sdo_down_IDX 667653-667653;
+SG_MUL_VAL_ 1409 APP_1_Constant_Regeneration_Mini sdo_down_IDX 733189-733189;
+SG_MUL_VAL_ 1409 APP_1_Constant_Regeneration_Actu sdo_down_IDX 798725-798725;
+SG_MUL_VAL_ 1409 APP_1_Brake_And_Regeneration_Zer sdo_down_IDX 864261-864261;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12294-12294;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Enable sdo_down_IDX 77830-77830;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Active sdo_down_IDX 143366-143366;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Select_Voltage_ sdo_down_IDX 208902-208902;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Select_Voltage_ sdo_down_IDX 274438-274438;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12295-12295;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Normal_Max_Thro sdo_down_IDX 77831-77831;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Normal_Max_Driv sdo_down_IDX 143367-143367;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Normal_Max_Rege sdo_down_IDX 208903-208903;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Normal_Max_Batt sdo_down_IDX 274439-274439;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Normal_Max_Line sdo_down_IDX 339975-339975;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Normal_Max_Digi sdo_down_IDX 405511-405511;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Normal_Max_Velo sdo_down_IDX 471047-471047;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Normal_Max_Cons sdo_down_IDX 536583-536583;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12296-12296;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Eco_Max_Throttl sdo_down_IDX 77832-77832;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Eco_Max_Drive_C sdo_down_IDX 143368-143368;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Eco_Max_Regener sdo_down_IDX 208904-208904;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Eco_Max_Battery sdo_down_IDX 274440-274440;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Eco_Max_Linear_ sdo_down_IDX 339976-339976;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Eco_Max_Digital sdo_down_IDX 405512-405512;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Eco_Max_Velocit sdo_down_IDX 471048-471048;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Eco_Max_Constan sdo_down_IDX 536584-536584;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12297-12297;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Sport_Max_Throt sdo_down_IDX 77833-77833;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Sport_Max_Drive sdo_down_IDX 143369-143369;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Sport_Max_Regen sdo_down_IDX 208905-208905;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Sport_Max_Batte sdo_down_IDX 274441-274441;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Sport_Max_Linea sdo_down_IDX 339977-339977;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Sport_Max_Digit sdo_down_IDX 405513-405513;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Sport_Max_Veloc sdo_down_IDX 471049-471049;
+SG_MUL_VAL_ 1409 APP_1_Power_Mode_Sport_Max_Const sdo_down_IDX 536585-536585;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12298-12298;
+SG_MUL_VAL_ 1409 APP_1_Maximum_DC_Current sdo_down_IDX 77834-77834;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 12299-12299;
+SG_MUL_VAL_ 1409 APP_1_Precharge_Enable sdo_down_IDX 77835-77835;
+SG_MUL_VAL_ 1409 APP_1_Precharge_Min_Voltage sdo_down_IDX 143371-143371;
+SG_MUL_VAL_ 1409 APP_1_Precharge_Max_Time sdo_down_IDX 208907-208907;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 20480-20480;
+SG_MUL_VAL_ 1409 Test_CMD sdo_down_IDX 86016-86016;
+SG_MUL_VAL_ 1409 Test_Status sdo_down_IDX 151552-151552;
+SG_MUL_VAL_ 1409 Test_Result_1 sdo_down_IDX 217088-217088;
+SG_MUL_VAL_ 1409 Test_Result_2 sdo_down_IDX 282624-282624;
+SG_MUL_VAL_ 1409 Test_Result_3 sdo_down_IDX 348160-348160;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 24574-24574;
+SG_MUL_VAL_ 1409 Control_board_version sdo_down_IDX 90110-90110;
+SG_MUL_VAL_ 1409 Dummy_mapping_object sdo_down_IDX 24575-24575;
+SG_MUL_VAL_ 1409 Abort_connection_option_code sdo_down_IDX 24583-24583;
+SG_MUL_VAL_ 1409 Error_code sdo_down_IDX 24639-24639;
+SG_MUL_VAL_ 1409 Controlword sdo_down_IDX 24640-24640;
+SG_MUL_VAL_ 1409 Statusword sdo_down_IDX 24641-24641;
+SG_MUL_VAL_ 1409 Quick_stop_option_code sdo_down_IDX 24666-24666;
+SG_MUL_VAL_ 1409 Shutdown_option_code sdo_down_IDX 24667-24667;
+SG_MUL_VAL_ 1409 Disable_operation_option_code sdo_down_IDX 24668-24668;
+SG_MUL_VAL_ 1409 Fault_reaction_option_code sdo_down_IDX 24670-24670;
+SG_MUL_VAL_ 1409 Modes_of_operation sdo_down_IDX 24672-24672;
+SG_MUL_VAL_ 1409 Modes_of_operation_display sdo_down_IDX 24673-24673;
+SG_MUL_VAL_ 1409 Position_actual_value_internal sdo_down_IDX 24675-24675;
+SG_MUL_VAL_ 1409 Position_actual_value sdo_down_IDX 24676-24676;
+SG_MUL_VAL_ 1409 Following_error_window sdo_down_IDX 24677-24677;
+SG_MUL_VAL_ 1409 Position_window sdo_down_IDX 24679-24679;
+SG_MUL_VAL_ 1409 Velocity_sensor_actual_value sdo_down_IDX 24681-24681;
+SG_MUL_VAL_ 1409 Velocity_actual_value sdo_down_IDX 24684-24684;
+SG_MUL_VAL_ 1409 Target_torque sdo_down_IDX 24689-24689;
+SG_MUL_VAL_ 1409 Motor_rated_current sdo_down_IDX 24693-24693;
+SG_MUL_VAL_ 1409 Motor_rated_torque sdo_down_IDX 24694-24694;
+SG_MUL_VAL_ 1409 Torque_actual_value sdo_down_IDX 24695-24695;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 24696-24696;
+SG_MUL_VAL_ 1409 Current_Torque_Actual_Value sdo_down_IDX 90232-90232;
+SG_MUL_VAL_ 1409 Current_Torque_Actual_Value_mA sdo_down_IDX 155768-155768;
+SG_MUL_VAL_ 1409 DC_link_circuit_voltage sdo_down_IDX 24697-24697;
+SG_MUL_VAL_ 1409 Target_position sdo_down_IDX 24698-24698;
+SG_MUL_VAL_ 1409 Polarity sdo_down_IDX 24702-24702;
+SG_MUL_VAL_ 1409 Position_factor_number_of_entrie sdo_down_IDX 24723-24723;
+SG_MUL_VAL_ 1409 Position_factor_Numerator sdo_down_IDX 90259-90259;
+SG_MUL_VAL_ 1409 Position_factor_Divisor sdo_down_IDX 155795-155795;
+SG_MUL_VAL_ 1409 Velocity_encoder_factor_number_o sdo_down_IDX 24724-24724;
+SG_MUL_VAL_ 1409 Velocity_encoder_factor_Numerato sdo_down_IDX 90260-90260;
+SG_MUL_VAL_ 1409 Velocity_encoder_factor_Divisor sdo_down_IDX 155796-155796;
+SG_MUL_VAL_ 1409 Number_of_entries sdo_down_IDX 24822-24822;
+SG_MUL_VAL_ 1409 Current_control_torque_regulator sdo_down_IDX 90358-90358;
+SG_MUL_VAL_ 1409 Current_control_torque_regulator sdo_down_IDX 155894-155894;
+SG_MUL_VAL_ 1409 Current_control_flux_regulator_P sdo_down_IDX 221430-221430;
+SG_MUL_VAL_ 1409 Current_control_flux_regulator_I sdo_down_IDX 286966-286966;
+SG_MUL_VAL_ 1409 Current_control_regulator_ramp sdo_down_IDX 352502-352502;
+SG_MUL_VAL_ 1409 Velocity_control_parameter_set_n sdo_down_IDX 24825-24825;
+SG_MUL_VAL_ 1409 Velocity_control_regulator_P_Gai sdo_down_IDX 90361-90361;
+SG_MUL_VAL_ 1409 Velocity_control_regulator_I_Gai sdo_down_IDX 155897-155897;
+SG_MUL_VAL_ 1409 Position_control_parameter_set_n sdo_down_IDX 24827-24827;
+SG_MUL_VAL_ 1409 Position_Control_Regulator_P_Gai sdo_down_IDX 90363-90363;
+SG_MUL_VAL_ 1409 Position_Control_Regulator_I_Gai sdo_down_IDX 155899-155899;
+SG_MUL_VAL_ 1409 Position_Control_Regulator_D_Gai sdo_down_IDX 221435-221435;
+SG_MUL_VAL_ 1409 Nominal_position sdo_down_IDX 286971-286971;
+SG_MUL_VAL_ 1409 Low_Pass_Filter_Cut_Off_Frequenc sdo_down_IDX 352507-352507;
+SG_MUL_VAL_ 1409 Position_Control_Regulator_Outpu sdo_down_IDX 418043-418043;
+SG_MUL_VAL_ 1409 Position_Control_Regulator_B_Gai sdo_down_IDX 483579-483579;
+SG_MUL_VAL_ 1409 Target_velocity sdo_down_IDX 24831-24831;
+SG_MUL_VAL_ 1409 Supported_drive_modes sdo_down_IDX 25858-25858;
