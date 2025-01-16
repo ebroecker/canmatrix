@@ -320,10 +320,7 @@ def get_signals_for_pdu(fe, pdu, overall_startbit = 0):
                     value_value = fe.selector(compu_scale, "!LOWER-LIMIT")[0].text
                     sig.add_values(value_value, value_name)
         sig.is_little_endian = is_little_endian
-        if not sig.is_little_endian:
-            sig.set_startbit(start_bit, bitNumbering=1)
-        else:
-            sig.start_bit = start_bit
+        sig.start_bit = start_bit
         sig.size = bit_length
         sig.receivers = list(set(receiver_ecus))
 
