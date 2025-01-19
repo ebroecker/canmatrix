@@ -252,7 +252,8 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     #         for sig in signals:
     #             frame.add_signal(sig)
 
-    for comm_index, map_index in zip(range(0x1800, 0x1808), range(0x1A00, 0x1A08)):
+    for comm_index in range(0x1800, 0x1808):
+        map_index = comm_index + 0x200
         if comm_index not in od or map_index not in od:
             continue
 
@@ -290,6 +291,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             mapped_obj = od.get_variable(obj_index, obj_subindex)
             if not mapped_obj:
                 #print(f"  Warning: Could not find object at Index: 0x{obj_index:04X}, Subindex: {obj_subindex}.")
+                current_bit_start += bit_length
                 continue
             signal_name = name_cleanup(mapped_obj.name)
             new_sig = canmatrix.Signal(signal_name, size=bit_length, start_bit=current_bit_start)
