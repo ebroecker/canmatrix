@@ -39,25 +39,6 @@ def name_cleanup(in_str):
     rets_str = re.sub("[^A-Za-z0-9]", '_', in_str)
     return rets_str
 
-# def get_signals(parent_object, signal_receiver):
-#     signals = []
-#     position = 0
-#     for sub in range(1, len(parent_object)):
-#         name = parent_object[sub].name
-#         size = datatype_mapping[parent_object[sub].data_type][1]
-#         factor = parent_object[sub].factor
-#         unsigned = "UNSIGNED" in datatype_mapping[parent_object[sub].data_type][0]
-#         signal = canmatrix.Signal(name = name, size=size, start_bit = position, factor=factor, is_signed = not unsigned)
-#         signal.receivers = []
-#         if len(signal_receiver) > 0:
-#             signal.receivers.append(signal_receiver)
-#         if parent_object[sub].min is not None:
-#             signal.offset = parent_object[sub].min
-#         position += size
-#         signals.append(signal)
-#     return signals
-
-
 def get_bit_length(data_type_code):
     return  datatype_mapping[data_type_code][1]
 def get_data_type_name(data_type_code):
@@ -133,9 +114,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     index.mux_val_grp.append([ 2, 2])
     index.muxer_for_signal = "SCS"
     sdo_up.add_signal(index)
-
     db.add_frame(sdo_up)
-
 
 
     for obj in od.values():
@@ -215,99 +194,65 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 signal_group_counter += 1
 
 
-    # RX Can-Ids ...
-    # for index in range(0x1400, 0x1408):
-    #     if index in od:
-    #         # store canid in object...
-    #         od[index+0x200].canid = od[index][1].default
-
-    # ##RX PDOs
-    # for index in range(0x1600, 0x1608):   
-    #     if index in od:
-    #         pdo_name = od[index].name.replace(" ", "_")
-    #         frame = canmatrix.canmatrix.Frame(name=pdo_name, transmitters=[plc_name])
-    #         # db.add_frame(frame)
-    #         frame_id = od[index].canid
-    #         frame.arbitration_id = canmatrix.ArbitrationId(id=frame_id)
-    #         frame.size = 8
-    #         signals = get_signals(od[index], node_name)
-    #         for sig in signals:
-    #             frame.add_signal(sig)
-
-    # # RT Can-Ids ...
-    # for index in range(0x1800, 0x1808):
-    #     if index in od:
-    #         # store canid in object...
-    #         od[index+0x200].canid = od[index][1].default & 0x7FF
-
-    # #TX
-    # for index in range(0x1A00, 0x1A08):   
-    #     if index in od:
-    #         pdo_name = od[index].name.replace(" ", "_")
-    #         frame = canmatrix.canmatrix.Frame(name=pdo_name, transmitters=[node_name])
-    #         # db.add_frame(frame)
-    #         frame_id = od[index].canid
-    #         frame.arbitration_id = canmatrix.ArbitrationId(id=frame_id)
-    #         frame.size = 8
-    #         signals = get_signals(od[index], plc_name)
-    #         for sig in signals:
-    #             frame.add_signal(sig)
-
-    for comm_index in range(0x1800, 0x1808):
-        map_index = comm_index + 0x200
-        if comm_index not in od or map_index not in od:
-            continue
-
-        # Retrieve the COB-ID
-        comm_param = od[comm_index] #od.get(comm_index)
-        cob_id_entry = comm_param.get(1) if comm_param else None
-        if not cob_id_entry or cob_id_entry.default is None:
-           # print(f"  Warning: No valid COB-ID found for {pdo_type} PDO at index 0x{comm_index:04X}. Skipping.")
-            continue
-        cob_id = cob_id_entry.default & 0x7FF
-        pdo_name = name_cleanup(od[comm_index].name)
-        frame = canmatrix.canmatrix.Frame(name=pdo_name, transmitters=[node_name])
-        frame_id = cob_id
-        frame.arbitration_id = canmatrix.ArbitrationId(id=frame_id)
-        db.add_frame(frame)
-        mapping_param = od.get(map_index)
-        if not mapping_param:
-#            print(f"  Warning: No mapping parameter found for {pdo_type} PDO at index 0x{map_index:04X}.")
-            continue
-        num_entries = mapping_param[0].default if 0 in mapping_param else 0
-        current_bit_start = 0
-        for subindex in range(1, num_entries + 1):
-            mapping_entry = mapping_param.get(subindex)
-            if not mapping_entry or mapping_entry.default is None:
-                #print(f"  Warning: Subindex {subindex} missing for mapping parameter at 0x{map_index:04X}.")
+    for start_index, rx_tx_config in {0x1400 : {"transmitter": [], "receiver": [node_name]}, 0x1800: {"transmitter": [node_name], "receiver": []}}.items():
+        print(start_index)
+        
+        for comm_index in range(start_index, start_index + 0x8):
+            map_index = comm_index + 0x200
+            if comm_index not in od or map_index not in od:
                 continue
 
-            # Decode the mapping entry
-            mapping_value = mapping_entry.default
-            obj_index = (mapping_value >> 16) & 0xFFFF
-            obj_subindex = (mapping_value >> 8) & 0xFF
-            bit_length = mapping_value & 0xFF
+            # Retrieve the COB-ID
+            comm_param = od[comm_index] #od.get(comm_index)
+            cob_id_entry = comm_param.get(1) if comm_param else None
+            if not cob_id_entry or cob_id_entry.default is None:
+            # print(f"  Warning: No valid COB-ID found for {pdo_type} PDO at index 0x{comm_index:04X}. Skipping.")
+                continue
+            cob_id = cob_id_entry.default & 0x7FF
+            pdo_name = name_cleanup(od[comm_index].name)
+            frame = canmatrix.canmatrix.Frame(name=pdo_name, transmitters=rx_tx_config["transmitter"])
+            frame_id = cob_id
+            frame.arbitration_id = canmatrix.ArbitrationId(id=frame_id)
+            db.add_frame(frame)
+            mapping_param = od.get(map_index)
+            if not mapping_param:
+    #            print(f"  Warning: No mapping parameter found for {pdo_type} PDO at index 0x{map_index:04X}.")
+                continue
+            num_entries = mapping_param[0].default if 0 in mapping_param else 0
+            current_bit_start = 0
+            for subindex in range(1, num_entries + 1):
+                mapping_entry = mapping_param.get(subindex)
+                if not mapping_entry or mapping_entry.default is None:
+                    #print(f"  Warning: Subindex {subindex} missing for mapping parameter at 0x{map_index:04X}.")
+                    continue
 
-            # Fetch the mapped object
-            mapped_obj = od.get_variable(obj_index, obj_subindex)
-            if not mapped_obj:
-                #print(f"  Warning: Could not find object at Index: 0x{obj_index:04X}, Subindex: {obj_subindex}.")
+                # Decode the mapping entry
+                mapping_value = mapping_entry.default
+                obj_index = (mapping_value >> 16) & 0xFFFF
+                obj_subindex = (mapping_value >> 8) & 0xFF
+                bit_length = mapping_value & 0xFF
+
+                # Fetch the mapped object
+                mapped_obj = od.get_variable(obj_index, obj_subindex)
+                if not mapped_obj:
+                    #print(f"  Warning: Could not find object at Index: 0x{obj_index:04X}, Subindex: {obj_subindex}.")
+                    current_bit_start += bit_length
+                    continue
+                signal_name = name_cleanup(mapped_obj.name)
+                new_sig = canmatrix.Signal(signal_name, size=bit_length, start_bit=current_bit_start)
+                datatype_name = get_data_type_name(mapping_entry.data_type)
+                if "UNSIGNED" in datatype_name:
+                    new_sig.is_signed = False
+                new_sig.factor = mapped_obj.factor
+                if mapped_obj.min is not None:
+                    new_sig.min = mapped_obj.min
+                    new_sig.offset = mapped_obj.min
+                if mapped_obj.max is not None:
+                    new_sig.max = mapped_obj.max
+                new_sig.receivers = rx_tx_config["receiver"]
+                frame.add_signal(new_sig)
                 current_bit_start += bit_length
-                continue
-            signal_name = name_cleanup(mapped_obj.name)
-            new_sig = canmatrix.Signal(signal_name, size=bit_length, start_bit=current_bit_start)
-            datatype_name = get_data_type_name(mapping_entry.data_type)
-            if "UNSIGNED" in datatype_name:
-                new_sig.is_signed = False
-            new_sig.factor = mapped_obj.factor
-            if mapped_obj.min is not None:
-                new_sig.min = mapped_obj.min
-                new_sig.offset = mapped_obj.min
-            if mapped_obj.max is not None:
-                new_sig.max = mapped_obj.max
-            frame.add_signal(new_sig)
-            current_bit_start += bit_length
-            frame.size =  math.ceil(current_bit_start/8)
+                frame.size =  math.ceil(current_bit_start/8)
 
     db.update_ecu_list()   
     for ecu in db.ecus:
