@@ -299,7 +299,7 @@ def dump(in_db, f, **options):
                 signal_line += "M "
                 multiplex_written = True
 
-            start_bit = signal.start_bit
+            start_bit = signal.get_startbit(bit_numbering=1)
 
             if signal.is_signed:
                 sign = '-'
