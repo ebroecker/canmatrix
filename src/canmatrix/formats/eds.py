@@ -6,6 +6,7 @@ import canopen.objectdictionary.datatypes
 import codecs
 import copy
 import re 
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -103,34 +104,34 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         emcy.add_signal(canmatrix.canmatrix.Signal(name="E_Number", size=8, start_bit=24, receivers=[plc_name]))
         db.add_frame(emcy)
 
-    sdo_down = canmatrix.canmatrix.Frame(name="SDO_download", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x600+node_id), transmitters=[node_name])
-    sig_cmd = canmatrix.canmatrix.Signal(name="sdo_down_CMD", size=3, start_bit=5, receivers=[plc_name], is_signed=False)
+    sdo_down = canmatrix.canmatrix.Frame(name="SDO_receive", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x600+node_id), transmitters=[node_name])
+    sig_cmd = canmatrix.canmatrix.Signal(name="CCS", size=3, start_bit=5, receivers=[plc_name], is_signed=False)
     sig_cmd.is_multiplexer = True
     sdo_down.is_complex_multiplexed = True
     sig_cmd.multiplex = "Multiplexor"
     sdo_down.add_signal(sig_cmd)
-    index = canmatrix.canmatrix.Signal(name="sdo_down_IDX", size=24, start_bit=8, receivers=[plc_name])
+    index = canmatrix.canmatrix.Signal(name="IDX", size=24, start_bit=8, receivers=[plc_name])
     index.multiplex = "Multiplexor"
     index.is_multiplexer = True
-    index.mux_val = 2
+    index.mux_val = 1
     index.mux_val_grp.append([ 2, 2])
-    index.muxer_for_signal = "sdo_down_CMD"
+    index.muxer_for_signal = "CCS"
     sdo_down.add_signal(index)
     db.add_frame(sdo_down)
 
-    sdo_up = canmatrix.canmatrix.Frame(name="SDO_upload", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x580+node_id), transmitters=[plc_name])
-    sig_cmd = canmatrix.canmatrix.Signal(name="sdo_up_CMD", size=3, start_bit=5, is_signed=False)
+    sdo_up = canmatrix.canmatrix.Frame(name="SDO_transmit", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x580+node_id), transmitters=[plc_name])
+    sig_cmd = canmatrix.canmatrix.Signal(name="SCS", size=3, start_bit=5, is_signed=False)
     sig_cmd.is_multiplexer = True
     sdo_up.is_complex_multiplexed = True
     sig_cmd.multiplex = "Multiplexor"
     sdo_up.add_signal(sig_cmd)
 
-    index = canmatrix.canmatrix.Signal(name="sdo_up_IDX", size=24, start_bit=8)
+    index = canmatrix.canmatrix.Signal(name="IDX", size=24, start_bit=8)
     index.multiplex = "Multiplexor"
     index.is_multiplexer = True
     index.mux_val = 2
     index.mux_val_grp.append([ 2, 2])
-    index.muxer_for_signal = "sdo_up_CMD"
+    index.muxer_for_signal = "SCS"
     sdo_up.add_signal(index)
 
     db.add_frame(sdo_up)
@@ -155,7 +156,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             new_sig.muxer_for_signal = "sdo_down_IDX"
             sdo_down.add_signal(new_sig)
             up_sig = copy.deepcopy(new_sig)
-            up_sig.muxer_for_signal = "sdo_up_IDX"
+            up_sig.muxer_for_signal = "IDX"
 
             up_sig.receivers = []
             sdo_up.add_signal(up_sig)
@@ -175,10 +176,10 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     new_sig.is_signed = False
                 new_sig.mux_val = combined_value
                 new_sig.mux_val_grp.append([ combined_value, combined_value])
-                new_sig.muxer_for_signal = "sdo_down_IDX"
+                new_sig.muxer_for_signal = "IDX"
                 sdo_down.add_signal(new_sig)
                 up_sig = copy.deepcopy(new_sig)
-                up_sig.muxer_for_signal = "sdo_up_IDX"
+                up_sig.muxer_for_signal = "IDX"
 
                 up_sig.receivers = []
                 sdo_up.add_signal(up_sig)
@@ -306,6 +307,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 new_sig.max = mapped_obj.max
             frame.add_signal(new_sig)
             current_bit_start += bit_length
+            frame.size =  math.ceil(current_bit_start/8)
 
     db.update_ecu_list()   
     for ecu in db.ecus:
