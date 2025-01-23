@@ -1134,7 +1134,8 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                     isignal_ub = canmatrix.Signal(ub_name,
                                                   start_bit=int(ub_start_bit.text, 0),
                                                   size = 1,
-                                                  is_signed = False) 
+                                                  is_signed = False,
+                                                  unit = "Unitless") 
                     frame.add_signal(isignal_ub)
 
                 group_id = group_id + 1
@@ -1389,7 +1390,8 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 new_signal_ub = canmatrix.Signal(ub_name,
                                                  start_bit = int(ub_start_bit.text, 0),
                                                  size = 1,
-                                                 is_signed = False)
+                                                 is_signed = False,
+                                                 unit = "Unitless")
                 frame.add_signal(new_signal_ub)
 
 
@@ -1631,19 +1633,21 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
             if freshness_tx_length is not None and int(freshness_tx_length, 0) > 0:
                 freshness_name = f"{ea.get_element_name(frame_elem)}_Freshness"
                 signal_freshness = canmatrix.Signal(freshness_name,
-                                                    start_bit = int(ipdu_length, 0)*8 + int(freshness_tx_length, 0) - 8,
+                                                    start_bit = int(ipdu_length, 0) * 8 + int(freshness_tx_length, 0) - 16,
                                                     size = int(freshness_tx_length, 0),
                                                     is_signed = False,
-                                                    is_little_endian = False) 
+                                                    is_little_endian = False,
+                                                    unit = "Unitless") 
                 new_frame.add_signal(signal_freshness)
 
             if auth_tx_length is not None and int(auth_tx_length, 0) > 0:
                 authinfo_name = f"{ea.get_element_name(frame_elem)}_AuthInfo"
                 signal_authinfo = canmatrix.Signal(authinfo_name,
-                                                start_bit = int(ipdu_length, 0)*8 + int(freshness_tx_length, 0) + int(auth_tx_length, 0) - 8,
+                                                start_bit = int(ipdu_length, 0) * 8 + int(freshness_tx_length, 0),
                                                 size = int(auth_tx_length, 0),
                                                 is_signed = False,
-                                                is_little_endian = False)
+                                                is_little_endian = False,
+                                                unit = "Unitless")
                 new_frame.add_signal(signal_authinfo)
         
         comment = ea.get_element_desc(frame_elem)
