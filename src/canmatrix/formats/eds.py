@@ -132,7 +132,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 new_sig.is_signed = False
             new_sig.mux_val = combined_value
             new_sig.mux_val_grp.append([ combined_value, combined_value])
-            new_sig.muxer_for_signal = "sdo_down_IDX"
+            new_sig.muxer_for_signal = "IDX"
             sdo_down.add_signal(new_sig)
             up_sig = copy.deepcopy(new_sig)
             up_sig.muxer_for_signal = "IDX"
@@ -194,9 +194,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 signal_group_counter += 1
 
 
-    for start_index, rx_tx_config in {0x1400 : {"transmitter": [], "receiver": [node_name]}, 0x1800: {"transmitter": [node_name], "receiver": []}}.items():
-        print(start_index)
-        
+    for start_index, rx_tx_config in {0x1400 : {"transmitter": [], "receiver": [node_name]}, 0x1800: {"transmitter": [node_name], "receiver": []}}.items():       
         for comm_index in range(start_index, start_index + 0x8):
             map_index = comm_index + 0x200
             if comm_index not in od or map_index not in od:
