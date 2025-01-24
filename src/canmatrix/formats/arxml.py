@@ -1960,18 +1960,20 @@ def decode_ethernet_helper(ea, float_factory):
                             try:
                                 target_frame.header_id = int(pdu_triggering_header_id_map[ipdu_triggering], 0)
                             except:
-                                target_frame.header_id = 0
-                        #                    continue
-                        
+                                pass
+
+                        # In Case Neither transmitter Nor receiver
                         if comm_direction.text == "OUT":
                             target_frame.add_transmitter(ecu.name)
-                        else:
+                        elif comm_direction.text == "IN":
                             target_frame.add_receiver(ecu.name)
+                        else:
+                            pass
                         
                         pdu_sig_mapping = ea.findall("I-SIGNAL-TO-I-PDU-MAPPING", ipdu)
 
                         get_signals(pdu_sig_mapping, target_frame, ea, None, float_factory)
-                        target_frame.update_receiver()
+                        # target_frame.update_receiver() # It will make transmitter and receiver worse
                         db.add_frame(target_frame)
                         
     return found_matrixes
@@ -2089,10 +2091,14 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
                         else:
                             ecu = process_ecu(ecu_elem, ea)
                             nodes[ecu_elem] = ecu
+
+                        # In Case Neither transmitter Nor receiver
                         if comm_direction.text == "OUT":
                             frame.add_transmitter(ecu.name)
-                        else:
+                        elif comm_direction.text == "IN":
                             frame.add_receiver(ecu.name)
+                        else:
+                            pass
                         db.add_ecu(ecu)
                 db.add_frame(frame)
         for frame in db.frames:

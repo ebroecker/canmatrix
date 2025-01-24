@@ -191,7 +191,7 @@ class Signal(object):
 
     cycle_time = attr.ib(default=0)  # type: int
     initial_value = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: canmatrix.types.PhysicalValue
-
+    scale_ranges = attr.ib(factory=list)
     min = attr.ib(
         converter=lambda value, float_factory=float_factory: (
             float_factory(value)
@@ -1793,7 +1793,7 @@ class CanMatrix(object):
 
     frames_dict_name = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
     frames_dict_id = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
-
+    _frames_dict_id_extend = {}
     signal_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     frame_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     global_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
@@ -1985,10 +1985,16 @@ class CanMatrix(object):
         :param ArbitrationId arbitration_id: Frame id as canmatrix.ArbitrationId
         :rtype: Frame or None
         """
-        for test in self.frames:
-            if test.arbitration_id == arbitration_id:
+        hash_name = f"{arbitration_id.id}_{arbitration_id.extended}"
+        
+        frame = self._frames_dict_id_extend.get(hash_name, None)
+        if frame is not None:
+            return frame
+        for frame in self.frames:
+            if frame.arbitration_id == arbitration_id:
                 # found ID while ignoring extended or standard
-                return test
+                self._frames_dict_id_extend[hash_name] = frame
+                return frame
         return None
 
     def frame_by_header_id(self, header_id):  # type: (HeaderId) -> typing.Union[Frame, None]
@@ -2090,7 +2096,7 @@ class CanMatrix(object):
         :return: the inserted Frame
         """
         self.frames.append(frame)
-
+        self._frames_dict_id_extend = {}
         self.frames_dict_name[frame.name] = frame
         if frame.header_id:
             self.frames_dict_id[frame.header_id] = frame
@@ -2105,6 +2111,7 @@ class CanMatrix(object):
         :param Frame frame: frame to remove from CAN Matrix
         """
         self.frames.remove(frame)
+        self._frames_dict_id_extend = {}
 
     def add_signal(self, signal):  # type: (Signal) -> Signal
         """
@@ -2199,6 +2206,8 @@ class CanMatrix(object):
             if bu.name.strip() == ecu.name:
                 return
         self.ecus.append(ecu)
+        self._frames_dict_id_extend = {}
+
 
     def del_ecu(self, ecu_or_glob):  # type: (typing.Union[Ecu, str]) -> None
         """Remove ECU from Matrix and all Frames.
@@ -2369,6 +2378,7 @@ class CanMatrix(object):
                 else:
                     logger.error(
                         "Name Conflict, could not copy/merge EnvVar " + envVar)
+        self._frames_dict_id_extend = {}
 
     def set_fd_type(self) -> None:
         """Try to guess and set the CAN type for every frame.
