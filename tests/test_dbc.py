@@ -642,3 +642,24 @@ def test_int_attribute_zero():
     assert 'BO_ 0 0' in outdbc.getvalue().decode('utf8')
     assert 'TestEcu 1' in outdbc.getvalue().decode('utf8')
     assert 'TestEcu 0' in outdbc.getvalue().decode('utf8')
+
+def test_env_var_with_val():
+
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        EV_ XYZ2_RADAR__LDWwarningStatusFl11: 0 [1|3] "km/h" 2 1 DUMMY_NODE_VECTOR0 Vector__XXX;
+        BA_ "SystemEnvVarLongSymbol" EV_ XYZ2_RADAR__LDWwarningStatusFl11 "XYZ2_RADAR__LDWwarningStatus__RADAR_XYZ2";
+        VAL_ XYZ2_RADAR__LDWwarningStatusFl11 0 "on" 1 "off" 2 "reserved" 3 "error" ;
+    ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc)    
+    key, var = next(iter(matrix.env_vars.items()))
+    assert key == 'XYZ2_RADAR__LDWwarningStatus__RADAR_XYZ2'
+    assert var['min'] == '1'
+    assert var['max'] == '3'
+    assert var['initialValue'] == '2'
+    assert var['unit'] == 'km/h'
+    assert len(var['values']) == 4
+    assert var['values']['0'] == 'on'
+    assert var['values']['1'] == 'off'
+
+    
