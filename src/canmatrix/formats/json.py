@@ -233,8 +233,14 @@ def load(f, **_options):
                         new_frame.pdu_name = frame[key]
 
             new_frame.arbitration_id.extended = frame.get("is_extended_frame", False)
+
+            if "attributes" in frame:
+                for k, v in frame["attributes"].items():
+                    new_frame.add_attribute(k, v)
+
             if "transmitters" in frame:
                 new_frame.transmitters = frame["transmitters"]
+
             for signal in frame["signals"]:
                 is_little_endian = not signal.get("is_big_endian", False)
                 is_float = signal.get("is_float", False)

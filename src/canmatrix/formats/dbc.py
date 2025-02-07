@@ -762,14 +762,14 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             db.ecus.append(canmatrix.Ecu(ele))
 
             elif decoded.startswith("VAL_ "):
-                regexp = re.compile(r"^VAL_ +(\S+) +(\S+) +(.*) *;")
+                regexp = re.compile(r"^VAL_ +(\d+)? *(\S+) +(.*) *;")
                 temp = regexp.match(decoded)
                 if temp:
                     frame_id = temp.group(1)
                     signal_name = temp.group(2)
                     temp_list = list(canmatrix.utils.escape_aware_split(temp.group(3), '"'))
 
-                    if frame_id.isnumeric():  # value for Frame
+                    if frame_id:  # value for Frame
                         try:
                             frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frame_id)))
                             sg = frame.signal_by_name(signal_name)
@@ -780,8 +780,15 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                                     sg.add_values(temp_list[i * 2], val)
                         except:
                             logger.error("Error with Line: " + str(temp_list))
-                    else:
-                        logger.info("Warning: environment variables currently not supported")
+                    else:                        
+                        try:
+                            values = db.env_vars[signal_name]['values']
+                            for i in range(math.floor(len(temp_list) / 2)):
+                                val = temp_list[i * 2 + 1]
+                                val = val.replace('\\"', '"')
+                                values[temp_list[i * 2].strip()]=val
+                        except:
+                            logger.error("Error with Line: " + str(temp_list))
 
             elif decoded.startswith("VAL_TABLE_ "):
                 regexp = re.compile(r"^VAL_TABLE_ +(\S+) +(.*) *;")
@@ -925,7 +932,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 access_nodes = temp.group(9).split(",")
                 db.add_env_var(var_name, {"varType": var_type, "min": min_value, "max": max_value, "unit": unit,
                                           "initialValue": initial_value, "evId": ev_id, "accessType": access_type,
-                                          "accessNodes": access_nodes})
+                                          "accessNodes": access_nodes, "values": {}})
 
         # else:
         except:
