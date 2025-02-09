@@ -238,7 +238,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     continue
                 signal_name = name_cleanup(mapped_obj.name)
                 new_sig = canmatrix.Signal(signal_name, size=bit_length, start_bit=current_bit_start)
-                datatype_name = get_data_type_name(mapping_entry.data_type)
+                datatype_name = get_data_type_name(mapped_obj.data_type)
                 if "UNSIGNED" in datatype_name:
                     new_sig.is_signed = False
                 new_sig.factor = mapped_obj.factor
