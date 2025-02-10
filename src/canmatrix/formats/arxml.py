@@ -354,7 +354,7 @@ def get_base_type_of_signal(signal):
 
 def dump(dbs, f, **options):
     # type: (typing.Mapping[str, canmatrix.CanMatrix], typing.IO, **str) -> None
-    ar_version = options.get("arVersion", "3.2.3")
+    ar_version = options.get("arVersion", "4.1.0")
 
     for name in dbs:
         db = dbs[name]
