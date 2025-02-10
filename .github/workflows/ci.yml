@@ -136,17 +136,19 @@ jobs:
 
   upload_pypi:
     needs: [build]
+    name: Release to PyPi
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
 
     # upload to PyPI only on release
     if: github.event.release && github.event.action == 'published'
     steps:
-      - uses: actions/download-artifact@v4.1.7
+      - uses: actions/download-artifact@v4
         with:
-          name: python-can-dist
           path: dist
+          merge-multiple: true
 
-      - uses: pypa/gh-action-pypi-publish@v1.4.2
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish release distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
