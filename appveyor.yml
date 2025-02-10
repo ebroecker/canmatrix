@@ -7,7 +7,6 @@ skip_branch_with_pr: true
 
 environment:
   matrix:
-    - TOXENV: py37
     - TOXENV: py38
     - TOXENV: py39
     - TOXENV: py310

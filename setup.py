@@ -61,7 +61,6 @@ Environment :: Console
 License :: OSI Approved :: BSD License
 Topic :: Scientific/Engineering
 Programming Language :: Python
-Programming Language :: Python :: 2.7
 Programming Language :: Python :: 3.4
 Programming Language :: Python :: 3.5
 Programming Language :: Python :: 3.6
@@ -82,6 +81,7 @@ setup(
     name = "canmatrix",
     version = versioneer.get_version(),
     cmdclass = versioneer.get_cmdclass(),
+    long_description_content_type='text/x-rst',
     maintainer = "Eduard Broecker",
     maintainer_email = "eduard@gmx.de",
     url = "http://github.com/ebroecker/canmatrix",
@@ -94,10 +94,7 @@ setup(
     install_requires = [
         "attrs>=19.2.0",
         "click",
-        "enum34; python_version < '3.4'",
-        "future",
         "importlib-metadata; python_version < '3.8'",
-        "six",
         "typing; python_version < '3.5'",
     ],
     extras_require = {
@@ -114,9 +111,10 @@ setup(
         "sym": [],
         "test": ["pathlib2; python_version < '3.4'", "pytest"],
         "wireshark": [],
-        "xls": ["xlrd", "xlwt"],
-        "xlsx": ["xlsxwriter"],
+        "xls": ["xlrd==1.2.0", "xlwt"],
+        "xlsx": ["openpyxl"],
         "yaml": ["pyyaml"],
+        "eds": ["canopen"]
     },
 
     packages = find_packages("src"),

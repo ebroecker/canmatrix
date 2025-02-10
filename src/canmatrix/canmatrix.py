@@ -26,8 +26,6 @@
 
 # TODO: Definitions should be disassembled
 
-from __future__ import absolute_import, division, print_function
-
 import decimal
 import fnmatch
 import itertools
@@ -40,8 +38,7 @@ import warnings
 from builtins import *
 
 import attr
-from past.builtins import basestring
-from six.moves import zip_longest
+from itertools import zip_longest
 
 import canmatrix.copy
 import canmatrix.types
@@ -163,7 +160,14 @@ class Signal(object):
     is_little_endian = attr.ib(default=True)  # type: bool
     is_signed = attr.ib(default=True)  # type: bool
     offset = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: canmatrix.types.PhysicalValue
-    factor = attr.ib(converter=float_factory, default=float_factory(1.0))  # type: canmatrix.types.PhysicalValue
+    factor = attr.ib(
+        converter=lambda value, float_factory=float_factory: (
+            float_factory(value)
+            if float(value) != 0
+            else float_factory(1.0)
+        ),
+        default=float_factory(1.0)
+    )  # type: canmatrix.types.PhysicalValue
 
     unit = attr.ib(default="")  # type: str
     receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
@@ -187,7 +191,7 @@ class Signal(object):
 
     cycle_time = attr.ib(default=0)  # type: int
     initial_value = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: canmatrix.types.PhysicalValue
-
+    scale_ranges = attr.ib(factory=list)
     min = attr.ib(
         converter=lambda value, float_factory=float_factory: (
             float_factory(value)
@@ -432,18 +436,20 @@ class Signal(object):
             if not (self.min <= value <= self.max):
                 value = self.min
 
-        if isinstance(value, basestring):
+        if isinstance(value, str) and self.values:
             for value_key, value_string in self.values.items():
                 if value_string == value:
                     value = value_key
                     return value
-            else:
-                raise ValueError(
-                        "{} is invalid value choice for {}".format(value, self)
-                )
 
+        try:
+            value = decimal.Decimal(value)
+        except Exception as e:
+            raise e
+
+        # if not (0 <= value <= 10):
         if not (self.min <= value <= self.max):
-            logger.info(
+            logger.warning(
                 "Value {} is not valid for {}. Min={} and Max={}".format(
                     value, self, self.min, self.max)
                 )
@@ -451,6 +457,7 @@ class Signal(object):
 
         if not self.is_float:
             raw_value = int(round(raw_value))
+
         return raw_value
 
     def raw2phys(self, value, decode_to_str=False):
@@ -463,6 +470,7 @@ class Signal(object):
         """
         if self.is_float:
             value = self.float_factory(value)
+
         if decode_to_str:
             for value_key, value_string in self.values.items():
                 if value_key == value:
@@ -485,7 +493,8 @@ class SignalGroup(object):
     name = attr.ib()  # type: str
     id = attr.ib()  # type: int
     signals = attr.ib(factory=list, repr=False)  # type: typing.MutableSequence[Signal]
-    e2e_trans = attr.ib(default=None)
+    e2e_properties = attr.ib(default=None)  # type: Optional[AutosarE2EProperties]
+    secOC_properties= attr.ib(default=None)  # type: Optional[AutosarSecOCProperties]
 
     def add_signal(self, signal):  # type: (Signal) -> None
         """Add a Signal to SignalGroup.
@@ -672,8 +681,6 @@ class ArbitrationId(object):
         self.id &= 0xfc0000ff
         self.id |= (_pgn << 8 & 0x3FFFF00)  # default pgn is None -> mypy reports error
 
-
-
     @property
     def j1939_tuple(self):  # type: () -> typing.Tuple[int, int, int]
         """Get tuple (destination, PGN, source)
@@ -779,6 +786,36 @@ class ArbitrationId(object):
 
 
 @attr.s(eq=False)
+class Endpoint(object):
+    """
+    Represents a Endpoint.
+
+    AUTOSAR Ethernet Frames Endpoints
+    """
+    server_ip = attr.ib(default="")  # type: str
+    server_port = attr.ib(default=0)  # type: int
+    client_ip = attr.ib(default="")  # type: str
+    client_port = attr.ib(default=0)  # type: int
+    ttl = attr.ib(default=0)  # type: int
+
+
+@attr.s(eq=False)
+class AutosarE2EProperties(object):
+    profile = attr.ib(default=None)  # type: str
+    data_ids = attr.ib(default=None) # type: List[int]
+    data_length = attr.ib(default=None)  # type: int
+
+
+@attr.s(eq=False)
+class AutosarSecOCProperties(object):
+    auth_algorithm = attr.ib(default="")  # type: str
+    payload_length = attr.ib(default=0)  # type: int
+    auth_tx_length = attr.ib(default=0)  # type: int
+    data_id = attr.ib(default=0)  # type: int
+    freshness_length = attr.ib(default=0)  # type: int
+    freshness_tx_length = attr.ib(default=0)  # type: int
+
+@attr.s(eq=False)
 class Pdu(object):
     """
     Represents a PDU.
@@ -810,15 +847,18 @@ class Pdu(object):
         self.signals.append(signal)
         return self.signals[len(self.signals) - 1]
 
-    def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
-        # type: (str, int, typing.Sequence[str]) -> None
+    def add_signal_group(self, 
+                         Name: str, 
+                         Id: int, 
+                         signalNames: typing.Sequence[str], 
+                         e2e_properties: typing.Optional[AutosarE2EProperties] = None) -> None:
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
         :param str Name: Group name
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = SignalGroup(Name, Id, e2e_trans=e2e_trans)
+        newGroup = SignalGroup(Name, Id, e2e_properties=e2e_properties)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
@@ -854,7 +894,7 @@ class Frame(object):
     """
     Represents CAN Frame.
 
-    The Frame has  following mandatory attributes
+    The Frame has following mandatory attributes
 
     * arbitration_id,
     * name,
@@ -892,9 +932,12 @@ class Frame(object):
     # ('sendType', '_sendType', str, None),
 
     pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
-    header_id = attr.ib(default=None)  #type: int
-    # header_id
     pdu_name = attr.ib(default="")  # type: str
+
+    header_id = attr.ib(default=None)  # type: int
+    endpoints = attr.ib(default=None)  # type: typing.MutableSequence[Endpoint]
+
+    secOC_properties = attr.ib(default=None)  # type:  Optional[AutosarSecOCProperties]
 
     @property
     def is_multiplexed(self):  # type: () -> bool
@@ -1019,15 +1062,18 @@ class Frame(object):
 
         return iter(self.signals)
 
-    def add_signal_group(self, Name, Id, signalNames, e2e_trans=None):
-        # type: (str, int, typing.Sequence[str]) -> None
+    def add_signal_group(self,
+                         Name: str, 
+                         Id: int, 
+                         signalNames: typing.Sequence[str], 
+                         e2e_properties: typing.Optional[AutosarE2EProperties] = None) -> None:
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
         :param str Name: Group name
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
         """
-        newGroup = SignalGroup(Name, Id, e2e_trans=e2e_trans)
+        newGroup = SignalGroup(Name, Id, e2e_properties=e2e_properties)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()
@@ -1275,6 +1321,7 @@ class Frame(object):
         """
         Collect Frame receivers out of receiver given in each signal. Add them to `self.receiver` list.
         """
+        self.receivers = []
         for sig in self.signals:
             for receiver in sig.receivers:
                 self.add_receiver(receiver)
@@ -1293,6 +1340,11 @@ class Frame(object):
         for signal in self.signals:
             if signal.name in data:
                 value = data.get(signal.name)
+                if isinstance(value, str):
+                    value = signal.phys2raw(value)
+                    if value is None:
+                        # TODO Error Handling
+                        value = 0
                 bits = pack_bitstring(signal.size, signal.is_float, value, signal.is_signed)
 
                 if signal.is_little_endian:
@@ -1327,7 +1379,6 @@ class Frame(object):
         """
 
         data = dict() if data is None else data
-
         if self.is_complex_multiplexed:
             raise EncodingComplexMultiplexed
         elif self.is_pdu_container:
@@ -1392,12 +1443,15 @@ class Frame(object):
                 least = most + signal.size
 
                 bits = big[most:least]
+
             unpacked.append(unpack_bitstring(signal.size, signal.is_float, signal.is_signed, bits))
 
         return unpacked
 
-    def unpack(self, data, report_error=True):
-        # type: (bytes, bool) -> typing.Mapping[str, DecodedSignal]
+    def unpack(self, data: bytes,
+               allow_truncated: bool = False,
+               allow_exceeded: bool = False,
+               ) -> typing.Mapping[str, DecodedSignal]:
         """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
         decodes every signal in signal-list.
 
@@ -1408,12 +1462,26 @@ class Frame(object):
         """
 
         rx_length = len(data)
-        if rx_length != self.size and report_error:
-            raise DecodingFrameLength(
-                'Received message 0x{self.arbitration_id.id:08X} '
-                'with length {rx_length}, expected {self.size}'.format(**locals())
-            )
-        elif self.is_pdu_container:
+        if rx_length != self.size:
+            msg_id = self.arbitration_id.id if self.arbitration_id.id != 0 else self.header_id
+
+            logging.warning(f"Received message 0x{msg_id:08X} with length {rx_length}, expected {self.size}")
+
+            if allow_truncated:
+                # pad the data with 0xff to prevent the codec from
+                # raising an exception.
+                data = data.ljust(self.size, b"\xFF")
+
+            if allow_exceeded:
+                # trim the payload data to match the expected size
+                data = data[:self.size]
+
+            if len(data) != self.size:
+                # return None
+                raise DecodingFrameLength(
+                    f"Received message 0x{msg_id:04X} with wrong data size: {rx_length} instead of {self.size}")
+
+        if self.is_pdu_container:
             header_id_signal = self.signal_by_name("Header_ID")
             header_dlc_signal = self.signal_by_name("Header_DLC")
             if header_id_signal is None or header_dlc_signal is None:
@@ -1555,7 +1623,7 @@ class Frame(object):
 
         else:
             return decoded
-    
+
     def _compress_little(self):
         for signal in self.signals:
             if not signal.is_little_endian:
@@ -1576,7 +1644,7 @@ class Frame(object):
                             gap_len += 1
                     else:
                         if gap_len is not None:
-                            signal = layout[bit_nr][0] 
+                            signal = layout[bit_nr][0]
                             signal.start_bit -= gap_len
                             gap_found = True
                             break
@@ -1598,11 +1666,22 @@ class Frame(object):
                         free_start = bit_nr
                 else:
                     if free_start is not None:
-                        signal = layout[bit_nr][0] 
+                        signal = layout[bit_nr][0]
                         signal.start_bit = free_start
                         gap_found = True
                         break
 
+    def multiplex_signals(self):
+        """Assign multiplexer to signals. When a multiplexor is in the frame."""
+        multiplexor = self.get_multiplexer
+        if multiplexor is None:
+            return
+
+        for signal in self.signals:
+            if signal.is_multiplexer or (signal.muxer_for_signal is not None):
+                continue
+            signal.muxer_for_signal = multiplexor.name
+            signal.mux_val = signal.multiplex
 
     def __str__(self):  # type: () -> str
         """Represent the frame by its name only."""
@@ -1712,6 +1791,9 @@ class CanMatrix(object):
     ecus = attr.ib(factory=list)  # type: typing.MutableSequence[Ecu]
     frames = attr.ib(factory=list)  # type: typing.MutableSequence[Frame]
 
+    frames_dict_name = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
+    frames_dict_id = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
+    _frames_dict_id_extend = {}
     signal_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     frame_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     global_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
@@ -1720,10 +1802,9 @@ class CanMatrix(object):
     value_tables = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.MutableMapping]
     env_vars = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.MutableMapping]
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
-
     baudrate = attr.ib(default=0)  # type:int
     fd_baudrate = attr.ib(default=0)  # type:int
-
+    vlan = attr.ib(default=None)  # type:int
     load_errors = attr.ib(factory=list)  # type: typing.MutableSequence[Exception]
 
     def __iter__(self):  # type: () -> typing.Iterator[Frame]
@@ -1904,11 +1985,38 @@ class CanMatrix(object):
         :param ArbitrationId arbitration_id: Frame id as canmatrix.ArbitrationId
         :rtype: Frame or None
         """
-        for test in self.frames:
-            if test.arbitration_id == arbitration_id:
+        hash_name = f"{arbitration_id.id}_{arbitration_id.extended}"
+        
+        frame = self._frames_dict_id_extend.get(hash_name, None)
+        if frame is not None:
+            return frame
+        for frame in self.frames:
+            if frame.arbitration_id == arbitration_id:
                 # found ID while ignoring extended or standard
+                self._frames_dict_id_extend[hash_name] = frame
+                return frame
+        return None
+
+    def frame_by_header_id(self, header_id):  # type: (HeaderId) -> typing.Union[Frame, None]
+        """Get Frame by its Header id.
+
+        :param HeaderId header_id: Header id as canmatrix.header_id
+        :rtype: Frame or None
+        """
+        for test in self.frames:
+            if test.header_id == header_id:
                 return test
         return None
+
+    def get_frame_by_id(self, id: int
+                        ) -> typing.Union[Frame, None]:
+        """Get Frame by id.
+
+        :param str name: Frame id to search for
+        :rtype: Frame or None
+        """
+
+        return self.frames_dict_id[id]
 
     def frame_by_pgn(self, pgn):  # type: (int) -> typing.Union[Frame, None]
         """Get Frame by pgn (j1939).
@@ -1924,7 +2032,6 @@ class CanMatrix(object):
                 return test
         return None
 
-
     def frame_by_name(self, name):  # type: (str) -> typing.Union[Frame, None]
         """Get Frame by name.
 
@@ -1935,6 +2042,15 @@ class CanMatrix(object):
             if test.name == name:
                 return test
         return None
+
+    def get_frame_by_name(self, name):  # type: (str) -> typing.Union[Frame, None]
+        """Get Frame by name.
+
+        :param str name: Frame name to search for
+        :rtype: Frame or None
+        """
+
+        return self.frames_dict_name[name]
 
     def glob_frames(self, globStr):  # type: (str) -> typing.List[Frame]
         """Find Frames by given glob pattern.
@@ -1980,6 +2096,13 @@ class CanMatrix(object):
         :return: the inserted Frame
         """
         self.frames.append(frame)
+        self._frames_dict_id_extend = {}
+        self.frames_dict_name[frame.name] = frame
+        if frame.header_id:
+            self.frames_dict_id[frame.header_id] = frame
+        elif frame.arbitration_id.id:
+            self.frames_dict_id[frame.arbitration_id.id] = frame
+
         return self.frames[len(self.frames) - 1]
 
     def remove_frame(self, frame):  # type: (Frame) -> None
@@ -1988,6 +2111,7 @@ class CanMatrix(object):
         :param Frame frame: frame to remove from CAN Matrix
         """
         self.frames.remove(frame)
+        self._frames_dict_id_extend = {}
 
     def add_signal(self, signal):  # type: (Signal) -> Signal
         """
@@ -2082,6 +2206,8 @@ class CanMatrix(object):
             if bu.name.strip() == ecu.name:
                 return
         self.ecus.append(ecu)
+        self._frames_dict_id_extend = {}
+
 
     def del_ecu(self, ecu_or_glob):  # type: (typing.Union[Ecu, str]) -> None
         """Remove ECU from Matrix and all Frames.
@@ -2252,8 +2378,9 @@ class CanMatrix(object):
                 else:
                     logger.error(
                         "Name Conflict, could not copy/merge EnvVar " + envVar)
+        self._frames_dict_id_extend = {}
 
-    def set_fd_type(self):  # type: () -> None
+    def set_fd_type(self) -> None:
         """Try to guess and set the CAN type for every frame.
 
         If a Frame is longer than 8 bytes, it must be Flexible Data Rate frame (CAN-FD).
@@ -2263,7 +2390,10 @@ class CanMatrix(object):
             if frame.size > 8:
                 frame.is_fd = True
 
-    def encode(self, frame_id, data):  # type: (ArbitrationId, typing.Mapping[str, typing.Any]) -> bytes
+    def encode(self,
+               frame_id: ArbitrationId,
+               data: typing.Mapping[str, typing.Any]
+               ) -> bytes:
         """Return a byte string containing the values from data packed
         according to the frame format.
 
@@ -2308,20 +2438,20 @@ class CanMatrix(object):
             if self.ecu_defines[define].type == "ENUM":
                 for bu in self.ecus:
                     if define in bu.attributes:
-                        bu.attributes[define] = self.ecu_defines[define].values[int(bu.attributes[define])]
+                        bu.attributes[define] = self.ecu_defines[define].values[int(float(bu.attributes[define]))]
 
         for define in self.frame_defines:
             if self.frame_defines[define].type == "ENUM":
                 for frame in self.frames:
                     if define in frame.attributes:
-                        frame.attributes[define] = self.frame_defines[define].values[int(frame.attributes[define])]
+                        frame.attributes[define] = self.frame_defines[define].values[int(float(frame.attributes[define]))]
 
         for define in self.signal_defines:
             if self.signal_defines[define].type == "ENUM":
                 for frame in self.frames:
                     for signal in frame.signals:
                         if define in signal.attributes:
-                            signal.attributes[define] = self.signal_defines[define].values[int(signal.attributes[define])]
+                            signal.attributes[define] = self.signal_defines[define].values[int(float(signal.attributes[define]))]
 
     def enum_attribs_to_keys(self):  # type: () -> None
         for define in self.ecu_defines:

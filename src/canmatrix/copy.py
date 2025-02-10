@@ -19,8 +19,6 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
-from __future__ import absolute_import, division, print_function
-
 import copy
 import logging
 import typing
@@ -70,7 +68,7 @@ def copy_ecu(ecu_or_glob, source_db, target_db):
 
 
 def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True, direct_ecu_only=True):
-    # type: (typing.Union[canmatrix.Ecu, str], canmatrix.CanMatrix, canmatrix.CanMatrix) -> None
+    # type: (typing.Union[canmatrix.Ecu, str], canmatrix.CanMatrix, canmatrix.CanMatrix, bool, bool, bool) -> None
     """
     Copy ECU(s) identified by Name or as Object from source CAN matrix to target CAN matrix.
     This function additionally copy all relevant Frames and Defines.

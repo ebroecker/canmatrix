@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function
 
 import importlib
 import logging
@@ -14,7 +13,7 @@ import canmatrix.cancluster
 
 logger = logging.getLogger(__name__)
 moduleList = ["arxml", "csv", "dbc", "dbf", "json", "ldf",
-              "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy", "wireshark", "odx"]
+              "kcd", "fibex", "sym", "xls", "xlsx", "yaml", "scapy", "wireshark", "odx", "eds"]
 
 loadedFormats = []
 supportedFormats = {}  # type: typing.MutableMapping[str, typing.MutableSequence[str]]
@@ -25,7 +24,7 @@ for module in moduleList:
         importlib.import_module("canmatrix.formats." + module)
         loadedFormats.append(module)
     except ImportError:
-        logger.warning("%s is not supported", module)
+        logger.debug("%s is not supported", module)
 
 for loadedModule in loadedFormats:
     supportedFormats[loadedModule] = []

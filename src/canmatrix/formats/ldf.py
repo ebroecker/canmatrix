@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import ldfparser
 import canmatrix
 import ldfparser.encoding
@@ -27,6 +25,12 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     if isinstance(converter, ldfparser.encoding.LogicalValue):
                         cm_signal.add_values(converter.phy_value, converter.info)
                     if isinstance(converter, ldfparser.encoding.PhysicalValue):
+                        cm_signal.scale_ranges.append({
+                            "min" : converter.phy_min, 
+                            "max" : converter.phy_max,
+                            "factor" : converter.scale,
+                            "offset" : converter.offset,
+                            "unit" : converter.unit})
                         cm_signal.offset = converter.offset
                         cm_signal.factor = converter.scale
                         cm_signal.unit = converter.unit

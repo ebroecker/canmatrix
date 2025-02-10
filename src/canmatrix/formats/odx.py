@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from lxml import etree
 import canmatrix.formats
 import decimal
@@ -168,7 +166,7 @@ def get_odx_info(eo, element_type):
     for request in eo.findall(element_type):
         short_name = eo.get_short_name(request)
         service_id_param = find_param(eo, request, "SERVICE-ID")
-        if service_id_param == None:
+        if service_id_param is None:
             continue
 
         service_id_value = eo.find("CODED-VALUE", service_id_param)
@@ -178,7 +176,7 @@ def get_odx_info(eo, element_type):
             continue
 
         id_param = find_param(eo, request, "ID")
-        if id_param == None:
+        if id_param is None:
             continue
         did_value = eo.find("CODED-VALUE", id_param)
         did = int(did_value.text)

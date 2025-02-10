@@ -19,8 +19,6 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
-from __future__ import absolute_import, division, print_function
-
 import copy
 import logging
 import sys
@@ -64,12 +62,11 @@ def convert_pdu_container_to_multiplexed(frame):  # type: (canmatrix.Frame) -> c
 
 
 def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> None
-    logger.info("Importing " + infile + " ... ")
+    logger.info(f"Importing " + infile + " ...")
     dbs = canmatrix.formats.loadp(infile, **options)
-    logger.info("done\n")
+    logger.info("Import Done")
 
-    logger.info("Exporting " + out_file_name + " ... ")
-
+    logger.info("Exporting " + out_file_name + " ...")
     out_dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
     for name in dbs:
         db = None
@@ -104,7 +101,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                 db_temp_list = canmatrix.formats.loadp(merge_string[0])
                 for dbTemp in db_temp_list:
                     if merge_string.__len__() == 1:
-                        print("merge complete: " + merge_string[0])
+                        # logger.debug("merge complete: " + merge_string[0])
                         db.merge([db_temp_list[dbTemp]])
                         # for frame in db_temp_list[dbTemp].frames:
                         #    copyResult = canmatrix.copy.copy_frame(frame.id, db_temp_list[dbTemp], db)
@@ -337,9 +334,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                 frame.is_j1939=True
             db.add_attribute("ProtocolType", "J1939")
 
-
-
-        logger.info(name)
+        logger.debug(f"{name}")
         logger.info("%d Frames found" % (db.frames.__len__()))
 
         out_dbs[name] = db
@@ -349,4 +344,4 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
                                 'force_output'], **options)
     else:
         canmatrix.formats.dumpp(out_dbs, out_file_name, **options)
-    logger.info("done")
+    logger.info("Export Done")

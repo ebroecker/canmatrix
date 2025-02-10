@@ -21,8 +21,6 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
-from __future__ import absolute_import, division, print_function
-
 import logging
 import sys
 
@@ -94,7 +92,7 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 
 # arxml switches
 @click.option('--arxmlIgnoreClusterInfo/--no-arxmlIgnoreClusterInfo', 'arxmlIgnoreClusterInfo', default=False, help="Ignore any can cluster info from arxml; Import all frames in one matrix\ndefault False")
-@click.option('--arxmlExportVersion', 'arVersion',  default="3.2.3", help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 3.2.3")
+@click.option('--arxmlExportVersion', 'arVersion',  default="4.1.0", help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 4.1.0")
 @click.option('--arxmlFlexray/--no-arxmlFlexray', 'decode_flexray', default = False, help="EXPERIMENTAL: import basic flexray data from ARXML")
 @click.option('--arxmlEthernet/--no-arxmlEthernet', 'decode_ethernet', default = False, help="EXPERIMENTAL: import basic ethernet data from ARXML")
 
@@ -126,6 +124,9 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--jsonNativeTypes/--no-jsonNativeTypes', 'jsonNativeTypes', default=False, help="Uses native json representation for decimals instead of string.")
 #sym switches
 @click.option('--symExportEncoding', 'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
+#eds switches
+@click.option('--edsImportEncoding', 'edsImportEncoding', default="iso-8859-1", help="Import charset of EDS format\ndefault iso-8859-1")
+@click.option('--edsNode', 'eds_node_id', default=1, help="Node-Id for EDS format\ndefault 1")
 # in and out file
 @click.argument('infile', required=True)
 @click.argument('outfile', required=True)
@@ -137,7 +138,7 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
     import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
     export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym|*.py
 
-    \n"""
+    """
 
     root_logger = canmatrix.log.setup_logger()
 

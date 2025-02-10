@@ -23,14 +23,11 @@
 # this script exports xls-files from a canmatrix-object
 # xls-files are the can-matrix-definitions displayed in Excel
 
-from __future__ import absolute_import, division, print_function
-
 import decimal
 import logging
 import typing
 from builtins import *
 
-import past.builtins
 import xlrd
 import xlwt
 
@@ -540,7 +537,7 @@ def load(file, **options):
         unit = ""
 
         factor = sh.cell(row_num, index['function']).value
-        if isinstance(factor, past.builtins.basestring):
+        if isinstance(factor, str):
             factor = factor.strip()
             if " " in factor and factor[0].isdigit():
                 (factor, unit) = factor.strip().split(" ", 1)
@@ -548,7 +545,9 @@ def load(file, **options):
                 unit = unit.strip()
                 new_signal.unit = unit
                 try:
-                    new_signal.factor = float_factory(factor)
+                    # if prevents overwriting explicit factor (if given)
+                    if new_signal.factor in (1, 1.0):	
+                        new_signal.factor = float_factory(factor)
                 except:
                     logger.warning(
                         "Some error occurred while decoding scale of Signal %s: '%s'",
