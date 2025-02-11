@@ -471,16 +471,28 @@ def test_candbpp_startbit():
  SG_ SIG10 : 4|13@0+ (0.1,0) [350|450] "V"  DEV1
     ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
-    assert matrix.frames[0].signal_by_name("SIG1").start_bit == 39
-    assert matrix.frames[0].signal_by_name("SIG2").start_bit == 52
-    assert matrix.frames[0].signal_by_name("SIG3").start_bit == 51
-    assert matrix.frames[0].signal_by_name("SIG4").start_bit == 6
-    assert matrix.frames[0].signal_by_name("SIG5").start_bit == 5
-    assert matrix.frames[0].signal_by_name("SIG6").start_bit == 23
-    assert matrix.frames[0].signal_by_name("SIG7").start_bit == 7
-    assert matrix.frames[0].signal_by_name("SIG8").start_bit == 34
-    assert matrix.frames[0].signal_by_name("SIG9").start_bit == 18
-    assert matrix.frames[0].signal_by_name("SIG10").start_bit == 4
+    # Motorola forward LSB
+    assert matrix.frames[0].signal_by_name("SIG1").get_startbit(True, True) == 36
+    assert matrix.frames[0].signal_by_name("SIG2").get_startbit(True, True) == 52
+    assert matrix.frames[0].signal_by_name("SIG3").get_startbit(True, True) == 56
+    assert matrix.frames[0].signal_by_name("SIG4").get_startbit(True, True) == 6
+    assert matrix.frames[0].signal_by_name("SIG5").get_startbit(True, True) == 5
+    assert matrix.frames[0].signal_by_name("SIG6").get_startbit(True, True) == 21
+    assert matrix.frames[0].signal_by_name("SIG7").get_startbit(True, True) == 7
+    assert matrix.frames[0].signal_by_name("SIG8").get_startbit(True, True) == 40
+    assert matrix.frames[0].signal_by_name("SIG9").get_startbit(True, True) == 24
+    assert matrix.frames[0].signal_by_name("SIG10").get_startbit(True, True) == 8
+    # Motorola forward MSB
+    assert matrix.frames[0].signal_by_name("SIG1").get_startbit(True, False) == 39
+    assert matrix.frames[0].signal_by_name("SIG2").get_startbit(True, False) == 52
+    assert matrix.frames[0].signal_by_name("SIG3").get_startbit(True, False) == 51
+    assert matrix.frames[0].signal_by_name("SIG4").get_startbit(True, False) == 6
+    assert matrix.frames[0].signal_by_name("SIG5").get_startbit(True, False) == 5
+    assert matrix.frames[0].signal_by_name("SIG6").get_startbit(True, False) == 23
+    assert matrix.frames[0].signal_by_name("SIG7").get_startbit(True, False) == 7
+    assert matrix.frames[0].signal_by_name("SIG8").get_startbit(True, False) == 34
+    assert matrix.frames[0].signal_by_name("SIG9").get_startbit(True, False) == 18
+    assert matrix.frames[0].signal_by_name("SIG10").get_startbit(True, False) == 4
     
     
 def test_missing_space():
