@@ -584,6 +584,9 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         receivers=receiver,
                         **extras
                     )
+                    if not temp_signal.is_little_endian:
+                        # startbit of motorola coded signals are MSB in dbc
+                        temp_signal.set_startbit(int(temp.group(2)), bitNumbering=1)
                     frame.add_signal(temp_signal)
     #                db.frames.addSignalToLastFrame(tempSig)
                 else:
@@ -634,9 +637,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     if is_complex_multiplexed or is_multiplexer:
                         temp_signal.is_multiplexer = True
                         temp_signal.multiplex = 'Multiplexor'
-
+                        
+                    if not temp_signal.is_little_endian:
+                        # startbit of motorola coded signals are MSB in dbc
+                        temp_signal.set_startbit(int(temp.group(3)), bitNumbering=1)
                     frame.add_signal(temp_signal)
-
                     if is_complex_multiplexed:
                         frame.is_complex_multiplexed = True
 
