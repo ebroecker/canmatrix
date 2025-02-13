@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools >= 40.8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "canmatrix"
+dynamic = ["readme", "version"]
+description = "Automotive Communication Matrix"
+authors = [{ name="Eduard Bröcker", email = "eduard@gmx.de" }]
+maintainers = [{ name = "canmatrix contributors" }]
+dependencies = [
+    "attrs>=19.2.0",
+    "click",
+    "importlib-metadata; python_version < '3.8'",
+    "typing; python_version < '3.5'",
+]
+requires-python = ">=3.8"
+keywords = [
+    "CAN",
+    "canbus",
+    "dbc",
+    "arxml",
+    "kcd",
+    "dbf",
+    "sym",
+    "fibex",
+    "eds",
+    "automotive",
+]
+license = { text = "BSD-2-Clause" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Manufacturing",
+    "Intended Audience :: Telecommunications Industry",
+    "License :: OSI Approved :: BSD-2-Clause License",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Embedded Systems",
+    "Topic :: Software Development :: Embedded Systems :: Controller Area Network (CAN)",
+    "Topic :: System :: Networking",
+    "Topic :: Utilities",
+]
+
+[project.scripts]
+cancompare = "canmatrix.cli.compare:cli_compare"
+canconvert = "canmatrix.cli.convert:cli_convert"
+
+[project.urls]
+homepage = "https://github.com/ebroecker/canmatrix"
+documentation = "https://canmatrix.readthedocs.io"
+repository = "https://github.com/ebroecker/canmatrix"
+
+[project.optional-dependencies]
+arxml = ["lxml"]
+csv = []
+dbc = []
+dbf = []
+fibex = ["lxml"]
+json = []
+kcd = ["lxml"]
+ldf = ["ldfparser"]
+odx = ["lxml"]
+scapy = []
+sym = []
+test = ["pathlib2; python_version < '3.4'", "pytest"]
+wireshark = []
+xls = ["xlrd==1.2.0", "xlwt"]
+xlsx = ["openpyxl"]
+yaml = ["pyyaml"]
+eds = ["canopen"]
+
+[tool.setuptools.dynamic]
+readme = { file = "README.md" }
