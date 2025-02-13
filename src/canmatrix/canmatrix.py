@@ -1680,8 +1680,9 @@ class Frame(object):
         for signal in self.signals:
             if signal.is_multiplexer or (signal.muxer_for_signal is not None):
                 continue
-            signal.muxer_for_signal = multiplexor.name
             signal.mux_val = signal.multiplex
+            if signal.multiplex is not None:
+                signal.muxer_for_signal = multiplexor.name
 
     def __str__(self):  # type: () -> str
         """Represent the frame by its name only."""
