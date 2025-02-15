@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
+import contextlib
 import logging
-
-import canmatrix._version
-__version__ = canmatrix._version.get_versions()['version']
+from importlib.metadata import PackageNotFoundError, version
 
 import canmatrix.formats as formats
 import canmatrix.cancluster as cancluster
@@ -32,3 +31,6 @@ from canmatrix.canmatrix import *
 
 # Set default logging handler to avoid "No handler found" warnings in python 2.
 logging.getLogger(__name__).addHandler(logging.NullHandler())
+
+with contextlib.suppress(PackageNotFoundError):
+    __version__ = version("python-can")
