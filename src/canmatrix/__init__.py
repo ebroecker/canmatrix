@@ -33,4 +33,4 @@ from canmatrix.canmatrix import *
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 with contextlib.suppress(PackageNotFoundError):
-    __version__ = version("python-can")
+    __version__ = version("canmatrix")
