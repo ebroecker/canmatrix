@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 67.7", "setuptools_scm>=8"]
+requires = ["setuptools >= 67.7"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -81,7 +81,7 @@ yaml = ["pyyaml"]
 eds = ["canopen"]
 
 [tool.setuptools.dynamic]
-readme = { file = "README.md" }
+readme = { file = "README.rst" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
