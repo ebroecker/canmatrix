@@ -134,7 +134,7 @@ jobs:
       - name: Save artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: python-can-dist
+          name: canmatrix-dist
           path: ./dist
 
   upload_pypi:

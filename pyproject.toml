@@ -36,18 +36,17 @@ classifiers = [
     "Intended Audience :: Information Technology",
     "Intended Audience :: Manufacturing",
     "Intended Audience :: Telecommunications Industry",
-    "License :: OSI Approved :: BSD-2-Clause License",
-    "Natural Language :: English",
-    "Operating System :: MacOS",
+    "License :: OSI Approved :: BSD License",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Topic :: Software Development :: Embedded Systems",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Embedded Systems :: Controller Area Network (CAN)",
     "Topic :: System :: Networking",
     "Topic :: Utilities",
@@ -88,4 +87,4 @@ readme = { file = "README.md" }
 where = ["src"]
 
 [tool.setuptools.package-data]
-canmatrix = ["j1939.dbc"]
+canmatrix = ["j1939.dbc", py.typed]
