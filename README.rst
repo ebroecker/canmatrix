@@ -1,14 +1,33 @@
-## **Canmatrix** is a python package to read and write several CAN (Controller Area Network) database formats. ##
+Canmatrix is a python package to read and write several CAN (Controller Area Network) database formats.
+-------------------------------------------------------------------------------------------------------
 [![PyPI](https://img.shields.io/pypi/v/canmatrix.svg)](https://pypi.org/project/canmatrix/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/canmatrix.svg)](https://pypi.org/project/canmatrix/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/canmatrix.svg)]()
 [![Codecov branch](https://img.shields.io/codecov/c/github/ebroecker/canmatrix/development.svg)](https://codecov.io/gh/ebroecker/canmatrix/)
 [![GitHub issues](https://img.shields.io/github/issues-raw/ebroecker/canmatrix.svg)](https://github.com/ebroecker/canmatrix/issues)
 
+|pypi| |PyPI - Python Version| |Codecov branch| |GitHub issues|
 
-## About
+.. |pypi| image:: https://img.shields.io/pypi/v/python-can.svg
+   :target: https://pypi.python.org/pypi/python-can/
+   :alt: Latest Version on PyPi
 
-***Canmatrix*** implements a "Python Can Matrix Object" which describes the can-communication and the needed objects (Boardunits, Frames, Signals, Values, ...)
-***Canmatrix*** also includes two **Tools** (canconvert and cancompare) for converting and comparing **CAN** databases.
+.. |PyPI - Python Version| image:: https://img.shields.io/pypi/pyversions/canmatrix.svg
+   :target: https://pypi.org/project/canmatrix/
+   :alt: Latest Version on PyPi
+
+.. |Codecov branch| image:: https://img.shields.io/codecov/c/github/ebroecker/canmatrix/development.svg
+   :target: https://codecov.io/gh/ebroecker/canmatrix/
+   :alt: Latest Version on PyPi
+
+.. |GitHub issues| image:: https://img.shields.io/github/issues-raw/ebroecker/canmatrix.svg
+   :target: https://github.com/ebroecker/canmatrix/issue
+   :alt: Latest Version on PyPi
+
+About
+-----
+
+**Canmatrix** implements a "Python Can Matrix Object" which describes the can-communication and the needed objects (Boardunits, Frames, Signals, Values, ...)
+**Canmatrix** also includes two **Tools** (canconvert and cancompare) for converting and comparing **CAN** databases.
 
 - Multiple formats automotive related communication matrix file parsing.
 - CAN message encoding and decoding.
@@ -66,13 +85,15 @@ Project Homepage: https://github.com/ebroecker/canmatrix
 
 Documentation: https://canmatrix.readthedocs.io
 
-## Installation
+Installation
+------------
 
 https://canmatrix.readthedocs.io/en/latest/installation.html
 
-[Chinese Translation / 安装中文方法解释及注意事项](https://github.com/ebroecker/canmatrix/wiki/%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E6%96%B9%E6%B3%95%E8%A7%A3%E9%87%8A%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
+`Chinese Translation / 中文安装方法解释及注意事项 <https://github.com/ebroecker/canmatrix/wiki/%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E6%96%B9%E6%B3%95%E8%A7%A3%E9%87%8A%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9>`_
 
-## Contributing
+Contributing
+------------
 
 Source Code, Documentation, Examples, Report issues and Any other contributions are **extremely appreciated**.
 
@@ -84,7 +105,7 @@ Source Code, Documentation, Examples, Report issues and Any other contributions 
 
 
 
-
+======
 
 Have Fun,
 
