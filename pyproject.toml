@@ -88,4 +88,4 @@ readme = { file = "README.md" }
 where = ["src"]
 
 [tool.setuptools.package-data]
-canmatrix = ["py.typed"]
+canmatrix = ["J1939.dbc"]
