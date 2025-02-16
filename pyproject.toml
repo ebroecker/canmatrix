@@ -82,6 +82,7 @@ eds = ["canopen"]
 
 [tool.setuptools.dynamic]
 readme = { file = "README.rst" }
+version = {attr = "canmatix.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
