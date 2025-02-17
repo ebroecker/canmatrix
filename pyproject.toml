@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 67.7"]
+requires = ["setuptools >= 40.8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -82,7 +82,7 @@ eds = ["canopen"]
 
 [tool.setuptools.dynamic]
 readme = { file = "README.rst" }
-version = {attr = "testpypi_canmatrix.__version__"}
+version = {attr = "canmatrix.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
