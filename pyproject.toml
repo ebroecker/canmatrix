@@ -3,7 +3,7 @@ requires = ["setuptools >= 40.8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "testpypi_canmatrix"
+name = "canmatrix"
 dynamic = ["readme", "version"]
 description = "Automotive Communication Matrix"
 authors = [{ name="Eduard Bröcker", email = "eduard@gmx.de" }]
