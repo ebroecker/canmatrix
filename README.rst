@@ -1,27 +1,23 @@
 Canmatrix is a python package to read and write several CAN (Controller Area Network) database formats.
 -------------------------------------------------------------------------------------------------------
-[![PyPI](https://img.shields.io/pypi/v/canmatrix.svg)](https://pypi.org/project/canmatrix/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/canmatrix.svg)]()
-[![Codecov branch](https://img.shields.io/codecov/c/github/ebroecker/canmatrix/development.svg)](https://codecov.io/gh/ebroecker/canmatrix/)
-[![GitHub issues](https://img.shields.io/github/issues-raw/ebroecker/canmatrix.svg)](https://github.com/ebroecker/canmatrix/issues)
 
-|pypi| |PyPI - Python Version| |Codecov branch| |GitHub issues|
+|pypi| |pypi_version| |codecov| |issues|
 
 .. |pypi| image:: https://img.shields.io/pypi/v/python-can.svg
-   :target: https://pypi.python.org/pypi/python-can/
+   :target: https://pypi.python.org/pypi/python-can
    :alt: Latest Version on PyPi
 
-.. |PyPI - Python Version| image:: https://img.shields.io/pypi/pyversions/canmatrix.svg
-   :target: https://pypi.org/project/canmatrix/
-   :alt: Latest Version on PyPi
+.. |pypi_version| image:: https://img.shields.io/pypi/pyversions/canmatrix.svg
+   :target: https://pypi.org/project/canmatrix
+   :alt: Support Version on PyPi
 
-.. |Codecov branch| image:: https://img.shields.io/codecov/c/github/ebroecker/canmatrix/development.svg
-   :target: https://codecov.io/gh/ebroecker/canmatrix/
-   :alt: Latest Version on PyPi
+.. |codecov| image:: https://img.shields.io/codecov/c/github/ebroecker/canmatrix/development.svg
+   :target: https://codecov.io/gh/ebroecker/canmatrix
+   :alt: Test coverage reports on Codecov
 
-.. |GitHub issues| image:: https://img.shields.io/github/issues-raw/ebroecker/canmatrix.svg
+.. |issues| image:: https://img.shields.io/github/issues-raw/ebroecker/canmatrix.svg
    :target: https://github.com/ebroecker/canmatrix/issue
-   :alt: Latest Version on PyPi
+   :alt: Current Github Issues
 
 About
 -----
@@ -102,7 +98,6 @@ Source Code, Documentation, Examples, Report issues and Any other contributions 
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
 
 
 ======
