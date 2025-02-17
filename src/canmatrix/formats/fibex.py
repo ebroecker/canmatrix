@@ -81,7 +81,7 @@ def create_signal_instance(parent, signal, signal_id):
     # type: (_Element, Signal, str) -> _Element
     signal_instance = create_sub_element_fx(parent, "SIGNAL-INSTANCE")
     signal_instance.set("ID", "PDUINST_" + signal_id)
-    create_sub_element_fx(signal_instance, "BIT-POSITION", str(signal.start_bit))
+    create_sub_element_fx(signal_instance, "BIT-POSITION", str(signal.get_startbit(bit_numbering=1)))
     create_sub_element_fx(signal_instance, "IS-HIGH-LOW-BYTE-ORDER", "false" if signal.is_little_endian else "true")
     return signal_instance
 
