@@ -15,16 +15,16 @@ jobs:
     continue-on-error: ${{ matrix.experimental }} # See: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idcontinue-on-error
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        # os: [ubuntu-latest]
+        # os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         experimental: [false]
         # python-version: ["2.7","3.4","3.5","3.6","3.7","3.8","3.9","3.10","3.11","3.12"]
-        python-version: ["3.8","3.9","3.10","3.11","3.12"]
+        python-version: ["3.8","3.9","3.10","3.11","3.12","3.13"]
       fail-fast: false
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -117,11 +117,14 @@ jobs:
   #       retention-days: 5
 
   build:
+    name: Packaging
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - name: Build wheel and sdist
@@ -129,24 +132,26 @@ jobs:
       - name: Check build artifacts
         run: pipx run twine check --strict dist/*
       - name: Save artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: python-can-dist
+          name: canmatrix-dist
           path: ./dist
 
   upload_pypi:
     needs: [build]
+    name: Release to PyPi
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
 
     # upload to PyPI only on release
     if: github.event.release && github.event.action == 'published'
     steps:
-      - uses: actions/download-artifact@v4.1.7
+      - uses: actions/download-artifact@v4
         with:
-          name: python-can-dist
           path: dist
+          merge-multiple: true
 
-      - uses: pypa/gh-action-pypi-publish@v1.4.2
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish release distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

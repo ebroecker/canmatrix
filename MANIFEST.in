@@ -1,3 +1,2 @@
-include versioneer.py
-include canmatrix/_version.py
 include LICENSE
+recursive-include tests *.py
