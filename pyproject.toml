@@ -3,7 +3,7 @@ requires = ["setuptools >= 40.8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "testpypi-canmatrix"
+name = "canmatrix"
 description = "Automotive Communication Matrix"
 readme = "README.md"
 license = { text = "BSD-2-Clause" }
@@ -29,6 +29,7 @@ keywords = [
     "eds",
     "automotive",
 ]
+
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
