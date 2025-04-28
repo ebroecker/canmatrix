@@ -364,7 +364,7 @@ def load(f, **options):
             # new_frame = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
             new_frame = canmatrix.Frame(message.get('name'))
 
-            if 'triggered' in message.attrib:
+            if 'interval' in message.attrib:
                 new_frame.cycle_time = int(message.get('interval'))
 
             if 'length' in message.attrib:
