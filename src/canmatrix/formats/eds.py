@@ -195,7 +195,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
 
     for start_index, rx_tx_config in {0x1400 : {"transmitter": [], "receiver": [node_name]}, 0x1800: {"transmitter": [node_name], "receiver": []}}.items():       
-        for comm_index in range(start_index, start_index + 0x8):
+        for comm_index in range(start_index, start_index + 0x200):
             map_index = comm_index + 0x200
             if comm_index not in od or map_index not in od:
                 continue
