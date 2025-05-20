@@ -230,8 +230,9 @@ class Earxml:
         txt = None
         for lang in self.preferred_languages:
             if txt is None:
-              txt = self.get_child(desc, f'L-2[@L="{lang}"]')
-              break
+                txt = self.get_child(desc, f'L-2[@L="{lang}"]')
+                if txt is None:
+                    break
         if txt is None:
             txt = self.get_child(desc, 'L-2')
         if txt is not None:
@@ -2173,6 +2174,8 @@ def load(file, **options):
     decode_flexray = options.get("decode_flexray", False)
 
     preferred_languages = options.get("preferred_languages", ["EN,DE"]).split(",")
+    preferred_languages.append("FOR-ALL")
+    logger.debug(f"preferred_languages: {preferred_languages}")
 
     result = {}
     logger.debug("Read arxml ...")
