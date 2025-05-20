@@ -2172,7 +2172,7 @@ def load(file, **options):
     decode_ethernet = options.get("decode_ethernet", False)
     decode_flexray = options.get("decode_flexray", False)
 
-    preferred_languages = options.get("preferred_languages", ["EN", "DE"])
+    preferred_languages = options.get("preferred_languages", ["EN,DE"]).split(",")
 
     result = {}
     logger.debug("Read arxml ...")
