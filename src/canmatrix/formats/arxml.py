@@ -53,10 +53,11 @@ _FloatFactory = typing.Callable[[typing.Any], typing.Any]
 
 
 class Earxml:
-    def __init__(self):
+    def __init__(self, preferred_languages):
         self.xml_element_cache = dict()  # type: typing.Dict[str, _Element]
         self.path_cache = {}
         self.sn_cache = {}
+        self.preferred_languages = preferred_languages
 
     def fill_caches(self, start_element=None, ar_path=""):
         if start_element is None:
@@ -226,9 +227,11 @@ class Earxml:
         # type: (_Element, _DocRoot) -> str
         """Get element description from XML."""
         desc = self.get_child(element, "DESC")
-        txt = self.get_child(desc, 'L-2[@L="DE"]')
-        if txt is None:
-            txt = self.get_child(desc, 'L-2[@L="EN"]')
+        txt = None
+        for lang in self.preferred_languages:
+            if txt is None:
+              txt = self.get_child(desc, f'L-2[@L="{lang}"]')
+              break
         if txt is None:
             txt = self.get_child(desc, 'L-2')
         if txt is not None:
@@ -2169,10 +2172,12 @@ def load(file, **options):
     decode_ethernet = options.get("decode_ethernet", False)
     decode_flexray = options.get("decode_flexray", False)
 
+    preferred_languages = options.get("preferred_languages", ["EN", "DE"])
+
     result = {}
     logger.debug("Read arxml ...")
 
-    ea = Earxml()
+    ea = Earxml(preferred_languages = preferred_languages)
     ea.open(file)
 
     com_module = ea.get_short_name_path("/ActiveEcuC/Com")
