@@ -36,6 +36,7 @@ import sys
 import typing
 import warnings
 from builtins import *
+from typing import Optional
 
 import attr
 from itertools import zip_longest
@@ -792,10 +793,14 @@ class Endpoint(object):
 
     AUTOSAR Ethernet Frames Endpoints
     """
-    server_ip = attr.ib(default="")  # type: str
+    server_ipv4 = attr.ib(default=None)  # type: Optional[str]
+    server_ipv6 = attr.ib(default=None)  # type: Optional[str]
     server_port = attr.ib(default=0)  # type: int
-    client_ip = attr.ib(default="")  # type: str
+
+    client_ipv4 = attr.ib(default=None)  # type: Optional[str]
+    client_ipv6 = attr.ib(default=None)  # type: Optional[str]
     client_port = attr.ib(default=0)  # type: int
+
     ttl = attr.ib(default=0)  # type: int
 
 
