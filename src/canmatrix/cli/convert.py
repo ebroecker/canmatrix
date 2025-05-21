@@ -95,6 +95,7 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--arxmlExportVersion', 'arVersion',  default="4.1.0", help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 4.1.0")
 @click.option('--arxmlFlexray/--no-arxmlFlexray', 'decode_flexray', default = False, help="EXPERIMENTAL: import basic flexray data from ARXML")
 @click.option('--arxmlEthernet/--no-arxmlEthernet', 'decode_ethernet', default = False, help="EXPERIMENTAL: import basic ethernet data from ARXML")
+@click.option('--preferred-languages', 'preferred_languages', default = "EN,DE", help="the preferred languages will be given priority when there are comments or descriptions available in multiple languages\ndefault EN,DE")
 
 
 # dbc switches
