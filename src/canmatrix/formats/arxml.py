@@ -53,10 +53,11 @@ _FloatFactory = typing.Callable[[typing.Any], typing.Any]
 
 
 class Earxml:
-    def __init__(self):
+    def __init__(self, preferred_languages):
         self.xml_element_cache = dict()  # type: typing.Dict[str, _Element]
         self.path_cache = {}
         self.sn_cache = {}
+        self.preferred_languages = preferred_languages
 
     def fill_caches(self, start_element=None, ar_path=""):
         if start_element is None:
@@ -226,9 +227,12 @@ class Earxml:
         # type: (_Element, _DocRoot) -> str
         """Get element description from XML."""
         desc = self.get_child(element, "DESC")
-        txt = self.get_child(desc, 'L-2[@L="DE"]')
-        if txt is None:
-            txt = self.get_child(desc, 'L-2[@L="EN"]')
+        txt = None
+        for lang in self.preferred_languages:
+            if txt is None:
+                txt = self.get_child(desc, f'L-2[@L="{lang}"]')
+                if txt is None:
+                    break
         if txt is None:
             txt = self.get_child(desc, 'L-2')
         if txt is not None:
@@ -1885,10 +1889,12 @@ def decode_ethernet_helper(ea, float_factory):
                 # Get Server Endpoint Info
                 server_port_ref = ea.follow_ref(socket_connection_bundle, "SERVER-PORT-REF")
                 server_port = ea.find("PORT-NUMBER", server_port_ref)
-                
+
                 server_app_endpoint = ea.get_child(server_port_ref, "APPLICATION-ENDPOINT")
                 server_endpoint_ref = ea.follow_ref(server_app_endpoint, "NETWORK-ENDPOINT-REF")
+
                 server_ipv4 = ea.find("IPV-4-ADDRESS", server_endpoint_ref)
+                server_ipv6 = ea.find("IPV-6-ADDRESS", server_endpoint_ref)
 
                 # Get Client Endpoint Info
                 socket_connections = ea.get_children(socket_connection_bundle, "SOCKET-CONNECTION")
@@ -1898,14 +1904,23 @@ def decode_ethernet_helper(ea, float_factory):
 
                     client_app_endpoint = ea.get_child(client_port_ref, "APPLICATION-ENDPOINT")
                     client_endpoint_ref = ea.follow_ref(client_app_endpoint, "NETWORK-ENDPOINT-REF")
+
                     client_ipv4 = ea.find("IPV-4-ADDRESS", client_endpoint_ref)
+                    client_ipv6 = ea.find("IPV-6-ADDRESS", client_endpoint_ref)
                     ttl = ea.find("TTL", client_endpoint_ref)
 
-                    endpoint = canmatrix.Endpoint(server_ipv4.text, 
-                                                  int(server_port.text, 0),
-                                                  client_ipv4.text, 
-                                                  int(client_port.text, 0),
-                                                  ttl)
+                    get_text = lambda el: el.text if el is not None else None
+                    get_int = lambda el: int(el.text, 0) if el is not None else 0
+
+                    endpoint = canmatrix.Endpoint(
+                        server_ipv4=get_text(server_ipv4),
+                        server_ipv6=get_text(server_ipv6),
+                        server_port=get_int(server_port),
+                        client_ipv4=get_text(client_ipv4),
+                        client_ipv6=get_text(client_ipv6),
+                        client_port=get_int(client_port),
+                        ttl=get_int(ttl)
+                    )
 
                     for scii in ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER", socket_connection):
 
@@ -2169,10 +2184,14 @@ def load(file, **options):
     decode_ethernet = options.get("decode_ethernet", False)
     decode_flexray = options.get("decode_flexray", False)
 
+    preferred_languages = options.get("preferred_languages", ["EN,DE"]).split(",")
+    preferred_languages.append("FOR-ALL")
+    logger.debug(f"preferred_languages: {preferred_languages}")
+
     result = {}
     logger.debug("Read arxml ...")
 
-    ea = Earxml()
+    ea = Earxml(preferred_languages = preferred_languages)
     ea.open(file)
 
     com_module = ea.get_short_name_path("/ActiveEcuC/Com")
