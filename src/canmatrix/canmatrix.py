@@ -44,6 +44,7 @@ from itertools import zip_longest
 import canmatrix.copy
 import canmatrix.types
 import canmatrix.utils
+import canmatrix.exceptions
 
 if sys.version_info < (3, 8):
     from importlib_metadata import version
@@ -55,22 +56,6 @@ if version("attrs") < '17.4.0':
 
 logger = logging.getLogger(__name__)
 defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
-
-
-class ExceptionTemplate(Exception):
-    def __call__(self, *args):
-        return self.__class__(*(self.args + args))
-
-
-class StartbitLowerZero(ExceptionTemplate): pass
-class EncodingComplexMultiplexed(ExceptionTemplate): pass
-class MissingMuxSignal(ExceptionTemplate): pass
-class DecodingComplexMultiplexed(ExceptionTemplate): pass
-class DecodingFrameLength(ExceptionTemplate): pass
-class ArbitrationIdOutOfRange(ExceptionTemplate): pass
-class J1939NeedsExtendedIdentifier(ExceptionTemplate): pass
-class DecodingConatainerPdu(ExceptionTemplate): pass
-class EncodingConatainerPdu(ExceptionTemplate): pass
 
 
 def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
