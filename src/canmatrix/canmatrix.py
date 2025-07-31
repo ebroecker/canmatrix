@@ -46,6 +46,8 @@ import canmatrix.types
 import canmatrix.utils
 import canmatrix.exceptions
 
+import canmatrix.Ecu
+
 if sys.version_info < (3, 8):
     from importlib_metadata import version
 else:
@@ -62,58 +64,6 @@ def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]
     """Converter for attrs which accepts ArbitrationId itself or int."""
     return source if isinstance(source, ArbitrationId) else  ArbitrationId.from_compound_integer(source)
 
-
-@attr.s
-class Ecu(object):
-    """
-    Represents one ECU.
-    """
-
-    name = attr.ib()  # type: str
-    comment = attr.ib(default=None)  # type: typing.Optional[str]
-    attributes = attr.ib(factory=dict, repr=False)  # type: typing.MutableMapping[str, typing.Any]
-
-    def attribute(self, attribute_name, db=None, default=None):  # type: (str, CanMatrix, typing.Any) -> typing.Any
-        """Get Board unit attribute by its name.
-
-        :param str attribute_name: attribute name.
-        :param CanMatrix db: Optional database parameter to get global default attribute value.
-        :param default: Default value if attribute doesn't exist.
-        :return: Return the attribute value if found, else `default` or None
-        """
-        if attribute_name in self.attributes:
-            return self.attributes[attribute_name]
-        elif db is not None:
-            if attribute_name in db.ecu_defines:
-                define = db.ecu_defines[attribute_name]
-                return define.defaultValue
-        return default
-
-    def add_attribute(self, attribute, value):  # type (attribute: str, value: typing.Any) -> None
-        """
-        Add the Attribute to current ECU. If the attribute already exists, update the value.
-
-        :param str attribute: Attribute name
-        :param any value: Attribute value
-        """
-        try:
-            self.attributes[attribute] = str(value)
-        except UnicodeDecodeError:
-            self.attributes[attribute] = value
-        if type(self.attributes[attribute]) == str:
-            self.attributes[attribute] = self.attributes[attribute].strip()
-
-    def del_attribute(self, attribute):
-        if attribute in self.attributes:
-            del self.attributes[attribute]
-
-    def add_comment(self, comment):  # type: (str) -> None
-        """
-        Set ECU comment.
-
-        :param str comment: BU comment/description.
-        """
-        self.comment = comment
 
 
 def normalize_value_table(table):  # type: (typing.Mapping) -> typing.MutableMapping[int, typing.Any]
