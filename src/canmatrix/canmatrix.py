@@ -48,6 +48,7 @@ import canmatrix.exceptions
 
 import canmatrix.Ecu
 import canmatrix.Signal
+import canmatrix.SignalGroup
 
 if sys.version_info < (3, 8):
     from importlib_metadata import version
@@ -74,55 +75,6 @@ def normalize_value_table(table):  # type: (typing.Mapping) -> typing.MutableMap
 
 
 
-@attr.s(eq=False)
-class SignalGroup(object):
-    """
-    Represents signal-group, containing multiple Signals.
-    """
-    name = attr.ib()  # type: str
-    id = attr.ib()  # type: int
-    signals = attr.ib(factory=list, repr=False)  # type: typing.MutableSequence[Signal]
-    e2e_properties = attr.ib(default=None)  # type: Optional[AutosarE2EProperties]
-    secOC_properties= attr.ib(default=None)  # type: Optional[AutosarSecOCProperties]
-
-    def add_signal(self, signal):  # type: (Signal) -> None
-        """Add a Signal to SignalGroup.
-
-        :param Signal signal: signal to add
-        """
-        if signal not in self.signals:
-            self.signals.append(signal)
-
-    def del_signal(self, signal):  # type: (Signal) -> None
-        """Remove Signal from SignalGroup.
-
-        :param Signal signal: signal to remove
-        """
-        if signal in self.signals:
-            self.signals.remove(signal)
-
-    def by_name(self, name):  # type: (str) -> typing.Union[Signal, None]
-        """
-        Find a Signal in the group by Signal name.
-
-        :param str name: Signal name to find
-        :return: signal contained in the group identified by name
-        :rtype: Signal
-        """
-        for test in self.signals:
-            if test.name == name:
-                return test
-        return None
-
-    def __iter__(self):  # type: () -> typing.Iterable[Signal]
-        """Iterate over all contained signals."""
-        return iter(self.signals)
-
-    def __getitem__(self, name):  # type: (str) -> Signal
-        signal = self.by_name(name)
-        if signal:
-            return signal
-        raise KeyError("Signal '{}' doesn't exist".format(name))
 
 
 @attr.s
