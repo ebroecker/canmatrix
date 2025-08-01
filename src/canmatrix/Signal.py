@@ -31,6 +31,7 @@ import typing
 
 import canmatrix.types
 import canmatrix.exceptions
+from canmatrix.utils import normalize_value_table
 
 
 

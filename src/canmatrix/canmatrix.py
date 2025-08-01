@@ -68,8 +68,7 @@ def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]
 
 
 
-def normalize_value_table(table):  # type: (typing.Mapping) -> typing.MutableMapping[int, typing.Any]
-    return {int(k): v for k, v in table.items()}
+
 
 
 
