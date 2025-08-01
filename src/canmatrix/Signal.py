@@ -25,11 +25,14 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import typing
 import attr
+from decimal import Decimal as DefaultFloatFactory
+import typing
 
 import canmatrix.types
 import canmatrix.exceptions
+
+
 
 @attr.s(eq=False)
 class Signal(object):
@@ -50,8 +53,8 @@ class Signal(object):
     """
 
     name = attr.ib(default="")  # type: str
-    # float_factory = attr.ib(default=defaultFloatFactory)
-    float_factory = defaultFloatFactory  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
+    # float_factory = attr.ib(default=DefaultFloatFactory)
+    float_factory = DefaultFloatFactory  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
     start_bit = attr.ib(default=0)  # type: int
     size = attr.ib(default=0)  # type: int
     is_little_endian = attr.ib(default=True)  # type: bool
@@ -219,7 +222,7 @@ class Signal(object):
         :param int or str value: signal value (0xFF)
         :param str valueName: Human readable value description ("Init")
         """
-        if isinstance(value, defaultFloatFactory):
+        if isinstance(value, DefaultFloatFactory):
             self.values[value.to_integral()] = valueName
         else:
             self.values[int(str(value), 0)] = valueName
