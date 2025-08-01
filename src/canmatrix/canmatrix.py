@@ -77,34 +77,7 @@ def normalize_value_table(table):  # type: (typing.Mapping) -> typing.MutableMap
 
 
 
-@attr.s
-class DecodedSignal(object):
-    """
-    Contains a decoded signal (frame decoding)
 
-    * rawValue : rawValue (value on the bus)
-    * physValue: physical Value (the scaled value)
-    * namedValue: value of Valuetable
-    * signal: pointer signal (object) which was decoded
-    """
-    raw_value = attr.ib()  # type: canmatrix.types.RawValue
-    signal = attr.ib()  # type: Signal
-
-    @property
-    def phys_value(self):  # type: () -> canmatrix.types.PhysicalValue
-        """
-        :return: physical Value (the scaled value)
-        :rtype: typing.Union[int, decimal.Decimal]
-        """
-        return self.signal.raw2phys(self.raw_value)
-
-    @property
-    def named_value(self):
-        """
-        :return: value of Valuetable
-        :rtype: typing.Union[str, int, decimal.Decimal]
-        """
-        return self.signal.raw2phys(self.raw_value, decode_to_str=True)
 
 
 # https://docs.python.org/3/library/itertools.html
