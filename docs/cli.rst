@@ -19,7 +19,7 @@ General
 _______
 
 If you properly install canmatrix using *pip,* the setuptools create
-two ecxcutables for you: `canconvert` and `cancompare`. You can find these executables
+two executables for you: `canconvert` and `cancompare`. You can find these executables
 near to your `python(.exe)`
 
 If you aren't able to find the scripts, you can still run it as
