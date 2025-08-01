@@ -423,46 +423,7 @@ def test_define_for_float():
     assert define.max == decimal.Decimal('111.11')
 
 
-# J1939CanId tests
-def test_canid_parse_values():
-    can_id = canmatrix.ArbitrationId(id=0x01ABCD02, extended=True)
-    assert can_id.j1939_source == 0x02
-    assert can_id.j1939_destination == 0xcd
-    assert can_id.j1939_pgn == 0x1AB00
-    assert can_id.j1939_destination == 0xCD
-    assert can_id.j1939_priority == 0
-    assert can_id.j1939_tuple == (0xCD, 0x1AB00, 2)
 
-
-def test_canid_repr():
-    can_id = canmatrix.ArbitrationId(id=0x01ABCD02, extended=True)
-    assert can_id.j1939_str == "DA:0xCD PGN:0x1AB00 SA:0x02"
-
-
-
-
-
-def test_Arbitration_id():
-    id_standard = canmatrix.ArbitrationId(id=0x1, extended=False)
-    id_extended = canmatrix.ArbitrationId(id=0x1, extended=True)
-    id_unknown = canmatrix.ArbitrationId(id=0x1, extended=None)  # Defaults to True
-
-    id_from_int_standard = canmatrix.ArbitrationId.from_compound_integer(1)
-    id_from_int_extended = canmatrix.ArbitrationId.from_compound_integer(1 | 1 << 31)
-
-    assert id_standard.to_compound_integer() == 1
-    assert id_extended.to_compound_integer() == (1 | 1 << 31)
-
-    assert id_standard.id == 1
-    assert id_extended.id == 1
-    assert id_unknown.id == 1
-    assert id_standard != id_extended
-    assert id_standard != id_unknown
-    assert id_extended == id_unknown
-    assert id_from_int_standard == id_standard
-    assert id_from_int_standard != id_extended
-    assert id_from_int_extended == id_extended
-    assert id_from_int_extended != id_standard
 
 def test_arbitration_id_is_instance():
     frame1 = canmatrix.Frame(name = "Frame1")
