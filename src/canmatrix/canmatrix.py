@@ -164,78 +164,7 @@ class AutosarSecOCProperties(object):
     freshness_length = attr.ib(default=0)  # type: int
     freshness_tx_length = attr.ib(default=0)  # type: int
 
-@attr.s(eq=False)
-class Pdu(object):
-    """
-    Represents a PDU.
 
-    PDUs are hierarchical groups of signals which are needed to represent Flexray busses
-    Whereas a PDU is the same than a frame on CAN bus, at flexray a frame may consist of
-    multiple PDUs (a bit like multiple signal layout for multiplexed can frames).
-    This class is only used for flexray busses.
-    """
-
-    name = attr.ib(default="")  # type: str
-    size = attr.ib(default=0)  # type: int
-    id = attr.ib(default=0)  # type: int
-    triggering_name = attr.ib(default="")  # type: str
-    pdu_type = attr.ib(default="")  # type: str
-    port_type = attr.ib(default="")  # type: str
-    signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
-    signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
-    cycle_time = attr.ib(default=0)  # type: int
-
-    def add_signal(self, signal):
-        # type: (Signal) -> Signal
-        """
-        Add Signal to Pdu.
-
-        :param Signal signal: Signal to be added.
-        :return: the signal added.
-        """
-        self.signals.append(signal)
-        return self.signals[len(self.signals) - 1]
-
-    def add_signal_group(self, 
-                         Name: str, 
-                         Id: int, 
-                         signalNames: typing.Sequence[str], 
-                         e2e_properties: typing.Optional[AutosarE2EProperties] = None) -> None:
-        """Add new SignalGroup to the Frame. Add given signals to the group.
-
-        :param str Name: Group name
-        :param int Id: Group id
-        :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
-        """
-        newGroup = SignalGroup(Name, Id, e2e_properties=e2e_properties)
-        self.signalGroups.append(newGroup)
-        for signal in signalNames:
-            signal = signal.strip()
-            if signal.__len__() == 0:
-                continue
-            signalId = self.signal_by_name(signal)
-            if signalId is not None:
-                newGroup.add_signal(signalId)
-
-    def get_signal_group_for_signal(self, signal_to_find):
-        for signal_group in self.signalGroups:
-            for signal in signal_group:
-                if signal == signal_to_find:
-                    return signal_group
-        return None
-
-    def signal_by_name(self, name):
-        # type: (str) -> typing.Union[Signal, None]
-        """
-        Get signal by name.
-
-        :param str name: signal name to be found.
-        :return: signal with given name or None if not found
-        """
-        for signal in self.signals:
-            if signal.name == name:
-                return signal
-        return None
 
 
 @attr.s(eq=False)
