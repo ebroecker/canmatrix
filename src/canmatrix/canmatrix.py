@@ -52,6 +52,7 @@ import canmatrix.SignalGroup as SignalGroup
 import canmatrix.DecodedSignal as DecodedSignal
 import canmatrix.ArbitrationId as ArbitrationId
 import canmatrix.Frame as Frame
+from canmatrix.Define import Define
 
 if sys.version_info < (3, 8):
     from importlib_metadata import version
