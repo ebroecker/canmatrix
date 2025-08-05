@@ -32,7 +32,7 @@ import re
 import typing
 from builtins import *
 
-import canmatrix
+from canmatrix.CanMatrix import CanMatrix
 import canmatrix.utils
 logger = logging.getLogger(__name__)
 
@@ -491,7 +491,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     signal = None  # type: typing.Optional[canmatrix.Signal]
     frame = None
     board_unit = None
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     frames_by_id = {}  # type: typing.Dict[int, canmatrix.Frame]
 
     def hash_arbitration_id(arbitration_id):  # type: (canmatrix.ArbitrationId) -> int

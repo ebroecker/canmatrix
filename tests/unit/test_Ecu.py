@@ -61,3 +61,4 @@ def test_ecu_repr():
     ecu = Ecu(name="Gateway")
     ecu.add_comment("with bug")
     assert str(ecu) == "Ecu(name='Gateway', comment='with bug')"
+   

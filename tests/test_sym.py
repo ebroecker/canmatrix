@@ -7,7 +7,9 @@ from pprint import pprint
 
 import pytest
 
-import canmatrix.canmatrix
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
 import canmatrix.formats.sym
 
 
@@ -85,12 +87,12 @@ def test_parse_longname_with_colon():
     ),
 )
 def test_export_default_decimal_places(is_float, value, expected):
-    matrix = canmatrix.canmatrix.CanMatrix()
+    matrix = CanMatrix()
 
-    frame = canmatrix.canmatrix.Frame()
+    frame = Frame()
     matrix.add_frame(frame)
 
-    signal = canmatrix.canmatrix.Signal(
+    signal = Signal(
         size=32,
         is_float=is_float,
         is_signed=False,

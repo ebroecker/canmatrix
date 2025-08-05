@@ -32,7 +32,7 @@ from builtins import *
 
 import attr
 
-import canmatrix
+from canmatrix.CanMatrix import CanMatrix
 import canmatrix.utils
 
 logger = logging.getLogger(__name__)
@@ -337,7 +337,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     frame_name = ""
     frame = None
 
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     db.add_frame_defines("Receivable", 'BOOL False True')
     db.add_frame_defines("Sendable", 'BOOL False True')
     db.add_signal_defines("HexadecimalOutput", 'BOOL False True')
