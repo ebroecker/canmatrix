@@ -161,3 +161,7 @@ def decode_number(value, float_factory):  # type(string) -> (int)
         value = value[2:]
 
     return int(value, base)
+
+def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
+    """Converter for attrs which accepts ArbitrationId itself or int."""
+    return source if isinstance(source, ArbitrationId.ArbitrationId) else  ArbitrationId.ArbitrationId.from_compound_integer(source)
