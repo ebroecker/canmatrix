@@ -31,7 +31,6 @@ import decimal
 import pytest
 from builtins import *
 
-import canmatrix.canmatrix
 from canmatrix.Pdu import Pdu
 
 #TODO: add PDU tests

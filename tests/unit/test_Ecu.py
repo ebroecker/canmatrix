@@ -31,7 +31,7 @@ import decimal
 import pytest
 from builtins import *
 
-import canmatrix.canmatrix
+from canmatrix.CanMatrix import CanMatrix
 from canmatrix.Ecu import Ecu
 from canmatrix.Define import Define
 
@@ -52,7 +52,7 @@ def test_ecu_default_attr_from_db():
     ecu = Ecu(name="Gateway")
     define = Define("INT 0 255")
     define.defaultValue = 33
-    matrix = canmatrix.canmatrix.CanMatrix(ecu_defines={"temperature": define})
+    matrix = CanMatrix(ecu_defines={"temperature": define})
     assert ecu.attribute("temperature", db=matrix, default=2) == 33
     assert ecu.attribute("wrong", db=matrix, default=2) == 2
 

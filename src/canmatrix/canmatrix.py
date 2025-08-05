@@ -62,56 +62,8 @@ if version("attrs") < '17.4.0':
     raise RuntimeError("need attrs >= 17.4.0")
 
 logger = logging.getLogger(__name__)
-defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@attr.s(eq=False)
-class AutosarSecOCProperties(object):
-    auth_algorithm = attr.ib(default="")  # type: str
-    payload_length = attr.ib(default=0)  # type: int
-    auth_tx_length = attr.ib(default=0)  # type: int
-    data_id = attr.ib(default=0)  # type: int
-    freshness_length = attr.ib(default=0)  # type: int
-    freshness_tx_length = attr.ib(default=0)  # type: int
-
-
-
-
-
-
-
 
 import enum
-
-
 class matrix_class(enum.Enum):
     CAN = 1
     FLEXRAY = 2

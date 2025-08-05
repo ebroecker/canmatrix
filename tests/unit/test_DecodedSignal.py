@@ -31,7 +31,7 @@ import decimal
 import pytest
 from builtins import *
 
-import canmatrix.canmatrix
+from canmatrix.CanMatrix import CanMatrix
 from canmatrix.Signal import Signal
 from canmatrix.DecodedSignal import DecodedSignal
 

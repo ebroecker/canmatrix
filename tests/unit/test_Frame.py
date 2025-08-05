@@ -31,7 +31,7 @@ import decimal
 import pytest
 from builtins import *
 
-import canmatrix.canmatrix
+from canmatrix.CanMatrix import CanMatrix
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 from canmatrix.DecodedSignal import DecodedSignal
@@ -332,7 +332,7 @@ def test_frame_no_attribute_with_default(empty_frame):
 def test_frame_default_attr_from_db(empty_frame):
     define = Define("INT 0 255")
     define.defaultValue = 33
-    matrix = canmatrix.canmatrix.CanMatrix(frame_defines={"from_db": define})
+    matrix = CanMatrix(frame_defines={"from_db": define})
     assert empty_frame.attribute("from_db", db=matrix, default=2) == 33
     assert empty_frame.attribute("wrong", db=matrix, default=2) == 2
 
