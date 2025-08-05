@@ -32,7 +32,7 @@ import pytest
 from builtins import *
 
 import canmatrix.canmatrix
-from canmatrix import Signal
+from canmatrix.Signal import Signal
 
 @pytest.fixture
 def some_signal():
@@ -277,52 +277,52 @@ def test_signal_encode_named_value(some_signal):
 
 
 def test_signal_encode_invalid_named_value(some_signal):
-    with pytest.raises(ValueError):
+    with pytest.raises(decimal.InvalidOperation):
         some_signal.phys2raw("wrong")
 
 
 def test_signal_min_unspecified_respects_calc_for_min_none_false():
-    signal = canmatrix.Signal(calc_min_for_none=False)
+    signal = Signal(calc_min_for_none=False)
     assert signal.min is None
 
 
 def test_signal_min_unspecified_respects_calc_for_min_none_true():
-    signal = canmatrix.Signal(size=8, is_signed=True, calc_min_for_none=True)
+    signal = Signal(size=8, is_signed=True, calc_min_for_none=True)
     assert signal.min == -128
 
 
 def test_signal_min_specified_respects_calc_for_min_none_false():
-    signal = canmatrix.Signal(min=42, calc_min_for_none=False)
+    signal = Signal(min=42, calc_min_for_none=False)
     assert signal.min == 42
 
 
 def test_signal_min_specified_respects_calc_for_min_none_true():
-    signal = canmatrix.Signal(min=42, calc_min_for_none=True)
+    signal = Signal(min=42, calc_min_for_none=True)
     assert signal.min == 42
 
 
 def test_signal_max_unspecified_respects_calc_for_max_none_false():
-    signal = canmatrix.Signal(calc_max_for_none=False)
+    signal = Signal(calc_max_for_none=False)
     assert signal.max is None
 
 
 def test_signal_max_unspecified_respects_calc_for_max_none_true():
-    signal = canmatrix.Signal(size=8, is_signed=True, calc_max_for_none=True)
+    signal = Signal(size=8, is_signed=True, calc_max_for_none=True)
     assert signal.max == 127
 
 
 def test_signal_max_specified_respects_calc_for_max_none_false():
-    signal = canmatrix.Signal(max=42, calc_max_for_none=False)
+    signal = Signal(max=42, calc_max_for_none=False)
     assert signal.max == 42
 
 
 def test_signal_max_specified_respects_calc_for_max_none_true():
-    signal = canmatrix.Signal(max=42, calc_max_for_none=True)
+    signal = Signal(max=42, calc_max_for_none=True)
     assert signal.max == 42
 
 
 def test_signal_range_type_int():
-    signal = canmatrix.Signal(is_float=False)
+    signal = Signal(is_float=False)
     signal_min, signal_max = signal.calculate_raw_range()
 
     min_is = isinstance(signal_min, int)
@@ -332,7 +332,7 @@ def test_signal_range_type_int():
 
 
 def test_signal_range_type_float():
-    signal = canmatrix.Signal(is_float=True)
+    signal = Signal(is_float=True)
     signal_min, signal_max = signal.calculate_raw_range()
 
     factory_type = type(signal.float_factory())
@@ -344,7 +344,7 @@ def test_signal_range_type_float():
 
 def test_signal_multiplexer_value_in_range():
     # test multiplexer ranges (complex multiplex)
-    signal = canmatrix.Signal()
+    signal = Signal()
     signal.mux_val_grp.append([1, 2])
     signal.mux_val_grp.append([4, 5])
     assert signal.multiplexer_value_in_range(0) == False
@@ -356,12 +356,12 @@ def test_signal_multiplexer_value_in_range():
     assert signal.multiplexer_value_in_range(6) == False
 
     # test standard multiplexer
-    signal2 = canmatrix.Signal()
+    signal2 = Signal()
     signal2.multiplex_setter(1)
     assert signal2.multiplexer_value_in_range(1) == True
     assert signal2.multiplexer_value_in_range(0) == False
 
-    signal3 = canmatrix.Signal()
+    signal3 = Signal()
     signal3.multiplex_setter("Multiplexor")
     assert signal3.multiplexer_value_in_range(1) == False
     assert signal3.multiplexer_value_in_range(0) == False

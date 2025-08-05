@@ -32,8 +32,8 @@ import pytest
 from builtins import *
 
 import canmatrix.canmatrix
-from canmatrix import Signal
-from canmatrix import SignalGroup
+from canmatrix.Signal import Signal
+from canmatrix.SignalGroup import SignalGroup
 
 
 # SignalGroup
@@ -88,7 +88,7 @@ def test_signalgroup_find_nothing(the_group, some_signal):
 
 def test_signalgroup_delete_nothing(the_group, some_signal):
     the_group.add_signal(some_signal)
-    the_group.del_signal(canmatrix.canmatrix.Signal())
+    the_group.del_signal(Signal())
     assert len(the_group.signals) == 1
 
 

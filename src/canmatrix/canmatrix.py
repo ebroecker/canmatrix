@@ -46,9 +46,11 @@ import canmatrix.types
 import canmatrix.utils
 import canmatrix.exceptions
 
-import canmatrix.Ecu
-import canmatrix.Signal
-import canmatrix.SignalGroup
+import canmatrix.Ecu as Ecu
+import canmatrix.Signal as Signal
+import canmatrix.SignalGroup as SignalGroup
+import canmatrix.DecodedSignal as DecodedSignal
+import canmatrix.ArbitrationId as ArbitrationId
 
 if sys.version_info < (3, 8):
     from importlib_metadata import version
@@ -64,7 +66,7 @@ defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], can
 
 def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
     """Converter for attrs which accepts ArbitrationId itself or int."""
-    return source if isinstance(source, ArbitrationId) else  ArbitrationId.from_compound_integer(source)
+    return source if isinstance(source, ArbitrationId.ArbitrationId) else  ArbitrationId.ArbitrationId.from_compound_integer(source)
 
 
 
@@ -903,7 +905,7 @@ class Frame(object):
             return_dict = dict()
 
             for s, v in zip(self.signals, unpacked):
-                return_dict[s.name] = DecodedSignal(v, s)
+                return_dict[s.name] = DecodedSignal.DecodedSignal(v, s)
 
             return return_dict
 

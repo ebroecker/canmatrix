@@ -344,7 +344,7 @@ class Signal(object):
                     return value
 
         try:
-            value = decimal.Decimal(value)
+            value = DefaultFloatFactory(value)
         except Exception as e:
             raise e
 

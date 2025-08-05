@@ -32,7 +32,7 @@ import pytest
 from builtins import *
 
 import canmatrix.canmatrix
-from canmatrix import Ecu
+from canmatrix.Ecu import Ecu
 
 
 def test_ecu_find_attribute():

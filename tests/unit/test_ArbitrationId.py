@@ -31,10 +31,8 @@ import decimal
 import pytest
 from builtins import *
 
-import canmatrix.canmatrix
-from canmatrix import Signal
-from canmatrix import DecodedSignal
-from canmatrix import ArbitrationId
+
+from canmatrix.ArbitrationId import ArbitrationId
 
 
 

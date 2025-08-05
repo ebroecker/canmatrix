@@ -32,8 +32,8 @@ import pytest
 from builtins import *
 
 import canmatrix.canmatrix
-from canmatrix import Signal
-from canmatrix import DecodedSignal
+from canmatrix.Signal import Signal
+from canmatrix.DecodedSignal import DecodedSignal
 
 
 @pytest.fixture
