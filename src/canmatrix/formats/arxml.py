@@ -53,7 +53,7 @@ _FloatFactory = typing.Callable[[typing.Any], typing.Any]
 
 
 class Earxml:
-    def __init__(self, preferred_languages):
+    def __init__(self, preferred_languages="EN,DE"):
         self.xml_element_cache = dict()  # type: typing.Dict[str, _Element]
         self.path_cache = {}
         self.sn_cache = {}
@@ -2184,7 +2184,7 @@ def load(file, **options):
     decode_ethernet = options.get("decode_ethernet", False)
     decode_flexray = options.get("decode_flexray", False)
 
-    preferred_languages = options.get("preferred_languages", ["EN,DE"]).split(",")
+    preferred_languages = options.get("preferred_languages", "EN,DE").split(",")
     preferred_languages.append("FOR-ALL")
     logger.debug(f"preferred_languages: {preferred_languages}")
 
