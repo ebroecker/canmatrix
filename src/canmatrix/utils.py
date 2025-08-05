@@ -31,6 +31,9 @@ import sys
 import typing
 from string import hexdigits
 from builtins import *
+from itertools import zip_longest
+
+from canmatrix.ArbitrationId import ArbitrationId
 
 if sys.version_info >= (3, 5):
     import math
@@ -164,4 +167,11 @@ def decode_number(value, float_factory):  # type(string) -> (int)
 
 def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
     """Converter for attrs which accepts ArbitrationId itself or int."""
-    return source if isinstance(source, ArbitrationId.ArbitrationId) else  ArbitrationId.ArbitrationId.from_compound_integer(source)
+    return source if isinstance(source, ArbitrationId) else  ArbitrationId.from_compound_integer(source)
+    
+# https://docs.python.org/3/library/itertools.html
+def grouper(iterable, n, fillvalue=None):
+    """Collect data into fixed-length chunks or blocks."""
+    # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"
+    args = [iter(iterable)] * n
+    return zip_longest(*args, fillvalue=fillvalue)

@@ -34,11 +34,18 @@ from builtins import *
 import canmatrix.canmatrix
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
+from canmatrix.DecodedSignal import DecodedSignal
+from canmatrix.ArbitrationId import ArbitrationId
+from canmatrix.Define import Define
 
 # Frame tests
 @pytest.fixture
 def empty_frame():
     return Frame(name="test_frame")
+    
+@pytest.fixture
+def some_signal():
+    return Signal(name="speed", size=8, factor=1.5)
 
 
 def test_frame_has_comment(empty_frame):
@@ -239,7 +246,7 @@ def test_frame_j1939_id_from_components(priority, pgn, source, id):
     ), )
 def test_frame_decode_j1939_id(source, pgn, priority, id):
     # we have to set all j1939 properties in the __init__ otherwise the setters crash
-    frame = Frame(arbitration_id=canmatrix.ArbitrationId(id=id, extended=True))
+    frame = Frame(arbitration_id=ArbitrationId(id=id, extended=True))
     assert hex(frame.source) == hex(source)
     assert hex(frame.pgn) == hex(pgn)
     assert hex(frame.priority) == hex(priority)
@@ -323,7 +330,7 @@ def test_frame_no_attribute_with_default(empty_frame):
 
 
 def test_frame_default_attr_from_db(empty_frame):
-    define = canmatrix.canmatrix.Define("INT 0 255")
+    define = Define("INT 0 255")
     define.defaultValue = 33
     matrix = canmatrix.canmatrix.CanMatrix(frame_defines={"from_db": define})
     assert empty_frame.attribute("from_db", db=matrix, default=2) == 33

@@ -25,10 +25,18 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import typing
 import attr
+import typing
+import fnmatch
+
+import itertools
 
 from canmatrix.utils import arbitration_id_converter
+from canmatrix.utils import grouper
+from canmatrix.AutosarE2EProperties import AutosarE2EProperties
+from canmatrix.DecodedSignal import DecodedSignal
+from canmatrix.SignalGroup import SignalGroup
+from canmatrix.Signal import Signal
 
 @attr.s(eq=False)
 class Frame(object):
