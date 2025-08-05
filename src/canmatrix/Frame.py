@@ -31,8 +31,7 @@ import fnmatch
 
 import itertools
 
-from canmatrix.utils import arbitration_id_converter
-from canmatrix.utils import grouper
+from canmatrix.utils import arbitration_id_converter, grouper, pack_bitstring, unpack_bitstring
 from canmatrix.AutosarE2EProperties import AutosarE2EProperties
 from canmatrix.DecodedSignal import DecodedSignal
 from canmatrix.SignalGroup import SignalGroup
@@ -690,7 +689,7 @@ class Frame(object):
             return_dict = dict()
 
             for s, v in zip(self.signals, unpacked):
-                return_dict[s.name] = DecodedSignal.DecodedSignal(v, s)
+                return_dict[s.name] = DecodedSignal(v, s)
 
             return return_dict
 

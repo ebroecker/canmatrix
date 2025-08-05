@@ -32,6 +32,7 @@ import typing
 from string import hexdigits
 from builtins import *
 from itertools import zip_longest
+import struct
 
 from canmatrix.ArbitrationId import ArbitrationId
 
@@ -175,3 +176,55 @@ def grouper(iterable, n, fillvalue=None):
     # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"
     args = [iter(iterable)] * n
     return zip_longest(*args, fillvalue=fillvalue)
+
+def unpack_bitstring(length, is_float, is_signed, bits):
+    # type: (int, bool, bool, typing.Any) -> typing.Union[float, int]
+    """
+    returns a value calculated from bits
+    :param length: length of signal in bits
+    :param is_float: value is float
+    :param bits: value as bits (array/iterable)
+    :param is_signed: value is signed
+    :return:
+    """
+
+    if is_float:
+        types = {
+            32: '>f',
+            64: '>d'
+        }
+
+        float_type = types[length]
+        value, = struct.unpack(float_type, bytearray(int(''.join(b), 2)  for b in grouper(bits, 8)))
+    else:
+        value = int(bits, 2)
+
+        if is_signed and bits[0] == '1':
+            value -= (1 << len(bits))
+
+    return value
+
+
+def pack_bitstring(length, is_float, value, signed):
+    """
+    returns a value in bits
+    :param length: length of signal in bits
+    :param is_float: value is float
+    :param value: value to encode
+    :param signed: value is signed
+    :return:
+    """
+    if is_float:
+        types = {
+            32: '>f',
+            64: '>d'
+        }
+
+        float_type = types[length]
+        x = bytearray(struct.pack(float_type, value))
+        bitstring = ''.join('{:08b}'.format(b) for b in x)
+    else:
+        b = '{:0{}b}'.format(int((2 << length) + value), length)
+        bitstring = b[-length:]
+
+    return bitstring

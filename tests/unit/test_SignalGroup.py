@@ -34,6 +34,7 @@ from builtins import *
 import canmatrix.canmatrix
 from canmatrix.Signal import Signal
 from canmatrix.SignalGroup import SignalGroup
+from canmatrix.Frame import Frame
 
 
 # SignalGroup
@@ -97,7 +98,7 @@ def test_encode_decode_frame():
     input_data = {'signal': decimal.Decimal('3.5')}
 
     s1 = Signal('signal', size=32, is_float=True)
-    f1 = canmatrix.canmatrix.Frame('frame', arbitration_id=1, size=4)
+    f1 = Frame('frame', arbitration_id=1, size=4)
     f1.add_signal(s1)
 
     raw_bytes = f1.encode(input_data)

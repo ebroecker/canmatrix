@@ -29,6 +29,7 @@ import typing
 import attr
 
 from canmatrix.SignalGroup import SignalGroup
+from canmatrix.AutosarE2EProperties import AutosarE2EProperties
 
 @attr.s(eq=False)
 class Pdu(object):
