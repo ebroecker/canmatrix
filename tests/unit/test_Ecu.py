@@ -33,6 +33,7 @@ from builtins import *
 
 import canmatrix.canmatrix
 from canmatrix.Ecu import Ecu
+from canmatrix.Define import Define
 
 
 def test_ecu_find_attribute():
@@ -49,7 +50,7 @@ def test_ecu_no_attribute():
 
 def test_ecu_default_attr_from_db():
     ecu = Ecu(name="Gateway")
-    define = canmatrix.canmatrix.Define("INT 0 255")
+    define = Define("INT 0 255")
     define.defaultValue = 33
     matrix = canmatrix.canmatrix.CanMatrix(ecu_defines={"temperature": define})
     assert ecu.attribute("temperature", db=matrix, default=2) == 33

@@ -33,6 +33,7 @@ from builtins import *
 
 import canmatrix.canmatrix
 from canmatrix.Signal import Signal
+from canmatrix.Define import Define
 
 @pytest.fixture
 def some_signal():
@@ -162,7 +163,7 @@ def test_signal_no_attribute_with_default(some_signal):
 
 
 def test_signal_default_attr_from_db(some_signal):
-    define = canmatrix.canmatrix.Define("INT 0 255")
+    define = Define("INT 0 255")
     define.defaultValue = 33
     matrix = canmatrix.canmatrix.CanMatrix(signal_defines={"from_db": define})
     assert some_signal.attribute("from_db", db=matrix, default=2) == 33
