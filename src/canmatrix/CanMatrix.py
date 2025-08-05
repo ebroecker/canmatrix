@@ -528,7 +528,7 @@ class CanMatrix(object):
         """Check all Frames and add unknown ECUs to the Matrix ECU list."""
         for frame in self.frames:
             for transmit_ecu in frame.transmitters:
-                self.add_ecu(Ecu(transmit_ecu))
+                self.add_ecu(Ecu.Ecu(transmit_ecu))
             frame.update_receiver()
             for signal in frame.signals:
                 for receive_ecu in signal.receivers:

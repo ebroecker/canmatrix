@@ -24,7 +24,7 @@ import logging
 import typing
 from builtins import *
 
-import canmatrix
+from canmatrix.Ecu import Ecu
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ def copy_ecu(ecu_or_glob, source_db, target_db):
     :param target_db: Destination CAN matrix
     """
     # check whether ecu_or_glob is object or symbolic name
-    if isinstance(ecu_or_glob, canmatrix.Ecu):
+    if isinstance(ecu_or_glob, Ecu):
         ecu_list = [ecu_or_glob]
     else:
         ecu_list = source_db.glob_ecus(ecu_or_glob)
@@ -80,7 +80,7 @@ def copy_ecu_with_frames(ecu_or_glob, source_db, target_db, rx=True, tx=True, di
     :param tx: copy tx-Frames (default: True)
     """
     # check whether ecu_or_glob is object or symbolic name
-    if isinstance(ecu_or_glob, canmatrix.Ecu):
+    if isinstance(ecu_or_glob, Ecu):
         ecu_list = [ecu_or_glob]
     else:
         ecu_list = source_db.glob_ecus(ecu_or_glob)

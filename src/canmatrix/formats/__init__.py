@@ -8,7 +8,7 @@ import typing
 from builtins import str
 from io import BytesIO
 
-import canmatrix
+from canmatrix.CanMatrix import CanMatrix
 import canmatrix.cancluster
 
 logger = logging.getLogger(__name__)
@@ -99,7 +99,7 @@ def load_flat(file_object, import_type, key="", **options):
 def dump(can_matrix_or_cluster, file_object, export_type, **options):
     # type: (typing.Union[canmatrix.CanMatrix, typing.Mapping[str, canmatrix.CanMatrix]], typing.IO, str, **str) -> None
     module_instance = sys.modules["canmatrix.formats." + export_type]
-    if isinstance(can_matrix_or_cluster, canmatrix.CanMatrix):
+    if isinstance(can_matrix_or_cluster, CanMatrix):
         module_instance.dump(can_matrix_or_cluster, file_object, **options)  # type: ignore
     elif "clusterExporter" in supportedFormats[export_type]:
         module_instance.dump(can_matrix_or_cluster, file_object, **options)  # type: ignore
