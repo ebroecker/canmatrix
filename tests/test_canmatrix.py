@@ -10,6 +10,10 @@ from canmatrix.Frame import Frame
 from canmatrix.ArbitrationId import ArbitrationId
 from canmatrix.Ecu import Ecu
 
+@pytest.fixture
+def empty_frame():
+    return Frame(name="test_frame")
+
 
 def test_signal_defaults_to_decimal():
     signal = Signal(
@@ -89,6 +93,7 @@ def test_canmatrix_get_frame_by_wrong_name(empty_matrix, empty_frame):
     empty_matrix.add_frame(empty_frame)
     assert empty_matrix.frame_by_name("wrong") is None
 
+
 def test_canmatrix_get_frame_by_pgn(empty_matrix, empty_frame):
     empty_frame.arbitration_id.id = 0xA123456
     empty_frame.arbitration_id.extended = True
@@ -109,7 +114,7 @@ def test_canmatrix_iterate_over_frames(empty_matrix, empty_frame):
 
 def test_canmatrix_remove_frame(empty_matrix, empty_frame):
     empty_matrix.add_frame(empty_frame)
-    empty_matrix.add_frame(canmatrix.Frame())
+    empty_matrix.add_frame(Frame())
     empty_matrix.remove_frame(empty_frame)
     assert len(empty_matrix.frames) == 1
 

@@ -31,7 +31,7 @@ import fnmatch
 
 import itertools
 
-from canmatrix.utils import arbitration_id_converter, grouper, pack_bitstring, unpack_bitstring
+from canmatrix.utils import arbitration_id_converter, grouper, pack_bitstring, unpack_bitstring, get_gcd
 from canmatrix.AutosarE2EProperties import AutosarE2EProperties
 from canmatrix.DecodedSignal import DecodedSignal
 from canmatrix.SignalGroup import SignalGroup
@@ -171,9 +171,9 @@ class Frame(object):
         elif len(min_cycle_time_list) == 1:
             return min_cycle_time_list[0]
         else:
-            gcd = canmatrix.utils.get_gcd(min_cycle_time_list[0], min_cycle_time_list[1])
+            gcd = get_gcd(min_cycle_time_list[0], min_cycle_time_list[1])
             for i in range(2, len(min_cycle_time_list)):
-                gcd = canmatrix.utils.get_gcd(gcd, min_cycle_time_list[i])
+                gcd = get_gcd(gcd, min_cycle_time_list[i])
             return gcd
         #    return min(min_cycle_time_list)
 
@@ -488,7 +488,7 @@ class Frame(object):
         for signal in self.signals:
             if signal.name in data:
                 value = data.get(signal.name)
-                if isinstance(value, str):
+                if isinstancee(value, str):
                     value = signal.phys2raw(value)
                     if value is None:
                         # TODO Error Handling

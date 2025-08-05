@@ -324,7 +324,7 @@ class CanMatrix(object):
         """
 
         for test in self.frames:
-            if test.arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(pgn).pgn:
+            if test.arbitration_id.pgn == ArbitrationId.ArbitrationId.from_pgn(pgn).pgn:
                 # canmatrix.ArbitrationId.from_pgn(pgn).pgn instead
                 # of just pgn is needed to do the pf >= 240 check
                 return test
@@ -480,7 +480,7 @@ class CanMatrix(object):
         :param str or Ecu ecu_or_name: old name or ECU instance
         :param str new_name: new name
         """
-        ecu = ecu_or_name if isinstance(ecu_or_name, Ecu) else self.ecu_by_name(ecu_or_name)
+        ecu = ecu_or_name if isinstance(ecu_or_name, Ecu.Ecu) else self.ecu_by_name(ecu_or_name)
         if ecu is None:
             return
         old_name = ecu.name
@@ -512,7 +512,7 @@ class CanMatrix(object):
 
         :param str or Ecu ecu_or_glob: ECU instance or glob pattern to remove from list
         """
-        ecu_list = [ecu_or_glob] if isinstance(ecu_or_glob, Ecu) else self.glob_ecus(ecu_or_glob)
+        ecu_list = [ecu_or_glob] if isinstance(ecu_or_glob, Ecu.Ecu) else self.glob_ecus(ecu_or_glob)
 
         for ecu in ecu_list:
             if ecu in self.ecus:
@@ -540,7 +540,7 @@ class CanMatrix(object):
         :param Frame or str frame_or_name: Old Frame instance or name or part of the name with '*' at the beginning or the end.
         :param str new_name: new Frame name, suffix or prefix
         """
-        old_name = frame_or_name.name if isinstance(frame_or_name, Frame) else frame_or_name
+        old_name = frame_or_name.name if isinstance(frame_or_name, Frame.Frame) else frame_or_name
         for frame in self.frames:
             if old_name[-1] == '*':
                 old_prefix_len = len(old_name)-1
@@ -557,7 +557,7 @@ class CanMatrix(object):
         """Delete Frame from Matrix.
 
         :param Frame or str frame_or_name: Frame or name to delete"""
-        frame = frame_or_name if isinstance(frame_or_name, Frame) else self.frame_by_name(frame_or_name)
+        frame = frame_or_name if isinstance(frame_or_name, Frame.Frame) else self.frame_by_name(frame_or_name)
         if frame:
             self.frames.remove(frame)
 
@@ -567,7 +567,7 @@ class CanMatrix(object):
         :param Signal or str signal_or_name: Old Signal instance or name or part of the name with '*' at the beginning or the end.
         :param str new_name: new Signal name, suffix or prefix
         """
-        old_name = signal_or_name.name if isinstance(signal_or_name, Signal) else signal_or_name
+        old_name = signal_or_name.name if isinstance(signal_or_name, Signal.Signal) else signal_or_name
         for frame in self.frames:
             if old_name[-1] == '*':
                 old_prefix_len = len(old_name) - 1
@@ -588,7 +588,7 @@ class CanMatrix(object):
         """Delete Signal from Matrix and all Frames.
 
         :param Signal or str signal: Signal instance or glob pattern to be deleted"""
-        if isinstance(signal, Signal):
+        if isinstance(signal, Signal.Signal):
             for frame in self.frames:
                 if signal in frame.signals:
                     frame.signals.remove(signal)
