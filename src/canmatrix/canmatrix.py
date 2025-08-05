@@ -145,22 +145,7 @@ def pack_bitstring(length, is_float, value, signed):
 
 
 
-@attr.s(eq=False)
-class Endpoint(object):
-    """
-    Represents a Endpoint.
 
-    AUTOSAR Ethernet Frames Endpoints
-    """
-    server_ipv4 = attr.ib(default=None)  # type: Optional[str]
-    server_ipv6 = attr.ib(default=None)  # type: Optional[str]
-    server_port = attr.ib(default=0)  # type: int
-
-    client_ipv4 = attr.ib(default=None)  # type: Optional[str]
-    client_ipv6 = attr.ib(default=None)  # type: Optional[str]
-    client_port = attr.ib(default=0)  # type: int
-
-    ttl = attr.ib(default=0)  # type: int
 
 
 @attr.s(eq=False)
