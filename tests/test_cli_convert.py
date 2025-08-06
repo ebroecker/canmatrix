@@ -9,6 +9,7 @@ import canmatrix.formats
 from canmatrix.utils import arbitration_id_converter
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
 
 try:
     from pathlib import Path
@@ -77,7 +78,7 @@ def create_dbc_with_special_char():
                       receivers=["recBU"])
     myFrame.add_signal(mySignal)
 
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     db.add_frame(myFrame)
     db.add_frame_defines("SomeUnneededDefine", 'INT 0 65535')
     canmatrix.formats.dumpp({"": db},
@@ -251,7 +252,7 @@ def create_dbc(additionalReceiver = []):
     mySignal3.add_attribute("mySignalAttribute", "7")
     myFrame2.add_signal(mySignal3)
 
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     db.add_frame(myFrame)
     db.add_frame(myFrame2)
     db.add_frame_defines("myAttribute", "INT -5 10")

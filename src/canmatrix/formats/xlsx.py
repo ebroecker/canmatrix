@@ -38,6 +38,8 @@ from openpyxl.styles import NamedStyle, Font, Alignment, PatternFill, Border, Si
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Ecu import Ecu
+from canmatrix.ArbitrationId import ArbitrationId
 
 logger = logging.getLogger(__name__)
 
@@ -381,7 +383,7 @@ def load(file, **options):
 
     # ECUs:
     for x in range(ecu_start, ecu_end):
-        db.add_ecu(canmatrix.Ecu(column_heads[x]))
+        db.add_ecu(Ecu(column_heads[x]))
         all_ecu_names.append(column_heads[x])
     # initialize:
     frame_id = None
@@ -414,7 +416,7 @@ def load(file, **options):
             # launch_param = str(int(launch_param))
 
             if frame_id.endswith("xh"):
-                new_frame = Frame(frame_name, canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True), size=dlc)
+                new_frame = Frame(frame_name, ArbitrationId(int(frame_id[:-2], 16), extended=True), size=dlc)
             else:
                 new_frame = Frame(frame_name, arbitration_id=int(frame_id[:-1], 16), size=dlc)
 

@@ -37,6 +37,8 @@ import canmatrix.formats.xls_common
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Ecu import Ecu
+from canmatrix.ArbitrationId import ArbitrationId
 
 logger = logging.getLogger(__name__)
 default_float_factory = decimal.Decimal
@@ -408,7 +410,7 @@ def load(file, **options):
 
     # ECUs:
     for x in range(index['ECUstart'], index['ECUend']):
-        db.add_ecu(canmatrix.Ecu(sh.cell(0, x).value))
+        db.add_ecu(Ecu(sh.cell(0, x).value))
 
     # initialize:
     frame_id = None
@@ -435,9 +437,9 @@ def load(file, **options):
 
             new_frame = Frame(frame_name, size=dlc)
             if frame_id.endswith("xh"):
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True)
+                new_frame.arbitration_id = ArbitrationId(int(frame_id[:-2], 16), extended=True)
             else:
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-1], 16), extended=False)
+                new_frame.arbitration_id = ArbitrationId(int(frame_id[:-1], 16), extended=False)
             db.add_frame(new_frame)
 
             # eval launch_type

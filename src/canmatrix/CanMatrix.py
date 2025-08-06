@@ -707,7 +707,7 @@ class CanMatrix(object):
         :param pycan_msg: python-can message
         :return: OrderedDictionary
         """
-        canmatrix_arbitration_id = canmatrix.ArbitrationId(pycan_msg.arbitration_id, extended=pycan_msg.is_extended_id)
+        canmatrix_arbitration_id = ArbitrationId.ArbitrationId(pycan_msg.arbitration_id, extended=pycan_msg.is_extended_id)
         return self.decode(canmatrix_arbitration_id, pycan_msg.data)
 
     def decode(self, frame_id, data):  # type: (ArbitrationId, bytes) -> typing.Mapping[str, typing.Any]

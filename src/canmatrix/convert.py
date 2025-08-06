@@ -32,6 +32,7 @@ import canmatrix.log
 
 
 from canmatrix.CanMatrix import CanMatrix
+from canmatrix.ArbitrationId import ArbitrationId
 
 logger = logging.getLogger(__name__)
 sys.path.append('..')  # todo remove?
@@ -155,7 +156,7 @@ def convert(infile, out_file_name, **options):  # type: (str, str, **str) -> Non
             change_tuples = options['changeFrameId'].split(',')
             for renameTuple in change_tuples:
                 old, new = renameTuple.split(':')
-                frame = db.frame_by_id(canmatrix.ArbitrationId(int(old)))
+                frame = db.frame_by_id(ArbitrationId(int(old)))
                 if frame is not None:
                     frame.arbitration_id.id = int(new)
                 else:

@@ -34,6 +34,7 @@ from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 from canmatrix.CanMatrix import CanMatrix
 from canmatrix.ArbitrationId import ArbitrationId
+from canmatrix.Ecu import Ecu
 
 
 def dump(db, f, **options):
@@ -212,7 +213,7 @@ def load(f, **_options):
 
     if "ecus" in json_data:
         for ecu in json_data["ecus"]:
-            new_ecu = canmatrix.Ecu(name=ecu, comment=json_data["ecus"][ecu])
+            new_ecu = Ecu(name=ecu, comment=json_data["ecus"][ecu])
             db.add_ecu(new_ecu)
     if "messages" in json_data:
         for frame in json_data["messages"]:

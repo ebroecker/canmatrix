@@ -46,7 +46,7 @@ def test_arbitration_id_is_instance():
 
 @pytest.mark.skip(reason="J1939 functionality is only partially implemented and currently breaks test chain")
 def test_arbitration_id_j1939_direct_setters():
-    arb_id = canmatrix.ArbitrationId(0)
+    arb_id = ArbitrationId(0)
     arb_id.pgn = 0xF1AA
     arb_id.j1939_source = 0x22
     arb_id.j1939_priority = 3

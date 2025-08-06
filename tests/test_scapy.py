@@ -19,7 +19,7 @@ def test_scapy_frame_exists():
 
 def test_scapy_muliplexed_frame():
     # here = os.path.dirname(os.path.realpath(__file__))
-    test_file = "tests/files/dbc/test_frame_decoding.dbc"
+    test_file = "../tests/files/dbc/test_frame_decoding.dbc"
     db = canmatrix.formats.loadp_flat(test_file)
     outscapy = io.BytesIO()
     canmatrix.formats.dump(db, outscapy, "scapy")

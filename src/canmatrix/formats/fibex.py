@@ -37,6 +37,8 @@ import decimal
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Ecu import Ecu
+from canmatrix.ArbitrationId import ArbitrationId
 
 clusterImporter = 1
 
@@ -278,7 +280,7 @@ def get_signals_for_pdu(fe, pdu, overall_startbit = 0):
             if len(fe.selector(ecu_instance_ref, "^INPUT-PORT")) > 0:
                 ecu_name = fe.sn(fe.get_referencable_parent(ecu_instance_ref))
                 receiver_ecus.append(ecu_name)
-                ecus.append(canmatrix.Ecu(name=ecu_name.strip()))
+                ecus.append(Ecu(name=ecu_name.strip()))
 
         signal_name = fe.sn(signal)
         coding = fe.selector(signal, ">CODING-REF")[0]
@@ -405,10 +407,10 @@ def load(f, **_options):
                 frame.transmitters = [fe.sn(a) for a in sending_ecus]
                 for ecu_element in sending_ecus:
                     ecu_name = fe.sn(ecu_element)
-                    cm_ecu = canmatrix.Ecu(ecu_name)
+                    cm_ecu = Ecu(ecu_name)
                     cm_ecu.add_comment(fe.get_desc_or_longname(ecu_element))
                     db.add_ecu(cm_ecu)
-                frame.arbitration_id = canmatrix.ArbitrationId(extended=extended, id=arbitration_id)
+                frame.arbitration_id = ArbitrationId(extended=extended, id=arbitration_id)
 
                 frame.add_comment(fe.get_desc_or_longname(pdu))
                 if "CAN-FD" in [a.text for a in

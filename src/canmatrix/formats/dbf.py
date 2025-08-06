@@ -36,6 +36,8 @@ from builtins import *
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Ecu import Ecu
+from canmatrix.ArbitrationId import ArbitrationId
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +86,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             else:
                 (bo_id, tem_s, signal_name, comment) = line.split(' ', 3)
                 comment = comment.replace('"', '').replace(';', '')
-                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(bo_id))).signal_by_name(
+                db.frame_by_id(ArbitrationId.from_compound_integer(int(bo_id))).signal_by_name(
                     signal_name).add_comment(comment)
 
         if mode == 'BUDescription':
@@ -103,7 +105,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             else:
                 (bo_id, tem_s, comment) = line.split(' ', 2)
                 comment = comment.replace('"', '').replace(';', '')
-                frame = db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(bo_id)))
+                frame = db.frame_by_id(ArbitrationId.from_compound_integer(int(bo_id)))
                 if frame:
                     frame.add_comment(comment)
 
@@ -112,7 +114,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 mode = ''
             else:
                 (bo_id, tem_s, attrib, value) = line.split(',', 3)
-                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(
+                db.frame_by_id(ArbitrationId.from_compound_integer(
                     int(bo_id))).add_attribute(
                     attrib.replace('"', ''),
                     value.replace('"', ''))
@@ -137,7 +139,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 mode = ''
             else:
                 (bo_id, tem_s, signal_name, attrib, value) = line.split(',', 4)
-                db.frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(bo_id)))\
+                db.frame_by_id(ArbitrationId.from_compound_integer(int(bo_id)))\
                     .signal_by_name(signal_name)\
                     .add_attribute(attrib.replace('"', ''), value[1:-1])
 
@@ -227,7 +229,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 if is_j1939:
                     new_frame.arbitration_id.pgn = int(arb_id)
                 else:
-                    new_frame.arbitration_id = canmatrix.ArbitrationId.from_compound_integer(int(arb_id))
+                    new_frame.arbitration_id = ArbitrationId.from_compound_integer(int(arb_id))
                 #   Frame(int(Id), name, size, transmitter))
                 if extended == 'X':
                     logger.debug("Extended")
@@ -237,7 +239,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 temp_str = line.strip()[6:].strip()
                 bo_list = temp_str.split(',')
                 for bo in bo_list:
-                    db.add_ecu(canmatrix.Ecu(bo))
+                    db.add_ecu(Ecu(bo))
 
             if line.startswith("[START_SIGNALS]"):
                 temp_str = line.strip()[15:].strip()
@@ -321,8 +323,8 @@ def dump(mydb, f, **options):
     ignore_encoding_errors = options.get("ignoreEncodingErrors", "strict")
     db.enum_attribs_to_keys()
     if len(db.signals) > 0:
-        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG")
-        free_signals_dummy_frame.arbitration_id = canmatrix.ArbitrationId(id=0x40000000, extended=True)
+        free_signals_dummy_frame = Frame("VECTOR__INDEPENDENT_SIG_MSG")
+        free_signals_dummy_frame.arbitration_id = ArbitrationId(id=0x40000000, extended=True)
         free_signals_dummy_frame.signals = db.signals
         db.add_frame(free_signals_dummy_frame)
 

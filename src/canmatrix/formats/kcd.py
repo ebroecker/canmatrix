@@ -37,6 +37,7 @@ from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 from canmatrix.Ecu import Ecu
 from canmatrix.CanMatrix import CanMatrix
+from canmatrix.ArbitrationId import ArbitrationId
 
 import canmatrix.cancluster
 
@@ -377,9 +378,9 @@ def load(f, **options):
                 new_frame.size = dlc
 
             if 'format' in message.attrib and message.get('format') == "extended":
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended=True)
+                new_frame.arbitration_id = ArbitrationId(int(message.get('id'), 16), extended=True)
             else:
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended=False)
+                new_frame.arbitration_id = ArbitrationId(int(message.get('id'), 16), extended=False)
 
             multiplex = message.find('./' + namespace + 'Multiplex')
             if multiplex is not None:

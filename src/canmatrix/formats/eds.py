@@ -215,7 +215,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             pdo_name = name_cleanup(od[comm_index].name)
             frame = Frame(name=pdo_name, transmitters=rx_tx_config["transmitter"])
             frame_id = cob_id
-            frame.arbitration_id = canmatrix.ArbitrationId(id=frame_id)
+            frame.arbitration_id = ArbitrationId(id=frame_id)
             db.add_frame(frame)
             mapping_param = od.get(map_index)
             if not mapping_param:
