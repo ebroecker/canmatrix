@@ -33,6 +33,8 @@ from builtins import *
 import attr
 
 from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
 import canmatrix.utils
 
 logger = logging.getLogger(__name__)
@@ -408,7 +410,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                                     frame.name + "_MUX").values = frame.mux_names
                             db.add_frame(frame)
 
-                        frame = canmatrix.Frame(frame_name)
+                        frame = Frame(frame_name)
 
                         frame.add_attribute(
                             'Receivable',
@@ -538,7 +540,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             # if float_factory is not None:
                             #     extras['float_factory'] = float_factory
 
-                            signal = canmatrix.Signal(
+                            signal = Signal(
                                 frame_name + "_MUX",
                                 start_bit=int(start_bit),
                                 size=int(signal_length),
@@ -573,7 +575,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         # if float_factory is not None:
                         #     extras['float_factory'] = float_factory
 
-                        signal = canmatrix.Signal(
+                        signal = Signal(
                             sig_name,
                             start_bit=int(start_bit),
                             size=int(signal_length),

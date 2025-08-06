@@ -35,6 +35,10 @@ import canmatrix.formats.xls_common
 from openpyxl.worksheet.dimensions import ColumnDimension
 from openpyxl.styles import NamedStyle, Font, Alignment, PatternFill, Border, Side
 
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
+
 logger = logging.getLogger(__name__)
 
 # Font Size : 8pt * 20 = 160
@@ -355,7 +359,7 @@ def load(file, **options):
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
     workbook = openpyxl.open(file)
     sheet = workbook._sheets[0]
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     # Defines not imported...
     db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
@@ -410,9 +414,9 @@ def load(file, **options):
             # launch_param = str(int(launch_param))
 
             if frame_id.endswith("xh"):
-                new_frame = canmatrix.Frame(frame_name, canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True), size=dlc)
+                new_frame = Frame(frame_name, canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True), size=dlc)
             else:
-                new_frame = canmatrix.Frame(frame_name, arbitration_id=int(frame_id[:-1], 16), size=dlc)
+                new_frame = Frame(frame_name, arbitration_id=int(frame_id[:-1], 16), size=dlc)
 
             for col_head in column_heads:
                 if col_head.startswith("frame."):
@@ -467,7 +471,7 @@ def load(file, **options):
                             new_frame.add_transmitter(ecu_name)
                         if 'r' in ecu_sender_receiver:
                             receiver.append(ecu_name)
-                new_signal = canmatrix.Signal(signal_name,
+                new_signal = Signal(signal_name,
                                               start_bit=(start_byte - 1) * 8 + start_bit,
                                               size=signal_length,
                                               is_little_endian=is_little_endian,

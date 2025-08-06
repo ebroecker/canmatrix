@@ -532,7 +532,7 @@ class CanMatrix(object):
             frame.update_receiver()
             for signal in frame.signals:
                 for receive_ecu in signal.receivers:
-                    self.add_ecu(Ecu(receive_ecu))
+                    self.add_ecu(Ecu.Ecu(receive_ecu))
 
     def rename_frame(self, frame_or_name, new_name):  # type: (typing.Union[Frame,str], str) -> None
         """Rename Frame.

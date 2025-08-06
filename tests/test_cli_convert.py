@@ -6,6 +6,10 @@ import tempfile
 import pytest
 import canmatrix.formats
 
+from canmatrix.utils import arbitration_id_converter
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+
 try:
     from pathlib import Path
 except ImportError:
@@ -57,11 +61,11 @@ def test_force_input_format(tmpdir, run):
 def create_dbc_with_special_char():
     outFile = tmp_dir + "/output_cli_convert_tmp.dbc"
 
-    myFrame = canmatrix.Frame("testFrame1", 
-                              arbitration_id=canmatrix.arbitration_id_converter(0x123), 
+    myFrame = Frame("testFrame1", 
+                              arbitration_id=arbitration_id_converter(0x123), 
                               size=8, 
                               transmitters=["testBU"])
-    mySignal = canmatrix.Signal("someTestSignal",
+    mySignal = Signal("someTestSignal",
                       size=11,
                       is_little_endian=False,
                       is_signed=False,
@@ -210,8 +214,8 @@ def create_dbc(additionalReceiver = []):
     tmp_dir = tempfile.mkdtemp()
     outFile = tmp_dir + "/output_cli_convert_tmpb.dbc"
 
-    myFrame = canmatrix.Frame("testFrame3", arbitration_id=canmatrix.arbitration_id_converter(0x124), size=8, transmitters=["testBU"])
-    mySignal = canmatrix.Signal("someTestSignal",
+    myFrame = Frame("testFrame3", arbitration_id=arbitration_id_converter(0x124), size=8, transmitters=["testBU"])
+    mySignal = Signal("someTestSignal",
                       size=11,
                       is_little_endian=False,
                       is_signed=False,
@@ -221,9 +225,9 @@ def create_dbc(additionalReceiver = []):
                       max=500,
                       receivers=["recBU"])
     myFrame.add_signal(mySignal)
-    myFrame2 = canmatrix.Frame("testFrame2", arbitration_id=canmatrix.arbitration_id_converter(0x125), size=8, transmitters=["testBU2"])
+    myFrame2 = Frame("testFrame2", arbitration_id=arbitration_id_converter(0x125), size=8, transmitters=["testBU2"])
     myFrame2.add_attribute("myAttribute", "42")
-    mySignal2 = canmatrix.Signal("someTestSignal2",
+    mySignal2 = Signal("someTestSignal2",
                       start_bit=15,
                       size=11,
                       is_little_endian=False,
@@ -234,7 +238,7 @@ def create_dbc(additionalReceiver = []):
                       max=500,
                       receivers=["recBU2"] + additionalReceiver)
     myFrame2.add_signal(mySignal2)
-    mySignal3 = canmatrix.Signal("zeroSignal",
+    mySignal3 = Signal("zeroSignal",
                       start_bit=20,
                       size=0,
                       is_little_endian=False,

@@ -72,7 +72,7 @@ def test_export_long_signal_names():
 def test_export_min_max():
     matrix = CanMatrix()
     frame = Frame(name="test_frame", size=6, arbitration_id=10)
-    signal = canmatrix.Signal(name="someSigName", size=40, min=-5, max=42)
+    signal = Signal(name="someSigName", size=40, min=-5, max=42)
     frame.add_signal(signal)
     matrix.add_frame(frame)
     out_file = io.BytesIO()
@@ -202,7 +202,7 @@ def test_import_export_enums():
 def test_export_native():
     matrix = CanMatrix()
     frame = Frame(name="test_frame", size=6, arbitration_id=10)
-    signal = canmatrix.Signal(name="test_sig", size=40, is_float=True, min="-4.2", max=42, factor="0.123", offset=1)
+    signal = Signal(name="test_sig", size=40, is_float=True, min="-4.2", max=42, factor="0.123", offset=1)
     frame.add_signal(signal)
     matrix.add_frame(frame)
     out_file = io.BytesIO()
@@ -215,7 +215,7 @@ def test_export_native():
 def test_export_all_native():
     matrix = CanMatrix()
     frame = Frame(name="test_frame", size=6, arbitration_id=10)
-    signal = canmatrix.Signal(name="test_sig", size=40, is_float=True, min="-4.2", max=42, factor="0.123", offset=1)
+    signal = Signal(name="test_sig", size=40, is_float=True, min="-4.2", max=42, factor="0.123", offset=1)
     frame.add_signal(signal)
     matrix.add_frame(frame)
     out_file = io.BytesIO()
@@ -232,7 +232,7 @@ def test_export_extended():
     matrix = CanMatrix()
     frame = Frame(name="test_frame", size=6, arbitration_id=ArbitrationId(extended=True, id=10))
     frame.pgn=22
-    signal = canmatrix.Signal(name="someSigName", size=40)
+    signal = Signal(name="someSigName", size=40)
     frame.add_signal(signal)
     matrix.add_frame(frame)
     out_file = io.BytesIO()

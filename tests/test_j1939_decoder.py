@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import pytest
 
 import io
 import canmatrix.j1939_decoder

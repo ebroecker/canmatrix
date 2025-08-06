@@ -33,6 +33,8 @@ import typing
 from builtins import *
 
 from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
 import canmatrix.utils
 logger = logging.getLogger(__name__)
 
@@ -155,7 +157,7 @@ def dump(in_db, f, **options):
 
     # free signals are in special frame in dbc...
     if len(db.signals) > 0:
-        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG")
+        free_signals_dummy_frame = Frame("VECTOR__INDEPENDENT_SIG_MSG")
         # set arbitration id manualy, constructor would not allow this special id
         free_signals_dummy_frame.arbitration_id.extended = True
         free_signals_dummy_frame.arbitration_id.id = 0x40000000
@@ -549,7 +551,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 regexp = re.compile(r"^BO_ ([^\ ]+) ([^\ ]+) *: *([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-                frame = canmatrix.Frame(temp.group(2), arbitration_id=int(temp.group(1)),
+                frame = Frame(temp.group(2), arbitration_id=int(temp.group(1)),
                                         size=int(temp.group(3)), transmitters=temp.group(4).split())
                 db.frames.append(frame)
                 add_frame_by_id(frame)
@@ -570,7 +572,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 #                    if float_factory is not None:
 #                        extras['float_factory'] = float_factory
 
-                    temp_signal = canmatrix.Signal(
+                    temp_signal = Signal(
                         temp.group(1),
                         start_bit=int(temp.group(2)),
                         size=int(temp.group(3)),
@@ -618,7 +620,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 #                    if float_factory is not None:
 #                        extras['float_factory'] = float_factory
 
-                    temp_signal = canmatrix.Signal(
+                    temp_signal = Signal(
                         temp.group(1),
                         start_bit=int(temp.group(3)),
                         size=int(temp.group(4)),

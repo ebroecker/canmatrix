@@ -1879,7 +1879,7 @@ def decode_ethernet_helper(ea, float_factory):
         physical_channels = ea.findall("ETHERNET-PHYSICAL-CHANNEL", ec)
         
         for pc in physical_channels:
-            db = canmatrix.CanMatrix(type=canmatrix.matrix_class.SOMEIP)
+            db = CanMatrix(type=canmatrix.matrix_class.SOMEIP)
 
             db.baudrate = int(baudrate_elem.text, 0) if baudrate_elem is not None else 0
             

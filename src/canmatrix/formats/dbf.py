@@ -32,7 +32,10 @@ import re
 import typing
 from builtins import *
 
-import canmatrix
+# import canmatrix
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +71,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     dbf_import_encoding = options.get("dbfImportEncoding", 'iso-8859-1')
     float_factory = options.get('float_factory', default_float_factory)
     is_j1939 = False
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
 
     mode = ''
     for line in f:
@@ -216,7 +219,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 else:
                     transmitters = list()
                 new_frame = db.add_frame(
-                    canmatrix.Frame(
+                    Frame(
                         name,
                         size=int(size),
                         transmitters=transmitters))
@@ -271,7 +274,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 start_bit += (int(start_byte) - 1) * 8
 
                 new_signal = new_frame.add_signal(
-                    canmatrix.Signal(
+                    Signal(
                         name,
                         start_bit=int(start_bit),
                         size=int(size),

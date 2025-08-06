@@ -488,7 +488,7 @@ class Frame(object):
         for signal in self.signals:
             if signal.name in data:
                 value = data.get(signal.name)
-                if isinstancee(value, str):
+                if isinstance(value, str):
                     value = signal.phys2raw(value)
                     if value is None:
                         # TODO Error Handling
