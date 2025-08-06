@@ -530,7 +530,7 @@ class Frame(object):
         if self.is_complex_multiplexed:
             raise EncodingComplexMultiplexed
         elif self.is_pdu_container:
-            raise EncodingConatainerPdu  # TODO add encoding
+            raise EncodingContainerPdu  # TODO add encoding
         elif self.is_multiplexed:
             # search for mulitplexer-signal
             for signal in self.signals:
@@ -633,7 +633,7 @@ class Frame(object):
             header_id_signal = self.signal_by_name("Header_ID")
             header_dlc_signal = self.signal_by_name("Header_DLC")
             if header_id_signal is None or header_dlc_signal is None:
-                raise DecodingConatainerPdu(
+                raise DecodingContainerPdu(
                     'Received message 0x{:08X} without Header_ID or '
                     'Header_DLC signal'.format(self.arbitration_id.id)
                 )

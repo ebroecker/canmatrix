@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 import canmatrix.formats
+import canmatrix.exceptions
 import os.path
 import textwrap
 import io
@@ -215,7 +216,7 @@ def test_pdu_container_decoding_without_header():
     )
     frame.add_pdu(pdu)
     data = bytearray([0] * frame.size)
-    with pytest.raises(canmatrix.DecodingConatainerPdu):
+    with pytest.raises(canmatrix.exceptions.DecodingContainerPdu):
         frame.decode(data)
 
 

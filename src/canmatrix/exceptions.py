@@ -54,8 +54,8 @@ class ArbitrationIdOutOfRange(ExceptionTemplate):
 class J1939NeedsExtendedIdentifier(ExceptionTemplate):
     pass
 
-class DecodingConatainerPdu(ExceptionTemplate):
+class DecodingContainerPdu(ExceptionTemplate):
     pass
 
-class EncodingConatainerPdu(ExceptionTemplate):
+class EncodingContainerPdu(ExceptionTemplate):
     pass
