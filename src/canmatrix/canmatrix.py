@@ -69,8 +69,12 @@ class DecodingComplexMultiplexed(ExceptionTemplate): pass
 class DecodingFrameLength(ExceptionTemplate): pass
 class ArbitrationIdOutOfRange(ExceptionTemplate): pass
 class J1939NeedsExtendedIdentifier(ExceptionTemplate): pass
-class DecodingConatainerPdu(ExceptionTemplate): pass
-class EncodingConatainerPdu(ExceptionTemplate): pass
+class DecodingContainerPdu(ExceptionTemplate): pass
+class EncodingContainerPdu(ExceptionTemplate): pass
+class DecodingConatainerPdu(ExceptionTemplate):
+    warnings.warn("This exception is deprecated and should be removed. Consider using DecodingContainerPdu exception instead.")
+class EncodingConatainerPdu(ExceptionTemplate):
+    warnings.warn("This exception is deprecated and should be removed. Consider using DecodingContainerPdu exception instead.")
 
 
 def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
