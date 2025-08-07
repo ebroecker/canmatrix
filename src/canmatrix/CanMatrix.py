@@ -155,7 +155,7 @@ class CanMatrix(object):
         :param str name: value table name
         :param valueTable: value table itself
         """
-        self.value_tables[name] = normalize_value_table(valueTable)
+        self.value_tables[name] = canmatrix.utils.normalize_value_table(valueTable)
 
     def add_attribute(self, attribute, value):  # type: (str, typing.Any) -> None
         """
