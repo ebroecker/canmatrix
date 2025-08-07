@@ -11,6 +11,7 @@ from canmatrix.CanMatrix import CanMatrix
 from canmatrix.Signal import Signal
 from canmatrix.Frame import Frame
 from canmatrix.Ecu import Ecu
+from canmatrix.Define import Define
 
 def test_long_signal_name_imports():
     long_signal_name = u'FAILURE_ZELL_UNTERTEMPERATUR_ENTLADEN_ALARM_IDX_01'
@@ -43,7 +44,7 @@ def test_long_signal_name_imports():
 
 def test_create_define():
     defaults = {}
-    test_string = canmatrix.formats.dbc.create_define("my_data_type", canmatrix.Define('ENUM "A","B"'), "BA_", defaults)
+    test_string = canmatrix.formats.dbc.create_define("my_data_type", Define('ENUM "A","B"'), "BA_", defaults)
     assert test_string == 'BA_DEF_ BA_ "my_data_type" ENUM "A","B";\n'
 
 

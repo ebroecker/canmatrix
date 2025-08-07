@@ -8,13 +8,14 @@ from canmatrix.CanMatrix import CanMatrix
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 from canmatrix.ArbitrationId import ArbitrationId
+from canmatrix.Define import Define
 import canmatrix.formats
 
 
 @pytest.fixture
 def default_matrix():
     matrix = CanMatrix()
-    some_define = canmatrix.Define("INT 0 65535")
+    some_define = Define("INT 0 65535")
     matrix.add_value_table("Options", {0: "North", 1: "South", 2: "East", 3: "West"})
 
     frame = Frame(name="test_frame", arbitration_id=10)

@@ -11,10 +11,11 @@ from canmatrix.ArbitrationId import ArbitrationId
 from canmatrix.Signal import Signal
 from canmatrix.Pdu import Pdu
 from canmatrix.Frame import Frame
+from canmatrix.exceptions import DecodingFrameLength
 
 
 def load_dbc():
-    test_file = "tests/files/dbc/test_frame_decoding.dbc"
+    test_file = "../tests/files/dbc/test_frame_decoding.dbc"
     return canmatrix.formats.loadp_flat(test_file)
 
 
@@ -63,7 +64,7 @@ def test_decode_with_too_little_dlc():
     # 002#0C00057003001F83
     frame_data = bytearray([12, 0, 5, 112, 3, 0, 31])
     frame = cm.frame_by_id(ArbitrationId(2))
-    with pytest.raises(canmatrix.DecodingFrameLength):
+    with pytest.raises(DecodingFrameLength):
         frame.decode(frame_data)
 
 
@@ -71,7 +72,7 @@ def test_decode_with_too_big_dlc():
     cm = load_dbc()
     frame_data1 = bytearray([0x38, 0x63, 0x8A, 0x7E, 0x00, 0x20, 0x00, 0x00])
     frame = cm.frame_by_id(ArbitrationId(4))
-    with pytest.raises(canmatrix.DecodingFrameLength):
+    with pytest.raises(DecodingFrameLength):
         frame.decode(frame_data1)
 
 
