@@ -36,6 +36,7 @@ from canmatrix.AutosarE2EProperties import AutosarE2EProperties
 from canmatrix.DecodedSignal import DecodedSignal
 from canmatrix.SignalGroup import SignalGroup
 from canmatrix.Signal import Signal
+from canmatrix.exceptions import EncodingContainerPdu, DecodingContainerPdu
 
 @attr.s(eq=False)
 class Frame(object):
