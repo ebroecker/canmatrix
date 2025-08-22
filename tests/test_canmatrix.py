@@ -297,7 +297,7 @@ def test_signal_encode_named_value(some_signal):
 
 
 def test_signal_encode_invalid_named_value(some_signal):
-    with pytest.raises(decimal.InvalidOperation):
+    with pytest.raises(ValueError):
         some_signal.phys2raw("wrong")
 
 
