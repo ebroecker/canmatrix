@@ -1257,7 +1257,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                     logger.debug('No valid compu method found for this - check ARXML file!!')
                     compu_method = None
         if compu_method is None:
-            logger.error('No valid compu method found for isignal/systemsignal {}/{} - check ARXML file!!'
+            logger.info('No valid compu method found for isignal/systemsignal {}/{} - check ARXML file!!'
                          .format(ea.get_short_name(isignal), ea.get_short_name(system_signal)))
         #####################################################################################################
         # no found compu-method fuzzy search in systemsignal:
@@ -1739,10 +1739,21 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
             new_frame, ea, frame_triggering, float_factory)
 
     if new_frame.is_pdu_container and new_frame.cycle_time == 0:
+        # TODO refactoring needed!
+        # TODO it IS absolutely okay, and also seen in real-world systems that the cycle-times of the container-pdu
+        # TODO and sub-pdus differ (differ from container to sub-pdu BUT also from sub-pdu to sub-pdu)
+        # TODO that is an KEY-FEATURE (!!!) of dynamic container-pdus
+        # TODO often the cycle-time of the container-pdu is 0 and the sub-pdus has different cycle-times
+        # TODO setting here the container-cycle-time to the shortest cycle-time of all sub-pdus is incorrect and
+        # TODO can lead into wrong behavior !!!
+        # TODO need to be refactored, for the moment at least changed the logger-output from error to info (because
+        # TODO it is NOT an error) and add the information to which cycle-time the frame is updated.
+        # TODO need to be clarified why this was added? was there any specific reason for this?
         cycle_times = {pdu.cycle_time for pdu in new_frame.pdus}
         if len(cycle_times) > 1:
-            logger.warning("%s is pdu-container(frame) with different cycle times (%s), frame cycle-time: %s",
-                           new_frame.name, cycle_times, new_frame.cycle_time)
+            logger.info("%s is pdu-container(frame) with different cycle times (%s), frame cycle-time: %s. "
+                        "Set Frame-cycle-time to %s",
+                           new_frame.name, cycle_times, new_frame.cycle_time, min(cycle_times))
         new_frame.cycle_time = min(cycle_times)
     new_frame.fit_dlc()
     if frame_elem is not None:
