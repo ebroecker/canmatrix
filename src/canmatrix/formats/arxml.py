@@ -308,6 +308,46 @@ class Earxml:
         return sorted(result_list, key=lambda element: element.sourceline)
 
 
+class AutosarBasePlatformTypes():
+    """handing/helper for autosar Platform Types
+    see autosar document-No 48 'Specification of Platform Types' """
+    _encoding_VOID = 'VOID'
+    _encoding_BOOLEAN = 'BOOLEAN'
+    _encoding_IEEE753 = 'IEEE754'
+    _encoding_2C = '2C'
+    _encoding_None = 'NONE'
+    _base_types = {
+        '/AUTOSAR_Platform/BaseTypes/dtRef_const_VOID': ('dtRef_const_VOID', _encoding_VOID),
+        '/AUTOSAR_Platform/BaseTypes/dtRef_VOID': ('dtRef_VOID', _encoding_VOID),
+        '/AUTOSAR_Platform/BaseTypes/boolean': ('boolean', _encoding_BOOLEAN),
+        '/AUTOSAR_Platform/BaseTypes/float32': ('float32', _encoding_IEEE753),
+        '/AUTOSAR_Platform/BaseTypes/float64': ('float64', _encoding_IEEE753),
+        '/AUTOSAR_Platform/BaseTypes/sint8': ('sint8', _encoding_2C),
+        '/AUTOSAR_Platform/BaseTypes/sint16': ('sint16', _encoding_2C),
+        '/AUTOSAR_Platform/BaseTypes/sint32': ('sint32', _encoding_2C),
+        '/AUTOSAR_Platform/BaseTypes/uint8': ('uint8', _encoding_None),
+        '/AUTOSAR_Platform/BaseTypes/uint16': ('uint16', _encoding_None),
+        '/AUTOSAR_Platform/BaseTypes/uint32': ('uint32', _encoding_None),
+    }
+
+    @classmethod
+    def _get_reference_of_element(cls, element: _Element|str):
+        if isinstance(element, _Element):
+            return element.text
+        else:
+            return element
+
+    @classmethod
+    def datatype_by_ref(cls, basetype_ref: _Element|str):
+        _definition = cls._base_types.get(cls._get_reference_of_element(basetype_ref), None)
+        return _definition[0] if _definition is not None else None
+
+    @classmethod
+    def encoding_by_ref(cls, basetype_ref: _Element|str):
+        _definition = cls._base_types.get(cls._get_reference_of_element(basetype_ref), None)
+        return _definition[1] if _definition is not None else None
+
+
 def create_sub_element(parent, element_name, text=None, dest=None):
     # type: (_Element, str, typing.Optional[str], typing.Optional[str]) -> _Element
     sn = lxml.etree.SubElement(parent, element_name)
@@ -1092,6 +1132,10 @@ def eval_type_of_signal(type_encoding, base_type, ea):
     elif base_type is not None:
         is_float = False
         type_name = ea.get_element_name(base_type)
+        if isinstance(base_type, _Element):
+            type_name = ea.get_element_name(base_type)
+        else:
+            type_name = base_type
         if type_name[0] == 'u':
             is_signed = False  # unsigned
         else:
@@ -1158,15 +1202,35 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             except IndexError:
                 pass
 
+        base_type_name = None
         base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")  # AR4
         if base_type is None:
             a = ea.selector(isignal, ">SYSTEM-SIGNAL-REF>DATA-TYPE-REF>BASE-TYPE-REF")
             if len(a) > 0:
                 base_type = a[0]
         try:
-            type_encoding = ea.get_child(base_type, "BASE-TYPE-ENCODING").text
+            if base_type is None:
+                # if not found, get/check if it's an autosar defined SwBaseType
+                # search in different locations
+                _search_for_base_type = [ea.get_child(isignal, "BASE-TYPE-REF")]
+                _tmp = ea.selector(isignal, ">SYSTEM-SIGNAL-REF>DATA-TYPE-REF>BASE-TYPE-REF")
+                if _tmp is not None:
+                    _search_for_base_type.extend(_tmp)
+                _tmp = ea.selector(isignal, ">SYSTEM-SIGNAL-REF>BASE-TYPE-REF")
+                if _tmp is not None:
+                    _search_for_base_type.extend(_tmp)
+                for _ele in _search_for_base_type:
+                    if _ele is None:
+                        continue
+                    type_encoding = AutosarBasePlatformTypes.encoding_by_ref(_ele)
+                    base_type_name = AutosarBasePlatformTypes.datatype_by_ref(_ele)
+                    if type_encoding is not None:
+                        break
+            else:
+                type_encoding = ea.get_child(base_type, "BASE-TYPE-ENCODING").text
+                base_type_name = ea.get_element_name(base_type)
         except AttributeError:
-            type_encoding = "None"
+            type_encoding = "NONE"
         signal_name = None  # type: typing.Optional[str]
         signal_name_elem = ea.get_child(isignal, "LONG-NAME")
         if signal_name_elem is not None:
@@ -1242,8 +1306,14 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             compu_method = ea.follow_ref(isignal, "COMPU-METHOD-REF")
 
             base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")
-            encoding = ea.get_child(base_type, "BASE-TYPE-ENCODING")
-            if encoding is not None and encoding.text == "IEEE754":
+            if base_type is None:
+                # if not found, get/check if it's an autosar defined SwBaseType
+                encoding = AutosarBasePlatformTypes.encoding_by_ref(ea.get_child(isignal, "BASE-TYPE-REF"))
+            else:
+                encoding = ea.get_child(base_type, "BASE-TYPE-ENCODING")
+                if encoding is not None:
+                    encoding = encoding.text
+            if encoding is not None and encoding == "IEEE754":
                 is_float = True
         if compu_method is None:
             #logger.debug('No Compmethod found!! - try alternate scheme 1.')
@@ -1278,8 +1348,11 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         if base_type is None:
             base_type = ea.follow_ref(datdefprops, "BASE-TYPE-REF")
-
-        (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type, ea)
+        if base_type is None and base_type_name is not None:
+            # if not found, but we already know the base_type_name
+            (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type_name, ea)
+        else:
+            (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type, ea)
 
         unit_element = ea.follow_ref(isignal, "UNIT-REF")
         display_name = ea.get_child(unit_element, "DISPLAY-NAME")
@@ -1360,11 +1433,9 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 if communication_direction[0].text == "IN":
                     new_signal.add_receiver(ea.get_short_name(ecu))
 
-            if base_type is not None:
-                temp = ea.get_child(base_type, "SHORT-NAME")
-                if temp is not None and "boolean" == temp.text:
-                    new_signal.add_values(1, "true")
-                    new_signal.add_values(0, "false")
+            if base_type_name is not None and "boolean" == base_type_name:
+                new_signal.add_values(1, "true")
+                new_signal.add_values(0, "false")
 
             if initvalue is not None and initvalue.text is not None:
                 initvalue.text = canmatrix.utils.guess_value(initvalue.text)
