@@ -1373,6 +1373,11 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                     new_signal.initial_value = (float_factory(initvalue.text) * factor) + offset
                 except decimal.InvalidOperation:
                     logger.error("could not decode value {}".format(initvalue.text))
+            else:
+                # no init-value found, check if existing initialized initial_value of Signal-object is between min/max,
+                # if not => INVALID! => set it to min to at least not generate an invalid Signal
+                if new_signal.min > new_signal.initial_value or new_signal.max < new_signal.initial_value:
+                    new_signal.initial_value = new_signal.min
 
             for key, value in list(values.items()):
                 new_signal.add_values(canmatrix.utils.decode_number(key, float_factory), value)
@@ -1478,6 +1483,19 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
         ipdu = ea.follow_ref(cpdu, "I-PDU-REF")
         if ipdu in ipdus_refs:
             continue
+        try:
+            if header_type == "SHORT-HEADER":
+                header_id = ea.get_child(ipdu, "HEADER-ID-SHORT-HEADER").text
+            elif header_type == "LONG-HEADER":
+                header_id = ea.get_child(ipdu, "HEADER-ID-LONG-HEADER").text
+            else:
+                # none type
+                header_id = None
+        except AttributeError:
+            header_id = None
+        if header_id is not None:
+            header_id = int(header_id, 0)
+
         ipdus_refs.append(ipdu)
         timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATION")
         if timing_spec is None:

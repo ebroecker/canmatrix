@@ -455,8 +455,8 @@ class Signal(object):
         # if not (0 <= value <= 10):
         if not (self.min <= value <= self.max):
             logger.warning(
-                "Value {} is not valid for {}. Min={} and Max={}".format(
-                    value, self, self.min, self.max)
+                "Signal {}: Value {} is not valid for {}. Min={} and Max={}".format(
+                    self.name, value, self, self.min, self.max)
                 )
         raw_value = (self.float_factory(value) - self.float_factory(self.offset)) / self.float_factory(self.factor)
 
