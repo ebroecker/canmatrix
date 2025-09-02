@@ -1577,19 +1577,49 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     # type: (_Element, Earxml, dict, typing.Callable, bool) -> typing.Union[canmatrix.Frame, None]
     global frames_cache
 
-    arb_id = ea.get_child(frame_triggering, "IDENTIFIER")
+    def set_frame_trigger_attributes_to_frame(frame_triggering, _frame):
+        arbitration_id = int(ea.get_child(frame_triggering, "IDENTIFIER").text, 0)
+        address_mode = ea.get_child(frame_triggering, "CAN-ADDRESSING-MODE")
+        frame_rx_behaviour_elem = ea.get_child(frame_triggering, "CAN-FRAME-RX-BEHAVIOR")
+        frame_tx_behaviour_elem = ea.get_child(frame_triggering, "CAN-FRAME-TX-BEHAVIOR")
+        is_fd_elem = ea.get_child(frame_triggering, "CAN-FD-FRAME-SUPPORT")
+        if address_mode is not None and address_mode.text == 'EXTENDED':
+            _frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=True)
+        else:
+            _frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=False)
+
+        if (frame_rx_behaviour_elem is not None and frame_rx_behaviour_elem.text == 'CAN-FD') or \
+                (frame_tx_behaviour_elem is not None and frame_tx_behaviour_elem.text == 'CAN-FD') or \
+                (is_fd_elem is not None and is_fd_elem.text.lower() == 'true'):
+            _frame.is_fd = True
+        else:
+            _frame.is_fd = False
+
     frame_elem = ea.follow_ref(frame_triggering, "FRAME-REF")
     frame_trig_name_elem = ea.get_child(frame_triggering, "SHORT-NAME")
     logger.debug("processing Frame-Trigger: %s", frame_trig_name_elem.text)
+    arb_id = ea.get_child(frame_triggering, "IDENTIFIER")
     if arb_id is None:
         logger.info("found Frame-Trigger %s without arbitration id", frame_trig_name_elem.text)
         return None
-    arbitration_id = int(arb_id.text, 0)
+
+    pdu_trigger = ea.selector(frame_triggering, ">I-PDU-TRIGGERING-REF")
+    if len(pdu_trigger) == 0:
+        pdu_trigger = ea.selector(frame_triggering, ">PDU-TRIGGERING-REF")
+    if len(pdu_trigger) == 1:
+        pdu_trigger = pdu_trigger[0]
+    else:
+        logger.debug(f"Frame-Trigger '{frame_trig_name_elem.text}' not a single PDU-Trigger found!")
+        pdu_trigger = None
 
     if frame_elem is not None:
         logger.debug("Frame: %s", ea.get_element_name(frame_elem))
         if frame_elem in frames_cache:
-            return copy.deepcopy(frames_cache[frame_elem])
+            # if we use some kind of cache for the frame, we need to take over the information which depends on
+            # the frame-triggering. otherwise we got wrong frames (e.g. wrong/duplicated IDs)
+            _f = copy.deepcopy(frames_cache[frame_elem])
+            set_frame_trigger_attributes_to_frame(frame_triggering, _f)
+            return copy.deepcopy(_f)
         dlc_elem = ea.get_child(frame_elem, "FRAME-LENGTH")
         # pdu_mapping = ea.get_child(frame_elem, "PDU-TO-FRAME-MAPPING")
         # pdu = ea.follow_ref(pdu_mapping, "PDU-REF")  # SIGNAL-I-PDU
@@ -1664,14 +1694,13 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     else:
         # without frameinfo take short-name of frametriggering and dlc = 8
         logger.debug("Frame-Trigger %s has no FRAME-REF", frame_trig_name_elem.text)
-        pdu = ea.selector(frame_triggering, ">I-PDU-TRIGGERING-REF>I-PDU-REF") # AR4.2
-        if len(pdu) == 0:
-            pdu = ea.selector(frame_triggering, ">PDU-TRIGGERING-REF>I-PDU-REF")
+        pdu = ea.selector(pdu_trigger, ">I-PDU-REF") # AR4.2
         if len(pdu) > 0:
             pdu = pdu[0]
         else:
             pdu = None
         dlc_elem = ea.get_child(pdu, "LENGTH")
+        arbitration_id = int(arb_id.text, 0)
         new_frame = canmatrix.Frame(frame_trig_name_elem.text, arbitration_id=arbitration_id,
                                     size=int(int(dlc_elem.text, 0) / 8))
         if pdu is not None:
@@ -1687,21 +1716,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     if new_frame.comment is None:
         new_frame.add_comment(ea.get_element_desc(pdu))
 
-    address_mode = ea.get_child(frame_triggering, "CAN-ADDRESSING-MODE")
-    frame_rx_behaviour_elem = ea.get_child(frame_triggering, "CAN-FRAME-RX-BEHAVIOR")
-    frame_tx_behaviour_elem = ea.get_child(frame_triggering, "CAN-FRAME-TX-BEHAVIOR")
-    is_fd_elem = ea.get_child(frame_triggering, "CAN-FD-FRAME-SUPPORT")
-    if address_mode is not None and address_mode.text == 'EXTENDED':
-        new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=True)
-    else:
-        new_frame.arbitration_id = canmatrix.ArbitrationId(arbitration_id, extended=False)
-
-    if (frame_rx_behaviour_elem is not None and frame_rx_behaviour_elem.text == 'CAN-FD') or \
-            (frame_tx_behaviour_elem is not None and frame_tx_behaviour_elem.text == 'CAN-FD') or \
-            (is_fd_elem is not None and is_fd_elem.text.lower() == 'true'):
-        new_frame.is_fd = True
-    else:
-        new_frame.is_fd = False
+    set_frame_trigger_attributes_to_frame(frame_triggering, new_frame)
 
     timing_spec = ea.get_child(pdu, "I-PDU-TIMING-SPECIFICATION")  # AR 3
     if timing_spec is None:
