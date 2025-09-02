@@ -817,12 +817,21 @@ class AutosarE2EProperties(object):
 
 @attr.s(eq=False)
 class AutosarSecOCProperties(object):
-    auth_algorithm = attr.ib(default="")  # type: str
-    payload_length = attr.ib(default=0)  # type: int
-    auth_tx_length = attr.ib(default=0)  # type: int
-    data_id = attr.ib(default=0)  # type: int
-    freshness_length = attr.ib(default=0)  # type: int
-    freshness_tx_length = attr.ib(default=0)  # type: int
+    secured_i_pdu_name = attr.ib(default="unknown")  # type: str
+    authentic_i_pdu_name = attr.ib(default="unknown")  # type: str
+    auth_algorithm = attr.ib(default=None)  # type: str|None
+    authentic_pdu_length = attr.ib(default=0)  # type: int
+    secured_i_pdu_length = attr.ib(default=0)  # type: int
+    auth_tx_length = attr.ib(default=None)  # type: int|None
+    data_id = attr.ib(default=None)  # type: int|None
+    freshness_value_id = attr.ib(default=None)  # type: int|None
+    freshness_length = attr.ib(default=None)  # type: int|None
+    freshness_tx_length = attr.ib(default=None)  # type: int|None
+    use_as_cryptographic_i_pdu = attr.ib(default=False)  # type: bool
+    message_link_length = attr.ib(default=None)  # type: int|None
+    message_link_position = attr.ib(default=None)  # type: int|None
+    key_id = attr.ib(default=None)  # type: int|None
+
 
 @attr.s(eq=False)
 class Pdu(object):
@@ -844,6 +853,7 @@ class Pdu(object):
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
     cycle_time = attr.ib(default=0)  # type: int
+    secOC_properties = attr.ib(default=None)  # type:  Optional[AutosarSecOCProperties]
 
     def add_signal(self, signal):
         # type: (Signal) -> Signal

@@ -1452,6 +1452,188 @@ def containters_are_little_endian(ea):
     return False
 
 
+def _get_secOC_properties(ea, pdu, secured_pdu_trigger):
+    if pdu is None or 'SECURED-I-PDU' not in pdu.tag:
+        return None, None
+
+    # info about cryptographic-pdu:
+    # in a cryptographic-i-pdu the authentic-pdu is NOT a payload of the secured-id-pdu,
+    # authentic-pdu and secured-i-pdu are two different pdus which are transmitted
+    # separately (in a container-pdu without header/fixed sub-pdu positions)
+    # a cryptographic-pdu may can contain a message-link where a some bytes (len and pos defined
+    # by MESSAGE-LINK-LENGTH/-POSITION) of the authentic-pdu are copied to the secured-i-pdu
+
+    try:
+        secured_i_pdu_name = ea.get_element_name(pdu)
+        secured_i_pdu_length = int(ea.get_child(pdu, "LENGTH").text, 0)
+
+        _tmp_ele = ea.get_child(pdu, "USE-AS-CRYPTOGRAPHIC-I-PDU")
+        use_as_cryptographic_i_pdu = _tmp_ele.text if _tmp_ele is not None \
+            else "False"
+        use_as_cryptographic_i_pdu = True if use_as_cryptographic_i_pdu.lower() == 'true' else False
+
+        # depending on the arxml-file secoc-related information can be found directly in the SECURE-I-PDU,
+        # or if not, they are defined in the AUTHENTICATION-PROPS-REF or FRESHNESS-PROPS-REF
+        secured_ipdu_secoc = ea.get_child(pdu, "SECURE-COMMUNICATION-PROPS")
+        auth_props = ea.selector(pdu, ">AUTHENTICATION-PROPS-REF")
+        auth_props = auth_props[0] if len(auth_props) == 1 else None
+        freshness_props = ea.selector(pdu, ">FRESHNESS-PROPS-REF")
+        freshness_props = freshness_props[0] if len(freshness_props) == 1 else None
+        payload_pdu_trigger = ea.selector(pdu, ">PAYLOAD-REF")
+        payload_pdu_trigger = payload_pdu_trigger[0] if len(payload_pdu_trigger) == 1 else None
+        secured_pdu_port = ea.selector(secured_pdu_trigger, ">I-PDU-PORT-REF")
+        secured_pdu_port = secured_pdu_port[0] if len(secured_pdu_port) == 1 else None
+        # payload_i_pdu_port = ea.selector(payload_pdu_trigger, ">I-PDU-PORT-REF")
+        # payload_i_pdu_port = payload_i_pdu_port[0] if len(payload_i_pdu_port) == 1 else None
+
+        _tmp_ele = ea.get_child(secured_ipdu_secoc, "AUTH-ALGORITHM")
+        if _tmp_ele is None and auth_props is not None:
+            _tmp_ele = ea.get_child(auth_props, "AUTH-ALGORITHM")
+        auth_algorithm = _tmp_ele.text if _tmp_ele is not None else None
+
+        _tmp_ele = ea.get_child(secured_ipdu_secoc, "AUTH-INFO-TX-LENGTH")
+        if _tmp_ele is None and auth_props is not None:
+            _tmp_ele = ea.get_child(auth_props, "AUTH-INFO-TX-LENGTH")
+        auth_tx_length = int(_tmp_ele.text, 0) if _tmp_ele is not None else None
+
+        _tmp_ele = ea.get_child(secured_ipdu_secoc, "DATA-ID")
+        data_id = int(_tmp_ele.text, 0) if _tmp_ele is not None else None
+
+        _tmp_ele = ea.get_child(secured_ipdu_secoc, "FRESHNESS-VALUE-ID")
+        freshness_value_id = int(_tmp_ele.text, 0) if _tmp_ele is not None else None
+
+        _tmp_ele = ea.get_child(secured_ipdu_secoc, "FRESHNESS-VALUE-LENGTH")
+        if _tmp_ele is None and freshness_props is not None:
+            _tmp_ele = ea.get_child(freshness_props, "FRESHNESS-VALUE-LENGTH")
+        freshness_bit_length = int(_tmp_ele.text, 0) if _tmp_ele is not None else None
+
+        _tmp_ele = ea.get_child(secured_ipdu_secoc, "FRESHNESS-VALUE-TX-LENGTH")
+        if _tmp_ele is None and freshness_props is not None:
+            _tmp_ele = ea.get_child(freshness_props, "FRESHNESS-VALUE-TX-LENGTH")
+        freshness_tx_length = int(_tmp_ele.text, 0) if _tmp_ele is not None else None
+
+        _tmp_ele = ea.get_child(secured_ipdu_secoc, "MESSAGE-LINK-LENGTH")
+        message_link_length = int(_tmp_ele.text, 0) if _tmp_ele is not None else None
+
+        _tmp_ele = ea.get_child(secured_ipdu_secoc, "MESSAGE-LINK-POSITION")
+        message_link_position = int(_tmp_ele.text, 0) if _tmp_ele is not None else None
+
+        _tmp_ele = ea.get_child(secured_pdu_port, "KEY-ID")
+        key_id = int(_tmp_ele.text, 0) if _tmp_ele is not None else None
+
+    except Exception as e:
+        logger.warning(f"Unable to get SecOC-Properties for {ea.get_element_name(pdu)}", exc_info=True)
+        return None, None
+
+    authentic_pdu = ea.selector(payload_pdu_trigger, ">I-PDU-REF")
+    if not authentic_pdu:
+        logger.error("SecuredIPdu %r is missing Payload", ea.get_short_name(pdu))
+        return None, None
+    if isinstance(authentic_pdu, list):
+        authentic_pdu = authentic_pdu[0]
+
+    authentic_i_pdu_name = ea.get_element_name(authentic_pdu)
+    authentic_pdu_length = int(ea.get_child(authentic_pdu, "LENGTH").text, 0)
+
+    secOC_properties = canmatrix.AutosarSecOCProperties(secured_i_pdu_name,
+                                                        authentic_i_pdu_name,
+                                                        auth_algorithm,
+                                                        authentic_pdu_length,
+                                                        secured_i_pdu_length,
+                                                        auth_tx_length,
+                                                        data_id,
+                                                        freshness_value_id,
+                                                        freshness_bit_length,
+                                                        freshness_tx_length,
+                                                        use_as_cryptographic_i_pdu,
+                                                        message_link_length,
+                                                        message_link_position,
+                                                        key_id=key_id,
+                                                        )
+    return secOC_properties, authentic_pdu
+
+
+def _add_autosar_secoc_signals_to_parent(parent):
+    """single method for Frame and Pdu
+    used to add SecOC related signals to pdu and frame, based on secOC_properties as stored in the object itself.
+    do NOTHING if no secOC_properties are present!
+
+    Note: atm canmatrix is handling Autosar-ARXML Frame which only points to a signal-i-pdu NOT as a Frame containing
+          a PDU, it is handled/stored as Frame-Only. But container-i-pdus are handled/stored as Frame containing PDUs.
+          Therefore, this method (and secOC_properties) is needed for the Frame AND the PDU (even if this is only
+          part of PDUs according to Autosar).
+
+    :param Frame|Pdu parent: Frame or Pdu to process
+    :return: None
+    """
+    if not hasattr(parent, "secOC_properties") or parent.secOC_properties is None:
+        return
+    _secOC_properties = parent.secOC_properties
+
+    # info: secOC_properties.freshness_tx_length, secOC_properties.auth_tx_length
+    #       and secOC_properties.message_link_length are in bit and NOT byte!!!
+
+    # structure/order of a secured-i-pdu:
+    #    secured-i-pdu header: Optional, not implemented in canmatrix at the moment
+    #    authentic-pdu (here the parent): use_as_cryptographic_i_pdu == False: mandatory, if True: not allowed
+    #    Truncated Freshness
+    #    Truncated Auth-Info (cmac)
+    #    Message-Link: Optional, only used if use_as_cryptographic_i_pdu == True and message_link_length > 0
+
+    # get the correct start_bit position
+    if _secOC_properties.use_as_cryptographic_i_pdu == True:
+        _start_base_bit = 0
+    else:
+        _start_base_bit = _secOC_properties.authentic_pdu_length * 8
+
+    # set shortcuts for different lengths
+    if _secOC_properties.freshness_tx_length and _secOC_properties.freshness_tx_length > 0:
+        _fv_tx_len = _secOC_properties.freshness_tx_length
+    else:
+        _fv_tx_len = 0
+    if _secOC_properties.auth_tx_length and _secOC_properties.auth_tx_length > 0:
+        _auth_tx_len = _secOC_properties.auth_tx_length
+    else:
+        _auth_tx_len = 0
+    if _secOC_properties.message_link_length and _secOC_properties.message_link_length > 0:
+        _msg_lnk_len = _secOC_properties.message_link_length
+    else:
+        _msg_lnk_len = 0
+
+    # add needed signals
+    if _fv_tx_len > 0:
+        freshness_name = f"{parent.name}_Freshness"
+        signal_freshness = canmatrix.Signal(freshness_name,
+                                            comment='Truncated Freshness-Value',
+                                            start_bit=_start_base_bit,
+                                            size=_fv_tx_len,
+                                            is_signed=False,
+                                            is_little_endian=False,
+                                            unit="Unitless")
+        parent.add_signal(signal_freshness)
+
+    if _auth_tx_len > 0:
+        authinfo_name = f"{parent.name}_AuthInfo"
+        signal_authinfo = canmatrix.Signal(authinfo_name,
+                                           comment='Truncated Auth-Info',
+                                           start_bit=_start_base_bit + _fv_tx_len,
+                                           size=_auth_tx_len,
+                                           is_signed=False,
+                                           is_little_endian=False,
+                                           unit="Unitless")
+        parent.add_signal(signal_authinfo)
+    if _secOC_properties.use_as_cryptographic_i_pdu == True and _msg_lnk_len > 0:
+        message_link_name = f"{parent.name}_MsgLink"
+        signal_msglnk = canmatrix.Signal(message_link_name,
+                                         comment='Message-Link Value',
+                                         start_bit=_start_base_bit + _fv_tx_len + _auth_tx_len,
+                                         size=_msg_lnk_len,
+                                         is_signed=False,
+                                         is_little_endian=False,
+                                         unit="Unitless")
+        parent.add_signal(signal_msglnk)
+
+
 def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_are_littleendian):
     target_frame.is_fd = True
     pdus = ea.follow_all_ref(pdu, "CONTAINED-PDU-TRIGGERING-REF")
@@ -1478,6 +1660,25 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
         ipdu = ea.follow_ref(cpdu, "I-PDU-REF")
         if ipdu in ipdus_refs:
             continue
+        ipdu_name = ea.get_element_name(ipdu)
+
+        # check/get secoc-stuff
+        _secoc_properties, authentic_pdu = _get_secOC_properties(ea, ipdu, cpdu)
+        if (_secoc_properties is not None and authentic_pdu is not None
+                and _secoc_properties.use_as_cryptographic_i_pdu == False):
+            # in case of a 'normal' secured-i-pdu, copy the authentic-pdu over the secured-i-pdu
+            #
+            # hint: copy the authentic/payload-pdu over the secured-i-pdu and adding signals to the pdu is
+            # in terms of SecOC-Specification incorrect (also practically/logically incorrect,
+            # because it is the wrong pdu-name)
+            # but as long as canmatrix does not support 'a pdu containing another pdu' this is the only acceptable
+            # workaround
+            ipdu = authentic_pdu
+            ipdu_name = ea.get_element_name(ipdu)  # get it once more after copy authentic-pdu over
+            logger.info("found secured pdu '%s', dissolved to '%s'", _secoc_properties.secured_i_pdu_name,
+                        ipdu_name)
+
+        # this need to be done AFTER the SECURED-I-PDU handling, otherwise the timing-specifications are wrong!
         ipdus_refs.append(ipdu)
         timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATION")
         if timing_spec is None:
@@ -1524,12 +1725,27 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
             pdu_port_type = ea.get_child(cpdu, "I-PDU-PORT-REF").attrib["DEST"]
         except (AttributeError, KeyError):
             pdu_port_type = ""
-        ipdu_length = int(ea.get_child(ipdu, "LENGTH").text, 0)
-        ipdu_name = ea.get_element_name(ipdu)
+        if _secoc_properties is not None:
+            # use the correct length for SECURED-I-PDU
+            # WARNING: for SECURED-I-PDU (which is not a cryptographic-pdu) inside an CONTAINER-I-PDU the length
+            #          of the PDU with the name of the authentic-pdu DOES NOT match
+            #          the length of the PDU as in the arxml-file
+            #  Reason: we need added the SecOC-related signals (truncated freshness and trunctated cmac) to the PDU
+            #          as adding this to the frame is not possible at dynamic container-pdus
+            # this is the only acceptable/possible solution in canmatrix at the moment
+            ipdu_length = _secoc_properties.secured_i_pdu_length
+        else:
+            ipdu_length = int(ea.get_child(ipdu, "LENGTH").text, 0)
         ipdu_triggering_name = ea.get_element_name(cpdu)
         target_pdu = canmatrix.Pdu(name=ipdu_name, size=ipdu_length, id=header_id,
                                    triggering_name=ipdu_triggering_name, pdu_type=pdu_type,
-                                   port_type=pdu_port_type, cycle_time=cycle_time)
+                                   port_type=pdu_port_type, cycle_time=cycle_time,
+                                   secOC_properties=_secoc_properties,
+                                   offset_bytes=offset_bytes)
+
+        # for a secured-id-pdu which is contained in a container-i-pdu it is NOT possible to add the SecOC-signals
+        # to the frame, so we HAVE to add it to the authentic-pdu (which is incorrect, see hint above).
+        _add_autosar_secoc_signals_to_parent(target_pdu)  # add secoc-related signals to PDU
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
         get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory, bit_offset=offset)
         target_frame.add_pdu(target_pdu)
@@ -1598,39 +1814,24 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         # pdu_name = ea.get_element_name(pdu)
         # target_pdu = canmatrix.Pdu(name=pdu_name)
 
-        secOC_properties = None
-        if pdu is not None and 'SECURED-I-PDU' in pdu.tag:
-            try:
-                payload_length = ea.get_child(pdu, "LENGTH").text
+        _secoc_properties, authentic_pdu = _get_secOC_properties(ea, pdu, pdu_trigger)
+        if (_secoc_properties is not None and authentic_pdu is not None
+                and _secoc_properties.use_as_cryptographic_i_pdu == False):
+            # in case of an SECURE-I-PDU which is NOT a cryptographic-pdu:
+            # copy the authentic/payload pdu OVER the secure-i-pdu
+            #
+            # hint: copy the authentic/payload-pdu over the secured-i-pdu and adding signals to the frame is
+            # in terms of SecOC-Specification incorrect (also practically/logically incorrect,
+            # because it is the wrong pdu-name)
+            # but as long as canmatrix does not support 'a pdu containing another pdu' this is the only acceptable
+            # workaround
+            pdu = authentic_pdu
 
-                secured_ipdu_SecoC = ea.get_child(pdu, "SECURE-COMMUNICATION-PROPS")
-
-                auth_algorithm = ea.get_child(secured_ipdu_SecoC, "AUTH-ALGORITHM").text
-                auth_tx_length = ea.get_child(secured_ipdu_SecoC, "AUTH-INFO-TX-LENGTH").text
-                data_id = ea.get_child(secured_ipdu_SecoC, "DATA-ID").text
-                freshness_bit_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-LENGTH").text
-                freshness_tx_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-TX-LENGTH").text
-                
-                secOC_properties = canmatrix.AutosarSecOCProperties(auth_algorithm, 
-                                                                   int(payload_length, 0),
-                                                                   int(auth_tx_length, 0),
-                                                                   int(data_id, 0),
-                                                                   int(freshness_bit_length, 0),
-                                                                   int(freshness_tx_length, 0)
-                                                                   )
-            except Exception as e:
-                logger.warning(f"{e}")
-
-            ipdu = ea.selector(pdu, ">PAYLOAD-REF>I-PDU-REF")
-            if not ipdu:
-                logger.error("SecuredIPdu %r is missing Payload", ea.get_short_name(pdu))
-                return None
-
-            pdu = ipdu[0]
-
-            ipdu_length = ea.get_child(pdu, "LENGTH").text
-
-        new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text, 0), secOC_properties=secOC_properties)
+        new_frame = canmatrix.Frame(ea.get_element_name(frame_elem), size=int(dlc_elem.text, 0),
+                                    secOC_properties=_secoc_properties)
+        # adding the SecOC-signals to the Frame is technically/logically incorrect, but as long as canmatrix
+        # does not support "a pdu containing another pdu" this is the only acceptable workaround
+        _add_autosar_secoc_signals_to_parent(new_frame)  # add secoc-realted signals to Frame
         # new_frame.add_pdu(target_pdu)
 
         if secOC_properties is not None:
