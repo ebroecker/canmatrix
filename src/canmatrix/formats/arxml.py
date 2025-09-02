@@ -1110,7 +1110,10 @@ def ar_byteorder_is_little(in_string):
 
 def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0):
     # type: (typing.Sequence[_Element], typing.Union[canmatrix.Frame, canmatrix.Pdu], Earxml, int, typing.Callable, int) -> None
-    """Add signals from xml to the Frame."""
+    """Add signals from xml to the Frame.
+    ATTENTION: be careful if you plan to use bit_offset != 0.
+               This will result in non-valid signal definitions (start-bit) in relation to the PDU.
+               Maybe a possible refactoring in the future to remove this bit_offset if no further need is identified?"""
 
     group_id = 1
     if signal_array is None:  # Empty signalarray - nothing to do
@@ -1493,28 +1496,17 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
             value = ea.get_child(time_period, "VALUE")
             if value is not None:
                 cycle_time = int(float_factory(value.text) * 1000)
+        # TODO maybe we need to refactor getting the offset for secured-i-pdus to get the offset BEFORE we
+        # copy the authentic/payload-PDU over the ipdu. need to be clarified. For the moment leave it as it was.
+        # until now we have not seen an non-cryptographic secured-i-pdu inside
+        # an static-container-PDU (=without header) (only in that veeeery specific situation it's important)
         try:
-            if header_type == "SHORT-HEADER":
-                header_id = ea.get_child(ipdu, "HEADER-ID-SHORT-HEADER").text
-            elif header_type == "LONG-HEADER":
-                header_id = ea.get_child(ipdu, "HEADER-ID-LONG-HEADER").text
-            else:
-                # none type
-                header_id = None
-        except AttributeError:
-            header_id = None
-        if header_id is not None:
-            header_id = int(header_id, 0)
-
-        if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
-            secured_i_pdu_name = ea.get_element_name(ipdu)
-            payload = ea.follow_ref(ipdu, "PAYLOAD-REF")
-            ipdu = ea.follow_ref(payload, "I-PDU-REF")
-            logger.info("found secured pdu '%s', dissolved to '%s'", secured_i_pdu_name, ea.get_element_name(ipdu))
-        try:
-            offset = int(ea.get_child(ipdu, "OFFSET").text, 0) * 8
+            offset_bytes = int(ea.get_child(ipdu, "OFFSET").text, 0)
         except:
-            offset = 0
+            if header_id is None:
+                logger.error(f"PDU {ipdu_name} is a Container-sub-PDU with no header, but NO PDU offset was found! "
+                             f"(will most likely result in wrong encoding/decoding!) - check ARXML file!!")
+            offset_bytes = 0
 
         try:
             pdu_type = ipdu.attrib["DEST"]
@@ -1530,8 +1522,11 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
         target_pdu = canmatrix.Pdu(name=ipdu_name, size=ipdu_length, id=header_id,
                                    triggering_name=ipdu_triggering_name, pdu_type=pdu_type,
                                    port_type=pdu_port_type, cycle_time=cycle_time)
+                                   port_type=pdu_port_type, cycle_time=cycle_time,
+                                   offset_bytes=offset_bytes)
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
-        get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory, bit_offset=offset)
+        get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory, bit_offset=0,
+                    generated_update_bits_init_to_1=generated_update_bits_init_to_1)
         target_frame.add_pdu(target_pdu)
 
 
