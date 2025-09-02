@@ -1989,7 +1989,7 @@ class CanMatrix(object):
         for element in defines_to_delete:
             del self.signal_defines[element]
 
-    def frame_by_id(self, arbitration_id):  # type: (ArbitrationId) -> typing.Union[Frame, None]
+    def get_frame_by_id(self, arbitration_id):  # type: (ArbitrationId) -> typing.Union[Frame, None]
         """Get Frame by its arbitration id.
 
         :param ArbitrationId arbitration_id: Frame id as canmatrix.ArbitrationId
@@ -2005,6 +2005,18 @@ class CanMatrix(object):
                 # found ID while ignoring extended or standard
                 self._frames_dict_id_extend[hash_name] = frame
                 return frame
+        return None
+    
+    def frame_by_id(self, arbitration_id):  # type: (ArbitrationId) -> typing.Union[Frame, None]
+        """Get Frame by its arbitration id.
+
+        :param ArbitrationId arbitration_id: Frame id as canmatrix.ArbitrationId
+        :rtype: Frame or None
+        """
+        for test in self.frames:
+            if test.arbitration_id == arbitration_id:
+                # found ID while ignoring extended or standard
+                return test
         return None
 
     def frame_by_header_id(self, header_id):  # type: (HeaderId) -> typing.Union[Frame, None]
