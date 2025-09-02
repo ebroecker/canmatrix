@@ -1108,7 +1108,8 @@ def ar_byteorder_is_little(in_string):
     return False
 
 
-def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0):
+def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset=0,
+                generated_update_bits_init_to_1: bool = False):
     # type: (typing.Sequence[_Element], typing.Union[canmatrix.Frame, canmatrix.Pdu], Earxml, int, typing.Callable, int) -> None
     """Add signals from xml to the Frame."""
 
@@ -1134,12 +1135,16 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 isignal_array = ea.follow_all_ref(isignal, "I-SIGNAL-REF")
                 get_signalgrp_and_signals(isignal, isignal_array, frame, group_id, ea)
                 if ub_start_bit is not None:
-                    ub_name = ea.get_element_name(isignal) + "_UB"   
+                    _ub_target_signal_name = ea.get_element_name(isignal)
+                    ub_name = _ub_target_signal_name + "_UB"
+                    _init_value = 1 if generated_update_bits_init_to_1 else 0
                     isignal_ub = canmatrix.Signal(ub_name,
+                                                  comment=f"Update-Bit for Signal '{_ub_target_signal_name}'",
                                                   start_bit=int(ub_start_bit.text, 0),
                                                   size = 1,
                                                   is_signed = False,
-                                                  unit = "Unitless") 
+                                                  unit = "Unitless",
+                                                  initial_value=_init_value)
                     frame.add_signal(isignal_ub)
 
                 group_id = group_id + 1
@@ -1391,15 +1396,19 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
             if ub_start_bit is not None:
                 ub_name = name + "_UB"
+                _init_value = 1 if generated_update_bits_init_to_1 else 0
                 new_signal_ub = canmatrix.Signal(ub_name,
+                                                 comment=f"Update-Bit for Signal '{name}'",
                                                  start_bit = int(ub_start_bit.text, 0),
                                                  size = 1,
                                                  is_signed = False,
-                                                 unit = "Unitless")
+                                                 unit = "Unitless",
+                                                 initial_value=_init_value)
                 frame.add_signal(new_signal_ub)
 
 
-def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea, float_factory):
+def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea, float_factory,
+                                    generated_update_bits_init_to_1: bool):
     selector_byte_order = ea.get_child(pdu, "SELECTOR-FIELD-BYTE-ORDER")
     selector_len = ea.get_child(pdu, "SELECTOR-FIELD-LENGTH")
     selector_start = ea.get_child(pdu, "SELECTOR-FIELD-START-POSITION")
@@ -1421,7 +1430,8 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
     if ipdu is not None:
         pdu_sig_mappings = ea.get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS")
         pdu_sig_mapping = ea.get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING")
-        get_signals(pdu_sig_mapping, target_frame, ea, None, float_factory)
+        get_signals(pdu_sig_mapping, target_frame, ea, None, float_factory,
+                    generated_update_bits_init_to_1=generated_update_bits_init_to_1)
         multiplex_translation[ea.get_element_name(ipdu)] = ea.get_element_name(pdu)
 
     dynamic_part = ea.get_child(pdu, "DYNAMIC-PART")
@@ -1440,7 +1450,8 @@ def get_frame_from_multiplexed_ipdu(pdu, target_frame, multiplex_translation, ea
             pdu_sig_mappings = ea.get_child(ipdu, "SIGNAL-TO-PDU-MAPPINGS")
             pdu_sig_mapping = ea.get_children(pdu_sig_mappings, "I-SIGNAL-TO-I-PDU-MAPPING")
 
-            get_signals(pdu_sig_mapping, target_frame, ea, selector_id.text, float_factory)
+            get_signals(pdu_sig_mapping, target_frame, ea, selector_id.text, float_factory,
+                        generated_update_bits_init_to_1=generated_update_bits_init_to_1)
 
 
 def containters_are_little_endian(ea):
@@ -1453,6 +1464,8 @@ def containters_are_little_endian(ea):
 
 
 def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_are_littleendian):
+def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_are_littleendian,
+                                  generated_update_bits_init_to_1: bool):
     target_frame.is_fd = True
     pdus = ea.follow_all_ref(pdu, "CONTAINED-PDU-TRIGGERING-REF")
     header_type = ea.get_child(pdu, "HEADER-TYPE").text
@@ -1531,7 +1544,8 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
                                    triggering_name=ipdu_triggering_name, pdu_type=pdu_type,
                                    port_type=pdu_port_type, cycle_time=cycle_time)
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
-        get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory, bit_offset=offset)
+        get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory, bit_offset=offset,
+                    generated_update_bits_init_to_1=generated_update_bits_init_to_1)
         target_frame.add_pdu(target_pdu)
 
 
@@ -1573,7 +1587,8 @@ def store_frame_timings(target_frame, cyclic_timing, event_timing, minimum_delay
             target_frame.cycle_time = int(float_factory(value.text) * 1000)
 
 
-def get_frame(frame_triggering, ea, multiplex_translation, float_factory, headers_are_littleendian):
+def get_frame(frame_triggering, ea, multiplex_translation, float_factory, headers_are_littleendian,
+              generated_update_bits_init_to_1: bool):
     # type: (_Element, Earxml, dict, typing.Callable, bool) -> typing.Union[canmatrix.Frame, None]
     global frames_cache
 
@@ -1723,20 +1738,24 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
 
     if pdu is not None:
         if "MULTIPLEXED-I-PDU" in pdu.tag:
-            get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, ea, float_factory)
+            get_frame_from_multiplexed_ipdu(pdu, new_frame, multiplex_translation, ea, float_factory,
+                                            generated_update_bits_init_to_1)
         elif pdu.tag == ea.ns + "CONTAINER-I-PDU":
-            get_frame_from_container_ipdu(pdu, new_frame, ea, float_factory, headers_are_littleendian)
+            get_frame_from_container_ipdu(pdu, new_frame, ea, float_factory, headers_are_littleendian,
+                                          generated_update_bits_init_to_1)
         else:
             pdu_sig_mapping = ea.selector(pdu, "//I-SIGNAL-TO-I-PDU-MAPPING")
             if pdu_sig_mapping:
-                get_signals(pdu_sig_mapping, new_frame, ea, None, float_factory)
+                get_signals(pdu_sig_mapping, new_frame, ea, None, float_factory,
+                            generated_update_bits_init_to_1=generated_update_bits_init_to_1)
             else:
                 # Seen some pdu_sig_mapping being [] and not None with some arxml 4.2
-                update_frame_with_pdu_triggerings(new_frame, ea, frame_triggering, float_factory)
+                update_frame_with_pdu_triggerings(new_frame, ea, frame_triggering, float_factory,
+                                                  generated_update_bits_init_to_1)
     else:
         # AR 4.2
         update_frame_with_pdu_triggerings(
-            new_frame, ea, frame_triggering, float_factory)
+            new_frame, ea, frame_triggering, float_factory, generated_update_bits_init_to_1)
 
     if new_frame.is_pdu_container and new_frame.cycle_time == 0:
         cycle_times = {pdu.cycle_time for pdu in new_frame.pdus}
@@ -1751,7 +1770,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
     return copy.deepcopy(new_frame)
 
 
-def update_frame_with_pdu_triggerings(frame, ea, frame_triggering, float_factory):
+def update_frame_with_pdu_triggerings(frame, ea, frame_triggering, float_factory, generated_update_bits_init_to_1: bool):
     # type: (canmatrix.Frame, Earxml, _Element, typing.Callable) -> None
     """Update frame with signals from PDU Triggerings."""
     pdu_trigs = ea.follow_all_ref(frame_triggering, "PDU-TRIGGERINGS-REF")
@@ -1772,7 +1791,8 @@ def update_frame_with_pdu_triggerings(frame, ea, frame_triggering, float_factory
                 )
 
             # signal_to_pdu_map = get_children(signal_to_pdu_maps, "I-SIGNAL-TO-I-PDU-MAPPING", arDict, ns)
-            get_signals(signal_to_pdu_maps, frame, ea, None, float_factory)  # todo BUG expects list, not item
+            get_signals(signal_to_pdu_maps, frame, ea, None, float_factory,
+                        generated_update_bits_init_to_1=generated_update_bits_init_to_1)  # todo BUG expects list, not item
     else:
         logger.debug("Frame %s (assuming AR4.2) no PDU-TRIGGERINGS found", frame.name)
 
@@ -1852,7 +1872,7 @@ def extract_cm_from_ecuc(com_module, ea):
     return {"": db}
 
 
-def decode_ethernet_helper(ea, float_factory):
+def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: bool):
     found_matrixes = {}
     nodes = {}  # type: typing.Dict[_Element, canmatrix.Ecu]
 
@@ -1991,14 +2011,15 @@ def decode_ethernet_helper(ea, float_factory):
                         
                         pdu_sig_mapping = ea.findall("I-SIGNAL-TO-I-PDU-MAPPING", ipdu)
 
-                        get_signals(pdu_sig_mapping, target_frame, ea, None, float_factory)
+                        get_signals(pdu_sig_mapping, target_frame, ea, None, float_factory,
+                                    generated_update_bits_init_to_1=generated_update_bits_init_to_1)
                         # target_frame.update_receiver() # It will make transmitter and receiver worse
                         db.add_frame(target_frame)
                         
     return found_matrixes
 
 
-def decode_flexray_helper(ea, float_factory):
+def decode_flexray_helper(ea, float_factory, generated_update_bits_init_to_1: bool):
     found_matrixes = {}
     fcs = ea.findall('FLEXRAY-CLUSTER')
     frame_counter = 0
@@ -2038,12 +2059,13 @@ def decode_flexray_helper(ea, float_factory):
                                                triggering_name=ipdu_triggering_name, pdu_type=pdu_type,
                                                port_type=pdu_port_type)
                     pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
-                    get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory)
+                    get_signals(pdu_sig_mapping, target_pdu, ea, None, float_factory,
+                                generated_update_bits_init_to_1=generated_update_bits_init_to_1)
                     frame.add_pdu(target_pdu)
     return found_matrixes
 
 
-def decode_can_helper(ea, float_factory, ignore_cluster_info):
+def decode_can_helper(ea, float_factory, ignore_cluster_info, generated_update_bits_init_to_1: bool):
     found_matrixes = {}
     if ignore_cluster_info is True:
         ccs = [lxml.etree.Element("ignoreClusterInfo")]  # type: typing.Sequence[_Element]
@@ -2097,7 +2119,8 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info):
 
         multiplex_translation = {}  # type: typing.Dict[str, str]
         for frameTrig in can_frame_trig:  # type: _Element
-            frame = get_frame(frameTrig, ea, multiplex_translation, float_factory, headers_are_littleendian)
+            frame = get_frame(frameTrig, ea, multiplex_translation, float_factory, headers_are_littleendian,
+                              generated_update_bits_init_to_1)
             if frame is not None:
                 frame.is_j1939 = "J-1939" in cc.tag
                 
@@ -2188,6 +2211,8 @@ def load(file, **options):
     preferred_languages.append("FOR-ALL")
     logger.debug(f"preferred_languages: {preferred_languages}")
 
+    generated_update_bits_init_to_1: bool = options.get('update_bit_init_1', False)
+
     result = {}
     logger.debug("Read arxml ...")
 
@@ -2208,12 +2233,12 @@ def load(file, **options):
     logger.debug("%d I-SIGNAL-TO-I-PDU-MAPPING in arxml...", get_sig_ipdu_nb(ea))
 
     if decode_ethernet:
-        result.update(decode_ethernet_helper(ea, float_factory))
+        result.update(decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1))
 
     if decode_flexray:
-        result.update(decode_flexray_helper(ea, float_factory))
+        result.update(decode_flexray_helper(ea, float_factory, generated_update_bits_init_to_1))
 
-    result.update(decode_can_helper(ea, float_factory, ignore_cluster_info))
+    result.update(decode_can_helper(ea, float_factory, ignore_cluster_info, generated_update_bits_init_to_1))
 
     result = canmatrix.cancluster.CanCluster(result)
 
