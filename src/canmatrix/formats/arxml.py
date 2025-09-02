@@ -998,19 +998,21 @@ def get_signalgrp_and_signals(sys_signal, sys_signal_array, frame, group_id, ea)
     transformer_ele = ea.follow_ref(sys_signal, "TRANSFORMER-REF")
     e2e_properties = None
     if transformer_ele is not None:
-        e2e_profile = ea.get_child(transformer_ele, "PROFILE-NAME").text
-       
+        _tmp_ele = ea.get_child(transformer_ele, "PROFILE-NAME")
+        e2e_profile = _tmp_ele.text if _tmp_ele is not None else None
+        _tmp_ele = ea.get_child(transformer_ele, "DATA-ID-MODE")
+        e2e_data_id_mode = _tmp_ele.text if _tmp_ele is not None else None
+
         trans_isignal_propss_elem = ea.get_child(sys_signal, "TRANSFORMATION-I-SIGNAL-PROPSS")
 
-        data_id_elems = ea.get_children(trans_isignal_propss_elem, "DATA-ID")
-        if data_id_elems is not None:
-            e2e_data_ids = [int(x.text, 0) for x in data_id_elems]
+        _tmp_ele = ea.get_children(trans_isignal_propss_elem, "DATA-ID")
+        if _tmp_ele is not None:
+            e2e_data_ids = [int(x.text, 0) for x in _tmp_ele]
 
-        data_len_elem = ea.get_child(trans_isignal_propss_elem, "DATA-LENGTH")
-        if data_len_elem is not None:
-            e2e_data_length = int(data_len_elem.text, 0)
+        _tmp_ele = ea.get_child(trans_isignal_propss_elem, "DATA-LENGTH")
+        e2e_data_length = int(_tmp_ele.text, 0) if _tmp_ele is not None else None
 
-        e2e_properties = canmatrix.AutosarE2EProperties(e2e_profile, e2e_data_ids, e2e_data_length)
+        e2e_properties = canmatrix.AutosarE2EProperties(e2e_profile, e2e_data_id_mode, e2e_data_ids, e2e_data_length)
 
     frame.add_signal_group(ea.get_element_name(sys_signal), group_id, members, e2e_properties)
 

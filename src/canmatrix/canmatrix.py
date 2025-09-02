@@ -811,6 +811,7 @@ class Endpoint(object):
 @attr.s(eq=False)
 class AutosarE2EProperties(object):
     profile = attr.ib(default=None)  # type: str
+    data_id_mode = attr.ib(default=None)  # type: str
     data_ids = attr.ib(default=None) # type: List[int]
     data_length = attr.ib(default=None)  # type: int
 
