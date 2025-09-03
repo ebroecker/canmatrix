@@ -1481,6 +1481,21 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
         ipdu = ea.follow_ref(cpdu, "I-PDU-REF")
         if ipdu in ipdus_refs:
             continue
+        try:
+            if header_type == "SHORT-HEADER":
+                header_id = ea.get_child(ipdu, "HEADER-ID-SHORT-HEADER").text
+            elif header_type == "LONG-HEADER":
+                header_id = ea.get_child(ipdu, "HEADER-ID-LONG-HEADER").text
+            else:
+                # none type
+                header_id = None
+        except AttributeError:
+            header_id = None
+        if header_id is not None:
+            header_id = int(header_id, 0)
+
+        ipdu_name = ea.get_element_name(ipdu)
+
         ipdus_refs.append(ipdu)
         timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATION")
         if timing_spec is None:
@@ -1517,11 +1532,9 @@ def get_frame_from_container_ipdu(pdu, target_frame, ea, float_factory, headers_
         except (AttributeError, KeyError):
             pdu_port_type = ""
         ipdu_length = int(ea.get_child(ipdu, "LENGTH").text, 0)
-        ipdu_name = ea.get_element_name(ipdu)
         ipdu_triggering_name = ea.get_element_name(cpdu)
         target_pdu = canmatrix.Pdu(name=ipdu_name, size=ipdu_length, id=header_id,
                                    triggering_name=ipdu_triggering_name, pdu_type=pdu_type,
-                                   port_type=pdu_port_type, cycle_time=cycle_time)
                                    port_type=pdu_port_type, cycle_time=cycle_time,
                                    offset_bytes=offset_bytes)
         pdu_sig_mapping = ea.get_children(ipdu, "I-SIGNAL-TO-I-PDU-MAPPING")
