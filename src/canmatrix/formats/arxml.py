@@ -1131,7 +1131,6 @@ def eval_type_of_signal(type_encoding, base_type, ea):
         is_float = False
     elif base_type is not None:
         is_float = False
-        type_name = ea.get_element_name(base_type)
         if isinstance(base_type, _Element):
             type_name = ea.get_element_name(base_type)
         else:
