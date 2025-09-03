@@ -211,7 +211,7 @@ def test_pdu_container_decoding_without_header():
     )
     frame.add_pdu(pdu)
     data = bytearray([0] * frame.size)
-    with pytest.raises(canmatrix.DecodingConatainerPdu):
+    with pytest.raises(canmatrix.DecodingContainerPdu):
         frame.decode(data)
 
 

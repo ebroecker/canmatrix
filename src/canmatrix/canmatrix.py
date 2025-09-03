@@ -71,10 +71,6 @@ class ArbitrationIdOutOfRange(ExceptionTemplate): pass
 class J1939NeedsExtendedIdentifier(ExceptionTemplate): pass
 class DecodingContainerPdu(ExceptionTemplate): pass
 class EncodingContainerPdu(ExceptionTemplate): pass
-class DecodingConatainerPdu(ExceptionTemplate):
-    warnings.warn("This exception is deprecated and should be removed. Consider using DecodingContainerPdu exception instead.")
-class EncodingConatainerPdu(ExceptionTemplate):
-    warnings.warn("This exception is deprecated and should be removed. Consider using EncodingContainerPdu exception instead.")
 
 
 def arbitration_id_converter(source):  # type: (typing.Union[int, ArbitrationId]) -> ArbitrationId
@@ -1391,7 +1387,7 @@ class Frame(object):
         if self.is_complex_multiplexed:
             raise EncodingComplexMultiplexed
         elif self.is_pdu_container:
-            raise EncodingConatainerPdu  # TODO add encoding
+            raise EncodingContainerPdu  # TODO add encoding
         elif self.is_multiplexed:
             # search for mulitplexer-signal
             for signal in self.signals:
