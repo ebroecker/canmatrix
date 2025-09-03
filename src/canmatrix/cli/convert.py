@@ -96,6 +96,7 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--arxmlFlexray/--no-arxmlFlexray', 'decode_flexray', default = False, help="EXPERIMENTAL: import basic flexray data from ARXML")
 @click.option('--arxmlEthernet/--no-arxmlEthernet', 'decode_ethernet', default = False, help="EXPERIMENTAL: import basic ethernet data from ARXML")
 @click.option('--preferred-languages', 'preferred_languages', default = "EN,DE", help="the preferred languages will be given priority when there are comments or descriptions available in multiple languages\ndefault EN,DE")
+@click.option('--arxmlUpdate-bit-init_1/--no-arxmlUpdate-bit-init_1', 'update_bit_init_1', default=False, help="Init generated Update-Bits with init-value 1 (True: init_value=1, False: init_value=0")
 
 
 # dbc switches
