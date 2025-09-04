@@ -41,10 +41,6 @@ clusterImporter = 1
 _Element = lxml.etree._Element
 
 
-def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
-    return decimal.Decimal(value)
-
-
 def create_signal(signal, node_list, type_enums):
     # type: (canmatrix.Signal, typing.Mapping[str, int], typing.Mapping[str, typing.Sequence[str]]) -> _Element
     xml_signal = lxml.etree.Element(
@@ -340,7 +336,7 @@ def parse_signal(signal, mux, namespace, nodelist, float_factory):
 
 def load(f, **options):
     # type: (typing.IO, **typing.Any) -> typing.Dict[str, canmatrix.CanMatrix]
-    float_factory = options.get("float_factory", default_float_factory)  # type: typing.Callable
+    float_factory = canmatrix.utils.FloatFactory.get_float_factory()  # type: typing.Callable
     dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
     tree = lxml.etree.parse(f)
     root = tree.getroot()

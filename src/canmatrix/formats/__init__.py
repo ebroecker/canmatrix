@@ -83,6 +83,10 @@ def load(file_object, import_type, key="", **options):
     # type: (typing.BinaryIO, str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
     dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
     module_instance = sys.modules["canmatrix.formats." + import_type]
+    _float_factory = options.get('float_factory', None)
+    if _float_factory is not None:
+        # if we got a float-factory: set it here to the FloatFactory-helper
+        canmatrix.utils.FloatFactory.set_float_factory(_float_factory)
     if "clusterImporter" in supportedFormats[import_type]:
         dbs = module_instance.load(file_object, **options)  # type: ignore
     else:

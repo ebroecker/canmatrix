@@ -6,6 +6,8 @@ import sys
 import typing
 from string import hexdigits
 from builtins import *
+from decimal import Decimal
+from typing import Any
 
 if sys.version_info >= (3, 5):
     import math
@@ -134,3 +136,30 @@ def decode_number(value, float_factory):  # type(string) -> (int)
         value = value[2:]
 
     return int(value, base)
+
+
+class FloatFactory:
+    """helper-class to get the float-factory
+    default: decimal.Decimal
+    use set_float_factory() to set an alternative float-factory (e.g. 'float')
+
+    usage-examples:
+      - get a value using the float-factory: FloatFactory.get_float(7)
+      - get the float-factory itself:        FloatFactory.get_float_factory()
+      - set a new float-factory:             FloatFactory.set_float_factory(float)
+      """
+
+    _default_float_factory = Decimal
+    _float_factory = None
+
+    @classmethod
+    def set_float_factory(cls, float_factory: callable):
+        cls._float_factory = float_factory
+
+    @classmethod
+    def get_float_factory(cls):
+        return cls._float_factory if cls._float_factory else cls._default_float_factory
+
+    @classmethod
+    def get_float(cls, value: Any):
+        return cls.get_float_factory()(value)

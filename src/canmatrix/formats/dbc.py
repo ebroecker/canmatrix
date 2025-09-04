@@ -37,10 +37,6 @@ import canmatrix.utils
 logger = logging.getLogger(__name__)
 
 
-def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
-    return decimal.Decimal(value)
-
-
 def normalize_name(name, whitespace_replacement):  # type: (str, str) -> str
     name = re.sub(r'\s+', whitespace_replacement, name)
 
@@ -482,7 +478,7 @@ class _FollowUps(object):
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     dbc_import_encoding = options.get("dbcImportEncoding", 'iso-8859-1')
     dbc_comment_encoding = options.get("dbcImportCommentEncoding", dbc_import_encoding)
-    float_factory = options.get('float_factory', default_float_factory)
+    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
 
     i = 0
 

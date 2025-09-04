@@ -38,10 +38,6 @@ import canmatrix.utils
 logger = logging.getLogger(__name__)
 
 
-def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
-    return decimal.Decimal(value)
-
-
 @attr.s
 class ParsingError(Exception):
     line_number = attr.ib()  # type: int
@@ -328,7 +324,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
     calc_min_for_none = options.get('calc_min_for_none')
     calc_max_for_none = options.get('calc_max_for_none')
-    float_factory = options.get('float_factory', default_float_factory)
+    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
 
     class Mode(object):
         glob, enums, send, sendReceive, receive = list(range(5))
