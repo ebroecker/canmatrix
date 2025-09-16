@@ -40,7 +40,6 @@ import canmatrix.types
 import canmatrix.utils
 
 logger = logging.getLogger(__name__)
-default_float_factory = decimal.Decimal
 
 clusterExporter = 1
 clusterImporter = 1
@@ -999,7 +998,7 @@ def get_signalgrp_and_signals(sys_signal, sys_signal_array, frame, group_id, ea)
     e2e_properties = None
     if transformer_ele is not None:
         e2e_profile = ea.get_child(transformer_ele, "PROFILE-NAME").text
-       
+
         trans_isignal_propss_elem = ea.get_child(sys_signal, "TRANSFORMATION-I-SIGNAL-PROPSS")
 
         data_id_elems = ea.get_children(trans_isignal_propss_elem, "DATA-ID")
@@ -1134,12 +1133,12 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 isignal_array = ea.follow_all_ref(isignal, "I-SIGNAL-REF")
                 get_signalgrp_and_signals(isignal, isignal_array, frame, group_id, ea)
                 if ub_start_bit is not None:
-                    ub_name = ea.get_element_name(isignal) + "_UB"   
+                    ub_name = ea.get_element_name(isignal) + "_UB"
                     isignal_ub = canmatrix.Signal(ub_name,
                                                   start_bit=int(ub_start_bit.text, 0),
                                                   size = 1,
                                                   is_signed = False,
-                                                  unit = "Unitless") 
+                                                  unit = "Unitless")
                     frame.add_signal(isignal_ub)
 
                 group_id = group_id + 1
@@ -1610,8 +1609,8 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
                 data_id = ea.get_child(secured_ipdu_SecoC, "DATA-ID").text
                 freshness_bit_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-LENGTH").text
                 freshness_tx_length = ea.get_child(secured_ipdu_SecoC, "FRESHNESS-VALUE-TX-LENGTH").text
-                
-                secOC_properties = canmatrix.AutosarSecOCProperties(auth_algorithm, 
+
+                secOC_properties = canmatrix.AutosarSecOCProperties(auth_algorithm,
                                                                    int(payload_length, 0),
                                                                    int(auth_tx_length, 0),
                                                                    int(data_id, 0),
@@ -1641,7 +1640,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
                                                     size = int(freshness_tx_length, 0),
                                                     is_signed = False,
                                                     is_little_endian = False,
-                                                    unit = "Unitless") 
+                                                    unit = "Unitless")
                 new_frame.add_signal(signal_freshness)
 
             if auth_tx_length is not None and int(auth_tx_length, 0) > 0:
@@ -1653,7 +1652,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
                                                 is_little_endian = False,
                                                 unit = "Unitless")
                 new_frame.add_signal(signal_authinfo)
-        
+
         comment = ea.get_element_desc(frame_elem)
         if pdu is not None:
             new_frame.add_attribute("PduName", ea.get_short_name(pdu))
@@ -2178,7 +2177,7 @@ def load(file, **options):
     global frames_cache
     frames_cache = {}
 
-    float_factory = options.get("float_factory", default_float_factory)  # type: typing.Callable
+    float_factory = canmatrix.utils.FloatFactory.get_float_factory()  # type: typing.Callable
     ignore_cluster_info = options.get("arxmlIgnoreClusterInfo", False)
 
     decode_ethernet = options.get("decode_ethernet", False)

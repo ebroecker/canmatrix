@@ -54,7 +54,6 @@ if version("attrs") < '17.4.0':
     raise RuntimeError("need attrs >= 17.4.0")
 
 logger = logging.getLogger(__name__)
-defaultFloatFactory = decimal.Decimal  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
 
 
 class ExceptionTemplate(Exception):
@@ -155,20 +154,19 @@ class Signal(object):
 
     name = attr.ib(default="")  # type: str
     # float_factory = attr.ib(default=defaultFloatFactory)
-    float_factory = defaultFloatFactory  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
+    float_factory = canmatrix.utils.FloatFactory.get_float  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
     start_bit = attr.ib(default=0)  # type: int
     size = attr.ib(default=0)  # type: int
     is_little_endian = attr.ib(default=True)  # type: bool
     is_signed = attr.ib(default=True)  # type: bool
-    offset = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: canmatrix.types.PhysicalValue
+    offset = attr.ib(converter=float_factory)  # type: canmatrix.types.PhysicalValue
     factor = attr.ib(
         converter=lambda value, float_factory=float_factory: (
             float_factory(value)
-            if float(value) != 0
+            if float_factory(value) != 0
             else float_factory(1.0)
-        ),
-        default=float_factory(1.0)
-    )  # type: canmatrix.types.PhysicalValue
+        )
+    )  # type: # type: canmatrix.types.PhysicalValue
 
     unit = attr.ib(default="")  # type: str
     receivers = attr.ib(factory=list)  # type: typing.MutableSequence[str]
@@ -191,7 +189,7 @@ class Signal(object):
     calc_max_for_none = attr.ib(default=True)  # type: bool
 
     cycle_time = attr.ib(default=0)  # type: int
-    initial_value = attr.ib(converter=float_factory, default=float_factory(0.0))  # type: canmatrix.types.PhysicalValue
+    initial_value = attr.ib(converter=float_factory)  # type: canmatrix.types.PhysicalValue
     scale_ranges = attr.ib(factory=list)
     min = attr.ib(
         converter=lambda value, float_factory=float_factory: (
@@ -200,6 +198,25 @@ class Signal(object):
             else value
         )
     )  # type: typing.Union[int, decimal.Decimal, None]
+
+    @offset.default
+    def set_default_offset(self):
+        # default-factory can be changed by option, so we need to initialize it during object-creation
+        # to use the correct float-factory itstead of class-initialisation above
+        return canmatrix.utils.FloatFactory.get_float(0.0)
+
+    @factor.default
+    def set_default_factor(self):
+        # default-factory can be changed by option, so we need to initialize it during object-creation
+        # to use the correct float-factory itstead of class-initialisation above
+        return canmatrix.utils.FloatFactory.get_float(1.0)
+
+    @initial_value.default
+    def set_default_initial_value(self):
+        # default-factory can be changed by option, so we need to initialize it during object-creation
+        # to use the correct float-factory itstead of class-initialisation above
+        return canmatrix.utils.FloatFactory.get_float(0.0)
+
     @min.default
     def set_default_min(self):  # type: () -> canmatrix.types.OptionalPhysicalValue
         return self.set_min()
@@ -323,7 +340,7 @@ class Signal(object):
         :param int or str value: signal value (0xFF)
         :param str valueName: Human readable value description ("Init")
         """
-        if isinstance(value, defaultFloatFactory):
+        if isinstance(value, canmatrix.utils.FloatFactory.get_float_factory()):
             self.values[value.to_integral()] = valueName
         else:
             self.values[int(str(value), 0)] = valueName
@@ -1714,8 +1731,8 @@ class Define(object):
             :param str inStr: integer represented as string.
             :rtype: int
             """
-            out = int(defaultFloatFactory(inStr))
-            if out != defaultFloatFactory(inStr):
+            out = int(canmatrix.utils.FloatFactory.get_float(inStr))
+            if out != canmatrix.utils.FloatFactory.get_float(inStr):
                 logger.warning("Warning, integer was expected but got float: got: {0} using {1}\n".format(inStr, str(out)))
             return out
 
@@ -1748,8 +1765,8 @@ class Define(object):
         elif definition[0:5] == 'FLOAT':
             self.type = 'FLOAT'
             min, max = definition[6:].split(' ', 2)
-            self.min = defaultFloatFactory(min)
-            self.max = defaultFloatFactory(max)
+            self.min = canmatrix.utils.FloatFactory.get_float(min)
+            self.max = canmatrix.utils.FloatFactory.get_float(max)
 
     def set_default(self, default):  # type: (typing.Any) -> None
         """Set Definition default value.
