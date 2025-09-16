@@ -467,8 +467,8 @@ def dump(db, f, **options):
     create_sub_element_fx(cluster, "SPEED", "500")
     create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "true")
     create_sub_element_fx(cluster, "BIT-COUNTING-POLICY", "MONOTONE")
-    attri = db.attributes["BusType"]
-    if attri is not None and attri == "CAN FD":
+    attribute = db.attributes["BusType"]
+    if attribute is not None and attribute == "CAN FD":
         protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN-FD")
         create_sub_element_fx(cluster, "CAN-FD-SPEED", "2000000")
     else:
