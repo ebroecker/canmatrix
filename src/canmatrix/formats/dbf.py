@@ -37,10 +37,6 @@ import canmatrix
 logger = logging.getLogger(__name__)
 
 
-def default_float_factory(value):  # type: (typing.Any) -> decimal.Decimal
-    return decimal.Decimal(value)
-
-
 # TODO support for [START_PARAM_NODE_RX_SIG]
 # TODO support for [START_PARAM_NODE_TX_MSG]
 
@@ -66,7 +62,7 @@ def decode_define(line):  # type: (str) -> typing.Tuple[str, str, str]
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     dbf_import_encoding = options.get("dbfImportEncoding", 'iso-8859-1')
-    float_factory = options.get('float_factory', default_float_factory)
+    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
     is_j1939 = False
     db = canmatrix.CanMatrix()
 

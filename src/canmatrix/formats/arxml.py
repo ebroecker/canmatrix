@@ -40,7 +40,6 @@ import canmatrix.types
 import canmatrix.utils
 
 logger = logging.getLogger(__name__)
-default_float_factory = decimal.Decimal
 
 clusterExporter = 1
 clusterImporter = 1
@@ -2498,7 +2497,7 @@ def load(file, **options):
     global frames_cache
     frames_cache = {}
 
-    float_factory = options.get("float_factory", default_float_factory)  # type: typing.Callable
+    float_factory = canmatrix.utils.FloatFactory.get_float_factory()  # type: typing.Callable
     ignore_cluster_info = options.get("arxmlIgnoreClusterInfo", False)
 
     decode_ethernet = options.get("decode_ethernet", False)

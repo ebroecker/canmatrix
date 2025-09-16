@@ -35,7 +35,6 @@ import canmatrix
 import canmatrix.formats.xls_common
 
 logger = logging.getLogger(__name__)
-default_float_factory = decimal.Decimal
 
 # Font Size : 8pt * 20 = 160
 # font = 'font: name Arial Narrow, height 160'
@@ -339,7 +338,7 @@ def read_additional_signal_attributes(signal, attribute_name, attribute_value):
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
-    float_factory = options.get("float_factory", default_float_factory)
+    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
 
     additional_inputs = dict()
     wb = xlrd.open_workbook(file_contents=file.read())
