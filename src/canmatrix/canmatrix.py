@@ -468,8 +468,8 @@ class Signal(object):
         # if not (0 <= value <= 10):
         if not (self.min <= value <= self.max):
             logger.warning(
-                "Value {} is not valid for {}. Min={} and Max={}".format(
-                    value, self, self.min, self.max)
+                "Signal {}: Value {} is not valid for {}. Min={} and Max={}".format(
+                    self.name, value, self, self.min, self.max)
                 )
         raw_value = (self.float_factory(value) - self.float_factory(self.offset)) / self.float_factory(self.factor)
 
@@ -612,6 +612,10 @@ def unpack_bitstring(length, is_float, is_signed, bits):
         value, = struct.unpack(float_type, bytearray(int(''.join(b), 2)  for b in grouper(bits, 8)))
     else:
         value = int(bits, 2)
+        # try:
+        #     value = int(bits, 2)
+        # except Exception as e:
+        #     xx = 1
 
         if is_signed and bits[0] == '1':
             value -= (1 << len(bits))
@@ -823,18 +827,28 @@ class Endpoint(object):
 @attr.s(eq=False)
 class AutosarE2EProperties(object):
     profile = attr.ib(default=None)  # type: str
+    data_id_mode = attr.ib(default=None)  # type: str
     data_ids = attr.ib(default=None) # type: List[int]
     data_length = attr.ib(default=None)  # type: int
 
 
 @attr.s(eq=False)
 class AutosarSecOCProperties(object):
-    auth_algorithm = attr.ib(default="")  # type: str
-    payload_length = attr.ib(default=0)  # type: int
-    auth_tx_length = attr.ib(default=0)  # type: int
-    data_id = attr.ib(default=0)  # type: int
-    freshness_length = attr.ib(default=0)  # type: int
-    freshness_tx_length = attr.ib(default=0)  # type: int
+    secured_i_pdu_name = attr.ib(default="unknown")  # type: str
+    authentic_i_pdu_name = attr.ib(default="unknown")  # type: str
+    auth_algorithm = attr.ib(default=None)  # type: str|None
+    authentic_pdu_length = attr.ib(default=0)  # type: int
+    secured_i_pdu_length = attr.ib(default=0)  # type: int
+    auth_tx_length = attr.ib(default=None)  # type: int|None
+    data_id = attr.ib(default=None)  # type: int|None
+    freshness_value_id = attr.ib(default=None)  # type: int|None
+    freshness_length = attr.ib(default=None)  # type: int|None
+    freshness_tx_length = attr.ib(default=None)  # type: int|None
+    use_as_cryptographic_i_pdu = attr.ib(default=False)  # type: bool
+    message_link_length = attr.ib(default=None)  # type: int|None
+    message_link_position = attr.ib(default=None)  # type: int|None
+    key_id = attr.ib(default=None)  # type: int|None
+
 
 @attr.s(eq=False)
 class Pdu(object):
@@ -845,6 +859,8 @@ class Pdu(object):
     Whereas a PDU is the same than a frame on CAN bus, at flexray a frame may consist of
     multiple PDUs (a bit like multiple signal layout for multiplexed can frames).
     This class is only used for flexray busses.
+    Note: since container-pdus are supported for arxml, this class is also used for arxml (but only
+          for sub-pdus of container-pdus).
     """
 
     name = attr.ib(default="")  # type: str
@@ -856,6 +872,9 @@ class Pdu(object):
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
     cycle_time = attr.ib(default=0)  # type: int
+    secOC_properties = attr.ib(default=None)  # type:  Optional[AutosarSecOCProperties]
+    # offset is used for arxml, sub-pdu inside a static-container-pdu
+    offset_bytes = attr.ib(default=0)  # type: int
 
     def add_signal(self, signal):
         # type: (Signal) -> Signal
@@ -1503,56 +1522,86 @@ class Frame(object):
                     f"Received message 0x{msg_id:04X} with wrong data size: {rx_length} instead of {self.size}")
 
         if self.is_pdu_container:
+            # note: PDU-Container without header is possible for ARXML-Container-PDUs with NO-HEADER
+            #       that mean this are not dynamic Container-PDUs rather than static ones. (each sub-pdu has
+            #       a fixed offset in the container)
+            header_signals = []
             header_id_signal = self.signal_by_name("Header_ID")
             header_dlc_signal = self.signal_by_name("Header_DLC")
-            if header_id_signal is None or header_dlc_signal is None:
-                raise DecodingContainerPdu(
-                    'Received message 0x{:08X} without Header_ID or '
-                    'Header_DLC signal'.format(self.arbitration_id.id)
-                )
+
+            if header_id_signal is not None:
+                header_signals.append(header_id_signal)
+                _header_id_signal_size = header_id_signal.size
+            else:
+                _header_id_signal_size = 0
+            if header_dlc_signal is not None:
+                header_signals.append(header_dlc_signal)
+                _header_dlc_signal_size = header_dlc_signal.size
+            else:
+                _header_dlc_signal_size = 0
             # TODO: may be we need to check that ID/DLC signals are contiguous
-            header_size = header_id_signal.size + header_dlc_signal.size
+            if len(header_signals) > 0 and len(header_signals) != 2:
+                raise DecodingConatainerPdu(
+                        'Received message 0x{:08X} with incorrect Header-Defintiion. '
+                        'Header_ID signal or Header_DLC is missing'.format(self.arbitration_id.id)
+                    )
+            header_size = _header_id_signal_size + _header_dlc_signal_size
             little, big = self.bytes_to_bitstrings(data)
             size = self.size * 8
             return_dict = dict({"pdus": []})
             # decode signal which are not in PDUs
-            signals = [s for s in self.signals if s not in [header_id_signal, header_dlc_signal]]
+            signals = [s for s in self.signals if s not in header_signals]
             if signals:
                 unpacked = self.bitstring_to_signal_list(signals, big, little, size)
                 for s, v in zip(signals, unpacked):
                     return_dict[s.name] = DecodedSignal(v, s)
             # decode PDUs
-            offset = header_id_signal.start_bit
-            header_signals = [header_id_signal, header_dlc_signal]
-            while (offset + header_size) < size:
-                unpacked = self.bitstring_to_signal_list(
-                    header_signals,
-                    big[offset:offset + header_size],
-                    little[size - offset - header_size:size - offset],
-                    header_size
-                )
-                offset += header_size
-                pdu_id = unpacked[0]
-                pdu_dlc = unpacked[1]
-                for s, v in zip(header_signals, unpacked):
-                    if s.name not in return_dict:
-                        return_dict[s.name] = []
-                    return_dict[s.name].append(DecodedSignal(v, s))
-                pdu = self.pdu_by_id(pdu_id)
+            offset = header_id_signal.start_bit if header_id_signal is not None else 0
+            no_header_next_pdu_idx = 0
+            # decode as long as there is data left to decode (if there is a header), or as long as there are sub-pdus
+            # left to decode (in case of static-container without pdu-headers)
+            while (offset + header_size) < size and no_header_next_pdu_idx < len(self.pdus):
+                if len(header_signals) > 0:
+                    unpacked = self.bitstring_to_signal_list(
+                        header_signals,
+                        big[offset:offset + header_size],
+                        little[size - offset - header_size:size - offset],
+                        header_size
+                    )
+                    offset += header_size
+                    pdu_id = unpacked[0]
+                    pdu_dlc = unpacked[1]
+                    for s, v in zip(header_signals, unpacked):
+                        if s.name not in return_dict:
+                            return_dict[s.name] = []
+                        return_dict[s.name].append(DecodedSignal(v, s))
+                    pdu = self.pdu_by_id(pdu_id)
+                else:
+                    # if there is no pdu-header, then we have a static container-pdu
+                    # we have to loop all sub-pdus and set the offset to the offset of the PDU
+                    # note: order of processing sub-PDUs is not important, even if the sub-PDUs are not ordered
+                    #       by the pdu-offset (we just set the offset correct to the actual processed sub-PDU)
+                    pdu = self.pdus[no_header_next_pdu_idx]
+                    no_header_next_pdu_idx += 1
+                    pdu_dlc = pdu.size
+                    offset = pdu.offset_bytes * 8
+                decode_size_bits = pdu_dlc * 8
                 if pdu is None:
                     return_dict['pdus'].append(None)
                 else:
                     unpacked = self.bitstring_to_signal_list(
                         pdu.signals,
-                        big[offset:offset + pdu_dlc * 8],
-                        little[size - offset - pdu_dlc * 8:size - offset],
-                        pdu_dlc * 8
+                        big[offset:offset + decode_size_bits],
+                        little[size - offset - decode_size_bits:size - offset],
+                        decode_size_bits
                     )
                     pdu_dict = dict()
                     for s, v in zip(pdu.signals, unpacked):
                         pdu_dict[s.name] = DecodedSignal(v, s)
                     return_dict["pdus"].append({pdu.name: pdu_dict})
-                offset += (pdu_dlc * 8)
+                if len(header_signals) > 0:
+                    # if there is a pdu-header, we have to set the offset to the start of the next pdu
+                    offset += decode_size_bits
             return return_dict
         else:
             little, big = self.bytes_to_bitstrings(data)
