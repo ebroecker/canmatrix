@@ -476,7 +476,6 @@ class Signal(object):
             for value_key, value_string in self.values.items():
                 if value_key == value:
                     return value_string
-                    break
 
         result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
 
@@ -603,13 +602,13 @@ def unpack_bitstring(length, is_float, is_signed, bits):
     return value
 
 
-def pack_bitstring(length, is_float, value, signed):
+def pack_bitstring(length, is_float, value, is_signed):
     """
     returns a value in bits
     :param length: length of signal in bits
     :param is_float: value is float
     :param value: value to encode
-    :param signed: value is signed
+    :param is_signed: value is is_signed
     :return:
     """
     if is_float:
