@@ -5,7 +5,7 @@ import sys
 sys.path.append('..')
 
 import canmatrix.formats
-from canmatrix.canmatrix import *
+# from canmatrix.canmatrix import *
 #
 # create target Matrix
 #

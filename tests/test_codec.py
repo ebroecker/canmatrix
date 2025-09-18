@@ -7,7 +7,8 @@ import unittest
 import tempfile
 
 from canmatrix import formats
-from canmatrix.canmatrix import Signal, ArbitrationId
+from canmatrix.Signal import Signal
+from canmatrix.ArbitrationId import ArbitrationId
 
 
 class TestCanmatrixCodec(unittest.TestCase):
@@ -34,7 +35,7 @@ class TestCanmatrixCodec(unittest.TestCase):
     #     self.assertEqual(s4.bitstruct_format(), '>s8')
 
     def test_encode_by_signal_raw_value(self):
-        test_file = "tests/files/dbc/test.dbc"
+        test_file = "../tests/files/dbc/test.dbc"
         for bus in formats.loadp(test_file).values():
             test_frame1 = ArbitrationId(0x123)
             data = {
@@ -45,7 +46,7 @@ class TestCanmatrixCodec(unittest.TestCase):
             assert data_bytes == (0, 0xCA, 0x20, 0, 0, 0, 0, 0)
 
     def test_encode_by_signal_physical_value(self):
-        test_file = "tests/files/dbc/test.dbc"
+        test_file = "../tests/files/dbc/test.dbc"
         for bus in formats.loadp(test_file).values():
             test_frame1 = ArbitrationId(0x123)
             data = {
@@ -56,7 +57,7 @@ class TestCanmatrixCodec(unittest.TestCase):
             assert data_bytes == (0, 0x28, 0x20, 0, 0, 0, 0, 0)
 
     def test_encode_decode_signal_value(self):
-        test_file = "tests/files/dbc/test.dbc"
+        test_file = "../tests/files/dbc/test.dbc"
         for bus in formats.loadp(test_file).values():
             test_frame1 = ArbitrationId(0x123)
 
@@ -71,7 +72,7 @@ class TestCanmatrixCodec(unittest.TestCase):
                 assert decoded[k].raw_value == v
 
     def test_encode_decode_signal_value_choice_unicode(self):
-        test_file = "tests/files/dbc/test.dbc"
+        test_file = "../tests/files/dbc/test.dbc"
         for bus in formats.loadp(test_file).values():
             test_frame1 = ArbitrationId(0x123)
 
@@ -86,7 +87,7 @@ class TestCanmatrixCodec(unittest.TestCase):
                 assert decoded[k].signal.values[decoded[k].raw_value] == v
 
     def test_encode_decode_signal_value_choice_str(self):
-        test_file = "tests/files/dbc/test.dbc"
+        test_file = "../tests/files/dbc/test.dbc"
         for bus in formats.loadp(test_file).values():
             test_frame1 = ArbitrationId(0x123)
 
@@ -101,7 +102,7 @@ class TestCanmatrixCodec(unittest.TestCase):
                 assert decoded[k].signal.values[decoded[k].raw_value] == v
 
     def test_import_export_additional_frame_info(self):
-        test_file = "tests/files/dbc/test.dbc"
+        test_file = "../tests/files/dbc/test.dbc"
         dbs = formats.loadp(test_file)
         tmp_dir = tempfile.mkdtemp()
         # for extension in ['csv', 'json']: # json will not export None type

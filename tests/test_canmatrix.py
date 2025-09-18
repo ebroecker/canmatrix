@@ -4,11 +4,19 @@ import decimal
 import pytest
 from builtins import *
 
-import canmatrix.canmatrix
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Signal import Signal
+from canmatrix.Frame import Frame
+from canmatrix.ArbitrationId import ArbitrationId
+from canmatrix.Ecu import Ecu
+
+@pytest.fixture
+def empty_frame():
+    return Frame(name="test_frame")
 
 
 def test_signal_defaults_to_decimal():
-    signal = canmatrix.canmatrix.Signal(
+    signal = Signal(
         offset=4,
         factor=2,
     )
@@ -910,10 +918,10 @@ def test_arbitration_id_j1939_direct_setters():
     assert arb_id.j1939_priority == 3
 
 def test_arbitration_id_comparators():
-    id_standard_1 = canmatrix.ArbitrationId(id=0x1, extended=False)
-    id_standard_2 = canmatrix.ArbitrationId(id=0x2, extended=False)
-    id_extended_1 = canmatrix.ArbitrationId(id=0x1, extended=True)
-    id_extended_2 = canmatrix.ArbitrationId(id=0x2, extended=True)
+    id_standard_1 = ArbitrationId(id=0x1, extended=False)
+    id_standard_2 = ArbitrationId(id=0x2, extended=False)
+    id_extended_1 = ArbitrationId(id=0x1, extended=True)
+    id_extended_2 = ArbitrationId(id=0x2, extended=True)
 
     sorting_results = sorted((
         id_extended_1, id_standard_2, id_extended_2, id_standard_1))
@@ -924,7 +932,7 @@ def test_arbitration_id_comparators():
 
 @pytest.fixture
 def empty_matrix():
-    return canmatrix.CanMatrix()
+    return CanMatrix()
 
 
 def test_canmatrix_add_attribure(empty_matrix):
@@ -934,7 +942,7 @@ def test_canmatrix_add_attribure(empty_matrix):
 
 def test_canmatrix_get_frame_by_glob(empty_matrix, empty_frame):
     empty_matrix.add_frame(empty_frame)
-    f2 = canmatrix.Frame(name="nm_osek_esp")
+    f2 = Frame(name="nm_osek_esp")
     empty_matrix.add_frame(f2)
     assert empty_matrix.glob_frames("*osek*") == [f2]
 
@@ -947,6 +955,7 @@ def test_canmatrix_get_frame_by_name(empty_matrix, empty_frame):
 def test_canmatrix_get_frame_by_wrong_name(empty_matrix, empty_frame):
     empty_matrix.add_frame(empty_frame)
     assert empty_matrix.frame_by_name("wrong") is None
+
 
 def test_canmatrix_get_frame_by_pgn(empty_matrix, empty_frame):
     empty_frame.arbitration_id.id = 0xA123456
@@ -968,29 +977,29 @@ def test_canmatrix_iterate_over_frames(empty_matrix, empty_frame):
 
 def test_canmatrix_remove_frame(empty_matrix, empty_frame):
     empty_matrix.add_frame(empty_frame)
-    empty_matrix.add_frame(canmatrix.Frame())
+    empty_matrix.add_frame(Frame())
     empty_matrix.remove_frame(empty_frame)
     assert len(empty_matrix.frames) == 1
 
 
 def test_canmatrix_rename_ecu_by_name(empty_matrix):
-    ecu = canmatrix.Ecu(name="old_name")
+    ecu = Ecu(name="old_name")
     empty_matrix.add_ecu(ecu)
     empty_matrix.rename_ecu("old_name", "new name")
     assert ecu.name == "new name"
 
 
 def test_canmatrix_rename_ecu_by_wrong_name(empty_matrix):
-    ecu = canmatrix.Ecu(name="old_name")
+    ecu = Ecu(name="old_name")
     empty_matrix.add_ecu(ecu)
     empty_matrix.rename_ecu("wrong", "new name")
     assert ecu.name == "old_name"
 
 
 def test_canmatrix_rename_ecu_check_frame(empty_matrix):
-    ecu = canmatrix.Ecu(name="old_name")
-    frame = canmatrix.Frame(name="test_frame")
-    signal = canmatrix.Signal(name="test_signal")
+    ecu = Ecu(name="old_name")
+    frame = Frame(name="test_frame")
+    signal = Signal(name="test_signal")
     signal.add_receiver("old_name")
     frame.add_signal(signal)
     frame.update_receiver()
@@ -1003,19 +1012,19 @@ def test_canmatrix_rename_ecu_check_frame(empty_matrix):
     assert "new_name" in frame.receivers
 
 def test_canmatrix_rename_ecu_by_instance(empty_matrix):
-    ecu = canmatrix.Ecu(name="old_name")
+    ecu = Ecu(name="old_name")
     empty_matrix.add_ecu(ecu)
     empty_matrix.rename_ecu(ecu, "new name")
     assert ecu.name == "new name"
 
 
 def test_canmatrix_del_ecu_by_glob(empty_matrix):
-    ecu1 = canmatrix.Ecu(name="ecu1")
-    ecu2 = canmatrix.Ecu(name="ecu2")
-    frame = canmatrix.Frame(transmitters=["ecu2", "ecu3"])
+    ecu1 = Ecu(name="ecu1")
+    ecu2 = Ecu(name="ecu2")
+    frame = Frame(transmitters=["ecu2", "ecu3"])
     empty_matrix.add_ecu(ecu1)
     empty_matrix.add_ecu(ecu2)
-    frame.add_signal(canmatrix.Signal(receivers=["ecu1", "ecu2"]))
+    frame.add_signal(Signal(receivers=["ecu1", "ecu2"]))
     empty_matrix.add_frame(frame)
     empty_matrix.del_ecu("*2")
     assert empty_matrix.ecus == [ecu1]
@@ -1024,8 +1033,8 @@ def test_canmatrix_del_ecu_by_glob(empty_matrix):
 
 
 def test_canmatrix_del_ecu_by_instance(empty_matrix):
-    ecu1 = canmatrix.Ecu(name="ecu1")
-    ecu2 = canmatrix.Ecu(name="ecu2")
+    ecu1 = Ecu(name="ecu1")
+    ecu2 = Ecu(name="ecu2")
     empty_matrix.add_ecu(ecu1)
     empty_matrix.add_ecu(ecu2)
     empty_matrix.del_ecu(ecu1)
@@ -1033,10 +1042,10 @@ def test_canmatrix_del_ecu_by_instance(empty_matrix):
 
 
 def test_canmatrix_del_obsolete_ecus(empty_matrix):
-    empty_matrix.add_ecu(canmatrix.Ecu(name="Ecu1"))
-    empty_matrix.add_ecu(canmatrix.Ecu(name="Ecu2"))
-    frame1 = canmatrix.Frame(name="frame1", transmitters=["Ecu1"])
-    frame1.add_signal(canmatrix.Signal("signal1", receivers=["Ecu2"]))
+    empty_matrix.add_ecu(Ecu(name="Ecu1"))
+    empty_matrix.add_ecu(Ecu(name="Ecu2"))
+    frame1 = Frame(name="frame1", transmitters=["Ecu1"])
+    frame1.add_signal(Signal("signal1", receivers=["Ecu2"]))
     empty_matrix.add_frame(frame1)
     empty_matrix.delete_obsolete_ecus()
     assert "Ecu1" in [ecu.name for ecu in empty_matrix.ecus]
@@ -1048,7 +1057,7 @@ def test_canmatrix_del_obsolete_ecus(empty_matrix):
 
 
 def test_canmatrix_rename_frame_by_name(empty_matrix):
-    f = canmatrix.Frame(name="F1")
+    f = Frame(name="F1")
     empty_matrix.add_frame(f)
     empty_matrix.rename_frame("F1", "F2")
     assert f.name == "F2"
@@ -1063,15 +1072,15 @@ def test_canmatrix_rename_frame_by_name(empty_matrix):
 
 
 def test_canmatrix_rename_frame_by_instance(empty_matrix):
-    f = canmatrix.Frame(name="F1")
+    f = Frame(name="F1")
     empty_matrix.add_frame(f)
     empty_matrix.rename_frame(f, "F2")
     assert f.name == "F2"
 
 
 def test_canmatrix_del_frame_by_name(empty_matrix):
-    f1 = canmatrix.Frame(name="F1")
-    f2 = canmatrix.Frame(name="F2")
+    f1 = Frame(name="F1")
+    f2 = Frame(name="F2")
     empty_matrix.add_frame(f1)
     empty_matrix.add_frame(f2)
     empty_matrix.del_frame("F1")
@@ -1080,17 +1089,17 @@ def test_canmatrix_del_frame_by_name(empty_matrix):
 
 
 def test_canmatrix_del_frame_by_instance(empty_matrix):
-    f1 = canmatrix.Frame(name="F1")
-    f2 = canmatrix.Frame(name="F2")
+    f1 = Frame(name="F1")
+    f2 = Frame(name="F2")
     empty_matrix.add_frame(f1)
     empty_matrix.add_frame(f2)
     empty_matrix.del_frame(f1)
     assert empty_matrix.frames == [f2]
 
 def test_effective_cycle_time():
-    frame = canmatrix.Frame()
-    sig1 = canmatrix.Signal(name = "s1", cycle_time=1)
-    sig2 = canmatrix.Signal(name = "s2", cycle_time=0)
+    frame = Frame()
+    sig1 = Signal(name = "s1", cycle_time=1)
+    sig2 = Signal(name = "s2", cycle_time=0)
     frame.add_signal(sig1)
     frame.add_signal(sig2)
     assert frame.effective_cycle_time == 1
@@ -1113,30 +1122,30 @@ def test_effective_cycle_time():
     assert frame.effective_cycle_time == 0
 
 def test_baudrate():
-    cm = canmatrix.CanMatrix()
+    cm = CanMatrix()
     cm.baudrate = 500000
     assert cm.baudrate == 500000
     cm.fd_baudrate = 1000000
     assert cm.fd_baudrate == 1000000
 
 def test_frame_compress():
-    frame = canmatrix.Frame("my_frame", size=8)
-    frame.add_signal(canmatrix.Signal(name = "Sig1", start_bit = 2, size = 13, is_little_endian=False ))
-    frame.add_signal(canmatrix.Signal(name = "Sig2", start_bit = 17, size = 14, is_little_endian=False))
-    frame.add_signal(canmatrix.Signal(name = "Sig3", start_bit = 35, size = 6, is_little_endian=False))
-    frame.add_signal(canmatrix.Signal(name = "Sig4", start_bit = 49, size = 8, is_little_endian=False))
+    frame = Frame("my_frame", size=8)
+    frame.add_signal(Signal(name = "Sig1", start_bit = 2, size = 13, is_little_endian=False ))
+    frame.add_signal(Signal(name = "Sig2", start_bit = 17, size = 14, is_little_endian=False))
+    frame.add_signal(Signal(name = "Sig3", start_bit = 35, size = 6, is_little_endian=False))
+    frame.add_signal(Signal(name = "Sig4", start_bit = 49, size = 8, is_little_endian=False))
     frame.compress()
     assert frame.signal_by_name("Sig1").start_bit == 0
     assert frame.signal_by_name("Sig2").start_bit == 13
     assert frame.signal_by_name("Sig3").start_bit == 27
     assert frame.signal_by_name("Sig4").start_bit == 33
 
-    frame = canmatrix.Frame("my_frame", size=8)
+    frame = Frame("my_frame", size=8)
     # some signals overlap!
-    frame.add_signal(canmatrix.Signal(name = "Sig1", start_bit = 12, size = 12, is_little_endian=True))
-    frame.add_signal(canmatrix.Signal(name = "Sig2", start_bit = 17, size = 9, is_little_endian=True))
-    frame.add_signal(canmatrix.Signal(name = "Sig3", start_bit = 33, size = 5, is_little_endian=True))
-    frame.add_signal(canmatrix.Signal(name = "Sig4", start_bit = 48, size = 9, is_little_endian=True))
+    frame.add_signal(Signal(name = "Sig1", start_bit = 12, size = 12, is_little_endian=True))
+    frame.add_signal(Signal(name = "Sig2", start_bit = 17, size = 9, is_little_endian=True))
+    frame.add_signal(Signal(name = "Sig3", start_bit = 33, size = 5, is_little_endian=True))
+    frame.add_signal(Signal(name = "Sig4", start_bit = 48, size = 9, is_little_endian=True))
     frame.compress()
     assert frame.signal_by_name("Sig1").start_bit == 0
     assert frame.signal_by_name("Sig2").start_bit == 12

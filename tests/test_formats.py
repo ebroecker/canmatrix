@@ -3,10 +3,11 @@ import io
 import textwrap
 
 import canmatrix.formats
+from canmatrix.CanMatrix import CanMatrix
 
 
 def test_dump_matrix():
-    matrix = canmatrix.CanMatrix()
+    matrix = CanMatrix()
 
     codec = 'utf-8'
 
