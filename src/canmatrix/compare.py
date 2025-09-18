@@ -26,12 +26,14 @@ from builtins import *
 
 import attr
 
-import canmatrix
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Ecu import Ecu
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
 
 logger = logging.getLogger(__name__)
 ConfigDict = typing.Optional[typing.Mapping[str, typing.Union[str, bool]]]
-WithAttribute = typing.TypeVar("WithAttribute", canmatrix.CanMatrix, canmatrix.Ecu, canmatrix.Frame, canmatrix.Signal)
-
+WithAttribute = typing.TypeVar("WithAttribute", CanMatrix, Ecu, Frame, Signal)
 
 @attr.s
 class CompareResult:
