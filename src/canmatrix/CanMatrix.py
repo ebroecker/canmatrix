@@ -44,6 +44,15 @@ from itertools import zip_longest
 import canmatrix.copy
 import canmatrix.types
 import canmatrix.utils
+import canmatrix.exceptions
+
+import canmatrix.Ecu as Ecu
+import canmatrix.Signal as Signal
+import canmatrix.SignalGroup as SignalGroup
+import canmatrix.DecodedSignal as DecodedSignal
+import canmatrix.ArbitrationId as ArbitrationId
+import canmatrix.Frame as Frame
+from canmatrix.Define import Define
 
 if sys.version_info < (3, 8):
     from importlib_metadata import version
@@ -148,7 +157,7 @@ class CanMatrix(object):
         :param str name: value table name
         :param valueTable: value table itself
         """
-        self.value_tables[name] = normalize_value_table(valueTable)
+        self.value_tables[name] = canmatrix.utils.normalize_value_table(valueTable)
 
     def add_attribute(self, attribute, value):  # type: (str, typing.Any) -> None
         """
@@ -300,7 +309,7 @@ class CanMatrix(object):
         return None
 
     def get_frame_by_id(self, id: int
-                        ) -> typing.Union[Frame, None]:
+                        ) -> typing.Union[Frame.Frame, None]:
         """Get Frame by id.
 
         :param str name: Frame id to search for
@@ -317,7 +326,7 @@ class CanMatrix(object):
         """
 
         for test in self.frames:
-            if test.arbitration_id.pgn == canmatrix.ArbitrationId.from_pgn(pgn).pgn:
+            if test.arbitration_id.pgn == ArbitrationId.ArbitrationId.from_pgn(pgn).pgn:
                 # canmatrix.ArbitrationId.from_pgn(pgn).pgn instead
                 # of just pgn is needed to do the pf >= 240 check
                 return test
@@ -473,7 +482,7 @@ class CanMatrix(object):
         :param str or Ecu ecu_or_name: old name or ECU instance
         :param str new_name: new name
         """
-        ecu = ecu_or_name if isinstance(ecu_or_name, Ecu) else self.ecu_by_name(ecu_or_name)
+        ecu = ecu_or_name if isinstance(ecu_or_name, Ecu.Ecu) else self.ecu_by_name(ecu_or_name)
         if ecu is None:
             return
         old_name = ecu.name
@@ -505,7 +514,7 @@ class CanMatrix(object):
 
         :param str or Ecu ecu_or_glob: ECU instance or glob pattern to remove from list
         """
-        ecu_list = [ecu_or_glob] if isinstance(ecu_or_glob, Ecu) else self.glob_ecus(ecu_or_glob)
+        ecu_list = [ecu_or_glob] if isinstance(ecu_or_glob, Ecu.Ecu) else self.glob_ecus(ecu_or_glob)
 
         for ecu in ecu_list:
             if ecu in self.ecus:
@@ -521,11 +530,11 @@ class CanMatrix(object):
         """Check all Frames and add unknown ECUs to the Matrix ECU list."""
         for frame in self.frames:
             for transmit_ecu in frame.transmitters:
-                self.add_ecu(Ecu(transmit_ecu))
+                self.add_ecu(Ecu.Ecu(transmit_ecu))
             frame.update_receiver()
             for signal in frame.signals:
                 for receive_ecu in signal.receivers:
-                    self.add_ecu(Ecu(receive_ecu))
+                    self.add_ecu(Ecu.Ecu(receive_ecu))
 
     def rename_frame(self, frame_or_name, new_name):  # type: (typing.Union[Frame,str], str) -> None
         """Rename Frame.
@@ -533,7 +542,7 @@ class CanMatrix(object):
         :param Frame or str frame_or_name: Old Frame instance or name or part of the name with '*' at the beginning or the end.
         :param str new_name: new Frame name, suffix or prefix
         """
-        old_name = frame_or_name.name if isinstance(frame_or_name, Frame) else frame_or_name
+        old_name = frame_or_name.name if isinstance(frame_or_name, Frame.Frame) else frame_or_name
         for frame in self.frames:
             if old_name[-1] == '*':
                 old_prefix_len = len(old_name)-1
@@ -550,7 +559,7 @@ class CanMatrix(object):
         """Delete Frame from Matrix.
 
         :param Frame or str frame_or_name: Frame or name to delete"""
-        frame = frame_or_name if isinstance(frame_or_name, Frame) else self.frame_by_name(frame_or_name)
+        frame = frame_or_name if isinstance(frame_or_name, Frame.Frame) else self.frame_by_name(frame_or_name)
         if frame:
             self.frames.remove(frame)
 
@@ -560,7 +569,7 @@ class CanMatrix(object):
         :param Signal or str signal_or_name: Old Signal instance or name or part of the name with '*' at the beginning or the end.
         :param str new_name: new Signal name, suffix or prefix
         """
-        old_name = signal_or_name.name if isinstance(signal_or_name, Signal) else signal_or_name
+        old_name = signal_or_name.name if isinstance(signal_or_name, Signal.Signal) else signal_or_name
         for frame in self.frames:
             if old_name[-1] == '*':
                 old_prefix_len = len(old_name) - 1
@@ -581,7 +590,7 @@ class CanMatrix(object):
         """Delete Signal from Matrix and all Frames.
 
         :param Signal or str signal: Signal instance or glob pattern to be deleted"""
-        if isinstance(signal, Signal):
+        if isinstance(signal, Signal.Signal):
             for frame in self.frames:
                 if signal in frame.signals:
                     frame.signals.remove(signal)
@@ -700,7 +709,7 @@ class CanMatrix(object):
         :param pycan_msg: python-can message
         :return: OrderedDictionary
         """
-        canmatrix_arbitration_id = canmatrix.ArbitrationId(pycan_msg.arbitration_id, extended=pycan_msg.is_extended_id)
+        canmatrix_arbitration_id = ArbitrationId.ArbitrationId(pycan_msg.arbitration_id, extended=pycan_msg.is_extended_id)
         return self.decode(canmatrix_arbitration_id, pycan_msg.data)
 
     def decode(self, frame_id, data):  # type: (ArbitrationId, bytes) -> typing.Mapping[str, typing.Any]

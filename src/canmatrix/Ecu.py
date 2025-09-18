@@ -30,7 +30,7 @@ import attr
 
 import canmatrix.types
 import canmatrix.exceptions
-
+from canmatrix.CanMatrix import CanMatrix
 @attr.s
 class Ecu(object):
     """
@@ -41,7 +41,7 @@ class Ecu(object):
     comment = attr.ib(default=None)  # type: typing.Optional[str]
     attributes = attr.ib(factory=dict, repr=False)  # type: typing.MutableMapping[str, typing.Any]
 
-    def attribute(self, attribute_name, db=None, default=None):  # type: (str, CanMatrix, typing.Any) -> typing.Any
+    def attribute(self, attribute_name, db=None, default=None):  # type: (str, CanMatrix.CanMatrix, typing.Any) -> typing.Any
         """Get Board unit attribute by its name.
 
         :param str attribute_name: attribute name.

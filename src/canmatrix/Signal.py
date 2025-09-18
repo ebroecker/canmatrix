@@ -31,7 +31,7 @@ import typing
 
 import canmatrix.types
 import canmatrix.exceptions
-from canmatrix.utils import normalize_value_table
+from canmatrix.utils import normalize_value_table, FloatFactory
 
 
 
@@ -55,7 +55,7 @@ class Signal(object):
 
     name = attr.ib(default="")  # type: str
     # float_factory = attr.ib(default=defaultFloatFactory)
-    float_factory = canmatrix.utils.FloatFactory.get_float  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
+    float_factory = FloatFactory.get_float  # type: typing.Callable[[typing.Any], canmatrix.types.PhysicalValue]
     start_bit = attr.ib(default=0)  # type: int
     size = attr.ib(default=0)  # type: int
     is_little_endian = attr.ib(default=True)  # type: bool
@@ -241,7 +241,7 @@ class Signal(object):
         :param int or str value: signal value (0xFF)
         :param str valueName: Human readable value description ("Init")
         """
-        if isinstance(value, canmatrix.utils.FloatFactory.get_float_factory()):
+        if isinstance(value, FloatFactory.get_float_factory()):
             self.values[value.to_integral()] = valueName
         else:
             self.values[int(str(value), 0)] = valueName
@@ -394,6 +394,7 @@ class Signal(object):
             for value_key, value_string in self.values.items():
                 if value_key == value:
                     return value_string
+                    break
 
         result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
 

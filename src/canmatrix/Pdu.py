@@ -28,8 +28,10 @@
 import typing
 import attr
 
-import SignalGroup
-import AutosarE2EProperties
+from canmatrix.SignalGroup import SignalGroup
+from canmatrix.Signal import Signal
+from canmatrix.AutosarE2EProperties import AutosarE2EProperties
+from canmatrix.AutosarSecOCProperties import AutosarSecOCProperties
 
 @attr.s(eq=False)
 class Pdu(object):
@@ -50,10 +52,10 @@ class Pdu(object):
     triggering_name = attr.ib(default="")  # type: str
     pdu_type = attr.ib(default="")  # type: str
     port_type = attr.ib(default="")  # type: str
-    signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
-    signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
+    signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal.Signal]
+    signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup.SignalGroup]
     cycle_time = attr.ib(default=0)  # type: int
-    secOC_properties = attr.ib(default=None)  # type:  Optional[AutosarSecOCProperties]
+    secOC_properties = attr.ib(default=None)  # type: Optional[AutosarSecOCProperties.AutosarSecOCProperties]
     # offset is used for arxml, sub-pdu inside a static-container-pdu
     offset_bytes = attr.ib(default=0)  # type: int
 

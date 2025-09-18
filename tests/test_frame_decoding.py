@@ -207,34 +207,34 @@ def test_decode_pdu_container():
 
 
 def test_pdu_container_decoding_without_header():
-    frame = canmatrix.Frame(
+    frame = Frame(
         name="frame",
         size=8,
     )
-    pdu = canmatrix.Pdu(
+    pdu = Pdu(
         name="pdu",
         size=8,
     )
     frame.add_pdu(pdu)
     data = bytearray([0] * frame.size)
-    with pytest.raises(canmatrix.DecodingContainerPdu):
+    with pytest.raises(canmatrix.exceptions.DecodingContainerPdu):
         frame.decode(data)
 
 
 def test_decoding_between_multiplexed_and_container_pdu():
-    frame_id = canmatrix.ArbitrationId(id=10, extended=False)
-    frame = canmatrix.Frame(
+    frame_id = ArbitrationId(id=10, extended=False)
+    frame = Frame(
         arbitration_id=frame_id,
         name="test",
     )
-    s1 = canmatrix.Signal(
+    s1 = Signal(
         name="Header_ID",
         size=24,
         is_signed=False,
         is_little_endian=False,
     )
     s1.set_startbit(7, bitNumbering=1)
-    s2 = canmatrix.Signal(
+    s2 = Signal(
         name="Header_DLC",
         size=8,
         is_signed=False,

@@ -28,7 +28,7 @@
 import attr
 import warnings
 import typing
-
+from canmatrix.exceptions import ArbitrationIdOutOfRange, J1939NeedsExtendedIdentifier
 @attr.s
 class ArbitrationId(object):
     standard_id_mask = ((1 << 11) - 1)

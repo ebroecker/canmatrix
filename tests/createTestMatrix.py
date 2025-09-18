@@ -4,6 +4,10 @@ import codecs
 import sys
 sys.path.append('..')
 
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.Ecu import Ecu
+from canmatrix.CanMatrix import CanMatrix
 import canmatrix.formats
 # from canmatrix.canmatrix import *
 #

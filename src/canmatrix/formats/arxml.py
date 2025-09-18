@@ -34,7 +34,13 @@ from builtins import *
 
 import lxml.etree
 
-import canmatrix
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Define import Define
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.Ecu import Ecu
+from canmatrix.Pdu import Pdu
+from canmatrix.ArbitrationId import ArbitrationId
 import canmatrix.cancluster
 import canmatrix.types
 import canmatrix.utils

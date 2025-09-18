@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013, Eduard Broecker
 # With contributions 2025, Gabriele Omodeo Vanone
 # All rights reserved.

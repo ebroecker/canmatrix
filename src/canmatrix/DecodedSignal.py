@@ -28,6 +28,9 @@
 import typing
 import attr
 
+from canmatrix.types import RawValue, PhysicalValue
+from canmatrix.Signal import Signal
+
 @attr.s
 class DecodedSignal(object):
     """
@@ -38,11 +41,11 @@ class DecodedSignal(object):
     * namedValue: value of Valuetable
     * signal: pointer signal (object) which was decoded
     """
-    raw_value = attr.ib()  # type: canmatrix.types.RawValue
+    raw_value = attr.ib()  # type: RawValue
     signal = attr.ib()  # type: Signal
 
     @property
-    def phys_value(self):  # type: () -> canmatrix.types.PhysicalValue
+    def phys_value(self):  # type: () -> PhysicalValue
         """
         :return: physical Value (the scaled value)
         :rtype: typing.Union[int, decimal.Decimal]

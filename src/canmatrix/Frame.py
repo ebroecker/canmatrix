@@ -35,10 +35,16 @@ import itertools
 
 from canmatrix.utils import arbitration_id_converter, grouper, pack_bitstring, unpack_bitstring, get_gcd
 from canmatrix.AutosarE2EProperties import AutosarE2EProperties
+from canmatrix.AutosarSecOCProperties import AutosarSecOCProperties
 from canmatrix.DecodedSignal import DecodedSignal
 from canmatrix.SignalGroup import SignalGroup
 from canmatrix.Signal import Signal
 from canmatrix.exceptions import EncodingContainerPdu, DecodingContainerPdu, DecodingFrameLength
+from canmatrix.ArbitrationId import ArbitrationId
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Pdu import Pdu
+from canmatrix.exceptions import EncodingComplexMultiplexed, MissingMuxSignal, DecodingContainerPdu
+from canmatrix.types import RawValue
 
 @attr.s(eq=False)
 class Frame(object):
@@ -82,7 +88,7 @@ class Frame(object):
     # ('cycleTime', '_cycleTime', int, None),
     # ('sendType', '_sendType', str, None),
 
-    pdus = attr.ib(factory=list)  # type: typing.MutableSequence[Pdu]
+    pdus = attr.ib(factory=list)  # type: typing.MutableSequence[CanMatrix.Pdu]
     pdu_name = attr.ib(default="")  # type: str
 
     header_id = attr.ib(default=None)  # type: int
@@ -248,7 +254,7 @@ class Frame(object):
         return None
 
     def add_pdu(self, pdu):
-        # type: (Pdu) -> Pdu
+        # type: (Pdu.Pdu) -> Pdu.Pdu
         """
         Add Pdu to Frame.
 
@@ -259,7 +265,7 @@ class Frame(object):
         return self.pdus[len(self.pdus) - 1]
 
     def pdu_by_name(self, name):
-        # type: (str) -> typing.Union[Pdu, None]
+        # type: (str) -> typing.Union[Pdu.Pdu, None]
         """Get PDU.
 
         :param str name: PDU name
@@ -478,7 +484,7 @@ class Frame(object):
                 self.add_receiver(receiver)
 
     def signals_to_bytes(self, data):
-        # type: (typing.Mapping[str, canmatrix.types.RawValue]) -> bytes
+        # type: (typing.Mapping[str, RawValue]) -> bytes
         """Return a byte string containing the values from data packed
         according to the frame format.
 
@@ -573,7 +579,7 @@ class Frame(object):
 
     @staticmethod
     def bitstring_to_signal_list(signals, big, little, size):
-        # type: (typing.Sequence[Signal], str, str, int) -> typing.Sequence[canmatrix.types.RawValue]
+        # type: (typing.Sequence[Signal.Signal], str, str, int) -> typing.Sequence[RawValue.RawValue]
         """Return OrderedDictionary with Signal Name: object decodedSignal (flat / without support for multiplexed frames)
 
         :param signals: Iterable of signals (class signal) to decode from frame.
@@ -652,7 +658,7 @@ class Frame(object):
                 _header_dlc_signal_size = 0
             # TODO: may be we need to check that ID/DLC signals are contiguous
             if len(header_signals) > 0 and len(header_signals) != 2:
-                raise DecodingConatainerPdu(
+                raise DecodingContainerPdu(
                         'Received message 0x{:08X} with incorrect Header-Defintiion. '
                         'Header_ID signal or Header_DLC is missing'.format(self.arbitration_id.id)
                     )
