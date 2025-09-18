@@ -15,7 +15,7 @@ from canmatrix.exceptions import DecodingFrameLength
 
 
 def load_dbc():
-    test_file = "../tests/files/dbc/test_frame_decoding.dbc"
+    test_file = "tests/files/dbc/test_frame_decoding.dbc"
     return canmatrix.formats.loadp_flat(test_file)
 
 
