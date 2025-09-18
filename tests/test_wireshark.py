@@ -18,7 +18,7 @@ def test_wireshark_frame_exists():
 def test_wireshark_muliplexed_frame():
     # here = os.path.dirname(os.path.realpath(__file__))
     # db = canmatrix.formats.loadp_flat(os.path.join(here, "test_frame_decoding.dbc"))
-    test_file = "../tests/files/dbc/test_frame_decoding.dbc"
+    test_file = "tests/files/dbc/test_frame_decoding.dbc"
     db = canmatrix.formats.loadp_flat(test_file)
     outlua = io.BytesIO()
     canmatrix.formats.dump(db, outlua, "wireshark")

@@ -9,7 +9,7 @@ except ImportError:
 
 
 def test_ecu_extract():
-    test_file = "../tests/files/arxml/MyECU.ecuc.arxml"
+    test_file = "tests/files/arxml/MyECU.ecuc.arxml"
     db = canmatrix.formats.arxml.load(test_file)['']
     assert db.frames is not None
     assert len(db.frames) == 2
@@ -18,7 +18,7 @@ def test_ecu_extract():
 
 
 def test_get_signals_from_container_i_pdu():
-    test_file = "../tests/files/arxml/ARXMLContainerTest.arxml"
+    test_file = "tests/files/arxml/ARXMLContainerTest.arxml"
     matrix = canmatrix.formats.arxml.load(test_file)
     assert matrix["New_CanCluster"].frames[0].signals[0].name == 'Header_ID'
     assert matrix["New_CanCluster"].frames[0].signals[1].name == 'Header_DLC'
@@ -28,20 +28,20 @@ def test_get_signals_from_container_i_pdu():
 
 
 def test_get_signals_from_secured_pdu():
-    test_file = "../tests/files/arxml/ARXMLSecuredPDUTest.arxml"
+    test_file = "tests/files/arxml/ARXMLSecuredPDUTest.arxml"
     matrix = canmatrix.formats.arxml.load(test_file)
     assert matrix["CAN"].frames[0].signals[0].name == 'someTestSignal'
     assert matrix["CAN"].frames[0].signals[1].name == 'Signal'
 
 
 def test_min_max():
-    test_file = "../tests/files/arxml/ARXML_min_max.arxml"
+    test_file = "tests/files/arxml/ARXML_min_max.arxml"
     matrix = canmatrix.formats.arxml.load(test_file)
     assert matrix["New_CanCluster"].frames[0].signals[0].is_signed is False
 
 
 def test_decode_compu_method_1():
-    test_file = "../tests/files/arxml/ARXMLCompuMethod1.arxml"
+    test_file = "tests/files/arxml/ARXMLCompuMethod1.arxml"
     ea = canmatrix.formats.arxml.Earxml()
     ea.open(test_file)
     compu_method = ea.find("COMPU-METHOD")
