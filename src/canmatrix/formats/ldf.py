@@ -1,16 +1,20 @@
 import ldfparser
-import canmatrix
+# import canmatrix
 import ldfparser.encoding
+
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
 
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     ldf = ldfparser.parse_ldf(path=f.name)  # using f.name is not nice, but works
 
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     db.baudrate = ldf.get_baudrate()
 
     for lin_frame in ldf.frames:
-        cm_frame = canmatrix.Frame()
+        cm_frame = Frame()
         cm_frame.name = lin_frame.name
         cm_frame.arbitration_id = cm_frame.arbitration_id.from_compound_integer(lin_frame.frame_id)
         cm_frame.add_transmitter(lin_frame.publisher.name)
@@ -18,7 +22,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
         for mapping in lin_frame.signal_map:
             lin_signal = mapping[1]
-            cm_signal = canmatrix.Signal()
+            cm_signal = Signal()
             cm_signal.is_signed = False
             if lin_signal.name in ldf.converters:
                 for converter in ldf.converters[lin_signal.name]._converters:

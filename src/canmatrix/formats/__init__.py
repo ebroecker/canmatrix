@@ -8,7 +8,7 @@ import typing
 from builtins import str
 from io import BytesIO
 
-import canmatrix
+from canmatrix.CanMatrix import CanMatrix
 import canmatrix.cancluster
 
 logger = logging.getLogger(__name__)

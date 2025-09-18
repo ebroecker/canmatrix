@@ -34,6 +34,12 @@ import xlwt
 import canmatrix
 import canmatrix.formats.xls_common
 
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Ecu import Ecu
+from canmatrix.ArbitrationId import ArbitrationId
+
 logger = logging.getLogger(__name__)
 
 # Font Size : 8pt * 20 = 160
@@ -343,7 +349,7 @@ def load(file, **options):
     additional_inputs = dict()
     wb = xlrd.open_workbook(file_contents=file.read())
     sh = wb.sheet_by_index(0)
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
 
     # Defines not imported...
     # db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
@@ -403,7 +409,7 @@ def load(file, **options):
 
     # ECUs:
     for x in range(index['ECUstart'], index['ECUend']):
-        db.add_ecu(canmatrix.Ecu(sh.cell(0, x).value))
+        db.add_ecu(Ecu(sh.cell(0, x).value))
 
     # initialize:
     frame_id = None
@@ -428,11 +434,11 @@ def load(file, **options):
             except:
                 launch_param = "0"
 
-            new_frame = canmatrix.Frame(frame_name, size=dlc)
+            new_frame = Frame(frame_name, size=dlc)
             if frame_id.endswith("xh"):
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True)
+                new_frame.arbitration_id = ArbitrationId(int(frame_id[:-2], 16), extended=True)
             else:
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-1], 16), extended=False)
+                new_frame.arbitration_id = ArbitrationId(int(frame_id[:-1], 16), extended=False)
             db.add_frame(new_frame)
 
             # eval launch_type
@@ -495,7 +501,7 @@ def load(file, **options):
                         new_frame.add_transmitter(sh.cell(0, x).value.strip())
                     if 'r' in sh.cell(row_num, x).value:
                         receiver.append(sh.cell(0, x).value.strip())
-                new_signal = canmatrix.Signal(
+                new_signal = Signal(
                     signal_name,
                     start_bit=(start_byte - 1) * 8 + start_bit,
                     size=int(signal_length),

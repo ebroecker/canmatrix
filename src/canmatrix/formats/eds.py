@@ -1,5 +1,5 @@
 import logging
-import canmatrix
+# import canmatrix
 import typing
 import canopen.objectdictionary.eds
 import canopen.objectdictionary.datatypes
@@ -7,6 +7,11 @@ import codecs
 import copy
 import re 
 import math
+
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.ArbitrationId import ArbitrationId
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +58,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     generic = options.get("generic", False)
     fp = codecs.getreader(eds_import_encoding)(f)
     od = canopen.objectdictionary.eds.import_eds(fp, node_id)
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     signal_group_counter = 1
 
     node_name = od.device_information.product_name
@@ -61,37 +66,37 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         node_name = "DUMMY"
     plc_name = "PLC"
     if generic is True:
-        nm_out = canmatrix.canmatrix.Frame(name="NMT_Out_Request", size=2, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0), transmitters=[plc_name])
-        sig_cmd = canmatrix.canmatrix.Signal(name="nmt_CMD", size=8, start_bit = 0, receivers=[node_name])
+        nm_out = Frame(name="NMT_Out_Request", size=2, arbitration_id=ArbitrationId(id=0), transmitters=[plc_name])
+        sig_cmd = Signal(name="nmt_CMD", size=8, start_bit = 0, receivers=[node_name])
         for val, val_name in cmd_values.items():
             sig_cmd.add_values(val, val_name)
         nm_out.add_signal(sig_cmd)
-        nm_out.add_signal(canmatrix.canmatrix.Signal(name="Node_ID", size=8, start_bit = 8, receivers=[node_name]))
+        nm_out.add_signal(Signal(name="Node_ID", size=8, start_bit = 8, receivers=[node_name]))
         db.add_frame(nm_out)
 
-        nm_responde = canmatrix.canmatrix.Frame(name="NMT_Response_Frame_In", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x700+node_id), transmitters=[node_name])
-        response_sig1 = canmatrix.canmatrix.Signal(name="NMT_Response_1", size=32, start_bit = 0, receivers=[plc_name])
+        nm_responde = Frame(name="NMT_Response_Frame_In", size=8, arbitration_id=ArbitrationId(id=0x700+node_id), transmitters=[node_name])
+        response_sig1 = Signal(name="NMT_Response_1", size=32, start_bit = 0, receivers=[plc_name])
         nm_responde.add_signal(response_sig1)
-        response_sig2 = canmatrix.canmatrix.Signal(name="NMT_Response_1", size=32, start_bit = 32, receivers=[plc_name])
+        response_sig2 = Signal(name="NMT_Response_1", size=32, start_bit = 32, receivers=[plc_name])
         nm_responde.add_signal(response_sig2)
         db.add_frame(nm_responde)
 
-        sync = canmatrix.canmatrix.Frame(name="SYNC", size=0, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x80), transmitters=[plc_name])
+        sync = Frame(name="SYNC", size=0, arbitration_id=ArbitrationId(id=0x80), transmitters=[plc_name])
         db.add_frame(sync)
 
-        emcy = canmatrix.canmatrix.Frame(name="EMCY", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x80+node_id), transmitters=[node_name])
-        emcy.add_signal(canmatrix.canmatrix.Signal(name="EMCY_Error_Code", size=16, start_bit=0, receivers=[plc_name]))
-        emcy.add_signal(canmatrix.canmatrix.Signal(name="E_Reg", size=8, start_bit=16, receivers=[plc_name]))
-        emcy.add_signal(canmatrix.canmatrix.Signal(name="E_Number", size=8, start_bit=24, receivers=[plc_name]))
+        emcy = Frame(name="EMCY", size=8, arbitration_id=ArbitrationId(id=0x80+node_id), transmitters=[node_name])
+        emcy.add_signal(Signal(name="EMCY_Error_Code", size=16, start_bit=0, receivers=[plc_name]))
+        emcy.add_signal(Signal(name="E_Reg", size=8, start_bit=16, receivers=[plc_name]))
+        emcy.add_signal(Signal(name="E_Number", size=8, start_bit=24, receivers=[plc_name]))
         db.add_frame(emcy)
 
-    sdo_down = canmatrix.canmatrix.Frame(name="SDO_receive", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x600+node_id), transmitters=[node_name])
-    sig_cmd = canmatrix.canmatrix.Signal(name="CCS", size=3, start_bit=5, receivers=[plc_name], is_signed=False)
+    sdo_down = Frame(name="SDO_receive", size=8, arbitration_id=ArbitrationId(id=0x600+node_id), transmitters=[node_name])
+    sig_cmd = Signal(name="CCS", size=3, start_bit=5, receivers=[plc_name], is_signed=False)
     sig_cmd.is_multiplexer = True
     sdo_down.is_complex_multiplexed = True
     sig_cmd.multiplex = "Multiplexor"
     sdo_down.add_signal(sig_cmd)
-    index = canmatrix.canmatrix.Signal(name="IDX", size=24, start_bit=8, receivers=[plc_name])
+    index = Signal(name="IDX", size=24, start_bit=8, receivers=[plc_name])
     index.multiplex = "Multiplexor"
     index.is_multiplexer = True
     index.mux_val = 1
@@ -100,14 +105,14 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     sdo_down.add_signal(index)
     db.add_frame(sdo_down)
 
-    sdo_up = canmatrix.canmatrix.Frame(name="SDO_transmit", size=8, arbitration_id=canmatrix.canmatrix.ArbitrationId(id=0x580+node_id), transmitters=[plc_name])
-    sig_cmd = canmatrix.canmatrix.Signal(name="SCS", size=3, start_bit=5, is_signed=False)
+    sdo_up = Frame(name="SDO_transmit", size=8, arbitration_id=ArbitrationId(id=0x580+node_id), transmitters=[plc_name])
+    sig_cmd = Signal(name="SCS", size=3, start_bit=5, is_signed=False)
     sig_cmd.is_multiplexer = True
     sdo_up.is_complex_multiplexed = True
     sig_cmd.multiplex = "Multiplexor"
     sdo_up.add_signal(sig_cmd)
 
-    index = canmatrix.canmatrix.Signal(name="IDX", size=24, start_bit=8)
+    index = Signal(name="IDX", size=24, start_bit=8)
     index.multiplex = "Multiplexor"
     index.is_multiplexer = True
     index.mux_val = 2
@@ -126,7 +131,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             if size == 0:
                 logger.info("Ignoring " + signal_name + " size 0")
                 continue
-            new_sig = canmatrix.canmatrix.Signal(name=signal_name, size=size, start_bit=32, receivers=[plc_name])
+            new_sig = Signal(name=signal_name, size=size, start_bit=32, receivers=[plc_name])
             datatype_name = get_data_type_name(obj.data_type)
             if "UNSIGNED" in datatype_name:
                 new_sig.is_signed = False
@@ -149,7 +154,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     logger.info("Ignoring " + signal_name + " size 0")
                     continue
 
-                new_sig = canmatrix.canmatrix.Signal(name=signal_name, size=size, start_bit=32, receivers=[plc_name])
+                new_sig = Signal(name=signal_name, size=size, start_bit=32, receivers=[plc_name])
                 datatype_name = get_data_type_name(subobj.data_type)
                 if "UNSIGNED" in datatype_name:
                     new_sig.is_signed = False
@@ -176,7 +181,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     logger.info("Ignoring " + signal_name + " size 0")
                     continue
 
-                new_sig = canmatrix.canmatrix.Signal(name=signal_name, size=size, start_bit=32, receivers=[plc_name])
+                new_sig = Signal(name=signal_name, size=size, start_bit=32, receivers=[plc_name])
                 datatype_name = get_data_type_name(subobj.data_type)
                 if "UNSIGNED" in datatype_name:
                     new_sig.is_signed = False
@@ -208,9 +213,9 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 continue
             cob_id = cob_id_entry.default & 0x7FF
             pdo_name = name_cleanup(od[comm_index].name)
-            frame = canmatrix.canmatrix.Frame(name=pdo_name, transmitters=rx_tx_config["transmitter"])
+            frame = Frame(name=pdo_name, transmitters=rx_tx_config["transmitter"])
             frame_id = cob_id
-            frame.arbitration_id = canmatrix.ArbitrationId(id=frame_id)
+            frame.arbitration_id = ArbitrationId(id=frame_id)
             db.add_frame(frame)
             mapping_param = od.get(map_index)
             if not mapping_param:
