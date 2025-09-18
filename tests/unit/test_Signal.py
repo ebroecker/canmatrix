@@ -336,7 +336,7 @@ def test_signal_range_type_float():
     signal = Signal(is_float=True)
     signal_min, signal_max = signal.calculate_raw_range()
 
-    factory_type = type(signal.float_factory())
+    factory_type = type(signal.float_factory(0))
 
     min_is = isinstance(signal_min, factory_type)
     max_is = isinstance(signal_max, factory_type)

@@ -30,7 +30,6 @@ import attr
 
 import canmatrix.types
 import canmatrix.exceptions
-from canmatrix.CanMatrix import CanMatrix
 @attr.s
 class Ecu(object):
     """

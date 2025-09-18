@@ -41,7 +41,6 @@ from canmatrix.SignalGroup import SignalGroup
 from canmatrix.Signal import Signal
 from canmatrix.exceptions import EncodingContainerPdu, DecodingContainerPdu, DecodingFrameLength
 from canmatrix.ArbitrationId import ArbitrationId
-from canmatrix.CanMatrix import CanMatrix
 from canmatrix.Pdu import Pdu
 from canmatrix.exceptions import EncodingComplexMultiplexed, MissingMuxSignal, DecodingContainerPdu
 from canmatrix.types import RawValue

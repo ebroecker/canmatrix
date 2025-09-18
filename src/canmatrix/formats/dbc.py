@@ -38,6 +38,8 @@ from canmatrix.Signal import Signal
 from canmatrix.Ecu import Ecu
 from canmatrix.ArbitrationId import ArbitrationId
 import canmatrix.utils
+from canmatrix.FloatFactory import FloatFactory
+
 logger = logging.getLogger(__name__)
 
 
@@ -482,7 +484,7 @@ class _FollowUps(object):
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     dbc_import_encoding = options.get("dbcImportEncoding", 'iso-8859-1')
     dbc_comment_encoding = options.get("dbcImportCommentEncoding", dbc_import_encoding)
-    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
+    float_factory = FloatFactory.get_float_factory()
 
     i = 0
 

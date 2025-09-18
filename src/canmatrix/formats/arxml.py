@@ -44,6 +44,8 @@ from canmatrix.ArbitrationId import ArbitrationId
 import canmatrix.cancluster
 import canmatrix.types
 import canmatrix.utils
+from canmatrix.FloatFactory import FloatFactory
+from canmatrix.AutosarSecOCProperties import AutosarSecOCProperties
 
 logger = logging.getLogger(__name__)
 
@@ -1365,9 +1367,12 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         if base_type is None and base_type_name is not None:
             # if not found, maybe we already know the base_type_name?
             (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type_name, ea)
-        else:
+        elif base_type is not None:
             (is_signed, is_float) = eval_type_of_signal(type_encoding, base_type, ea)
-
+        else:
+            is_signed = False
+            is_float = False
+            
         unit_element = ea.follow_ref(isignal, "UNIT-REF")
         display_name = ea.get_child(unit_element, "DISPLAY-NAME")
         if display_name is not None:
@@ -1641,7 +1646,7 @@ def _get_secOC_properties(ea, pdu, secured_pdu_trigger):
     authentic_i_pdu_name = ea.get_element_name(authentic_pdu)
     authentic_pdu_length = int(ea.get_child(authentic_pdu, "LENGTH").text, 0)
 
-    secOC_properties = canmatrix.AutosarSecOCProperties(secured_i_pdu_name,
+    secOC_properties = AutosarSecOCProperties(secured_i_pdu_name,
                                                         authentic_i_pdu_name,
                                                         auth_algorithm,
                                                         authentic_pdu_length,
@@ -2503,7 +2508,7 @@ def load(file, **options):
     global frames_cache
     frames_cache = {}
 
-    float_factory = canmatrix.utils.FloatFactory.get_float_factory()  # type: typing.Callable
+    float_factory = FloatFactory.get_float_factory()  # type: typing.Callable
     ignore_cluster_info = options.get("arxmlIgnoreClusterInfo", False)
 
     decode_ethernet = options.get("decode_ethernet", False)

@@ -39,7 +39,7 @@ from canmatrix.Signal import Signal
 from canmatrix.CanMatrix import CanMatrix
 from canmatrix.Ecu import Ecu
 from canmatrix.ArbitrationId import ArbitrationId
-
+from canmatrix.FloatFactory import FloatFactory
 logger = logging.getLogger(__name__)
 
 # Font Size : 8pt * 20 = 160
@@ -344,7 +344,7 @@ def read_additional_signal_attributes(signal, attribute_name, attribute_value):
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
-    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
+    float_factory = FloatFactory.get_float_factory()
 
     additional_inputs = dict()
     wb = xlrd.open_workbook(file_contents=file.read())

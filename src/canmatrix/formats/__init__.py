@@ -9,6 +9,7 @@ from builtins import str
 from io import BytesIO
 
 from canmatrix.CanMatrix import CanMatrix
+from canmatrix.FloatFactory import FloatFactory
 import canmatrix.cancluster
 
 logger = logging.getLogger(__name__)
@@ -86,7 +87,7 @@ def load(file_object, import_type, key="", **options):
     _float_factory = options.get('float_factory', None)
     if _float_factory is not None:
         # if we got a float-factory: set it here to the FloatFactory-helper
-        canmatrix.utils.FloatFactory.set_float_factory(_float_factory)
+        FloatFactory.set_float_factory(_float_factory)
     if "clusterImporter" in supportedFormats[import_type]:
         dbs = module_instance.load(file_object, **options)  # type: ignore
     else:

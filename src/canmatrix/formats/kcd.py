@@ -38,7 +38,7 @@ from canmatrix.Signal import Signal
 from canmatrix.Ecu import Ecu
 from canmatrix.CanMatrix import CanMatrix
 from canmatrix.ArbitrationId import ArbitrationId
-
+from canmatrix.FloatFactory import FloatFactory
 import canmatrix.cancluster
 
 clusterExporter = 1
@@ -342,7 +342,7 @@ def parse_signal(signal, mux, namespace, nodelist, float_factory):
 
 def load(f, **options):
     # type: (typing.IO, **typing.Any) -> typing.Dict[str, canmatrix.CanMatrix]
-    float_factory = canmatrix.utils.FloatFactory.get_float_factory()  # type: typing.Callable
+    float_factory = FloatFactory.get_float_factory()  # type: typing.Callable
     dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
     tree = lxml.etree.parse(f)
     root = tree.getroot()

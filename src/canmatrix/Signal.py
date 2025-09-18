@@ -31,9 +31,8 @@ import typing
 
 import canmatrix.types
 import canmatrix.exceptions
-from canmatrix.utils import normalize_value_table, FloatFactory
-
-
+from canmatrix.utils import normalize_value_table
+from canmatrix.FloatFactory import FloatFactory
 
 @attr.s(eq=False)
 class Signal(object):
@@ -90,7 +89,13 @@ class Signal(object):
     calc_max_for_none = attr.ib(default=True)  # type: bool
 
     cycle_time = attr.ib(default=0)  # type: int
-    initial_value = attr.ib(converter=float_factory)  # type: canmatrix.types.PhysicalValue
+    initial_value = attr.ib(
+        converter=lambda value, float_factory=float_factory: (
+            float_factory(value)
+            if value is not None
+            else 0.0
+        )
+    )  # type: canmatrix.types.PhysicalValue
     scale_ranges = attr.ib(factory=list)
     min = attr.ib(
         converter=lambda value, float_factory=float_factory: (
@@ -104,19 +109,19 @@ class Signal(object):
     def set_default_offset(self):
         # default-factory can be changed by option, so we need to initialize it during object-creation
         # to use the correct float-factory itstead of class-initialisation above
-        return canmatrix.utils.FloatFactory.get_float(0.0)
+        return FloatFactory.get_float(0.0)
 
     @factor.default
     def set_default_factor(self):
         # default-factory can be changed by option, so we need to initialize it during object-creation
         # to use the correct float-factory itstead of class-initialisation above
-        return canmatrix.utils.FloatFactory.get_float(1.0)
+        return FloatFactory.get_float(1.0)
 
     @initial_value.default
     def set_default_initial_value(self):
         # default-factory can be changed by option, so we need to initialize it during object-creation
         # to use the correct float-factory itstead of class-initialisation above
-        return canmatrix.utils.FloatFactory.get_float(0.0)
+        FloatFactory.get_float(0.0)
 
     @min.default
     def set_default_min(self):  # type: () -> canmatrix.types.OptionalPhysicalValue
@@ -362,7 +367,7 @@ class Signal(object):
                     return value
 
         try:
-            value = decimal.Decimal(value)
+            value = FloatFactory.get_float(value)
         except Exception as e:
             raise e
 

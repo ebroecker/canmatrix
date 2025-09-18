@@ -36,6 +36,7 @@ from canmatrix.CanMatrix import CanMatrix
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 import canmatrix.utils
+from canmatrix.FloatFactory import FloatFactory
 
 logger = logging.getLogger(__name__)
 
@@ -326,7 +327,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
     calc_min_for_none = options.get('calc_min_for_none')
     calc_max_for_none = options.get('calc_max_for_none')
-    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
+    float_factory = FloatFactory.get_float_factory()
 
     class Mode(object):
         glob, enums, send, sendReceive, receive = list(range(5))

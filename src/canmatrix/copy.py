@@ -25,7 +25,6 @@ import typing
 from builtins import *
 
 from canmatrix.Ecu import Ecu
-from canmatrix.CanMatrix import CanMatrix
 
 logger = logging.getLogger(__name__)
 

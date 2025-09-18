@@ -38,6 +38,7 @@ from canmatrix.Signal import Signal
 from canmatrix.CanMatrix import CanMatrix
 from canmatrix.Ecu import Ecu
 from canmatrix.ArbitrationId import ArbitrationId
+from canmatrix.FloatFactory import FloatFactory
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +68,7 @@ def decode_define(line):  # type: (str) -> typing.Tuple[str, str, str]
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     dbf_import_encoding = options.get("dbfImportEncoding", 'iso-8859-1')
-    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
+    float_factory = FloatFactory.get_float_factory()
     is_j1939 = False
     db = CanMatrix()
 
