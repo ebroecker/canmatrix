@@ -36,7 +36,7 @@ import lxml.etree
 
 import canmatrix
 import canmatrix.cancluster
-import canmatrix.types
+import canmatrix.canmatrix_types
 import canmatrix.utils
 
 logger = logging.getLogger(__name__)
