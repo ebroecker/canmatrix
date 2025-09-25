@@ -467,11 +467,7 @@ def dump(db, f, **options):
     create_sub_element_fx(cluster, "SPEED", "500")
     create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "true")
     create_sub_element_fx(cluster, "BIT-COUNTING-POLICY", "MONOTONE")
-    if 'BusType' in db.attributes:
-        protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN-FD")
-        create_sub_element_fx(cluster, "CAN-FD-SPEED", "2000000")
-    else:
-        protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN")
+    protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN")
     protocol.attrib['{{{pre}}}type'.format(pre=xsi)] = "can:PROTOCOL-TYPE"
     create_sub_element_fx(cluster, "PROTOCOL-VERSION", "20")
     channel_refs = create_sub_element_fx(cluster, "CHANNEL-REFS")
