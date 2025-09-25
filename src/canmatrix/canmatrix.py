@@ -42,7 +42,7 @@ import attr
 from itertools import zip_longest
 
 import canmatrix.copy
-import canmatrix.canmatrix_types
+import canmatrix.types
 import canmatrix.utils
 
 if sys.version_info < (3, 8):
