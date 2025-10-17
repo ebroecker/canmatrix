@@ -15,7 +15,9 @@ except ImportError:
 
 @attr.s
 class j1939_decoder(object):
-    string = read_binary(__name__.rpartition('.')[0], "j1939.dbc")
+    #string = read_binary(__name__.rpartition('.')[0], "j1939.dbc")
+    with open( "j1939.dbc", "rb") as fd:
+        string = fd.read()
     j1939_db = canmatrix.formats.loads_flat(
         string, import_type="dbc", dbcImportEncoding="utf8"
     )

@@ -301,7 +301,7 @@ def test_writing_complex_multiplex():
     canmatrix.formats.dump(db, outdbc, "dbc")
     for line in outdbc.getvalue().decode('utf8').split('\n'):
         if "SG_MUL_VAL" in line:
-            return True
+            return 
     assert False
 
 
@@ -318,7 +318,7 @@ def test_defines_with_special_cars():
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
     assert matrix.frames[0].signals[0].attributes["Accuracy"] == "+/- 10.2 at 55.1%"
 
-@pytest.mark.skip(reason="J1939 functionality is only partially implemented and currently breaks test chain")
+#@pytest.mark.skip(reason="J1939 functionality is only partially implemented and currently breaks test chain")
 def test_j1939_frametype():
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BU_: someOtherEcu
