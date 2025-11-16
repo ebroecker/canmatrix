@@ -1,10 +1,14 @@
-import  canmatrix.formats.wireshark
+import canmatrix.formats.wireshark
 import io
 import os
 
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
+
 def test_wireshark_frame_exists():
-    db = canmatrix.CanMatrix()
-    db.add_frame(canmatrix.Frame("some_frame"))
+    db = CanMatrix()
+    db.add_frame(Frame("some_frame"))
     outlua = io.BytesIO()
     canmatrix.formats.dump(db, outlua, "wireshark")
 
@@ -24,10 +28,10 @@ def test_wireshark_muliplexed_frame():
 
 
 def test_wireshark_signal_exists():
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
 
-    db.add_frame(canmatrix.Frame("some_frame"))
-    db.frame_by_name("some_frame").add_signal(canmatrix.Signal("some_signal", start_bit=3, size=11, factor=1.5, offset=42, unit="cm" ))
+    db.add_frame(Frame("some_frame"))
+    db.frame_by_name("some_frame").add_signal(Signal("some_signal", start_bit=3, size=11, factor=1.5, offset=42, unit="cm" ))
 
     outlua = io.BytesIO()
     canmatrix.formats.dump(db, outlua, "wireshark")
@@ -36,9 +40,9 @@ def test_wireshark_signal_exists():
     assert 'my_frame_tree:add(some_frame_some_signal, reversed_pdu:bitfield(-14,11) - 2048)' in outlua.getvalue().decode("utf8")
 
 def test_wireshark_get_coorect_bits_for_signal():
-    frame = canmatrix.Frame("some_frame")
-    sig_big_endian = canmatrix.Signal("some_signal", is_little_endian=False,  start_bit=3, size=11, factor=1.5, offset=42, unit="cm")
-    sig_little_endian = canmatrix.Signal("some_signal2", is_little_endian=True, start_bit=3, size=11, factor=1.5, offset=42, unit="cm")
+    frame = Frame("some_frame")
+    sig_big_endian = Signal("some_signal", is_little_endian=False,  start_bit=3, size=11, factor=1.5, offset=42, unit="cm")
+    sig_little_endian = Signal("some_signal2", is_little_endian=True, start_bit=3, size=11, factor=1.5, offset=42, unit="cm")
     frame.add_signal(sig_big_endian)
     frame.add_signal(sig_little_endian)
 

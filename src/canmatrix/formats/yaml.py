@@ -29,7 +29,10 @@ from builtins import *
 
 import yaml
 
-import canmatrix
+# import canmatrix
+
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
 
 try:
     from yaml.representer import SafeRepresenter
@@ -90,7 +93,7 @@ def _frame_constructor(loader, node):
     return _constructor(
         loader=loader,
         node=node,
-        cls=canmatrix.Frame,
+        cls=Frame,
         mapping={
             'size': 'dlc',
         },
@@ -101,7 +104,7 @@ def _signal_constructor(loader, node):
     signal = _constructor(
         loader=loader,
         node=node,
-        cls=canmatrix.Signal,
+        cls=Signal,
         mapping={
             'startbit': 'startBit',  # todo shall probably be updated to match current names like start_bit
             'signalsize': 'signalSize',

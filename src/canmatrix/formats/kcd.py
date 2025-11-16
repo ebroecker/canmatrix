@@ -32,7 +32,13 @@ from builtins import *
 
 import lxml.etree
 
-import canmatrix
+# import canmatrix
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.Ecu import Ecu
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.ArbitrationId import ArbitrationId
+from canmatrix.FloatFactory import FloatFactory
 import canmatrix.cancluster
 
 clusterExporter = 1
@@ -296,7 +302,7 @@ def parse_signal(signal, mux, namespace, nodelist, float_factory):
         for noderef in noderefs:
             receiver.append(nodelist[noderef.get('id')])
 
-    new_sig = canmatrix.Signal(
+    new_sig = Signal(
         signal.get('name'),
         start_bit=int(start_bit),
         size=int(signal_size),
@@ -336,7 +342,7 @@ def parse_signal(signal, mux, namespace, nodelist, float_factory):
 
 def load(f, **options):
     # type: (typing.IO, **typing.Any) -> typing.Dict[str, canmatrix.CanMatrix]
-    float_factory = canmatrix.utils.FloatFactory.get_float_factory()  # type: typing.Callable
+    float_factory = FloatFactory.get_float_factory()  # type: typing.Callable
     dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
     tree = lxml.etree.parse(f)
     root = tree.getroot()
@@ -348,9 +354,9 @@ def load(f, **options):
 
     counter = 0
     for bus in buses:
-        db = canmatrix.CanMatrix()
+        db = CanMatrix()
         for node in nodes:
-            db.ecus.append(canmatrix.Ecu(node.get('name')))
+            db.ecus.append(Ecu(node.get('name')))
             node_list[node.get('id')] = node.get('name')
 
         messages = bus.findall('./' + namespace + 'Message')
@@ -358,7 +364,7 @@ def load(f, **options):
         for message in messages:
             dlc = None
             # new_frame = Frame(int(message.get('id'), 16), message.get('name'), 1, None)
-            new_frame = canmatrix.Frame(message.get('name'))
+            new_frame = Frame(message.get('name'))
 
             if 'interval' in message.attrib:
                 new_frame.cycle_time = int(message.get('interval'))
@@ -368,9 +374,9 @@ def load(f, **options):
                 new_frame.size = dlc
 
             if 'format' in message.attrib and message.get('format') == "extended":
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended=True)
+                new_frame.arbitration_id = ArbitrationId(int(message.get('id'), 16), extended=True)
             else:
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(message.get('id'), 16), extended=False)
+                new_frame.arbitration_id = ArbitrationId(int(message.get('id'), 16), extended=False)
 
             multiplex = message.find('./' + namespace + 'Multiplex')
             if multiplex is not None:
@@ -407,7 +413,7 @@ def load(f, **options):
                     node_refs = consumer.findall('./' + namespace + 'NodeRef')
                     for node_ref in node_refs:
                         receiver_names.append(node_list[node_ref.get('id')])
-                new_signal = canmatrix.Signal(
+                new_signal = Signal(
                     multiplex.get('name'),
                     start_bit=int(start_bit),
                     size=int(signal_size),

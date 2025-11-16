@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2013, Eduard Broecker
+# With contributions 2025, Gabriele Omodeo Vanone
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that
+# the following conditions are met:
+#
+#    Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#    Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,   PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR  OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+import typing
+import attr
+
+@attr.s(eq=False)
+class AutosarSecOCProperties(object):
+    secured_i_pdu_name = attr.ib(default="unknown")  # type: str
+    authentic_i_pdu_name = attr.ib(default="unknown")  # type: str
+    auth_algorithm = attr.ib(default=None)  # type: str|None
+    authentic_pdu_length = attr.ib(default=0)  # type: int
+    secured_i_pdu_length = attr.ib(default=0)  # type: int
+    auth_tx_length = attr.ib(default=None)  # type: int|None
+    data_id = attr.ib(default=None)  # type: int|None
+    freshness_value_id = attr.ib(default=None)  # type: int|None
+    freshness_length = attr.ib(default=None)  # type: int|None
+    freshness_tx_length = attr.ib(default=None)  # type: int|None
+    use_as_cryptographic_i_pdu = attr.ib(default=False)  # type: bool
+    message_link_length = attr.ib(default=None)  # type: int|None
+    message_link_position = attr.ib(default=None)  # type: int|None
+    key_id = attr.ib(default=None)  # type: int|None

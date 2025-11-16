@@ -32,8 +32,14 @@ import re
 import typing
 from builtins import *
 
-import canmatrix
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.Ecu import Ecu
+from canmatrix.ArbitrationId import ArbitrationId
 import canmatrix.utils
+from canmatrix.FloatFactory import FloatFactory
+
 logger = logging.getLogger(__name__)
 
 
@@ -151,7 +157,7 @@ def dump(in_db, f, **options):
 
     # free signals are in special frame in dbc...
     if len(db.signals) > 0:
-        free_signals_dummy_frame = canmatrix.Frame("VECTOR__INDEPENDENT_SIG_MSG")
+        free_signals_dummy_frame = Frame("VECTOR__INDEPENDENT_SIG_MSG")
         # set arbitration id manualy, constructor would not allow this special id
         free_signals_dummy_frame.arbitration_id.extended = True
         free_signals_dummy_frame.arbitration_id.id = 0x40000000
@@ -478,7 +484,7 @@ class _FollowUps(object):
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     dbc_import_encoding = options.get("dbcImportEncoding", 'iso-8859-1')
     dbc_comment_encoding = options.get("dbcImportCommentEncoding", dbc_import_encoding)
-    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
+    float_factory = FloatFactory.get_float_factory()
 
     i = 0
 
@@ -487,7 +493,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     signal = None  # type: typing.Optional[canmatrix.Signal]
     frame = None
     board_unit = None
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     frames_by_id = {}  # type: typing.Dict[int, canmatrix.Frame]
 
     def hash_arbitration_id(arbitration_id):  # type: (canmatrix.ArbitrationId) -> int
@@ -545,7 +551,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 regexp = re.compile(r"^BO_ ([^\ ]+) ([^\ ]+) *: *([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)
     #            db.frames.addFrame(Frame(temp.group(1), temp.group(2), temp.group(3), temp.group(4)))
-                frame = canmatrix.Frame(temp.group(2), arbitration_id=int(temp.group(1)),
+                frame = Frame(temp.group(2), arbitration_id=int(temp.group(1)),
                                         size=int(temp.group(3)), transmitters=temp.group(4).split())
                 db.frames.append(frame)
                 add_frame_by_id(frame)
@@ -566,7 +572,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 #                    if float_factory is not None:
 #                        extras['float_factory'] = float_factory
 
-                    temp_signal = canmatrix.Signal(
+                    temp_signal = Signal(
                         temp.group(1),
                         start_bit=int(temp.group(2)),
                         size=int(temp.group(3)),
@@ -614,7 +620,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 #                    if float_factory is not None:
 #                        extras['float_factory'] = float_factory
 
-                    temp_signal = canmatrix.Signal(
+                    temp_signal = Signal(
                         temp.group(1),
                         start_bit=int(temp.group(3)),
                         size=int(temp.group(4)),
@@ -645,7 +651,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             elif decoded.startswith("BO_TX_BU_ "):
                 regexp = re.compile(r"^BO_TX_BU_ ([0-9]+) *: *(.+) *;")
                 temp = regexp.match(decoded)
-                frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
+                frame = get_frame_by_id(ArbitrationId.from_compound_integer(int(temp.group(1))))
                 for ecu_name in temp.group(2).split(','):
                     frame.add_transmitter(ecu_name)
             elif decoded.startswith("CM_ SG_ "):
@@ -655,7 +661,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
+                    frame = get_frame_by_id(ArbitrationId.from_compound_integer(int(temp.group(1))))
                     signal = frame.signal_by_name(temp.group(2))
                     if signal:
                         try:
@@ -672,7 +678,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     if temp:
-                        frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
+                        frame = get_frame_by_id(ArbitrationId.from_compound_integer(int(temp.group(1))))
                         signal = frame.signal_by_name(temp.group(2))
                         try:
                             comment = temp_raw.group(3).decode(
@@ -690,7 +696,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 temp = regexp.match(decoded)
                 temp_raw = regexp_raw.match(l)
                 if temp:
-                    frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
+                    frame = get_frame_by_id(ArbitrationId.from_compound_integer(int(temp.group(1))))
                     if frame:
                         try:
                             frame.add_comment(temp_raw.group(2).decode(
@@ -706,7 +712,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     temp = regexp.match(decoded)
                     temp_raw = regexp_raw.match(l)
                     if temp:
-                        frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
+                        frame = get_frame_by_id(ArbitrationId.from_compound_integer(int(temp.group(1))))
                         try:
                             comment = temp_raw.group(2).decode(
                                 dbc_comment_encoding).replace('\\"', '"')
@@ -755,7 +761,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     my_temp_list = temp.group(1).split(' ')
                     for ele in my_temp_list:
                         if len(ele.strip()) > 1:
-                            db.ecus.append(canmatrix.Ecu(ele))
+                            db.ecus.append(Ecu(ele))
 
             elif decoded.startswith("VAL_ "):
                 regexp = re.compile(r"^VAL_ +(\d+)? *(\S+) +(.*) *;")
@@ -767,7 +773,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
                     if frame_id:  # value for Frame
                         try:
-                            frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frame_id)))
+                            frame = get_frame_by_id(ArbitrationId.from_compound_integer(int(frame_id)))
                             sg = frame.signal_by_name(signal_name)
                             for i in range(math.floor(len(temp_list) / 2)):
                                 val = temp_list[i * 2 + 1]
@@ -840,13 +846,13 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 if tempba.group(1).strip().startswith("BO_ "):
                     regexp = re.compile(r"^BA_ +\"(.+?)\" +BO_ +(\d+) +(.+) *; *")
                     temp = regexp.match(decoded)
-                    get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).add_attribute(
+                    get_frame_by_id(ArbitrationId.from_compound_integer(int(temp.group(2)))).add_attribute(
                         temp.group(1), temp.group(3))
                 elif tempba.group(1).strip().startswith("SG_ "):
                     regexp = re.compile(r"^BA_ +\"(.+?)\" +SG_ +(\d+) +(\S+) +(.+) *; *")
                     temp = regexp.match(decoded)
                     if temp is not None:
-                        get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(2)))).signal_by_name(
+                        get_frame_by_id(ArbitrationId.from_compound_integer(int(temp.group(2)))).signal_by_name(
                             temp.group(3)).add_attribute(temp.group(1), temp.group(4))
                 elif tempba.group(1).strip().startswith("EV_ "):
                     regexp = re.compile(r"^BA_ +\"(.+?)\" +EV_ +(\S+) +(.*) *; *")
@@ -880,7 +886,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             elif decoded.startswith("SIG_GROUP_ "):
                 regexp = re.compile(r"^SIG_GROUP_ +(\S+) +(\S+) +(\S+) +\:(.*) *; *")
                 temp = regexp.match(decoded)
-                frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
+                frame = get_frame_by_id(ArbitrationId.from_compound_integer(int(temp.group(1))))
                 if frame is not None:
                     signal_array = temp.group(4).split(' ')
                     frame.add_signal_group(temp.group(2), temp.group(3), signal_array)  # todo wrong annotation in canmatrix? Id is a string?
@@ -888,7 +894,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             elif decoded.startswith("SIG_VALTYPE_ "):
                 regexp = re.compile(r"^SIG_VALTYPE_ +(\S+) +(\S+)\s*\:(.*) *; *")
                 temp = regexp.match(decoded)
-                frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(temp.group(1))))
+                frame = get_frame_by_id(ArbitrationId.from_compound_integer(int(temp.group(1))))
                 if frame:
                     signal = frame.signal_by_name(temp.group(2))
                     signal.is_float = True
@@ -912,7 +918,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     signal_name = temp.group(2)
                     muxer_for_signal = temp.group(3)
                     mux_val_groups = temp.group(4).split(',')
-                    frame = get_frame_by_id(canmatrix.ArbitrationId.from_compound_integer(int(frame_id)))
+                    frame = get_frame_by_id(ArbitrationId.from_compound_integer(int(frame_id)))
                     if frame is not None:
                         signal = frame.signal_by_name(signal_name)
                         frame.is_complex_multiplexed = True
