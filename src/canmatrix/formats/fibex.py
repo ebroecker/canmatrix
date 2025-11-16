@@ -470,14 +470,21 @@ def dump(db, f, **options):
     # add the file name as a suffix in the cluster name
     cluster_name = f"cluster_{os.path.basename(f.name).split('.')[0]}"
     create_short_name_desc(cluster, cluster_name, "clusterDesc")
-    create_sub_element_fx(cluster, "SPEED", "500")
     create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "true")
     create_sub_element_fx(cluster, "BIT-COUNTING-POLICY", "MONOTONE")
     if 'BusType' in db.attributes and db.attributes['BusType'] == "CAN FD":
         protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN-FD")
-        create_sub_element_fx(cluster, "CAN-FD-SPEED", "2000000")
+        if 'Baudrate' in db.attributes:
+            create_sub_element_fx(cluster, "CAN-FD-SPEED", db.attributes['Baudrate'])
+        else:
+            create_sub_element_fx(cluster, "CAN-FD-SPEED", "2000000")
+        create_sub_element_fx(cluster, "SPEED", "500")
     else:
         protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN")
+        if 'Baudrate' in db.attributes:
+            create_sub_element_fx(cluster, "SPEED", db.attributes['Baudrate'])
+        else:
+            create_sub_element_fx(cluster, "SPEED", "500")
     protocol.attrib['{{{pre}}}type'.format(pre=xsi)] = "can:PROTOCOL-TYPE"
     create_sub_element_fx(cluster, "PROTOCOL-VERSION", "20")
     channel_refs = create_sub_element_fx(cluster, "CHANNEL-REFS")

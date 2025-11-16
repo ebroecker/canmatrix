@@ -871,6 +871,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     temp = regexp.match(decoded)
                     if temp:
                         db.add_attribute("BusType", f'"{temp.group(1)}"')
+                elif '"Baudrate"' in decoded:
+                    regexp = re.compile(r"^BA_ +\"Baudrate\" +(.+?) *; *")
+                    temp = regexp.match(decoded)
+                    if temp:
+                        db.add_attribute("Baudrate", f'{temp.group(1)}')
                 else:
                     regexp = re.compile(
                         r"^BA_ +\"([A-Za-z0-9\-_]+)\" +([\"\S\-\.]+) *; *")
