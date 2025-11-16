@@ -32,8 +32,11 @@ from builtins import *
 
 import attr
 
-import canmatrix
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
 import canmatrix.utils
+from canmatrix.FloatFactory import FloatFactory
 
 logger = logging.getLogger(__name__)
 
@@ -324,7 +327,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
     calc_min_for_none = options.get('calc_min_for_none')
     calc_max_for_none = options.get('calc_max_for_none')
-    float_factory = canmatrix.utils.FloatFactory.get_float_factory()
+    float_factory = FloatFactory.get_float_factory()
 
     class Mode(object):
         glob, enums, send, sendReceive, receive = list(range(5))
@@ -333,7 +336,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
     frame_name = ""
     frame = None
 
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     db.add_frame_defines("Receivable", 'BOOL False True')
     db.add_frame_defines("Sendable", 'BOOL False True')
     db.add_signal_defines("HexadecimalOutput", 'BOOL False True')
@@ -404,7 +407,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                                     frame.name + "_MUX").values = frame.mux_names
                             db.add_frame(frame)
 
-                        frame = canmatrix.Frame(frame_name)
+                        frame = Frame(frame_name)
 
                         frame.add_attribute(
                             'Receivable',
@@ -534,7 +537,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                             # if float_factory is not None:
                             #     extras['float_factory'] = float_factory
 
-                            signal = canmatrix.Signal(
+                            signal = Signal(
                                 frame_name + "_MUX",
                                 start_bit=int(start_bit),
                                 size=int(signal_length),
@@ -569,7 +572,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         # if float_factory is not None:
                         #     extras['float_factory'] = float_factory
 
-                        signal = canmatrix.Signal(
+                        signal = Signal(
                             sig_name,
                             start_bit=int(start_bit),
                             size=int(signal_length),
