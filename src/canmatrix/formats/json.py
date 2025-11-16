@@ -30,6 +30,12 @@ from builtins import *
 import decimal
 import canmatrix
 
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.ArbitrationId import ArbitrationId
+from canmatrix.Ecu import Ecu
+
 
 def dump(db, f, **options):
     # type: (canmatrix.CanMatrix, typing.BinaryIO, **str) -> None
@@ -193,7 +199,7 @@ def dump(db, f, **options):
 def load(f, **_options):
     # type: (typing.BinaryIO, **str) -> canmatrix.CanMatrix
 
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
 
     import io
     json_data = json.load(io.TextIOWrapper(f, encoding='UTF-8'))
@@ -207,13 +213,13 @@ def load(f, **_options):
 
     if "ecus" in json_data:
         for ecu in json_data["ecus"]:
-            new_ecu = canmatrix.Ecu(name=ecu, comment=json_data["ecus"][ecu])
+            new_ecu = Ecu(name=ecu, comment=json_data["ecus"][ecu])
             db.add_ecu(new_ecu)
     if "messages" in json_data:
         for frame in json_data["messages"]:
             # new_frame = Frame(frame["id"],frame["name"],8,None)
-            arb_id = canmatrix.canmatrix.ArbitrationId(id=frame["id"], extended=frame.get("is_extended_frame", "False"))
-            new_frame = canmatrix.Frame(frame["name"], arbitration_id=arb_id, size=8)
+            arb_id = ArbitrationId(id=frame["id"], extended=frame.get("is_extended_frame", "False"))
+            new_frame = Frame(frame["name"], arbitration_id=arb_id, size=8)
             if "length" in frame:
                 new_frame.size = frame["length"]
             simple_mapping = ["is_complex_multiplexed", "mux_names", "cycle_time", "is_j1939", "header_id", "pdu_name"]
@@ -246,7 +252,7 @@ def load(f, **_options):
                 is_float = signal.get("is_float", False)
                 is_signed = signal.get("is_signed", False)
 
-                new_signal = canmatrix.Signal(
+                new_signal = Signal(
                     signal["name"],
                     start_bit=signal["start_bit"],
                     size=signal["bit_length"],

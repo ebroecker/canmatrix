@@ -2,6 +2,11 @@ from lxml import etree
 import canmatrix.formats
 import decimal
 
+from canmatrix.utils import arbitration_id_converter
+
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
 
 class OdxReader:
     def __init__(self):
@@ -218,7 +223,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
 
     decode_service = 0x22
 
-    db = canmatrix.canmatrix.CanMatrix()
+    db = CanMatrix()
     eo = OdxReader()
     eo.open(f)
 # 22, 2E write by id, 2f, InputOutputControlByIdent, 31 Routine Control,
@@ -231,23 +236,23 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             tx_can_id = int(value.text, 16)
 
     info_struct = {} # get_odx_info(eo, "REQUEST")
-    tx_frame = canmatrix.canmatrix.Frame(arbitration_id=canmatrix.arbitration_id_converter(tx_can_id),
+    tx_frame = Frame(arbitration_id=arbitration_id_converter(tx_can_id),
                                          name="Diag_Reqest", size=8)
 
     if decode_service == 0:
-        service_id = canmatrix.canmatrix.Signal("service_id", start_bit=8, size=8)
+        service_id = Signal("service_id", start_bit=8, size=8)
         tx_frame.add_signal(service_id)
         service_id.multiplex = 'Multiplexor'
     else:
 #        info_struct = info_struct[decode_service]
-        service_id = canmatrix.canmatrix.Signal("service_{:x}_muxer".format(decode_service), start_bit=8, size=24)
+        service_id = Signal("service_{:x}_muxer".format(decode_service), start_bit=8, size=24)
         tx_frame.add_signal(service_id)
         service_id.multiplex = 'Multiplexor'
         service_id.is_signed = False
 
 
     for mux_val in info_struct:
-        request_id_signal = canmatrix.canmatrix.Signal(info_struct[mux_val]["name"], start_bit=32, multiplex=mux_val)
+        request_id_signal = Signal(info_struct[mux_val]["name"], start_bit=32, multiplex=mux_val)
         request_id_signal.size = info_struct[mux_val]["bit_length"]
    #     for value in info_struct[mux_val]:
    #         request_id_signal.add_values(value, info_struct[mux_val][value]["name"])
@@ -267,12 +272,12 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         value = eo.find("VALUE", pyhs_canid_container[0])
         if value is not None:
             rx_can_id = int(value.text, 16)
-    tx_frame = canmatrix.canmatrix.Frame(arbitration_id=canmatrix.arbitration_id_converter(rx_can_id),
+    tx_frame = Frame(arbitration_id=arbitration_id_converter(rx_can_id),
                                          name="Diag_Response", size=8)
 
-    tp_info = canmatrix.canmatrix.Signal("tp_length", start_bit=0, size=8)
+    tp_info = Signal("tp_length", start_bit=0, size=8)
     tx_frame.add_signal(tp_info)
-    service_id = canmatrix.canmatrix.Signal("service_{:x}_muxer".format(decode_service+0x40), start_bit=8, size=24)
+    service_id = Signal("service_{:x}_muxer".format(decode_service+0x40), start_bit=8, size=24)
     tx_frame.add_signal(service_id)
     service_id.multiplex = 'Multiplexor'
     service_id.is_signed = False
@@ -282,7 +287,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
         did_info = info_struct[mux_val]
         did_vars = flatten_did_info(did_info)
         for var in did_vars:
-            new_signal = canmatrix.canmatrix.Signal(var, multiplex=mux_val)
+            new_signal = Signal(var, multiplex=mux_val)
             if "bit_size" in did_vars[var]:
                 new_signal.size = did_vars[var]["bit_size"]
             else:
