@@ -866,7 +866,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         temp.group(2)).add_attribute(
                         temp.group(1),
                         temp.group(3))
-                elif decoded.find('"BusType"') != -1:
+                elif '"BusType"' in decoded:
                     regexp = re.compile(r"^BA_ +\"BusType\" +\"(.+?)\" *; *")
                     temp = regexp.match(decoded)
                     if temp:
