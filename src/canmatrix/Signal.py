@@ -28,11 +28,15 @@
 import attr
 from decimal import Decimal as DefaultFloatFactory
 import typing
+import logging
 
 import canmatrix.types
 import canmatrix.exceptions
 from canmatrix.utils import normalize_value_table
 from canmatrix.FloatFactory import FloatFactory
+
+
+logger = logging.getLogger(__name__)
 
 @attr.s(eq=False)
 class Signal(object):
