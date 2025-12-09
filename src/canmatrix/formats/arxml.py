@@ -32,20 +32,21 @@ import re
 import typing
 from builtins import *
 
-import lxml.etree
-
-from canmatrix.CanMatrix import CanMatrix
-from canmatrix.Define import Define
-from canmatrix.Frame import Frame
-from canmatrix.Signal import Signal
-from canmatrix.Ecu import Ecu
-from canmatrix.Pdu import Pdu
-from canmatrix.ArbitrationId import ArbitrationId
+import canmatrix.Endpoint
 import canmatrix.cancluster
 import canmatrix.types
 import canmatrix.utils
-from canmatrix.FloatFactory import FloatFactory
+import lxml.etree
+from canmatrix.ArbitrationId import ArbitrationId
 from canmatrix.AutosarSecOCProperties import AutosarSecOCProperties
+from canmatrix.CanMatrix import CanMatrix, matrix_class
+from canmatrix.Define import Define
+from canmatrix.Ecu import Ecu
+from canmatrix.Endpoint import Endpoint
+from canmatrix.FloatFactory import FloatFactory
+from canmatrix.Frame import Frame
+from canmatrix.Pdu import Pdu
+from canmatrix.Signal import Signal
 
 logger = logging.getLogger(__name__)
 
@@ -164,7 +165,7 @@ class Earxml:
         # type: (_Element, str) -> str
         """Get element short name."""
         return self.sn_cache.get(element, "")
-    
+
     def follow_ref(self, start_element, element_name):
         ref_element = self.find(element_name, start_element)
         if ref_element is None:
@@ -1178,7 +1179,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
 
         # To Get Update Bit
         ub_start_bit = ea.get_child(signal, "UPDATE-INDICATION-BIT-POSITION")
-        
+
         isignal = ea.follow_ref(signal, "SIGNAL-REF")
         if isignal is None:
             isignal = ea.follow_ref(signal, "I-SIGNAL-REF")  # AR4
@@ -1372,7 +1373,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
         else:
             is_signed = False
             is_float = False
-            
+
         unit_element = ea.follow_ref(isignal, "UNIT-REF")
         display_name = ea.get_child(unit_element, "DISPLAY-NAME")
         if display_name is not None:
@@ -1488,7 +1489,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 new_signal.add_attribute("ISignalName", isignal_name)
             if system_signal_name is not None and system_signal_name:
                 new_signal.add_attribute("SysSignalName", system_signal_name)
-                
+
             existing_signal = frame.signal_by_name(new_signal.name)
             if existing_signal is None:
                 frame.add_signal(new_signal)
@@ -1979,7 +1980,7 @@ def get_frame(frame_triggering, ea, multiplex_translation, float_factory, header
         # does not support "a pdu containing another pdu" this is the only acceptable workaround
         _add_autosar_secoc_signals_to_parent(new_frame)  # add secoc-realted signals to Frame
         # new_frame.add_pdu(target_pdu)
-        
+
         comment = ea.get_element_desc(frame_elem)
         if pdu is not None:
             new_frame.add_attribute("PduName", ea.get_short_name(pdu))
@@ -2185,7 +2186,7 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
 
     socket_connetions = ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER")
     pdu_triggering_header_id_map = {}
-    
+
     for socket_connetion in socket_connetions:
         header_id = ea.get_child(socket_connetion, "HEADER-ID")
         ipdu_triggering = ea.follow_ref(socket_connetion, "PDU-TRIGGERING-REF")
@@ -2198,12 +2199,12 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
     for ec in ecs:
         baudrate_elem = ea.find("BAUDRATE", ec)
         physical_channels = ea.findall("ETHERNET-PHYSICAL-CHANNEL", ec)
-        
+
         for pc in physical_channels:
-            db = CanMatrix(type=canmatrix.matrix_class.SOMEIP)
+            db = CanMatrix(type=matrix_class.SOMEIP)
 
             db.baudrate = int(baudrate_elem.text, 0) if baudrate_elem is not None else 0
-            
+
             channel_name = ea.get_element_name(pc)
 
             vlan = ea.get_child(pc, "VLAN")
@@ -2239,7 +2240,7 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
                     get_text = lambda el: el.text if el is not None else None
                     get_int = lambda el: int(el.text, 0) if el is not None else 0
 
-                    endpoint = canmatrix.Endpoint(
+                    endpoint = Endpoint(
                         server_ipv4=get_text(server_ipv4),
                         server_ipv6=get_text(server_ipv6),
                         server_port=get_int(server_port),
@@ -2272,7 +2273,7 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
 
                         # Size
                         ipdu_length = int(ea.get_child(ipdu, "LENGTH").text, 0)
-                        
+
                         # Cycle-Time
                         timing_spec = ea.get_child(ipdu, "I-PDU-TIMING-SPECIFICATION")
                         if timing_spec is None:
@@ -2283,7 +2284,7 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
                         cycle_time = 0
                         if value is not None:
                             cycle_time = int(float_factory(value.text) * 1000)
-                        
+
                         # print(ipdu.tag)
                         # if ipdu is not None and 'SECURED-I-PDU' in ipdu.tag:
                         #     print("get IN?")
@@ -2315,14 +2316,14 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
                             target_frame.add_receiver(ecu.name)
                         else:
                             pass
-                        
+
                         pdu_sig_mapping = ea.findall("I-SIGNAL-TO-I-PDU-MAPPING", ipdu)
 
                         get_signals(pdu_sig_mapping, target_frame, ea, None, float_factory,
                                     generated_update_bits_init_to_1=generated_update_bits_init_to_1)
                         # target_frame.update_receiver() # It will make transmitter and receiver worse
                         db.add_frame(target_frame)
-                        
+
     return found_matrixes
 
 
@@ -2430,7 +2431,7 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info, generated_update_b
                               generated_update_bits_init_to_1)
             if frame is not None:
                 frame.is_j1939 = "J-1939" in cc.tag
-                
+
                 comm_directions = ea.selector(frameTrig, ">>FRAME-PORT-REF/COMMUNICATION-DIRECTION")
                 for comm_direction in comm_directions:
                     ecu_elem = ea.get_ecu_instance(element=comm_direction)
