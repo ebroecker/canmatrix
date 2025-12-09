@@ -2212,7 +2212,7 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
 
             vlan = ea.get_child(pc, "VLAN")
             vlan_tag = ea.get_child(vlan, "VLAN-IDENTIFIER")
-            db.vlan = int(vlan_tag.text, 0)
+            db.vlan = int(vlan_tag.text, 0) if vlan_tag is not None and vlan_tag.text else None
 
             found_matrixes[channel_name] = db
 
@@ -2253,7 +2253,8 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
                         ttl=get_int(ttl)
                     )
 
-                    for scii in ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER", socket_connection):
+                    pdus = ea.get_child(socket_connection, "PDUS")
+                    for scii in ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER", pdus):
 
                         header_id = ea.get_child(scii, "HEADER-ID")
                         ipdu_triggering = ea.follow_ref(scii, "PDU-TRIGGERING-REF")
