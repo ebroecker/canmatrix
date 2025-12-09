@@ -1219,6 +1219,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 pass
 
         base_type_name = None
+        type_encoding = None
         base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")  # AR4
         if base_type is None:
             a = ea.selector(isignal, ">SYSTEM-SIGNAL-REF>DATA-TYPE-REF>BASE-TYPE-REF")
@@ -1242,6 +1243,9 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                     base_type_name = AutosarBasePlatformTypes.datatype_by_ref(_ele)
                     if type_encoding is not None:
                         break
+                # If type_encoding still None after loop, set default
+                if type_encoding is None:
+                    type_encoding = "NONE"
             else:
                 type_encoding = ea.get_child(base_type, "BASE-TYPE-ENCODING").text
                 base_type_name = ea.get_element_name(base_type)
