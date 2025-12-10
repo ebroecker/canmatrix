@@ -1264,6 +1264,7 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 pass
 
         base_type_name = None
+        type_encoding = None
         base_type = ea.follow_ref(isignal, "BASE-TYPE-REF")  # AR4
         if base_type is None:
             a = ea.selector(isignal, ">SYSTEM-SIGNAL-REF>DATA-TYPE-REF>BASE-TYPE-REF")
@@ -1287,6 +1288,9 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                     base_type_name = AutosarBasePlatformTypes.datatype_by_ref(_ele)
                     if type_encoding is not None:
                         break
+                # If type_encoding still None after loop, set default
+                if type_encoding is None:
+                    type_encoding = "NONE"
             else:
                 type_encoding = ea.get_child(base_type, "BASE-TYPE-ENCODING").text
                 base_type_name = ea.get_element_name(base_type)
@@ -2253,7 +2257,7 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
 
             vlan = ea.get_child(pc, "VLAN")
             vlan_tag = ea.get_child(vlan, "VLAN-IDENTIFIER")
-            db.vlan = int(vlan_tag.text, 0)
+            db.vlan = int(vlan_tag.text, 0) if vlan_tag is not None and vlan_tag.text else None
 
             found_matrixes[channel_name] = db
 
@@ -2294,7 +2298,8 @@ def decode_ethernet_helper(ea, float_factory, generated_update_bits_init_to_1: b
                         ttl=get_int(ttl)
                     )
 
-                    for scii in ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER", socket_connection):
+                    pdus = ea.get_child(socket_connection, "PDUS")
+                    for scii in ea.findall("SOCKET-CONNECTION-IPDU-IDENTIFIER", pdus):
 
                         header_id = ea.get_child(scii, "HEADER-ID")
                         ipdu_triggering = ea.follow_ref(scii, "PDU-TRIGGERING-REF")
