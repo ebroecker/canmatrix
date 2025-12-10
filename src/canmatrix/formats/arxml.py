@@ -1105,16 +1105,61 @@ def decode_compu_method(compu_method, ea, float_factory):
         # scale_desc = ea.get_element_desc(compu_scale)
         if rational is not None:
             numerator_parent = ea.get_child(rational, "COMPU-NUMERATOR")
-            numerator = ea.get_children(numerator_parent, "V")
+            numerator_vs = ea.get_children(numerator_parent, "V") if numerator_parent is not None else []
+
             denominator_parent = ea.get_child(rational, "COMPU-DENOMINATOR")
-            denominator = ea.get_children(denominator_parent, "V")
+            denominator_vs = ea.get_children(denominator_parent, "V") if denominator_parent is not None else []
+
             try:
-                factor = float_factory(numerator[1].text) / float_factory(denominator[0].text)
-                offset = float_factory(numerator[0].text) / float_factory(denominator[0].text)
-            except decimal.DivisionByZero:
-                if numerator[0].text != denominator[0].text or numerator[1].text != denominator[1].text:
+                # Parse coefficients
+                num = [float_factory(v.text) for v in numerator_vs]
+
+                # AUTOSAR: missing denominator usually implies 1
+                if denominator_vs:
+                    den = [float_factory(v.text) for v in denominator_vs]
+                else:
+                    den = [float_factory(1)]
+
+                d0 = den[0] if den else float_factory(1)
+
+                if d0 == 0:
+                    raise decimal.DivisionByZero
+
+                # Detect polynomial (more than linear)
+                if len(num) > 2 or len(den) > 1:
                     logger.warning(
-                        "ARXML signal scaling: polynom is not supported and it is replaced by factor=1 and offset =0.")
+                        "ARXML signal scaling: polynomial scaling not fully supported, "
+                        "replacing by factor=1 and offset=0. "
+                        "numerator=%r denominator=%r",
+                        num, den,
+                    )
+                    factor = float_factory(1)
+                    offset = float_factory(0)
+                else:
+                    # Linear / affine cases
+                    if len(num) >= 2:
+                        # phys = (num0 + num1 * raw) / d0
+                        offset = num[0] / d0
+                        factor = num[1] / d0
+                    elif len(num) == 1:
+                        # Only offset or constant mapping: phys = num0 / d0
+                        offset = num[0] / d0
+                        factor = float_factory(0)
+                    else:
+                        # No coefficients — keep default 1/0 and warn
+                        logger.warning(
+                            "ARXML signal scaling: COMPU-RATIONAL-COEFFS without coefficients. "
+                            "Using factor=1 and offset=0."
+                        )
+                        factor = float_factory(1)
+                        offset = float_factory(0)
+
+            except (decimal.DivisionByZero, decimal.InvalidOperation, IndexError) as e:
+                logger.warning(
+                    "ARXML signal scaling: invalid rational coefficients (%s). "
+                    "Replacing with factor=1 and offset=0. numerator=%r denominator=%r",
+                    e, [v.text for v in numerator_vs], [v.text for v in denominator_vs],
+                )
                 factor = float_factory(1)
                 offset = float_factory(0)
         else:
