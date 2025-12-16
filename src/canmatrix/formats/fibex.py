@@ -418,6 +418,10 @@ def load(f, **_options):
 def dump(db, f, **options):
     # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
     ns_map = {"fx": fx, "ho": ho, "can": can, "xsi": xsi}
+    can_channel = 'CANCHANNEL01'
+    db_name= db.attribute("DBName")
+    if db_name:
+        can_channel = db_name
     root = lxml.etree.Element(ns_fx + "FIBEX", nsmap=ns_map)
     root.attrib[
         '{{{pre}}}schemaLocation'.format(
@@ -473,16 +477,16 @@ def dump(db, f, **options):
     channel_refs = create_sub_element_fx(cluster, "CHANNEL-REFS")
     # for each channel
     channel_ref = create_sub_element_fx(channel_refs, "CHANNEL-REF")
-    channel_ref.set("ID-REF", "CANCHANNEL01")
 
+    channel_ref.set("ID-REF", can_channel)
     #
     # CHANNELS
     #
     channels = create_sub_element_fx(elements, "CHANNELS")
     channel = create_sub_element_fx(channels, "CHANNEL")
     # for each channel
-    channel.set('ID', 'CANCHANNEL01')
-    create_short_name_desc(channel, "CANCHANNEL01", "Can Channel Description")
+    channel.set('ID', can_channel)
+    create_short_name_desc(channel, can_channel, "Can Channel Description")
 
     # for pdu triggerings
     pdu_triggerings = create_sub_element_fx(channel, "PDU-TRIGGERINGS")
@@ -533,7 +537,7 @@ def dump(db, f, **options):
         connector = create_sub_element_fx(connectors, "CONNECTOR")
         connector.set('ID', 'Connector' + bu.name)
         channel_ref = create_sub_element_fx(connector, "CHANNEL-REF")
-        channel_ref.set("ID-REF", "CANCHANNEL01")
+        channel_ref.set("ID-REF", can_channel)
         controller_ref = create_sub_element_fx(connector, "CONTROLLER-REF")
         controller_ref.set("ID-REF", 'Controller_' + bu.name)
         inputs = create_sub_element_fx(connector, "INPUTS")
