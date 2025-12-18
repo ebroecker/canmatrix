@@ -473,6 +473,10 @@ def dump(db, f, **options):
     cluster.set('ID', 'canCluster1')
     # add the file name as a suffix in the cluster name
     cluster_name = f"cluster_{os.path.basename(f.name).split('.')[0]}"
+    # If DBName attribute is present, use it instead of the file based name
+    if db_name :
+        cluster_name = can_channel
+        cluster.set('ID', can_channel)
     create_short_name_desc(cluster, cluster_name, "clusterDesc")
     create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "true")
     create_sub_element_fx(cluster, "BIT-COUNTING-POLICY", "MONOTONE")
