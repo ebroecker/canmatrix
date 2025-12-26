@@ -400,10 +400,10 @@ class Signal(object):
             value = self.float_factory(value)
 
         if decode_to_str:
-            for value_key, value_string in self.values.items():
-                if value_key == value:
-                    return value_string
-                    break
+            try:
+                return self.values[value]
+            except KeyError:
+                pass
 
         result = value * self.factor + self.offset  # type: typing.Union[canmatrix.types.PhysicalValue, str]
 
