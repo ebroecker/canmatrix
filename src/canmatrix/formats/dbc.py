@@ -985,6 +985,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
             signal.initial_value = (gen_sig_start_value * signal.factor) + signal.offset
             signal.cycle_time = int(signal.attributes.get("GenSigCycleTime", 0))
             if signal.attribute("SystemSignalLongSymbol") is not None:
+                signal.short_name = signal.name
                 signal.name = signal.attribute("SystemSignalLongSymbol")[1:-1]
                 signal.del_attribute("SystemSignalLongSymbol")
     for define in db.global_defines:
