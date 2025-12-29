@@ -54,6 +54,7 @@ class Signal(object):
     * receivers  (ECU Name)
     * attributes, _values, unit, comment
     * multiplex ('Multiplexor' or Number of Multiplex)
+    * short_name (if name exceeds normal length)
     """
 
     name = attr.ib(default="")  # type: str
@@ -108,6 +109,8 @@ class Signal(object):
             else value
         )
     )  # type: typing.Union[int, decimal.Decimal, None]
+
+    short_name = attr.ib(default="")  # type: str
 
     @offset.default
     def set_default_offset(self):
