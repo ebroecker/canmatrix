@@ -92,6 +92,7 @@ def dump(db, f, **options):
                     "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
+                    "is_ascii": signal.is_ascii,
                 })
             symbolic_frame = {"name": frame.name,
                               "id": int(frame.arbitration_id.id),
@@ -148,6 +149,7 @@ def dump(db, f, **options):
                     "is_big_endian": signal.is_little_endian is False,
                     "is_signed": signal.is_signed,
                     "is_float": signal.is_float,
+                    "is_ascii": signal.is_ascii,
                     "comment": signal.comment,
                     "comments": signal.comments,
                     "attributes": attributes,
@@ -251,6 +253,7 @@ def load(f, **_options):
                 is_little_endian = not signal.get("is_big_endian", False)
                 is_float = signal.get("is_float", False)
                 is_signed = signal.get("is_signed", False)
+                is_ascii = signal.get("is_ascii", False)
 
                 new_signal = Signal(
                     signal["name"],
@@ -259,6 +262,7 @@ def load(f, **_options):
                     is_little_endian=is_little_endian,
                     is_signed=is_signed,
                     is_float=is_float,
+                    is_ascii=is_ascii,
                     factor=signal.get("factor", 1),
                     offset=signal.get("offset", 0)
                 )
