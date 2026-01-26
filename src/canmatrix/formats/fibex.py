@@ -213,25 +213,6 @@ def create_output_port(parent, frame, prefix=""):
     
     return output_port
 
-def create_secoc_configuration(frame, auth_info_tx_length_def, freshness_value_tx_length_def, data_id_def, freshness_value_length_def, spdu):
-    auth_info_tx_length = int(frame.attribute("SCP_AuthInfoTxLength")) if frame.attribute("SCP_AuthInfoTxLength") is not None else int(auth_info_tx_length_def)
-    freshness_value_tx_length = int(frame.attribute("SCP_FreshnessValueTxLength")) if frame.attribute("SCP_FreshnessValueTxLength") is not None else int(freshness_value_tx_length_def)
-    secoc_pdu_length = frame.size + (auth_info_tx_length // 8) + (freshness_value_tx_length // 8)
-                    
-    create_sub_element_fx(spdu, "BYTE-LENGTH", str(secoc_pdu_length))  # DLC
-    create_sub_element_fx(spdu, "PDU-TYPE", "OTHER")
-    manufac_extansion = create_sub_element_fx(spdu, "MANUFACTURER-EXTENSION")
-    sec_props = create_sub_element_fx(manufac_extansion, "SECURITY-PROPERTIES")
-    data_id = frame.attribute("SCP_DataId") if frame.attribute("SCP_DataId") else data_id_def
-    create_sub_element_fx(sec_props, "DATA-ID", data_id)
-    create_sub_element_fx(sec_props, "MAC-LENGTH", str(auth_info_tx_length)) 
-    freshness_value_length = frame.attribute("SCP_FreshnessValueLength") if frame.attribute("SCP_FreshnessValueLength") else freshness_value_length_def
-    create_sub_element_fx(sec_props, "FRESHNESS-VALUE-LENGTH", str(freshness_value_length))
-    create_sub_element_fx(sec_props, "FRESHNESS-VALUE-TX-LENGTH", str(freshness_value_tx_length))
-    payload_pdu = create_sub_element_fx(sec_props, "PAYLOAD")
-    payload_ref = create_sub_element_fx(payload_pdu, "PDU-REF")
-    payload_ref.set("ID-REF", "PDU_" + frame.name)
-
 def get_base_data_type(signal):
     # type: (Signal) -> str
     if signal.is_float:
@@ -680,10 +661,6 @@ def dump(db, f, **options):
     # PDUS
     #
     pdus = create_sub_element_fx(elements, "PDUS")
-    auth_info_tx_length_def = db.frame_defines["SCP_AuthInfoTxLength"].defaultValue
-    freshness_value_tx_length_def = db.frame_defines["SCP_FreshnessValueTxLength"].defaultValue
-    data_id_def = db.frame_defines["SCP_DataId"].defaultValue
-    freshness_value_length_def = db.frame_defines["SCP_FreshnessValueLength"].defaultValue
     for frame in db.frames:
         pdu = create_sub_element_fx(pdus, "PDU")
         pdu.set("ID", "PDU_" + frame.name)
@@ -818,7 +795,6 @@ def dump(db, f, **options):
                 spdu = create_sub_element_fx(pdus, "PDU")
                 spdu.set("ID", "SPDU_" + frame.name)
                 create_short_name_desc(spdu, "SPDU_" + frame.name, frame.comment)
-                create_secoc_configuration(frame, auth_info_tx_length_def, freshness_value_tx_length_def, data_id_def, freshness_value_length_def, spdu)
 
     # FRAMES
     #
