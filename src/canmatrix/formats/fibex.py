@@ -565,6 +565,7 @@ def dump(db, f, **options):
         for frame in db.frames:
             if bu.name in frame.receivers:
                 input_port = create_sub_element_fx(inputs, "INPUT-PORT")
+                input_port.set('ID', 'Input_Port_' + bu.name +'_'+ frame.name)
                 frame_triggering_ref = create_sub_element_fx(input_port, "FRAME-TRIGGERING-REF")
                 frame_triggering_ref.set("ID-REF", "FT_" + frame.name)
                 # Reference to PDUs
@@ -577,11 +578,12 @@ def dump(db, f, **options):
         outputs = create_sub_element_fx(connector, "OUTPUTS")
         for frame in db.frames:
             if bu.name in frame.transmitters:
-                input_port = create_sub_element_fx(outputs, "OUTPUT-PORT")
-                frame_triggering_ref = create_sub_element_fx(input_port, "FRAME-TRIGGERING-REF")
+                output_port = create_sub_element_fx(outputs, "OUTPUT-PORT")
+                output_port.set('ID', 'Output_Port_' + bu.name +'_'+ frame.name)
+                frame_triggering_ref = create_sub_element_fx(output_port, "FRAME-TRIGGERING-REF")
                 frame_triggering_ref.set("ID-REF", "FT_" + frame.name)
                 # Reference to PDUs
-                included_pdus = create_sub_element_fx(input_port, "INCLUDED-PDUS")
+                included_pdus = create_sub_element_fx(output_port, "INCLUDED-PDUS")
                 included_pdu = create_sub_element_fx(included_pdus, "INCLUDED-PDU")
                 included_pdu.set('ID', 'output_included_pdu_' + frame.name)
                 pdu_triggering_ref = create_sub_element_fx(included_pdu, "PDU-TRIGGERING-REF")
