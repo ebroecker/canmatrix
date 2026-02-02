@@ -32,12 +32,13 @@ import openpyxl.utils
 
 import canmatrix
 import canmatrix.formats.xls_common
+
 from openpyxl.worksheet.dimensions import ColumnDimension
 from openpyxl.styles import NamedStyle, Font, Alignment, PatternFill, Border, Side
 
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix.CanMatrix import CanMatrix, matrix_class
 from canmatrix.Ecu import Ecu
 from canmatrix.ArbitrationId import ArbitrationId
 
@@ -221,7 +222,7 @@ def dump(db, filename, **options):
 
     write_excel_line(worksheet, 0, 0, row_array, sty_header)
 
-    if db.type == canmatrix.matrix_class.CAN:
+    if db.type == matrix_class.CAN:
         frame_hash = {}
         logger.debug("DEBUG: Length of db.frames is %d", len(db.frames))
         for frame in db.frames:

@@ -36,7 +36,7 @@ import canmatrix.formats.xls_common
 
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix.CanMatrix import CanMatrix, matrix_class
 from canmatrix.Ecu import Ecu
 from canmatrix.ArbitrationId import ArbitrationId
 from canmatrix.FloatFactory import FloatFactory
@@ -174,7 +174,7 @@ def dump(db, file, **options):
     worksheet.col(head_start + 1).width = 5555
 
     frame_hash = {}
-    if db.type == canmatrix.matrix_class.CAN:
+    if db.type == matrix_class.CAN:
         logger.debug("Length of db.frames is %d", len(db.frames))
         for frame in db.frames:
             if frame.is_complex_multiplexed:
