@@ -687,10 +687,10 @@ def dump(db, f, **options):
     # PDUS
     #
     pdus = create_sub_element_fx(elements, "PDUS")
-    auth_info_tx_length_def = db.frame_defines["SCP_AuthInfoTxLength"].defaultValue
-    freshness_value_tx_length_def = db.frame_defines["SCP_FreshnessValueTxLength"].defaultValue
-    data_id_def = db.frame_defines["SCP_DataId"].defaultValue
-    freshness_value_length_def = db.frame_defines["SCP_FreshnessValueLength"].defaultValue
+    auth_info_tx_length_def = getattr(db.frame_defines.get("SCP_AuthInfoTxLength"), 'defaultValue', None)
+    freshness_value_tx_length_def = getattr(db.frame_defines.get("SCP_FreshnessValueTxLength"), 'defaultValue', None)
+    data_id_def = getattr(db.frame_defines.get("SCP_DataId"), 'defaultValue', None)
+    freshness_value_length_def = getattr(db.frame_defines.get("SCP_FreshnessValueLength"), 'defaultValue', None)
     for frame in db.frames:
         pdu = create_sub_element_fx(pdus, "PDU")
         pdu.set("ID", "PDU_" + frame.name)
