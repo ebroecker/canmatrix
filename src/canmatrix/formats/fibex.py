@@ -204,10 +204,10 @@ def create_pdu_triggering(parent, pdu, prefix=""):
     return pdu_triggering
 
 
-def create_output_port(parent, frame, name, prefix=""):
+def create_output_port(parent, frame, ecu_name, prefix=""):
     """Helper function to create output port with frame and PDU references."""
     output_port = create_sub_element_fx(parent, "OUTPUT-PORT")
-    output_port.set('ID', 'Output_Port_' + name +'_'+ frame.name)
+    output_port.set('ID', 'Output_Port_' + ecu_name +'_'+ frame.name)
     # Frame triggering reference
     frame_triggering_ref = create_sub_element_fx(output_port, "FRAME-TRIGGERING-REF")
     frame_triggering_ref.set("ID-REF", f"{prefix}FT_{frame.name}")
