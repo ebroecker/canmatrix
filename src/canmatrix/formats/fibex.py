@@ -204,10 +204,10 @@ def create_pdu_triggering(parent, pdu, prefix=""):
     return pdu_triggering
 
 
-def create_output_port(parent, frame, prefix=""):
+def create_output_port(parent, frame, name, prefix=""):
     """Helper function to create output port with frame and PDU references."""
     output_port = create_sub_element_fx(parent, "OUTPUT-PORT")
-    
+    output_port.set('ID', 'Output_Port_' + name +'_'+ frame.name)
     # Frame triggering reference
     frame_triggering_ref = create_sub_element_fx(output_port, "FRAME-TRIGGERING-REF")
     frame_triggering_ref.set("ID-REF", f"{prefix}FT_{frame.name}")
@@ -663,6 +663,7 @@ def dump(db, f, **options):
         for frame in db.frames:
             if bu.name in frame.receivers:
                 input_port = create_sub_element_fx(inputs, "INPUT-PORT")
+                input_port.set('ID', 'Input_Port_' + bu.name +'_'+ frame.name)
                 frame_triggering_ref = create_sub_element_fx(input_port, "FRAME-TRIGGERING-REF")
                 frame_triggering_ref.set("ID-REF", "FT_" + frame.name)
                 # Reference to PDUs
@@ -676,10 +677,10 @@ def dump(db, f, **options):
         for frame in db.frames:
             if bu.name in frame.transmitters:
                 # Create regular output port
-                create_output_port(outputs, frame)
+                create_output_port(outputs, frame, bu.name)
                 # Create secured output port if applicable
                 if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
-                    create_output_port(outputs, frame, prefix="S")
+                    create_output_port(outputs, frame, bu.name, prefix="S")
 
         # ignore CONTROLLERS/CONTROLLER
 
