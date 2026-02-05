@@ -184,7 +184,7 @@ def create_frame_triggering(parent, frame, prefix=""):
     
     return frame_triggering
 
-def create_pdu_triggering(parent, pdu, prefix=""):
+def create_pdu_triggering(parent, pdu, gen_msg_type_def, msg_nr_of_repetition_def, msg_delay_time_def, msg_cycle_time_def, prefix=""):
     """Helper function to create a PDU triggering element with timings."""
     pdu_triggering = create_sub_element_fx(parent, "PDU-TRIGGERING")
     pdu_triggering.set("ID", f"{prefix}PDU_{pdu.name}")
@@ -196,6 +196,21 @@ def create_pdu_triggering(parent, pdu, prefix=""):
         repeating_time_range = create_sub_element_fx(cyclic_timing, "REPEATING-TIME-RANGE")
         time_value = f"PT{pdu.cycle_time / 1000.0}S"
         create_sub_element_fx(repeating_time_range, "VALUE", time_value)
+    
+    send_type = pdu.attributes["GenMsgSendType"] if "GenMsgSendType" in pdu.attributes else gen_msg_type_def
+    if send_type and ("event" in send_type.lower() or "spontaneous" in send_type.lower()):
+        event_controlled_timing = create_sub_element_fx(pdu_timings, "EVENT-CONTROLLED-TIMING")
+        pdu.debounce_time_range = int(float(pdu.attributes.get("GenMsgDelayTime", msg_delay_time_def)))
+        debounce_time_range = create_sub_element_fx(event_controlled_timing, "DEBOUNCE-TIME-RANGE")
+        debounce_time_value = f"PT{pdu.debounce_time_range / 1000.0}S"
+        create_sub_element_fx(debounce_time_range, "VALUE", debounce_time_value)
+        pdu.final_repetitions = pdu.attributes.get("GenMsgNrOfRepetition", msg_nr_of_repetition_def)
+        create_sub_element_fx(event_controlled_timing, "FINAL-REPETITIONS", pdu.final_repetitions)
+        pdu.repeating_time_range = int(float(pdu.attributes.get("GenMsgCycleTime", msg_cycle_time_def))) if pdu.cycle_time == 0 else None
+        if pdu.repeating_time_range is not None and pdu.repeating_time_range > 0:
+            repeating_time_range = create_sub_element_fx(event_controlled_timing, "REPEATING-TIME-RANGE")
+            repeating_time_range_value = f"PT{pdu.repeating_time_range / 1000.0}S"
+            create_sub_element_fx(repeating_time_range, "VALUE", repeating_time_range_value)
     
     # PDU reference
     pdu_ref = create_sub_element_fx(pdu_triggering, "PDU-REF")
@@ -539,6 +554,10 @@ def dump(db, f, **options):
         '{{{pre}}}schemaLocation'.format(
             pre=xsi)] = 'http://www.asam.net/xml/fbx ..\\..\\xml_schema\\fibex.xsd http://www.asam.net/xml/fbx/can  ..\\..\\xml_schema\\fibex4can.xsd'
 
+    gen_msg_type_def = getattr(db.frame_defines.get("GenMsgSendType"), 'defaultValue', None)
+    msg_delay_time_def = getattr(db.frame_defines.get("GenMsgDelayTime"), 'defaultValue', None)
+    msg_nr_of_repetition_def = getattr(db.frame_defines.get("GenMsgNrOfRepetition"), 'defaultValue', None)
+    msg_cycle_time_def = getattr(db.frame_defines.get("GenMsgCycleTime"), 'defaultValue', None)
     #
     # Make sure that we can even write to FIBEX
     #
@@ -619,11 +638,11 @@ def dump(db, f, **options):
     pdu_triggerings = create_sub_element_fx(channel, "PDU-TRIGGERINGS")
     for pdu in db.frames:
         # Create regular PDU triggering
-        create_pdu_triggering(pdu_triggerings, pdu)
+        create_pdu_triggering(pdu_triggerings, pdu, gen_msg_type_def, msg_nr_of_repetition_def, msg_delay_time_def, msg_cycle_time_def)
 
         # Create secured PDU triggering if applicable
         if pdu.attribute("SC_Message") and pdu.attribute("SC_Message").lower() == "yes":
-            create_pdu_triggering(pdu_triggerings, pdu, prefix="S")
+            create_pdu_triggering(pdu_triggerings, pdu, gen_msg_type_def, msg_nr_of_repetition_def, msg_delay_time_def, msg_cycle_time_def, prefix="S")
 
 
     frame_triggerings = create_sub_element_fx(channel, "FRAME-TRIGGERINGS")

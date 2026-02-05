@@ -82,6 +82,10 @@ class Frame(object):
     signalGroups = attr.ib(factory=list)  # type: typing.MutableSequence[SignalGroup]
 
     cycle_time = attr.ib(default=0)  # type: int
+    event_controlled_time = attr.ib(default=0)  # type: int
+    debounce_time_range = attr.ib(default=0)  # type: int
+    final_repetitions = attr.ib(default=0)  # type: int
+    repeating_time_range = attr.ib(default=0)  # type: int
 
     is_j1939 = attr.ib(default=False)  # type: bool
     # ('cycleTime', '_cycleTime', int, None),
@@ -172,7 +176,7 @@ class Frame(object):
 
     @property
     def effective_cycle_time(self):
-        """Calculate effective cycle time for frame, depending on singal cycle times"""
+        """Calculate effective cycle time for frame, depending on signal cycle times"""
         min_cycle_time_list = [y for y in [x.cycle_time for x in self.signals] + [self.cycle_time] if y != 0]
         if len(min_cycle_time_list) == 0:
             return 0
