@@ -148,8 +148,11 @@ def create_frame_element(parent, frame, prefix=""):
     frame_element.set("ID", f"{prefix}FRAME_{frame.name}")
     
     create_short_name_desc(frame_element, frame.name, frame.comment)
-    create_sub_element_fx(frame_element, "BYTE-LENGTH", str(frame.size))
-    create_sub_element_fx(frame_element, "PDU-TYPE", "APPLICATION")
+    create_sub_element_fx(frame_element, "BYTE-LENGTH", str(frame.size))    
+    if frame.attribute("NmAsrMessage") and frame.attribute("NmAsrMessage").lower() == "yes":
+        create_sub_element_fx(frame_element, "FRAME-TYPE", "NM")
+    else:
+        create_sub_element_fx(frame_element, "FRAME-TYPE", "APPLICATION")
     
     # PDU instances
     pdu_instances = create_sub_element_fx(frame_element, "PDU-INSTANCES")
@@ -716,7 +719,10 @@ def dump(db, f, **options):
         pdu.set("ID", "PDU_" + frame.name)
         create_short_name_desc(pdu, "PDU_" + frame.name, frame.comment)
         create_sub_element_fx(pdu, "BYTE-LENGTH", str(frame.size))  # DLC
-        create_sub_element_fx(pdu, "PDU-TYPE", "APPLICATION")
+        if frame.attribute("NmAsrMessage") and frame.attribute("NmAsrMessage").lower() == "yes":
+            create_sub_element_fx(pdu, "PDU-TYPE", "NM")
+        else:
+            create_sub_element_fx(pdu, "PDU-TYPE", "APPLICATION")
 
         if frame.is_multiplexed:
             mux = create_sub_element_fx(pdu, "MULTIPLEXER")
