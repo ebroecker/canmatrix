@@ -664,6 +664,10 @@ def dump(db, f, **options):
     for bu in db.ecus:
         ecu = create_sub_element_fx(ecus, "ECU")
         ecu.set("ID", bu.name)
+        nm_address = bu.attribute("NmStationAddress")
+        if nm_address:
+         manufac_extansion = create_sub_element_fx(ecu, "MANUFACTURER-EXTENSION")
+         create_sub_element_te(manufac_extansion, "ECU-ADDRESS",nm_address)
         create_short_name_desc(ecu, bu.name, bu.comment)
         function_refs = create_sub_element_fx(ecu, "FUNCTION-REFS")
         func_ref = create_sub_element_fx(function_refs, "FUNCTION-REF")
