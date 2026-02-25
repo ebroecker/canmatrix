@@ -623,6 +623,11 @@ def dump(db, f, **options):
             create_sub_element_fx(cluster, "SPEED", "500")
     protocol.attrib['{{{pre}}}type'.format(pre=xsi)] = "can:PROTOCOL-TYPE"
     create_sub_element_fx(cluster, "PROTOCOL-VERSION", "20")
+    protocol_type = db.attribute("ProtocolType")
+    if protocol_type:
+         manufac_extension = create_sub_element_fx(cluster, "MANUFACTURER-EXTENSION")
+         create_sub_element_te(manufac_extension,"PROTOCOL-FORMAT",protocol_type)
+
     channel_refs = create_sub_element_fx(cluster, "CHANNEL-REFS")
     # for each channel
     channel_ref = create_sub_element_fx(channel_refs, "CHANNEL-REF")
