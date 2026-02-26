@@ -52,7 +52,7 @@ def get_data_type_name(data_type_code):
 def format_index(index, subindex):
     return f"Index: 0x{index:04X}{subindex:02X}"
 
-def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
+def load(f, **options):  # type: (typing.IO, **typing.Any) -> CanMatrix
     eds_import_encoding = options.get("edsImportEncoding", 'iso-8859-1')
     node_id = options.get("eds_node_id", 0)
     generic = options.get("generic", False)
@@ -242,7 +242,7 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                     current_bit_start += bit_length
                     continue
                 signal_name = name_cleanup(mapped_obj.name)
-                new_sig = canmatrix.Signal(signal_name, size=bit_length, start_bit=current_bit_start)
+                new_sig = Signal(signal_name, size=bit_length, start_bit=current_bit_start)
                 datatype_name = get_data_type_name(mapped_obj.data_type)
                 if "UNSIGNED" in datatype_name:
                     new_sig.is_signed = False
