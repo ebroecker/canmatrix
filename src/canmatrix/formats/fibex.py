@@ -179,7 +179,10 @@ def create_frame_triggering(parent, frame, prefix=""):
     # Frame reference
     frame_ref = create_sub_element_fx(frame_triggering, "FRAME-REF")
     frame_ref.set("ID-REF", f"{prefix}FRAME_{frame.name}")
-    
+    if frame.is_j1939:
+         manufac_extension = create_sub_element_fx(frame_triggering, "MANUFACTURER-EXTENSION")
+         create_sub_element_te(manufac_extension,"PROTOCOL-FORMAT","J1939")
+         
     # CAN-FD behavior (if applicable)
     if frame.is_fd:
         create_sub_element_fx(frame_triggering, "CAN-FRAME-TX-BEHAVIOR", "CAN-FD")
