@@ -623,6 +623,11 @@ def dump(db, f, **options):
             create_sub_element_fx(cluster, "SPEED", "500")
     protocol.attrib['{{{pre}}}type'.format(pre=xsi)] = "can:PROTOCOL-TYPE"
     create_sub_element_fx(cluster, "PROTOCOL-VERSION", "20")
+    protocol_type = db.attribute("ProtocolType")
+    if protocol_type:
+         manufac_extension = create_sub_element_fx(cluster, "MANUFACTURER-EXTENSION")
+         create_sub_element_te(manufac_extension,"PROTOCOL-FORMAT",protocol_type)
+
     channel_refs = create_sub_element_fx(cluster, "CHANNEL-REFS")
     # for each channel
     channel_ref = create_sub_element_fx(channel_refs, "CHANNEL-REF")
@@ -664,6 +669,10 @@ def dump(db, f, **options):
     for bu in db.ecus:
         ecu = create_sub_element_fx(ecus, "ECU")
         ecu.set("ID", bu.name)
+        nm_address = bu.attribute("NmStationAddress")
+        if nm_address:
+         manufac_extansion = create_sub_element_fx(ecu, "MANUFACTURER-EXTENSION")
+         create_sub_element_te(manufac_extansion, "NM-ECU-ADDRESS",nm_address)
         create_short_name_desc(ecu, bu.name, bu.comment)
         function_refs = create_sub_element_fx(ecu, "FUNCTION-REFS")
         func_ref = create_sub_element_fx(function_refs, "FUNCTION-REF")
