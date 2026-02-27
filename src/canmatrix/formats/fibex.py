@@ -151,6 +151,8 @@ def create_frame_element(parent, frame, prefix=""):
     create_sub_element_fx(frame_element, "BYTE-LENGTH", str(frame.size))    
     if frame.attribute("NmAsrMessage") and frame.attribute("NmAsrMessage").lower() == "yes":
         create_sub_element_fx(frame_element, "FRAME-TYPE", "NM")
+    elif (frame.is_j1939):
+        create_sub_element_fx(frame_element, "FRAME-TYPE", "J1939")
     else:
         create_sub_element_fx(frame_element, "FRAME-TYPE", "APPLICATION")
     
@@ -179,9 +181,6 @@ def create_frame_triggering(parent, frame, prefix=""):
     # Frame reference
     frame_ref = create_sub_element_fx(frame_triggering, "FRAME-REF")
     frame_ref.set("ID-REF", f"{prefix}FRAME_{frame.name}")
-    if frame.is_j1939:
-         manufac_extension = create_sub_element_fx(frame_triggering, "MANUFACTURER-EXTENSION")
-         create_sub_element_te(manufac_extension,"PROTOCOL-FORMAT","J1939")
          
     # CAN-FD behavior (if applicable)
     if frame.is_fd:
