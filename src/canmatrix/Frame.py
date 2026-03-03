@@ -624,8 +624,12 @@ class Frame(object):
         rx_length = len(data)
         if rx_length != self.size:
             msg_id = self.arbitration_id.id if self.arbitration_id.id != 0 else self.header_id
-
-            logging.warning(f"Received message 0x{msg_id:08X} with length {rx_length}, expected {self.size}")
+            if msg_id is None:
+                msg_description = "nothing"
+            else:
+                msg_description = f"message 0x{msg_id:08X} with length {rx_length}"
+            msg = f"Received {msg_description}, expected {self.size}"
+            logging.warning(msg)
 
             if allow_truncated:
                 # pad the data with 0xff to prevent the codec from
@@ -638,8 +642,7 @@ class Frame(object):
 
             if len(data) != self.size:
                 # return None
-                raise DecodingFrameLength(
-                    f"Received message 0x{msg_id:04X} with wrong data size: {rx_length} instead of {self.size}")
+                raise DecodingFrameLength(f"{msg} (wrong data size)")
 
         if self.is_pdu_container:
             # note: PDU-Container without header is possible for ARXML-Container-PDUs with NO-HEADER
