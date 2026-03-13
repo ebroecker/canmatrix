@@ -245,8 +245,7 @@ def create_output_port(parent, frame, ecu_name, prefix=""):
 def create_secoc_configuration(frame, auth_info_tx_length_def, freshness_value_tx_length_def, data_id_def, freshness_value_length_def, spdu):
     auth_info_tx_length = int(frame.attribute("SCP_AuthInfoTxLength")) if frame.attribute("SCP_AuthInfoTxLength") is not None else int(auth_info_tx_length_def)
     freshness_value_tx_length = int(frame.attribute("SCP_FreshnessValueTxLength")) if frame.attribute("SCP_FreshnessValueTxLength") is not None else int(freshness_value_tx_length_def)
-    secoc_pdu_length = frame.size + (auth_info_tx_length // 8) + (freshness_value_tx_length // 8)
-    create_sub_element_fx(spdu, "BYTE-LENGTH", str(secoc_pdu_length))
+    create_sub_element_fx(spdu, "BYTE-LENGTH", str(frame.size))
     create_sub_element_fx(spdu, "PDU-TYPE", "OTHER")
     manufac_extansion = create_sub_element_te(spdu, "MANUFACTURER-EXTENSION")
     sec_props = create_sub_element_te(manufac_extansion, "SECURITY-PROPERTIES")
@@ -657,12 +656,13 @@ def dump(db, f, **options):
 
     frame_triggerings = create_sub_element_fx(channel, "FRAME-TRIGGERINGS")
     for frame in db.frames:
-        # Create regular frame triggering
-        create_frame_triggering(frame_triggerings, frame)
-
         # Create secured frame triggering if applicable
         if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
             create_frame_triggering(frame_triggerings, frame, prefix="S")
+        else:
+            # Create regular frame triggering
+            create_frame_triggering(frame_triggerings, frame)
+
 
     #
     # ECUS
@@ -709,11 +709,13 @@ def dump(db, f, **options):
         outputs = create_sub_element_fx(connector, "OUTPUTS")
         for frame in db.frames:
             if bu.name in frame.transmitters:
-                # Create regular output port
-                create_output_port(outputs, frame, bu.name)
                 # Create secured output port if applicable
                 if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
                     create_output_port(outputs, frame, bu.name, prefix="S")
+                else:
+                    # Create regular output port
+                    create_output_port(outputs, frame, bu.name)
+
 
         # ignore CONTROLLERS/CONTROLLER
 
@@ -729,7 +731,12 @@ def dump(db, f, **options):
         pdu = create_sub_element_fx(pdus, "PDU")
         pdu.set("ID", "PDU_" + frame.name)
         create_short_name_desc(pdu, "PDU_" + frame.name, frame.comment)
-        create_sub_element_fx(pdu, "BYTE-LENGTH", str(frame.size))  # DLC
+        byte_length = frame.size
+        if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
+            auth_info_tx_length = int(frame.attribute("SCP_AuthInfoTxLength")) if frame.attribute("SCP_AuthInfoTxLength") is not None else int(auth_info_tx_length_def)
+            freshness_value_tx_length = int(frame.attribute("SCP_FreshnessValueTxLength")) if frame.attribute("SCP_FreshnessValueTxLength") is not None else int(freshness_value_tx_length_def)
+            byte_length = frame.size - ((auth_info_tx_length + freshness_value_tx_length) // 8)
+        create_sub_element_fx(pdu, "BYTE-LENGTH", str(byte_length))  # DLC
         if frame.attribute("NmAsrMessage") and frame.attribute("NmAsrMessage").lower() == "yes":
             create_sub_element_fx(pdu, "PDU-TYPE", "NM")
         else:
@@ -868,12 +875,13 @@ def dump(db, f, **options):
     #
     frames = create_sub_element_fx(elements, "FRAMES")
     for frame in db.frames:
-        # Create regular frame
-        create_frame_element(frames, frame)
-
         # Create secured frame if applicable
         if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
             create_frame_element(frames, frame, prefix="S")
+        else:
+            # Create regular frame
+            create_frame_element(frames, frame)
+
 
     #
     # FUNCTIONS
