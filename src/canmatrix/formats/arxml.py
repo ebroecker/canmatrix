@@ -365,6 +365,13 @@ def create_sub_element(parent, element_name, text=None, dest=None):
         sn.set("DEST", dest)
     return sn
 
+def element_exists(parent, element_name, short_name):
+    for element in parent.iter(element_name):
+        for item in element.iter('SHORT-NAME'):
+            if item.text == short_name:
+                return True
+    return False
+
 
 def get_base_type_of_signal(signal):
     # type: (Signal.Signal) -> typing.Tuple[str, int]
@@ -673,7 +680,8 @@ def dump(dbs, f, **options):
                             signal_to_pdu_mapping,
                             'PACKING-BYTE-ORDER',
                             'MOST-SIGNIFICANT-BYTE-FIRST')
-                signal_ref.text = "/ISignal/{0}".format(signal.name, dest='I-SIGNAL')
+                signal_ref.text = "/ISignal/{0}".format(signal.name)
+                signal_ref.set('DEST', 'I-SIGNAL')
 
                 create_sub_element(signal_to_pdu_mapping, 'START-POSITION',
                                    str(signal.get_startbit(bit_numbering=1)))
@@ -699,6 +707,9 @@ def dump(dbs, f, **options):
                 continue
 
             for signal in frame.signals:
+                if element_exists(elements, 'I-SIGNAL', signal.name):
+                    continue
+
                 signal_ele = create_sub_element(elements, 'I-SIGNAL')
                 create_sub_element(signal_ele, 'SHORT-NAME', signal.name)
                 if ar_version[0] == "4":
@@ -748,6 +759,9 @@ def dump(dbs, f, **options):
                 continue
 
             for signal in frame.signals:
+                if element_exists(elements, 'SYSTEM-SIGNAL', signal.name):
+                    continue
+
                 signal_ele = create_sub_element(elements, 'SYSTEM-SIGNAL')
                 create_sub_element(signal_ele, 'SHORT-NAME', signal.name)
                 if signal.comment:
@@ -841,13 +855,29 @@ def dump(dbs, f, **options):
                 continue
 
             for signal in frame.signals:
+                if element_exists(elements, 'COMPU-METHOD', signal.name):
+                    continue
+
                 compu_method = create_sub_element(elements, 'COMPU-METHOD')
                 create_sub_element(compu_method, 'SHORT-NAME', signal.name)
-                # missing: UNIT-REF
+                if len(signal.values) == 0:
+                    create_sub_element(compu_method, 'CATEGORY', 'SCALE_LINEAR')
+                create_sub_element(compu_method, 'UNIT-REF', text="/DataType/Unit/{}".format(signal.name), dest='UNIT')
                 compu_int_to_phys = create_sub_element(
                     compu_method, 'COMPU-INTERNAL-TO-PHYS')
                 compu_scales = create_sub_element(compu_int_to_phys, 'COMPU-SCALES')
-                for value in sorted(signal.values):
+                if len(signal.values) == 0:
+                    compu_scale = create_sub_element(compu_scales, 'COMPU-SCALE')
+                    create_sub_element(compu_scale, 'SHORT-LABEL', 'Linear_scale')
+                    create_sub_element(compu_scale, 'LOWER-LIMIT', "%.1f" % signal.min)
+                    create_sub_element(compu_scale, 'UPPER-LIMIT', "%.1f" % signal.max)
+                    compu_rationsl_coeff = create_sub_element(compu_scale, 'COMPU-RATIONAL-COEFFS')
+                    compu_numerator = create_sub_element(compu_rationsl_coeff, 'COMPU-NUMERATOR')
+                    create_sub_element(compu_numerator, 'V', "%.1f" % signal.offset)
+                    create_sub_element(compu_numerator, 'V', "%.1f" % signal.factor)
+                    compu_denomiator = create_sub_element(compu_rationsl_coeff, 'COMPU-DENOMINATOR')
+                    create_sub_element(compu_denomiator, 'V', "1")
+                for i, value in enumerate(sorted(signal.values)):
                     compu_scale = create_sub_element(compu_scales, 'COMPU-SCALE')
                     desc = create_sub_element(compu_scale, 'DESC')
                     l2 = create_sub_element(desc, 'L-2')
@@ -856,17 +886,8 @@ def dump(dbs, f, **options):
                     create_sub_element(compu_scale, 'LOWER-LIMIT', str(value))
                     create_sub_element(compu_scale, 'UPPER-LIMIT', str(value))
                     compu_const = create_sub_element(compu_scale, 'COMPU-CONST')
-                    create_sub_element(compu_const, 'VT', signal.values[value])
-                else:
-                    compu_scale = create_sub_element(compu_scales, 'COMPU-SCALE')
-                    # createSubElement(compuScale, 'LOWER-LIMIT', str(#TODO))
-                    # createSubElement(compuScale, 'UPPER-LIMIT', str(#TODO))
-                    compu_rationsl_coeff = create_sub_element(compu_scale, 'COMPU-RATIONAL-COEFFS')
-                    compu_numerator = create_sub_element(compu_rationsl_coeff, 'COMPU-NUMERATOR')
-                    create_sub_element(compu_numerator, 'V', "%g" % signal.offset)
-                    create_sub_element(compu_numerator, 'V', "%g" % signal.factor)
-                    compu_denomiator = create_sub_element(compu_rationsl_coeff, 'COMPU-DENOMINATOR')
-                    create_sub_element(compu_denomiator, 'V', "1")
+                    create_sub_element(compu_const, 'VT', 'cm_' + str(i) + '_'
+                        + re.sub(r'[^\w]', '', signal.values[value].replace(' ', '_')))
 
     ar_package = create_sub_element(subpackages, 'AR-PACKAGE')
     create_sub_element(ar_package, 'SHORT-NAME', 'Unit')
@@ -878,6 +899,9 @@ def dump(dbs, f, **options):
                 continue
 
             for signal in frame.signals:
+                if element_exists(elements, 'UNIT', signal.name):
+                    continue
+
                 unit = create_sub_element(elements, 'UNIT')
                 create_sub_element(unit, 'SHORT-NAME', signal.name)
                 create_sub_element(unit, 'DISPLAY-NAME', signal.unit)
