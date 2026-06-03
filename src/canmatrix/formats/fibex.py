@@ -107,6 +107,37 @@ def create_signal_ref(parent, signal_ref_id):
     signal_ref.set("ID-REF", "SIG_" + signal_ref_id)
     return signal_ref
 
+def create_signal_group_element(parent, frame, sig_group):
+    # type: (_Element, Frame, typing.Any) -> _Element
+    signal_group_element = create_sub_element_fx(parent, "SIGNAL-GROUP")
+    sig_group_id = f"SIGGRP_{frame.name}_{sig_group.name}"
+    signal_group_element.set("ID", sig_group_id)
+    create_short_name_desc(signal_group_element, sig_group.name, "")
+
+    sig_group_dbc_id = getattr(sig_group, "id", None)
+    if sig_group_dbc_id is not None:
+        identifier = create_sub_element_fx(signal_group_element, "IDENTIFIER")
+        create_sub_element_fx(identifier, "IDENTIFIER-VALUE", str(sig_group_dbc_id))
+
+    member_signals = getattr(sig_group, "signals", None) or []
+    if member_signals:
+        ordered_signals = create_sub_element_fx(signal_group_element, "ORDERED-SIGNALS")
+        for seq_num, signal in enumerate(member_signals, start=1):
+            if isinstance(signal, str):
+                signal_obj = frame.signal_by_name(signal)
+                if signal_obj is None:
+                    print(f"Warning: Signal '{signal}' in group '{sig_group.name}' "
+                          f"not found in frame '{frame.name}' - skipping")
+                    continue
+            else:
+                signal_obj = signal
+
+            ordered_signal = create_sub_element_fx(ordered_signals, "ORDERED-SIGNAL")
+            create_sub_element_fx(ordered_signal, "SEQUENCE-NUMBER", str(seq_num))
+            create_signal_ref(ordered_signal, create_signal_id(frame, signal_obj))
+
+    return signal_group_element
+
 
 def bits_to_byte_str(bits, name):
     b = int(bits)
@@ -1015,5 +1046,14 @@ def dump(db, f, **options):
     # REQUIREMENTS
     #
     # requirements = createSubElementFx(elements,  "REQUIREMENTS")
+    has_signal_groups = any(
+        getattr(frame, "signalGroups", None) for frame in db.frames
+    )
+    if has_signal_groups:
+        requirements = create_sub_element_fx(root, "REQUIREMENTS")
+        signal_groups_element = create_sub_element_fx(requirements, "SIGNAL-GROUPS")
+        for frame in db.frames:
+            for sig_group in getattr(frame, "signalGroups", []) or []:
+                create_signal_group_element(signal_groups_element, frame, sig_group)
 
     f.write(lxml.etree.tostring(root, pretty_print=True))

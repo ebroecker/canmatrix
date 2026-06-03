@@ -249,6 +249,9 @@ def load(f, **_options):
             if "transmitters" in frame:
                 new_frame.transmitters = frame["transmitters"]
 
+            if "comment" in frame:
+                new_frame.comment = frame["comment"]
+
             for signal in frame["signals"]:
                 is_little_endian = not signal.get("is_big_endian", False)
                 is_float = signal.get("is_float", False)
