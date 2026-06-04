@@ -668,4 +668,3 @@ def test_env_var_with_val():
     assert var['values']['0'] == 'on'
     assert var['values']['1'] == 'off'
 
-    
