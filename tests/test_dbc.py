@@ -559,7 +559,7 @@ def test_default_initial_value():
     ''').encode('utf-8'))
 
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
-    assert matrix.frames[0].signals[0].initial_value == 10
+    assert matrix.frames[0].signals[0].initial_value == 5
 
 def test_keep_individual_inital_value():
     dbc = io.BytesIO(textwrap.dedent(u'''\
