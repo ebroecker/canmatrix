@@ -78,3 +78,53 @@ def test_yaml_native_types_render_unquoted(default_matrix):
     data = out_file.getvalue().decode("utf-8")
     # default yamlNativeTypes=True => numbers are not quoted strings
     assert "factor: '1'" not in data
+
+
+def test_yaml_field_coverage_round_trip():
+    matrix = CanMatrix()
+    from canmatrix.CanMatrix import matrix_class
+    from canmatrix.Ecu import Ecu
+    matrix.type = matrix_class.SOMEIP
+    matrix.vlan = 42
+
+    ecu = Ecu(name="ECU1")
+    ecu.add_attribute("role", "gateway")
+    matrix.add_ecu(ecu)
+
+    frame = Frame(name="f", arbitration_id=10)
+    frame.receivers = ["ECU1"]
+    frame.event_controlled_time = 5
+    frame.debounce_time_range = 6
+    frame.final_repetitions = 7
+    frame.repeating_time_range = 8
+
+    signal = Signal(name="s", size=8)
+    signal.short_name = "shrt"
+    signal.type_label = "tl"
+    signal.enumeration = "Options"
+    signal.cycle_time = 9
+    signal.calc_min_for_none = False
+    signal.calc_max_for_none = False
+    frame.add_signal(signal)
+    matrix.add_frame(frame)
+
+    out_file = io.BytesIO()
+    canmatrix.formats.dump(matrix, out_file, "yaml", yamlExportAll=True)
+    new_matrix = canmatrix.formats.loads_flat(out_file.getvalue(), "yaml")
+
+    assert new_matrix.type == matrix_class.SOMEIP
+    assert new_matrix.vlan == 42
+    assert new_matrix.ecu_by_name("ECU1").attribute("role") == "gateway"
+    new_frame = new_matrix.frames[0]
+    assert new_frame.receivers == ["ECU1"]
+    assert new_frame.event_controlled_time == 5
+    assert new_frame.debounce_time_range == 6
+    assert new_frame.final_repetitions == 7
+    assert new_frame.repeating_time_range == 8
+    new_signal = new_frame.signals[0]
+    assert new_signal.short_name == "shrt"
+    assert new_signal.type_label == "tl"
+    assert new_signal.enumeration == "Options"
+    assert new_signal.cycle_time == 9
+    assert new_signal.calc_min_for_none is False
+    assert new_signal.calc_max_for_none is False

@@ -118,6 +118,11 @@ def to_dict(db, export_all=False, native_types=False, motorola_bit_format="lsb",
         export_dict['env_vars'] = db.env_vars
         export_dict['baudrate'] = db.baudrate
         export_dict['fd_baudrate'] = db.fd_baudrate
+        export_dict['type'] = db.type.name
+        export_dict['vlan'] = db.vlan
+        ecu_attributes = {ecu.name: ecu.attributes for ecu in db.ecus if ecu.attributes}
+        if ecu_attributes:
+            export_dict['ecu_attributes'] = ecu_attributes
 
         for frame in db.frames:
             frame_attributes = {attribute: frame.attribute(attribute, db=db) for attribute in db.frame_defines}
@@ -147,6 +152,12 @@ def to_dict(db, export_all=False, native_types=False, motorola_bit_format="lsb",
                     "is_multiplexer": signal.is_multiplexer,
                     "mux_value": signal.mux_val,
                     "receivers": signal.receivers,
+                    "short_name": signal.short_name,
+                    "type_label": signal.type_label,
+                    "enumeration": signal.enumeration,
+                    "cycle_time": signal.cycle_time,
+                    "calc_min_for_none": signal.calc_min_for_none,
+                    "calc_max_for_none": signal.calc_max_for_none,
                 }
                 if signal.multiplex is not None:
                     symbolic_signal["multiplex"] = signal.multiplex
@@ -174,7 +185,12 @@ def to_dict(db, export_all=False, native_types=False, motorola_bit_format="lsb",
                  "is_j1939": frame.is_j1939,
                  "header_id": frame.header_id,
                  "pdu_name": frame.pdu_name,
-                 "transmitters": frame.transmitters})
+                 "transmitters": frame.transmitters,
+                 "receivers": frame.receivers,
+                 "event_controlled_time": frame.event_controlled_time,
+                 "debounce_time_range": frame.debounce_time_range,
+                 "final_repetitions": frame.final_repetitions,
+                 "repeating_time_range": frame.repeating_time_range})
 
     return export_dict
 
@@ -229,6 +245,11 @@ def from_dict(data, **_options):
             if "comment" in frame:
                 new_frame.comment = frame["comment"]
 
+            for _attr in ("event_controlled_time", "debounce_time_range",
+                          "final_repetitions", "repeating_time_range"):
+                if _attr in frame:
+                    setattr(new_frame, _attr, frame[_attr])
+
             for signal in frame["signals"]:
                 is_little_endian = not signal.get("is_big_endian", False)
                 is_float = signal.get("is_float", False)
@@ -279,6 +300,11 @@ def from_dict(data, **_options):
                 if signal.get("receivers", False):
                     for ecu in signal["receivers"]:
                         new_signal.add_receiver(ecu)
+                for _attr in ("short_name", "type_label", "enumeration", "cycle_time",
+                              "calc_min_for_none", "calc_max_for_none"):
+                    if _attr in signal:
+                        setattr(new_signal, _attr, signal[_attr])
+
                 if new_signal.is_little_endian is False:
                     new_signal.set_startbit(
                         new_signal.start_bit, bitNumbering=1, startLittle=True)
@@ -308,5 +334,24 @@ def from_dict(data, **_options):
             elif key == 'fd_baudrate':
                 db.fd_baudrate = data[key]
 
+    if "type" in data:
+        db.type = matrix_class[data["type"]]
+    if "vlan" in data:
+        db.vlan = data["vlan"]
+    if "ecu_attributes" in data:
+        for ecu_name, attrs in data["ecu_attributes"].items():
+            ecu = db.ecu_by_name(ecu_name)
+            if ecu is not None:
+                for k, v in attrs.items():
+                    ecu.add_attribute(k, v)
+
     db.update_ecu_list()
+
+    # Restore explicit frame-level receivers after update_ecu_list() rebuilds them
+    # from signal receivers (frame receivers may include ECUs not in any signal).
+    if "messages" in data:
+        for frame_data, frame in zip(data["messages"], db.frames):
+            if "receivers" in frame_data:
+                frame.receivers = list(frame_data["receivers"])
+
     return db
