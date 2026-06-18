@@ -35,157 +35,21 @@ from canmatrix.Signal import Signal
 from canmatrix.CanMatrix import CanMatrix
 from canmatrix.ArbitrationId import ArbitrationId
 from canmatrix.Ecu import Ecu
+from canmatrix.formats import _dict_codec
 
 
 def dump(db, f, **options):
     # type: (canmatrix.CanMatrix, typing.BinaryIO, **str) -> None
 
-    export_canard = options.get('jsonExportCanard', False)
-    motorola_bit_format = options.get('jsonMotorolaBitFormat', "lsb")
-    export_all = options.get('jsonExportAll', False)
-    native_types = options.get('jsonNativeTypes', False)
-    number_converter = float if native_types else str
-    additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
+    export_dict = _dict_codec.to_dict(
+        db,
+        export_all=options.get('jsonExportAll', False),
+        native_types=options.get('jsonNativeTypes', False),
+        motorola_bit_format=options.get('jsonMotorolaBitFormat', "lsb"),
+        export_canard=options.get('jsonExportCanard', False),
+        additional_frame_columns=[x for x in options.get("additionalFrameAttributes", "").split(",") if x],
+    )
 
-
-    export_dict = {}
-    if export_all:
-        export_dict['enumerations'] = db.value_tables
-
-    export_dict['messages'] = []
-
-    if export_canard:
-        for frame in db.frames:
-            signals = {}
-            for signal in frame.signals:
-                signals[
-                    signal.get_startbit(
-                        bit_numbering=1,
-                        start_little=True)] = {
-                    "name": signal.name,
-                    "bit_length": signal.size,
-                    "factor": signal.factor,
-                    "offset": signal.offset}
-            export_dict['messages'].append(
-                {"name": frame.name, "id": hex(frame.arbitration_id.id), "signals": signals})
-
-    elif export_all is False:
-        for frame in db.frames:
-            symbolic_signals = []
-            for signal in frame.signals:
-                if not signal.is_little_endian:
-                    if motorola_bit_format == "msb":
-                        start_bit = signal.get_startbit(bit_numbering=1)
-                    elif motorola_bit_format == "msbreverse":
-                        start_bit = signal.get_startbit()
-                    else:  # motorola_bit_format == "lsb"
-                        start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
-                else:
-                    start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
-
-                symbolic_signals.append({
-                    "name": signal.name,
-                    "start_bit": start_bit,
-                    "bit_length": signal.size,
-                    "factor": number_converter(signal.factor),
-                    "offset": number_converter(signal.offset),
-                    "is_big_endian": signal.is_little_endian is False,
-                    "is_signed": signal.is_signed,
-                    "is_float": signal.is_float,
-                    "is_ascii": signal.is_ascii,
-                })
-            symbolic_frame = {"name": frame.name,
-                              "id": int(frame.arbitration_id.id),
-                              "is_extended_frame": frame.arbitration_id.extended,
-                              "is_fd": frame.is_fd,
-                              "signals": symbolic_signals}
-            frame_attributes = {
-                attr: frame.attribute(attr)
-                for attr in additional_frame_columns
-                if frame.attribute(attr) is not None  # don't export None parameters
-            }
-            if frame_attributes:  # only add attributes if there are any
-                symbolic_frame["attributes"] = frame_attributes
-            export_dict['messages'].append(symbolic_frame)
-    else:  # export_all
-        _define_mapping = {"signal_defines": db.signal_defines, "frame_defines": db.frame_defines,
-                           "global_defines": db.global_defines, "env_defines": db.env_defines, "ecu_defines": db.ecu_defines}
-        for define_type in _define_mapping:
-            export_dict[define_type] = [{"name": a,
-                                         "define": _define_mapping[define_type][a].definition,
-                                         "default": _define_mapping[define_type][a].defaultValue,
-                                         "type": _define_mapping[define_type][a].type} for a in _define_mapping[define_type]]
-        export_dict['ecus'] = {ecu.name: ecu.comment for ecu in db.ecus}
-        export_dict['attributes'] = db.attributes
-        export_dict['value_tables'] = db.value_tables
-        export_dict['env_vars'] = db.env_vars
-        export_dict['baudrate'] = db.baudrate
-        export_dict['fd_baudrate'] = db.fd_baudrate
-
-        for frame in db.frames:
-            frame_attributes = {attribute: frame.attribute(attribute, db=db) for attribute in db.frame_defines}
-            symbolic_signals = []
-            for signal in frame.signals:
-                attributes = {attribute: signal.attribute(attribute, db=db) for attribute in db.signal_defines}
-                values = {key: signal.values[key] for key in signal.values}
-                if not signal.is_little_endian:
-                    if motorola_bit_format == "msb":
-                        start_bit = signal.get_startbit(bit_numbering=1)
-                    elif motorola_bit_format == "msbreverse":
-                        start_bit = signal.get_startbit()
-                    else:  # motorola_bit_format == "lsb"
-                        start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
-                else:  # motorola_bit_format == "lsb"
-                    start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
-
-                symbolic_signal = {
-                    "name": signal.name,
-                    "start_bit": start_bit,
-                    "bit_length": signal.size,
-                    "factor": number_converter(signal.factor),
-                    "offset": number_converter(signal.offset),
-                    "min": number_converter(signal.min),
-                    "max": number_converter(signal.max),
-                    "is_big_endian": signal.is_little_endian is False,
-                    "is_signed": signal.is_signed,
-                    "is_float": signal.is_float,
-                    "is_ascii": signal.is_ascii,
-                    "comment": signal.comment,
-                    "comments": signal.comments,
-                    "attributes": attributes,
-                    "initial_value": number_converter(signal.initial_value),
-                    "values": values,
-                    "is_multiplexer": signal.is_multiplexer,
-                    "mux_value": signal.mux_val,
-                    "receivers": signal.receivers,
-                }
-                if signal.multiplex is not None:
-                    symbolic_signal["multiplex"] = signal.multiplex
-                if signal.unit:
-                    symbolic_signal["unit"] = signal.unit
-                if signal.muxer_for_signal is not None:
-                    symbolic_signal["muxer_for_signal"] = signal.muxer_for_signal
-                if signal.mux_val_grp:
-                    symbolic_signal["mux_val_grp"] = signal.mux_val_grp
-
-                symbolic_signals.append(symbolic_signal)
-
-            export_dict['messages'].append(
-                {"name": frame.name,
-                 "id": int(frame.arbitration_id.id),
-                 "is_extended_frame": frame.arbitration_id.extended,
-                 "is_fd": frame.is_fd,
-                 "signals": symbolic_signals,
-                 "attributes": frame_attributes,
-                 "comment": frame.comment,
-                 "length": frame.size,
-                 "is_complex_multiplexed": frame.is_complex_multiplexed,
-                 "mux_names": frame.mux_names,
-                 "cycle_time": frame.cycle_time,
-                 "is_j1939": frame.is_j1939,
-                 "header_id": frame.header_id,
-                 "pdu_name": frame.pdu_name,
-                 "transmitters": frame.transmitters})
     import io
     temp = io.TextIOWrapper(f, encoding='UTF-8')
 
