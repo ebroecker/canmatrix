@@ -128,3 +128,24 @@ def test_yaml_field_coverage_round_trip():
     assert new_signal.cycle_time == 9
     assert new_signal.calc_min_for_none is False
     assert new_signal.calc_max_for_none is False
+
+
+def test_yaml_frame_id_as_hex():
+    matrix = CanMatrix()
+    matrix.add_frame(Frame(name="f", arbitration_id=26))
+
+    # default: id stays an integer
+    default_out = io.BytesIO()
+    canmatrix.formats.dump(matrix, default_out, "yaml")
+    default_struct = yaml.safe_load(default_out.getvalue())
+    assert default_struct["messages"][0]["id"] == 26
+
+    # with the flag: id is emitted as a hex string
+    hex_out = io.BytesIO()
+    canmatrix.formats.dump(matrix, hex_out, "yaml", yamlFrameIdAsHex=True)
+    hex_struct = yaml.safe_load(hex_out.getvalue())
+    assert hex_struct["messages"][0]["id"] == "0x1a"
+
+    # and the hex export still round-trips back to the original integer id
+    new_matrix = canmatrix.formats.loads_flat(hex_out.getvalue(), "yaml")
+    assert new_matrix.frames[0].arbitration_id.id == 26

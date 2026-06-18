@@ -39,6 +39,7 @@ def dump(db, f, **options):
         native_types=options.get('yamlNativeTypes', True),
         motorola_bit_format=options.get('yamlMotorolaBitFormat', "lsb"),
         additional_frame_columns=[x for x in options.get("additionalFrameAttributes", "").split(",") if x],
+        frame_id_as_hex=options.get('yamlFrameIdAsHex', False),
     )
     text = yaml.safe_dump(export_dict, default_flow_style=False, sort_keys=True, allow_unicode=True)
     f.write(text.encode('utf-8'))

@@ -49,8 +49,8 @@ def _start_bit(signal, motorola_bit_format):
 
 
 def to_dict(db, export_all=False, native_types=False, motorola_bit_format="lsb",
-            export_canard=False, additional_frame_columns=None):
-    # type: (canmatrix.CanMatrix, bool, bool, str, bool, typing.Optional[typing.Sequence[str]]) -> dict
+            export_canard=False, additional_frame_columns=None, frame_id_as_hex=False):
+    # type: (canmatrix.CanMatrix, bool, bool, str, bool, typing.Optional[typing.Sequence[str]], bool) -> dict
     number_converter = float if native_types else str
     additional_frame_columns = list(additional_frame_columns or [])
 
@@ -92,7 +92,7 @@ def to_dict(db, export_all=False, native_types=False, motorola_bit_format="lsb",
                     "is_ascii": signal.is_ascii,
                 })
             symbolic_frame = {"name": frame.name,
-                              "id": int(frame.arbitration_id.id),
+                              "id": hex(frame.arbitration_id.id) if frame_id_as_hex else int(frame.arbitration_id.id),
                               "is_extended_frame": frame.arbitration_id.extended,
                               "is_fd": frame.is_fd,
                               "signals": symbolic_signals}
@@ -172,7 +172,7 @@ def to_dict(db, export_all=False, native_types=False, motorola_bit_format="lsb",
 
             export_dict['messages'].append(
                 {"name": frame.name,
-                 "id": int(frame.arbitration_id.id),
+                 "id": hex(frame.arbitration_id.id) if frame_id_as_hex else int(frame.arbitration_id.id),
                  "is_extended_frame": frame.arbitration_id.extended,
                  "is_fd": frame.is_fd,
                  "signals": symbolic_signals,
@@ -213,7 +213,10 @@ def from_dict(data, **_options):
             db.add_ecu(new_ecu)
     if "messages" in data:
         for frame in data["messages"]:
-            arb_id = ArbitrationId(id=frame["id"], extended=frame.get("is_extended_frame", "False"))
+            frame_id = frame["id"]
+            if isinstance(frame_id, str):
+                frame_id = int(frame_id, 16) if frame_id.lower().startswith("0x") else int(frame_id)
+            arb_id = ArbitrationId(id=frame_id, extended=frame.get("is_extended_frame", "False"))
             new_frame = Frame(frame["name"], arbitration_id=arb_id, size=8)
             if "length" in frame:
                 new_frame.size = frame["length"]
