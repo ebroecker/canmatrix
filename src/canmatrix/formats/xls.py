@@ -423,6 +423,7 @@ def load(file, **options):
         # new frame detected
         if sh.cell(row_num, index['ID']).value != frame_id:
             # new Frame
+            signal_name = ""  # reset so the first signal of a new frame is never skipped
             frame_id = sh.cell(row_num, index['ID']).value
             frame_name = sh.cell(row_num, index['frameName']).value
             cycle_time = sh.cell(row_num, index['cycle']).value
