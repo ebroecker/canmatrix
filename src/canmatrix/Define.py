@@ -60,7 +60,7 @@ class Define(object):
         # for any known type:
         if definition[0:3] == 'INT':
             self.type = 'INT'
-            min, max = definition[4:].split(' ', 2)
+            min, max = definition.split()[1:3]
             self.min = safe_convert_str_to_int(min)
             self.max = safe_convert_str_to_int(max)
 
@@ -79,13 +79,13 @@ class Define(object):
 
         elif definition[0:3] == 'HEX':  # differently rendered in DBC editor, but values are saved like for an INT
             self.type = 'HEX'
-            min, max = definition[4:].split(' ', 2)
+            min, max = definition.split()[1:3]
             self.min = safe_convert_str_to_int(min)
             self.max = safe_convert_str_to_int(max)
 
         elif definition[0:5] == 'FLOAT':
             self.type = 'FLOAT'
-            min, max = definition[6:].split(' ', 2)
+            min, max = definition.split()[1:3]
             self.min = DefaultFloatFactory(min)
             self.max = DefaultFloatFactory(max)
 

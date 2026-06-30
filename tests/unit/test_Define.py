@@ -96,3 +96,22 @@ def test_define_for_float():
     assert define.type == "FLOAT"
     assert define.min == decimal.Decimal('-2.2')
     assert define.max == decimal.Decimal('111.11')
+
+
+@pytest.mark.parametrize("definition,exp_type,exp_min,exp_max", [
+    ("INT 0 15", "INT", 0, 15),
+    ("INT  0 15", "INT", 0, 15),          # extra space between type and value
+    ("INT   -5   10", "INT", -5, 10),     # irregular spacing, negative value
+    ("HEX 0 255", "HEX", 0, 255),
+    ("HEX  0 255", "HEX", 0, 255),
+    ("FLOAT 0 1.5", "FLOAT", 0, decimal.Decimal('1.5')),
+    ("FLOAT  -2.5 2.5", "FLOAT", decimal.Decimal('-2.5'), decimal.Decimal('2.5')),
+])
+def test_define_tolerates_extra_whitespace(definition, exp_type, exp_min, exp_max):
+    # Vector/CANdb DBC exporters emit extra spaces between tokens. The value
+    # splitter must not assume a single space; otherwise "INT  0 15" raised
+    # ValueError and the define was silently dropped on DBC import.
+    define = Define(definition)
+    assert define.type == exp_type
+    assert define.min == exp_min
+    assert define.max == exp_max
