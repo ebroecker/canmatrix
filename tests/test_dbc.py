@@ -42,6 +42,29 @@ def test_long_signal_name_imports():
     assert name_found is True
 
 
+def test_extra_whitespace_frame_define_roundtrips():
+    # A BA_DEF_ written with extra whitespace between tokens (as real exporters
+    # emit) must not be silently dropped on import; otherwise the per-frame BA_
+    # attribute is kept and dump() later raises KeyError on the missing define.
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    BO_ 2147483648 FDFrame: 8 TEST_ECU
+     SG_ sig1 : 0|8@1+ (1,0) [0|255] "" TEST_ECU
+
+    BA_DEF_ BO_  "VFrameFormat" INT  0 15;
+    BA_DEF_DEF_  "VFrameFormat" 0;
+    BA_ "VFrameFormat" BO_ 2147483648 15;
+    ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc)
+    assert "VFrameFormat" in matrix.frame_defines
+    assert matrix.frame_defines["VFrameFormat"].type == "INT"
+
+    out = io.BytesIO()
+    canmatrix.formats.dump(matrix, out, "dbc")  # previously raised KeyError
+    reloaded = canmatrix.formats.dbc.load(io.BytesIO(out.getvalue()))
+    assert "VFrameFormat" in reloaded.frame_defines
+
+
 def test_create_define():
     defaults = {}
     test_string = canmatrix.formats.dbc.create_define("my_data_type", Define('ENUM "A","B"'), "BA_", defaults)
