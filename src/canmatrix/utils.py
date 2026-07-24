@@ -33,6 +33,8 @@ from string import hexdigits
 from builtins import *
 from itertools import zip_longest
 import struct
+from decimal import Decimal, InvalidOperation
+
 
 from canmatrix.ArbitrationId import ArbitrationId
 
@@ -229,3 +231,19 @@ def pack_bitstring(length, is_float, value, signed):
 
     return bitstring
 
+
+def set_attribute_with_type_conversion(target_obj, col_head, value):
+    col_head_clean = col_head.replace("signal.", "").replace("frame.", "")
+
+    if hasattr(target_obj, col_head_clean):
+        target_type = type(getattr(target_obj, col_head_clean))
+        try:
+            if target_type == Decimal and value is None:
+                converted_value = None  # oder ein Standard-Decimal wie Decimal(0)
+            else:
+                converted_value = target_type(value)
+            setattr(target_obj, col_head_clean, converted_value)
+        except (ValueError, TypeError, InvalidOperation):
+            setattr(target_obj, col_head_clean, value)
+    else:
+        setattr(target_obj, col_head_clean, value)

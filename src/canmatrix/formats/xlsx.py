@@ -32,6 +32,7 @@ import openpyxl.utils
 
 import canmatrix
 import canmatrix.formats.xls_common
+import camatrix.utils
 
 from openpyxl.worksheet.dimensions import ColumnDimension
 from openpyxl.styles import NamedStyle, Font, Alignment, PatternFill, Border, Side
@@ -423,10 +424,7 @@ def load(file, **options):
 
             for col_head in column_heads:
                 if col_head.startswith("frame."):
-                    command_str = col_head.replace("frame", "new_frame")
-                    command_str += "=" + str(row[column_heads.index(col_head)].value)
-                    exec(command_str)
-                    
+                    canmatrix.utils.set_attribute_with_type_conversion(new_frame, col_head, row[column_heads.index(col_head)].value)
             db.add_frame(new_frame)
 
             # eval launch_type
@@ -549,11 +547,7 @@ def load(file, **options):
 
         for col_head in column_heads: # todo explain this possibly dangerous code with eval
             if col_head.startswith("signal."):
-                command_str = col_head.replace("signal", "new_signal")
-                command_str += "=" + str(row[column_heads.index(col_head)].value)
-                exec(command_str)
-
-
+                canmatrix.utils.set_attribute_with_type_conversion(new_signal, col_head, row[column_heads.index(col_head)].value)
 
     # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
     for frame in db.frames:
