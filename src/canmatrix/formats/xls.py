@@ -333,10 +333,7 @@ def read_additional_signal_attributes(signal, attribute_name, attribute_value):
     if not attribute_name.startswith("signal"):
         return
     if attribute_name.replace("signal.", "") in vars(signal):
-        command_str = attribute_name + "="
-        command_str += str(attribute_value)
-        if len(str(attribute_value)) > 0:
-            exec(command_str)
+        canmatrix.utils.set_attribute_with_type_conversion(signal, attribute_name, attribute_value)
     else:
         pass
 
@@ -458,10 +455,8 @@ def load(file, **options):
 
             for additional_index in additional_inputs:
                 if "frame" in additional_inputs[additional_index]:
-                    command_str = additional_inputs[additional_index].replace("frame", "new_frame")
-                    command_str += "="
-                    command_str += str(sh.cell(row_num, additional_index).value)
-                    exec(command_str)
+                    canmatrix.utils.set_attribute_with_type_conversion(new_frame, additional_inputs[additional_index], sh.cell(row_num, additional_index).value)
+
 
         # new signal detected
         if sh.cell(row_num, index['signalName']).value != signal_name \
