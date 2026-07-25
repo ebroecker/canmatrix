@@ -340,3 +340,33 @@ def test_merge(tmpdir, run):
         assert b"BO_ 291" in content
         assert b"BO_ 292" in content
         assert b"BO_ 293" in content
+
+
+@pytest.mark.parametrize(
+    "module, command",
+    [
+        ("canmatrix.cli.convert", "cli_convert"),
+        ("canmatrix.cli.compare", "cli_compare"),
+    ],
+)
+def test_cli_no_duplicatie_options(
+    module: str, command: str,
+    recwarn: pytest.WarningsRecorder
+) -> None:
+    import importlib
+
+    from click.testing import CliRunner
+
+    module = importlib.import_module(module)
+    cli = getattr(module, command)
+
+    cli_runner = CliRunner()
+    result = cli_runner.invoke(cli, ["--help"])
+
+    assert result.exit_code == 0
+
+    for warn in recwarn:
+        if warn.category == UserWarning and "parameters should be unique" in str(
+            warn.message
+        ):
+            pytest.fail(str(warn.message))

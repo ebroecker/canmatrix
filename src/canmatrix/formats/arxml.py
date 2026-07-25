@@ -24,6 +24,7 @@
 # arxml-files are the can-matrix-definitions and a lot more in AUTOSAR-Context
 # currently Support for Autosar 3.2 and 4.0-4.3 is planned
 # AUTOSAR 4.2.2 is partial support -> 2024/05/20
+from __future__ import annotations
 
 import copy
 import decimal
