@@ -171,7 +171,8 @@ def dump(in_db, f, **options):
             db.env_vars[env_var_name[:32]] = db.env_vars.pop(env_var_name)
             db.add_env_defines("SystemEnvVarLongSymbol", "STRING")
 
-    header = "VERSION \"created by canmatrix\"\n\n\nNS_ :\n\nBS_:\n\n"
+    new_symbols = "".join("    " + symbol + "\n" for symbol in db.new_symbols)
+    header = "VERSION \"created by canmatrix\"\n\n\nNS_ :\n" + new_symbols + "\nBS_:\n\n"
     f.write(header.encode(dbc_export_encoding, ignore_encoding_errors))
 
     # ECUs
@@ -478,7 +479,7 @@ def dump(in_db, f, **options):
 
 
 class _FollowUps(object):
-    NOTHING, SIGNAL_COMMENT, FRAME_COMMENT, BOARD_UNIT_COMMENT, GLOBAL_COMMENT = range(5)
+    NOTHING, SIGNAL_COMMENT, FRAME_COMMENT, BOARD_UNIT_COMMENT, GLOBAL_COMMENT, NEW_SYMBOLS = range(6)
 
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
@@ -547,6 +548,16 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                         board_unit.add_comment(comment[:-1].strip()[:-1])
                 continue
             decoded = l.decode(dbc_import_encoding).strip()
+            if follow_up == _FollowUps.NEW_SYMBOLS:
+                # the NS_ section lists bare symbol names, one per line, until
+                # the next section keyword (usually BS_:) starts.
+                if re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", decoded):
+                    db.new_symbols.append(decoded)
+                    continue
+                follow_up = _FollowUps.NOTHING
+            if decoded.startswith("NS_ ") or decoded == "NS_:":
+                follow_up = _FollowUps.NEW_SYMBOLS
+                continue
             if decoded.startswith("BO_ "):
                 regexp = re.compile(r"^BO_ ([^\ ]+) ([^\ ]+) *: *([^\ ]+) ([^\ ]+)")
                 temp = regexp.match(decoded)

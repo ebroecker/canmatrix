@@ -102,6 +102,7 @@ class CanMatrix(object):
     value_tables = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.MutableMapping]
     env_vars = attr.ib(factory=dict)  # type: typing.MutableMapping[str, typing.MutableMapping]
     signals = attr.ib(factory=list)  # type: typing.MutableSequence[Signal]
+    new_symbols = attr.ib(factory=list)  # type: typing.MutableSequence[str]
     baudrate = attr.ib(default=0)  # type:int
     fd_baudrate = attr.ib(default=0)  # type:int
     vlan = attr.ib(default=None)  # type:int
