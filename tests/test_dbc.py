@@ -65,6 +65,37 @@ def test_extra_whitespace_frame_define_roundtrips():
     assert "VFrameFormat" in reloaded.frame_defines
 
 
+def test_new_symbols_section_roundtrips():
+    # The NS_ ("new symbols") section lists the DBC keywords a file uses. It was
+    # never parsed, and dump() always wrote an empty NS_ :, so a dbc->dbc
+    # conversion silently dropped the whole section.
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    VERSION "test"
+
+
+    NS_ :
+        NS_DESC_
+        CM_
+        BA_DEF_
+        BA_
+
+    BS_:
+
+    BU_: TEST_ECU
+
+    BO_ 100 TestFrame: 8 TEST_ECU
+     SG_ sig1 : 0|8@1+ (1,0) [0|255] "" TEST_ECU
+    ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc)
+    assert matrix.new_symbols == ["NS_DESC_", "CM_", "BA_DEF_", "BA_"]
+
+    out = io.BytesIO()
+    canmatrix.formats.dump(matrix, out, "dbc")
+    reloaded = canmatrix.formats.dbc.load(io.BytesIO(out.getvalue()))
+    assert reloaded.new_symbols == ["NS_DESC_", "CM_", "BA_DEF_", "BA_"]
+
+
 def test_create_define():
     defaults = {}
     test_string = canmatrix.formats.dbc.create_define("my_data_type", Define('ENUM "A","B"'), "BA_", defaults)
