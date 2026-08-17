@@ -29,6 +29,16 @@ import attr
 import warnings
 import typing
 from canmatrix.exceptions import ArbitrationIdOutOfRange, J1939NeedsExtendedIdentifier
+
+
+def _check_range(name, value, mask):  # type: (str, int, int) -> None
+    if value != value & mask:
+        raise ValueError(
+            "{name} {value} out of range (0-{maximum})".format(
+                name=name, value=value, maximum=mask)
+        )
+
+
 @attr.s
 class ArbitrationId(object):
     standard_id_mask = ((1 << 11) - 1)
@@ -169,6 +179,64 @@ class ArbitrationId(object):
         return cls(
             id = (pgn << 8), extended = True
         )
+
+    @classmethod
+    def from_j1939_fields(cls, pdu_format, pdu_specific, priority=0, edp=0, dp=0,
+                          source_address=0):
+        # type: (int, int, int, int, int, int) -> ArbitrationId
+        """Build an extended ArbitrationId from the individual J1939 bit fields.
+
+        :param pdu_format: PDU Format (PF), 8 bits (0-255)
+        :param pdu_specific: PDU Specific (PS), 8 bits (0-255) -- destination
+            address (PF < 240) or group extension (PF >= 240)
+        :param priority: message priority, 3 bits (0-7)
+        :param edp: Extended Data Page, 1 bit (0-1)
+        :param dp: Data Page, 1 bit (0-1)
+        :param source_address: source address (SA), 8 bits (0-255)
+        :rtype: ArbitrationId
+        """
+        _check_range("priority", priority, 0x7)
+        _check_range("edp", edp, 0x1)
+        _check_range("dp", dp, 0x1)
+        _check_range("pdu_format", pdu_format, 0xFF)
+        _check_range("pdu_specific", pdu_specific, 0xFF)
+        _check_range("source_address", source_address, 0xFF)
+        _id = (
+            (priority << 26)
+            | (edp << 25)
+            | (dp << 24)
+            | (pdu_format << 16)
+            | (pdu_specific << 8)
+            | source_address
+        )
+        return cls(id=_id, extended=True)
+
+    @classmethod
+    def from_pgn_fields(cls, pgn, priority=0, source_address=0, destination=None):
+        # type: (int, int, int, typing.Optional[int]) -> ArbitrationId
+        """Build an extended ArbitrationId from a PGN plus its surrounding fields.
+
+        :param pgn: Parameter Group Number, 18 bits (0-0x3FFFF)
+        :param priority: message priority, 3 bits (0-7)
+        :param source_address: source address (SA), 8 bits (0-255)
+        :param destination: destination address, 8 bits (0-255). Only valid for
+            PDU1 messages (PDU format < 240); raises ValueError otherwise.
+        :rtype: ArbitrationId
+        """
+        _check_range("pgn", pgn, 0x3FFFF)
+        _check_range("priority", priority, 0x7)
+        _check_range("source_address", source_address, 0xFF)
+        _id = (pgn << 8) | (priority << 26) | source_address
+        if destination is not None:
+            _check_range("destination", destination, 0xFF)
+            pdu_format = (_id >> 16) & 0xFF
+            if pdu_format >= 240:
+                raise ValueError(
+                    "destination is only valid for PDU1 messages "
+                    "(PDU format < 240)"
+                )
+            _id |= destination << 8
+        return cls(id=_id, extended=True)
 
     def to_compound_integer(self):
         if self.extended:

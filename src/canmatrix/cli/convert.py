@@ -124,6 +124,11 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--jsonExportAll/--no-jsonExportAll', 'jsonExportAll', default=False, help="Export more data to json format")
 @click.option('--jsonMotorolaBitFormat', 'jsonMotorolaBitFormat', default="lsb", help="Json format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
 @click.option('--jsonNativeTypes/--no-jsonNativeTypes', 'jsonNativeTypes', default=False, help="Uses native json representation for decimals instead of string.")
+# yaml switches
+@click.option('--yamlExportAll/--no-yamlExportAll', 'yamlExportAll', default=False, help="Export more data to yaml format")
+@click.option('--yamlMotorolaBitFormat', 'yamlMotorolaBitFormat', default="lsb", help="Yaml format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
+@click.option('--yamlNativeTypes/--no-yamlNativeTypes', 'yamlNativeTypes', default=True, help="Uses native yaml representation for decimals instead of string.")
+@click.option('--yamlFrameIdAsHex/--no-yamlFrameIdAsHex', 'yamlFrameIdAsHex', default=False, help="Export frame id as hexadecimal string in yaml format\ndefault: False")
 #eds switches
 @click.option('--edsImportEncoding', 'edsImportEncoding', default="iso-8859-1", help="Import charset of EDS format\ndefault iso-8859-1")
 @click.option('--edsNode', 'eds_node_id', default=1, help="Node-Id for EDS format\ndefault 1")
@@ -135,9 +140,9 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
     """
     canmatrix.cli.convert [options] import-file export-file
 
-    import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
-    export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym|*.py
-
+    \b
+    import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.yaml|*.xls(x)|*.sym
+    export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.yaml|*.xls(x)|*.sym|*.py
     """
 
     root_logger = canmatrix.log.setup_logger()
