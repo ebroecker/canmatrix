@@ -32,8 +32,16 @@ import openpyxl.utils
 
 import canmatrix
 import canmatrix.formats.xls_common
+import camatrix.utils
+
 from openpyxl.worksheet.dimensions import ColumnDimension
 from openpyxl.styles import NamedStyle, Font, Alignment, PatternFill, Border, Side
+
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix, matrix_class
+from canmatrix.Ecu import Ecu
+from canmatrix.ArbitrationId import ArbitrationId
 
 logger = logging.getLogger(__name__)
 
@@ -215,7 +223,7 @@ def dump(db, filename, **options):
 
     write_excel_line(worksheet, 0, 0, row_array, sty_header)
 
-    if db.type == canmatrix.matrix_class.CAN:
+    if db.type == matrix_class.CAN:
         frame_hash = {}
         logger.debug("DEBUG: Length of db.frames is %d", len(db.frames))
         for frame in db.frames:
@@ -355,7 +363,7 @@ def load(file, **options):
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
     workbook = openpyxl.open(file)
     sheet = workbook._sheets[0]
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
     # Defines not imported...
     db.add_frame_defines("GenMsgDelayTime", 'INT 0 65535')
     db.add_frame_defines("GenMsgCycleTimeActive", 'INT 0 65535')
@@ -377,7 +385,7 @@ def load(file, **options):
 
     # ECUs:
     for x in range(ecu_start, ecu_end):
-        db.add_ecu(canmatrix.Ecu(column_heads[x]))
+        db.add_ecu(Ecu(column_heads[x]))
         all_ecu_names.append(column_heads[x])
     # initialize:
     frame_id = None
@@ -410,16 +418,13 @@ def load(file, **options):
             # launch_param = str(int(launch_param))
 
             if frame_id.endswith("xh"):
-                new_frame = canmatrix.Frame(frame_name, canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True), size=dlc)
+                new_frame = Frame(frame_name, ArbitrationId(int(frame_id[:-2], 16), extended=True), size=dlc)
             else:
-                new_frame = canmatrix.Frame(frame_name, arbitration_id=int(frame_id[:-1], 16), size=dlc)
+                new_frame = Frame(frame_name, arbitration_id=int(frame_id[:-1], 16), size=dlc)
 
             for col_head in column_heads:
                 if col_head.startswith("frame."):
-                    command_str = col_head.replace("frame", "new_frame")
-                    command_str += "=" + str(row[column_heads.index(col_head)].value)
-                    exec(command_str)
-                    
+                    canmatrix.utils.set_attribute_with_type_conversion(new_frame, col_head, row[column_heads.index(col_head)].value)
             db.add_frame(new_frame)
 
             # eval launch_type
@@ -467,7 +472,7 @@ def load(file, **options):
                             new_frame.add_transmitter(ecu_name)
                         if 'r' in ecu_sender_receiver:
                             receiver.append(ecu_name)
-                new_signal = canmatrix.Signal(signal_name,
+                new_signal = Signal(signal_name,
                                               start_bit=(start_byte - 1) * 8 + start_bit,
                                               size=signal_length,
                                               is_little_endian=is_little_endian,
@@ -542,11 +547,7 @@ def load(file, **options):
 
         for col_head in column_heads: # todo explain this possibly dangerous code with eval
             if col_head.startswith("signal."):
-                command_str = col_head.replace("signal", "new_signal")
-                command_str += "=" + str(row[column_heads.index(col_head)].value)
-                exec(command_str)
-
-
+                canmatrix.utils.set_attribute_with_type_conversion(new_signal, col_head, row[column_heads.index(col_head)].value)
 
     # dlc-estimation / dlc is not in xls, thus calculate a minimum-dlc:
     for frame in db.frames:

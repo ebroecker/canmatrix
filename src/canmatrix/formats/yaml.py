@@ -19,116 +19,35 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 #
-# this script exports yaml-files from a canmatrix-object
-# yaml-files are just object-dumps human readable.
-# This export is complete, no information lost
+# this script imports and exports structured yaml files for a canmatrix object.
+# the yaml structure mirrors the json format (see canmatrix.formats._dict_codec),
+# so json and yaml describe the same logical model.
 
-import copy
 import typing
-from builtins import *
-
-import yaml
 
 import canmatrix
+from canmatrix.formats import _dict_codec
 
-try:
-    from yaml.representer import SafeRepresenter
-except ImportError:
-    yaml = None
+import yaml  # noqa: F401  (import guarded by formats/__init__.py)
 
 
-representers = False
-try:
-    yaml.add_representer(int, SafeRepresenter.represent_int)
-    yaml.add_representer(str, SafeRepresenter.represent_unicode)
-    yaml.add_representer(list, SafeRepresenter.represent_list)
-    representers = True
-except:
-    representers = False
-    # some error with representers ... continue anyway
-
-_yaml_initialized = False
-
-
-def dump(db, f, **options):  # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
-    __init_yaml()
-    new_db = copy.deepcopy(db)
-
-    for i, frame in enumerate(new_db.frames):
-        for j, signal in enumerate(frame.signals):
-            if not signal.is_little_endian:
-                signal.start_bit = signal.get_startbit(bit_numbering=1, start_little=True)
-                # new_db.frames[i].signals[j].start_bit = signal.start_bit
-
-    # f = open(filename, "w")
-    if representers:
-        f.write(yaml.dump(new_db))
-    else:
-        f.write(yaml.dump(new_db).encode('utf8'))
+def dump(db, f, **options):
+    # type: (canmatrix.CanMatrix, typing.BinaryIO, **typing.Any) -> None
+    export_dict = _dict_codec.to_dict(
+        db,
+        export_all=options.get('yamlExportAll', False),
+        native_types=options.get('yamlNativeTypes', True),
+        motorola_bit_format=options.get('yamlMotorolaBitFormat', "lsb"),
+        additional_frame_columns=[x for x in options.get("additionalFrameAttributes", "").split(",") if x],
+        frame_id_as_hex=options.get('yamlFrameIdAsHex', False),
+    )
+    text = yaml.safe_dump(export_dict, default_flow_style=False, sort_keys=True, allow_unicode=True)
+    f.write(text.encode('utf-8'))
 
 
-def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
-    __init_yaml()
-    db = yaml.safe_load(f)
+def load(f, **options):
+    # type: (typing.BinaryIO, **typing.Any) -> canmatrix.CanMatrix
+    yaml_data = yaml.safe_load(f)
+    db = _dict_codec.from_dict(yaml_data, **options)
+    f.close()
     return db
-
-
-T = typing.TypeVar('T')
-
-
-def _constructor(loader, node, cls, mapping=None):
-    # type: (typing.Any, typing.Any, typing.Type[T], typing.Mapping) -> T
-    d = {k.lstrip('_'): v for k, v in loader.construct_mapping(node).items()}
-    name = d.pop('name')
-    if mapping:
-        for old, new in mapping.items():
-            d[new] = d.pop(old)
-    return cls(name, **d)  # type: ignore
-
-
-def _frame_constructor(loader, node):
-    return _constructor(
-        loader=loader,
-        node=node,
-        cls=canmatrix.Frame,
-        mapping={
-            'size': 'dlc',
-        },
-    )
-
-
-def _signal_constructor(loader, node):
-    signal = _constructor(
-        loader=loader,
-        node=node,
-        cls=canmatrix.Signal,
-        mapping={
-            'startbit': 'startBit',  # todo shall probably be updated to match current names like start_bit
-            'signalsize': 'signalSize',
-        },
-    )
-
-    if not signal.is_little_endian:
-        signal.set_startbit(
-            loader.construct_mapping(node)['_startbit'],
-            bitNumbering=1,
-            startLittle=False)
-
-    return signal
-
-
-def _frame_representer(dumper, data):
-    node = yaml.representer.Representer.represent_object(dumper, data)
-    node.tag = '{}:Frame'.format(node.tag.partition(':python/object:')[0])
-
-    return node
-
-
-def __init_yaml():
-    """Lazy init yaml because canmatrix might not be fully loaded when loading this format."""
-    global _yaml_initialized
-    if not _yaml_initialized:
-        _yaml_initialized = True
-        yaml.add_constructor(u'tag:yaml.org,2002:Frame', _frame_constructor)
-        yaml.add_constructor(u'tag:yaml.org,2002:Signal', _signal_constructor)
-        yaml.add_representer(canmatrix.Frame, _frame_representer)

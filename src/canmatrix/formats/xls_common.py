@@ -22,22 +22,22 @@
 import typing
 from builtins import *
 
-import canmatrix
+from canmatrix.CanMatrix import matrix_class
 
 
 def get_frame_info(db, frame):
     # type: (canmatrix.CanMatrix, canmatrix.Frame) -> typing.List[str]
     ret_array = []  # type: typing.List[str]
 
-    if db.type == canmatrix.matrix_class.CAN:
+    if db.type == matrix_class.CAN:
         # frame-id
         if frame.arbitration_id.extended:
             ret_array.append("%3Xxh" % frame.arbitration_id.id)
         else:
             ret_array.append("%3Xh" % frame.arbitration_id.id)
-    elif db.type == canmatrix.matrix_class.FLEXRAY:
+    elif db.type == matrix_class.FLEXRAY:
         ret_array.append("TODO")
-    elif db.type == canmatrix.matrix_class.SOMEIP:
+    elif db.type == matrix_class.SOMEIP:
         ret_array.append("%3Xh" % frame.header_id)
 
     # frame-Name

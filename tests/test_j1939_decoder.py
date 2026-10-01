@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
+
+import pytest
+
 import io
 import canmatrix.j1939_decoder
 import textwrap
 import collections
 
+from canmatrix.ArbitrationId import ArbitrationId
+
+#@pytest.mark.skip(reason="J1939 functionality is only partially implemented and currently breaks test chain")
 def test_j1939_decoder():
     dbc = io.BytesIO(textwrap.dedent(u'''\
        BO_ 2566856834 CM_Requests: 9 CGW
@@ -27,19 +33,19 @@ def test_j1939_decoder():
     t = canmatrix.j1939_decoder.j1939_decoder()
 
     #  BAM
-    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xecFF00, extended= True),
+    (type, signals) = t.decode(ArbitrationId(id = 0xecFF00, extended= True),
         bytearray([0x20,10,0,1,0xff,0x66,0x1,0]), matrix)
     assert "BAM " in type
  #   print (type, signals)
 
     # data 1
-    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xebFF00, extended= True),
+    (type, signals) = t.decode(ArbitrationId(id = 0xebFF00, extended= True),
         bytearray([0x0,1,1,1,1,1,1,1]), matrix)
     assert "BAM data" in type
     #print (type, signals)
 
     # data 2
-    (type, signals) = t.decode(canmatrix.ArbitrationId(id = 0xebFF00, extended= True),
+    (type, signals) = t.decode(ArbitrationId(id = 0xebFF00, extended= True),
         bytearray([0x1,1,1,1,1,1,1,1]), matrix)
     assert "BAM last data" in type
 #    print (type, signals)
@@ -50,7 +56,7 @@ def test_j1939_decoder():
     #  BA0x20, M
 
     for i in range(0,len(can_ids)):
-        (type, signals) = t.decode(canmatrix.ArbitrationId(id=can_ids[i], extended=True),
+        (type, signals) = t.decode(ArbitrationId(id=can_ids[i], extended=True),
              can_data[i], matrix)
 
     print ("-------- test data -------- ")
@@ -63,6 +69,6 @@ def test_j1939_decoder():
         (0x0CF00400, ("F4DEDE3028FFF0FF", "J1939 known: EEC1"))])
 
     for arb_id, (asc_data, expected) in test_frames.items():
-        (type, signals) = t.decode(canmatrix.ArbitrationId(id=arb_id, extended=True),
+        (type, signals) = t.decode(ArbitrationId(id=arb_id, extended=True),
                                    bytearray.fromhex(asc_data), matrix)
         assert expected in type

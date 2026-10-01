@@ -34,8 +34,13 @@ import xlwt
 import canmatrix
 import canmatrix.formats.xls_common
 
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix, matrix_class
+from canmatrix.Ecu import Ecu
+from canmatrix.ArbitrationId import ArbitrationId
+from canmatrix.FloatFactory import FloatFactory
 logger = logging.getLogger(__name__)
-default_float_factory = decimal.Decimal
 
 # Font Size : 8pt * 20 = 160
 # font = 'font: name Arial Narrow, height 160'
@@ -169,7 +174,7 @@ def dump(db, file, **options):
     worksheet.col(head_start + 1).width = 5555
 
     frame_hash = {}
-    if db.type == canmatrix.matrix_class.CAN:
+    if db.type == matrix_class.CAN:
         logger.debug("Length of db.frames is %d", len(db.frames))
         for frame in db.frames:
             if frame.is_complex_multiplexed:
@@ -328,10 +333,7 @@ def read_additional_signal_attributes(signal, attribute_name, attribute_value):
     if not attribute_name.startswith("signal"):
         return
     if attribute_name.replace("signal.", "") in vars(signal):
-        command_str = attribute_name + "="
-        command_str += str(attribute_value)
-        if len(str(attribute_value)) > 0:
-            exec(command_str)
+        canmatrix.utils.set_attribute_with_type_conversion(signal, attribute_name, attribute_value)
     else:
         pass
 
@@ -339,12 +341,12 @@ def read_additional_signal_attributes(signal, attribute_name, attribute_value):
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
-    float_factory = options.get("float_factory", default_float_factory)
+    float_factory = FloatFactory.get_float_factory()
 
     additional_inputs = dict()
     wb = xlrd.open_workbook(file_contents=file.read())
     sh = wb.sheet_by_index(0)
-    db = canmatrix.CanMatrix()
+    db = CanMatrix()
 
     # Defines not imported...
     # db.add_ecu_defines("NWM-Stationsadresse", 'HEX 0 63')
@@ -404,7 +406,7 @@ def load(file, **options):
 
     # ECUs:
     for x in range(index['ECUstart'], index['ECUend']):
-        db.add_ecu(canmatrix.Ecu(sh.cell(0, x).value))
+        db.add_ecu(Ecu(sh.cell(0, x).value))
 
     # initialize:
     frame_id = None
@@ -418,6 +420,7 @@ def load(file, **options):
         # new frame detected
         if sh.cell(row_num, index['ID']).value != frame_id:
             # new Frame
+            signal_name = ""  # reset so the first signal of a new frame is never skipped
             frame_id = sh.cell(row_num, index['ID']).value
             frame_name = sh.cell(row_num, index['frameName']).value
             cycle_time = sh.cell(row_num, index['cycle']).value
@@ -429,11 +432,11 @@ def load(file, **options):
             except:
                 launch_param = "0"
 
-            new_frame = canmatrix.Frame(frame_name, size=dlc)
+            new_frame = Frame(frame_name, size=dlc)
             if frame_id.endswith("xh"):
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-2], 16), extended=True)
+                new_frame.arbitration_id = ArbitrationId(int(frame_id[:-2], 16), extended=True)
             else:
-                new_frame.arbitration_id = canmatrix.ArbitrationId(int(frame_id[:-1], 16), extended=False)
+                new_frame.arbitration_id = ArbitrationId(int(frame_id[:-1], 16), extended=False)
             db.add_frame(new_frame)
 
             # eval launch_type
@@ -452,10 +455,8 @@ def load(file, **options):
 
             for additional_index in additional_inputs:
                 if "frame" in additional_inputs[additional_index]:
-                    command_str = additional_inputs[additional_index].replace("frame", "new_frame")
-                    command_str += "="
-                    command_str += str(sh.cell(row_num, additional_index).value)
-                    exec(command_str)
+                    canmatrix.utils.set_attribute_with_type_conversion(new_frame, additional_inputs[additional_index], sh.cell(row_num, additional_index).value)
+
 
         # new signal detected
         if sh.cell(row_num, index['signalName']).value != signal_name \
@@ -496,7 +497,7 @@ def load(file, **options):
                         new_frame.add_transmitter(sh.cell(0, x).value.strip())
                     if 'r' in sh.cell(row_num, x).value:
                         receiver.append(sh.cell(0, x).value.strip())
-                new_signal = canmatrix.Signal(
+                new_signal = Signal(
                     signal_name,
                     start_bit=(start_byte - 1) * 8 + start_bit,
                     size=int(signal_length),

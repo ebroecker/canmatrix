@@ -8,7 +8,8 @@ import typing
 from builtins import str
 from io import BytesIO
 
-import canmatrix
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.FloatFactory import FloatFactory
 import canmatrix.cancluster
 
 logger = logging.getLogger(__name__)
@@ -58,7 +59,8 @@ def loads_flat(string, import_type=None, key="", **options):
 
 
 def loadp(path, import_type=None, key="", **options):
-    # type: (str, str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
+    # type: (typing.Union[str, bytes, os.PathLike], str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
+    path = os.fsdecode(path)
     with open(path, "rb") as fileObject:
         if not import_type:
             for supportedImportType, extension in extensionMapping.items():
@@ -74,7 +76,7 @@ def loadp(path, import_type=None, key="", **options):
 
 
 def loadp_flat(path, import_type=None, key="", **options):
-    # type: (str, str, str, **str) -> typing.Union[canmatrix.CanMatrix, None]
+    # type: (typing.Union[str, bytes, os.PathLike], str, str, **str) -> typing.Union[canmatrix.CanMatrix, None]
     dbs = loadp(path, import_type, key, **options)
     return dbs.popitem()[1] if dbs else None
 
@@ -83,6 +85,10 @@ def load(file_object, import_type, key="", **options):
     # type: (typing.BinaryIO, str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
     dbs = {}  # type: typing.Dict[str, canmatrix.CanMatrix]
     module_instance = sys.modules["canmatrix.formats." + import_type]
+    _float_factory = options.get('float_factory', None)
+    if _float_factory is not None:
+        # if we got a float-factory: set it here to the FloatFactory-helper
+        FloatFactory.set_float_factory(_float_factory)
     if "clusterImporter" in supportedFormats[import_type]:
         dbs = module_instance.load(file_object, **options)  # type: ignore
     else:
@@ -99,14 +105,15 @@ def load_flat(file_object, import_type, key="", **options):
 def dump(can_matrix_or_cluster, file_object, export_type, **options):
     # type: (typing.Union[canmatrix.CanMatrix, typing.Mapping[str, canmatrix.CanMatrix]], typing.IO, str, **str) -> None
     module_instance = sys.modules["canmatrix.formats." + export_type]
-    if isinstance(can_matrix_or_cluster, canmatrix.CanMatrix):
+    if isinstance(can_matrix_or_cluster, CanMatrix):
         module_instance.dump(can_matrix_or_cluster, file_object, **options)  # type: ignore
     elif "clusterExporter" in supportedFormats[export_type]:
         module_instance.dump(can_matrix_or_cluster, file_object, **options)  # type: ignore
 
 
 def dumpp(can_cluster, path, export_type=None, **options):
-    # type: (typing.Mapping[str, canmatrix.CanMatrix], str, str, **str) -> None
+    # type: (typing.Mapping[str, canmatrix.CanMatrix], typing.Union[str, bytes, os.PathLike], str, **str) -> None
+    path = os.fsdecode(path)
     if not export_type:
         for key, extension in extensionMapping.items():
             if path.lower().endswith("." + extension) and "dump" in supportedFormats[key]:

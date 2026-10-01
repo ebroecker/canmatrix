@@ -95,6 +95,8 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--arxmlExportVersion', 'arVersion',  default="4.1.0", help="Set output AUTOSAR version\ncurrently only 3.2.3 and 4.1.0 are supported\ndefault 4.1.0")
 @click.option('--arxmlFlexray/--no-arxmlFlexray', 'decode_flexray', default = False, help="EXPERIMENTAL: import basic flexray data from ARXML")
 @click.option('--arxmlEthernet/--no-arxmlEthernet', 'decode_ethernet', default = False, help="EXPERIMENTAL: import basic ethernet data from ARXML")
+@click.option('--preferred-languages', 'preferred_languages', default = "EN,DE", help="the preferred languages will be given priority when there are comments or descriptions available in multiple languages\ndefault EN,DE")
+@click.option('--arxmlUpdate-bit-init_1/--no-arxmlUpdate-bit-init_1', 'update_bit_init_1', default=False, help="Init generated Update-Bits with init-value 1 (True: init_value=1, False: init_value=0")
 
 
 # dbc switches
@@ -122,8 +124,11 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--jsonExportAll/--no-jsonExportAll', 'jsonExportAll', default=False, help="Export more data to json format")
 @click.option('--jsonMotorolaBitFormat', 'jsonMotorolaBitFormat', default="lsb", help="Json format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
 @click.option('--jsonNativeTypes/--no-jsonNativeTypes', 'jsonNativeTypes', default=False, help="Uses native json representation for decimals instead of string.")
-#sym switches
-@click.option('--symExportEncoding', 'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
+# yaml switches
+@click.option('--yamlExportAll/--no-yamlExportAll', 'yamlExportAll', default=False, help="Export more data to yaml format")
+@click.option('--yamlMotorolaBitFormat', 'yamlMotorolaBitFormat', default="lsb", help="Yaml format: startbit of motorola signals\nValid values: msb, lsb, msbreverse\n default lsb")
+@click.option('--yamlNativeTypes/--no-yamlNativeTypes', 'yamlNativeTypes', default=True, help="Uses native yaml representation for decimals instead of string.")
+@click.option('--yamlFrameIdAsHex/--no-yamlFrameIdAsHex', 'yamlFrameIdAsHex', default=False, help="Export frame id as hexadecimal string in yaml format\ndefault: False")
 #eds switches
 @click.option('--edsImportEncoding', 'edsImportEncoding', default="iso-8859-1", help="Import charset of EDS format\ndefault iso-8859-1")
 @click.option('--edsNode', 'eds_node_id', default=1, help="Node-Id for EDS format\ndefault 1")
@@ -135,9 +140,9 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
     """
     canmatrix.cli.convert [options] import-file export-file
 
-    import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym
-    export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.xls(x)|*.sym|*.py
-
+    \b
+    import-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.yaml|*.xls(x)|*.sym
+    export-file: *.dbc|*.dbf|*.kcd|*.arxml|*.json|*.yaml|*.xls(x)|*.sym|*.py
     """
 
     root_logger = canmatrix.log.setup_logger()

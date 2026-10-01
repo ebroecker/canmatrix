@@ -34,16 +34,24 @@ import canmatrix
 import re
 import decimal
 
+from canmatrix.Frame import Frame
+from canmatrix.Signal import Signal
+from canmatrix.CanMatrix import CanMatrix
+from canmatrix.Ecu import Ecu
+from canmatrix.ArbitrationId import ArbitrationId
+
 clusterImporter = 1
 
 logger = logging.getLogger(__name__)
 
 fx = "http://www.asam.net/xml/fbx"
+te = "http://www.technica-engineering.com/xml/fbx"
 ho = "http://www.asam.net/xml"
 can = "http://www.asam.net/xml/fbx/can"
 xsi = "http://www.w3.org/2001/XMLSchema-instance"
 ns_ho = "{%s}" % ho
 ns_fx = "{%s}" % fx
+ns_te = "{%s}" % te
 ns_can = "{%s}" % can
 ns_xsi = "{%s}" % xsi
 
@@ -64,6 +72,13 @@ def create_short_name_desc(parent, short_name, desc):
 def create_sub_element_fx(parent, element_name, element_text=None):
     # type: (_Element, str, typing.Optional[str]) -> _Element
     new = lxml.etree.SubElement(parent, ns_fx + element_name)
+    if element_text is not None:
+        new.text = element_text
+    return new
+
+def create_sub_element_te(parent, element_name, element_text=None):
+    # type: (_Element, str, typing.Optional[str]) -> _Element
+    new = lxml.etree.SubElement(parent, ns_te + element_name)
     if element_text is not None:
         new.text = element_text
     return new
@@ -91,6 +106,37 @@ def create_signal_ref(parent, signal_ref_id):
     signal_ref = create_sub_element_fx(parent, "SIGNAL-REF")
     signal_ref.set("ID-REF", "SIG_" + signal_ref_id)
     return signal_ref
+
+def create_signal_group_element(parent, frame, sig_group):
+    # type: (_Element, Frame, typing.Any) -> _Element
+    signal_group_element = create_sub_element_fx(parent, "SIGNAL-GROUP")
+    sig_group_id = f"SIGGRP_{frame.name}_{sig_group.name}"
+    signal_group_element.set("ID", sig_group_id)
+    create_short_name_desc(signal_group_element, sig_group.name, "")
+
+    sig_group_dbc_id = getattr(sig_group, "id", None)
+    if sig_group_dbc_id is not None:
+        identifier = create_sub_element_fx(signal_group_element, "IDENTIFIER")
+        create_sub_element_fx(identifier, "IDENTIFIER-VALUE", str(sig_group_dbc_id))
+
+    member_signals = getattr(sig_group, "signals", None) or []
+    if member_signals:
+        ordered_signals = create_sub_element_fx(signal_group_element, "ORDERED-SIGNALS")
+        for seq_num, signal in enumerate(member_signals, start=1):
+            if isinstance(signal, str):
+                signal_obj = frame.signal_by_name(signal)
+                if signal_obj is None:
+                    print(f"Warning: Signal '{signal}' in group '{sig_group.name}' "
+                          f"not found in frame '{frame.name}' - skipping")
+                    continue
+            else:
+                signal_obj = signal
+
+            ordered_signal = create_sub_element_fx(ordered_signals, "ORDERED-SIGNAL")
+            create_sub_element_fx(ordered_signal, "SEQUENCE-NUMBER", str(seq_num))
+            create_signal_ref(ordered_signal, create_signal_id(frame, signal_obj))
+
+    return signal_group_element
 
 
 def bits_to_byte_str(bits, name):
@@ -126,6 +172,122 @@ def get_multiplexing_parts_infos(signals, frame_name, start_pos=-1, end_pos=-1, 
         seg_big_endian = not signal.is_little_endian
 
     return start_pos, end_pos, seg_big_endian
+
+def create_frame_element(parent, frame, prefix=""):
+    """Helper function to create a frame element with PDU instances."""
+    frame_element = create_sub_element_fx(parent, "FRAME")
+    frame_element.set("ID", f"{prefix}FRAME_{frame.name}")
+    
+    create_short_name_desc(frame_element, frame.name, frame.comment)
+    create_sub_element_fx(frame_element, "BYTE-LENGTH", str(frame.size))    
+    if frame.attribute("NmAsrMessage") and frame.attribute("NmAsrMessage").lower() == "yes":
+        create_sub_element_fx(frame_element, "FRAME-TYPE", "NM")
+    elif (frame.is_j1939):
+        create_sub_element_fx(frame_element, "FRAME-TYPE", "J1939")
+    else:
+        create_sub_element_fx(frame_element, "FRAME-TYPE", "APPLICATION")
+    
+    # PDU instances
+    pdu_instances = create_sub_element_fx(frame_element, "PDU-INSTANCES")
+    pdu_instance = create_sub_element_fx(pdu_instances, "PDU-INSTANCE")
+    pdu_instance.set("ID", f"PDUINSTANCE_{frame.name}")  # Note: No prefix for ID
+    
+    pdu_ref = create_sub_element_fx(pdu_instance, "PDU-REF")
+    pdu_ref.set("ID-REF", f"{prefix}PDU_{frame.name}")
+    
+    create_sub_element_fx(pdu_instance, "BIT-POSITION", "0")
+    create_sub_element_fx(pdu_instance, "IS-HIGH-LOW-BYTE-ORDER", "false")
+    
+    return frame_element
+
+def create_frame_triggering(parent, frame, prefix=""):
+    """Helper function to create a frame triggering element."""
+    frame_triggering = create_sub_element_fx(parent, "FRAME-TRIGGERING")
+    frame_triggering.set("ID", f"{prefix}FT_{frame.name}")
+    
+    # Identifier
+    identifier = create_sub_element_fx(frame_triggering, "IDENTIFIER")
+    create_sub_element_fx(identifier, "IDENTIFIER-VALUE", str(frame.arbitration_id.id))
+    
+    # Frame reference
+    frame_ref = create_sub_element_fx(frame_triggering, "FRAME-REF")
+    frame_ref.set("ID-REF", f"{prefix}FRAME_{frame.name}")
+         
+    # CAN-FD behavior (if applicable)
+    if frame.is_fd:
+        create_sub_element_fx(frame_triggering, "CAN-FRAME-TX-BEHAVIOR", "CAN-FD")
+        create_sub_element_fx(frame_triggering, "CAN-FRAME-RX-BEHAVIOR", "CAN-FD")
+    
+    return frame_triggering
+
+def create_pdu_triggering(parent, pdu, gen_msg_type_def, msg_nr_of_repetition_def, msg_delay_time_def, msg_cycle_time_def, prefix=""):
+    """Helper function to create a PDU triggering element with timings."""
+    pdu_triggering = create_sub_element_fx(parent, "PDU-TRIGGERING")
+    pdu_triggering.set("ID", f"{prefix}PDU_{pdu.name}")
+    
+    # Timings
+    pdu_timings = create_sub_element_fx(pdu_triggering, "TIMINGS")
+    if pdu.cycle_time > 0:
+        cyclic_timing = create_sub_element_fx(pdu_timings, "CYCLIC-TIMING")
+        repeating_time_range = create_sub_element_fx(cyclic_timing, "REPEATING-TIME-RANGE")
+        time_value = f"PT{pdu.cycle_time / 1000.0}S"
+        create_sub_element_fx(repeating_time_range, "VALUE", time_value)
+    
+    send_type = pdu.attributes["GenMsgSendType"] if "GenMsgSendType" in pdu.attributes else gen_msg_type_def
+    if send_type and ("event" in send_type.lower() or "spontaneous" in send_type.lower()):
+        event_controlled_timing = create_sub_element_fx(pdu_timings, "EVENT-CONTROLLED-TIMING")
+        pdu.debounce_time_range = int(float(pdu.attributes.get("GenMsgDelayTime", msg_delay_time_def)))
+        debounce_time_range = create_sub_element_fx(event_controlled_timing, "DEBOUNCE-TIME-RANGE")
+        debounce_time_value = f"PT{pdu.debounce_time_range / 1000.0}S"
+        create_sub_element_fx(debounce_time_range, "VALUE", debounce_time_value)
+        pdu.final_repetitions = pdu.attributes.get("GenMsgNrOfRepetition", msg_nr_of_repetition_def)
+        create_sub_element_fx(event_controlled_timing, "FINAL-REPETITIONS", pdu.final_repetitions)
+        pdu.repeating_time_range = int(float(pdu.attributes.get("GenMsgCycleTime", msg_cycle_time_def))) if pdu.cycle_time == 0 else None
+        if pdu.repeating_time_range is not None and pdu.repeating_time_range > 0:
+            repeating_time_range = create_sub_element_fx(event_controlled_timing, "REPEATING-TIME-RANGE")
+            repeating_time_range_value = f"PT{pdu.repeating_time_range / 1000.0}S"
+            create_sub_element_fx(repeating_time_range, "VALUE", repeating_time_range_value)
+    
+    # PDU reference
+    pdu_ref = create_sub_element_fx(pdu_triggering, "PDU-REF")
+    pdu_ref.set("ID-REF", f"{prefix}PDU_{pdu.name}")
+    
+    return pdu_triggering
+
+
+def create_output_port(parent, frame, ecu_name, prefix=""):
+    """Helper function to create output port with frame and PDU references."""
+    output_port = create_sub_element_fx(parent, "OUTPUT-PORT")
+    output_port.set('ID', 'Output_Port_' + ecu_name +'_'+ frame.name)
+    # Frame triggering reference
+    frame_triggering_ref = create_sub_element_fx(output_port, "FRAME-TRIGGERING-REF")
+    frame_triggering_ref.set("ID-REF", f"{prefix}FT_{frame.name}")
+    
+    # PDU references
+    included_pdus = create_sub_element_fx(output_port, "INCLUDED-PDUS")
+    included_pdu = create_sub_element_fx(included_pdus, "INCLUDED-PDU")
+    included_pdu.set('ID', f'{prefix.lower()}output_included_pdu_{frame.name}')
+    
+    pdu_triggering_ref = create_sub_element_fx(included_pdu, "PDU-TRIGGERING-REF")
+    pdu_triggering_ref.set("ID-REF", f"{prefix}PDU_{frame.name}")
+    
+    return output_port
+
+def create_secoc_configuration(frame, auth_info_tx_length_def, freshness_value_tx_length_def, data_id_def, freshness_value_length_def, spdu):
+    auth_info_tx_length = int(frame.attribute("SCP_AuthInfoTxLength")) if frame.attribute("SCP_AuthInfoTxLength") is not None else int(auth_info_tx_length_def)
+    freshness_value_tx_length = int(frame.attribute("SCP_FreshnessValueTxLength")) if frame.attribute("SCP_FreshnessValueTxLength") is not None else int(freshness_value_tx_length_def)
+    create_sub_element_fx(spdu, "BYTE-LENGTH", str(frame.size))
+    create_sub_element_fx(spdu, "PDU-TYPE", "OTHER")
+    manufac_extansion = create_sub_element_te(spdu, "MANUFACTURER-EXTENSION")
+    sec_props = create_sub_element_te(manufac_extansion, "SECURITY-PROPERTIES")
+    data_id = frame.attribute("SCP_DataId") if frame.attribute("SCP_DataId") else data_id_def
+    create_sub_element_te(sec_props, "DATA-ID", data_id)
+    create_sub_element_te(sec_props, "AUTH-INFO-TX-LENGTH", str(auth_info_tx_length))
+    freshness_value_length = frame.attribute("SCP_FreshnessValueLength") if frame.attribute("SCP_FreshnessValueLength") else freshness_value_length_def
+    create_sub_element_te(sec_props, "FRESHNESS-VALUE-LENGTH", str(freshness_value_length))
+    create_sub_element_te(sec_props, "FRESHNESS-VALUE-TX-LENGTH", str(freshness_value_tx_length))
+    payload_pdu = create_sub_element_te(sec_props, "PAYLOAD-REF")
+    payload_pdu.set("ID-REF", "PDU_" + frame.name)
 
 def get_base_data_type(signal):
     # type: (Signal) -> str
@@ -274,7 +436,7 @@ def get_signals_for_pdu(fe, pdu, overall_startbit = 0):
             if len(fe.selector(ecu_instance_ref, "^INPUT-PORT")) > 0:
                 ecu_name = fe.sn(fe.get_referencable_parent(ecu_instance_ref))
                 receiver_ecus.append(ecu_name)
-                ecus.append(canmatrix.Ecu(name=ecu_name.strip()))
+                ecus.append(Ecu(name=ecu_name.strip()))
 
         signal_name = fe.sn(signal)
         coding = fe.selector(signal, ">CODING-REF")[0]
@@ -289,7 +451,7 @@ def get_signals_for_pdu(fe, pdu, overall_startbit = 0):
             pass
         bit_length = int(fe.selector(coding, "/!BIT-LENGTH")[0].text)
         compu_methods = fe.selector(coding, "/!COMPU-METHOD")
-        sig = canmatrix.Signal(name=signal_name, is_signed=is_signed)
+        sig = Signal(name=signal_name, is_signed=is_signed)
         for compu_method in compu_methods:
             category = fe.selector(compu_method, "/!CATEGORY")
             if len(category) > 0 and category[0].text == "LINEAR":
@@ -346,7 +508,7 @@ def load(f, **_options):
             logger.info(fe.sn(cluster) + " seems not to be a CAN cluster - ignoring")
             continue
 
-        db = canmatrix.CanMatrix()
+        db = CanMatrix()
         result[fe.sn(cluster)] = db
         channels = fe.selector(cluster, ">>CHANNEL-REF")
         for channel in channels:
@@ -364,7 +526,7 @@ def load(f, **_options):
 
                 if len(pdu_instances) > 1:
                     frame_name = fe.sn(frame_element)
-                    frame = canmatrix.Frame(name=frame_name)
+                    frame = Frame(name=frame_name)
                     for pdu_instance in pdu_instances:
                         pdu = fe.selector(pdu_instance, ">PDU-REF")[0]
                         pdu_startbit_position = int(fe.selector(pdu_instance, "/BIT-POSITION")[0].text, 0)
@@ -379,7 +541,7 @@ def load(f, **_options):
                 else:
                     pdu = fe.selector(pdu_instances[0], ">PDU-REF")[0]
                     frame_name = fe.sn(pdu)
-                    frame = canmatrix.Frame(name=frame_name)
+                    frame = Frame(name=frame_name)
 
                     signals, ecus = get_signals_for_pdu(fe, pdu)
                     for sig in signals:
@@ -401,10 +563,10 @@ def load(f, **_options):
                 frame.transmitters = [fe.sn(a) for a in sending_ecus]
                 for ecu_element in sending_ecus:
                     ecu_name = fe.sn(ecu_element)
-                    cm_ecu = canmatrix.Ecu(ecu_name)
+                    cm_ecu = Ecu(ecu_name)
                     cm_ecu.add_comment(fe.get_desc_or_longname(ecu_element))
                     db.add_ecu(cm_ecu)
-                frame.arbitration_id = canmatrix.ArbitrationId(extended=extended, id=arbitration_id)
+                frame.arbitration_id = ArbitrationId(extended=extended, id=arbitration_id)
 
                 frame.add_comment(fe.get_desc_or_longname(pdu))
                 if "CAN-FD" in [a.text for a in
@@ -417,12 +579,20 @@ def load(f, **_options):
 
 def dump(db, f, **options):
     # type: (canmatrix.CanMatrix, typing.IO, **typing.Any) -> None
-    ns_map = {"fx": fx, "ho": ho, "can": can, "xsi": xsi}
+    ns_map = {"fx": fx, "ho": ho, "te": te, "can": can, "xsi": xsi}
+    can_channel = 'CANCHANNEL01'
+    db_name= db.attribute("DBName")
+    if db_name:
+        can_channel = db_name
     root = lxml.etree.Element(ns_fx + "FIBEX", nsmap=ns_map)
     root.attrib[
         '{{{pre}}}schemaLocation'.format(
             pre=xsi)] = 'http://www.asam.net/xml/fbx ..\\..\\xml_schema\\fibex.xsd http://www.asam.net/xml/fbx/can  ..\\..\\xml_schema\\fibex4can.xsd'
 
+    gen_msg_type_def = getattr(db.frame_defines.get("GenMsgSendType"), 'defaultValue', None)
+    msg_delay_time_def = getattr(db.frame_defines.get("GenMsgDelayTime"), 'defaultValue', None)
+    msg_nr_of_repetition_def = getattr(db.frame_defines.get("GenMsgNrOfRepetition"), 'defaultValue', None)
+    msg_cycle_time_def = getattr(db.frame_defines.get("GenMsgCycleTime"), 'defaultValue', None)
     #
     # Make sure that we can even write to FIBEX
     #
@@ -463,54 +633,67 @@ def dump(db, f, **options):
     cluster.set('ID', 'canCluster1')
     # add the file name as a suffix in the cluster name
     cluster_name = f"cluster_{os.path.basename(f.name).split('.')[0]}"
+    # If DBName attribute is present, use it instead of the file based name
+    if db_name :
+        cluster_name = can_channel
+        cluster.set('ID', can_channel)
     create_short_name_desc(cluster, cluster_name, "clusterDesc")
-    create_sub_element_fx(cluster, "SPEED", "500")
     create_sub_element_fx(cluster, "IS-HIGH-LOW-BIT-ORDER", "true")
     create_sub_element_fx(cluster, "BIT-COUNTING-POLICY", "MONOTONE")
-    protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN")
+    if 'BusType' in db.attributes and db.attributes['BusType'] == "CAN FD":
+        protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN-FD")
+        if 'Baudrate' in db.attributes:
+            create_sub_element_fx(cluster, "CAN-FD-SPEED", db.attributes['Baudrate'])
+        else:
+            create_sub_element_fx(cluster, "CAN-FD-SPEED", "2000000")
+        create_sub_element_fx(cluster, "SPEED", "500")
+    else:
+        protocol = create_sub_element_fx(cluster, "PROTOCOL", "CAN")
+        if 'Baudrate' in db.attributes:
+            create_sub_element_fx(cluster, "SPEED", db.attributes['Baudrate'])
+        else:
+            create_sub_element_fx(cluster, "SPEED", "500")
     protocol.attrib['{{{pre}}}type'.format(pre=xsi)] = "can:PROTOCOL-TYPE"
     create_sub_element_fx(cluster, "PROTOCOL-VERSION", "20")
+    protocol_type = db.attribute("ProtocolType")
+    if protocol_type:
+         manufac_extension = create_sub_element_fx(cluster, "MANUFACTURER-EXTENSION")
+         create_sub_element_te(manufac_extension,"PROTOCOL-FORMAT",protocol_type)
+
     channel_refs = create_sub_element_fx(cluster, "CHANNEL-REFS")
     # for each channel
     channel_ref = create_sub_element_fx(channel_refs, "CHANNEL-REF")
-    channel_ref.set("ID-REF", "CANCHANNEL01")
 
+    channel_ref.set("ID-REF", can_channel)
     #
     # CHANNELS
     #
     channels = create_sub_element_fx(elements, "CHANNELS")
     channel = create_sub_element_fx(channels, "CHANNEL")
     # for each channel
-    channel.set('ID', 'CANCHANNEL01')
-    create_short_name_desc(channel, "CANCHANNEL01", "Can Channel Description")
+    channel.set('ID', can_channel)
+    create_short_name_desc(channel, can_channel, "Can Channel Description")
 
     # for pdu triggerings
     pdu_triggerings = create_sub_element_fx(channel, "PDU-TRIGGERINGS")
     for pdu in db.frames:
-        pdu_triggering = create_sub_element_fx(
-            pdu_triggerings, "PDU-TRIGGERING")
-        pdu_triggering.set("ID", "PDU_" + pdu.name)
-        pdu_timings = create_sub_element_fx(pdu_triggering, "TIMINGS")
-        if pdu.cycle_time > 0:
-            cyclic_timing = create_sub_element_fx(pdu_timings, "CYCLIC-TIMING")
-            repeating_time_range = create_sub_element_fx(cyclic_timing, "REPEATING-TIME-RANGE")
-            create_sub_element_fx(repeating_time_range, "VALUE", "PT" + str(pdu.cycle_time/1000.0) + "S")
+        # Create regular PDU triggering
+        create_pdu_triggering(pdu_triggerings, pdu, gen_msg_type_def, msg_nr_of_repetition_def, msg_delay_time_def, msg_cycle_time_def)
 
-        pdu_ref = create_sub_element_fx(pdu_triggering, "PDU-REF")
-        pdu_ref.set("ID-REF", "PDU_" + pdu.name)
+        # Create secured PDU triggering if applicable
+        if pdu.attribute("SC_Message") and pdu.attribute("SC_Message").lower() == "yes":
+            create_pdu_triggering(pdu_triggerings, pdu, gen_msg_type_def, msg_nr_of_repetition_def, msg_delay_time_def, msg_cycle_time_def, prefix="S")
+
 
     frame_triggerings = create_sub_element_fx(channel, "FRAME-TRIGGERINGS")
     for frame in db.frames:
-        frame_triggering = create_sub_element_fx(
-            frame_triggerings, "FRAME-TRIGGERING")
-        frame_triggering.set("ID", "FT_" + frame.name)
-        identifier = create_sub_element_fx(frame_triggering, "IDENTIFIER")
-        create_sub_element_fx(identifier, "IDENTIFIER-VALUE", str(frame.arbitration_id.id))
-        frame_ref = create_sub_element_fx(frame_triggering, "FRAME-REF")
-        frame_ref.set("ID-REF", "FRAME_" + frame.name)
-        if (frame.is_fd):
-            create_sub_element_fx(frame_triggering, "CAN-FRAME-TX-BEHAVIOR","CAN-FD")
-            create_sub_element_fx(frame_triggering, "CAN-FRAME-RX-BEHAVIOR","CAN-FD")
+        # Create secured frame triggering if applicable
+        if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
+            create_frame_triggering(frame_triggerings, frame, prefix="S")
+        else:
+            # Create regular frame triggering
+            create_frame_triggering(frame_triggerings, frame)
+
 
     #
     # ECUS
@@ -519,6 +702,10 @@ def dump(db, f, **options):
     for bu in db.ecus:
         ecu = create_sub_element_fx(ecus, "ECU")
         ecu.set("ID", bu.name)
+        nm_address = bu.attribute("NmStationAddress")
+        if nm_address:
+         manufac_extansion = create_sub_element_fx(ecu, "MANUFACTURER-EXTENSION")
+         create_sub_element_te(manufac_extansion, "NM-ECU-ADDRESS",nm_address)
         create_short_name_desc(ecu, bu.name, bu.comment)
         function_refs = create_sub_element_fx(ecu, "FUNCTION-REFS")
         func_ref = create_sub_element_fx(function_refs, "FUNCTION-REF")
@@ -533,13 +720,14 @@ def dump(db, f, **options):
         connector = create_sub_element_fx(connectors, "CONNECTOR")
         connector.set('ID', 'Connector' + bu.name)
         channel_ref = create_sub_element_fx(connector, "CHANNEL-REF")
-        channel_ref.set("ID-REF", "CANCHANNEL01")
+        channel_ref.set("ID-REF", can_channel)
         controller_ref = create_sub_element_fx(connector, "CONTROLLER-REF")
         controller_ref.set("ID-REF", 'Controller_' + bu.name)
         inputs = create_sub_element_fx(connector, "INPUTS")
         for frame in db.frames:
             if bu.name in frame.receivers:
                 input_port = create_sub_element_fx(inputs, "INPUT-PORT")
+                input_port.set('ID', 'Input_Port_' + bu.name +'_'+ frame.name)
                 frame_triggering_ref = create_sub_element_fx(input_port, "FRAME-TRIGGERING-REF")
                 frame_triggering_ref.set("ID-REF", "FT_" + frame.name)
                 # Reference to PDUs
@@ -552,15 +740,13 @@ def dump(db, f, **options):
         outputs = create_sub_element_fx(connector, "OUTPUTS")
         for frame in db.frames:
             if bu.name in frame.transmitters:
-                input_port = create_sub_element_fx(outputs, "OUTPUT-PORT")
-                frame_triggering_ref = create_sub_element_fx(input_port, "FRAME-TRIGGERING-REF")
-                frame_triggering_ref.set("ID-REF", "FT_" + frame.name)
-                # Reference to PDUs
-                included_pdus = create_sub_element_fx(input_port, "INCLUDED-PDUS")
-                included_pdu = create_sub_element_fx(included_pdus, "INCLUDED-PDU")
-                included_pdu.set('ID', 'output_included_pdu_' + frame.name)
-                pdu_triggering_ref = create_sub_element_fx(included_pdu, "PDU-TRIGGERING-REF")
-                pdu_triggering_ref.set("ID-REF", "PDU_" + frame.name)
+                # Create secured output port if applicable
+                if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
+                    create_output_port(outputs, frame, bu.name, prefix="S")
+                else:
+                    # Create regular output port
+                    create_output_port(outputs, frame, bu.name)
+
 
         # ignore CONTROLLERS/CONTROLLER
 
@@ -568,12 +754,24 @@ def dump(db, f, **options):
     # PDUS
     #
     pdus = create_sub_element_fx(elements, "PDUS")
+    auth_info_tx_length_def = getattr(db.frame_defines.get("SCP_AuthInfoTxLength"), 'defaultValue', None)
+    freshness_value_tx_length_def = getattr(db.frame_defines.get("SCP_FreshnessValueTxLength"), 'defaultValue', None)
+    data_id_def = getattr(db.frame_defines.get("SCP_DataId"), 'defaultValue', None)
+    freshness_value_length_def = getattr(db.frame_defines.get("SCP_FreshnessValueLength"), 'defaultValue', None)
     for frame in db.frames:
         pdu = create_sub_element_fx(pdus, "PDU")
         pdu.set("ID", "PDU_" + frame.name)
         create_short_name_desc(pdu, "PDU_" + frame.name, frame.comment)
-        create_sub_element_fx(pdu, "BYTE-LENGTH", str(frame.size))  # DLC
-        create_sub_element_fx(pdu, "PDU-TYPE", "APPLICATION")
+        byte_length = frame.size
+        if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
+            auth_info_tx_length = int(frame.attribute("SCP_AuthInfoTxLength")) if frame.attribute("SCP_AuthInfoTxLength") is not None else int(auth_info_tx_length_def)
+            freshness_value_tx_length = int(frame.attribute("SCP_FreshnessValueTxLength")) if frame.attribute("SCP_FreshnessValueTxLength") is not None else int(freshness_value_tx_length_def)
+            byte_length = frame.size - ((auth_info_tx_length + freshness_value_tx_length) // 8)
+        create_sub_element_fx(pdu, "BYTE-LENGTH", str(byte_length))  # DLC
+        if frame.attribute("NmAsrMessage") and frame.attribute("NmAsrMessage").lower() == "yes":
+            create_sub_element_fx(pdu, "PDU-TYPE", "NM")
+        else:
+            create_sub_element_fx(pdu, "PDU-TYPE", "APPLICATION")
 
         if frame.is_multiplexed:
             mux = create_sub_element_fx(pdu, "MULTIPLEXER")
@@ -698,23 +896,23 @@ def dump(db, f, **options):
                 signal_id = create_signal_id(frame, signal)
                 signal_instance = create_signal_instance(signal_instances, signal, signal_id)
                 create_signal_ref(signal_instance, signal_id)
+            if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
+                spdu = create_sub_element_fx(pdus, "PDU")
+                spdu.set("ID", "SPDU_" + frame.name)
+                create_short_name_desc(spdu, "SPDU_" + frame.name, frame.comment)
+                create_secoc_configuration(frame, auth_info_tx_length_def, freshness_value_tx_length_def, data_id_def, freshness_value_length_def, spdu)
 
     # FRAMES
     #
     frames = create_sub_element_fx(elements, "FRAMES")
     for frame in db.frames:
-        frame_element = create_sub_element_fx(frames, "FRAME")
-        frame_element.set("ID", "FRAME_" + frame.name)
-        create_short_name_desc(frame_element, frame.name, frame.comment)
-        create_sub_element_fx(frame_element, "BYTE-LENGTH", str(frame.size))  # DLC
-        create_sub_element_fx(frame_element, "PDU-TYPE", "APPLICATION")
-        pdu_instances = create_sub_element_fx(frame_element, "PDU-INSTANCES")
-        pdu_instance = create_sub_element_fx(pdu_instances, "PDU-INSTANCE")
-        pdu_instance.set("ID", "PDUINSTANCE_" + frame.name)
-        pdu_ref = create_sub_element_fx(pdu_instance, "PDU-REF")
-        pdu_ref.set("ID-REF", "PDU_" + frame.name)
-        create_sub_element_fx(pdu_instance, "BIT-POSITION", "0")
-        create_sub_element_fx(pdu_instance, "IS-HIGH-LOW-BYTE-ORDER", "false")
+        # Create secured frame if applicable
+        if frame.attribute("SC_Message") and frame.attribute("SC_Message").lower() == "yes":
+            create_frame_element(frames, frame, prefix="S")
+        else:
+            # Create regular frame
+            create_frame_element(frames, frame)
+
 
     #
     # FUNCTIONS
@@ -848,5 +1046,14 @@ def dump(db, f, **options):
     # REQUIREMENTS
     #
     # requirements = createSubElementFx(elements,  "REQUIREMENTS")
+    has_signal_groups = any(
+        getattr(frame, "signalGroups", None) for frame in db.frames
+    )
+    if has_signal_groups:
+        requirements = create_sub_element_fx(root, "REQUIREMENTS")
+        signal_groups_element = create_sub_element_fx(requirements, "SIGNAL-GROUPS")
+        for frame in db.frames:
+            for sig_group in getattr(frame, "signalGroups", []) or []:
+                create_signal_group_element(signal_groups_element, frame, sig_group)
 
     f.write(lxml.etree.tostring(root, pretty_print=True))

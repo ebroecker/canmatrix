@@ -106,6 +106,7 @@ Frame comment</L-2>
       <ELEMENTS>
         <SECURED-I-PDU>
             <SHORT-NAME>secPdu</SHORT-NAME>
+            <LENGTH>64</LENGTH>
             <PAYLOAD-REF>/PDU/myPayLoad</PAYLOAD-REF>
         </SECURED-I-PDU>
         <PAYLOAD>
