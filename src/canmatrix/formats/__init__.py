@@ -59,7 +59,8 @@ def loads_flat(string, import_type=None, key="", **options):
 
 
 def loadp(path, import_type=None, key="", **options):
-    # type: (str, str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
+    # type: (typing.Union[str, bytes, os.PathLike], str, str, **str) -> typing.Union[typing.Dict[str, canmatrix.CanMatrix], None]
+    path = os.fsdecode(path)
     with open(path, "rb") as fileObject:
         if not import_type:
             for supportedImportType, extension in extensionMapping.items():
@@ -75,7 +76,7 @@ def loadp(path, import_type=None, key="", **options):
 
 
 def loadp_flat(path, import_type=None, key="", **options):
-    # type: (str, str, str, **str) -> typing.Union[canmatrix.CanMatrix, None]
+    # type: (typing.Union[str, bytes, os.PathLike], str, str, **str) -> typing.Union[canmatrix.CanMatrix, None]
     dbs = loadp(path, import_type, key, **options)
     return dbs.popitem()[1] if dbs else None
 
@@ -111,7 +112,8 @@ def dump(can_matrix_or_cluster, file_object, export_type, **options):
 
 
 def dumpp(can_cluster, path, export_type=None, **options):
-    # type: (typing.Mapping[str, canmatrix.CanMatrix], str, str, **str) -> None
+    # type: (typing.Mapping[str, canmatrix.CanMatrix], typing.Union[str, bytes, os.PathLike], str, **str) -> None
+    path = os.fsdecode(path)
     if not export_type:
         for key, extension in extensionMapping.items():
             if path.lower().endswith("." + extension) and "dump" in supportedFormats[key]:
