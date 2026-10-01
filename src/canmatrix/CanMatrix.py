@@ -713,7 +713,11 @@ class CanMatrix(object):
         :param data: data dictionary
         :return: A byte string of the packed values.
         """
-        return self.frame_by_id(frame_id).encode(data)
+
+        frame = self.frame_by_id(frame_id)
+        if frame is None:
+            raise KeyError(f"Frame with id {frame_id} not found")
+        return frame.encode(data)
 
     def decode_pycan(self, pycan_msg):
         """Return OrderedDictionary with Signal Name: object decodedSignal
