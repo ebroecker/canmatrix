@@ -35,7 +35,7 @@ from builtins import *
 # import canmatrix
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 from canmatrix.Ecu import Ecu
 from canmatrix.ArbitrationId import ArbitrationId
 from canmatrix.FloatFactory import FloatFactory

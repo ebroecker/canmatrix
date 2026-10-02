@@ -39,7 +39,7 @@ from openpyxl.styles import NamedStyle, Font, Alignment, PatternFill, Border, Si
 
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
-from canmatrix.CanMatrix import CanMatrix, matrix_class
+from canmatrix._canmatrix import CanMatrix, matrix_class
 from canmatrix.Ecu import Ecu
 from canmatrix.ArbitrationId import ArbitrationId
 

@@ -6,7 +6,7 @@ import json as json_mod
 import pytest
 yaml = pytest.importorskip("yaml")
 
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 from canmatrix.ArbitrationId import ArbitrationId
@@ -82,7 +82,7 @@ def test_yaml_native_types_render_unquoted(default_matrix):
 
 def test_yaml_field_coverage_round_trip():
     matrix = CanMatrix()
-    from canmatrix.CanMatrix import matrix_class
+    from canmatrix._canmatrix import matrix_class
     from canmatrix.Ecu import Ecu
     matrix.type = matrix_class.SOMEIP
     matrix.vlan = 42

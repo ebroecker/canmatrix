@@ -7,3 +7,4 @@ __version__ = "1.2.0"
 # Set default logging handler to avoid "No handler found" warnings in python 2.
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
+from canmatrix._canmatrix import CanMatrix

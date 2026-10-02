@@ -7,7 +7,7 @@ from pprint import pprint
 
 import pytest
 
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
 import canmatrix.formats.sym

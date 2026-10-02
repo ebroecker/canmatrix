@@ -5,7 +5,7 @@ import canmatrix.formats.scapy
 
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 
 
 def test_scapy_frame_exists():
