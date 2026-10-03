@@ -9,7 +9,7 @@ import canmatrix.formats
 from canmatrix.utils import arbitration_id_converter
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 
 try:
     from pathlib import Path

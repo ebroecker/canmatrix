@@ -29,7 +29,7 @@ import typing
 
 import canmatrix
 from canmatrix.ArbitrationId import ArbitrationId
-from canmatrix.CanMatrix import CanMatrix, matrix_class
+from canmatrix._canmatrix import CanMatrix, matrix_class
 from canmatrix.Ecu import Ecu
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal

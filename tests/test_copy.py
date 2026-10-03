@@ -2,7 +2,7 @@
 
 
 
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 from canmatrix.Signal import Signal
 from canmatrix.Frame import Frame
 import canmatrix.copy

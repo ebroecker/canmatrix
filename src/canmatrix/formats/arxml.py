@@ -40,7 +40,7 @@ import canmatrix.utils
 import lxml.etree
 from canmatrix.ArbitrationId import ArbitrationId
 from canmatrix.AutosarSecOCProperties import AutosarSecOCProperties
-from canmatrix.CanMatrix import CanMatrix, matrix_class
+from canmatrix._canmatrix import CanMatrix, matrix_class
 from canmatrix.Define import Define
 from canmatrix.Ecu import Ecu
 from canmatrix.Endpoint import Endpoint

@@ -30,7 +30,7 @@ import canmatrix.copy
 import canmatrix.formats
 import canmatrix.log
 
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 from canmatrix.ArbitrationId import ArbitrationId
 
 logger = logging.getLogger(__name__)
