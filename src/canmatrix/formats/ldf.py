@@ -4,7 +4,7 @@ import ldfparser.encoding
 
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 
 
 def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix

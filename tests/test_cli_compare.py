@@ -6,7 +6,7 @@ import pytest
 
 import canmatrix.formats
 from canmatrix.utils import arbitration_id_converter
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 from canmatrix.Signal import Signal
 from canmatrix.Frame import Frame
 

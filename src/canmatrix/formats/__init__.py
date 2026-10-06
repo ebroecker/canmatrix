@@ -8,7 +8,7 @@ import typing
 from builtins import str
 from io import BytesIO
 
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 from canmatrix.FloatFactory import FloatFactory
 import canmatrix.cancluster
 
