@@ -873,8 +873,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 elif tempba.group(1).strip().startswith("BU_ "):
                     regexp = re.compile(r"^BA_ +\"(.*?)\" +BU_ +(\S+) +(.+) *; *")
                     temp = regexp.match(decoded)
-                    db.ecu_by_name(
-                        temp.group(2)).add_attribute(
+                    ecu = db.ecu_by_name(temp.group(2))
+                    if ecu is None:
+                        ecu = Ecu(temp.group(2))
+                        db.add_ecu(ecu)
+                    ecu.add_attribute(
                         temp.group(1),
                         temp.group(3))
                 elif '"BusType"' in decoded:
