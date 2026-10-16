@@ -22,7 +22,7 @@
 import typing
 from builtins import *
 
-from canmatrix.CanMatrix import matrix_class
+from canmatrix._canmatrix import matrix_class
 
 
 def get_frame_info(db, frame):

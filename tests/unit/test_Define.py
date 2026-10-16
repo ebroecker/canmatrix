@@ -31,7 +31,7 @@ import decimal
 import pytest
 from builtins import *
 
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 from canmatrix.Define import Define
 
 # Define tests

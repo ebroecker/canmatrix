@@ -7,7 +7,7 @@ import textwrap
 import pytest
 
 import canmatrix.formats
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 
 
 def test_dump_matrix():

@@ -10,7 +10,7 @@ import math
 
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
-from canmatrix.CanMatrix import CanMatrix
+from canmatrix._canmatrix import CanMatrix
 from canmatrix.ArbitrationId import ArbitrationId
 
 logger = logging.getLogger(__name__)
