@@ -20,7 +20,10 @@ In addition to the *canmatrix* package there are 2 scripts installed with this p
 for additional formats [arxml, kcd, fibex, xls, xlsx] use syntax like:
 ::
 
-    $ pip install git+https://github.com/ebroecker/canmatrix#egg=canmatrix[kcd]
+    $ pip install "git+https://github.com/ebroecker/canmatrix#egg=canmatrix[kcd]"
+
+(the quotes are required - zsh and other shells otherwise interpret
+``[kcd]`` as a glob pattern)
 
 
 If you are using a \*NIX-System, these scripts should be callable from command line

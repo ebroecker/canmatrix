@@ -704,20 +704,24 @@ class CanMatrix(object):
 
     def encode(self,
                frame_id: ArbitrationId,
-               data: typing.Mapping[str, typing.Any]
+               data: typing.Mapping[str, typing.Any],
+               fill_value: typing.Optional[bool] = None,
                ) -> bytes:
         """Return a byte string containing the values from data packed
         according to the frame format.
 
         :param frame_id: frame id
         :param data: data dictionary
+        :param fill_value: fill for bits not covered by any (provided) signal.
+            None (default) fills with 1 for j1939 frames (SAE J1939-71),
+            0 for all other frames. True/1 fills with 1, False/0 fills with 0.
         :return: A byte string of the packed values.
         """
 
         frame = self.frame_by_id(frame_id)
         if frame is None:
             raise KeyError(f"Frame with id {frame_id} not found")
-        return frame.encode(data)
+        return frame.encode(data, fill_value)
 
     def decode_pycan(self, pycan_msg):
         """Return OrderedDictionary with Signal Name: object decodedSignal

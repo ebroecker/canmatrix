@@ -32,7 +32,7 @@ import openpyxl.utils
 
 import canmatrix
 import canmatrix.formats.xls_common
-import camatrix.utils
+import canmatrix.utils
 
 from openpyxl.worksheet.dimensions import ColumnDimension
 from openpyxl.styles import NamedStyle, Font, Alignment, PatternFill, Border, Side

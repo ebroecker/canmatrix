@@ -722,4 +722,20 @@ def test_env_var_with_val():
     assert var['values']['0'] == 'on'
     assert var['values']['1'] == 'off'
 
+
+def test_ecu_attribute_for_unknown_ecu():
+    # "BA_" for an ECU not listed in "BU_:" - attribute must not get lost (#827)
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 100 testFrame: 8 Vector__XXX
+         SG_ someSignal: 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+        BA_ "Node Address" BU_ SOME_UNKNOWN_ECU 42;
+        ''').encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc)
+
+    ecu = matrix.ecu_by_name("SOME_UNKNOWN_ECU")
+    assert ecu is not None
+    assert ecu.attribute("Node Address") is not None
+
     

@@ -486,12 +486,13 @@ class Frame(object):
             for receiver in sig.receivers:
                 self.add_receiver(receiver)
 
-    def signals_to_bytes(self, data):
-        # type: (typing.Mapping[str, RawValue]) -> bytes
+    def signals_to_bytes(self, data, fill_bit='0'):
+        # type: (typing.Mapping[str, RawValue], str) -> bytes
         """Return a byte string containing the values from data packed
         according to the frame format.
 
         :param data: data dictionary of signal : rawValue
+        :param fill_bit: bit ('0' or '1') used for bits not covered by any signal
         :return: A byte string of the packed values.
         """
 
@@ -520,8 +521,8 @@ class Frame(object):
         little_bits_iter = reversed(tuple(grouper(little_bits, 8)))
         little_bits = list(itertools.chain(*little_bits_iter))
         bitstring = ''.join(
-            next(x for x in (l, b, '0') if x is not None)
-            # l if l != ' ' else (b if b != ' ' else '0')
+            next(x for x in (l, b, fill_bit) if x is not None)
+            # l if l != ' ' else (b if b != ' ' else fill_bit)
             for l, b in zip(little_bits, big_bits)
         )
         return bytearray(
@@ -529,14 +530,21 @@ class Frame(object):
             for b in grouper(bitstring, 8)
         )
 
-    def encode(self, data=None):
-        # type: (typing.Optional[typing.Mapping[str, typing.Any]]) -> bytes
+    def encode(self, data=None, fill_value=None):
+        # type: (typing.Optional[typing.Mapping[str, typing.Any]], typing.Optional[bool]) -> bytes
         """Return a byte string containing the values from data packed
         according to the frame format.
 
         :param dict data: data dictionary
+        :param fill_value: fill for bits not covered by any (provided) signal.
+            None (default) fills with 1 for j1939 frames (SAE J1939-71),
+            0 for all other frames. True/1 fills with 1, False/0 fills with 0.
         :return: A byte string of the packed values.
         """
+        if fill_value is None:
+            fill_bit = '1' if self.is_j1939 else '0'
+        else:
+            fill_bit = '1' if fill_value else '0'
 
         data = dict() if data is None else data
         if self.is_complex_multiplexed:
@@ -563,7 +571,7 @@ class Frame(object):
                 if signalName in encodeSignals:
                     newData[signalName] = data[signalName]
             data = newData
-        return self.signals_to_bytes(data)
+        return self.signals_to_bytes(data, fill_bit)
 
     @staticmethod
     def bytes_to_bitstrings(data):
