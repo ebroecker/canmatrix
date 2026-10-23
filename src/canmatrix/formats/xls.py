@@ -129,6 +129,7 @@ def dump(db, file, **options):
         additional_frame_columns = []  # ["attributes['DisplayDecimalPlaces']"]
 
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
+    byte_base = canmatrix.formats.xls_common.get_byte_base(options, "xlsExportByteBase")
 
     workbook = xlwt.Workbook(encoding='utf8')
 #    ws_name = os.path.basename(filename).replace('.xls', '')
@@ -244,7 +245,7 @@ def dump(db, file, **options):
                     col = write_ecu_matrix(ecu_list, sig, frame, worksheet, row, col, frame_style)
 
                     # write Value
-                    (frontRow, backRow) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format)
+                    (frontRow, backRow) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format, byte_base)
                     write_excel_line(worksheet, row, front_col, frontRow, sig_style)
                     backRow += additional_frame_info
                     for item in additional_signal_columns:
@@ -272,7 +273,7 @@ def dump(db, file, **options):
                 col = head_start
                 col = write_ecu_matrix(
                     ecu_list, sig, frame, worksheet, row, col, frame_style)
-                (frontRow, backRow) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format)
+                (frontRow, backRow) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format, byte_base)
                 write_excel_line(worksheet, row, front_col, frontRow, sig_style)
 
                 if float(sig.min) != 0 or float(sig.max) != 1.0:
@@ -341,6 +342,7 @@ def read_additional_signal_attributes(signal, attribute_name, attribute_value):
 def load(file, **options):
     # type: (typing.IO, **typing.Any) -> canmatrix.CanMatrix
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
+    byte_base = canmatrix.formats.xls_common.get_byte_base(options, "xlsImportByteBase")
     float_factory = FloatFactory.get_float_factory()
 
     additional_inputs = dict()
@@ -463,7 +465,7 @@ def load(file, **options):
                 and len(sh.cell(row_num, index['signalName']).value) > 0:
             # new Signal
             receiver = []
-            start_byte = int(sh.cell(row_num, index['startbyte']).value)
+            start_byte = int(sh.cell(row_num, index['startbyte']).value) - byte_base
             start_bit = int(sh.cell(row_num, index['startbit']).value)
             signal_name = sh.cell(row_num, index['signalName']).value.strip()
             signal_comment = sh.cell(
@@ -499,7 +501,7 @@ def load(file, **options):
                         receiver.append(sh.cell(0, x).value.strip())
                 new_signal = Signal(
                     signal_name,
-                    start_bit=(start_byte - 1) * 8 + start_bit,
+                    start_bit=start_byte * 8 + start_bit,
                     size=int(signal_length),
                     is_little_endian=is_little_endian,
                     is_signed=is_signed,
@@ -509,12 +511,12 @@ def load(file, **options):
                 if not is_little_endian:
                     # motorola
                     if motorola_bit_format == "msb":
-                        new_signal.set_startbit((start_byte - 1) * 8 + start_bit, bitNumbering=1)
+                        new_signal.set_startbit(start_byte * 8 + start_bit, bitNumbering=1)
                     elif motorola_bit_format == "msbreverse":
-                        new_signal.set_startbit((start_byte - 1) * 8 + start_bit)
+                        new_signal.set_startbit(start_byte * 8 + start_bit)
                     else:  # motorola_bit_format == "lsb"
                         new_signal.set_startbit(
-                            (start_byte - 1) * 8 + start_bit,
+                            start_byte * 8 + start_bit,
                             bitNumbering=1,
                             startLittle=True)
 

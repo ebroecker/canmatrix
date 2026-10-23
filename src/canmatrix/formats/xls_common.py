@@ -58,8 +58,16 @@ def get_frame_info(db, frame):
     return ret_array
 
 
-def get_signal(db, frame, sig, motorola_bit_format):
-    # type: (canmatrix.CanMatrix, canmatrix.Frame, canmatrix.Signal, str) -> typing.Tuple[typing.List, typing.List]
+def get_byte_base(options, option_name):
+    # type: (typing.Dict[str, typing.Any], str) -> int
+    byte_base = options.get(option_name, 1)
+    if isinstance(byte_base, bool) or not isinstance(byte_base, int) or byte_base not in (0, 1):
+        raise ValueError("{} must be the integer 0 or 1".format(option_name))
+    return byte_base
+
+
+def get_signal(db, frame, sig, motorola_bit_format, byte_base=1):
+    # type: (canmatrix.CanMatrix, canmatrix.Frame, canmatrix.Signal, str, int) -> typing.Tuple[typing.List, typing.List]
     front_array = []  # type: typing.List[typing.Union[str, float]]
     back_array = []
     if motorola_bit_format == "msb":
@@ -70,7 +78,7 @@ def get_signal(db, frame, sig, motorola_bit_format):
         start_bit = sig.get_startbit(bit_numbering=1, start_little=True)
 
     # start byte
-    front_array.append(int(start_bit / 8) + 1)
+    front_array.append(int(start_bit / 8) + byte_base)
     # start bit
     front_array.append(start_bit % 8)
     # signal name
