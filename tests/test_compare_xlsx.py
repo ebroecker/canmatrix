@@ -105,6 +105,48 @@ def test_xlsx_report_definition_and_table_values(tmp_path):
     assert ("Database", "valuetable NewTable", "added", None, "{2: 'Two'}") in rows
 
 
+@pytest.mark.parametrize("attribute", ["ECU", "FRAME", "SIGNAL", "ecu", "SignalGroup", "Signalgroup"])
+def test_xlsx_report_reserved_attribute_names(tmp_path, attribute):
+    old = CanMatrix()
+    frame = Frame("Engine", arbitration_id=0x123, size=8)
+    frame.add_attribute(attribute, "OldOwner")
+    old.add_frame(frame)
+    new = copy.deepcopy(old)
+    new.frames[0].attributes[attribute] = "NewOwner"
+    output = tmp_path / "attribute.xlsx"
+    canmatrix.compare.dump_result_xlsx(canmatrix.compare.compare_db(old, new), output)
+    assert report_rows(output)[1:] == [
+        ("FRAME Engine / ATTRIBUTES", attribute, "changed", "OldOwner", "NewOwner")]
+
+
+def test_xlsx_report_changed_global_table_identity(tmp_path):
+    old, new = CanMatrix(), CanMatrix()
+    for name in ("State", "Mode"):
+        old.value_tables[name] = {1: "Off"}
+        new.value_tables[name] = {1: "On"}
+    output = tmp_path / "tables.xlsx"
+    canmatrix.compare.dump_result_xlsx(canmatrix.compare.compare_db(old, new), output)
+    assert report_rows(output)[1:] == [
+        ("Valuetable State", "Value 1 b'Off'", "changed", "Off", "On"),
+        ("Valuetable Mode", "Value 1 b'Off'", "changed", "Off", "On")]
+
+
+def test_xlsx_report_changed_definition_identity(tmp_path):
+    old, new = CanMatrix(), CanMatrix()
+    for name in ("A", "B"):
+        old.add_frame_defines(name, "INT 0 7")
+        new.add_frame_defines(name, "INT 0 15")
+        old.frame_defines[name].defaultValue = "1"
+        new.frame_defines[name].defaultValue = "2"
+    output = tmp_path / "definitions.xlsx"
+    canmatrix.compare.dump_result_xlsx(canmatrix.compare.compare_db(old, new), output)
+    assert report_rows(output)[1:] == [
+        ("Frame Defines / Define A", "Definition", "changed", "INT 0 7", "INT 0 15"),
+        ("Frame Defines / Define A", "DefaultValue", "changed", "1", "2"),
+        ("Frame Defines / Define B", "Definition", "changed", "INT 0 7", "INT 0 15"),
+        ("Frame Defines / Define B", "DefaultValue", "changed", "1", "2")]
+
+
 def test_xlsx_report_preserves_precision_and_cell_limit(tmp_path):
     result = canmatrix.compare.CompareResult()
     result.add_child(canmatrix.compare.CompareResult("changed", "offset", None,

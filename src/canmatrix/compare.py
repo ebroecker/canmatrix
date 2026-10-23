@@ -46,6 +46,7 @@ class CompareResult:
     ref = attr.ib(default=None)  # type: typing.Any                 # reference to related object
     changes = attr.ib(default=None)  # type: typing.Optional[typing.List]
     _children = attr.ib(factory=list)  # type: typing.List[CompareResult]  # nested CompareResults
+    context = attr.ib(default=None)  # type: typing.Optional[str]  # object identity when ref has no name
 
     def add_child(self, child):
         # type: (CompareResult) -> None
@@ -137,10 +138,9 @@ def compare_db(db1, db2, ignore=None):
                         db1.value_tables,
                         [db1.value_tables[vt1], None]))
             else:
-                result.add_child(
-                    compare_value_table(
-                        db1.value_tables[vt1],
-                        db2.value_tables[vt1]))
+                table_result = compare_value_table(db1.value_tables[vt1], db2.value_tables[vt1])
+                table_result.context = "Valuetable " + vt1
+                result.add_child(table_result)
 
         for vt2 in db2.value_tables:
             if vt2 not in db1.value_tables:
@@ -227,13 +227,13 @@ def compare_define_list(d1list, d2list):
                 result.add_child(
                     CompareResult(
                         "changed", "Definition", d1.definition, [
-                            d1.definition, d2.definition]))
+                            d1.definition, d2.definition], context="Define " + definition))
 
             if d1.defaultValue != d2.defaultValue:
                 result.add_child(
                     CompareResult(
                         "changed", "DefaultValue", d1.definition, [
-                            d1.defaultValue, d2.defaultValue]))
+                            d1.defaultValue, d2.defaultValue], context="Define " + definition))
     for definition in d2list:
         if definition not in d1list:
             result.add_child(
@@ -488,9 +488,16 @@ def compare_signal(s1, s2, ignore=None):
     return result
 
 
+_XLSX_OBJECT_TYPES = {"FRAME": Frame, "SIGNAL": Signal, "ECU": Ecu, "ecu": Ecu,
+                      "SignalGroup": SignalGroup, "Signalgroup": SignalGroup}
+
+
 def _xlsx_rows(res, path=()):
     # type: (CompareResult, typing.Tuple[str, ...]) -> typing.Iterator[typing.List[typing.Any]]
-    if res.type in ("FRAME", "SIGNAL", "ECU", "ecu", "SignalGroup", "Signalgroup"):
+    object_type = _XLSX_OBJECT_TYPES.get(res.type)
+    if res.context is not None:
+        path += (res.context,)
+    elif object_type is not None and isinstance(res.ref, object_type):
         label = res.type + " " + res.ref.name
         if not path or path[-1] != label:
             path += (label,)
