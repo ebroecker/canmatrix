@@ -21,6 +21,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
+import importlib
 import logging
 import sys
 import typing
@@ -40,14 +41,25 @@ logger = logging.getLogger(__name__)
 @click.option('-c', '--comments', 'check_comments', is_flag=True, default=False, help="look for changed comments")
 @click.option('-a', '--attributes', 'check_attributes', is_flag=True, default=False, help="look for changed attributes")
 @click.option('-t', '--valueTable', 'ignore_valuetables', is_flag=True, default=False, help="ignore changed valuetables")
+@click.option('-o', '--output', type=click.Path(dir_okay=False), help="Also write comparison changes to an XLSX report.")
 @click.argument('matrix1', required=True)
 @click.argument('matrix2', required=True)
-def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attributes, ignore_valuetables, frames):
+def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attributes, ignore_valuetables, frames, output=None):
     """
         canmatrix.cli.compare [options] matrix1 matrix2
 
         matrixX can be any of *.dbc|*.dbf|*.kcd|*.arxml|*.xls(x)|*.sym
     """
+
+    if output is not None:
+        if frames:
+            raise click.UsageError("--output cannot be combined with --frames")
+        if not output.lower().endswith(".xlsx"):
+            raise click.BadParameter("report filename must end in .xlsx", param_hint="--output")
+        try:
+            importlib.import_module("openpyxl")
+        except ImportError:
+            raise click.ClickException('XLSX reports require the optional dependencies: pip install "canmatrix[xlsx]"')
 
     import canmatrix.log
     root_logger = canmatrix.log.setup_logger()
@@ -97,6 +109,11 @@ def cli_compare(matrix1, matrix2, verbosity, silent, check_comments, check_attri
         # ignore["ATTRIBUTE"] = "*"
         # ignore["DEFINE"] = "*"
         obj = canmatrix.compare.compare_db(db1, db2, ignore)
+        if output is not None:
+            try:
+                canmatrix.compare.dump_result_xlsx(obj, output)
+            except (OSError, ValueError) as error:
+                raise click.ClickException("Could not write XLSX comparison report: " + str(error))
         canmatrix.compare.dump_result(obj)
     return 0
 

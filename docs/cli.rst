@@ -14,6 +14,26 @@ Command Line Interface
 
     Example: "*cancompare* file1.dbc file2.dbc"
 
+    To also save the differences as an Excel report, install the optional
+    spreadsheet dependencies and use ``--output`` (or ``-o``)::
+
+        pip install "canmatrix[xlsx]"
+        cancompare --output changes.xlsx old.dbc new.dbc
+
+    The report lists each detected change with its object, property, change
+    type, and old/new values. Matrix 1 is the old version; matrix 2 is the new
+    version. Values are stored as literal text to preserve numeric precision
+    and strings. Added or removed objects show their names; this is a change
+    report rather than a full database export. Equal databases produce a
+    header-only report.
+
+    The report uses the existing comparison logic and filters. Use
+    ``--comments`` and ``--attributes`` to include those differences, or
+    ``--valueTable`` to ignore value tables. Console output is retained.
+    ``--output`` requires an ``.xlsx`` filename and cannot be combined with
+    the frame-list-only option ``--frames``. Values exceeding Excel's limit
+    of 32767 characters per cell are rejected instead of truncated.
+
 
 General
 _______
