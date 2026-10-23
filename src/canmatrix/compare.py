@@ -20,6 +20,7 @@
 # DAMAGE.
 
 import logging
+import os
 import sys
 import typing
 from builtins import *
@@ -45,6 +46,7 @@ class CompareResult:
     ref = attr.ib(default=None)  # type: typing.Any                 # reference to related object
     changes = attr.ib(default=None)  # type: typing.Optional[typing.List]
     _children = attr.ib(factory=list)  # type: typing.List[CompareResult]  # nested CompareResults
+    context = attr.ib(default=None)  # type: typing.Optional[str]  # object identity when ref has no name
 
     def add_child(self, child):
         # type: (CompareResult) -> None
@@ -133,12 +135,12 @@ def compare_db(db1, db2, ignore=None):
                     CompareResult(
                         "deleted",
                         "valuetable " + vt1,
-                        db1.value_tables))
+                        db1.value_tables,
+                        [db1.value_tables[vt1], None]))
             else:
-                result.add_child(
-                    compare_value_table(
-                        db1.value_tables[vt1],
-                        db2.value_tables[vt1]))
+                table_result = compare_value_table(db1.value_tables[vt1], db2.value_tables[vt1])
+                table_result.context = "Valuetable " + vt1
+                result.add_child(table_result)
 
         for vt2 in db2.value_tables:
             if vt2 not in db1.value_tables:
@@ -146,7 +148,8 @@ def compare_db(db1, db2, ignore=None):
                     CompareResult(
                         "added",
                         "valuetable " + vt2,
-                        db2.value_tables))
+                        db2.value_tables,
+                        [None, db2.value_tables[vt2]]))
 
     propagate_changes(result)
 
@@ -215,7 +218,8 @@ def compare_define_list(d1list, d2list):
                     "deleted",
                     "Define" +
                     str(definition),
-                    d1list))
+                    d1list,
+                    [d1list[definition].definition, None]))
         else:
             d2 = d2list[definition]
             d1 = d1list[definition]
@@ -223,13 +227,13 @@ def compare_define_list(d1list, d2list):
                 result.add_child(
                     CompareResult(
                         "changed", "Definition", d1.definition, [
-                            d1.definition, d2.definition]))
+                            d1.definition, d2.definition], context="Define " + definition))
 
             if d1.defaultValue != d2.defaultValue:
                 result.add_child(
                     CompareResult(
                         "changed", "DefaultValue", d1.definition, [
-                            d1.defaultValue, d2.defaultValue]))
+                            d1.defaultValue, d2.defaultValue], context="Define " + definition))
     for definition in d2list:
         if definition not in d1list:
             result.add_child(
@@ -237,7 +241,8 @@ def compare_define_list(d1list, d2list):
                     "added",
                     "Define" +
                     str(definition),
-                    d2list))
+                    d2list,
+                    [None, d2list[definition].definition]))
     return result
 
 
@@ -355,12 +360,12 @@ def compare_frame(f1, f2, ignore=None):
     temp = [str(item) for item in f2.transmitters]
     for transmitter in f1.transmitters:
         if transmitter not in temp:
-            result.add_child(CompareResult("removed", "Frame-Transmitter", f1))
+            result.add_child(CompareResult("removed", "Frame-Transmitter", f1, [transmitter, None]))
 
     temp = [str(item) for item in f1.transmitters]
     for transmitter in f2.transmitters:
         if transmitter not in temp:
-            result.add_child(CompareResult("added", "Frame-Transmitter", f2))
+            result.add_child(CompareResult("added", "Frame-Transmitter", f2, [None, transmitter]))
 
     for sg1 in f1.signalGroups:
         sg2 = f2.signal_group_by_name(sg1.name)
@@ -457,7 +462,8 @@ def compare_signal(s1, s2, ignore=None):
                     "removed",
                     "receiver " +
                     receiver,
-                    s1.receivers))
+                    s1.receivers,
+                    [receiver, None]))
 
     for receiver in s2.receivers:
         if receiver.strip() not in s1.receivers:
@@ -466,7 +472,8 @@ def compare_signal(s1, s2, ignore=None):
                     "added",
                     "receiver " +
                     receiver,
-                    s1.receivers))
+                    s1.receivers,
+                    [None, receiver]))
 
     if "ATTRIBUTE" in ignore and ignore["ATTRIBUTE"] == "*":
         pass
@@ -479,6 +486,72 @@ def compare_signal(s1, s2, ignore=None):
         result.add_child(compare_value_table(s1.values, s2.values))
 
     return result
+
+
+_XLSX_OBJECT_TYPES = {"FRAME": Frame, "SIGNAL": Signal, "ECU": Ecu, "ecu": Ecu,
+                      "SignalGroup": SignalGroup, "Signalgroup": SignalGroup}
+
+
+def _xlsx_rows(res, path=()):
+    # type: (CompareResult, typing.Tuple[str, ...]) -> typing.Iterator[typing.List[typing.Any]]
+    object_type = _XLSX_OBJECT_TYPES.get(res.type)
+    if res.context is not None:
+        path += (res.context,)
+    elif object_type is not None and isinstance(res.ref, object_type):
+        label = res.type + " " + res.ref.name
+        if not path or path[-1] != label:
+            path += (label,)
+    elif res.children and res.type is not None:
+        path += (res.type,)
+
+    if res.type is not None and res.result not in (None, "equal") and (res.changes is not None or not res.children):
+        old_value, new_value = None, None
+        if res.changes is not None:
+            old_value, new_value = res.changes
+        elif res.result == "changed" and isinstance(res.ref, list) and len(res.ref) == 2:
+            # Legacy value-table and signal-group changes store their pair in ref.
+            old_value, new_value = res.ref
+        elif res.result in ("deleted", "removed", "added"):
+            value = getattr(res.ref, "name", res.ref)
+            if res.result == "added":
+                new_value = value
+            else:
+                old_value = value
+        yield [" / ".join(path) or "Database", res.type, res.result, old_value, new_value]
+
+    for child in res.children:
+        yield from _xlsx_rows(child, path)
+
+
+def dump_result_xlsx(res, filename):
+    # type: (CompareResult, typing.Union[str, os.PathLike, typing.BinaryIO]) -> None
+    """Write comparison changes to XLSX without modifying the result tree.
+
+    Values are stored as text to preserve literal strings and numeric precision.
+    Requires the optional xlsx dependencies.
+    """
+    import openpyxl
+    from openpyxl.styles import Alignment, Font
+
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Comparison"
+    worksheet.append(["Object", "Property", "Change", "Old value", "New value"])
+    for row_number, values in enumerate(_xlsx_rows(res), 2):
+        for column, value in enumerate(values, 1):
+            text = "" if value is None else str(value)
+            if len(text) > 32767:
+                raise ValueError("Comparison value exceeds the XLSX limit of 32767 characters")
+            cell = worksheet.cell(row_number, column, text)
+            cell.data_type = "s"
+            cell.alignment = Alignment(wrap_text=True, vertical="top")
+    for cell in worksheet[1]:
+        cell.font = Font(bold=True)
+    for column, width in (("A", 55), ("B", 28), ("C", 12), ("D", 50), ("E", 50)):
+        worksheet.column_dimensions[column].width = width
+    worksheet.freeze_panes = "A2"
+    worksheet.auto_filter.ref = worksheet.dimensions
+    workbook.save(filename)
 
 
 def dump_result(res, depth=0):
