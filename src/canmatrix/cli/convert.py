@@ -116,6 +116,8 @@ Example --signalNameFromAttrib SysSignalName\nARXML known Attributes: SysSignalN
 @click.option('--symExportEncoding', 'symExportEncoding', default="iso-8859-1", help="Export charset of sym format, maybe utf-8\ndefault iso-8859-1")
 # xls/csv switches
 @click.option('--xlsMotorolaBitFormat', 'xlsMotorolaBitFormat', default="msbreverse", help="Excel format for startbit of motorola codescharset signals\nValid values: msb, lsb, msbreverse\n default msbreverse")
+@click.option('--xlsImportByteBase', 'xlsImportByteBase', type=click.IntRange(0, 1), default=1, help="First byte number when reading xls/xlsx: 0 or 1. Default: 1.")
+@click.option('--xlsExportByteBase', 'xlsExportByteBase', type=click.IntRange(0, 1), default=1, help="First byte number when writing xls/xlsx: 0 or 1. Default: 1.")
 @click.option('--additionalFrameAttributes', 'additionalFrameAttributes', default="", help="append columns to csv/xls(x), example: is_fd")
 @click.option('--additionalSignalAttributes', 'additionalSignalAttributes', default="", help="append columns to csv/xls(x), example: is_signed,attributes[\"GenSigStartValue\"]")
 @click.option('--xlsValuesInSeperateLines/--no-xlsValuesInSeperateLines', 'xlsValuesInSeperateLines', default = False, help="Excel format: create seperate line for each value of signal value table\tdefault: False")

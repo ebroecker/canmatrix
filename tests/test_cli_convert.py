@@ -370,3 +370,72 @@ def test_cli_no_duplicatie_options(
             warn.message
         ):
             pytest.fail(str(warn.message))
+
+
+@pytest.fixture
+def byte_base_dbc(tmp_path):
+    source = tmp_path / "byte_base.dbc"
+    source.write_text(
+        'VERSION ""\n\nBU_: ECU\n\n'
+        'BO_ 100 Frame: 8 ECU\n'
+        ' SG_ LaterByte : 16|8@1+ (1,0) [0|255] "" ECU\n'
+    )
+    return source
+
+
+def spreadsheet_signal_byte(path, file_format):
+    if file_format == "xlsx":
+        import openpyxl
+
+        workbook = openpyxl.load_workbook(str(path), read_only=True)
+        try:
+            rows = list(workbook.active.iter_rows(values_only=True))
+        finally:
+            workbook.close()
+    else:
+        import xlrd
+
+        workbook = xlrd.open_workbook(str(path))
+        sheet = workbook.sheet_by_index(0)
+        rows = [sheet.row_values(i) for i in range(sheet.nrows)]
+        workbook.release_resources()
+    return rows[1][rows[0].index("Signal Byte No.")]
+
+
+@pytest.mark.parametrize("file_format", ["xls", "xlsx"])
+def test_cli_zero_byte_base_round_trip(tmp_path, run, byte_base_dbc, file_format):
+    spreadsheet = tmp_path / ("zero." + file_format)
+    restored = tmp_path / "restored.dbc"
+    result = run("--xlsExportByteBase", "0", str(byte_base_dbc), str(spreadsheet))
+    assert result.ret == 0
+    assert spreadsheet_signal_byte(spreadsheet, file_format) == 2
+
+    result = run("--xlsImportByteBase", "0", str(spreadsheet), str(restored))
+    assert result.ret == 0
+    reloaded = canmatrix.formats.loadp(str(restored))[""]
+    assert reloaded.frames[0].signals[0].start_bit == 16
+
+
+@pytest.mark.parametrize("file_format", ["xls", "xlsx"])
+def test_cli_independent_byte_bases(tmp_path, run, byte_base_dbc, file_format):
+    one_based = tmp_path / ("one." + file_format)
+    zero_based = tmp_path / ("zero." + file_format)
+    assert run(str(byte_base_dbc), str(one_based)).ret == 0
+    assert spreadsheet_signal_byte(one_based, file_format) == 3
+
+    result = run(
+        "--xlsImportByteBase", "1", "--xlsExportByteBase", "0",
+        str(one_based), str(zero_based),
+    )
+    assert result.ret == 0
+    assert spreadsheet_signal_byte(zero_based, file_format) == 2
+
+
+@pytest.mark.parametrize("option", ["--xlsImportByteBase", "--xlsExportByteBase"])
+@pytest.mark.parametrize("value", ["-1", "2"])
+def test_cli_invalid_byte_base(tmp_path, run, byte_base_dbc, option, value):
+    output = tmp_path / "invalid.xlsx"
+    result = run(option, value, str(byte_base_dbc), str(output))
+    assert result.ret != 0
+    assert "Invalid value" in result.stderr.str()
+    assert not output.exists()

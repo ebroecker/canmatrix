@@ -436,6 +436,28 @@ ____________________
 
 * xls(x):
 
+  --xlsImportByteBase / --xlsExportByteBase
+
+                        First byte number in the ``Signal Byte No.`` column when
+                        reading or writing XLS/XLSX files. Each accepts 0 or 1
+                        and defaults to 1. Bit numbering is unchanged.
+
+                        To export with zero-based byte numbers::
+
+                            canconvert --xlsExportByteBase 0 input.dbc output.xlsx
+
+                        To import that file, specify its byte numbering::
+
+                            canconvert --xlsImportByteBase 0 input.xlsx output.dbc
+
+                        Import and export settings are independent. For example,
+                        to convert an existing one-based workbook to zero-based::
+
+                            canconvert --xlsImportByteBase 1 --xlsExportByteBase 0 input.xlsx output.xlsx
+
+                        Byte numbering is not detected automatically. These
+                        options do not affect CSV files.
+
   --xlsMotorolaBitFormat
 
                         Excel format for startbit of motorola coded signals. Valid values: msb, lsb, msbreverse default msbreverse. [more about starbits...](https://github.com/ebroecker/canmatrix/wiki/signal-Byteorder)
