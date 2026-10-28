@@ -118,6 +118,7 @@ def write_excel_line(worksheet, row, col, row_array, style):
 def dump(db, filename, **options):
     # type: (canmatrix.CanMatrix, str, **str) -> None
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
+    byte_base = canmatrix.formats.xls_common.get_byte_base(options, "xlsExportByteBase")
     values_in_seperate_lines = options.get("xlsValuesInSeperateLines", True)
     additional_signal_columns = [x for x in options.get("additionalSignalAttributes", "").split(",") if x]
     additional_frame_columns = [x for x in options.get("additionalFrameAttributes", "").split(",") if x]
@@ -295,7 +296,7 @@ def dump(db, filename, **options):
                     col = write_ecu_matrix(ecu_list, sig, frame, worksheet, row, col, frame_style)
 
                     # write Value
-                    (frontRow, back_row) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format)
+                    (frontRow, back_row) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format, byte_base)
                     write_excel_line(worksheet, row, front_col, frontRow, signal_style)
                     back_row += additional_frame_info
                     for item in additional_signal_columns:
@@ -323,7 +324,7 @@ def dump(db, filename, **options):
 
                 col = head_start
                 col = write_ecu_matrix(ecu_list, sig, frame, worksheet, row, col, frame_style)
-                (frontRow, back_row) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format)
+                (frontRow, back_row) = canmatrix.formats.xls_common.get_signal(db, frame, sig, motorola_bit_format, byte_base)
                 write_excel_line(worksheet, row, front_col, frontRow, signal_style)
 
                 if float(sig.min) != 0 or float(sig.max) != 1.0:
@@ -361,6 +362,7 @@ def load(file, **options):
 
     # else use this hack to read xlsx
     motorola_bit_format = options.get("xlsMotorolaBitFormat", "msbreverse")
+    byte_base = canmatrix.formats.xls_common.get_byte_base(options, "xlsImportByteBase")
     workbook = openpyxl.open(file)
     sheet = workbook._sheets[0]
     db = CanMatrix()
@@ -438,7 +440,7 @@ def load(file, **options):
         # new signal detected
         if get_if_possible(row, 'Signal Name') != signal_name:
             receiver = []  # type: typing.List[str]
-            start_byte = int(get_if_possible(row, 'Signal Byte No.', "0"))
+            start_byte = int(get_if_possible(row, 'Signal Byte No.', "0")) - byte_base
             start_bit = int(get_if_possible(row, 'Signal Bit No.', "0"))
             signal_name = get_if_possible(row, 'Signal Name')
             signal_comment = get_if_possible(row, 'Signal Function')
@@ -473,7 +475,7 @@ def load(file, **options):
                         if 'r' in ecu_sender_receiver:
                             receiver.append(ecu_name)
                 new_signal = Signal(signal_name,
-                                              start_bit=(start_byte - 1) * 8 + start_bit,
+                                              start_bit=start_byte * 8 + start_bit,
                                               size=signal_length,
                                               is_little_endian=is_little_endian,
                                               is_signed=is_signed,
@@ -483,12 +485,12 @@ def load(file, **options):
                     # motorola
                     if motorola_bit_format == "msb":
                         new_signal.set_startbit(
-                            (start_byte - 1) * 8 + start_bit, bitNumbering=1)
+                            start_byte * 8 + start_bit, bitNumbering=1)
                     elif motorola_bit_format == "msbreverse":
-                        new_signal.set_startbit((start_byte - 1) * 8 + start_bit)
+                        new_signal.set_startbit(start_byte * 8 + start_bit)
                     else:  # motorola_bit_format == "lsb"
                         new_signal.set_startbit(
-                            (start_byte - 1) * 8 + start_bit,
+                            start_byte * 8 + start_bit,
                             bitNumbering=1,
                             startLittle=True
                         )
