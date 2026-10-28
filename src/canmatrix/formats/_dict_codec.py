@@ -125,10 +125,10 @@ def to_dict(db, export_all=False, native_types=False, motorola_bit_format="lsb",
             export_dict['ecu_attributes'] = ecu_attributes
 
         for frame in db.frames:
-            frame_attributes = {attribute: frame.attribute(attribute, db=db) for attribute in db.frame_defines}
+            frame_attributes = dict(frame.attributes)
             symbolic_signals = []
             for signal in frame.signals:
-                attributes = {attribute: signal.attribute(attribute, db=db) for attribute in db.signal_defines}
+                attributes = dict(signal.attributes)
                 values = {key: signal.values[key] for key in signal.values}
                 start_bit = _start_bit(signal, motorola_bit_format)
 
@@ -177,6 +177,9 @@ def to_dict(db, export_all=False, native_types=False, motorola_bit_format="lsb",
                  "is_fd": frame.is_fd,
                  "signals": symbolic_signals,
                  "attributes": frame_attributes,
+                 "signal_groups": [{"name": sg.name, "id": sg.id,
+                                    "signals": [s.name for s in sg.signals]}
+                                   for sg in frame.signalGroups],
                  "comment": frame.comment,
                  "length": frame.size,
                  "is_complex_multiplexed": frame.is_complex_multiplexed,
@@ -238,6 +241,9 @@ def from_dict(data, **_options):
 
             new_frame.arbitration_id.extended = frame.get("is_extended_frame", False)
 
+            if "is_fd" in frame:
+                new_frame.is_fd = frame["is_fd"]
+
             if "attributes" in frame:
                 for k, v in frame["attributes"].items():
                     new_frame.add_attribute(k, v)
@@ -280,8 +286,8 @@ def from_dict(data, **_options):
                 if signal.get("unit", False):
                     new_signal.unit = signal["unit"]
 
-                if signal.get("multiplex", False):
-                    new_signal.multiplex = signal["multiplex"]
+                if signal.get("multiplex") is not None:
+                    new_signal.multiplex = new_signal.multiplex_setter(signal["multiplex"])
 
                 if signal.get("values", False):
                     for key in signal["values"]:
@@ -312,15 +318,24 @@ def from_dict(data, **_options):
                     new_signal.set_startbit(
                         new_signal.start_bit, bitNumbering=1, startLittle=True)
                 new_frame.add_signal(new_signal)
+
+            for group in frame.get("signal_groups", []):
+                new_frame.add_signal_group(group["name"], group["id"], group["signals"])
             db.add_frame(new_frame)
 
     _define_list = {"signal_defines": db.add_signal_defines, "frame_defines": db.add_frame_defines,
                     "global_defines": db.add_global_defines, "env_defines": db.add_env_defines,
                     "ecu_defines": db.add_ecu_defines}
+    _define_dicts = {"signal_defines": db.signal_defines, "frame_defines": db.frame_defines,
+                     "global_defines": db.global_defines, "env_defines": db.env_defines,
+                     "ecu_defines": db.ecu_defines}
     for define_type, fptr in _define_list.items():
         if define_type in data:
             for define in data[define_type]:
                 fptr(define['name'], define['define'])
+                default = define.get('default')
+                if default is not None:
+                    _define_dicts[define_type][define['name']].set_default(default)
 
     cm_import_list_dict = {'attributes': db.attributes, 'value_tables': db.value_tables, 'env_vars': db.env_vars}
 
