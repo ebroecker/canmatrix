@@ -160,7 +160,10 @@ def cli_convert(infile, outfile, silent, verbosity, **options):
     else:
         options["ignoreEncodingErrors"] = "strict"
 
-    canmatrix.convert.convert(infile, outfile, **options)
+    try:
+        canmatrix.convert.convert(infile, outfile, **options)
+    except (IOError, OSError) as error:
+        raise click.ClickException("Could not convert " + infile + ": " + str(error))
     return 0
 
 

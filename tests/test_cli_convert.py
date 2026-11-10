@@ -439,3 +439,10 @@ def test_cli_invalid_byte_base(tmp_path, run, byte_base_dbc, option, value):
     assert result.ret != 0
     assert "Invalid value" in result.stderr.str()
     assert not output.exists()
+
+
+def test_cli_missing_input_file_reports_clean_error(tmpdir, run):
+    result = run("does-not-exist.dbc", "tmp.json")
+    assert result.ret != 0
+    assert "Error" in result.stderr.str()
+    assert "Traceback" not in result.stderr.str()
