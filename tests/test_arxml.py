@@ -40,6 +40,28 @@ def test_min_max():
     assert matrix["New_CanCluster"].frames[0].signals[0].is_signed is False
 
 
+def test_signal_group_system_name():
+    """group name = I-SIGNAL-GROUP short name, sys_name = SHORT-NAME of the
+    referenced SYSTEM-SIGNAL-GROUP; both must survive a re-export (#777)."""
+    matrix = canmatrix.formats.arxml.load("tests/files/arxml/ARXMLSignalGroupTest.arxml")
+    frames = [f for cluster in matrix.values() for f in cluster.frames]
+    frame = [f for f in frames if f.name == "FRAME_testFrame1"][0]
+    assert len(frame.signalGroups) == 1
+    group = frame.signalGroups[0]
+    assert group.name == "SIGGRP_auto"
+    assert group.sys_name == "SIGGRP_system"
+    assert len(group.signals) == 2
+
+    # roundtrip: re-export keeps both names
+    import io
+    out = io.BytesIO()
+    canmatrix.formats.dump(dict(matrix), out, "arxml")
+    text = out.getvalue()
+    assert b"SIGGRP_auto" in text
+    assert b"SIGGRP_system" in text
+    assert b"/Signal/SIGGRP_system" in text
+
+
 def test_decode_compu_method_1():
     test_file = "tests/files/arxml/ARXMLCompuMethod1.arxml"
     ea = canmatrix.formats.arxml.Earxml()
