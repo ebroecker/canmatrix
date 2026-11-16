@@ -1095,8 +1095,8 @@ def get_signalgrp_and_signals(sys_signal, sys_signal_array, frame, group_id, ea)
     frame.add_signal_group(ea.get_element_name(sys_signal), group_id, members, e2e_properties, sys_name)
 
 
-def decode_compu_method(compu_method, ea, float_factory):
-    # type: (_Element, Earxml, _FloatFactory) -> typing.Tuple
+def decode_compu_method(compu_method, ea, float_factory, value_ranges=None):
+    # type: (_Element, Earxml, _FloatFactory, typing.Optional[list]) -> typing.Tuple
     values = {}
     factor = float_factory(1.0)
     offset = float_factory(0)
@@ -1132,6 +1132,14 @@ def decode_compu_method(compu_method, ea, float_factory):
             #####################################################################################################
             #####################################################################################################
             values[ll.text] = desc
+        elif rational is None and ll is not None and ul is not None and desc is not None \
+                and value_ranges is not None:
+            # value-to-text rule with a range instead of a single value - no single value table
+            # entry possible, keep it as scale range (#667)
+            value_ranges.append({
+                "min": canmatrix.utils.decode_number(ll.text, float_factory),
+                "max": canmatrix.utils.decode_number(ul.text, float_factory),
+                "label": desc})
 
         # scale_desc = ea.get_element_desc(compu_scale)
         if rational is not None:
@@ -1433,7 +1441,8 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
             compu_method = ea.follow_ref(system_signal, "COMPU-METHOD-REF")
 
         # decode compuMethod:
-        (values, factor, offset, unit_elem, const) = decode_compu_method(compu_method, ea, float_factory)
+        value_ranges = []  # type: list
+        (values, factor, offset, unit_elem, const) = decode_compu_method(compu_method, ea, float_factory, value_ranges)
 
         if signal_min is not None:
             signal_min *= factor
@@ -1520,6 +1529,8 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 new_signal.min = signal_min
             if signal_max is not None:
                 new_signal.max = signal_max
+            if value_ranges:
+                new_signal.scale_ranges.extend(value_ranges)
 
             if not new_signal.is_little_endian:
                 # startbit of motorola coded signals are MSB in arxml

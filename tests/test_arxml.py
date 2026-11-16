@@ -74,6 +74,34 @@ def test_decode_compu_method_1():
     assert offset == 17
 
 
+def test_decode_compu_method_ranges():
+    """value-to-text rules with ranges (LOWER != UPPER) must not be dropped (#667)."""
+    ea = canmatrix.formats.arxml.Earxml()
+    ea.open("tests/files/arxml/ARXMLCompuMethodRanges.arxml")
+    compu_method = ea.find("COMPU-METHOD")
+    value_ranges = []
+    values, factor, offset, unit, const = canmatrix.formats.arxml.decode_compu_method(
+        compu_method, ea, float, value_ranges)
+    assert values == {'0': 'off'}
+    assert value_ranges == [
+        {'min': 1, 'max': 5, 'label': 'low range'},
+        {'min': 6, 'max': 10, 'label': 'high range'}]
+
+
+def test_signal_scale_ranges_from_arxml():
+    """range value-tables must reach the signal's scale_ranges (#667)."""
+    matrix = canmatrix.formats.arxml.load("tests/files/arxml/ARXMLCompuMethodRanges.arxml")
+    frames = [f for c in matrix.values() for f in c.frames]
+    muxer = [s for f in frames for s in f.signals if s.name == 'myMuxer'][0]
+    assert muxer.values == {0: 'off'}
+    assert muxer.scale_ranges == [
+        {'min': 1, 'max': 5, 'label': 'low range'},
+        {'min': 6, 'max': 10, 'label': 'high range'}]
+    # signals without value ranges keep empty scale_ranges
+    others = [s for f in frames for s in f.signals if s.name != 'myMuxer']
+    assert all(s.scale_ranges == [] for s in others)
+
+
 def test_arxml_3_roundtrip():
     """dbc -> arxml 3.2.3 -> dbc must keep all frames (#813).
 
