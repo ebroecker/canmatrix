@@ -2499,6 +2499,9 @@ def decode_can_helper(ea, float_factory, ignore_cluster_info, generated_update_b
                 db.fd_baudrate = int(fd_baudrate_elem.text, 0)
 
             can_frame_trig = ea.selector(cc, "/CAN-PHYSICAL-CHANNEL//CAN-FRAME-TRIGGERING")
+            if len(can_frame_trig) == 0:
+                # AUTOSAR 3.x uses the generic PHYSICAL-CHANNEL instead of CAN-PHYSICAL-CHANNEL (#813)
+                can_frame_trig = ea.selector(cc, "/PHYSICAL-CHANNEL//CAN-FRAME-TRIGGERING")
 
         multiplex_translation = {}  # type: typing.Dict[str, str]
         for frameTrig in can_frame_trig:  # type: _Element
