@@ -1377,7 +1377,14 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                     base_type = ea.follow_ref(test_signal, "BASE-TYPE-REF")
 
             # Only get min/max values of the internal
-            lowers = ea.get_children(data_constr, "INTERNAL-CONSTRS/LOWER-LIMIT")
+            # note: get_children with a nested path does not work on namespaced
+            # arxml files (only the first path segment gets the namespace),
+            # therefore collect the limits per DATA-CONSTR-RULE (#797)
+            lowers = []
+            uppers = []
+            for rule in ea.get_children(data_constr, "DATA-CONSTR-RULE"):
+                lowers.extend(ea.find_children_by_path(rule, "INTERNAL-CONSTRS/LOWER-LIMIT"))
+                uppers.extend(ea.find_children_by_path(rule, "INTERNAL-CONSTRS/UPPER-LIMIT"))
             if not lowers:
                 lower = None
             else:
@@ -1385,7 +1392,6 @@ def get_signals(signal_array, frame, ea, multiplex_id, float_factory, bit_offset
                 for elem in lowers:
                     if decimal.Decimal(lower.text) > decimal.Decimal(elem.text):
                         lower = elem
-            uppers = ea.get_children(data_constr, "INTERNAL-CONSTRS/UPPER-LIMIT")
             if not uppers:
                 upper = None
             else:

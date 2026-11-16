@@ -40,6 +40,16 @@ def test_min_max():
     assert matrix["New_CanCluster"].frames[0].signals[0].is_signed is False
 
 
+def test_min_max_from_data_constr():
+    """min/max must be read from INTERNAL-CONSTRS inside DATA-CONSTR-RULE,
+    factor/offset are applied afterwards (#797)."""
+    test_file = "tests/files/arxml/ARXMLDataConstrTest.arxml"
+    matrix = canmatrix.formats.arxml.load(test_file)
+    signal = matrix["New_CanCluster"].frames[0].signals[0]
+    assert signal.min == 0
+    assert signal.max == 250
+
+
 def test_signal_group_system_name():
     """group name = I-SIGNAL-GROUP short name, sys_name = SHORT-NAME of the
     referenced SYSTEM-SIGNAL-GROUP; both must survive a re-export (#777)."""
