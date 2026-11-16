@@ -50,3 +50,27 @@ def test_decode_compu_method_1():
     assert values == {'0': 'no trailer detected', '1': 'trailer detected'}
     assert factor == 42
     assert offset == 17
+
+
+def test_arxml_3_roundtrip():
+    """dbc -> arxml 3.2.3 -> dbc must keep all frames (#813).
+
+    AUTOSAR 3.x uses the generic PHYSICAL-CHANNEL element (CAN-PHYSICAL-CHANNEL
+    exists only since AUTOSAR 4.x); the importer has to look for both.
+    """
+    import io
+
+    with open("tests/files/dbc/test_frame_decoding.dbc", "rb") as dbc_file:
+        db_source = canmatrix.formats.load(dbc_file, "dbc")
+    out = io.BytesIO()
+    canmatrix.formats.dump(db_source, out, "arxml", arVersion="3.2.3")
+
+    matrix = canmatrix.formats.loads(out.getvalue(), "arxml")
+    frames = {frame.name: frame for cluster in matrix.values() for frame in cluster.frames}
+    assert len(frames) == 4
+    assert "FRAME_testFrame1" in frames
+    assert "FRAME_testFrame2" in frames
+    assert "FRAME_testFrameFloat" in frames
+    assert "FRAME_muxTestFrame" in frames
+    assert frames["FRAME_testFrame1"].arbitration_id.id == 1
+    assert frames["FRAME_testFrame2"].arbitration_id.id == 2
