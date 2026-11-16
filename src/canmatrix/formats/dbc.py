@@ -194,7 +194,8 @@ def dump(in_db, f, **options):
         for table in sorted(db.value_tables):
             f.write(("VAL_TABLE_ " + table).encode(dbc_export_encoding, ignore_encoding_errors))
             for row in db.value_tables[table]:
-                f.write(' {} "{}"'.format(str(row), db.value_tables[table][row]).encode(dbc_export_encoding, ignore_encoding_errors))
+                description = str(db.value_tables[table][row]).replace('"', '\\"')
+                f.write(' {} "{}"'.format(str(row), description).encode(dbc_export_encoding, ignore_encoding_errors))
             f.write(";\n".encode(dbc_export_encoding, ignore_encoding_errors))
         f.write("\n".encode(dbc_export_encoding, ignore_encoding_errors))
 
@@ -808,11 +809,11 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                 temp = regexp.match(decoded)
                 if temp:
                     table_name = temp.group(1)
-                    temp_list = temp.group(2).split('"')
+                    temp_list = list(canmatrix.utils.escape_aware_split(temp.group(2), '"'))
                     value_hash = {}
                     try:
                         for i in range(math.floor(len(temp_list) / 2)):
-                            val = temp_list[i * 2 + 1]
+                            val = temp_list[i * 2 + 1].replace('\\"', '"')
                             value_hash[temp_list[i * 2].strip()] = val.strip()
                     except:
                         logger.error("Error with Line: " + str(temp_list))

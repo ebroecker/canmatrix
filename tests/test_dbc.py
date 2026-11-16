@@ -575,6 +575,25 @@ def test_escaped_quotes():
     assert matrix.frames[0].signals[0].values[2] == r'string with "escaped" double quotes'
 
 
+def test_escaped_quotes_in_value_table():
+    dbc = io.BytesIO(textwrap.dedent(r'''
+        VAL_TABLE_ Gear 0 "neutral" 1 "say \"one\"" 2 "two";
+        ''').encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+    assert matrix.value_tables["Gear"] == {0: "neutral", 1: 'say "one"', 2: "two"}
+
+
+def test_value_table_with_quotes_round_trip():
+    matrix = CanMatrix()
+    matrix.add_value_table("Gear", {0: "neutral", 1: 'say "one"'})
+    outdbc = io.BytesIO()
+    canmatrix.formats.dump(matrix, outdbc, "dbc")
+    assert b'1 "say \\"one\\""' in outdbc.getvalue()
+
+    reloaded = canmatrix.formats.dbc.load(io.BytesIO(outdbc.getvalue()), dbcImportEncoding="utf8")
+    assert reloaded.value_tables["Gear"] == {0: "neutral", 1: 'say "one"'}
+
+
 def test_float_cycle_time():
     dbc = io.BytesIO(textwrap.dedent(u'''\
         BO_ 17 Frame_1: 8 Vector__XXX
