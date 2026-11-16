@@ -37,6 +37,7 @@ class SignalGroup(object):
     signals = attr.ib(factory=list, repr=False)  # type: typing.MutableSequence[Signal]
     e2e_properties = attr.ib(default=None)  # type: Optional[AutosarE2EProperties]
     secOC_properties= attr.ib(default=None)  # type: Optional[AutosarSecOCProperties]
+    sys_name = attr.ib(default=None)  # type: Optional[str]
 
     def add_signal(self, signal):  # type: (Signal) -> None
         """Add a Signal to SignalGroup.

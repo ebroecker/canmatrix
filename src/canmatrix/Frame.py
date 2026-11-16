@@ -223,17 +223,19 @@ class Frame(object):
         return iter(self.signals)
 
     def add_signal_group(self,
-                         Name: str, 
-                         Id: int, 
-                         signalNames: typing.Sequence[str], 
-                         e2e_properties: typing.Optional[AutosarE2EProperties] = None) -> None:
+                         Name: str,
+                         Id: int,
+                         signalNames: typing.Sequence[str],
+                         e2e_properties: typing.Optional[AutosarE2EProperties] = None,
+                         sys_name: typing.Optional[str] = None) -> None:
         """Add new SignalGroup to the Frame. Add given signals to the group.
 
         :param str Name: Group name
         :param int Id: Group id
         :param list of str signalNames: list of Signal names to add. Non existing names are ignored.
+        :param str sys_name: name of the referenced SYSTEM-SIGNAL-GROUP (arxml system name), optional
         """
-        newGroup = SignalGroup(Name, Id, e2e_properties=e2e_properties)
+        newGroup = SignalGroup(Name, Id, e2e_properties=e2e_properties, sys_name=sys_name)
         self.signalGroups.append(newGroup)
         for signal in signalNames:
             signal = signal.strip()

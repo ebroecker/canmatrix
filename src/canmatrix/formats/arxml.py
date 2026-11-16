@@ -744,7 +744,8 @@ def dump(dbs, f, **options):
             for group in frame.signalGroups:
                 signal_ele = create_sub_element(elements, 'I-SIGNAL')
                 create_sub_element(signal_ele, 'SHORT-NAME', group.name)
-                sys_sig_ref = create_sub_element(signal_ele, 'SYSTEM-SIGNAL-REF', text="/Signal/{}".format(group.name),
+                # arxml: reference the SYSTEM-SIGNAL-GROUP by its system name (#777)
+                sys_sig_ref = create_sub_element(signal_ele, 'SYSTEM-SIGNAL-REF', text="/Signal/{}".format(group.sys_name if group.sys_name else group.name),
                                                  dest='SYSTEM-SIGNAL-GROUP')
 
     #
@@ -783,7 +784,7 @@ def dump(dbs, f, **options):
                     # init_value_ref.text = "/CONSTANTS/{}".format(signal.name)
             for group in frame.signalGroups:
                 group_ele = create_sub_element(elements, 'SYSTEM-SIGNAL-GROUP')
-                create_sub_element(group_ele, 'SHORT-NAME', group.name)
+                create_sub_element(group_ele, 'SHORT-NAME', group.sys_name if group.sys_name else group.name)
                 if ar_version[0] == "3":
                     data_type_ref.set('DEST', 'INTEGER-TYPE')  # todo check this
                 sys_signal_refs = create_sub_element(
@@ -1087,7 +1088,11 @@ def get_signalgrp_and_signals(sys_signal, sys_signal_array, frame, group_id, ea)
 
         e2e_properties = canmatrix.AutosarE2EProperties(e2e_profile, e2e_data_id_mode, e2e_data_ids, e2e_data_length)
 
-    frame.add_signal_group(ea.get_element_name(sys_signal), group_id, members, e2e_properties)
+    # arxml: system name = SHORT-NAME of the referenced SYSTEM-SIGNAL-GROUP (#777)
+    sys_signal_group = ea.follow_ref(sys_signal, "SYSTEM-SIGNAL-GROUP-REF")
+    sys_name = ea.get_element_name(sys_signal_group) if sys_signal_group is not None else None
+
+    frame.add_signal_group(ea.get_element_name(sys_signal), group_id, members, e2e_properties, sys_name)
 
 
 def decode_compu_method(compu_method, ea, float_factory):
