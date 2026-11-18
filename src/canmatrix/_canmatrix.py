@@ -93,7 +93,7 @@ class CanMatrix(object):
 
     frames_dict_name = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
     frames_dict_id = attr.ib(factory=dict)  # type: typing.MutableSequence[Frame]
-    _frames_dict_id_extend = {}
+    _frames_dict_id_extend = attr.ib(factory=dict)  # type: typing.MutableMapping[typing.Tuple[int, bool], Frame]
     signal_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     frame_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
     global_defines = attr.ib(factory=dict)  # type: typing.MutableMapping[str, Define]
@@ -280,32 +280,36 @@ class CanMatrix(object):
         for element in defines_to_delete:
             del self.signal_defines[element]
 
-    def get_frame_by_id(self, arbitration_id):  # type: (ArbitrationId) -> typing.Union[Frame, None]
-        """Get Frame by its arbitration id.
-
-        :param ArbitrationId arbitration_id: Frame id as canmatrix.ArbitrationId
-        :rtype: Frame or None
-        """
-        hash_name = f"{arbitration_id.id}_{arbitration_id.extended}"
-        
-        frame = self._frames_dict_id_extend.get(hash_name, None)
-        if frame is not None:
-            return frame
-        for frame in self.frames:
-            if frame.arbitration_id == arbitration_id:
-                # found ID while ignoring extended or standard
-                self._frames_dict_id_extend[hash_name] = frame
-                return frame
-        return None
-    
     def frame_by_id(self, arbitration_id):  # type: (ArbitrationId) -> typing.Union[Frame, None]
-        """Get Frame by its arbitration id.
+        """Get Frame by its arbitration id. Always searches, never cached (#872/#884).
+
         :param ArbitrationId arbitration_id: Frame id as canmatrix.ArbitrationId
         :rtype: Frame or None
         """
         for test in self.frames:
             if test.arbitration_id == arbitration_id:
-                # found ID while ignoring extended or standard
+                return test
+        return None
+
+    def get_frame_by_arbitration_id(self, arbitration_id):  # type: (ArbitrationId) -> typing.Union[Frame, None]
+        """Get Frame by its arbitration id, using a cache (see #774, #872).
+
+        ArbitrationId is not hashable, so the cache is keyed by the derived
+        tuple (id, extended). Cache misses fall back to a linear search and
+        populate the cache. The cache is invalidated by add_frame,
+        remove_frame, del_frame and merge; use frame_by_id if you need a
+        guaranteed fresh lookup after manipulating self.frames directly.
+
+        :param ArbitrationId arbitration_id: Frame id as canmatrix.ArbitrationId
+        :rtype: Frame or None
+        """
+        cache_key = (arbitration_id.id, arbitration_id.extended)
+        frame = self._frames_dict_id_extend.get(cache_key, None)
+        if frame is not None:
+            return frame
+        for test in self.frames:
+            if test.arbitration_id == arbitration_id:
+                self._frames_dict_id_extend[cache_key] = test
                 return test
         return None
 
@@ -574,6 +578,7 @@ class CanMatrix(object):
         frame = frame_or_name if isinstance(frame_or_name, Frame.Frame) else self.frame_by_name(frame_or_name)
         if frame:
             self.frames.remove(frame)
+            self._frames_dict_id_extend = {}
 
     def rename_signal(self, signal_or_name, new_name):  # type: (typing.Union[Signal, str], str) -> None
         """Rename Signal.
