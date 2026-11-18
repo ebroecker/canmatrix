@@ -288,6 +288,8 @@ def from_dict(data, **_options):
 
                 if signal.get("multiplex") is not None:
                     new_signal.multiplex = new_signal.multiplex_setter(signal["multiplex"])
+                if signal.get("mux_value") is not None:
+                    new_signal.mux_val = signal["mux_value"]
 
                 if signal.get("values", False):
                     for key in signal["values"]:
@@ -310,7 +312,7 @@ def from_dict(data, **_options):
                     for ecu in signal["receivers"]:
                         new_signal.add_receiver(ecu)
                 for _attr in ("short_name", "type_label", "enumeration", "cycle_time",
-                              "calc_min_for_none", "calc_max_for_none"):
+                              "calc_min_for_none", "calc_max_for_none", "muxer_for_signal", "mux_val_grp"):
                     if _attr in signal:
                         setattr(new_signal, _attr, signal[_attr])
 
