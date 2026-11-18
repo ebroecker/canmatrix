@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import io
 import os
+from decimal import Decimal
 from pathlib import Path
 import textwrap
 
@@ -8,6 +9,29 @@ import pytest
 
 import canmatrix.formats
 from canmatrix._canmatrix import CanMatrix
+
+
+def test_kcd_signal_scaling_roundtrip():
+    cluster = canmatrix.formats.loads(b'''
+        <NetworkDefinition xmlns="http://kayak.2codeornot2code.org/1.0">
+          <Document name="Example"/>
+          <Bus name="Bench">
+            <Message id="0x001" name="Sample" length="2">
+              <Signal name="Scaled" offset="0" length="16">
+                <Value slope="1.0000000000000000001" intercept="-1234.56789012345"/>
+              </Signal>
+            </Message>
+          </Bus>
+        </NetworkDefinition>
+    ''', "kcd")
+    output = io.BytesIO()
+    canmatrix.formats.dump(cluster, output, "kcd")
+
+    matrix = canmatrix.formats.loads_flat(output.getvalue(), "kcd")
+    signal = matrix.frames[0].signal_by_name("Scaled")
+    assert (signal.factor, signal.offset) == (
+        Decimal("1.0000000000000000001"), Decimal("-1234.56789012345")
+    )
 
 
 def test_dump_matrix():
