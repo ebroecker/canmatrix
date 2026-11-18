@@ -47,6 +47,16 @@ clusterImporter = 1
 _Element = lxml.etree._Element
 
 
+def _format_scaling(number):
+    # Keep the existing compact spelling whenever it represents the value exactly.
+    factory = decimal.Decimal if isinstance(number, (int, decimal.Decimal)) else float
+    number = factory(number)
+    compact = "%g" % number
+    if factory(compact) == number:
+        return compact
+    return str(number)
+
+
 def create_signal(signal, node_list, type_enums):
     # type: (canmatrix.Signal, typing.Mapping[str, int], typing.Mapping[str, typing.Sequence[str]]) -> _Element
     xml_signal = lxml.etree.Element(
@@ -91,10 +101,10 @@ def create_signal(signal, node_list, type_enums):
     elif signal.is_signed:
         value.set('type', "signed")
 
-    if float(signal.factor) != 1:
-        value.set('slope', str("%g" % signal.factor))
-    if float(signal.offset) != 0:
-        value.set('intercept', str("%g" % signal.offset))
+    if signal.factor != 1:
+        value.set('slope', _format_scaling(signal.factor))
+    if signal.offset != 0:
+        value.set('intercept', _format_scaling(signal.offset))
     if float(signal.min) != 0:
         value.set('min', str("{:.16g}".format(signal.min)))
     if float(signal.max) != 1 and float(signal.max) != 0:
