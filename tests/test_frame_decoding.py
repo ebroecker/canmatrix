@@ -110,7 +110,8 @@ def test_decode_with_dbc_multiplex():
     assert decoded2["muxSig9"].raw_value == 0x20
 
 
-def test_decode_complex_multiplexed():
+@pytest.mark.parametrize("export_type", [None, "json", "yaml"])
+def test_decode_complex_multiplexed(export_type):
     dbc = io.BytesIO(textwrap.dedent(u'''\
     BO_ 2024 OBD2: 8 Vector__XXX
     SG_ ParameterID_Service01 m1M : 23|8@0+ (1,0) [0|0] "" Vector__XXX
@@ -124,9 +125,17 @@ def test_decode_complex_multiplexed():
     ''').encode('utf-8'))
     matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
 
+    if export_type is not None:
+        if export_type == "yaml":
+            pytest.importorskip("yaml")
+        exported = io.BytesIO()
+        canmatrix.formats.dump(matrix, exported, export_type, **{export_type + "ExportAll": True})
+        matrix = canmatrix.formats.loads_flat(exported.getvalue(), export_type)
+
     decoded = matrix.decode(ArbitrationId(2024),bytearray([0x03,0x41,0x0d,0x00,0xaa,0xaa,0xaa,0xaa]))
     assert decoded["Vehicle_speed"].raw_value == 0
     assert "MAF_air_flow_rate" not in decoded
+    assert matrix.frames[0].signal_by_name("ParameterID_Service01").mux_val == 1
 
 
 def test_decode_pdu_container():
