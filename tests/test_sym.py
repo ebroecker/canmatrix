@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import io
+import struct
 import sys
 import textwrap
 from itertools import chain
@@ -146,6 +147,29 @@ def tests_parse_float(variable_type, bit_length):
     frame = matrix.frames[0]
     signal = frame.signals[0]
     assert signal.is_float
+
+
+@pytest.mark.parametrize("sign", ["-", "+"])
+@pytest.mark.parametrize("size,value_type,sym_type,packing", [
+    (32, 1, "float", "<f"),
+    (64, 2, "double", "<d"),
+])
+def test_dbc_float_to_sym(sign, size, value_type, sym_type, packing):
+    dbc = (
+        'BO_ 256 Battery: 8 ECU\n'
+        ' SG_ Voltage : 0|{}@1{} (1,0) [0|1000] "V" Logger\n'
+        'SIG_VALTYPE_ 256 Voltage : {};\n'
+    ).format(size, sign, value_type)
+    matrix = canmatrix.formats.loads_flat(dbc, import_type="dbc")
+    exported = io.BytesIO()
+    canmatrix.formats.sym.dump(matrix, exported)
+    assert "Var=Voltage {} 0,{}".format(sym_type, size) in exported.getvalue().decode("ascii")
+
+    exported.seek(0)
+    restored = canmatrix.formats.sym.load(exported)
+    payload = struct.pack(packing, 402.5).ljust(8, b"\x00")
+    assert restored.frames[0].decode(payload)["Voltage"].phys_value == 402.5
+
 
 def test_unterminated_enum():
     f = io.BytesIO(
