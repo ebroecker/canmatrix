@@ -104,13 +104,12 @@ def create_signal(db, signal):  # type: (canmatrix.CanMatrix, canmatrix.Signal) 
         output += "Var=%s " % signal.name
     if signal.type_label:
         output += signal.type_label + " "
+    elif signal.is_float:
+        output += "double " if signal.size == 64 else "float "
+    elif signal.is_signed:
+        output += "signed "
     else:
-        if signal.is_signed:
-            output += "signed "
-        elif signal.is_float:
-            output += "float "
-        else:
-            output += "unsigned "
+        output += "unsigned "
 
     start_bit = signal.get_startbit()
     if not signal.is_little_endian:
