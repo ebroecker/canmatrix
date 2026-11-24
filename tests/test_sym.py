@@ -10,6 +10,7 @@ import pytest
 from canmatrix._canmatrix import CanMatrix
 from canmatrix.Frame import Frame
 from canmatrix.Signal import Signal
+import canmatrix.formats.dbc
 import canmatrix.formats.sym
 
 
@@ -419,3 +420,60 @@ def test_sym_val_table():
         ''').encode('utf-8'))
     matrix = canmatrix.formats.sym.load(sym)
     assert matrix.frames[0].signals[0].values == {0: 'R', 1: 'B', 2: 'E'}
+
+
+@pytest.mark.parametrize('separator', [' ', '  '])
+def test_mux_motorola_flag(separator):
+    sym = io.BytesIO(textwrap.dedent(u'''\
+        FormatVersion=5.0 // Do not edit this line!
+        Title="Test-CAN"
+
+        {{SENDRECEIVE}}
+
+        [MuxTestFrame]
+        ID=002h
+        DLC=8
+        Mux=Mux258 0,16 0102h{}-m
+        Var=Value unsigned 16,8
+        ''').format(separator).encode('utf-8'))
+    matrix = canmatrix.formats.sym.load(sym)
+    assert matrix.load_errors == []
+
+    frame = matrix.frame_by_name("MuxTestFrame")
+    mux = frame.signal_by_name("MuxTestFrame_MUX")
+    assert not mux.is_little_endian
+
+    decoded = frame.decode(bytearray([0x01, 0x02, 42, 0, 0, 0, 0, 0]))
+    assert decoded["MuxTestFrame_MUX"].raw_value == 0x0102
+    assert decoded["Value"].raw_value == 42
+
+
+@pytest.mark.parametrize(
+    'mux_definition,signal_definition,data',
+    (
+        ('7|16@0+', '16|8@1+', bytearray([0x01, 0x02, 42, 0, 0, 0, 0, 0])),
+        ('0|16@1+', '23|8@0+', bytearray([0x02, 0x01, 42, 0, 0, 0, 0, 0])),
+    )
+)
+def test_export_mux_byte_order(mux_definition, signal_definition, data):
+    # The Mux line takes the byte order of the multiplexer, not the one of
+    # the multiplexed signals
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+        BO_ 2 MuxTestFrame: 8 Vector__XXX
+         SG_ Mux M : {} (1,0) [0|0] "" Vector__XXX
+         SG_ Value m258 : {} (1,0) [0|0] "" Vector__XXX
+        ''').format(mux_definition, signal_definition).encode('utf-8'))
+    matrix = canmatrix.formats.dbc.load(dbc)
+    frame = matrix.frame_by_name("MuxTestFrame")
+    expected = frame.decode(data)
+
+    f = io.BytesIO()
+    canmatrix.formats.sym.dump(matrix, f)
+    f.seek(0)
+    exported = canmatrix.formats.sym.load(f).frame_by_name("MuxTestFrame")
+
+    exported_mux = exported.signal_by_name("MuxTestFrame_MUX")
+    assert exported_mux.is_little_endian == frame.signal_by_name("Mux").is_little_endian
+    decoded = exported.decode(data)
+    assert decoded["MuxTestFrame_MUX"].raw_value == expected["Mux"].raw_value
+    assert decoded["Value"].raw_value == expected["Value"].raw_value == 42

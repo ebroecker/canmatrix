@@ -280,7 +280,7 @@ Title=\"{}\"
                                     '{:X}'.format(int(mux_signal.calc_max()))
                                 )
                                 s = '{:0{}X}h'.format(i, length)
-                            if not signal.is_little_endian:
+                            if not mux_signal.is_little_endian:
                                 # Motorola
                                 mux_out += " %d,%d %s -m" % (start_bit, mux_signal.size, s)
                             else:
@@ -495,7 +495,9 @@ def load(f, **options):  # type: (typing.IO, **typing.Any) -> canmatrix.CanMatri
                                 line=line,
                             )
                         frame.mux_names[multiplexor] = sig_name
-                        index_offset = 2
+                        # switches follow the name, the start bit and length
+                        # and the multiplexer value
+                        index_offset = 1
 
                     for switch in temp_array[index_offset + 2:]:
                         if switch == "-m":
