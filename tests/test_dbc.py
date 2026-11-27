@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import io
+import time
 import textwrap
 import string
 import pytest
@@ -758,3 +759,37 @@ def test_ecu_attribute_for_unknown_ecu():
     assert ecu.attribute("Node Address") is not None
 
     
+def test_signal_line_with_many_spaces_is_parsed_fast():
+    # a "SG_" line with many spaces and no ':' must not cause catastrophic
+    # regex backtracking while loading (#951)
+    payload = b'VERSION ""\nBS_:\nBU_: E\nBO_ 100 M: 8 E\n SG_ ' + b' ' * 300 + b'x\n'
+
+    start = time.perf_counter()
+    matrix = canmatrix.formats.dbc.load(io.BytesIO(payload), dbcImportEncoding="utf8")
+    elapsed = time.perf_counter() - start
+
+    assert elapsed < 1.0
+    assert len(matrix.frames[0].signals) == 0
+
+
+@pytest.mark.parametrize("indicator, is_multiplexer, multiplex, mux_val", [
+    ("M", True, "Multiplexor", None),
+    ("m0", False, 0, 0),
+    ("m1M", True, "Multiplexor", 1),
+])
+def test_multiplexer_indicator_in_signal_line(indicator, is_multiplexer, multiplex, mux_val):
+    dbc = io.BytesIO(textwrap.dedent(u'''\
+    BO_ 123 someFrame: 8 someOtherEcu
+     SG_ someSignal {} : 8|8@1+ (1,0) [0|9] ""  CCL_TEST
+    ''').format(indicator).encode('utf-8'))
+
+    matrix = canmatrix.formats.dbc.load(dbc, dbcImportEncoding="utf8")
+
+    signal = matrix.frames[0].signal_by_name("someSignal")
+    assert signal is not None
+    assert signal.is_multiplexer == is_multiplexer
+    assert signal.multiplex == multiplex
+    assert signal.mux_val == mux_val
+    assert signal.start_bit == 8
+    assert signal.size == 8
+    assert signal.receivers == ["CCL_TEST"]
